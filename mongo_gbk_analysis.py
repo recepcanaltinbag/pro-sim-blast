@@ -11,7 +11,10 @@ import sys
 import time
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c4465fa072c5a9a06b98bd2af9176bb93807eab4
 def is_matching_product(product_name):
     """
     Check if the product name matches any keyword in the filter_products list
