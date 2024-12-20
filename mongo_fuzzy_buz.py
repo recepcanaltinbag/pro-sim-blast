@@ -100,7 +100,8 @@ def data_fuzz_analysis(data):
 
     grouped = df.groupby('Group').apply(
     lambda g: pd.Series({
-    "Score": (1 / ((g['relative'].sum()+EPSILON)/len(g))) * ((len(g)**2)/sample_size) * 100,
+    #"Score": (1 / ((g['relative'].sum()+EPSILON)/len(g))) * ((len(g)**2)/sample_size) * 1000,
+    "Score": (1/(abs(g['relative'])+1)).sum() * (len(g)**2/sample_size) * 100,
     "Average R": g['relative'].sum()/len(g),
     "Total R": g['relative'].sum(),
     "Total Gene": len(g),
@@ -127,7 +128,7 @@ Relative_Collection = ROAR_DB['RelativeGenes']
 distinct_values = Rieske_Collection.distinct("PredictedCluster")
 
 
-with open(f"out_Relative_Info/GeneralInfo.txt", "w") as file1:
+with open(f"out_Relative_Infov2/GeneralInfo.txt", "w") as file1:
 
     file1.write(f"-------------------------------------\n")
 
@@ -185,9 +186,9 @@ for the_value in distinct_values:
 
         # Dosyayı açma (yazma modunda)
 
-    groups_dataframe.to_csv(f"out_Relative_Info/{the_value}.csv", float_format="%.1f")  # `index=False` ile index'i yazmadan kaydediyoruz.
+    groups_dataframe.to_csv(f"out_Relative_Infov2/{the_value}.csv", float_format="%.2f")  # `index=False` ile index'i yazmadan kaydediyoruz.
 
-    with open(f"out_Relative_Info/GeneralInfo.txt", "a") as file1:
+    with open(f"out_Relative_Infov2/GeneralInfo.txt", "a") as file1:
         # Verilerinizi hesapladıktan sonra
         file1.write(f"The Value: {the_value}\n")
         file1.write(f"Total IDs: {len(ids)}\n")
