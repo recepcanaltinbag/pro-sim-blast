@@ -1,6 +1,22 @@
 # ROAR-DB 
 
-This repo contains codes to find similar proteins and their relative nucleotide sequences, the extracted data was used specifically building the ROAR-DB.  
+This repo contains codes to find similar proteins and their relative nucleotide sequences, the extracted data was used specifically to build the ROAR-DB.  
+
+## Requirements
+
+**Libraries**
+- [Linux]()
+- [Python]()
+- [PyMongo](), [matplotlib](), [biopython](), [pandas](), [seaborn](), [numpy]() 
+
+**Externals**
+- [blastn](https://www.ncbi.nlm.nih.gov/books/NBK569861/)
+- [makeblastdb](https://www.ncbi.nlm.nih.gov/books/NBK569861/) 
+- [hmmer](http://hmmer.org/) 
+
+**Data**
+- [InterPro](https://www.ebi.ac.uk/interpro/)
+- [NCBI](https://www.ncbi.nlm.nih.gov/)
 
 ## Finding ROs
 
@@ -20,6 +36,6 @@ Score = (1 / ((Σ relative distances + ε) / #genes)) × ((#genes)^2 / sample si
 ![example_output](/img/Operon.png)
 ## Analysing Co-occurences 
 
-Clustered heatmaps for each group were prepared using the libraries of matplotlib and seaborn to analyze co-occurred gene groups.
+By analyzing co-occurring gene groups, consistently associated gene clusters have been identified for each RO group and each RO enzyme. For this purpose, heatmap and word cloud analyses are performed, and the results can be visualized using Sankey diagrams. In this way, functional predictions can be made for previously unknown or unannotated genes and enzymes, providing data that can support the formulation of hypotheses.
 
 ![example_output](/img/WordCloudR.png)
