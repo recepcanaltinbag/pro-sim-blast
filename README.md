@@ -33,7 +33,6 @@ Equation 1: To calculate the relative importance of the gene group:
 Score = (1 / ((Σ relative distances + ε) / #genes)) × ((#genes)^2 / sample size) × 100
  ```
 
-![example_output](/img/Operon.png)
 ## Analysing Co-occurences 
 
 By analyzing co-occurring gene groups, consistently associated gene clusters have been identified for each RO group and each RO enzyme. For this purpose, heatmap and word cloud analyses are performed, and the results can be visualized using Sankey diagrams. In this way, functional predictions can be made for previously unknown or unannotated genes and enzymes, providing data that can support the formulation of hypotheses.
