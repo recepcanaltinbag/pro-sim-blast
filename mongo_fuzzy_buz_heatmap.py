@@ -97,7 +97,7 @@ for group_name, group_data in grouped_data.items():
     cluster.ax_heatmap.yaxis.set_tick_params(labelrotation=0)
     cluster.fig.tight_layout()
     # Dosyayı kaydet
-    output_file = os.path.join(output_folder, f"clustered_heatmap_{group_name}.png")
+    output_file = os.path.join(output_folder, f"clustered_heatmap_{group_name}.pdf")
     plt.savefig(output_file)
     plt.close()
 

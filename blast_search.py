@@ -88,6 +88,7 @@ def perform_blast(fasta_file, query_type, evalue_threshold):
     return result.text
 
 
+
 def parse_blast_results(blast_xml, output_file, evalue_threshold):
     with open(output_file, "w") as out:
         out.write("Query_ID,Subject_ID,Accession,E-value,Alignment_Length\n")
