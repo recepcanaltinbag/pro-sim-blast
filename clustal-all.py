@@ -2,8 +2,8 @@ import os
 import subprocess
 
 
-input_folder = "out_pro_combined"  # all proteins families in a single fasta file
-output_folder = "aligned"  # alignment outs
+input_folder = "Proteins_ROs_alphaSubUnits"  # all proteins families in a single fasta file
+output_folder = "ROs_72_Aligned"  # alignment outs
 
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -23,7 +23,7 @@ print("Hizalamalar tamamlandı.")
 
 # Hizalamaların bulunduğu klasör
 alignment_folder = output_folder  # Stockholm formatlı hizalamalar buradan alınacak
-output_file = "Rieske_DB_For_HMMER.sto"  # Çıktı dosyası
+output_file = "Rieske_72_For_HMMER.sto"  # Çıktı dosyası
 
 # Çıktı dosyasını oluştur
 with open(output_file, "w") as outfile:
