@@ -27,6 +27,9 @@ def main():
     ap.add_argument("--out", default=os.path.join(HERE, "site"))
     ap.add_argument("--base", default="", help="URL prefix, e.g. /pro-sim-blast for a GitHub project page")
     ap.add_argument("--limit", type=int, default=0, help="only N entry pages (for testing)")
+    ap.add_argument("--pages-only", action="store_true",
+                    help="refresh just the overview pages, static files and bulk downloads; "
+                         "leave the per-type, per-variant and per-entry pages in place")
     args = ap.parse_args()
 
     os.environ["ROAR_BASE"] = args.base
@@ -38,10 +41,13 @@ def main():
     client = TestClient(A.app)
 
     out = args.out
-    if os.path.exists(out):
+    if os.path.exists(out) and not args.pages_only:
         shutil.rmtree(out)
-    os.makedirs(out)
-    shutil.copytree(os.path.join(HERE, "static"), os.path.join(out, "static"))
+    os.makedirs(out, exist_ok=True)
+    static_dst = os.path.join(out, "static")
+    if os.path.exists(static_dst):
+        shutil.rmtree(static_dst)
+    shutil.copytree(os.path.join(HERE, "static"), static_dst)
 
     def save(url, path, binary=False):
         r = client.get(url)
@@ -72,8 +78,23 @@ def main():
     for name in ("ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
                  "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                  "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
+                 "variant_signatures.csv", "motif_stats.json",
                  "null_model.csv", "sdp_positions.csv", "stats.json"):
         save("/download/analysis/" + name, "download/analysis/" + name)
+    if args.pages_only:
+        print("[search] index")
+        rows = con.execute("""
+            SELECT r.candidate_id, r.protein_id, r.locus_tag, r.product, r.ro_cluster,
+                   p.organism, p.is_plasmid
+            FROM ro r JOIN replicon p USING(nucleotide_id) WHERE r.is_confirmed=1""").fetchall()
+        with open(os.path.join(out, "search_index.json"), "w") as fh:
+            json.dump([[A.slug(r[0]), r[1], r[2], r[3], r[4], r[5], r[6]] for r in rows], fh)
+        with open(os.path.join(out, "search.html"), "w") as fh:
+            fh.write(SEARCH_PAGE.replace("__BASE__", A.BASE))
+        con.close()
+        print(f"[done] {out} (overview pages only)")
+        return
+
     print(f"[pages] {len(clusters)} clusters")
     for c in clusters:
         save(f"/cluster/{c}", f"cluster/{c}.html")

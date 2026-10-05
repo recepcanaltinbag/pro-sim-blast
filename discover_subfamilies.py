@@ -77,10 +77,16 @@ def identity_to(sequence, reference):
     return match / total if total else 0.0
 
 
+CDHIT_FAILURES = []
+
+
 def cdhit_subfamilies(members, sequences):
     """CD-HIT ile alt-aileler. Donen: {candidate_id: subfamily_index}, temsilciler.
 
-    members: [candidate_id, ...] ; sequences: hizalanmis diziler (ayni sirada)
+    members: [candidate_id, ...] ; sequences: HAM protein dizileri (ayni sirada).
+    Hizalanmis (match-state) dizi VERILMEZ: insert kolonlari atilmis oldugu icin
+    fuzyon/ek domainli proteinler duz enzimden ayirt edilemez hale gelir. Kimlik
+    ve konsensus hesaplari hizalamada kalir, bolme ham dizide yapilir.
     """
     if len(members) < 2:
         return {members[0]: 0}, {0: members[0]}
@@ -96,7 +102,8 @@ def cdhit_subfamilies(members, sequences):
                             "-M", "3000", "-T", "4", "-d", "0"],
                            check=True, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL)
-        except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        except (subprocess.CalledProcessError, FileNotFoundError, OSError) as exc:
+            CDHIT_FAILURES.append(str(exc))
             return {m: 0 for m in members}, {0: members[0]}
 
         assignment, representatives = {}, {}
@@ -165,6 +172,10 @@ def main():
               AND r.ro_cluster != 'N/A'
     """).fetchall()
 
+    raw = dict(connection.execute(
+        "SELECT candidate_id, sequence FROM ro WHERE sequence IS NOT NULL"))
+    print(f"[okunuyor] ham dizi: {len(raw)}")
+
     by_cluster = defaultdict(list)
     organism_of = {}
     for row in rows:
@@ -211,7 +222,8 @@ def main():
             continue
 
         # CD-HIT alt-aileleri
-        assignment, representatives = cdhit_subfamilies(members, sequences)
+        assignment, representatives = cdhit_subfamilies(
+            members, [raw.get(m, aligned[m]) for m in members])
         subfam_members = defaultdict(list)
         for candidate_id in members:
             subfam_members[assignment.get(candidate_id, 0)].append(candidate_id)

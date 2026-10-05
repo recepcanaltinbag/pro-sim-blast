@@ -1,0 +1,72 @@
+cluster,substrate_en,substrate_smiles,product_en,reaction,reaction_class,family,notes
+1_101_OxoO,unknown,,,not established,unknown,unknown,reference enzyme not traced to a publication in this work
+1_102_CARDO,carbazole,c1ccc2c(c1)[nH]c1ccccc12,"2'-aminobiphenyl-2,3-diol","angular dioxygenation at the carbon next to the ring nitrogen, after which the ring system opens spontaneously",angular_dioxygenation,biaryls_ethers,"carbazole 1,9a-dioxygenase; angular attack distinguishes it from lateral ring dihydroxylation"
+1_103_CarAa,carbazole,c1ccc2c(c1)[nH]c1ccccc12,"2'-aminobiphenyl-2,3-diol",angular dioxygenation,angular_dioxygenation,biaryls_ethers,alpha subunit of the same carbazole system as CARDO
+1_104_VanA,vanillate,COc1cc(ccc1O)C(=O)O,protocatechuate and formaldehyde,O-demethylation of an aromatic methyl ether,O_demethylation,aromatic_acids,entry point of lignin-derived aromatics into the beta-ketoadipate pathway
+1_105_DdmC,dicamba,OC(=O)c1c(OC)c(Cl)ccc1Cl,"3,6-dichlorosalicylate and formaldehyde",O-demethylation of the herbicide methyl ether,O_demethylation,haloaromatics,"39 % of this type's members are plant proteins, so the herbicide label applies only to its bacterial subgroup"
+1_106_TsaM,4-toluenesulfonate,Cc1ccc(cc1)S(=O)(=O)O,4-sulfobenzyl alcohol,hydroxylation of the ring methyl group,hydroxylation,sulfoaromatics,surfactant and detergent intermediate
+1_107_CndA,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+1_108_PobA,4-hydroxybenzoate,OC(=O)c1ccc(O)cc1,protocatechuate,ring hydroxylation next to the existing hydroxyl,hydroxylation,aromatic_acids,reaction taken from the original curation and not re-verified in this work
+1_109_LigX,"5,5'-dehydrodivanillate",OC(=O)c1cc(-c2cc(C(=O)O)cc(OC)c2O)cc(OC)c1O,demethylated biaryl diacid,O-demethylation of a lignin-derived biaryl,O_demethylation,biaryls_ethers,the biphenyl linkage is typical of softwood lignin
+1_110_SxtT,saxitoxin pathway intermediate,,hydroxylated alkaloid,tailoring hydroxylation on the saxitoxin scaffold,hydroxylation,alkaloids,structure not drawn: the scaffold is stereochemically complex and the exact intermediate is uncertain
+1_111_GxtA,gonyautoxin pathway intermediate,,hydroxylated alkaloid,tailoring hydroxylation on the saxitoxin scaffold,hydroxylation,alkaloids,"structure not drawn, for the same reason as SxtT"
+1_112_NdmA,caffeine,Cn1cnc2c1c(=O)n(C)c(=O)n2C,theobromine and formaldehyde,N-demethylation at position N1,N_demethylation,alkaloids,"NdmA, NdmB and NdmC remove the three methyl groups in sequence"
+1_113_CdnA,caffeine and methylxanthines,Cn1cnc2c1c(=O)n(C)c(=O)n2C,demethylated xanthine,N-demethylation,N_demethylation,alkaloids,methylxanthine demethylase of the caffeine degradation system
+1_114_NdmB,caffeine,Cn1cnc2c1c(=O)n(C)c(=O)n2C,paraxanthine and formaldehyde,N-demethylation at position N3,N_demethylation,alkaloids,
+1_115_NdmC,7-methylxanthine,Cn1cnc2c1[nH]c(=O)[nH]c2=O,xanthine and formaldehyde,N-demethylation at position N7,N_demethylation,alkaloids,
+2_201_BphA1,biphenyl,c1ccc(-c2ccccc2)cc1,"cis-2,3-dihydro-2,3-dihydroxybiphenyl",cis-dihydroxylation at ring positions 2 and 3,cis_dihydroxylation,biaryls_ethers,the same enzyme class acts on polychlorinated biphenyls
+2_202_EdoA1,ethylbenzene,CCc1ccccc1,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,99.8 % identical to the cumene enzyme CumA1 yet reported on a different substrate
+2_203_cumA1,cumene,CC(C)c1ccccc1,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,
+2_204_Dpe,diphenyl ether,c1ccc(Oc2ccccc2)cc1,phenol and catechol,angular dioxygenation at the ether carbon,angular_dioxygenation,biaryls_ethers,
+2_206_IpBAa,isopropylbenzene,CC(C)c1ccccc1,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,
+2_207_BpdC1,biphenyl,c1ccc(-c2ccccc2)cc1,"cis-2,3-dihydro-2,3-dihydroxybiphenyl",cis-dihydroxylation,cis_dihydroxylation,biaryls_ethers,
+2_208_TecA1,"1,2,4,5-tetrachlorobenzene",Clc1cc(Cl)c(Cl)cc1Cl,chlorinated cis-dihydrodiol,cis-dihydroxylation of a highly chlorinated ring,cis_dihydroxylation,haloaromatics,
+2_209_TDO,toluene,Cc1ccccc1,"cis-2,3-dihydroxy-2,3-dihydrotoluene",cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,"toluene dioxygenase, the structural prototype of the family"
+2_210_XylC1,xylene,Cc1ccccc1C,dimethyl cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,
+2_211_bfzA,benzene and fluorene,C1c2ccccc2-c2ccccc21,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,pah,substrate assignment is weak; the structure shown is fluorene
+2_212_BedC1,benzene,c1ccccc1,cis-benzene dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,alkylbenzenes,
+2_213_BphA1A2,biphenyl,c1ccc(-c2ccccc2)cc1,"cis-2,3-dihydro-2,3-dihydroxybiphenyl",cis-dihydroxylation,cis_dihydroxylation,biaryls_ethers,
+2_214_TftA,"2,4,5-trichlorophenoxyacetate",OC(=O)COc1cc(Cl)c(Cl)cc1Cl,"2,4,5-trichlorophenol and glyoxylate",oxygenolytic cleavage of the ether bond,dioxygenation_with_release,haloaromatics,"first step of the 2,4,5-T herbicide pathway"
+2_215_cadA,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+2_216_BPDO,biphenyl,c1ccc(-c2ccccc2)cc1,"cis-2,3-dihydro-2,3-dihydroxybiphenyl",cis-dihydroxylation,cis_dihydroxylation,biaryls_ethers,
+2_217_HcaE,3-phenylpropionate,OC(=O)CCc1ccccc1,"3-(2,3-dihydroxyphenyl)propionate",cis-dihydroxylation at ring positions 2 and 3,cis_dihydroxylation,aromatic_acids,
+2_218_BphA1,biphenyl,c1ccc(-c2ccccc2)cc1,"cis-2,3-dihydro-2,3-dihydroxybiphenyl",cis-dihydroxylation,cis_dihydroxylation,biaryls_ethers,
+3_301_PhnA1a,phenanthrene,c1ccc2c(c1)ccc1ccccc21,"cis-3,4-dihydroxy-3,4-dihydrophenanthrene",cis-dihydroxylation at ring positions 3 and 4,cis_dihydroxylation,pah,
+3_302_DitA,dehydroabietate,CC(C)c1ccc2c(c1)CCC1C2(C)CCCC1(C)C(=O)O,diterpenoid diol,cis-dihydroxylation of a resin acid,cis_dihydroxylation,terpenoids_steroids,conifer resin acid; the aromatic ring is part of the abietane skeleton
+3_303_NBDO,nitrobenzene,O=[N+]([O-])c1ccccc1,catechol and nitrite,dioxygenation with release of the nitro group,dioxygenation_with_release,nitroaromatics,
+3_304_OMO,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+3_305_ArhA1,polycyclic aromatic hydrocarbons,c1ccc2cc3ccccc3cc2c1,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,pah,broad specificity reported; anthracene shown as a representative substrate
+3_306_3NTDO,3-nitrotoluene,Cc1cccc(c1)[N+](=O)[O-],methylcatechol and nitrite,dioxygenation with release of the nitro group,dioxygenation_with_release,nitroaromatics,
+3_307_NagGH,naphthalene-2-sulfonate,OS(=O)(=O)c1ccc2ccccc2c1,"1,2-dihydroxynaphthalene and sulfite",dioxygenation with release of the sulfonate,dioxygenation_with_release,sulfoaromatics,
+3_308_DxnA1,dibenzo-p-dioxin,O1c2ccccc2Oc2ccccc21,"2,2',3-trihydroxydiphenyl ether",angular dioxygenation,angular_dioxygenation,biaryls_ethers,the angular route is what allows the dioxin ring to open
+3_309_NahAc,naphthalene,c1ccc2ccccc2c1,"cis-1,2-dihydroxy-1,2-dihydronaphthalene",cis-dihydroxylation at ring positions 1 and 2,cis_dihydroxylation,pah,naphthalene dioxygenase of the classical nah operon
+3_310_DntAc,"2,4-dinitrotoluene",Cc1ccc([N+](=O)[O-])cc1[N+](=O)[O-],4-methyl-5-nitrocatechol and nitrite,dioxygenation with release of one nitro group,dioxygenation_with_release,nitroaromatics,explosives manufacturing residue
+3_311_PhtAa,phthalate,OC(=O)c1ccccc1C(=O)O,"cis-4,5-dihydroxy-4,5-dihydrophthalate",cis-dihydroxylation at ring positions 4 and 5,cis_dihydroxylation,aromatic_acids,plasticiser hydrolysis product
+3_312_NinA,nitroaromatic compounds,O=[N+]([O-])c1ccccc1,hydroxylated aromatic and nitrite,dioxygenation with release of the nitro group,dioxygenation_with_release,nitroaromatics,broad nitroaromatic specificity reported; nitrobenzene shown
+3_313_KshA15,3-ketosteroid,O=C1CCC2(C)C3CCC4(C)C(=O)CCC4C3CCC2=C1,9-alpha-hydroxy-3-ketosteroid,9-alpha-hydroxylation of the steroid B ring,hydroxylation,terpenoids_steroids,"opens the steroid ring system; androst-4-ene-3,17-dione shown as substrate"
+3_314_NDO,naphthalene,c1ccc2ccccc2c1,"cis-1,2-dihydroxy-1,2-dihydronaphthalene",cis-dihydroxylation,cis_dihydroxylation,pah,
+3_315_NDO,naphthalene,c1ccc2ccccc2c1,"cis-1,2-dihydroxy-1,2-dihydronaphthalene",cis-dihydroxylation,cis_dihydroxylation,pah,
+3_316_NarAa,naphthalene,c1ccc2ccccc2c1,"cis-1,2-dihydroxy-1,2-dihydronaphthalene",cis-dihydroxylation,cis_dihydroxylation,pah,naphthalene system of Rhodococcus
+3_317_NidA,pyrene,c1cc2ccc3cccc4ccc(c1)c2c34,"cis-4,5-dihydroxy-4,5-dihydropyrene",cis-dihydroxylation at ring positions 4 and 5,cis_dihydroxylation,pah,a four-ring PAH and a priority pollutant
+3_318_NidA,pyrene,c1cc2ccc3cccc4ccc(c1)c2c34,"cis-4,5-dihydroxy-4,5-dihydropyrene",cis-dihydroxylation,cis_dihydroxylation,pah,
+3_319_PhdA,phenanthrene,c1ccc2c(c1)ccc1ccccc21,"cis-3,4-dihydroxy-3,4-dihydrophenanthrene",cis-dihydroxylation,cis_dihydroxylation,pah,
+3_320_NidA3,polycyclic aromatic hydrocarbons,c1cc2ccc3cccc4ccc(c1)c2c34,cis-dihydrodiol,cis-dihydroxylation,cis_dihydroxylation,pah,broad PAH specificity reported; pyrene shown
+4_401_CmtAb,p-cumate,CC(C)c1ccc(cc1)C(=O)O,"cis-2,3-dihydroxy-2,3-dihydro-p-cumate",cis-dihydroxylation at ring positions 2 and 3,cis_dihydroxylation,aromatic_acids,acts downstream of cumene oxidation
+4_402_PsbAb,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+4_403_AtdA,aniline,Nc1ccccc1,catechol and ammonia,dioxygenation with release of the amino group,dioxygenation_with_release,anilines,aniline dioxygenase is a multicomponent system
+4_404_TdnA1,aniline,Nc1ccccc1,catechol and ammonia,dioxygenation with release of the amino group,dioxygenation_with_release,anilines,
+4_405_ROCH34,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+4_406_PDO,phthalate,OC(=O)c1ccccc1C(=O)O,"cis-3,4-dihydroxy-3,4-dihydrophthalate",cis-dihydroxylation at ring positions 3 and 4,cis_dihydroxylation,aromatic_acids,attacks a different ring position than PhtAa
+4_407_PbaA1,3-phenoxybenzoate,OC(=O)c1cccc(Oc2ccccc2)c1,protocatechuate and phenol,angular dioxygenation at the ether carbon,angular_dioxygenation,biaryls_ethers,pyrethroid insecticide metabolite
+4_408_AntA,anthranilate,Nc1ccccc1C(=O)O,"catechol, ammonia and carbon dioxide",dioxygenation with release of both substituents,dioxygenation_with_release,aromatic_acids,tryptophan catabolite and plant signalling precursor
+4_409_TPDO,terephthalate,OC(=O)c1ccc(cc1)C(=O)O,"1,2-dihydroxy-3,5-cyclohexadiene-1,4-dicarboxylate",cis-dihydroxylation at ring positions 1 and 2,cis_dihydroxylation,aromatic_acids,"the polyethylene terephthalate monomer, central to plastic degradation routes"
+4_410_CbdC,2-halobenzoate,OC(=O)c1ccccc1Cl,"catechol, halide and carbon dioxide",dioxygenation with loss of the halogen and the carboxyl group,dioxygenation_with_release,haloaromatics,2-chlorobenzoate shown
+4_411_XylX,toluate and benzoate,Cc1cccc(c1)C(=O)O,methyl-cis-dihydroxycyclohexadiene carboxylate,cis-dihydroxylation at ring positions 1 and 2,cis_dihydroxylation,aromatic_acids,TOL plasmid pathway; m-toluate shown
+5_501_CmoS,choline,C[N+](C)(C)CCO,betaine aldehyde,hydroxylation of the choline hydroxymethyl carbon,hydroxylation,quaternary_amines,the plant chloroplast enzyme of osmolyte synthesis; 37 % of this type's members are plant proteins
+5_502_CmoB,choline,C[N+](C)(C)CCO,betaine aldehyde,hydroxylation,hydroxylation,quaternary_amines,
+5_503_CmoA,choline,C[N+](C)(C)CCO,betaine aldehyde,hydroxylation,hydroxylation,quaternary_amines,
+5_504_CntA,L-carnitine,C[N+](C)(C)CC(O)CC(=O)[O-],trimethylamine and malic semialdehyde,oxygenolytic cleavage of the carbon-nitrogen bond,C_N_cleavage,quaternary_amines,"the gut bacterial route from dietary carnitine to trimethylamine, linked to cardiovascular risk"
+5_505_OxyA,unknown,,,not established,unknown,unknown,substrate not found in standard databases
+5_506_Stc2,stachydrine,C[N+]1(C)CCCC1C(=O)[O-],N-methylproline,N-demethylation of proline betaine,N_demethylation,quaternary_amines,a plant-derived osmolyte used as a carbon source by rhizosphere bacteria
+5_507_BmoA,glycine betaine,C[N+](C)(C)CC(=O)[O-],dimethylglycine and formaldehyde,N-demethylation,N_demethylation,quaternary_amines,
+5_508_GbcA,glycine betaine,C[N+](C)(C)CC(=O)[O-],dimethylglycine and formaldehyde,N-demethylation,N_demethylation,quaternary_amines,first step of glycine betaine catabolism

@@ -46,6 +46,7 @@ HMM_PATH = os.environ.get("ROAR_HMM", os.path.join(PARENT, "RieskeDB71.hmm"))
 MOTIF_HMM_PATH = os.environ.get("ROAR_MOTIF_HMM",
                                 os.path.join(PARENT, "ROs_71_Clean", "ROmotif71.hmm"))
 ECOLOGY_PATH = os.environ.get("ROAR_ECOLOGY", os.path.join(PARENT, "cluster_ecology.csv"))
+CHEMISTRY_PATH = os.environ.get("ROAR_CHEMISTRY", os.path.join(PARENT, "chemistry.csv"))
 BASE = os.environ.get("ROAR_BASE", "").rstrip("/")
 STATIC_MODE = False          # set by freeze.py: links get ".html" suffixes
 
@@ -216,7 +217,12 @@ def cluster_table(con):
 def home(request: Request):
     con = connect()
     try:
-        return render(request, "index.html", totals=totals(con), clusters=cluster_table(con))
+        counts = dict(con.execute("SELECT ro_cluster, COUNT(*) FROM ro WHERE is_confirmed=1 "
+                                  "GROUP BY ro_cluster"))
+        groups = atlas.chemistry_groups(CHEMISTRY_PATH, counts, ECOLOGY)
+        return render(request, "index.html", totals=totals(con), groups=groups,
+                      reactions=atlas.reaction_summary(groups),
+                      motif=atlas.read_json(apath("motif_stats.json")))
     finally:
         con.close()
 
@@ -349,8 +355,18 @@ def leaf_page(request: Request, leaf_id: str, page: int = 1):
         if not leaf:
             raise HTTPException(404, "leaf not found")
         total, rows = members_query(con, leaf=leaf_id, page=page)
+        sdp = None
+        if atlas.table_exists(con, "leaf_sdp"):
+            r = con.execute("SELECT residues, signature, n_differ FROM leaf_sdp WHERE leaf_id=?",
+                            (leaf_id,)).fetchone()
+            c2 = con.execute("SELECT columns FROM cluster_sdp WHERE cluster=?",
+                             (leaf["cluster"],)).fetchone()
+            if r and c2:
+                import json as _json
+                sdp = {"residues": _json.loads(r[0]), "signature": r[1], "n_differ": r[2],
+                       "columns": _json.loads(c2[0])}
         return render(request, "leaf.html", leaf=leaf, c=cluster_parts(leaf["cluster"]),
-                      members=rows, total=total, page=page,
+                      members=rows, total=total, page=page, sdp=sdp,
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE)
     finally:
         con.close()
@@ -988,6 +1004,7 @@ def dl_analysis(name: str):
     allowed = {"ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
                "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
+               "variant_signatures.csv", "motif_stats.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")
@@ -1045,6 +1062,16 @@ def cluster_extras(con, cluster):
             "upstream_family": row.get("top_regulator_family") or "",
             "intergenic_bp": int(row["median_intergenic_bp"]) if row.get("median_intergenic_bp") else None,
             "upstream_product": "typical upstream regulator of this type"})
+    if atlas.table_exists(con, "cluster_sdp"):
+        row = con.execute("SELECT columns FROM cluster_sdp WHERE cluster=?", (cluster,)).fetchone()
+        if row:
+            import json as _json
+            x["sdp_columns"] = _json.loads(row[0])
+            x["sdp_leaves"] = [
+                {"leaf_id": r[0], "size": r[1], "residues": _json.loads(r[2]), "n_differ": r[3]}
+                for r in con.execute(
+                    "SELECT leaf_id, size, residues, n_differ FROM leaf_sdp "
+                    "WHERE cluster=? ORDER BY size DESC LIMIT 20", (cluster,))]
     tpath = apath("trees", f"{cluster}.nwk")
     if os.path.exists(tpath) and os.path.getsize(tpath) > 0:
         try:

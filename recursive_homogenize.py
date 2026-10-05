@@ -82,6 +82,9 @@ def cdhit_word(threshold):
     return 2
 
 
+CDHIT_FAILURES = []
+
+
 def cdhit(members, sequences, threshold):
     """CD-HIT ile bol. Donen: {candidate_id: alt_kume_index}."""
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -96,7 +99,10 @@ def cdhit(members, sequences, threshold):
                             "-T", "4", "-d", "0"],
                            check=True, stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL)
-        except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        except (subprocess.CalledProcessError, FileNotFoundError, OSError) as exc:
+            # Sessizce "hepsi tek alt-kume" donmek bolmeyi gorunmez bicimde
+            # iptal eder; sayilabilir olmasi icin raporlanir.
+            CDHIT_FAILURES.append(str(exc))
             return {m: 0 for m in members}
         assignment, current = {}, None
         with open(out + ".clstr") as handle:
@@ -110,8 +116,17 @@ def cdhit(members, sequences, threshold):
     return assignment
 
 
-def homogenize(members, aligned, rng):
-    """Bir kumeyi homojen yapraklara boler. Donen: [(leaf_members, depth, median_id)]."""
+def homogenize(members, aligned, raw, rng):
+    """Bir kumeyi homojen yapraklara boler. Donen: [(leaf_members, depth, median_id)]
+
+    IKI AYRI DIZI KAYNAGI, bilerek:
+      - `aligned` (match-state kolonlari) ile MEDYAN KIMLIK olculur. Kolon tabanli
+        kimlik pozisyon pozisyon karsilastirma gerektirir, bu yuzden hizalama sart.
+      - `raw` (ham protein dizisi) ile CD-HIT bolme yapilir. Match-state dizileri
+        insert kolonlarini atar; olculdu: medyan uzunluk kaybi %14, 10. persentil
+        %41, en kotu durumda 846 kalinti. Fuzyon/ek domainli bir protein ham
+        diziyle artik duz enzimden ayrilir.
+    """
     leaves = []
     # Yigin: (uyeler, derinlik)
     stack = [(members, 0)]
@@ -126,7 +141,7 @@ def homogenize(members, aligned, rng):
             leaves.append((node, depth, median))
             continue
 
-        assignment = cdhit(node, sequences, THRESHOLDS[depth])
+        assignment = cdhit(node, [raw.get(m, aligned[m]) for m in node], THRESHOLDS[depth])
         children = defaultdict(list)
         for candidate_id in node:
             children[assignment.get(candidate_id, 0)].append(candidate_id)
@@ -189,6 +204,12 @@ def main():
         FROM ro r JOIN replicon rep ON rep.nucleotide_id = r.nucleotide_id
         WHERE r.is_confirmed = 1 AND r.ro_cluster IS NOT NULL AND r.ro_cluster != 'N/A'
     """).fetchall()
+    raw = {}
+    for candidate_id, sequence in connection.execute(
+            "SELECT candidate_id, sequence FROM ro WHERE sequence IS NOT NULL"):
+        raw[candidate_id] = sequence
+    print(f"[okunuyor] ham dizi: {len(raw)}")
+
     by_cluster = defaultdict(list)
     organism_of = {}
     for row in rows:
@@ -203,7 +224,7 @@ def main():
     for index, (cluster, members) in enumerate(clusters, 1):
         sys.stdout.write(f"\r  {index}/{len(clusters)} kume  ({cluster})      ")
         sys.stdout.flush()
-        leaves = homogenize(members, aligned, rng)
+        leaves = homogenize(members, aligned, raw, rng)
         leaves.sort(key=lambda x: -len(x[0]))
         for leaf_index, (leaf_members, depth, median) in enumerate(leaves):
             leaf_id = f"{cluster}#{leaf_index}"
@@ -221,6 +242,10 @@ def main():
     connection.executemany("INSERT INTO leaf VALUES (?,?,?,?,?,?,?,?)", leaf_rows)
     connection.executemany("INSERT INTO ro_leaf VALUES (?,?,?,?,?)", member_rows)
     connection.commit()
+
+    if CDHIT_FAILURES:
+        print(f"[UYARI] cd-hit {len(CDHIT_FAILURES)} kez basarisiz oldu; "
+              f"o dugumler bolunmedi. Ornek: {CDHIT_FAILURES[0][:120]}")
 
     # --- Ozet
     total_leaves = len(leaf_rows)

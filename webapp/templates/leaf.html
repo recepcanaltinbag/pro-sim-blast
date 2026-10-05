@@ -14,7 +14,28 @@
   <dt>Plasmid / transposon rate</dt><dd>{{ '%.0f%%' % (100 * (leaf.plasmid_rate or 0)) }} / {{ '%.0f%%' % (100 * (leaf.transposon_rate or 0)) }}</dd>
   <dt>Representative</dt><dd><a href="{{ u('/ro/' ~ slug(leaf.representative)) }}">{{ leaf.representative }}</a></dd>
 </dl>
-<p class="dl"><a class="btn" href="{{ u('/download/leaf/' ~ leaf_slug(leaf.leaf_id) ~ '.fasta') }}">⬇ FASTA of members</a></p>
+<p class="dl"><a class="btn" href="{{ u('/download/leaf/' ~ leaf_slug(leaf.leaf_id) ~ '.fasta') }}">Member sequences (FASTA)</a></p>
+
+{% if sdp %}
+<h2>Residue signature</h2>
+<p class="note" style="max-width:92ch">Consensus residue of this variant at the alignment columns
+that best separate the variants of its type. Highlighted cells differ from the type's majority
+residue, which is where a functional difference would have to come from: overall identity cannot
+distinguish substrates in this family.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead><tr><th class="note">column</th>{% for col in sdp.columns %}<th class="num">{{ col.column }}{% if col.is_ligand %}<sup>L</sup>{% endif %}</th>{% endfor %}</tr></thead>
+<tbody>
+<tr><td class="note">type majority</td>{% for col in sdp.columns %}<td class="num note">{{ col.consensus }}</td>{% endfor %}</tr>
+<tr><td><b>this variant</b></td>
+  {% for col in sdp.columns %}{% set r = sdp.residues.get(col.column|string, '-') %}
+  <td class="num {{ 'diff' if r != col.consensus else '' }}">{{ r }}</td>{% endfor %}</tr>
+</tbody></table></div>
+<p class="note">Differs from the type majority at {{ sdp.n_differ }} of {{ sdp.columns|length }}
+positions. A superscript L marks a metal-binding position; the motif test accepts a ligand up to two
+columns away, so variation here does not mean the centre is incomplete. These are statistically
+discriminating columns, not structurally verified binding residues.
+<a href="{{ u('/atlas/evidence') }}">Why residue-level comparison matters in this family</a></p>
+{% endif %}
 <h2>Members</h2>
 {% set q = '' %}
 {% include "_members.html" %}

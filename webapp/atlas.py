@@ -481,3 +481,130 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
                  f'operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text>')
     parts.append("</svg>")
     return "".join(parts)
+
+
+# ------------------------------------------------------------- chemistry
+FAMILY_ORDER = ["alkylbenzenes", "pah", "biaryls_ethers", "nitroaromatics", "haloaromatics",
+                "sulfoaromatics", "aromatic_acids", "anilines", "quaternary_amines",
+                "alkaloids", "terpenoids_steroids", "unknown"]
+FAMILY_LABEL = {
+    "alkylbenzenes": "Benzene and alkylbenzenes",
+    "pah": "Polycyclic aromatic hydrocarbons",
+    "biaryls_ethers": "Biaryls, diaryl ethers and heterocycles",
+    "nitroaromatics": "Nitroaromatics",
+    "haloaromatics": "Halogenated aromatics",
+    "sulfoaromatics": "Sulfonated aromatics",
+    "aromatic_acids": "Aromatic acids and lignin-derived compounds",
+    "anilines": "Anilines",
+    "quaternary_amines": "Quaternary amines and osmolytes",
+    "alkaloids": "Alkaloids and purines",
+    "terpenoids_steroids": "Terpenoids and steroids",
+    "unknown": "Substrate not established",
+}
+FAMILY_NOTE = {
+    "alkylbenzenes": "Fuel components and industrial solvents. These are the substrates on which "
+                     "the chemistry of the family was first described, and toluene dioxygenase "
+                     "remains its structural prototype.",
+    "pah": "Combustion and tar residues, several of them priority pollutants. Their fused rings "
+           "resist attack until two hydroxyls are installed on adjacent carbons.",
+    "biaryls_ethers": "Biphenyls, dioxins, carbazole and lignin-derived biaryls. Some of these are "
+                      "attacked at the carbon joining the two rings rather than on a ring edge, "
+                      "which is what makes the skeleton fall apart.",
+    "nitroaromatics": "Explosives and dye intermediates. The oxygenase installs the diol and the "
+                      "nitro group leaves as nitrite, so one step both activates and detoxifies.",
+    "haloaromatics": "Herbicides, solvents and their residues. The halogen departs as halide, "
+                     "which is the step that makes these compounds biodegradable at all.",
+    "sulfoaromatics": "Surfactant and dye intermediates. The sulfonate leaves as sulfite during "
+                      "dihydroxylation.",
+    "aromatic_acids": "Carboxylated aromatics from plants and from industry, including the "
+                      "polyethylene terephthalate monomer. Most funnel into the beta-ketoadipate "
+                      "pathway and then into central metabolism.",
+    "anilines": "Dye and pesticide feedstocks. The amino group leaves as ammonia, giving catechol.",
+    "quaternary_amines": "Choline, the betaines and carnitine. These enzymes carry the same two "
+                         "metal centres as the ring-hydroxylating ones but act on open-chain "
+                         "substrates with no aromatic ring at all, which is the clearest evidence "
+                         "that the family is defined by its chemistry rather than by its substrate.",
+    "alkaloids": "Caffeine and intermediates of saxitoxin biosynthesis. Here the enzymes strip "
+                 "methyl groups from nitrogen or install single hydroxyls on complex scaffolds.",
+    "terpenoids_steroids": "Conifer resin acids and 3-ketosteroids. Hydroxylation at a specific "
+                           "ring position opens polycyclic skeletons that are otherwise inert.",
+    "unknown": "Reference enzymes whose original publications could not be traced in this work. "
+               "Their members are confirmed Rieske oxygenases, but this database claims no "
+               "substrate for them.",
+}
+REACTION_LABEL = {
+    "cis_dihydroxylation": "cis-dihydroxylation",
+    "angular_dioxygenation": "angular dioxygenation",
+    "dioxygenation_with_release": "dioxygenation with substituent release",
+    "O_demethylation": "O-demethylation",
+    "N_demethylation": "N-demethylation",
+    "hydroxylation": "hydroxylation",
+    "C_N_cleavage": "carbon-nitrogen bond cleavage",
+    "unknown": "not established",
+}
+REACTION_NOTE = {
+    "cis_dihydroxylation": "Both atoms of O2 are added to adjacent ring carbons, giving a cis-diol. "
+                           "This is the reaction the family is named for.",
+    "angular_dioxygenation": "Attack at the carbon that joins two rings. The product is unstable "
+                             "and the ring system opens without further enzymes.",
+    "dioxygenation_with_release": "Dihydroxylation at a substituted carbon, so the substituent "
+                                  "leaves as nitrite, halide, sulfite, ammonia or carbon dioxide.",
+    "O_demethylation": "One oxygen atom is used to oxidise an aryl methyl ether, releasing "
+                       "formaldehyde and the free phenol.",
+    "N_demethylation": "A methyl group on nitrogen is oxidised and released as formaldehyde.",
+    "hydroxylation": "A single oxygen atom is inserted at one carbon; the second is reduced to "
+                     "water.",
+    "C_N_cleavage": "Oxygenation at the carbon next to a quaternary nitrogen, cleaving the "
+                    "carbon-nitrogen bond.",
+    "unknown": "No reaction is claimed for these types.",
+}
+REACTION_COLORS = {
+    "cis_dihydroxylation": "#1f4e79", "angular_dioxygenation": "#2a8f87",
+    "dioxygenation_with_release": "#8c2f22", "O_demethylation": "#b5731f",
+    "N_demethylation": "#6d4c9a", "hydroxylation": "#1f7a4d",
+    "C_N_cleavage": "#b03a6e", "unknown": "#8a8a8a",
+}
+
+
+def chemistry_groups(path, counts, ecology=None):
+    """Group the curated chemistry table by chemical family, newest counts attached."""
+    rows = read_csv(path)
+    by_family = defaultdict(list)
+    for r in rows:
+        r = dict(r)
+        r["n"] = counts.get(r["cluster"], 0)
+        r["gene"] = r["cluster"].split("_", 2)[-1]
+        r["group"] = group_of(r["cluster"])
+        r["reaction_label"] = REACTION_LABEL.get(r["reaction_class"], r["reaction_class"])
+        r["color"] = REACTION_COLORS.get(r["reaction_class"], "#8a8a8a")
+        if ecology:
+            r["sclass"] = ecology.get(r["cluster"], {}).get("substrate_class", "")
+        by_family[r["family"]].append(r)
+    groups = []
+    for family in FAMILY_ORDER:
+        members = sorted(by_family.get(family, []), key=lambda r: -r["n"])
+        if not members:
+            continue
+        groups.append({
+            "key": family, "label": FAMILY_LABEL.get(family, family),
+            "note": FAMILY_NOTE.get(family, ""), "types": members,
+            "n_types": len(members), "n_members": sum(m["n"] for m in members),
+            "reactions": sorted({m["reaction_class"] for m in members}),
+        })
+    return groups
+
+
+def reaction_summary(groups):
+    """Members and types per reaction class, for the overview strip."""
+    per = defaultdict(lambda: {"types": 0, "members": 0})
+    for g in groups:
+        for t in g["types"]:
+            per[t["reaction_class"]]["types"] += 1
+            per[t["reaction_class"]]["members"] += t["n"]
+    out = []
+    for key in ["cis_dihydroxylation", "dioxygenation_with_release", "angular_dioxygenation",
+                "hydroxylation", "N_demethylation", "O_demethylation", "C_N_cleavage", "unknown"]:
+        if key in per:
+            out.append({"key": key, "label": REACTION_LABEL[key], "note": REACTION_NOTE[key],
+                        "color": REACTION_COLORS[key], **per[key]})
+    return out

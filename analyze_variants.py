@@ -119,13 +119,17 @@ def main():
     assignment = {row[0]: row[1] for row in connection.execute(
         "SELECT candidate_id, ro_cluster FROM ro WHERE is_confirmed=1 "
         "AND ro_cluster IS NOT NULL AND ro_cluster != 'N/A'")}
+    raw = dict(connection.execute(
+        "SELECT candidate_id, sequence FROM ro WHERE sequence IS NOT NULL"))
     connection.close()
+    print(f"  {len(raw)} ham dizi")
 
     by_cluster = defaultdict(list)
     for candidate_id, cluster in assignment.items():
         sequence = aligned.get(candidate_id)
         if sequence:
-            by_cluster[cluster].append(sequence)
+            # (hizalanmis dizi, ham dizi): kimlik hizalamada, cd-hit ham dizide
+            by_cluster[cluster].append((sequence, raw.get(candidate_id, sequence)))
     print(f"  {len(by_cluster)} kume, {sum(len(v) for v in by_cluster.values())} dizi")
 
     clusters = {k: v for k, v in by_cluster.items() if len(v) >= args.min_n}
@@ -142,15 +146,17 @@ def main():
             sorted(clusters.items(), key=lambda x: -len(x[1])), 1):
         sample = (rng.sample(sequences, MAX_PAIRWISE_SAMPLE)
                   if len(sequences) > MAX_PAIRWISE_SAMPLE else sequences)
+        aln_sample = [p[0] for p in sample]
+        raw_sample = [p[1] for p in sample]
         identities = []
-        for i in range(len(sample)):
-            for j in range(i + 1, len(sample)):
-                identities.append(identity(sample[i], sample[j]))
+        for i in range(len(aln_sample)):
+            for j in range(i + 1, len(aln_sample)):
+                identities.append(identity(aln_sample[i], aln_sample[j]))
         identities.sort()
         median = identities[len(identities) // 2] if identities else 1.0
         low = identities[len(identities) // 20] if len(identities) >= 20 else median
 
-        subfamilies = None if args.skip_cdhit else run_cdhit(sample, SUBFAMILY_IDENTITY)
+        subfamilies = None if args.skip_cdhit else run_cdhit(raw_sample, SUBFAMILY_IDENTITY)
 
         rows.append({
             "cluster": cluster, "n": len(sequences), "sampled": len(sample),
@@ -194,10 +200,11 @@ def main():
     coverage = [0] * length
 
     per_cluster_columns = {}
-    for cluster, sequences in clusters.items():
+    for cluster, pairs in clusters.items():
+        aln = [p[0] for p in pairs]          # kolon sayimi hizalanmis dizide
         columns = []
         for position in range(length):
-            counter = Counter(s[position] for s in sequences if s[position] != "-")
+            counter = Counter(s[position] for s in aln if s[position] != "-")
             columns.append(counter)
         per_cluster_columns[cluster] = columns
 

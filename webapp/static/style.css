@@ -149,3 +149,40 @@ section.stat h2 { border-bottom: none; font-size: 1.08rem; margin: .8em 0 .4em; 
 .note { font-size: .85rem; color: var(--dim); }
 .caveat { background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--accent-ink);
           border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: .9rem; max-width: 95ch; }
+
+/* ===================== chemistry cards and architecture figure ===================== */
+svg.arch { display: block; background: var(--panel); border: 1px solid var(--rule);
+           border-radius: 8px; padding: 10px; height: auto; }
+svg.arch text { fill: currentColor; }
+section.chemfam { margin: 26px 0 32px; }
+section.chemfam h3 { margin-bottom: .2em; }
+.structgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 10px; }
+.structcard { display: flex; flex-direction: column; background: var(--panel);
+              border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; color: var(--ink); }
+.structcard:hover { border-color: var(--accent-ink); text-decoration: none;
+                    box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+.structcard__img { display: flex; align-items: center; justify-content: center;
+                   height: 152px; border-bottom: 1px solid var(--rule);
+                   background: color-mix(in srgb, var(--paper) 70%, var(--panel)); }
+.structcard__img svg.struct { max-width: 100%; height: auto; }
+.struct--none { font-size: .78rem; color: var(--dim); text-align: center; line-height: 1.3; }
+.structcard__body { padding: 8px 10px 10px; }
+.structcard__gene { font-weight: 700; font-family: var(--serif); font-size: 1rem; }
+.structcard__sub { font-size: .84rem; margin-top: 1px; }
+.structcard__rx { font-size: .76rem; color: var(--dim); margin-top: 5px; }
+.structcard__rx i { display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+                    margin-right: 5px; vertical-align: 0; }
+.structcard__n { font-size: .74rem; color: var(--dim); margin-top: 3px; }
+@media (prefers-color-scheme: dark) {
+  svg.arch rect[fill="#cfe0ef"] { fill: #1e3346; }
+  svg.arch rect[fill="#f2dfc6"] { fill: #3d3222; }
+  svg.arch rect[fill="#fcecd0"] { fill: #3a3122; }
+  svg.arch rect[fill="#d9eede"] { fill: #1d3a2b; }
+  .structcard__img { background: #14181d; }
+}
+
+/* variant residue signature tables */
+table.sdp td, table.sdp th { font-family: ui-monospace, Menlo, Consolas, monospace; }
+table.sdp td.diff { background: rgba(140,47,34,.14); font-weight: 700; color: var(--accent-ink); }
+table.sdp thead tr:nth-child(2) th { border-bottom: 2px solid var(--rule); }
+table.sdp sup { font-size: .7em; color: var(--accent-ink); }

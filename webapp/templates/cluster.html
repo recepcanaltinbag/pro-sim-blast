@@ -159,6 +159,43 @@ sequence-verified partners above.</p>
   <tbody>{% for r in c.neighborhood %}<tr><td>{{ r.category }}</td><td class="num">{{ pct(r.ros, c.n) }}</td><td class="num">{{ r.genes|fmt }}</td></tr>{% endfor %}</tbody>
 </table></div>
 
+{% if x.sdp_columns %}
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  {% for col in x.sdp_columns %}<th class="num" title="score {{ col.score }} · {{ col.domain }} domain{{ ' · metal ligand' if col.is_ligand }}">{{ col.column }}{% if col.is_ligand %}<sup>L</sup>{% endif %}</th>{% endfor %}
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  {% for col in x.sdp_columns %}<th class="num note">{{ col.consensus }}</th>{% endfor %}<th></th></tr>
+</thead>
+<tbody>
+{% for l in x.sdp_leaves %}
+<tr><td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id.split('#')[-1] }}</a></td>
+  <td class="num">{{ l.size }}</td>
+  {% for col in x.sdp_columns %}
+  {% set r = l.residues.get(col.column|string, '-') %}
+  <td class="num {{ 'diff' if r != col.consensus else '' }}">{{ r }}</td>
+  {% endfor %}
+  <td class="num">{{ l.n_differ }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="{{ u('/download/analysis/variant_signatures.csv') }}">Download signatures</a></p>
+{% endif %}
+
 {% if x.tree_svg %}
 <h2>Phylogeny within this type</h2>
 <p class="note">Variant representatives of this type with its curated reference, aligned on the

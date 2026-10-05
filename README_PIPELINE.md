@@ -48,6 +48,8 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 11 | `extract_representatives.py` | her yaprak/küme için temsilci dizi + katalitik doğrulama |
 | 12 | `classify_domains.py` | yaşam alanı (bakteri/ökaryot/arke) — `ro_domain` |
 | 13 | `analyze_ecology.py` | substrat sınıfı × mobilite hipotez testi |
+| 12b | `variant_signature.py` | varyantlari ayiran hizalama kolonlari → `cluster_sdp`, `leaf_sdp` |
+| 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
 | 14 | `make_report.py` / `make_explorer.py` / `make_hub.py` | üç HTML sayfa |
@@ -187,9 +189,23 @@ Hugging Face Spaces).
 - **Operon tamlığı** artık dizi tabanlı ölçülüyor (adım 4b). `analyze_ecology.py`
   içindeki anotasyon-metni tabanlı `operon_complete` eski ölçüttür; karşılaştırma
   için tutuldu.
-- **CD-HIT alt-aile/yaprak kümelemesi match-state dizileri üzerinde** yapılıyor
-  (insert kolonları atılmış). Füzyon/ek domainli proteinler olduğundan daha
-  benzer görünür. Ham diziyle tekrar kümeleme açık iş.
+## Varyant kalinti imzasi (adim 12b)
+
+Her kume icin varyantlari AYIRAN hizalama kolonlari bulunur: kolon uyelerin
+≥%90'inda dolu, varyantlar arasi en fazla 4 farkli kalinti, en sik iki kalinti
+varyantlarin ≥%70'ini kapsiyor ve kalinti varyant ICINDE korunmus (entropi ≤0,5).
+Bu kapilar olmadan metrik yalnizca en kotu hizalanmis ilmekleri buluyordu
+(olculdu: CntA'da her varyant farkli kalinti, ~11 durum).
+Sonuc: 35 kumede imza, 1.749 varyant; kolonlarin %48'i katalitik bolgede,
+varyantlar kume cogunlugundan ortalama 4,8/12 kolonda ayriliyor.
+**Sinir:** bunlar istatistiksel olarak ayirt edici kolonlardir, yapisal olarak
+dogrulanmis baglanma cebi kalintilari degildir; veritabaninda yapi yok.
+
+## Korunmus merkez olcumu (adim 12c)
+
+11.422 dogrulanmis RO'da: Rieske ligandlarinin 4/4'u %100, kopru Asp/Glu %100,
+katalitik triad 3/3 %87,3 (kalan %12,7'de 2/3). En oynak pozisyon Fe(II)
+karboksilati (kolon 355, %87,6) — hem Asp hem Glu kabul ediyor.
 - **7 küme substratı bilinmiyor** (`OxoO/CndA/cadA/OMO/PsbAb/ROCH34/OxyA`): standart
   veritabanlarında bulunamadı, orijinal referans makaleleri gerekir.
 - **Substrat ataması küme düzeyinde**: heterojen kümelerde tek substrat tüm üyeler

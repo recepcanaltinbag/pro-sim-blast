@@ -1,48 +1,210 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<section class="hero">
-  <h1>Rieske oxygenase alpha subunits, with their genomic neighbourhoods</h1>
-  <p class="lede">
-    Every entry is a protein found in a GenBank record that passed two independent tests:
-    profile-HMM coverage of a full-length RO alpha model and the presence of the
-    Rieske [2Fe-2S] ligands plus the mononuclear-iron catalytic triad at the aligned positions.
-    For each one the ±10 kb neighbourhood is stored, operon structure is inferred from
-    neighbour protein sequences (Pfam models for beta subunit, ferredoxin and reductase),
-    and the entry is assigned to one of the reference RO types and to a sequence-homogeneous variant.
-  </p>
-  {% if not static_mode %}
-  <form class="bigsearch" action="{{ u('/search') }}" method="get">
-    <input type="search" name="q" placeholder="Search by organism, product, protein ID, locus tag or cluster name">
-    <button>Search</button>
-  </form>
-  {% endif %}
-</section>
+
+<h1>Rieske oxygenases: one catalytic architecture, many chemistries</h1>
+<p class="lede">A Rieske oxygenase alpha subunit carries two metal centres in one chain. A Rieske
+[2Fe-2S] cluster at the N-terminus accepts electrons from a ferredoxin, passes them across the
+subunit interface, and a mononuclear Fe(II) site at the C-terminus uses them to activate O<sub>2</sub>
+and attack the substrate. Every one of the {{ totals.confirmed|fmt }} proteins in this database was
+confirmed to have both centres intact, so what differs between them is not the machinery but what
+they point it at.</p>
+
+{% if not static_mode %}
+<form class="bigsearch" action="{{ u('/search') }}" method="get">
+  <input type="search" name="q" placeholder="Search by organism, product, protein identifier, locus tag or enzyme type">
+  <button>Search</button>
+</form>
+{% endif %}
 
 <section class="tiles">
-  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed RO alpha entries</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">reference RO types</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence-homogeneous variants</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">replicons with an RO</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.neighbors|fmt }}</div><div class="tile__l">neighbouring genes recorded</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.operon_any|fmt }}</div><div class="tile__l">operons with β / ferredoxin / reductase</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.plasmid|fmt }}</div><div class="tile__l">entries on plasmids</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.novel|fmt }}</div><div class="tile__l">novel-type candidates</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed alpha subunits</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">characterised enzyme types</div></div>
+  <div class="tile"><div class="tile__n">{{ groups|length }}</div><div class="tile__l">chemical families attacked</div></div>
+  <div class="tile"><div class="tile__n">{{ reactions|length - 1 }}</div><div class="tile__l">distinct reaction types</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence variants</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">genomes represented</div></div>
 </section>
 
-<section>
-  <h2>Reference RO types</h2>
-  <p class="muted">Sorted by number of confirmed members. Operon columns count members whose
-    same-strand gene run (gap ≤ 150 bp) contains a sequence-verified component.</p>
-  {% include "_cluster_table.html" %}
-</section>
+<h2>1 · The shared architecture, as measured</h2>
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" width="100%" class="arch">
+  <style>
+    .dom { stroke: #333; stroke-width: 1; }
+    .lb { font-size: 11px; fill: currentColor; }
+    .lbs { font-size: 10px; fill: currentColor; opacity: .8; }
+    .ti { font-size: 12px; font-weight: 700; fill: currentColor; }
+    .pc { font-size: 10.5px; font-weight: 700; fill: #1f7a4d; }
+    .fl { stroke: currentColor; stroke-width: 1.4; fill: none; marker-end: url(#a2); }
+    .fe { fill: #8c2f22; }
+    .s2 { fill: #d9a13b; }
+  </style>
+  <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+    orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 
-<section class="dl">
-  <h2>Downloads</h2>
-  <ul>
-    <li><a href="{{ u('/download/all_confirmed.fasta') }}">All confirmed RO alpha sequences (FASTA)</a></li>
-    <li><a href="{{ u('/download/all_confirmed.csv') }}">All confirmed entries with annotation (CSV)</a></li>
-    <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
-  </ul>
+  <text class="ti" x="0" y="14">Alpha subunit, drawn along the 426 positions of the catalytic-centre profile</text>
+
+  <rect class="dom" x="0" y="26" width="300" height="34" rx="4" fill="#cfe0ef"/>
+  <text class="lb" x="12" y="47">Rieske [2Fe-2S] domain</text>
+  <rect class="dom" x="300" y="26" width="680" height="34" rx="4" fill="#f2dfc6"/>
+  <text class="lb" x="314" y="47">catalytic domain, mononuclear Fe(II) site</text>
+
+  {% set cols = [(85,'C','Cys'),(87,'H','His'),(105,'C','Cys'),(108,'H','His'),
+                 (209,'D/E','bridge'),(212,'H','His'),(217,'H','His'),(355,'D/E','Asp/Glu')] %}
+  {% for col, exp, nm in cols %}
+  {% set px = (col / 426.0 * 960)|round(1) %}
+  <line x1="{{ px }}" y1="26" x2="{{ px }}" y2="60" stroke="#8c2f22" stroke-width="1.4"/>
+  <circle cx="{{ px }}" cy="68" r="3.2" fill="#8c2f22"/>
+  <text class="lbs" x="{{ px }}" y="84" text-anchor="middle">{{ exp }}</text>
+  <text class="lbs" x="{{ px }}" y="96" text-anchor="middle">{{ col }}</text>
+  {% if motif %}{% for s in motif.sites %}{% if s.column == col %}
+  <text class="pc" x="{{ px }}" y="110" text-anchor="middle">{{ '%.0f' % (100 * s.fraction) }}%</text>
+  {% endif %}{% endfor %}{% endif %}
+  {% endfor %}
+  <text class="lbs" x="0" y="126">conservation across all confirmed entries at each required position</text>
+
+  <text class="ti" x="0" y="164">Electron path</text>
+  <rect class="dom" x="0" y="176" width="104" height="30" rx="4" fill="var(--panel)"/>
+  <text class="lb" x="52" y="195" text-anchor="middle">NAD(P)H</text>
+  <path class="fl" d="M106,191 H140"/>
+  <rect class="dom" x="142" y="176" width="104" height="30" rx="4" fill="#fcecd0"/>
+  <text class="lb" x="194" y="195" text-anchor="middle">reductase</text>
+  <path class="fl" d="M248,191 H282"/>
+  <rect class="dom" x="284" y="176" width="104" height="30" rx="4" fill="#d9eede"/>
+  <text class="lb" x="336" y="195" text-anchor="middle">ferredoxin</text>
+  <path class="fl" d="M390,191 H424"/>
+
+  <rect class="dom" x="426" y="168" width="150" height="46" rx="4" fill="#cfe0ef"/>
+  <circle class="s2" cx="452" cy="191" r="5"/><circle class="s2" cx="470" cy="191" r="5"/>
+  <circle class="fe" cx="461" cy="182" r="4"/><circle class="fe" cx="461" cy="200" r="4"/>
+  <text class="lbs" x="484" y="188">Rieske</text><text class="lbs" x="484" y="200">[2Fe-2S]</text>
+  <path class="fl" d="M578,191 H612"/>
+  <text class="lbs" x="582" y="182">bridging Asp</text>
+
+  <rect class="dom" x="614" y="168" width="150" height="46" rx="4" fill="#f2dfc6"/>
+  <circle class="fe" cx="648" cy="191" r="6"/>
+  <text class="lbs" x="660" y="188">mononuclear</text><text class="lbs" x="660" y="200">Fe(II)</text>
+  <path class="fl" d="M766,191 H800"/>
+  <rect class="dom" x="802" y="176" width="178" height="30" rx="4" fill="var(--panel)"/>
+  <text class="lb" x="891" y="195" text-anchor="middle">substrate + O₂ → product</text>
+  <text class="lbs" x="0" y="232">Electrons cross from the Rieske centre of one subunit to the iron of its neighbour, which is why the enzyme works as a trimer.</text>
+
+  {% if motif %}
+  <text class="ti" x="0" y="266">Measured over {{ motif.n|fmt }} confirmed entries</text>
+  <text class="lb" x="0" y="286">All four Rieske ligands present: {{ motif.rieske_ligands['4']|fmt }} entries, {{ '%.1f' % (100 * motif.rieske_ligands['4'] / motif.n) }}%</text>
+  <text class="lb" x="0" y="302">Complete 2-His-1-carboxylate triad: {{ motif.catalytic_triad['3']|fmt }} entries, {{ '%.1f' % (100 * motif.catalytic_triad['3'] / motif.n) }}% · remaining {{ motif.catalytic_triad['2']|fmt }} have two of the three</text>
+  <text class="lb" x="0" y="318">Inter-subunit bridging Asp or Glu present: {{ motif.bridging_present|fmt }} entries, {{ '%.1f' % (100 * motif.bridging_present / motif.n) }}%</text>
+  {% endif %}
+</svg>
+<figcaption><b>Method.</b> Each entry was aligned to a profile built from 71 experimentally
+characterised enzymes, and the residue at each of the eight defining positions was read directly
+from the alignment. Membership of the database requires all four Rieske ligands and at least two of
+the three iron ligands.
+<b>What the numbers say.</b> The Rieske centre is invariant. The carboxylate of the iron site is the
+one position with real variation, which is expected: it tolerates both aspartate and glutamate and
+sits in a loop that shifts between sub-families. <a href="{{ u('/about') }}">Full methods</a></figcaption>
+</figure>
+
+<h2>2 · What the reaction actually is</h2>
+<p>The two metal centres support more than one chemistry. Counting types and members by reaction
+shows that the <em>cis</em>-dihydroxylation the family is named for is only the most common case, not
+the whole story.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Reaction</th><th class="num">Types</th><th class="num">Entries</th><th>What happens</th></tr></thead>
+<tbody>
+{% for r in reactions %}
+<tr><td><span class="chip" style="background:{{ r.color }};color:#fff;border:0">{{ r.label }}</span></td>
+    <td class="num">{{ r.types }}</td><td class="num">{{ r.members|fmt }}</td>
+    <td class="small">{{ r.note }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>Reaction assignments come from the literature on each type's reference enzyme and are
+curated in <code>chemistry.csv</code>. They describe the characterised enzyme; whether a given
+member performs the same reaction depends on how close it is to that reference, which every entry
+page states. <a href="{{ u('/atlas/evidence') }}">Evidence levels</a></figcaption>
+</figure>
+
+<h2>3 · Enzymes grouped by the chemicals they act on</h2>
+<p class="note">Each card is one characterised enzyme type with its reference substrate drawn from
+SMILES, the reaction it performs, and the number of confirmed entries assigned to it. Click a card
+to open the type.</p>
+
+{% for g in groups %}
+<section class="chemfam">
+  <h3>{{ g.label }} <span class="note">· {{ g.n_types }} types · {{ g.n_members|fmt }} entries</span></h3>
+  <p class="note" style="max-width:88ch">{{ g.note }}</p>
+  <div class="structgrid">
+  {% for t in g.types %}
+    <a class="structcard" href="{{ u('/cluster/' ~ t.cluster) }}">
+      <div class="structcard__img">
+        {% if t.substrate_smiles %}
+        <svg class="struct" data-smiles="{{ t.substrate_smiles }}" aria-label="{{ t.substrate_en }}"></svg>
+        {% else %}
+        <div class="struct struct--none">structure<br>not drawn</div>
+        {% endif %}
+      </div>
+      <div class="structcard__body">
+        <div class="structcard__gene">{{ t.gene }}</div>
+        <div class="structcard__sub">{{ t.substrate_en }}</div>
+        <div class="structcard__rx"><i style="background:{{ t.color }}"></i>{{ t.reaction_label }}</div>
+        <div class="structcard__n">{{ t.n|fmt }} entries{% if t.product_en %} · → {{ t.product_en }}{% endif %}</div>
+      </div>
+    </a>
+  {% endfor %}
+  </div>
 </section>
+{% endfor %}
+
+<h2>4 · Explore further</h2>
+<div class="cards">
+  <a class="card" href="{{ u('/atlas') }}"><h3>Atlas</h3>
+    <p>Phylogeny, sequence space, taxonomy, operons, regulation, ecology, evidence levels and the
+    statistical tests behind every claim.</p></a>
+  <a class="card" href="{{ u('/clusters') }}"><h3>All enzyme types</h3>
+    <p>Sortable table of the {{ totals.clusters }} types with members, genera, variants, plasmid
+    rates and operon composition.</p></a>
+  {% if not static_mode %}
+  <a class="card" href="{{ u('/classify') }}"><h3>Classify your sequence</h3>
+    <p>Paste a protein sequence and run the same two tests every entry passed: profile coverage and
+    a direct check of the eight catalytic-centre positions.</p></a>
+  {% endif %}
+  <a class="card" href="{{ u('/about') }}"><h3>Methods</h3>
+    <p>How entries are selected, where every threshold comes from, and what this database does not
+    claim.</p></a>
+</div>
+
+<h2>5 · Downloads</h2>
+<ul>
+  <li><a href="{{ u('/download/all_confirmed.fasta') }}">All confirmed alpha subunit sequences (FASTA)</a></li>
+  <li><a href="{{ u('/download/all_confirmed.csv') }}">All entries with annotation, type, variant and operon summary (CSV)</a></li>
+  <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
+  <li><a href="{{ u('/download/tree_all.nwk') }}">Phylogenetic tree (Newick)</a></li>
+</ul>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script>
+(function () {
+  const els = document.querySelectorAll('svg.struct[data-smiles]');
+  if (!els.length || typeof SmilesDrawer === 'undefined') return;
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const drawer = new SmilesDrawer.SvgDrawer({
+    width: 190, height: 150, bondThickness: 1.1, bondLength: 17, atomVisualization: 'default',
+    terminalCarbons: false, explicitHydrogens: false, compactDrawing: false, padding: 6
+  });
+  els.forEach(function (el) {
+    try {
+      SmilesDrawer.parse(el.dataset.smiles, function (tree) {
+        drawer.draw(tree, el, dark ? 'dark' : 'light', false);
+      }, function () {
+        el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
+        el.remove();
+      });
+    } catch (e) {
+      el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
+      el.remove();
+    }
+  });
+})();
+</script>
 {% endblock %}

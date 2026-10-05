@@ -92,6 +92,14 @@ python3 classify_domains.py --db roar.sqlite --out-dir "$OUT"
 step "13/14  Ekoloji hipotez testi"
 python3 analyze_ecology.py --db roar.sqlite --out "$OUT/cluster_ecology_stats.csv"
 
+# --- 12b. Varyant kalinti imzasi (ayirt edici kolonlar)
+step "12b/14 Varyant kalinti imzasi"
+python3 variant_signature.py --db roar.sqlite --out-dir "$OUT"
+
+# --- 12c. Korunmus merkez istatistigi (web ana sayfasi bunu okur)
+step "12c/14 Korunmus merkez istatistigi"
+python3 motif_stats.py --db roar.sqlite --out "$OUT/motif_stats.json"
+
 # --- 13b. Filogeni + dizi benzerlik agi (FastTree gerekir)
 step "13b/14 Filogeni ve dizi benzerlik agi"
 if command -v FastTree >/dev/null 2>&1 || [ -x ./bin/FastTree ]; then
