@@ -67,7 +67,8 @@ eukaryotic share are therefore excluded from the bacterial mobility statistics r
 mixed in.</p>
 <div class="tablewrap"><table class="data compact" data-filter="Filter types by name, substrate or phylum…">
 <thead><tr><th>Type</th><th>Substrate</th><th class="num">Members</th><th class="num">Genera</th>
-<th>Dominant phylum</th><th class="num">Share</th><th class="num">Eukaryotic</th><th>Eukaryotic groups</th></tr></thead>
+<th data-facet="Dominant phylum">Dominant phylum</th><th class="num">Share<span class="unit">%</span></th>
+<th class="num">Eukaryotic<span class="unit">%</span></th><th>Eukaryotic groups</th></tr></thead>
 <tbody>
 {% for d in over %}
 {% set top = (d.phyla.items()|list)[0] if d.phyla else ('–', 0) %}

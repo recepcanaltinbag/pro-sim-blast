@@ -5,6 +5,7 @@ Reads the SQLite DB and analysis_out/ files; no extra dependencies.
 """
 
 import csv
+import functools
 import html
 import json
 import os
@@ -655,9 +656,9 @@ def _arene(cx, cy, r, aromatic=True, saturated=(), subs=(), fused=False):
     return "".join(out)
 
 
-def _arrow(x, y, width=56, above="", below=""):
+def _arrow(x, y, width=56, above="", below="", marker_id="rxarrow"):
     out = [f'<line x1="{x}" y1="{y}" x2="{x + width}" y2="{y}" stroke="currentColor" '
-           f'stroke-width="1.3" marker-end="url(#rxarrow)"/>']
+           f'stroke-width="1.3" marker-end="url(#{marker_id})"/>']
     if above:
         out.append(f'<text x="{x + width / 2:.1f}" y="{y - 6}" font-size="9" '
                    f'text-anchor="middle" fill="currentColor">{above}</text>')
@@ -667,17 +668,25 @@ def _arrow(x, y, width=56, above="", below=""):
     return "".join(out)
 
 
-_DEFS = ('<defs><marker id="rxarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" '
-         'markerHeight="7" orient="auto-start-reverse">'
-         '<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>')
+def _defs(marker_id="rxarrow"):
+    """Ok isaretcisi tanimi. Marker id'si CAGRI BASINA tekil olmali: ana sayfada
+    yedi reaksiyon semasi var ve hepsi ayni id'yi yazarsa belge gecersiz olur.
+    Tarayici ilk tanima cozdugu icin gorsel sonuc dogru gorunur, bu yuzden
+    gozle farkedilmez; dogrulama araci yakalar."""
+    return ('<defs><marker id="' + marker_id + '" viewBox="0 0 10 10" refX="9" refY="5" '
+            'markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
+            '<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>')
 
 
 def reaction_scheme_svg(kind, width=300, height=96):
     """Reaksiyon sinifi icin genel mekanizma semasi."""
     r, cy = 19, 46
+    # Tekil marker id: ayni sayfadaki yedi sema ayni id'yi paylasmasin.
+    marker = "rxarrow-" + kind.replace("_", "-")
+    arrow = functools.partial(_arrow, marker_id=marker)
     body = ""
     if kind == "cis_dihydroxylation":
-        body = (_arene(34, cy, r) + _arrow(62, cy, 58, "O₂, NAD(P)H")
+        body = (_arene(34, cy, r) + arrow(62, cy, 58, "O₂, NAD(P)H")
                 + _arene(150, cy, r, aromatic=False, saturated=(4, 5),
                          subs=[(4, "OH"), (5, "OH")])
                 + '<text x="196" y="50" font-size="9" fill="currentColor">cis-diol, '
@@ -685,36 +694,36 @@ def reaction_scheme_svg(kind, width=300, height=96):
     elif kind == "angular_dioxygenation":
         body = (_arene(30, cy, r) + _arene(30 + r * 1.73, cy, r)
                 + f'<circle cx="{30 + r * 0.87:.1f}" cy="{cy}" r="3" fill="#8c2f22"/>'
-                + _arrow(96, cy, 52, "O₂, NAD(P)H")
+                + arrow(96, cy, 52, "O₂, NAD(P)H")
                 + _arene(176, cy, r, subs=[(1, "OH")])
                 + _arene(176 + r * 1.9, cy, r, subs=[(4, "OH")])
                 + '<text x="150" y="80" font-size="9" fill="currentColor">attack at the ring '
                   'junction, so the fused system falls apart</text>')
     elif kind == "dioxygenation_with_release":
-        body = (_arene(34, cy, r, subs=[(0, "X")]) + _arrow(62, cy, 58, "O₂, NAD(P)H", "− X")
+        body = (_arene(34, cy, r, subs=[(0, "X")]) + arrow(62, cy, 58, "O₂, NAD(P)H", "− X")
                 + _arene(150, cy, r, aromatic=True, subs=[(0, "OH"), (1, "OH")])
                 + '<text x="196" y="50" font-size="9" fill="currentColor">X leaves as nitrite,</text>'
                 + '<text x="196" y="62" font-size="9" fill="currentColor">halide, sulfite, NH₃ or CO₂</text>')
     elif kind == "O_demethylation":
-        body = (_arene(34, cy, r, subs=[(0, "OCH₃")]) + _arrow(76, cy, 54, "O₂, NAD(P)H", "− HCHO")
+        body = (_arene(34, cy, r, subs=[(0, "OCH₃")]) + arrow(76, cy, 54, "O₂, NAD(P)H", "− HCHO")
                 + _arene(164, cy, r, subs=[(0, "OH")])
                 + '<text x="204" y="50" font-size="9" fill="currentColor">free phenol plus</text>'
                 + '<text x="204" y="62" font-size="9" fill="currentColor">formaldehyde</text>')
     elif kind == "N_demethylation":
         body = ('<text x="18" y="52" font-size="13" fill="currentColor">R₂N–CH₃</text>'
-                + _arrow(86, cy, 54, "O₂, NAD(P)H", "− HCHO")
+                + arrow(86, cy, 54, "O₂, NAD(P)H", "− HCHO")
                 + '<text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text>'
                 + '<text x="204" y="50" font-size="9" fill="currentColor">one methyl removed</text>'
                 + '<text x="204" y="62" font-size="9" fill="currentColor">per reaction cycle</text>')
     elif kind == "hydroxylation":
         body = ('<text x="22" y="52" font-size="13" fill="currentColor">R–CH</text>'
-                + _arrow(74, cy, 54, "O₂, NAD(P)H", "+ H₂O")
+                + arrow(74, cy, 54, "O₂, NAD(P)H", "+ H₂O")
                 + '<text x="138" y="52" font-size="13" fill="currentColor">R–C–OH</text>'
                 + '<text x="200" y="50" font-size="9" fill="currentColor">one oxygen atom inserted,</text>'
                 + '<text x="200" y="62" font-size="9" fill="currentColor">the other reduced to water</text>')
     elif kind == "C_N_cleavage":
         body = ('<text x="12" y="52" font-size="13" fill="currentColor">R–CH₂–N⁺(CH₃)₃</text>'
-                + _arrow(116, cy, 50, "O₂, NAD(P)H")
+                + arrow(116, cy, 50, "O₂, NAD(P)H")
                 + '<text x="172" y="46" font-size="11" fill="currentColor">R–CHO</text>'
                 + '<text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text>'
                 + '<text x="232" y="52" font-size="9" fill="currentColor">C–N bond broken</text>')
@@ -722,7 +731,7 @@ def reaction_scheme_svg(kind, width=300, height=96):
         return ""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
             f'width="100%" style="max-width:{width}px;height:auto" class="rxnscheme">'
-            + _DEFS + body + "</svg>")
+            + _defs(marker) + body + "</svg>")
 
 
 # ----------------------------------------------------------- taxonomy tree

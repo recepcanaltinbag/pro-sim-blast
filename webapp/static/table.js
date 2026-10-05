@@ -474,12 +474,14 @@
             ok = false;
           }
         }
-        c.style.display = ok ? '' : 'none';
+        /* a class, not an inline style, so the "is this card visible" test
+           below cannot depend on how a browser serialises style attributes */
+        c.classList.toggle('is-hidden', !ok);
         if (ok) shown++;
       });
       sections.forEach(function (s) {
-        var any = s.querySelector('[data-card]:not([style*="display: none"])');
-        s.style.display = any ? '' : 'none';
+        var any = s.querySelector('[data-card]:not(.is-hidden)');
+        s.classList.toggle('is-hidden', !any);
       });
       facets.forEach(function (f) {
         f.chips.forEach(function (c) {
@@ -506,6 +508,59 @@
     apply();
   }
 
+  /* ------------------------------------------- contents for long atlas pages */
+
+  /* The atlas pages are long runs of numbered sections, and until you scroll
+     the whole way there is no way to see what one contains. Pages that carry
+     the atlas sub-navigation get a compact contents strip built from their own
+     h2 headings. Progressive enhancement: without scripting the page is
+     unchanged, and the headings are still in document order. */
+  function slugify(s) {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+
+  function pageContents() {
+    var subnav = document.querySelector('nav.subnav');
+    var main = document.querySelector('main');
+    if (!subnav || !main) return;
+    /* The statistics page wraps each test in its own <section class="stat">,
+       so the headings that matter are not all direct children of <main>. */
+    var heads = Array.prototype.slice.call(
+      main.querySelectorAll(':scope > h2, :scope > section > h2'));
+    if (heads.length < 4) return;
+
+    var nav = document.createElement('nav');
+    nav.className = 'toc';
+    nav.setAttribute('aria-label', 'Contents of this page');
+    var legend = document.createElement('span');
+    legend.className = 'toc__legend';
+    legend.textContent = 'On this page';
+    nav.appendChild(legend);
+
+    heads.forEach(function (h, i) {
+      if (!h.id) h.id = 's-' + (slugify(h.textContent) || i);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      /* headings read "3 · Which types share a genome" - keep the number as a
+         separate mark so the strip scans as a numbered list */
+      var txt = h.textContent.replace(/\s+/g, ' ').trim();
+      var m = txt.match(/^(\d+)\s*\u00b7\s*(.*)$/);
+      if (m) {
+        var n = document.createElement('b');
+        n.textContent = m[1];
+        a.appendChild(n);
+        a.appendChild(document.createTextNode(m[2]));
+      } else {
+        a.textContent = txt;
+      }
+      nav.appendChild(a);
+    });
+
+    /* after the lede if there is one, otherwise after the h1 */
+    var after = main.querySelector('p.lede') || main.querySelector('h1') || subnav;
+    after.parentNode.insertBefore(nav, after.nextSibling);
+  }
+
   function init() {
     var tables = document.querySelectorAll('table.data');
     Array.prototype.forEach.call(tables, function (t) {
@@ -525,6 +580,11 @@
         if (window.console && console.warn) console.warn('table.js cards', e);
       }
     });
+    try {
+      pageContents();
+    } catch (e) {
+      if (window.console && console.warn) console.warn('table.js toc', e);
+    }
   }
 
   if (document.readyState === 'loading') {

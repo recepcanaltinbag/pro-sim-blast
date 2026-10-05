@@ -78,7 +78,10 @@ and is shown for completeness only.</div>
   <span><i style="background:#b2bec3"></i>other</span><span><i class="dash"></i>predicted operon</span>
 </div>
 <figure class="fig">
-{{ svg|safe }}
+{#  The gene map is drawn with preserveAspectRatio="none" so that distances stay
+    proportional to the genome. Below roughly 440px that squashes the labels, so
+    the figure scrolls instead of shrinking.                                   #}
+<div class="archscroll">{{ svg|safe }}</div>
 <figcaption>Genes within 10 kb on either side, drawn to scale; arrow direction is the coding strand.
 The dashed outline marks the predicted operon, the run of same-strand genes separated by at most 150
 base pairs. Hover any gene for its product, coordinates and the Pfam evidence behind its component

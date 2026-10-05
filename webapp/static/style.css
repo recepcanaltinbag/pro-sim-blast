@@ -581,6 +581,41 @@ form.inline { margin: var(--s2) 0; }
 }
 .facetchip.on .facetchip__n { opacity: .8; }
 
+/* set by table.js when a row, card or whole family section is filtered out */
+.is-hidden { display: none !important; }
+
+/* contents strip built by table.js on the long atlas pages */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s3);
+  margin: var(--s4) 0 var(--s5);
+  padding: var(--s2) var(--s3);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: .86rem;
+}
+.toc__legend {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  margin-right: var(--s1);
+}
+.toc a { color: var(--ink-2); }
+.toc a:hover { color: var(--accent-ink); }
+.toc a b {
+  display: inline-block;
+  min-width: 1.1em;
+  margin-right: 4px;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+/* a heading jumped to from the strip gets a little breathing room */
+h2[id] { scroll-margin-top: var(--s3); }
+
 /* -------------------------- 8  tiles, cards, key/value facts           */
 .tiles {
   display: grid;
@@ -864,14 +899,33 @@ svg.genes {
 }
 svg.rxnscheme { color: var(--ink); display: block; }
 
+/* the hand-drawn operon-architecture schematic on the regulation page */
+svg.schematic {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3);
+  height: auto;
+  color: var(--ink);
+}
+svg.schematic text { fill: currentColor; }
+
 /* The generated SVGs (operon layouts, reaction schemes, trees) are built in
    Python with literal colours. They cannot be changed from here, so dark mode
    corrects them by attribute: black outlines and dark reds are unreadable on a
    dark panel. */
 @media (prefers-color-scheme: dark) {
+  /* near-black outlines and label text, invisible on a dark panel */
   svg.oplayout polygon[stroke="#111"] { stroke: #e8e6e1; }
   svg.oplayout polygon[stroke="#5a5a5a"] { stroke: #9aa4ae; }
+  svg.genes [stroke="#2d3436"] { stroke: var(--ink); }
+  svg.genes [fill="#2d3436"] { fill: var(--ink); }
+  svg.genes [stroke="#999"], svg.genes [stroke="#333"] { stroke: var(--rule-2); }
+  svg.genes [stroke="#777"] { stroke: var(--rule-2); }
+  svg [stroke="#111"]:not(polygon) { stroke: var(--ink); }
   svg.rxnscheme circle[fill="#8c2f22"] { fill: var(--fig-iron); }
+  svg.rxnscheme [stroke="#8c2f22"] { stroke: var(--accent-ink); }
   svg.tree line, svg.tree path { stroke: var(--rule-2); }
   .structcard__img { background: #14181d; }
 }
@@ -1017,8 +1071,11 @@ details.taxnode[open] > summary::before { content: "\25be"; }
   .pdbbar__styles { margin-left: 0; }
   /* an 8-position schematic cannot stay legible at 390px; it scrolls instead
      of shrinking its text to four pixels */
-  .archscroll { overflow-x: auto; }
-  .archscroll svg.arch, .archscroll svg.flowfig { min-width: 620px; }
+  .archscroll { overflow-x: auto; overscroll-behavior-x: contain; }
+  .archscroll svg.arch,
+  .archscroll svg.flowfig,
+  .archscroll svg.schematic,
+  .archscroll svg.genes { min-width: 620px; max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

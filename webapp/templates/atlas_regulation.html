@@ -22,43 +22,51 @@ subunit, measures it, and reports what sits on the other side of it.</p>
 
 <h2>1 · Four architectures</h2>
 <figure class="fig">
+<div class="archscroll">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" width="100%" style="max-width:760px" class="schematic">
   <style>
     .lbl { font-size: 11px; fill: currentColor; }
     .ttl { font-size: 12px; font-weight: 700; fill: currentColor; }
     .pr  { font-size: 10px; fill: currentColor; }
+    /* Outlines were #333 / #111, which vanish against a dark panel. They are
+       theme tokens now; the gene fills stay literal because they are saturated
+       enough to read in both themes under white labels. */
+    .gn  { stroke: var(--fig-stroke); stroke-width: 1; }
+    .gna { stroke: var(--ink); stroke-width: 1.4; }
+    .prbox { fill: none; stroke: var(--accent-ink); stroke-dasharray: 4 3; }
   </style>
   <!-- divergent regulator -->
   <text class="ttl" x="0" y="14">Divergent regulator: shared promoter region</text>
-  <polygon points="150,22 60,22 40,34 60,46 150,46" fill="#8e44ad" stroke="#333"/>
+  <polygon points="150,22 60,22 40,34 60,46 150,46" fill="#8e44ad" class="gn"/>
   <text class="lbl" x="95" y="38" text-anchor="middle" fill="#fff">regulator</text>
-  <rect x="152" y="22" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
+  <rect x="152" y="22" width="56" height="24" class="prbox"/>
   <text class="pr" x="180" y="60" text-anchor="middle">promoter region</text>
-  <polygon points="210,22 300,22 320,34 300,46 210,46" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <polygon points="210,22 300,22 320,34 300,46 210,46" fill="#c0392b" class="gna"/>
   <text class="lbl" x="255" y="38" text-anchor="middle" fill="#fff">alpha</text>
-  <polygon points="322,22 392,22 412,34 392,46 322,46" fill="#2980b9" stroke="#333"/>
+  <polygon points="322,22 392,22 412,34 392,46 322,46" fill="#2980b9" class="gn"/>
   <text class="lbl" x="357" y="38" text-anchor="middle" fill="#fff">beta</text>
   <text class="lbl" x="430" y="38">one intergenic region controls both genes</text>
 
   <!-- codirectional regulator -->
   <text class="ttl" x="0" y="96">Co-directional regulator: read-through or separate promoter</text>
-  <polygon points="40,104 130,104 150,116 130,128 40,128" fill="#8e44ad" stroke="#333"/>
+  <polygon points="40,104 130,104 150,116 130,128 40,128" fill="#8e44ad" class="gn"/>
   <text class="lbl" x="90" y="120" text-anchor="middle" fill="#fff">regulator</text>
-  <rect x="152" y="104" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
-  <polygon points="210,104 300,104 320,116 300,128 210,128" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <rect x="152" y="104" width="56" height="24" class="prbox"/>
+  <polygon points="210,104 300,104 320,116 300,128 210,128" fill="#c0392b" class="gna"/>
   <text class="lbl" x="255" y="120" text-anchor="middle" fill="#fff">alpha</text>
   <text class="lbl" x="340" y="120">same strand: the two may be one transcript</text>
 
   <!-- no regulator -->
   <text class="ttl" x="0" y="178">No regulator upstream</text>
-  <polygon points="150,186 60,186 40,198 60,210 150,210" fill="#b2bec3" stroke="#333"/>
+  <polygon points="150,186 60,186 40,198 60,210 150,210" fill="#b2bec3" class="gn"/>
   <text class="lbl" x="95" y="202" text-anchor="middle" fill="#fff">other gene</text>
-  <rect x="152" y="186" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
-  <polygon points="210,186 300,186 320,198 300,210 210,210" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <rect x="152" y="186" width="56" height="24" class="prbox"/>
+  <polygon points="210,186 300,186 320,198 300,210 210,210" fill="#c0392b" class="gna"/>
   <text class="lbl" x="255" y="202" text-anchor="middle" fill="#fff">alpha</text>
   <text class="lbl" x="340" y="202">regulation from a distant locus, or none</text>
   <text class="pr" x="0" y="238">Arrows point 5' to 3'. The dashed box is the intergenic region measured on this page.</text>
 </svg>
+</div>
 <figcaption><b>Why the divergent case matters.</b> A regulator transcribed away from the operon
 shares the single intergenic region with it and can control both its own gene and the catabolic
 genes from one site. This is the classical arrangement for LysR-family activators of aromatic

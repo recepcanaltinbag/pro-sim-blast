@@ -1,11 +1,8 @@
 {#  Sorting and filtering are provided by static/table.js, included once from
     base.html. This file used to carry its own copy of the sort routine.
 
-    Facets are limited to what the route actually passes: cluster_table() builds
-    its rows from the database and cluster_ecology.csv, so RO group, substrate
-    class and literature confidence are available here, but chemical family and
-    reaction class are not - they live in chemistry.csv, which this page does
-    not receive.                                                              #}
+    cluster_table() artik chemistry.csv satirini da birlestiriyor, bu yuzden
+    kimyasal aile ve reaksiyon sinifi da facet olarak kullanilabiliyor.       #}
 <div class="tablewrap">
 <table class="data" id="clusters" data-filter="Filter types by name, substrate or genus…">
   <thead><tr>
@@ -13,6 +10,8 @@
     <th class="num" data-facet="RO group">Group</th>
     <th>Substrate</th>
     <th data-facet="Substrate class">Class</th>
+    <th data-facet="Chemical family">Family</th>
+    <th data-facet="Reaction">Reaction</th>
     <th data-facet="Confidence">Confidence</th>
     <th class="num">Members</th>
     <th class="num">Genera</th>
@@ -31,6 +30,8 @@
     <td class="num">{{ c.group }}</td>
     <td>{{ c.substrate or '–' }}</td>
     <td><span class="chip chip--{{ c.sclass or 'unknown' }}">{{ c.sclass or 'unknown' }}</span></td>
+    <td class="small">{{ (c.family or 'unknown').replace('_', ' ') }}</td>
+    <td class="small">{{ (c.reaction_class or 'unknown').replace('_', ' ') }}</td>
     <td>{{ c.confidence or '–' }}</td>
     <td class="num" data-v="{{ c.n }}">{{ c.n|fmt }}</td>
     <td class="num" data-v="{{ c.genera }}">{{ c.genera|fmt }}</td>

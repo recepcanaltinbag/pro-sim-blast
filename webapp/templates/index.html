@@ -348,23 +348,22 @@ filter to find a type by name, substrate or product.</p>
   <p class="note">{{ g.note }}</p>
   <div class="structgrid">
   {% for t in g.types %}
-    {#  A type with no confirmed entries has no page: /cluster/<type> answers 404
-        because the route requires at least one confirmed member. Ten of the 71
-        curated types are in that position, so their cards are shown but inert
-        rather than linking to an error page.                                  #}
-    {% if t.n %}
-    <a class="structcard" href="{{ u('/cluster/' ~ t.cluster) }}" {{ card_attrs(t) }}>{{ card_body(t) }}</a>
-    {% else %}
-    <div class="structcard structcard--empty" {{ card_attrs(t) }}>{{ card_body(t) }}</div>
-    {% endif %}
+    {#  Uyesi olmayan tipler ARTIK sayfa veriyor: cluster_detail() n==0 oldugunda
+    None dondurmek yerine referans enzimin kuratorlu bilgilerini tasiyan bir
+    sayfa kuruyor. Bu yuzden kartlar yine baglanir; "uye yok" bilgisi kartin
+    kendisinde ve acilan sayfada yazili.                                      #}
+    <a class="structcard{{ ' structcard--empty' if not t.n }}"
+       href="{{ u('/cluster/' ~ t.cluster) }}" {{ card_attrs(t) }}>{{ card_body(t) }}</a>
   {% endfor %}
   </div>
 </section>
 {% endfor %}
 </div>
-<p class="note">Cards drawn with a dashed border are curated types for which the current build found
-no confirmed alpha subunit, so they have no entry page. They are kept visible because the reference
-enzyme is real; their absence is a property of this build's search, not of the literature.</p>
+<p class="note">Cards drawn with a dashed border are curated types for which this build found no
+confirmed alpha subunit. They still open, showing what the literature records about the reference
+enzyme, because the enzyme is real: the absence is a property of this build's search, and of the
+duplicate entries in the reference set, rather than of the literature.
+<a href="{{ u('/atlas/quality') }}">Why some references recruit nothing</a></p>
 
 <h2>4 · Explore further</h2>
 <div class="cards">

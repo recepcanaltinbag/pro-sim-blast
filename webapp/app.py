@@ -235,9 +235,15 @@ def cluster_table(con):
     out = []
     for r in rows:
         eco = ECOLOGY.get(r["cluster"], {})
+        chem = CHEMISTRY.get(r["cluster"], {})
         d = dict(r)
         d.update(cluster_parts(r["cluster"]))
-        d.update({"substrate": eco.get("substrate", ""), "sclass": eco.get("substrate_class", ""),
+        d.update({"family": chem.get("family", ""),
+                  "reaction_class": chem.get("reaction_class", ""),
+                  "reaction": chem.get("reaction", ""),
+                  "pdb": chem.get("pdb", ""),
+                  "substrate": chem.get("substrate_en") or eco.get("substrate", ""),
+                  "sclass": eco.get("substrate_class", ""),
                   "confidence": eco.get("confidence", ""), "leaves": leaves.get(r["cluster"], 0),
                   "euk": euk.get(r["cluster"], 0) or 0, "genera": len(genera.get(r["cluster"], ()))})
         out.append(d)
@@ -1168,9 +1174,12 @@ def atlas_novel(request: Request):
             if (r["tier"], r["assignment_class"]) in matrix:
                 matrix[(r["tier"], r["assignment_class"])] = r["n"]
         domains = Counter(r["domain"] or "unassigned" for r in rows)
+        live = {r[0] for r in con.execute(
+            "SELECT DISTINCT ro_cluster FROM ro WHERE is_confirmed=1")}
+        live |= {c for c in CHEMISTRY} | {c for c in ECOLOGY}   # artik hepsinin sayfasi var
         return render(request, "atlas_novel.html", rows=rows, variants=variants,
                       matrix=matrix, tiers=tiers, classes=classes, domains=domains,
-                      n_total=len(rows))
+                      n_total=len(rows), live_clusters=live)
     finally:
         con.close()
 
