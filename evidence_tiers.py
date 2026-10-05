@@ -55,6 +55,7 @@ def main():
     ap.add_argument("--refs", default="ROs_71_Clean/refs71.fasta")
     ap.add_argument("--out-dir", default="analysis_out")
     ap.add_argument("--threads", type=int, default=8)
+    ap.add_argument("--chemistry", default="chemistry.csv")
     ap.add_argument("--cut-characterized", type=float, default=95.0)
     ap.add_argument("--cut-close", type=float, default=60.0)
     ap.add_argument("--cut-family", type=float, default=40.0)
@@ -114,6 +115,47 @@ def main():
     print(f"   HMM kumesi != en yakin referans: {disagree} ({100*disagree/len(rows):.1f}%)")
 
     os.makedirs(args.out_dir, exist_ok=True)
+
+    # --- Referans ciftleri: esik kalibrasyonunun dayanagi ---
+    # Bu tablo onceden elle uretilmisti, yani (a) pipeline'da yoktu, (b) substrat
+    # adlari eski Turkce ekoloji dosyasindan geliyordu ve arayuze "bilinmiyor"
+    # diye siziyordu. Artik burada, chemistry.csv'nin INGILIZCE adlariyla
+    # uretiliyor ve her kosuda tazeleniyor.
+    pairs_path = os.path.join(args.out_dir, "reference_pairs.csv")
+    chem = {}
+    if os.path.exists(args.chemistry):
+        with open(args.chemistry) as fh:
+            for row in csv.DictReader(fh):
+                chem[row["cluster"]] = row
+    with tempfile.TemporaryDirectory() as tmp:
+        db = os.path.join(tmp, "refs")
+        out = os.path.join(tmp, "pairs.tsv")
+        subprocess.run(["diamond", "makedb", "--in", args.refs, "-d", db, "--quiet"], check=True)
+        subprocess.run(["diamond", "blastp", "-q", args.refs, "-d", db, "-o", out, "--quiet",
+                        "-p", str(args.threads), "-k", "200", "--max-hsps", "1",
+                        "--ultra-sensitive", "-e", "1e-3", "--outfmt", "6",
+                        "qseqid", "sseqid", "pident", "qcovhsp"], check=True)
+        best = {}
+        for line in open(out):
+            q, s_, pid, qcov = line.rstrip("\n").split("\t")
+            if q >= s_ or float(qcov) < 60:
+                continue
+            a, b = "_".join(q.split("_")[:3]), "_".join(s_.split("_")[:3])
+            if a == b:
+                continue
+            key = tuple(sorted((a, b)))
+            best[key] = max(best.get(key, 0.0), float(pid))
+    with open(pairs_path, "w", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["ref_a", "ref_b", "identity", "substrate_a", "substrate_b",
+                         "same_substrate_label"])
+        for (a, b), pid in sorted(best.items(), key=lambda kv: -kv[1]):
+            sa = chem.get(a, {}).get("substrate_en", "unknown")
+            sb = chem.get(b, {}).get("substrate_en", "unknown")
+            same = int(sa == sb and sa not in ("unknown", ""))
+            writer.writerow([a, b, round(pid, 1), sa, sb, same])
+    print(f"[yazildi] {pairs_path}  ({len(best)} referans cifti)")
+
     by_cluster = defaultdict(Counter)
     for r in rows:
         by_cluster[hmm_cluster[r[0]]][r[5]] += 1
@@ -126,6 +168,47 @@ def main():
             w.writerow([cl, n] + [c[t] for t in TIER_ORDER]
                        + [round((c["characterized"] + c["close_homolog"]) / n, 3)])
     print(f"[yazildi] {path}")
+
+    # --- Novel aday dizileri: TEK tanim, hem dosya hem web ayni kurali kullanir ---
+    # Eskiden analysis_out/novel_high_confidence.fasta diye bir dosya vardi, 155
+    # dizi iceriyordu ve make_hub.py bu sayiyi yayinliyordu -- ama HICBIR script
+    # onu uretmiyordu. Yani yayinlanan sayi mevcut kodla yeniden uretilemiyordu.
+    # Kural burada acikca tanimlanir ve webapp ayni SQL'i kullanir:
+    #   dogrulanmis + Rieske tam + katalitik tam + >=300 kalinti
+    #   + en yakin referansa <%25 kimlik (tier='novel')
+    #   + en az 3 uyeli bir varyantta (tek seferlik anotasyon artifaktini eler)
+    novel_sql = """
+        SELECT r.candidate_id, r.protein_id, r.ro_cluster, r.sequence, p.organism,
+               e.ref_identity, e.nearest_ref, rl.leaf_id, l.size
+        FROM ro r
+        JOIN ro_evidence e ON e.candidate_id = r.candidate_id
+        JOIN replicon p ON p.nucleotide_id = r.nucleotide_id
+        LEFT JOIN ro_leaf rl ON rl.candidate_id = r.candidate_id
+        LEFT JOIN leaf l ON l.leaf_id = rl.leaf_id
+        WHERE r.is_confirmed = 1 AND e.tier = 'novel' AND r.rieske_intact = 1
+          AND r.catalytic_intact = 1 AND LENGTH(r.sequence) >= 300
+          AND l.size >= 3
+        ORDER BY l.size DESC, e.ref_identity ASC"""
+    try:
+        novel = con.execute(novel_sql).fetchall()
+    except sqlite3.OperationalError as exc:
+        print(f"[atlandi] novel aday ciktisi: {exc} "
+              f"(recursive_homogenize.py ve characterize_leaves.py once kosmali)")
+        novel = []
+    if novel:
+        fa = os.path.join(args.out_dir, "novel_high_confidence.fasta")
+        with open(fa, "w") as fh:
+            for cid, pid, cluster, seq, org, ident, near, leaf, size in novel:
+                fh.write(f">{cid} {pid or ''} nearest={near} identity={ident:.1f} "
+                         f"variant={leaf} size={size} organism=\"{org}\"\n{seq}\n")
+        cv = os.path.join(args.out_dir, "novel_high_confidence.csv")
+        with open(cv, "w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["candidate_id", "protein_id", "assigned_cluster", "nearest_reference",
+                        "identity_to_nearest", "variant", "variant_size", "organism"])
+            for cid, pid, cluster, seq, org, ident, near, leaf, size in novel:
+                w.writerow([cid, pid, cluster, near, round(ident, 1), leaf, size, org])
+        print(f"[yazildi] {fa} ve {cv}  ({len(novel)} aday, kural scriptin icinde tanimli)")
     con.close()
 
 

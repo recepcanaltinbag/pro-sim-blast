@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
+
+{#  Card markup is shared by the linked and the inert case, so it lives in two
+    macros rather than being written out twice.                               #}
+{% macro card_attrs(t) -%}
+data-card data-reaction="{{ t.reaction_label }}" data-sclass="{{ t.sclass or 'unknown' }}"
+data-group="{{ t.group }}"
+data-k="{{ t.gene }} {{ t.cluster }} {{ t.substrate_en }} {{ t.product_en }} {{ t.family }} {{ t.reaction_label }}"
+{%- endmacro %}
+
+{% macro card_body(t) -%}
+<div class="structcard__img">
+  {%- if t.substrate_smiles %}
+  <svg class="struct" data-smiles="{{ t.substrate_smiles }}" aria-label="{{ t.substrate_en }}"></svg>
+  {%- else %}
+  <div class="struct struct--none">structure<br>not drawn</div>
+  {%- endif %}
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">{{ t.gene }}{% if t.pdb %} <span class="chip chip--ok" title="Structure of the reference enzyme: PDB {{ t.pdb }}">3D</span>{% endif %}</div>
+  <div class="structcard__sub">{{ t.substrate_en }}</div>
+  <div class="structcard__rx"><i style="background:{{ t.color }}"></i>{{ t.reaction_label }}</div>
+  <div class="structcard__n">{% if t.n %}{{ t.n|fmt }} entries{% else %}no confirmed entries{% endif %}{% if t.product_en %} · → {{ t.product_en }}{% endif %}</div>
+</div>
+{%- endmacro %}
+
 {% block body %}
 
 <h1>Rieske oxygenases: one catalytic architecture, many chemistries</h1>
@@ -11,9 +36,9 @@ confirmed to have both centres intact, so what differs between them is not the m
 they point it at.</p>
 
 {% if not static_mode %}
-<form class="bigsearch" action="{{ u('/search') }}" method="get">
-  <input type="search" name="q" placeholder="Search by organism, product, protein identifier, locus tag or enzyme type">
-  <button>Search</button>
+<form class="bigsearch" action="{{ u('/search') }}" method="get" role="search">
+  <input type="search" name="q" aria-label="Search the database" placeholder="Search by organism, product, protein identifier, locus tag or enzyme type">
+  <button class="primary">Search</button>
 </form>
 {% endif %}
 
@@ -21,89 +46,270 @@ they point it at.</p>
   <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed alpha subunits</div></div>
   <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">characterised enzyme types</div></div>
   <div class="tile"><div class="tile__n">{{ groups|length }}</div><div class="tile__l">chemical families attacked</div></div>
-  <div class="tile"><div class="tile__n">{{ reactions|length - 1 }}</div><div class="tile__l">distinct reaction types</div></div>
+  <div class="tile"><div class="tile__n">{{ reactions|length }}</div><div class="tile__l">distinct reaction types</div></div>
   <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence variants</div></div>
   <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">genomes represented</div></div>
 </section>
 
 <h2>1 · The shared architecture, as measured</h2>
+
+{#  The figure used to be one 980x330 SVG holding the schematic, the per-position
+    labels, the electron path and four lines of prose. Text in SVG cannot wrap or
+    reflow, so the per-position labels collided with each other and the prose sat a
+    few pixels below the row above it. It is now three independent pieces: two
+    schematics with their own viewBox, and real HTML for everything that is a
+    number or a sentence.                                                         #}
+
+<p class="note">Positions below are columns of the {{ motif.model.length if motif and motif.model else 426 }}-column
+profile built from {{ motif.model.references if motif and motif.model else 71 }} characterised
+enzymes, not residue numbers in any one protein.</p>
+
 <figure class="fig">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" width="100%" class="arch">
+<div class="archscroll">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 118" class="arch" role="img"
+     aria-label="Schematic of the alpha subunit showing the Rieske domain, the catalytic domain and the eight defining positions">
   <style>
-    .dom { stroke: #333; stroke-width: 1; }
-    .lb { font-size: 11px; fill: currentColor; }
-    .lbs { font-size: 10px; fill: currentColor; opacity: .8; }
-    .ti { font-size: 12px; font-weight: 700; fill: currentColor; }
-    .pc { font-size: 10.5px; font-weight: 700; fill: #1f7a4d; }
-    .fl { stroke: currentColor; stroke-width: 1.4; fill: none; marker-end: url(#a2); }
-    .fe { fill: #8c2f22; }
-    .s2 { fill: #d9a13b; }
+    .arch-lb  { font-size: 11px; }
+    .arch-lbs { font-size: 10px; }
+    .arch-dim { font-size: 10px; opacity: .75; }
+    .arch-dom { stroke: var(--fig-stroke); stroke-width: 1; }
+    .arch-tick { stroke: var(--fig-iron); stroke-width: 1.4; }
+    .arch-brk { stroke: var(--fig-stroke); stroke-width: 1; fill: none; }
+    .c-rieske { fill: var(--fig-rieske); }
+    .c-cat    { fill: var(--fig-cat); }
+    .c-iron   { fill: var(--fig-iron); }
   </style>
-  <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
-    orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
 
-  <text class="ti" x="0" y="14">Alpha subunit, drawn along the 426 positions of the catalytic-centre profile</text>
+  <!-- domain bars: 0-130 Rieske, 130-426 catalytic, scaled col/426*980 -->
+  <rect class="arch-dom c-rieske" x="0" y="14" width="300" height="40" rx="4"/>
+  <text class="arch-lb" x="12" y="39">Rieske [2Fe-2S] domain</text>
+  <rect class="arch-dom c-cat" x="300" y="14" width="680" height="40" rx="4"/>
+  <text class="arch-lb" x="312" y="39">catalytic domain, mononuclear Fe(II) site</text>
 
-  <rect class="dom" x="0" y="26" width="300" height="34" rx="4" fill="#cfe0ef"/>
-  <text class="lb" x="12" y="47">Rieske [2Fe-2S] domain</text>
-  <rect class="dom" x="300" y="26" width="680" height="34" rx="4" fill="#f2dfc6"/>
-  <text class="lb" x="314" y="47">catalytic domain, mononuclear Fe(II) site</text>
-
-  {% set cols = [(85,'C','Cys'),(87,'H','His'),(105,'C','Cys'),(108,'H','His'),
-                 (209,'D/E','bridge'),(212,'H','His'),(217,'H','His'),(355,'D/E','Asp/Glu')] %}
-  {% for col, exp, nm in cols %}
-  {% set px = (col / 426.0 * 960)|round(1) %}
-  <line x1="{{ px }}" y1="26" x2="{{ px }}" y2="60" stroke="#8c2f22" stroke-width="1.4"/>
-  <circle cx="{{ px }}" cy="68" r="3.2" fill="#8c2f22"/>
-  <text class="lbs" x="{{ px }}" y="84" text-anchor="middle">{{ exp }}</text>
-  <text class="lbs" x="{{ px }}" y="96" text-anchor="middle">{{ col }}</text>
-  {% if motif %}{% for s in motif.sites %}{% if s.column == col %}
-  <text class="pc" x="{{ px }}" y="110" text-anchor="middle">{{ '%.0f' % (100 * s.fraction) }}%</text>
-  {% endif %}{% endfor %}{% endif %}
+  <!-- the eight required positions: ticks only. Columns 85/87, 105/108 and
+       209/212/217 are 4.6 to 11.5 user units apart at this scale, so printing a
+       residue label and a percentage under each one guaranteed an overlap. The
+       values are in the table below instead. -->
+  {% for col in [85, 87, 105, 108, 209, 212, 217, 355] %}
+  {% set px = (col / 426.0 * 980)|round(1) %}
+  <line class="arch-tick" x1="{{ px }}" y1="14" x2="{{ px }}" y2="54"/>
+  <circle class="c-iron" cx="{{ px }}" cy="60" r="3"/>
   {% endfor %}
-  <text class="lbs" x="0" y="126">conservation across all confirmed entries at each required position</text>
 
-  <text class="ti" x="0" y="164">Electron path</text>
-  <rect class="dom" x="0" y="176" width="104" height="30" rx="4" fill="var(--panel)"/>
-  <text class="lb" x="52" y="195" text-anchor="middle">NAD(P)H</text>
-  <path class="fl" d="M106,191 H140"/>
-  <rect class="dom" x="142" y="176" width="104" height="30" rx="4" fill="#fcecd0"/>
-  <text class="lb" x="194" y="195" text-anchor="middle">reductase</text>
-  <path class="fl" d="M248,191 H282"/>
-  <rect class="dom" x="284" y="176" width="104" height="30" rx="4" fill="#d9eede"/>
-  <text class="lb" x="336" y="195" text-anchor="middle">ferredoxin</text>
-  <path class="fl" d="M390,191 H424"/>
+  <!-- grouped brackets, placed so no two labels can touch -->
+  <path class="arch-brk" d="M195.5,68 V72 H248.5 V68"/>
+  <text class="arch-lbs" x="222" y="86" text-anchor="middle">4 Rieske ligands</text>
 
-  <rect class="dom" x="426" y="168" width="150" height="46" rx="4" fill="#cfe0ef"/>
-  <circle class="s2" cx="452" cy="191" r="5"/><circle class="s2" cx="470" cy="191" r="5"/>
-  <circle class="fe" cx="461" cy="182" r="4"/><circle class="fe" cx="461" cy="200" r="4"/>
-  <text class="lbs" x="484" y="188">Rieske</text><text class="lbs" x="484" y="200">[2Fe-2S]</text>
-  <path class="fl" d="M578,191 H612"/>
-  <text class="lbs" x="582" y="182">bridging Asp</text>
+  <path class="arch-brk" d="M480.7,68 V72 H499.1 V68"/>
+  <text class="arch-lbs" x="490" y="86" text-anchor="middle">bridge + 2 Fe histidines</text>
 
-  <rect class="dom" x="614" y="168" width="150" height="46" rx="4" fill="#f2dfc6"/>
-  <circle class="fe" cx="648" cy="191" r="6"/>
-  <text class="lbs" x="660" y="188">mononuclear</text><text class="lbs" x="660" y="200">Fe(II)</text>
-  <path class="fl" d="M766,191 H800"/>
-  <rect class="dom" x="802" y="176" width="178" height="30" rx="4" fill="var(--panel)"/>
-  <text class="lb" x="891" y="195" text-anchor="middle">substrate + O₂ → product</text>
-  <text class="lbs" x="0" y="232">Electrons cross from the Rieske centre of one subunit to the iron of its neighbour, which is why the enzyme works as a trimer.</text>
+  <path class="arch-brk" d="M816.6,68 V72"/>
+  <text class="arch-lbs" x="816.6" y="86" text-anchor="middle">catalytic Asp</text>
 
-  {% if motif %}
-  <text class="ti" x="0" y="266">Measured over {{ motif.n|fmt }} confirmed entries</text>
-  <text class="lb" x="0" y="286">All four Rieske ligands present: {{ motif.rieske_ligands['4']|fmt }} entries, {{ '%.1f' % (100 * motif.rieske_ligands['4'] / motif.n) }}%</text>
-  <text class="lb" x="0" y="302">Complete 2-His-1-carboxylate triad: {{ motif.catalytic_triad['3']|fmt }} entries, {{ '%.1f' % (100 * motif.catalytic_triad['3'] / motif.n) }}% · remaining {{ motif.catalytic_triad['2']|fmt }} have two of the three</text>
-  <text class="lb" x="0" y="318">Inter-subunit bridging Asp or Glu present: {{ motif.bridging_present|fmt }} entries, {{ '%.1f' % (100 * motif.bridging_present / motif.n) }}%</text>
-  {% endif %}
+  <text class="arch-dim" x="0" y="106">N-terminus</text>
+  <text class="arch-dim" x="980" y="106" text-anchor="end">C-terminus</text>
 </svg>
-<figcaption><b>Method.</b> Each entry was aligned to a profile built from 71 experimentally
-characterised enzymes, and the residue at each of the eight defining positions was read directly
-from the alignment. Membership of the database requires all four Rieske ligands and at least two of
-the three iron ligands.
-<b>What the numbers say.</b> The Rieske centre is invariant. The carboxylate of the iron site is the
-one position with real variation, which is expected: it tolerates both aspartate and glutamate and
-sits in a loop that shifts between sub-families. <a href="{{ u('/about') }}">Full methods</a></figcaption>
+</div>
+<figcaption><b>The alpha subunit and the eight positions membership depends on.</b> Ticks mark the
+columns listed in Table&nbsp;1. Residue identities and conservation are given there rather than on
+the drawing, because three of the groups are only a few profile columns wide. Nothing in this figure
+is derived from a structure.</figcaption>
 </figure>
+
+{% if motif %}
+<h3>Table 1 · The eight defining positions</h3>
+<div class="tablewrap"><table class="data compact" data-filter="Filter positions…">
+<thead><tr>
+  <th class="num">Profile<span class="unit">column</span></th>
+  <th>Position</th>
+  <th data-facet="Centre">Centre</th>
+  <th class="num">Expected<span class="unit">residue</span></th>
+  <th class="num">Entries with it<span class="unit">of {{ motif.n|fmt }}</span></th>
+  <th class="num">Conservation<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+{% for s in motif.sites|sort(attribute='column') %}
+<tr>
+  <td class="num">{{ s.column }}</td>
+  <td>{{ s.label }}</td>
+  <td>{% if s.column in [85, 87, 105, 108] %}Rieske [2Fe-2S]{% elif s.column == 209 %}subunit bridge{% else %}mononuclear Fe(II){% endif %}</td>
+  <td class="num">{{ s.expected }}</td>
+  <td class="num" data-v="{{ s.found }}">{{ s.found|fmt }}</td>
+  <td class="num" data-v="{{ s.fraction }}">{{ '%.2f' % (100 * s.fraction) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><b>Method.</b> Each entry was aligned to the profile and the residue at each column
+read directly from the alignment. Membership requires all four Rieske ligands and at least two of
+the three iron ligands. The one position with real variation is the catalytic carboxylate, for the
+reason set out in section 1.2.</p>
+{% endif %}
+
+<h3>1.1 · The electron path</h3>
+<figure class="fig">
+<div class="archscroll">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 104" class="flowfig" role="img"
+     aria-label="Electron path from NAD(P)H through a reductase and ferredoxin to the Rieske centre and the mononuclear iron">
+  <style>
+    .fl-lb  { font-size: 11px; }
+    .fl-lbs { font-size: 10px; }
+    .fl-box { stroke: var(--fig-stroke); stroke-width: 1; }
+    .fl-arr { stroke: currentColor; stroke-width: 1.4; fill: none; marker-end: url(#flarrow); }
+    .fl-tick { stroke: var(--fig-stroke); stroke-width: 1; }
+    .c-rieske  { fill: var(--fig-rieske); }
+    .c-cat     { fill: var(--fig-cat); }
+    .c-red     { fill: var(--fig-red); }
+    .c-fd      { fill: var(--fig-fd); }
+    .c-neutral { fill: var(--fig-neutral); }
+    .c-iron    { fill: var(--fig-iron); }
+    .c-sulfur  { fill: var(--fig-sulfur); }
+  </style>
+  <defs>
+    <marker id="flarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+
+  <rect class="fl-box c-neutral" x="0" y="22" width="96" height="34" rx="4"/>
+  <text class="fl-lb" x="48" y="43" text-anchor="middle">NAD(P)H</text>
+  <path class="fl-arr" d="M100,39 H132"/>
+
+  <rect class="fl-box c-red" x="140" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="192" y="43" text-anchor="middle">reductase</text>
+  <path class="fl-arr" d="M248,39 H280"/>
+
+  <rect class="fl-box c-fd" x="288" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="340" y="43" text-anchor="middle">ferredoxin</text>
+  <path class="fl-arr" d="M396,39 H428"/>
+
+  <rect class="fl-box c-rieske" x="436" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-sulfur" cx="453" cy="39" r="5"/>
+  <circle class="c-sulfur" cx="471" cy="39" r="5"/>
+  <circle class="c-iron" cx="462" cy="30" r="4"/>
+  <circle class="c-iron" cx="462" cy="48" r="4"/>
+  <text class="fl-lbs" x="486" y="36">Rieske</text>
+  <text class="fl-lbs" x="486" y="48">[2Fe-2S]</text>
+  <path class="fl-arr" d="M590,39 H622"/>
+
+  <rect class="fl-box c-cat" x="630" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-iron" cx="652" cy="39" r="6"/>
+  <text class="fl-lbs" x="666" y="36">mononuclear</text>
+  <text class="fl-lbs" x="666" y="48">Fe(II)</text>
+  <path class="fl-arr" d="M784,39 H816"/>
+
+  <rect class="fl-box c-neutral" x="824" y="22" width="156" height="34" rx="4"/>
+  <text class="fl-lb" x="902" y="43" text-anchor="middle">substrate + O₂ → product</text>
+
+  <!-- the one annotation that stays on the drawing, below the boxes where it has
+       the full width to itself -->
+  <path class="fl-tick" d="M606,64 V76"/>
+  <text class="fl-lbs" x="606" y="88" text-anchor="middle">subunit interface</text>
+</svg>
+</div>
+<figcaption><b>Electrons reach the iron of a neighbouring subunit, not its own.</b> The Rieske
+centre of one chain donates across the interface to the mononuclear iron of the next, which is why
+the enzyme is active only as an oligomer. The carboxylate at the interface and the carboxylate at
+the iron are two different residues with two different behaviours, set out next.</figcaption>
+</figure>
+
+<h3>1.2 · The two carboxylates behave differently</h3>
+{% if motif and motif.carboxylate_identity %}
+{% set cat = motif.carboxylate_identity.catalytic_iron %}
+{% set brg = motif.carboxylate_identity.bridging %}
+<p>Writing both of these positions as "D/E" hides the sharpest sequence-level result in the
+database. The carboxylate that completes the iron triad is aspartate and effectively nothing else.
+The carboxylate at the subunit interface is aspartate in the ring-hydroxylating enzymes and
+glutamate in the quaternary-amine branch, so a single alignment column tracks the substrate
+chemistry.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th>Carboxylate</th>
+  <th class="num">Profile<span class="unit">column</span></th>
+  <th class="num">Asp<span class="unit">entries</span></th>
+  <th class="num">Glu<span class="unit">entries</span></th>
+  <th class="num">Asp : Glu</th>
+  <th class="num">Carboxylate in window<span class="unit">of {{ motif.n|fmt }}</span></th>
+  <th>In the reference set</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td><b>Catalytic</b>, completes the 2-His-1-carboxylate triad at the mononuclear iron</td>
+  <td class="num">{{ cat.column }}</td>
+  <td class="num" data-v="{{ cat.asp }}">{{ cat.asp|fmt }}</td>
+  <td class="num" data-v="{{ cat.glu }}">{{ cat.glu|fmt }}</td>
+  <td class="num" data-v="{{ cat.asp_to_glu }}">{{ '%.0f' % cat.asp_to_glu }} : 1</td>
+  <td class="num" data-v="{{ cat.with_carboxylate }}">{{ cat.with_carboxylate|fmt }} <span class="note">({{ pct(cat.with_carboxylate, motif.n) }})</span></td>
+  <td class="small">70 of 71 Asp, one Asn, no Glu</td>
+</tr>
+<tr>
+  <td><b>Bridging</b>, links the Rieske centre of one subunit to the iron of the next</td>
+  <td class="num">{{ brg.column }}</td>
+  <td class="num" data-v="{{ brg.asp }}">{{ brg.asp|fmt }}</td>
+  <td class="num" data-v="{{ brg.glu }}">{{ brg.glu|fmt }}</td>
+  <td class="num" data-v="{{ brg.asp_to_glu }}">{{ '%.1f' % brg.asp_to_glu }} : 1</td>
+  <td class="num" data-v="{{ brg.with_carboxylate }}">{{ brg.with_carboxylate|fmt }} <span class="note">({{ pct(brg.with_carboxylate, motif.n) }})</span></td>
+  <td class="small">the five Glu references are exactly the five group-5 quaternary-amine enzymes</td>
+</tr>
+</tbody></table></div>
+<p class="note"><b>Read from an alignment column, not from a structure.</b> No structure is used
+anywhere in this database: these are the residues the profile alignment places at columns
+{{ cat.column }} and {{ brg.column }}, counted over {{ motif.n|fmt }} confirmed entries. The
+{{ pct(motif.n - cat.with_carboxylate, motif.n) }} of entries with no carboxylate within two
+columns of position {{ cat.column }} reflect alignment shift in that loop rather than a missing
+site, which is why membership requires only two of the three iron ligands.</p>
+
+{% set glu = brg.glu_clusters|selectattr('n', 'ge', 20)|list %}
+{% if glu %}
+<h4>The glutamate is a branch marker, not scattered noise</h4>
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th>Type</th>
+  <th class="num">RO<span class="unit">group</span></th>
+  <th class="num">Glu<span class="unit">members</span></th>
+  <th class="num">Members</th>
+  <th class="num">Glu share<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+{% for t in glu[:10] %}
+<tr{% if t.fraction >= 0.8 %} class="hl"{% endif %}>
+  <td>{% if t.n %}<a href="{{ u('/cluster/' ~ t.cluster) }}">{{ t.cluster.split('_', 2)[-1] }}</a>
+      <span class="note small">{{ t.cluster }}</span>{% else %}{{ t.cluster }}{% endif %}</td>
+  <td class="num">{{ t.cluster.split('_')[0] }}</td>
+  <td class="num" data-v="{{ t.glu }}">{{ t.glu|fmt }}</td>
+  <td class="num" data-v="{{ t.n }}">{{ t.n|fmt }}</td>
+  <td class="num" data-v="{{ t.fraction }}">{{ '%.1f' % (100 * t.fraction) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Types with at least 20 members, ordered by the share of members carrying glutamate at
+column {{ brg.column }}. The enzymes at the top of this table cleave carbon–nitrogen bonds or
+demethylate open-chain quaternary amines; the ring-hydroxylating types carry aspartate. Again, these
+are alignment residues, not structurally verified contacts.
+<a href="{{ u('/atlas/evidence') }}">How far a residue may be read as a function</a></p>
+{% endif %}
+{% endif %}
+
+{% if motif %}
+<h3>1.3 · Completeness of the two centres</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Requirement</th><th class="num">Entries<span class="unit">of {{ motif.n|fmt }}</span></th><th class="num">Share<span class="unit">%</span></th></tr></thead>
+<tbody>
+<tr><td>All four Rieske ligands present</td>
+    <td class="num" data-v="{{ motif.rieske_ligands['4'] }}">{{ motif.rieske_ligands['4']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.rieske_ligands['4'] / motif.n }}">{{ '%.1f' % (100 * motif.rieske_ligands['4'] / motif.n) }}</td></tr>
+<tr><td>Complete 2-His-1-carboxylate triad at the iron</td>
+    <td class="num" data-v="{{ motif.catalytic_triad['3'] }}">{{ motif.catalytic_triad['3']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.catalytic_triad['3'] / motif.n }}">{{ '%.1f' % (100 * motif.catalytic_triad['3'] / motif.n) }}</td></tr>
+<tr><td>Two of the three iron ligands, the minimum for membership</td>
+    <td class="num" data-v="{{ motif.catalytic_triad['2'] }}">{{ motif.catalytic_triad['2']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.catalytic_triad['2'] / motif.n }}">{{ '%.1f' % (100 * motif.catalytic_triad['2'] / motif.n) }}</td></tr>
+<tr><td>Inter-subunit bridging Asp or Glu present</td>
+    <td class="num" data-v="{{ motif.bridging_present }}">{{ motif.bridging_present|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.bridging_present / motif.n }}">{{ '%.1f' % (100 * motif.bridging_present / motif.n) }}</td></tr>
+</tbody></table></div>
+<p class="note">The Rieske centre is invariant across the whole database. <a href="{{ u('/about') }}">Full
+methods</a> · <a href="{{ u('/atlas/quality') }}">what these counts cannot tell you</a></p>
+{% endif %}
 
 <h2>2 · What the reaction actually is</h2>
 <p>The two metal centres support more than one chemistry. Counting types and members by reaction
@@ -116,7 +322,7 @@ the whole story.</p>
 <tbody>
 {% for r in reactions %}
 <tr><td><span class="chip" style="background:{{ r.color }};color:#fff;border:0">{{ r.label }}</span></td>
-    <td class="num">{{ r.types }}</td><td class="num">{{ r.members|fmt }}</td>
+    <td class="num" data-v="{{ r.types }}">{{ r.types }}</td><td class="num" data-v="{{ r.members }}">{{ r.members|fmt }}</td>
     <td>{{ reaction_scheme_svg(r.key)|safe }}</td>
     <td class="small">{{ r.note }}</td></tr>
 {% endfor %}
@@ -131,34 +337,34 @@ page states. <a href="{{ u('/atlas/evidence') }}">Evidence levels</a></figcaptio
 
 <h2>3 · Enzymes grouped by the chemicals they act on</h2>
 <p class="note">Each card is one characterised enzyme type with its reference substrate drawn from
-SMILES, the reaction it performs, and the number of confirmed entries assigned to it. Click a card
-to open the type.</p>
+SMILES, the reaction it performs, and the number of confirmed entries assigned to it. Use the
+filter to find a type by name, substrate or product.</p>
 
+<div data-cardfilter="Find a type by name, substrate or product…"
+     data-card-facets="reaction:Reaction,sclass:Substrate class,group:RO group">
 {% for g in groups %}
-<section class="chemfam">
+<section class="chemfam" data-cardsection>
   <h3>{{ g.label }} <span class="note">· {{ g.n_types }} types · {{ g.n_members|fmt }} entries</span></h3>
-  <p class="note" style="max-width:88ch">{{ g.note }}</p>
+  <p class="note">{{ g.note }}</p>
   <div class="structgrid">
   {% for t in g.types %}
-    <a class="structcard" href="{{ u('/cluster/' ~ t.cluster) }}">
-      <div class="structcard__img">
-        {% if t.substrate_smiles %}
-        <svg class="struct" data-smiles="{{ t.substrate_smiles }}" aria-label="{{ t.substrate_en }}"></svg>
-        {% else %}
-        <div class="struct struct--none">structure<br>not drawn</div>
-        {% endif %}
-      </div>
-      <div class="structcard__body">
-        <div class="structcard__gene">{{ t.gene }}</div>
-        <div class="structcard__sub">{{ t.substrate_en }}</div>
-        <div class="structcard__rx"><i style="background:{{ t.color }}"></i>{{ t.reaction_label }}</div>
-        <div class="structcard__n">{{ t.n|fmt }} entries{% if t.product_en %} · → {{ t.product_en }}{% endif %}</div>
-      </div>
-    </a>
+    {#  A type with no confirmed entries has no page: /cluster/<type> answers 404
+        because the route requires at least one confirmed member. Ten of the 71
+        curated types are in that position, so their cards are shown but inert
+        rather than linking to an error page.                                  #}
+    {% if t.n %}
+    <a class="structcard" href="{{ u('/cluster/' ~ t.cluster) }}" {{ card_attrs(t) }}>{{ card_body(t) }}</a>
+    {% else %}
+    <div class="structcard structcard--empty" {{ card_attrs(t) }}>{{ card_body(t) }}</div>
+    {% endif %}
   {% endfor %}
   </div>
 </section>
 {% endfor %}
+</div>
+<p class="note">Cards drawn with a dashed border are curated types for which the current build found
+no confirmed alpha subunit, so they have no entry page. They are kept visible because the reference
+enzyme is real; their absence is a property of this build's search, not of the literature.</p>
 
 <h2>4 · Explore further</h2>
 <div class="cards">
@@ -166,8 +372,8 @@ to open the type.</p>
     <p>Phylogeny, sequence space, taxonomy, operons, regulation, ecology, evidence levels and the
     statistical tests behind every claim.</p></a>
   <a class="card" href="{{ u('/clusters') }}"><h3>All enzyme types</h3>
-    <p>Sortable table of the {{ totals.clusters }} types with members, genera, variants, plasmid
-    rates and operon composition.</p></a>
+    <p>Sortable, filterable table of the {{ totals.clusters }} types with members, genera, variants,
+    plasmid rates and operon composition.</p></a>
   {% if not static_mode %}
   <a class="card" href="{{ u('/classify') }}"><h3>Classify your sequence</h3>
     <p>Paste a protein sequence and run the same two tests every entry passed: profile coverage and
@@ -185,7 +391,9 @@ to open the type.</p>
   <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
   <li><a href="{{ u('/download/tree_all.nwk') }}">Phylogenetic tree (Newick)</a></li>
 </ul>
+{% endblock %}
 
+{% block scripts %}
 <script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
 <script>
 (function () {
@@ -196,18 +404,16 @@ to open the type.</p>
     width: 190, height: 150, bondThickness: 1.1, bondLength: 17, atomVisualization: 'default',
     terminalCarbons: false, explicitHydrogens: false, compactDrawing: false, padding: 6
   });
+  const fallback = function (el) {
+    el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
+    el.remove();
+  };
   els.forEach(function (el) {
     try {
       SmilesDrawer.parse(el.dataset.smiles, function (tree) {
         drawer.draw(tree, el, dark ? 'dark' : 'light', false);
-      }, function () {
-        el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
-        el.remove();
-      });
-    } catch (e) {
-      el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
-      el.remove();
-    }
+      }, function () { fallback(el); });
+    } catch (e) { fallback(el); }
   });
 })();
 </script>

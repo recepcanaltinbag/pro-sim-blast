@@ -117,6 +117,12 @@ step "12c5/14 Substrat ongorulebilirligi"
 python3 substrate_predictability.py --pairs "$OUT/reference_pairs.csv" \
   --ecology cluster_ecology.csv --out "$OUT/substrate_predictability.json"
 
+# --- 12c6. Izolasyon kaynagi -> habitat sozlugu (gbk source nitelikleri)
+step "12c6/14 Izolasyon kaynagi ve habitat"
+python3 isolation_source.py --db roar.sqlite --gbk-dir gbk_files \
+  --ecology cluster_ecology.csv --chemistry chemistry.csv \
+  --out "$OUT/habitat.json" --cpu "$CPU"
+
 # --- 12d. Arama indeksi (FTS5 + filtre alanlari)
 step "12d/14 Arama indeksi"
 python3 build_search_index.py --db roar.sqlite --ecology cluster_ecology.csv --chemistry chemistry.csv
@@ -134,6 +140,23 @@ fi
 step "13c/14 Istatistiksel cikarimlar"
 python3 stats_overview.py --db roar.sqlite --out "$OUT/stats.json"
 
+# --- 13d. KAPI: kuratorlu veri ve veritabani dogrulamasi
+#
+# Bu adim HTML uretiminden ONCE durur. Bu pipeline birkac sessiz hata yayinladi
+# (yutulan cd-hit cokmesi, kolonlari kaydiran CSV virgul kacisi, hizalama
+# gurultusunu secen metrik); hepsinde hata ciktiyi bozdu ama hicbir sey
+# durmadi. Buradan sonrasi web sitesine gider, o yuzden kapi burada.
+#
+# Bir kontrolun neden basarisiz oldugunu anlamadan atlamak ISTIYORSANIZ
+# --warn-only kullanin -- ama o zaman hatali veriyi yayinladiginizi bilin.
+step "13d/14 Dogrulama kapisi (kuratorlu veri + veritabani)"
+python3 validate_curation.py --db roar.sqlite --ecology cluster_ecology.csv \
+  --chemistry chemistry.csv --out-dir "$OUT"
+
+# --- 13e. Koken manifestosu (her artefakt nereden geliyor)
+step "13e/14 Koken manifestosu"
+python3 provenance.py --db roar.sqlite --out-dir "$OUT"
+
 # --- 14. HTML sayfalar
 step "14/14  HTML sayfalar uretiliyor"
 python3 make_report.py   --db roar.sqlite -o report.html
@@ -143,5 +166,6 @@ python3 make_hub.py      --db roar.sqlite --out-dir "$OUT" -o hub.html
 step "TAMAM"
 echo "  Veritabani : roar.sqlite"
 echo "  Analizler  : $OUT/"
+echo "  Koken      : $OUT/provenance.json (her artefaktin kaynagi ve yasi)"
 echo "  Sayfalar   : hub.html (ana kapi), report.html, explorer.html"
 echo "  Web        : cd webapp && uvicorn app:app --port 8000   (bkz. webapp/README_DEPLOY.md)"

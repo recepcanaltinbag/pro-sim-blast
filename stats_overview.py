@@ -141,6 +141,7 @@ def main():
     ap.add_argument("--db", default="roar.sqlite")
     ap.add_argument("--ecology", default="cluster_ecology.csv")
     ap.add_argument("--domain-csv", default="analysis_out/domain_by_cluster.csv")
+    ap.add_argument("--chemistry", default="chemistry.csv")
     ap.add_argument("--out", default="analysis_out/stats.json")
     args = ap.parse_args()
 
@@ -237,6 +238,70 @@ def main():
         "chromosome": {"n": len(ch), "mean_components": float(np.mean([d["completeness"] or 0 for d in ch])) if ch else None},
         "mannwhitney_p": float(stats.mannwhitneyu([d["completeness"] or 0 for d in pl],
                                                   [d["completeness"] or 0 for d in ch]).pvalue) if pl and ch else None})
+
+    # 5b. Kopru karboksilati Asp mi Glu mu -- grup ve reaksiyon sinifiyla iliskisi
+    #
+    # Olculen sey: iki karboksilatin DAVRANISI farkli. Katalitik demir
+    # karboksilati neredeyse istisnasiz Asp (476:1), yani bu pozisyon ailenin
+    # degismeyen parcasi. Kopru karboksilati ise 2,5:1 bolunuyor ve Glu dagilimi
+    # rastgele degil: kuaterner amin dalini isaretliyor. Test bu izlenimi
+    # olcuye donusturur.
+    carbox = con.execute("""
+        SELECT c.bridging_residue, c.catalytic_residue, r.ro_group, r.ro_cluster
+        FROM ro_carboxylate c JOIN ro r USING(candidate_id)
+        WHERE r.is_confirmed = 1""").fetchall() \
+        if con.execute("SELECT name FROM sqlite_master WHERE name='ro_carboxylate'").fetchone() \
+        else []
+    if carbox:
+        chem_class = {}
+        with open(args.chemistry) as fh:
+            for row in csv.DictReader(fh):
+                chem_class[row["cluster"]] = row.get("reaction_class", "unknown")
+        for test_id, key_fn, label in (
+                ("bridging_residue_by_group", lambda r: r[2], "RO group"),
+                ("bridging_residue_by_reaction",
+                 lambda r: chem_class.get(r[3], "unknown"), "reaction class")):
+            carbox_only = [r for r in carbox if r[0] in ("D", "E")]
+            keys = sorted({key_fn(r) for r in carbox_only})
+            cols = ["Asp", "Glu"]
+
+            # YALNIZCA karboksilat tasiyan girisler. "other" kategorisi hizalama
+            # boslugu demek ve orani gruplar arasinda cok degisiyor (grup 1'de
+            # %27, grup 2'de %1); onu tabloya katmak kalinti kimligi testini
+            # kaplama testine cevirir. Olculdu: karisik tabloda katalitik
+            # kontrol V=0,20 cikiyordu, oysa Asp/Glu'ya daraltinca sinyal yok.
+            table = [[sum(1 for r in carbox_only if key_fn(r) == k
+                          and ("Asp" if r[0] == "D" else "Glu") == c)
+                      for c in cols] for k in keys]
+            keys_t, cols_t, table = trim_table(keys, cols, table)
+            chi2, p, dof, _ = stats.chi2_contingency(table)
+            out["tests"].append({
+                "id": test_id,
+                "question": f"Among entries that have a bridging carboxylate, is its identity "
+                            f"(Asp or Glu) associated with the {label}?",
+                "rows": keys_t, "cols": cols_t, "table": table,
+                "chi2": float(chi2), "dof": int(dof), "p": float(p),
+                "cramers_v": cramers_v(table)})
+        # Katalitik karboksilat: KONTROL testi. Yine yalnizca karboksilat tasiyan
+        # girisler; bu pozisyon degismezse burada sinyal cikmamali.
+        cat_only = [r for r in carbox if r[1] in ("D", "E")]
+        keys = sorted({r[2] for r in cat_only})
+        cols = ["Asp", "Glu"]
+        table = [[sum(1 for r in cat_only if r[2] == k
+                      and ("Asp" if r[1] == "D" else "Glu") == c)
+                  for c in cols] for k in keys]
+        keys_t, cols_t, table = trim_table(keys, cols, table)
+        chi2, p, dof, _ = stats.chi2_contingency(table)
+        out["tests"].append({
+            "id": "catalytic_residue_by_group",
+            "question": "Among entries that have a catalytic carboxylate at all, is its "
+                        "identity (Asp or Glu) associated with the RO group? This is the "
+                        "control for the test above: the position is nearly invariant, so "
+                        "a strong association here would mean the method is picking up "
+                        "alignment artefacts rather than chemistry.",
+            "rows": keys_t, "cols": cols_t, "table": table,
+            "chi2": float(chi2), "dof": int(dof), "p": float(p),
+            "cramers_v": cramers_v(table)})
 
     # 6. grup x filum (dagilim tablosu + Cramér's V)
     phyla = [p for p, _ in Counter(d["phylum"] for d in data).most_common(8)]

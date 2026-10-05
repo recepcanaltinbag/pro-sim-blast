@@ -98,6 +98,21 @@ operon, and the organisms that carry it.</p>
     regulator is closer to the operon start than a non-regulator gene would be, which is the
     expected geometry for a shared promoter region.
     <a href="{{ u('/atlas/regulation') }}">Regulation</a></li>
+  {% if motif and motif.carboxylate_identity %}
+  {% set cat = motif.carboxylate_identity.catalytic_iron %}
+  {% set brg = motif.carboxylate_identity.bridging %}
+  <li><b>One alignment column separates the quaternary-amine branch from the rest of the family.</b>
+    The two carboxylates of this fold behave in opposite ways. The catalytic carboxylate at the
+    mononuclear iron (column {{ cat.column }}) is aspartate and effectively nothing else,
+    {{ cat.asp|fmt }} Asp against {{ cat.glu|fmt }} Glu, so the facial triad uses Asp specifically
+    rather than either carboxylate. The inter-subunit bridging carboxylate (column
+    {{ brg.column }}) splits {{ brg.asp|fmt }} Asp to {{ brg.glu|fmt }} Glu, and the glutamate is
+    not scattered: it marks the group-5 enzymes that cleave carbon–nitrogen bonds or demethylate
+    open-chain quaternary amines, reaching 100 % in GbcA and above 89 % in Stc2, CntA and BmoA.
+    These are residues read from an alignment column, not from a structure.
+    <a href="{{ u('/atlas/evidence') }}">Evidence</a> ·
+    <a href="{{ u('/') }}#main">the figure and full counts</a></li>
+  {% endif %}
 </ul>
 <p class="note">Every figure in this atlas is generated from the database at build time; the
 underlying tables are downloadable from each page.</p>

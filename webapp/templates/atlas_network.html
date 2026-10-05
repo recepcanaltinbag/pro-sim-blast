@@ -18,9 +18,17 @@ residues rather than by overall sequence.</p>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Reference A</th><th>Reference B</th><th class="num">Identity</th><th>Substrate A</th><th>Substrate B</th><th>Same label</th></tr></thead>
 <tbody>
+{#  Ten of the 71 curated references have no confirmed member in this build, so
+    /cluster/<type> answers 404 for them. The similarity network carries one
+    "representative" node per variant, and a variant exists only where members
+    do, so the clusters of those nodes are exactly the types that have a page.
+    The set is derived here rather than hard-coded, because which references
+    come up empty changes whenever the pipeline is rerun.                     #}
+{% set live = data.nodes | rejectattr('kind', 'equalto', 'reference')
+                        | map(attribute='cluster') | list %}
 {% for r in refpairs %}
-<tr><td><a href="{{ u('/cluster/' ~ r.ref_a) }}">{{ r.ref_a }}</a></td>
-    <td><a href="{{ u('/cluster/' ~ r.ref_b) }}">{{ r.ref_b }}</a></td>
+<tr><td>{% if r.ref_a in live %}<a href="{{ u('/cluster/' ~ r.ref_a) }}">{{ r.ref_a }}</a>{% else %}{{ r.ref_a }}{% endif %}</td>
+    <td>{% if r.ref_b in live %}<a href="{{ u('/cluster/' ~ r.ref_b) }}">{{ r.ref_b }}</a>{% else %}{{ r.ref_b }}{% endif %}</td>
     <td class="num">{{ '%.1f %%' % (r.identity|float) }}</td>
     <td>{{ r.substrate_a }}</td><td>{{ r.substrate_b }}</td>
     <td>{% if r.same_substrate_label == '1' %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td></tr>
@@ -66,7 +74,9 @@ and their members' substrate labels should be read together.
 <script>
 const DATA = {{ data|tojson }}, COL = {{ GROUP_COLORS|tojson }};
 const STATIC = {{ 'true' if static_mode else 'false' }};
-const clusterUrl = c => "{{ u('/cluster/') }}" + c + (STATIC ? ".html" : "");
+/* Types with no confirmed member have no page; see the note on the table above. */
+const LIVE = new Set(DATA.nodes.filter(n => n.kind !== 'reference').map(n => n.cluster));
+const clusterUrl = c => LIVE.has(c) ? "{{ u('/cluster/') }}" + c + (STATIC ? ".html" : "") : null;
 const leafUrl = l => "{{ u('/leaf/') }}" + l.replace('#','-') + (STATIC ? ".html" : "");
 (function(){
   const el = document.getElementById('ssn'), W = el.clientWidth || 900, H = 620;
@@ -89,7 +99,10 @@ const leafUrl = l => "{{ u('/leaf/') }}" + l.replace('#','-') + (STATIC ? ".html
     .attr('stroke', d => d.kind === 'reference' ? '#111' : '#fff')
     .attr('stroke-width', d => d.kind === 'reference' ? 1.6 : 0.5)
     .style('cursor','pointer')
-    .on('click', (e,d) => { location.href = d.kind === 'reference' ? clusterUrl(d.cluster) : leafUrl(d.leaf || d.id); });
+    .on('click', (e,d) => {
+      const href = d.kind === 'reference' ? clusterUrl(d.cluster) : leafUrl(d.leaf || d.id);
+      if (href) location.href = href;      /* null for a type with no page */
+    });
   node.append('title').text(d => d.kind === 'reference'
     ? 'curated reference · ' + d.cluster
     : d.cluster + ' · variant ' + d.leaf + ' · ' + d.size + ' members · ' + (d.organism||'') + (d.tier ? ' · ' + d.tier : ''));

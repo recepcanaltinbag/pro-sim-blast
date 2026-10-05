@@ -272,7 +272,25 @@ def cluster_detail(con, cluster):
     n = con.execute("SELECT COUNT(*) FROM ro WHERE is_confirmed=1 AND ro_cluster=?",
                     (cluster,)).fetchone()[0]
     if not n:
-        return None
+        # Uyesi olmayan tip bir HATA degildir: referans enzim kuratorlu sette
+        # var ama taranan genomlarda ona atanan dogrulanmis protein cikmamis.
+        # Ana sayfadaki kimya kartlari chemistry.csv'den geliyor (71 tip),
+        # oysa ro tablosunda 61 tip var; aradaki fark 404 veriyordu.
+        if cluster not in CHEMISTRY and cluster not in ECOLOGY:
+            return None
+        eco = ECOLOGY.get(cluster, {})
+        return {"cluster": cluster, "n": 0, **cluster_parts(cluster),
+                "substrate": CHEMISTRY.get(cluster, {}).get("substrate_en")
+                             or eco.get("substrate", ""),
+                "sclass": eco.get("substrate_class", ""),
+                "note": eco.get("ecology_note", ""),
+                "confidence": eco.get("confidence", ""),
+                "replicons": 0, "plasmid": 0, "score": None, "coverage": None,
+                "operon": {"beta": 0, "ferredoxin": 0, "reductase": 0, "complete": 0,
+                           "nb_beta": 0, "nb_ferredoxin": 0, "nb_reductase": 0, "total": 0},
+                "domains": [], "genera": [], "top_genera": [], "genera_n": 0,
+                "neighborhood": [], "regulators": [], "layouts": [], "leaves": [],
+                "classes": [], "empty": True}
     eco = ECOLOGY.get(cluster, {})
     info = {"cluster": cluster, "n": n, **cluster_parts(cluster),
             "substrate": eco.get("substrate", ""), "sclass": eco.get("substrate_class", ""),
@@ -970,7 +988,8 @@ def atlas_home(request: Request):
     con = connect()
     try:
         return render(request, "atlas_home.html", over=_overview(con), totals=totals(con),
-                      stats=atlas.read_json(apath("stats.json")))
+                      stats=atlas.read_json(apath("stats.json")),
+                      motif=atlas.read_json(apath("motif_stats.json")))
     finally:
         con.close()
 
@@ -1019,7 +1038,8 @@ def atlas_ecology(request: Request):
     con = connect()
     try:
         return render(request, "atlas_ecology.html", over=_overview(con),
-                      stats=atlas.read_json(apath("stats.json")))
+                      stats=atlas.read_json(apath("stats.json")),
+                      habitat=atlas.read_json(apath("habitat.json")))
     finally:
         con.close()
 
@@ -1225,6 +1245,7 @@ def dl_analysis(name: str):
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
                "redundancy.json", "cooccurrence.json", "substrate_predictability.json",
+               "habitat.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")
@@ -1265,6 +1286,24 @@ def cluster_extras(con, cluster):
         WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()[0]
     x["nearest"] = atlas.nearest_types(
         atlas.identity_matrix(apath("cluster_identity_matrix.csv")), cluster)
+    if atlas.table_exists(con, "replicon_source"):
+        x["habitats"] = con.execute("""
+            SELECT s.habitat h, COUNT(*) n, COUNT(DISTINCT p.organism) species
+            FROM ro r JOIN replicon p USING(nucleotide_id)
+            JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
+            WHERE r.is_confirmed=1 AND r.ro_cluster=? AND s.habitat != 'unknown'
+            GROUP BY 1 ORDER BY n DESC LIMIT 8""", (cluster,)).fetchall()
+        x["habitat_coverage"] = con.execute("""
+            SELECT SUM(CASE WHEN s.habitat != 'unknown' THEN 1 ELSE 0 END), COUNT(*)
+            FROM ro r LEFT JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
+            WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()
+    motif = atlas.read_json(apath("motif_stats.json")) or {}
+    carbox = {}
+    for site, entry in (motif.get("carboxylate_identity") or {}).items():
+        row = (entry.get("per_cluster") or {}).get(cluster)
+        if row:
+            carbox[site] = {**row, "column": entry["column"]}
+    x["carboxylate"] = carbox
     reg_rows = {r["cluster"]: r for r in atlas.read_csv(apath("regulation_by_cluster.csv"))}
     x["reg_row"] = reg_rows.get(cluster)
     top_layout = con.execute(

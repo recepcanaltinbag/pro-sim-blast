@@ -13,8 +13,8 @@ subunits almost any difference reaches significance while only some are large en
   <b>Entries are not independent observations.</b> Sequence databases contain many near-identical
   strains of the same species, so treating each alpha subunit as one sample inflates the effective
   sample size. Where the design allows it, every test is therefore repeated after collapsing the
-  data to one observation per type and genus. A finding is called robust only if both levels agree
-  in direction and the genus level stays significant.
+  data to one observation per distinct sequence and once more per type and genus. A finding is
+  called robust only if all three levels agree in direction and the genus level stays significant.
 </div>
 
 {% for t in stats.tests %}
@@ -27,7 +27,8 @@ subunits almost any difference reaches significance while only some are large en
 <th class="num">Ratio</th><th class="num">Odds ratio</th><th class="num">Fisher exact p</th><th class="num">Observations</th></tr></thead>
 <tbody>
 {% for lvl, r in t.levels.items() %}
-<tr><td>{{ 'per entry' if lvl == 'entry' else 'per type and genus' }}</td>
+<tr><td>{{ {'entry': 'per entry', 'sequence': 'per distinct sequence',
+     'genus': 'per type and genus'}.get(lvl, lvl) }}</td>
   <td class="num">{{ '%.1f %%' % (100 * r.rate_a) }}</td><td class="num">{{ '%.1f %%' % (100 * r.rate_b) }}</td>
   <td class="num">{{ '%.2f' % r.ratio }}</td><td class="num">{{ '%.2f' % r.odds_ratio }}</td>
   <td class="num">{{ '%.1e' % r.p }}</td><td class="num">{{ r.n|fmt }}</td></tr>

@@ -1,0 +1,70 @@
+==============================================================================
+SUBSTRAT SINIFI x MOBILITE
+==============================================================================
+
+[dislandi] okaryot-agirlikli 2 kume (>=%25 okaryot, bakteriyel mobiliteyi confound eder):
+    1_111_GxtA       %39 okaryot
+    5_501_CmoS       %37 okaryot
+
+substrat sinifi         kume      RO  Tn yakin  plazmit   cins  operon tam
+--------------------------------------------------------------------------
+natural_specialized       12   5,136     5.3%    1.6%    551       0.0%
+xenobiotic                37   3,624    11.9%    5.5%    311       6.4%
+natural_aromatic           7   1,682    26.8%    0.7%    222       0.0%
+
+==============================================================================
+HIPOTEZ TESTI: ksenobiyotik vs dogal substrat
+==============================================================================
+  olcut                          ksenobiyotik      dogal      oran
+  ---------------------------- -------------- ---------- ---------
+  transpozon komsulugu                 11.9%     10.6%     1.12x
+  plazmit uzerinde                      5.5%      1.4%     4.02x
+  farkli cins sayisi                     311       630     0.49x
+  toplam RO                            3,624     6,818
+
+  transpozon farki icin z = 2.00 (anlamli degil, p<0.01 esigi |z|>2.58)
+
+==============================================================================
+KUME DUZEYI (n >= 30)
+==============================================================================
+kume             sinif                    RO     Tn   plaz  cins  sinteni H
+---------------------------------------------------------------------------
+1_102_CARDO      xenobiotic               55 36.4% 18.2%    20       2.17
+1_104_VanA       natural_aromatic      1,169 35.5%  0.8%   191       2.05
+4_406_PDO        xenobiotic              184 20.7%  6.0%    58       2.05
+3_311_PhtAa      xenobiotic              126 16.7%  8.7%    18       2.15
+1_112_NdmA       natural_specialized      31 16.1%  0.0%    14       1.61
+1_106_TsaM       xenobiotic              655 15.6%  2.4%   145       1.90
+4_409_TPDO       xenobiotic              273 14.3% 11.4%    42       2.21
+3_319_PhdA       xenobiotic               61 13.1%  4.9%    24       2.02
+3_301_PhnA1a     xenobiotic               94 11.7% 20.2%    17       2.15
+1_110_SxtT       natural_specialized     188 11.7%  2.1%    81       1.74
+1_113_CdnA       natural_specialized     401 11.2%  2.5%    78       1.71
+1_108_PobA       natural_aromatic         90 11.1%  0.0%    33       1.87
+4_405_ROCH34     xenobiotic              182 11.0%  1.6%    55       1.95
+5_508_GbcA       natural_specialized     336 10.1%  0.0%     7       1.18
+1_105_DdmC       xenobiotic              401  8.7%  1.0%   127       1.56
+1_107_CndA       xenobiotic               60  8.3%  0.0%    24       1.92
+4_401_CmtAb      xenobiotic              107  7.5%  6.5%    43       1.94
+2_217_HcaE       natural_aromatic        178  6.7%  0.0%    16       2.14
+2_218_BphA1      xenobiotic               64  6.2%  6.2%    21       2.17
+2_211_bfzA       xenobiotic               49  6.1%  2.0%    18       2.05
+4_403_AtdA       xenobiotic              115  6.1%  0.9%    31       1.97
+3_302_DitA       natural_specialized      69  5.8%  4.3%    15       1.89
+4_410_CbdC       xenobiotic              243  5.8%  2.1%    50       1.99
+3_307_NagGH      xenobiotic              174  5.7%  3.4%    36       2.07
+4_411_XylX       xenobiotic              422  5.7%  3.3%    59       2.07
+5_507_BmoA       natural_specialized     610  5.6%  2.1%   138       1.92
+4_408_AntA       natural_aromatic        184  5.4%  1.6%    14       1.86
+3_317_NidA       xenobiotic               37  5.4% 24.3%    20       1.87
+5_504_CntA       natural_specialized   1,210  4.9%  2.1%   202       1.90
+4_404_TdnA1      xenobiotic              425  4.5%  4.0%    71       2.04
+1_109_LigX       natural_aromatic         48  4.2%  0.0%    24       1.84
+3_316_NarAa      xenobiotic               30  3.3%  0.0%    16       1.76
+5_506_Stc2       natural_specialized     903  3.3%  2.8%   167       1.84
+1_111_GxtA       natural_specialized     234  3.0%  0.0%   104       1.52
+3_313_KshA15     natural_specialized   1,345  2.5%  0.1%   161       1.80
+5_505_OxyA       xenobiotic               95  2.1%  1.1%    23       1.44
+5_501_CmoS       natural_specialized     288  1.7%  0.0%    90       1.26
+
+[yazildi] analysis_out/cluster_ecology_stats.csv

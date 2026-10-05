@@ -1,0 +1,19 @@
+[yazildi] analysis_out/stats.json
+  plasmid_by_class
+      entry     0.056 vs 0.014 (3.95x, p=8.2e-31, n=9855)
+      sequence  0.047 vs 0.014 (3.29x, p=3.4e-19, n=8573)
+      genus     0.072 vs 0.016 (4.35x, p=5.0e-09, n=1791)
+  mobile_by_class
+      entry     0.217 vs 0.155 (1.40x, p=3.0e-14, n=9855)
+      sequence  0.198 vs 0.151 (1.31x, p=2.5e-08, n=8573)
+      genus     0.264 vs 0.149 (1.77x, p=2.1e-09, n=1791)
+  taxonomic_breadth                {"unit": "cluster (n>=10 members)", "metric": "genera per member", "xenobiotic": {"n": 31, "median": 0.3333333333333333}, "natural": {"n": 19, "median": 0.22622
+  reductase_by_group               chi2=2429 dof=12 p=0.0e+00 V=0.27
+  ferredoxin_by_group              chi2=1394 dof=8 p=1.4e-295 V=0.25
+  beta_by_group                    chi2=6302 dof=4 p=0.0e+00 V=0.74
+  operon_completeness_by_plasmid   {"plasmid": {"n": 296, "mean_components": 1.135135135135135}, "chromosome": {"n": 9514, "mean_components": 0.656190876602901}, "mannwhitney_p": 4.08538570353239
+  bridging_residue_by_group        chi2=8107 dof=4 p=0.0e+00 V=0.84
+  bridging_residue_by_reaction     chi2=7329 dof=6 p=0.0e+00 V=0.80
+  catalytic_residue_by_group       chi2=31 dof=4 p=3.8e-06 V=0.06
+  phylum_by_group                  chi2=4334 dof=28 p=0.0e+00 V=0.31
+  evidence: {'characterized': 215, 'close_homolog': 2653, 'family_member': 1906, 'distant': 6275, 'novel': 373} transferable=0.25 mostly_distant: ['1_105_DdmC', '1_106_TsaM', '1_107_CndA', '1_110_SxtT', '1_111_GxtA', '1_112_NdmA', '1_113_CdnA', '2_211_bfzA', '2_212_BedC1', '3_316_NarAa', '3_319_PhdA', '4_403_AtdA', '4_404_TdnA1', '5_502_CmoB', '5_504_CntA', '5_507_BmoA']

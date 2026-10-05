@@ -54,9 +54,12 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
 | 12c5 | `substrate_predictability.py` | kimlik → substrat ongorusunun ROC/kesinlik olcumu → `substrate_predictability.json` |
+| 12c6 | `isolation_source.py` | `gbk_files/` `source` nitelikleri + `cluster_ecology.csv`/`chemistry.csv` → `replicon_source` tablosu (izolasyon kaynagi, konak, cografya, yil, habitat) + `analysis_out/habitat.json`; habitat × substrat sinifi tur-normalize capraz tablolari |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
+| 13d | `validate_curation.py` | **KAPI**: DB + iki kuratorlu CSV denetimi → PASS/FAIL satirlari; bir FAIL varsa sifir-disi cikar ve pipeline durur (bkz. Safeguards) |
+| 13e | `provenance.py` | her tablo/dosya icin ureten script, girdiler, kayit sayisi, zaman, kaynak zinciri → `analysis_out/provenance.json` |
 | 14 | `make_report.py` / `make_explorer.py` / `make_hub.py` | üç HTML sayfa |
 
 Tümünü koşmak için: `bash run_all.sh` (bkz. aşağı).
@@ -82,11 +85,11 @@ kontaminant temizlendi).
   co-occurrence skorlaması genom bolluğunu ölçüyor. Gerçek zenginleşenler: ro_beta
   (4,12x), ring_cleavage (2,81x), ferredoksin (2,05x).
 - **Kümeler heterojen**: doğrulanan RO'ların ~%67'si medyan kimliği <%35 olan
-  kümelerde. Özyinelemeli homojenizasyon 61 kümeyi 1.790 yaprağa böldü.
+  kümelerde. Özyinelemeli homojenizasyon 61 kümeyi 1.809 yapraga böldü.
 - **Varyantlar genomik bağlamla ayrışıyor** (KshA'nın bir varyantı steroid dehidrogenaz
   yanında; VanA'nın mobil *Burkholderia* soyu IclR+transpozon yanında).
-- **Novel**: 155 yüksek-güven aday (güvenle RO, bilinen tipe uymuyor) + bitki/alg dalı.
-- **Ekoloji**: ksenobiyotik RO'lar plazmit üzerinde 4,3x daha sık (yatay transfer);
+- **Novel**: 318 yuksek-guven aday (güvenle RO, bilinen tipe uymuyor) + bitki/alg dalı.
+- **Ekoloji**: ksenobiyotik RO'lar plazmit uzerinde 4,0x daha sik (tur bazinda 3,3x, cins bazinda 4,4x) (yatay transfer);
   transpozon farkı sınırda (z=2,57); taksonomik yayılım ters (doğal substratlar daha
   çok soyda — kadim dikey kalıtım).
 - **Veri kompozisyonu**: %91,2 bakteri, %8,3 ökaryot (483 bitki/alg, 219 mantar,
@@ -376,7 +379,155 @@ karboksilati (kolon 355, %87,6) — hem Asp hem Glu kabul ediyor.
 - `roar.sqlite` — ana veritabanı (replicon, ro, neighbor, gene_category, subfamily,
   ro_subfamily, leaf, ro_leaf, leaf_profile, ro_domain)
 - `analysis_out/` — tüm analiz CSV'leri + novel/temsilci FASTA'ları
+- `analysis_out/provenance.json` — köken manifestosu (`provenance.py`): her tablo
+  ve her analiz dosyası için üreten script, tükettiği girdiler, satır/kayıt
+  sayısı, değişiklik zamanı, kısa İngilizce açıklama ve zincirin dayandığı
+  kaynak veri
 - `report.html`, `explorer.html`, `hub.html` — üç HTML sayfa (DB'den canlı üretilir)
 
 Sınıflandırmayı değiştirmek için gbk'ları yeniden parse etmek gerekmez:
 `python3 build_db.py --recategorize` yalnızca `gene_category` tablosunu yeniden üretir.
+
+## Referans setinde bulunan tekrarlar (2026-10-06)
+
+`validate_curation.py` iki SERT hata veriyor ve ikisi de kuratorluk karari
+gerektiriyor, bu yuzden kod tarafindan sessizce duzeltilmedi:
+
+1. **71 referans, 68 tekil dizi.** Uc cift birebir ayni: `1_101_OxoO` = `3_304_OMO`,
+   `3_309_NahAc` = `3_315_NDO`, `3_314_NDO` = `3_316_NarAa`. Sonuc kozmetik degil:
+   `RieskeDB71.hmm` ayni profili iki kez iceriyor ve atama ikizler arasinda
+   keyfi bolunuyor (OxoO 2 / OMO 11, NDO 2 / NarAa 30, NahAc 0 / NDO 0).
+   "En iyi profil ile en yakin referans protein uyusmuyor" oraninin %29,3
+   olmasinin bir kismi bundan.
+2. **`1_115_NdmC`, `1_114_NdmB`'nin alt dizisi** (355 aa, 373 aa icinde).
+   Gercek NdmB ve NdmC ~%65 benzer ayri demetilazlardir, yani ayni protein iki
+   kez girilmis, biri N-ucundan kisaltilmis. NdmC sifir uye topluyor, NdmB 15.
+3. Uyari duzeyinde: `1_102_CARDO` / `1_103_CarAa` %99,2 ve CarAa sifir uye
+   topluyor. Ayni desen ama sert kontrolu bir kalinti farkla gecmiyor; otomatik
+   kural bunu EdoA1/cumA1 (%99,8, farkli substrat, gercek bir bulgu) vakasindan
+   ayirt edemez, bu yuzden karar insana birakildi.
+
+Hangi ikizin tutulacagi ve NdmC'nin kendi dizisiyle yeniden alinip alinmayacagi
+kuratore aittir; degistirildiginde `RieskeDB71.hmm` yeniden kurulmali ve
+pipeline 1. adimdan itibaren kosulmalidir.
+
+## Safeguards (adim 13d/13e) — ne yakalanir, ne yakalanmaz
+
+Bu pipeline birkac SESSIZ hata yayinladi: yutulan cd-hit cokmesi, kolonlari
+kaydiran `2\,4` CSV kacisi, en kotu hizalanmis ilmekleri "ayirt edici kolon"
+sanan metrik, `is_confirmed=NULL` kalan 945 aday. Hepsinin ortak yani ayni:
+hata ciktiyi BOZDU ama hicbir sey durmadi. Iki script bunu adres aliyor ve
+`run_all.sh` icinde HTML uretiminden ONCE kosuyor.
+
+### `validate_curation.py` — kapi (sifir-disi cikar)
+
+Her kontrol icin tek satir `PASS` / `FAIL` / `WARN` ve bir sayi yazar. Bir
+`FAIL` varsa sifir-disi cikar, yani `set -e` altinda pipeline durur ve bozuk
+veri web sitesine gitmez. Kapsam:
+
+| grup | ne sinaniyor |
+|---|---|
+| **referans seti** (`ROs_71_Clean/refs71.fasta`) | iki referans dizisi birbirinin AYNISI olmasin; bir dizi bir baskasinin ICINDE gecmesin (parca referans); her kimlik FASTA + `cluster_ecology.csv` + `chemistry.csv` ucunde de tam bir kez olsun. Ayrica WARN olarak: %99 uzeri kimlikli ciftler (substratlariyla) ve hic uye toplamayan referanslar (ikiz/parca etiketiyle) |
+| sozluk | `add_reference.py`'nin YAZARKEN kullandigi izinli deger listeleri ile dogrulayicinin KONTROL ETTIGI listeler ayni mi (ayrisirsa yeni referans sessizce gecer) |
+| CSV bicimi | her satirin alan sayisi baslikla ayni mi — `2\,4` kacisi hata sinifi tam olarak bu |
+| `ro` | dogrulanan her RO'nun gercek bir `ro_cluster`'i (`NULL`/`'N/A'` degil), dizisi ve `rieske_intact=1`'i var mi; `is_confirmed` hic `NULL` kalmis mi |
+| kapsama | `ro`'daki her kume iki kuratorlu CSV'de var mi; CSV'lerde olup `ro`'da uyesi olmayan tip var mi (bilinen 10 uyesiz referans `REFERENCE_ONLY_CLUSTERS` ile muaf, muafiyet bayatlarsa `WARN`); iki CSV ayni tip kumesini kapsiyor mu; tekrarlanan satir var mi |
+| `cluster_ecology.csv` | `substrate_class` ∈ {xenobiotic, natural_aromatic, natural_specialized, unknown}, `confidence` ∈ {low, medium, high} |
+| `chemistry.csv` | `reaction_class` ve `family` bilinen kumede, `source_kind` bilinen kumede, `curation_confidence` ∈ {low, medium, high}; her bos olmayan `substrate_smiles` makul (parantez/koseli parantez dengesi, yalnizca mesru atom-bag karakterleri, en az bir atom, eslesen halka kapanis rakamlari); her bos olmayan `pdb` tam dort alfanumerik; adlandirilmis substratin kaynagi yazili mi |
+| tutarlilik | iki CSV bir tipin substratinin bilinip bilinmedigi konusunda celisiyor mu (chemistry substrati adlandirmis ama ecology hala `unknown` diyorsa ekoloji testi o tipi disarida birakir ve web sayfasi iki farkli sey soyler) |
+| dil | `leaf_profile.label`, `leaf.top_genera`, `ro_etc.etc_profile`, `operon.layout` ve iki CSV'nin HER alani; ayrica `analysis_out/` icinde web'in yayinladigi metin dosyalari. Iki tuzak ayri ayri araniyor: Turkce'ye ozgu harfler **ve** ASCII'ye sadelestirilmis Turkce kelimeler (`agirlikli`, `komsu`, `kume`, `yaprak`, `bilinmiyor`, `dusuk`, `orta`, `yuksek`, `degil`) — ikincisi daha sinsi, cunku kodlama kontrolleri onlari gormez |
+| referans butunlugu | `neighbor.candidate_id` → `ro`; `ro_leaf.leaf_id` → `leaf`; `leaf_sdp.cluster` → `cluster_sdp`; `leaf_sdp.leaf_id` → `leaf`; `gene_category.neighbor_id` → `neighbor`; `ro.nucleotide_id` → `replicon`; `ro_subfamily.subfamily_id` → `subfamily`; `leaf.size` o yapragin `ro_leaf` uye sayisina esit mi ve `sum(leaf.size)` = `ro_leaf` satir sayisi mi; `subfamily.size` ayni sekilde |
+| aritmetik | dogrulanan RO sayisi `ro`, `ro_search`, `ro_evidence`, `ro_domain`, `operon`, `ro_leaf`, `ro_etc`, `ro_regulation`, `ro_subfamily` arasinda ayni mi (ayrisirsa farkli sayilar yazdirilir); her dogrulanan RO her tureyen tabloda var mi; tureyen tablolar yalnizca dogrulanmis RO tutuyor mu |
+| tazelik | `ro_search`'un substrat/aile/reaksiyon alanlari kuratorlu CSV'lerin SU ANKI halini mi yansitiyor (SQLite tablo basina zaman damgasi tutmadigi icin bu ancak icerik karsilastirmasiyla gorulebilir) |
+
+**Referans seti kontrolu neden sert bir kapi.** Pipeline'in TAMAMI
+`ROs_71_Clean/refs71.fasta` uzerine kuruluyor: tip atamasi, katalitik motif
+kolonlari, her kanit kademesi. Ayni enzim iki adla girildiginde
+`RieskeDB71.hmm` birbirinin aynisi iki profil tasir ve atama ikizler arasinda
+KEYFI boluur — olculdu: OxoO 2 / OMO 11, NDO 2 / NarAa 30, NahAc 0 / NDO 0.
+"En yuksek skorlu profil ile en yakin referans protein farkli tipte" orani
+(%29,3) buyuk olcude bundan sisiyor. Parca referans ayni sorunun diger yuzu:
+`1_115_NdmC` (355 aa) `1_114_NdmB`'nin (373 aa) harfi harfine bir parcasi, oysa
+gercek NdmB ve NdmC ~%65 kimlikli ayri demetilazlar; parcadan kurulan profil
+sistematik olarak zayif ve NdmC hic uye toplamiyor.
+
+**%99 uzeri kimlik neden FAIL degil WARN.** Bu veritabaninin merkezi bulgusu
+tam olarak bu: `2_202_EdoA1` ve `2_203_cumA1` %99,8 kimlikte FARKLI
+substratlara (etilbenzen / kumen) etki ediyor. Bunu kusur saymak bulguyu
+silmek olur. Duplikasyon kusuru ise AYRI ve sert kontrol; tam kopya ve parca
+ciftleri WARN listesinden cikarilir, yoksa gercek bulgu gurultuye karisir.
+
+### `provenance.py` — koken manifestosu (yuksek sesle uyarir)
+
+`analysis_out/provenance.json` yazar. Script adlari README'nin pipeline
+tablosundan capraz kontrol edilir ama YETKILI olan `provenance.py` icindeki
+modul duzeyi `TABLE_PROVENANCE` / `FILE_PROVENANCE` dict'leridir. Uyari
+siniflari:
+
+- **haritada olmayan tablo/dosya** — haritalanmamis bir artefakt, sessizce
+  bayatlayan seyin ta kendisidir (bu kontrol `ro_carboxylate` tablosunu
+  bulmustur: `motif_stats.py` kuruyor, `stats_overview.py` okuyor, hicbir
+  belgede yoktu);
+- **haritada olup diskte/veritabaninda olmayan artefakt** — o adim kosulmamis;
+- **ureticisi dogrulanamayan artefakt** — haritadaki script'in KOD GOVDESINDE
+  (docstring ve yorumlar atilarak) cikti adi hic gecmiyorsa, ya harita
+  yanlistir ya da artefakt yetimdir;
+- **girdisi kendisinden yeni olan artefakt** — bayat zincir.
+
+Her artefakt icin zincir kaynak veriye kadar cozulur: `combined_pfam.fasta`,
+`gbk_files/`, `ROs_71_Clean/`, `cluster_ecology.csv`, `chemistry.csv`
+(+ `RieskeDB71.hmm`, `component_hmms/`).
+
+`provenance.py` varsayilan olarak sifir doner (yalnizca uyarir); CI'da sert
+kapi istenirse `--strict`.
+
+### Yakalanamayanlar — durust liste
+
+Bunlar kontrol edilmiyor ve bu dogrulayici gectigi icin veri "dogru" olmus
+sayilmaz:
+
+1. **Kuratorlu bilginin DOGRULUGU.** Bir substrat yanlis makaleden alinmissa,
+   SMILES yanlis molekulu cizse, PDB kodu baska bir yapiya isaret etse
+   kontroller gecer. Sinanan sey bicim ve ic tutarliliktir, literatur degil.
+2. **Referans setinde YAKLASIK duplikasyon.** Sert kontroller yalnizca TAM
+   kopyayi ve harfi harfine PARCAYI gorur. Tek kalintisi degisen bir kopya
+   ikisinden de kacar; o ancak %99 uzeri kimlik WARN'inda gorunur ve karari
+   insan verir. Ornegin `1_102_CARDO` / `1_103_CarAa` %99,2 kimlikte ve AYNI
+   substrata (karbazol) atanmis, CarAa hic uye toplamiyor — bu desen
+   duplikasyona benziyor ama otomatik olarak boyle ilan edilmiyor. Ayrica o
+   WARN'in kimlik olcumu `analysis_out/reference_pairs.csv`'den okunur: o dosya
+   bayatsa veya yoksa kontrol sessizce zayiflar (yoksa WARN yazar).
+3. **SMILES kimyasi.** Kontrol parantez dengesi ve mesru karakter duzeyinde;
+   valans, aromatiklik ve stereokimya sinanmiyor (RDKit kurulu degil). Bicimsel
+   olarak gecerli ama kimyasal olarak sacma bir SMILES gecer.
+4. **SQLite tablo basina tazelik.** SQLite tablolar icin zaman damgasi tutmaz.
+   Dosya duzeyinde bayatlik yakalanir; tablo duzeyinde yalnizca ozel olarak
+   yazilmis icerik karsilastirmalari yakalar (su an sadece `ro_search` ↔ iki
+   CSV). Baska bir tablo bir CSV'den kopyalama yapmaya baslarsa o kontrol elle
+   eklenmeli. Dosya duzeyindeki olcut de KABA: mtime karsilastirmasi bir
+   girdinin NE kadarinin degistigini bilmez, bu yuzden bir CSV'de tek alan
+   duzeltilince o CSV'ye bagli TUM ciktilar "bayat" gorunur. Uyari her zaman
+   "yeniden kos" demek degil, "yeniden kosulup kosulmayacagina KARAR VER"
+   demektir.
+5. **Istatistiksel iddialar.** `stats.json`, `null_model.csv`,
+   `cooccurrence.json`, `substrate_predictability.json` icindeki sayilarin
+   dogrulugu sinanmiyor; yalnizca dosyalarin var oldugu ve girdilerinden yeni
+   oldugu. Yanlis bir null model sessizce gecer.
+6. **Biyolojik anlam.** Operon tanimi (ayni iplik, bosluk ≤150 bp) bir
+   konvansiyondur; yaprak = varyant esitligi bir karardir; kume duzeyi substrat
+   atamasi heterojen kumelerde uyelerin cogu icin gecerli degildir. Hicbiri
+   dogrulanabilir bir onerme degil.
+7. **Kaynak verinin kendisi.** `gbk_files/` kayitlarinin %88,9'u `CON` tipinde,
+   yani dizi dosyada yok; bu eksiklik kontrollerle giderilemez (bkz. yukarida
+   regulasyon mimarisi bolumu).
+8. **Ingilizce metnin kalitesi.** Dil kontrolu Turkce harf ve sabit bir Turkce
+   kelime listesi arar. Listede olmayan bir Turkce kelime, bozuk Ingilizce ya
+   da yarim cumle gecer. Ters yonde de kusurlu: arama ONEK eslesmesi yapar
+   (Turkce eklemeli oldugu icin gerekli) ve bu mesru metni yakalayabilir —
+   GenBank'tan gelen `New Zealand: Kumeu` yer adi 'kume' onekine takiliyor.
+   Bilinen yanlis pozitifler `LANGUAGE_FALSE_POSITIVES` ile muaf tutuluyor; o
+   liste uzadikca kontrolun degeri duser.
+9. **`webapp/` sablonlari.** Dogrulayici veritabani ve iki CSV'ye bakar; HTML
+   sablonlarindaki sabit yazilmis metinler ve sayilar kapsamda degildir —
+   daha once tam bu sinifta hata cikmisti (`make_report.py` icinde sabit
+   yazilmis 960 / "4,3x" degerleri DB ile celisiyordu).

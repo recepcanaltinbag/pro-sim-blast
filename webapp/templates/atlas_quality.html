@@ -35,7 +35,7 @@ statement is modest but real: the share of entries on plasmids is
 </figure>
 
 <h3>Which types are most affected</h3>
-<div class="tablewrap"><table class="data compact sortable">
+<div class="tablewrap"><table class="data compact" data-filter="Filter types…">
 <thead><tr><th>Type</th><th class="num">Entries</th><th class="num">Distinct sequences</th><th class="num">Redundancy</th></tr></thead>
 <tbody>
 {% for c in red.clusters if c.entries >= 20 %}
@@ -56,7 +56,8 @@ than of the enzymes.</p>
 <p>Each association test is therefore run at three levels: once per entry, once per distinct
 sequence, and once per type and genus. A conclusion that survives all three does not depend on how
 the copies are counted.</p>
-<div class="tablewrap"><table class="data compact">
+{#  Grouped by question with a rowspan cell: order is meaningful. #}
+<div class="tablewrap"><table class="data compact" data-nosort>
 <thead><tr><th>Question</th><th>Level</th><th class="num">Xenobiotic</th><th class="num">Natural</th>
 <th class="num">Ratio</th><th class="num">p</th><th class="num">Observations</th></tr></thead>
 <tbody>
@@ -110,10 +111,14 @@ the copies are counted.</p>
     <td>Every taxonomic and ecological figure.</td>
     <td>Nothing available here. The taxonomy tree shows the shape of the bias directly.
     <a href="{{ u('/atlas/taxonomy') }}">Taxonomy</a></td></tr>
-<tr><td><b>Seven types have no recorded substrate</b> because their original publications could not
-    be traced during this work.</td>
-    <td>They appear as "substrate not established" and are excluded from chemistry groupings.</td>
-    <td>The primary literature for OxoO, CndA, cadA, OMO, PsbAb, ROCH34 and OxyA.</td></tr>
+<tr><td><b>Most curated substrates carry no individual citation.</b> All 71 types now have a
+    recorded substrate, but for 50 of them <code>chemistry.csv</code> records the source only as
+    established literature on the reference enzyme rather than naming a paper or a structure.</td>
+    <td>Every substrate, product and reaction label, and so every chemistry grouping. The claim is
+    traceable for the 21 types with a paper or a PDB entry recorded, and rests on the curator for
+    the rest.</td>
+    <td>Naming the primary reference for each of those 50 types. Each type page prints the source
+    it has, so the gap is visible per type rather than only in aggregate.</td></tr>
 <tr><td><b>Clustering compares sequences, not function.</b> Variants are sequence-homogeneous
     subgroups; nothing guarantees that a variant boundary is a functional boundary.</td>
     <td>Variant counts and the claim that variants are candidate functional units.</td>
@@ -144,12 +149,16 @@ intergenic gap of {{ validation.components.beta.gap_median }} base pairs.</p>
 (<code>cluster_ecology.csv</code> and <code>chemistry.csv</code>, both from the literature on the
 reference enzymes). Everything else is produced by a script in the repository and can be regenerated
 with <code>bash run_all.sh</code>.</p>
-<div class="tablewrap"><table class="data compact">
-<thead><tr><th>File</th><th class="num">Rows</th><th>Produced by</th><th>Contents</th></tr></thead>
+<div class="tablewrap"><table class="data compact" data-filter="Filter files…">
+<thead><tr><th>File</th><th class="num">Rows</th><th data-facet="Produced by">Produced by</th><th>Contents</th></tr></thead>
 <tbody>
 {% for d in downloads if d.exists %}
 <tr>
-  <td>{% if d.kind == 'route' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
+  {#  tree_all.nwk is listed with kind 'file' because it lives in the analysis
+      directory, but it is not in the allow-list of /download/analysis/{name};
+      it is served by its own route. Sending it to the generic analysis URL
+      produced the only broken link on the site.                            #}
+  <td>{% if d.kind == 'route' or d.name == 'tree_all.nwk' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
       {% else %}<a href="{{ u('/download/analysis/' ~ d.name) }}">{{ d.name }}</a>{% endif %}</td>
   <td class="num">{{ d.rows|fmt if d.rows is not none else '–' }}</td>
   <td class="mono small">{{ d.script }}</td>
@@ -157,14 +166,4 @@ with <code>bash run_all.sh</code>.</p>
 </tr>
 {% endfor %}
 </tbody></table></div>
-<script>
-document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
-  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
-  th.dataset.asc = asc ? '1' : '0';
-  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
-    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
-  rows.sort((a, b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
-  rows.forEach(r => tb.appendChild(r));
-}));
-</script>
 {% endblock %}

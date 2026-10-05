@@ -5,27 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}ROAR-DB{% endblock %} · ROAR-DB</title>
 <meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="{{ u('/static/style.css') }}">
 </head>
 <body>
+{% set path = (request.url.path if request else '/') %}
+<a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <a class="brand" href="{{ u('/') }}"><span class="brand__mark">RO</span> ROAR-DB</a>
-  <nav>
-    <a href="{{ u('/atlas') }}">Atlas</a>
-    <a href="{{ u('/clusters') }}">Types</a>
-    <a href="{{ u('/search') }}">Search</a>
-    {% if not static_mode %}<a href="{{ u('/classify') }}">Classify a sequence</a>{% endif %}
-    <a href="{{ u('/about') }}">Methods</a>
+  <nav aria-label="Main">
+    <a href="{{ u('/atlas') }}"{% if path.startswith('/atlas') %} aria-current="page"{% endif %}>Atlas</a>
+    <a href="{{ u('/clusters') }}"{% if path in ('/clusters',) or path.startswith('/cluster/') %} aria-current="page"{% endif %}>Types</a>
+    <a href="{{ u('/search') }}"{% if path.startswith('/search') %} aria-current="page"{% endif %}>Search</a>
+    {% if not static_mode %}<a href="{{ u('/classify') }}"{% if path.startswith('/classify') %} aria-current="page"{% endif %}>Classify a sequence</a>{% endif %}
+    <a href="{{ u('/about') }}"{% if path.startswith('/about') %} aria-current="page"{% endif %}>Methods</a>
     {% if not static_mode %}<a href="{{ u('/api/docs') }}">API</a>{% endif %}
   </nav>
   {% if not static_mode %}
-  <form class="qs" action="{{ u('/search') }}" method="get">
-    <input type="search" name="q" placeholder="organism, product, protein ID, cluster…" value="{{ q or '' }}">
+  <form class="qs" action="{{ u('/search') }}" method="get" role="search">
+    <input type="search" name="q" aria-label="Quick search" placeholder="organism, product, protein ID, cluster…" value="{{ q or '' }}">
     <button>Go</button>
   </form>
   {% endif %}
 </header>
-<main>
+<main id="main">
 {% block body %}{% endblock %}
 </main>
 <footer>
@@ -39,5 +42,7 @@
   When citing a specific entry, quote its identifier and this revision, because type assignments and
   variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
 </footer>
+<script src="{{ u('/static/table.js') }}" defer></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

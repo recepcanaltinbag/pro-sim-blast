@@ -1,8 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Clusters{% endblock %}
+{% block title %}Enzyme types{% endblock %}
 {% block body %}
 <h1>Reference RO types</h1>
-<p class="muted">Each confirmed entry is assigned to the reference type whose profile scores highest (bit score, not E-value).
-Click a column header to sort.</p>
+<p class="lede">Each confirmed entry is assigned to the reference type whose profile scores highest,
+by bit score rather than E-value. One row is one characterised enzyme type.</p>
+<p class="note">Click any column header to sort it; click again to reverse. The filter box matches
+anything in a row, and the chips narrow the table to one RO group, substrate class or literature
+confidence. Percentages are shares of that type's own members, so they are comparable down a column
+but not additive. A type with a low β, ferredoxin or reductase share is one whose partners are
+usually encoded elsewhere in the genome, not one that works without them.</p>
 {% include "_cluster_table.html" %}
+<p class="note">Substrate and substrate class come from <code>cluster_ecology.csv</code>, curated
+from the literature on each type's reference enzyme; they describe that enzyme, not every member.
+<a href="{{ u('/atlas/evidence') }}">How far the label carries</a> ·
+<a href="{{ u('/download/all_confirmed.csv') }}">Download every entry (CSV)</a></p>
 {% endblock %}

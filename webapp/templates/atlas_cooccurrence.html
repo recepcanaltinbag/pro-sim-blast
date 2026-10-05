@@ -33,7 +33,7 @@ same type may still differ in sequence; the figure is about assignment, not iden
 transcription unit. Two on opposite strands share a genome and a neighbourhood but are transcribed
 separately, so their association is about gene content rather than regulation.</p>
 <figure class="fig">
-<div class="tablewrap"><table class="data compact">
+<div class="tablewrap"><table class="data compact" data-filter="Filter pairs by type or substrate…">
 <thead><tr><th>Type A</th><th>Type B</th><th class="num">Pairs within 10 kb</th>
 <th class="num">Of those, same strand</th><th>Substrates</th></tr></thead>
 <tbody>
@@ -61,7 +61,7 @@ often simply by being common. The test below shuffles type labels across all
 times, while holding two things fixed: how many oxygenases each replicon has, and how many members
 each type has in total. Enrichment above that null is therefore not explained by abundance.</p>
 <figure class="fig">
-<div class="tablewrap"><table class="data compact sortable">
+<div class="tablewrap"><table class="data compact" data-filter="Filter pairs by type or substrate…">
 <thead><tr><th>Type A</th><th>Type B</th><th class="num">Replicons observed</th>
 <th class="num">Expected</th><th class="num">Ratio</th><th class="num">z</th>
 <th class="num">Also neighbours</th><th>Substrates</th></tr></thead>
@@ -96,14 +96,4 @@ Pairs with fewer than five observed replicons are not shown.
 replicons carry more than one type of Rieske oxygenase, so multi-capability genomes are a minority
 but not a rarity.</p>
 
-<script>
-document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
-  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
-  th.dataset.asc = asc ? '1' : '0';
-  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
-    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
-  rows.sort((a, b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
-  rows.forEach(r => tb.appendChild(r));
-}));
-</script>
 {% endblock %}

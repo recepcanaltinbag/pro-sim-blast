@@ -131,7 +131,7 @@ types where naming members after the reference enzyme would be misleading.</figc
 </figure>
 
 <h2>6 · Types dominated by distant members</h2>
-<div class="tablewrap"><table class="data compact sortable">
+<div class="tablewrap"><table class="data compact" data-filter="Filter types by name or substrate…">
 <thead><tr><th>Type</th><th>Reference substrate</th><th class="num">Members</th>
 <th>Evidence composition</th><th class="num">Characterised or close</th></tr></thead>
 <tbody>
@@ -177,13 +177,5 @@ Plotly.newPlot('ev', TIERS.map(t => ({type:'bar', orientation:'h', name:t.replac
    yaxis:{tickfont:{size:10}}, legend:{orientation:'h', y:1.015, font:{size:10}},
    font:{color: dark ? '#e8e6e1' : '#15202b'},
    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
-document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
-  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
-  th.dataset.asc = asc ? '1' : '0';
-  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
-    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
-  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
-  rows.forEach(r => tb.appendChild(r));
-}));
 </script>
 {% endblock %}

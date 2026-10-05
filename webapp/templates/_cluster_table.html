@@ -1,41 +1,47 @@
+{#  Sorting and filtering are provided by static/table.js, included once from
+    base.html. This file used to carry its own copy of the sort routine.
+
+    Facets are limited to what the route actually passes: cluster_table() builds
+    its rows from the database and cluster_ecology.csv, so RO group, substrate
+    class and literature confidence are available here, but chemical family and
+    reaction class are not - they live in chemistry.csv, which this page does
+    not receive.                                                              #}
 <div class="tablewrap">
-<table class="data sortable" id="clusters">
+<table class="data" id="clusters" data-filter="Filter types by name, substrate or genus…">
   <thead><tr>
-    <th>Type</th><th>Group</th><th>Substrate</th><th>Class</th>
-    <th class="num">Members</th><th class="num">Genera</th><th class="num">Variants</th>
-    <th class="num">Plasmid</th><th class="num">β in operon</th><th class="num">Fd</th><th class="num">Red.</th>
-    <th class="num">Eukaryote</th>
+    <th>Type</th>
+    <th class="num" data-facet="RO group">Group</th>
+    <th>Substrate</th>
+    <th data-facet="Substrate class">Class</th>
+    <th data-facet="Confidence">Confidence</th>
+    <th class="num">Members</th>
+    <th class="num">Genera</th>
+    <th class="num">Variants</th>
+    <th class="num">Plasmid<span class="unit">%</span></th>
+    <th class="num">β in operon<span class="unit">%</span></th>
+    <th class="num">Ferredoxin<span class="unit">%</span></th>
+    <th class="num">Reductase<span class="unit">%</span></th>
+    <th class="num">Eukaryotic<span class="unit">%</span></th>
   </tr></thead>
   <tbody>
   {% for c in clusters %}
   <tr>
-    <td><a href="{{ u('/cluster/' ~ c.cluster) }}"><b>{{ c.gene }}</b></a> <span class="muted small">{{ c.cluster }}</span></td>
+    <td><a href="{{ u('/cluster/' ~ c.cluster) }}"><b>{{ c.gene }}</b></a>
+        <span class="note small">{{ c.cluster }}</span></td>
     <td class="num">{{ c.group }}</td>
     <td>{{ c.substrate or '–' }}</td>
-    <td><span class="chip chip--{{ c.sclass }}">{{ c.sclass or '–' }}</span></td>
+    <td><span class="chip chip--{{ c.sclass or 'unknown' }}">{{ c.sclass or 'unknown' }}</span></td>
+    <td>{{ c.confidence or '–' }}</td>
     <td class="num" data-v="{{ c.n }}">{{ c.n|fmt }}</td>
-    <td class="num">{{ c.genera }}</td>
-    <td class="num">{{ c.leaves }}</td>
-    <td class="num">{{ pct(c.plasmid, c.n) }}</td>
-    <td class="num">{{ pct(c.beta or 0, c.n) }}</td>
-    <td class="num">{{ pct(c.ferredoxin or 0, c.n) }}</td>
-    <td class="num">{{ pct(c.reductase or 0, c.n) }}</td>
-    <td class="num">{{ pct(c.euk, c.n) }}</td>
+    <td class="num" data-v="{{ c.genera }}">{{ c.genera|fmt }}</td>
+    <td class="num" data-v="{{ c.leaves }}">{{ c.leaves|fmt }}</td>
+    <td class="num" data-v="{{ 100 * (c.plasmid or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.plasmid or 0) / c.n) if c.n else '–' }}</td>
+    <td class="num" data-v="{{ 100 * (c.beta or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.beta or 0) / c.n) if c.n else '–' }}</td>
+    <td class="num" data-v="{{ 100 * (c.ferredoxin or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.ferredoxin or 0) / c.n) if c.n else '–' }}</td>
+    <td class="num" data-v="{{ 100 * (c.reductase or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.reductase or 0) / c.n) if c.n else '–' }}</td>
+    <td class="num" data-v="{{ 100 * (c.euk or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.euk or 0) / c.n) if c.n else '–' }}</td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
 </div>
-<script>
-document.querySelectorAll('table.sortable th').forEach((th, i) => {
-  th.addEventListener('click', () => {
-    const tb = th.closest('table').tBodies[0];
-    const rows = [...tb.rows];
-    const asc = th.dataset.asc !== '1';
-    th.dataset.asc = asc ? '1' : '0';
-    const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim().replace('%','').replace(/,/g,''); const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
-    rows.sort((a, b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * (asc ? 1 : -1); });
-    rows.forEach(r => tb.appendChild(r));
-  });
-});
-</script>

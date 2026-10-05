@@ -4,12 +4,13 @@
 <nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/clusters') }}">Types</a> › {{ c.cluster }}</nav>
 
 <h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · RO group {{ c.group }}</span></h1>
+<div class="numbered">
 
 {% set tiers = x.tiers %}
 {% set tier_total = tiers.values()|sum if tiers else 0 %}
 {% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}
 <div class="caveat">
-  <b>{{ c.substrate or 'Substrate not established' }}</b>
+  <b>{{ c.substrate or (chem.substrate_en if chem else '') or 'substrate under curation' }}</b>
   {% if c.sclass %}<span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>{% endif %}
   {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
   <br>
@@ -19,6 +20,22 @@
   informative for them; the rest are more distant relatives whose function is unknown.
   {% endif %}
   {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
+  {% if chem and chem.source %}
+  <br><span class="note"><b>Curated from:</b> {{ chem.source }}
+    {%- if chem.source_kind %} ·
+      {% if chem.source_kind == 'general' %}no individual citation was recorded for this type
+      {% elif chem.source_kind == 'paper' %}from a published paper
+      {% elif chem.source_kind == 'structure' %}from a deposited structure
+      {% elif chem.source_kind in ('paper+structure', 'structure+paper') %}from a paper and a deposited structure
+      {% elif chem.source_kind == 'paper+curator' %}from a paper with a curator's judgement
+      {% elif chem.source_kind == 'curator' %}a curator's judgement
+      {% elif chem.source_kind == 'none' %}no source recorded
+      {% else %}{{ chem.source_kind }}{% endif %}
+    {%- endif %}
+    {%- if chem.curation_confidence and chem.curation_confidence != 'high' %} ·
+      <b>curation confidence: {{ chem.curation_confidence }}</b>
+    {%- endif %}</span>
+  {% endif %}
 </div>
 
 {% if chem and chem.reaction_class != 'unknown' %}
@@ -54,6 +71,40 @@
 </figure>
 {% endif %}
 
+{#  Three-dimensional structure of the reference enzyme, where one has been
+    deposited. Seventeen of the 71 curated types have a PDB identifier; the rest
+    render nothing at all. The viewer is progressive enhancement: the box, the
+    identifier, the RCSB link and the caption are plain HTML and remain correct
+    if the CDN is unreachable or scripting is off.                             #}
+{% if chem and chem.pdb %}
+{% set pdb = chem.pdb|upper %}
+<h2>Three-dimensional structure of the reference enzyme</h2>
+<figure class="fig pdbfig">
+  <div class="pdbbar">
+    <span class="pdbbar__id">{{ pdb }}</span>
+    <a href="https://www.rcsb.org/structure/{{ pdb }}" rel="noopener noreferrer" target="_blank">View {{ pdb }} at RCSB PDB</a>
+    <span class="pdbbar__styles" id="pdbstyles" hidden>
+      <button type="button" data-style="cartoon" class="on">Cartoon</button>
+      <button type="button" data-style="chain">By chain</button>
+      <button type="button" data-style="trace">Backbone</button>
+    </span>
+  </div>
+  <div class="pdbwrap">
+    <div class="pdbviewer" id="pdbviewer" data-pdb="{{ pdb }}"></div>
+    <div class="pdbnote" id="pdbnote">
+      Loading structure {{ pdb }} from RCSB PDB…
+    </div>
+  </div>
+  <figcaption><b>This is the structure of the characterised reference enzyme, not of the database
+  entry you are viewing.</b> PDB {{ pdb }} was solved for the enzyme from which this type's
+  substrate assignment comes. None of the {{ c.n|fmt }} members listed on this page has a structure
+  of its own, and no structural information is used anywhere in ROAR-DB: types, variants and
+  catalytic-centre calls are made from sequence alignment only. Treat the fold as context for the
+  reference, and read the evidence table above for how close any given member is to it.
+  Coordinates are fetched from RCSB PDB when the figure loads and are not redistributed here.</figcaption>
+</figure>
+{% endif %}
+
 <div class="cols">
   <div>
     <h3>Key facts</h3>
@@ -64,6 +115,24 @@
       <dt>On plasmids</dt><dd>{{ pct(c.plasmid or 0, c.n) }} ({{ (c.plasmid or 0)|fmt }})</dd>
       <dt>Transposase within 10 kb</dt><dd>{{ pct(x.transposon, c.n) }}</dd>
       <dt>Profile match</dt><dd>mean score {{ '%.0f' % (c.score or 0) }} bits, mean coverage {{ '%.2f' % (c.coverage or 0) }}</dd>
+      {% if x.carboxylate and x.carboxylate.bridging %}
+      {% set bg = x.carboxylate.bridging %}
+      <dt>Bridging carboxylate <span class="note">column {{ bg.column }}</span></dt>
+      <dd>{% if bg.dominant == 'Glu' %}<b>Glu branch.</b> Glutamate in {{ bg.glu|fmt }} of
+          {{ bg.n|fmt }} members ({{ pct(bg.glu, bg.n) }}){% if bg.asp %}, aspartate in
+          {{ bg.asp|fmt }}{% endif %}. Glutamate here marks the quaternary-amine enzymes.
+          {% else %}<b>Asp branch.</b> Aspartate in {{ bg.asp|fmt }} of {{ bg.n|fmt }} members
+          ({{ pct(bg.asp, bg.n) }}){% if bg.glu %}, glutamate in {{ bg.glu|fmt }}
+          ({{ pct(bg.glu, bg.n) }}){% endif %}, as in the ring-hydroxylating majority.{% endif %}</dd>
+      {% endif %}
+      {% if x.carboxylate and x.carboxylate.catalytic_iron %}
+      {% set ci = x.carboxylate.catalytic_iron %}
+      <dt>Catalytic carboxylate <span class="note">column {{ ci.column }}</span></dt>
+      <dd>{{ ci.dominant }} in {{ (ci.asp if ci.dominant == 'Asp' else ci.glu)|fmt }} of
+          {{ ci.n|fmt }} members ({{ pct(ci.asp if ci.dominant == 'Asp' else ci.glu, ci.n) }}){% if ci.other %};
+          {{ ci.other|fmt }} have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site{% endif %}. This site is aspartate across the whole family.</dd>
+      {% endif %}
       <dt>Domains of life</dt><dd>{% for d in c.domains %}{{ d.domain }}{% if d.euk_group %} / {{ d.euk_group }}{% endif %} {{ d.n }}{% if not loop.last %} · {% endif %}{% endfor %}</dd>
       <dt>Phyla</dt><dd class="small">{% for p, n in x.phyla %}{{ p }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</dd>
       <dt>Top genera</dt><dd>{% for g, n in c.top_genera %}<span class="chip">{{ g }} {{ n }}</span> {% endfor %}</dd>
@@ -240,16 +309,21 @@ the characterised enzyme.</p>
 <h2>Variants</h2>
 <p class="note">Members were split recursively until each subgroup reached a median pairwise identity
 target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
-<div class="tablewrap"><table class="data compact">
-  <thead><tr><th>Variant</th><th class="num">Members</th><th class="num">Median identity</th>
-  <th>Dominant genera</th><th>Distinguishing neighbours</th><th class="num">Plasmid</th></tr></thead>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
   <tbody>
   {% for l in c.leaves %}
-  <tr><td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id }}</a>{% if not l.is_homogeneous %} <span class="chip chip--warn">heterogeneous</span>{% endif %}</td>
-    <td class="num">{{ l.size }}</td><td class="num">{{ '%.2f' % l.median_identity }}</td>
+  <tr><td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id }}</a></td>
+    <td class="num" data-v="{{ l.size }}">{{ l.size|fmt }}</td>
+    <td class="num" data-v="{{ l.median_identity }}">{{ '%.2f' % l.median_identity }}</td>
     <td class="small">{{ (l.top_genera or '').replace(';', ', ') }}</td>
-    <td class="small">{{ l.neighbor_signature or '' }}</td>
-    <td class="num">{{ '%.0f %%' % (100 * (l.plasmid_rate or 0)) }}</td></tr>
+    <td class="small">{{ l.neighbor_signature or '–' }}</td>
+    <td class="num" data-v="{{ 100 * (l.plasmid_rate or 0) }}">{{ '%.0f' % (100 * (l.plasmid_rate or 0)) }}</td>
+    <td>{% if l.is_homogeneous %}<span class="chip chip--ok">homogeneous</span>{% else %}<span class="chip chip--warn">heterogeneous</span>{% endif %}</td></tr>
   {% endfor %}
   </tbody>
 </table></div>
@@ -262,6 +336,10 @@ target. A variant is the finest unit at which a distinct function can reasonably
 </form>
 {% endif %}
 {% include "_members.html" %}
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
 <script>
 (function () {
@@ -270,12 +348,105 @@ target. A variant is the finest unit at which a distinct function can reasonably
   const dark = matchMedia('(prefers-color-scheme: dark)').matches;
   const drawer = new SmilesDrawer.SvgDrawer({width: 210, height: 165, bondThickness: 1.1,
     bondLength: 18, terminalCarbons: false, padding: 6});
+  const fallback = function (el) {
+    el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
+    el.remove();
+  };
   els.forEach(function (el) {
     try {
       SmilesDrawer.parse(el.dataset.smiles, t => drawer.draw(t, el, dark ? 'dark' : 'light', false),
-        () => { el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>'); el.remove(); });
-    } catch (e) { el.remove(); }
+        () => fallback(el));
+    } catch (e) { fallback(el); }
   });
 })();
 </script>
+
+{% if chem and chem.pdb %}
+{#  3Dmol.js is loaded with async + onerror so a blocked or slow CDN leaves the
+    static fallback in place instead of an empty grey box.                     #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"
+        onerror="window.__pdbFailed = true;"></script>
+<script>
+(function () {
+  var host = document.getElementById('pdbviewer');
+  var note = document.getElementById('pdbnote');
+  var bar  = document.getElementById('pdbstyles');
+  if (!host || !note) return;
+  var id = host.dataset.pdb;
+  var rcsb = 'https://www.rcsb.org/structure/' + id;
+
+  function fail(why) {
+    note.innerHTML = why + ' <a href="' + rcsb + '" rel="noopener noreferrer" target="_blank">' +
+                     'Open ' + id + ' at RCSB PDB</a> to view it there.';
+    if (bar) bar.hidden = true;
+  }
+
+  if (window.__pdbFailed || typeof $3Dmol === 'undefined') {
+    fail('The interactive viewer could not be loaded.');
+    return;
+  }
+
+  var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  var viewer;
+  try {
+    viewer = $3Dmol.createViewer(host, {
+      backgroundColor: dark ? '#181c22' : '#f4f2ec',
+      antialias: true
+    });
+  } catch (e) {
+    fail('The interactive viewer could not start in this browser.');
+    return;
+  }
+
+  /* If RCSB does not answer, say so rather than leaving "Loading…" forever. */
+  var settled = false;
+  var timer = setTimeout(function () {
+    if (!settled) fail('The structure could not be fetched from RCSB PDB.');
+  }, 15000);
+
+  var styles = {
+    cartoon: { cartoon: { color: 'spectrum' } },
+    chain:   { cartoon: { colorscheme: 'chain' } },
+    trace:   { cartoon: { style: 'trace', color: 'spectrum', thickness: 0.2 } }
+  };
+
+  function applyStyle(name) {
+    viewer.setStyle({}, styles[name] || styles.cartoon);
+    /* keep the two metal centres visible: they are the point of this family */
+    viewer.setStyle({ resn: ['FES', 'SF4', 'FE', 'FE2'] }, { sphere: { scale: 0.45 } });
+    viewer.render();
+  }
+
+  try {
+    $3Dmol.download('pdb:' + id, viewer, {}, function () {
+      settled = true;
+      clearTimeout(timer);
+      try {
+        applyStyle('cartoon');
+        viewer.zoomTo();
+        viewer.render();
+        note.hidden = true;
+        if (bar) {
+          bar.hidden = false;
+          bar.addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-style]');
+            if (!b) return;
+            Array.prototype.forEach.call(bar.querySelectorAll('button'), function (o) {
+              o.classList.toggle('on', o === b);
+            });
+            applyStyle(b.dataset.style);
+          });
+        }
+      } catch (e) {
+        fail('The structure was fetched but could not be drawn.');
+      }
+    });
+  } catch (e) {
+    settled = true;
+    clearTimeout(timer);
+    fail('The structure could not be fetched from RCSB PDB.');
+  }
+})();
+</script>
+{% endif %}
 {% endblock %}

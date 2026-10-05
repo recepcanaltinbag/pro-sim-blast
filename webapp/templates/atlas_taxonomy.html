@@ -10,6 +10,7 @@ contains it. Reading the composition of a type together with the number of disti
 separates two histories: an enzyme inherited vertically within one lineage, and an enzyme that has
 moved between distant hosts.</p>
 
+<h2>1 · Phylum composition of the twelve largest types</h2>
 <figure class="fig">
 <div id="tax" class="chart" style="height:1500px"></div>
 <figcaption><b>Shown.</b> Phylum of each member, as a percentage of the type, for the twelve most
@@ -22,7 +23,7 @@ acquisition. <b>Caveat.</b> Sequenced genomes are heavily biased towards culture
 model soil bacteria, so absence from a phylum is weak evidence.</figcaption>
 </figure>
 
-<h2>Where the enzymes sit in the tree of life</h2>
+<h2>2 · Where the enzymes sit in the tree of life</h2>
 <p class="note">Counts of confirmed entries along the NCBI lineage of the genome that carries them.
 Branches open on click. Crowded nodes show their largest children and state how many taxa and
 entries were left out, so the pruning is visible rather than silent.</p>
@@ -58,13 +59,13 @@ as much as where the enzymes are: isolates from soil and from clinical samples d
 public genome collection.</figcaption>
 </figure>
 
-<h2>Composition table</h2>
+<h2>3 · Phylum composition of every type</h2>
 <p class="note">Eukaryotic Rieske oxygenases are not a contamination artefact: chloroplast enzymes
 such as choline monooxygenase, fungal and animal proteins carry an intact Rieske centre and
 catalytic triad and pass exactly the same test as the bacterial enzymes. Types with a substantial
 eukaryotic share are therefore excluded from the bacterial mobility statistics rather than silently
 mixed in.</p>
-<div class="tablewrap"><table class="data compact sortable">
+<div class="tablewrap"><table class="data compact" data-filter="Filter types by name, substrate or phylum…">
 <thead><tr><th>Type</th><th>Substrate</th><th class="num">Members</th><th class="num">Genera</th>
 <th>Dominant phylum</th><th class="num">Share</th><th class="num">Eukaryotic</th><th>Eukaryotic groups</th></tr></thead>
 <tbody>
@@ -103,13 +104,5 @@ Plotly.newPlot('tax', traces, {barmode:'stack', margin:{l:180,r:10,t:10,b:45},
   xaxis:{title:'share of members (%)', range:[0,100]}, yaxis:{tickfont:{size:10}},
   legend:{orientation:'h', y:1.015, font:{size:10}}, font:{color: dark ? '#e8e6e1' : '#15202b'},
   paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
-document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
-  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
-  th.dataset.asc = asc ? '1' : '0';
-  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
-    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
-  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
-  rows.forEach(r => tb.appendChild(r));
-}));
 </script>
 {% endblock %}

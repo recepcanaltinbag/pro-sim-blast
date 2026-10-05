@@ -1,21 +1,29 @@
+{#  Members are paged on the server (PAGE_SIZE rows per request), so this table
+    deliberately gets no client-side filter: a box that searched only the rows
+    of the current page would look like a search of the whole type and quietly
+    miss most of it. The server-side `q` form above does the real filtering.
+    Column sorting is still useful, because it reorders what is on screen and
+    says so.                                                                  #}
 <div class="tablewrap">
 <table class="data">
   <thead><tr>
     <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
-    <th>Class</th><th class="num">Score</th><th>Operon</th>
+    <th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
   </tr></thead>
   <tbody>
   {% for m in members %}
   <tr>
     <td><a href="{{ u('/ro/' ~ slug(m.candidate_id)) }}">{{ m.protein_id or m.locus_tag or m.candidate_id }}</a>
         {% if m.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
-    <td>{{ m.organism }}</td>
+    <td><i>{{ m.organism }}</i></td>
     <td class="small">{{ m.product }}</td>
     <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ m.ro_cluster.split('_', 2)[-1] }}</a></td>
     <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
-    <td><span class="chip chip--{{ m.assignment_class }}">{{ m.assignment_class or '–' }}</span></td>
-    <td class="num">{{ '%.0f' % m.hmm_score if m.hmm_score else '–' }}</td>
-    <td class="small mono">{{ m.layout or '' }}</td>
+    <td><span class="chip chip--{{ m.assignment_class or 'unknown' }}">{{ m.assignment_class or 'unassigned' }}</span></td>
+    <td class="num" data-v="{{ m.hmm_score or '' }}">{{ '%.0f' % m.hmm_score if m.hmm_score else '–' }}</td>
+    <td class="small mono">{{ m.layout or '–' }}</td>
   </tr>
   {% else %}
   <tr><td colspan="8" class="empty">No entries.</td></tr>
@@ -24,9 +32,9 @@
 </table>
 </div>
 {% if pages > 1 %}
-<nav class="pager">
+<nav class="pager" aria-label="Member pages">
   {% if page > 1 %}<a href="{{ u(request.url.path, page=page-1, q=q) }}">← previous</a>{% endif %}
-  <span>page {{ page }} / {{ pages }} · {{ total|fmt }} entries</span>
+  <span>page {{ page }} of {{ pages }} · {{ total|fmt }} entries</span>
   {% if page < pages %}<a href="{{ u(request.url.path, page=page+1, q=q) }}">next →</a>{% endif %}
 </nav>
 {% endif %}

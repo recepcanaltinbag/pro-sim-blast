@@ -1,15 +1,41 @@
+{#  Twelve atlas pages in one undifferentiated row gave no sense of what the
+    atlas contains. They group into three questions - where the proteins sit in
+    sequence space, what surrounds them in the genome, and how far any of it can
+    be trusted - so the row is labelled accordingly. The groups collapse to a
+    plain wrap on narrow screens.                                             #}
 {% set page = page_id|default('') %}
-<nav class="subnav">
-  <a href="{{ u('/atlas') }}" class="{{ 'on' if page == 'home' }}">Overview</a>
-  <a href="{{ u('/atlas/phylogeny') }}" class="{{ 'on' if page == 'phylogeny' }}">Phylogeny</a>
-  <a href="{{ u('/atlas/network') }}" class="{{ 'on' if page == 'network' }}">Sequence space</a>
-  <a href="{{ u('/atlas/taxonomy') }}" class="{{ 'on' if page == 'taxonomy' }}">Taxonomy</a>
-  <a href="{{ u('/atlas/operons') }}" class="{{ 'on' if page == 'operons' }}">Operons</a>
-  <a href="{{ u('/atlas/regulation') }}" class="{{ 'on' if page == 'regulation' }}">Regulation</a>
-  <a href="{{ u('/atlas/cooccurrence') }}" class="{{ 'on' if page == 'cooccurrence' }}">Co-occurrence</a>
-  <a href="{{ u('/atlas/ecology') }}" class="{{ 'on' if page == 'ecology' }}">Ecology</a>
-  <a href="{{ u('/atlas/evidence') }}" class="{{ 'on' if page == 'evidence' }}">Evidence</a>
-  <a href="{{ u('/atlas/novel') }}" class="{{ 'on' if page == 'novel' }}">Novel candidates</a>
-  <a href="{{ u('/atlas/statistics') }}" class="{{ 'on' if page == 'statistics' }}">Statistics</a>
-  <a href="{{ u('/atlas/quality') }}" class="{{ 'on' if page == 'quality' }}">Data quality</a>
+<nav class="subnav" aria-label="Atlas sections">
+  <a href="{{ u('/atlas') }}" class="{{ 'on' if page == 'home' }}"
+     {% if page == 'home' %}aria-current="page"{% endif %}>Overview</a>
+
+  <span class="subnav__sep" aria-hidden="true"></span>
+  <span class="subnav__group">Sequence</span>
+  <a href="{{ u('/atlas/phylogeny') }}" class="{{ 'on' if page == 'phylogeny' }}"
+     {% if page == 'phylogeny' %}aria-current="page"{% endif %}>Phylogeny</a>
+  <a href="{{ u('/atlas/network') }}" class="{{ 'on' if page == 'network' }}"
+     {% if page == 'network' %}aria-current="page"{% endif %}>Sequence space</a>
+  <a href="{{ u('/atlas/taxonomy') }}" class="{{ 'on' if page == 'taxonomy' }}"
+     {% if page == 'taxonomy' %}aria-current="page"{% endif %}>Taxonomy</a>
+
+  <span class="subnav__sep" aria-hidden="true"></span>
+  <span class="subnav__group">Genomic context</span>
+  <a href="{{ u('/atlas/operons') }}" class="{{ 'on' if page == 'operons' }}"
+     {% if page == 'operons' %}aria-current="page"{% endif %}>Operons</a>
+  <a href="{{ u('/atlas/regulation') }}" class="{{ 'on' if page == 'regulation' }}"
+     {% if page == 'regulation' %}aria-current="page"{% endif %}>Regulation</a>
+  <a href="{{ u('/atlas/cooccurrence') }}" class="{{ 'on' if page == 'cooccurrence' }}"
+     {% if page == 'cooccurrence' %}aria-current="page"{% endif %}>Co-occurrence</a>
+  <a href="{{ u('/atlas/ecology') }}" class="{{ 'on' if page == 'ecology' }}"
+     {% if page == 'ecology' %}aria-current="page"{% endif %}>Ecology</a>
+
+  <span class="subnav__sep" aria-hidden="true"></span>
+  <span class="subnav__group">How far to trust it</span>
+  <a href="{{ u('/atlas/evidence') }}" class="{{ 'on' if page == 'evidence' }}"
+     {% if page == 'evidence' %}aria-current="page"{% endif %}>Evidence</a>
+  <a href="{{ u('/atlas/novel') }}" class="{{ 'on' if page == 'novel' }}"
+     {% if page == 'novel' %}aria-current="page"{% endif %}>Novel candidates</a>
+  <a href="{{ u('/atlas/statistics') }}" class="{{ 'on' if page == 'statistics' }}"
+     {% if page == 'statistics' %}aria-current="page"{% endif %}>Statistics</a>
+  <a href="{{ u('/atlas/quality') }}" class="{{ 'on' if page == 'quality' }}"
+     {% if page == 'quality' %}aria-current="page"{% endif %}>Data quality</a>
 </nav>

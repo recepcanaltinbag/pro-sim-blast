@@ -2,6 +2,8 @@
 {% block title %}Search{% endblock %}
 {% block body %}
 <h1>Search</h1>
+<p class="lede">One query searches entries, organisms, products, identifiers and enzyme types at
+once. Results are entries; matching types are listed separately above them.</p>
 
 <form class="bigsearch" method="get">
   <input type="search" name="q" value="{{ q }}"
@@ -61,8 +63,8 @@ asterisk for a prefix, and OR between alternatives. Example:
 
   <div class="results">
     {% if clusters %}
-    <h2>Enzyme types</h2>
-    <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> — {{ c.substrate or 'substrate not established' }} ({{ c.n }} entries)</li>{% endfor %}</ul>
+    <h2>Enzyme types matching the query</h2>
+    <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> — {{ c.substrate or 'substrate under curation' }} ({{ c.n }} entries)</li>{% endfor %}</ul>
     {% endif %}
     <h2>Entries <span class="note">{{ total|fmt }}</span></h2>
     {% if total %}
@@ -87,7 +89,7 @@ asterisk for a prefix, and OR between alternatives. Example:
     </table>
     </div>
     {% if pages > 1 %}
-    <nav class="pager">
+    <nav class="pager" aria-label="Result pages">
       {% if page > 1 %}<a href="{{ u('/search', q=q, page=page-1, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner=flags.partner, regulator=flags.regulator) }}">previous</a>{% endif %}
       <span>page {{ page }} of {{ pages }}</span>
       {% if page < pages %}<a href="{{ u('/search', q=q, page=page+1, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner=flags.partner, regulator=flags.regulator) }}">next</a>{% endif %}

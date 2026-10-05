@@ -1,11 +1,11 @@
 cluster,substrate,substrate_class,ecology_note,confidence
-1_101_OxoO,unknown,unknown,,low
+1_101_OxoO,"2-oxo-1,2-dihydroquinoline",natural_aromatic,"N-heterocyclic aromatic. Quinoline occurs both as a precursor of plant alkaloids and as a coal-tar component, so this class assignment is not clear-cut.",medium
 1_102_CARDO,carbazole,xenobiotic,N-heterocyclic aromatic; carbazole degradation genes are known to travel on transposons,high
 1_103_CarAa,carbazole,xenobiotic,Alpha subunit of the same carbazole system as CARDO,high
 1_104_VanA,vanillate,natural_aromatic,Lignin-derived; degradation of plant material and a central part of the soil carbon cycle,high
 1_105_DdmC,dicamba,xenobiotic,"Herbicide O-demethylase, but 39 % of this type's members are plant proteins, so the label applies only to the bacterial subgroup",low
 1_106_TsaM,4-toluenesulfonate,xenobiotic,Surfactant and detergent derivative,high
-1_107_CndA,unknown,unknown,,low
+1_107_CndA,"chloroacetanilide herbicides (alachlor, acetochlor, butachlor)",xenobiotic,Chloroacetanilide herbicides; the oxygenase gene sits in a transposable element conserved between the two Sphingomonas strains.,high
 1_108_PobA,4-hydroxybenzoate,natural_aromatic,,medium
 1_109_LigX,"5,5'-dehydrodivanillate",natural_aromatic,Lignin-derived biaryl; part of the Sphingobium lignin pathway,high
 1_110_SxtT,saxitoxin pathway intermediate,natural_specialized,"Cyanobacterial natural product biosynthesis, not degradation",medium
@@ -27,14 +27,14 @@ cluster,substrate,substrate_class,ecology_note,confidence
 2_212_BedC1,benzene,xenobiotic,BTEX compound,high
 2_213_BphA1A2,biphenyl,xenobiotic,Alpha-beta fusion protein,medium
 2_214_TftA,"2,4,5-trichlorophenoxyacetate",xenobiotic,"First step of the 2,4,5-T herbicide pathway",high
-2_215_cadA,unknown,unknown,,low
+2_215_cadA,"2,4-dichlorophenoxyacetate (2,4-D)",xenobiotic,"Phenoxyacetate herbicide oxygenase of Bradyrhizobium sp. HW13. TENTATIVE: the source work discusses both 2,4-D and 2,4,5-T activity, so the preferred substrate is unsettled.",low
 2_216_BPDO,biphenyl,xenobiotic,,high
 2_217_HcaE,3-phenylpropionate,natural_aromatic,Plant-derived phenylpropanoid; the chromosomal hca operon of Escherichia coli,high
 2_218_BphA1,biphenyl,xenobiotic,,high
 3_301_PhnA1a,phenanthrene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_302_DitA,dehydroabietate,natural_specialized,Conifer resin acid; degradation of a plant defence compound,high
 3_303_NBDO,nitrobenzene,xenobiotic,Nitroaromatic,high
-3_304_OMO,unknown,unknown,,low
+3_304_OMO,"2-oxo-1,2-dihydroquinoline",natural_aromatic,Same enzyme as the reference entered as OxoO; see that entry. Class assignment shares its ambiguity.,medium
 3_305_ArhA1,polycyclic aromatic hydrocarbons,xenobiotic,,medium
 3_306_3NTDO,3-nitrotoluene,xenobiotic,Nitroaromatic and explosives residue,high
 3_307_NagGH,naphthalene-2-sulfonate,xenobiotic,Dye industry intermediate,high
@@ -52,10 +52,10 @@ cluster,substrate,substrate_class,ecology_note,confidence
 3_319_PhdA,phenanthrene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_320_NidA3,polycyclic aromatic hydrocarbons,xenobiotic,,medium
 4_401_CmtAb,p-cumate,xenobiotic,,high
-4_402_PsbAb,unknown,unknown,,low
+4_402_PsbAb,4-sulfobenzoate,xenobiotic,"4-sulfobenzoate, a sulfonated aromatic of industrial origin; released sulfite enters sulfur metabolism.",high
 4_403_AtdA,aniline,xenobiotic,Dye and pesticide intermediate,high
 4_404_TdnA1,aniline,xenobiotic,Carried on a TOL-like plasmid,high
-4_405_ROCH34,unknown,unknown,From Cupriavidus metallidurans CH34,low
+4_405_ROCH34,phthalate,xenobiotic,"Phthalate 4,5-dioxygenase of Cupriavidus metallidurans CH34; plasticiser degradation.",high
 4_406_PDO,phthalate,xenobiotic,Plasticiser,high
 4_407_PbaA1,3-phenoxybenzoate,xenobiotic,"Pyrethroid insecticide metabolite; a 3-PBA 1',2'-dioxygenase of RHO type IV",high
 4_408_AntA,anthranilate,natural_aromatic,"Intermediate of tryptophan catabolism, so an endogenous metabolite rather than a pollutant",high
@@ -66,7 +66,7 @@ cluster,substrate,substrate_class,ecology_note,confidence
 5_502_CmoB,choline,natural_specialized,Plant osmolyte biosynthesis,high
 5_503_CmoA,choline,natural_specialized,Plant osmolyte biosynthesis,high
 5_504_CntA,L-carnitine,natural_specialized,"Gut microbiome; carnitine to trimethylamine to TMAO, linked to cardiovascular risk",high
-5_505_OxyA,unknown,unknown,,low
+5_505_OxyA,benzalkonium chloride and other quaternary ammonium compounds,xenobiotic,"Benzalkonium chloride, a synthetic disinfectant. The qxyAR operon travels on IS1380 and Tn3 composite transposons, and N-dealkylation removes the biocidal activity.",high
 5_506_Stc2,stachydrine,natural_specialized,Plant betaine (proline betaine) in the rhizosphere,high
 5_507_BmoA,glycine betaine,natural_specialized,,medium
 5_508_GbcA,glycine betaine,natural_specialized,Osmolyte demethylation; the Pseudomonas gbc pathway,high

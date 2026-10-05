@@ -53,9 +53,12 @@ measures what has been studied rather than what exists.</p>
 <p class="note">Grouped by variant, largest first. Identity is to the nearest curated reference,
 which names the closest relative without implying the same function. Operon columns show
 sequence-verified partners.</p>
-<div class="tablewrap"><table class="data compact">
+{#  Rows are grouped by variant with a rowspan cell, so they must keep their
+    order: sorting is disabled for this table.                               #}
+<div class="tablewrap"><table class="data compact" data-nosort>
 <thead><tr><th>Variant</th><th>Entry</th><th>Organism</th><th>Domain</th>
-<th>Nearest reference</th><th class="num">Identity</th><th>Partners in operon</th><th>Product annotation</th></tr></thead>
+<th>Assigned type</th><th>Nearest reference</th><th class="num">Identity<span class="unit">%</span></th>
+<th>Partners in operon</th><th>Product annotation</th></tr></thead>
 <tbody>
 {% for leaf_id, items in variants %}
 {% for r in items %}
@@ -66,8 +69,13 @@ sequence-verified partners.</p>
       {% if r.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
   <td><i>{{ r.organism }}</i></td>
   <td class="note">{{ r.domain or '–' }}{% if r.euk_group %} / {{ r.euk_group }}{% endif %}</td>
-  <td><a href="{{ u('/cluster/' ~ r.nearest_ref) }}">{{ r.nearest_ref }}</a></td>
-  <td class="num">{{ '%.1f %%' % r.ref_identity }}</td>
+  {#  The type the profile assigned always has a page, because the entry is one
+      of its members. The nearest reference by sequence is a different thing and
+      may be one of the curated references with no confirmed member in this
+      build, which has no page - so it is shown as a label, not a link.      #}
+  <td><a href="{{ u('/cluster/' ~ r.ro_cluster) }}">{{ r.ro_cluster.split('_', 2)[-1] }}</a></td>
+  <td class="mono small">{{ r.nearest_ref }}</td>
+  <td class="num" data-v="{{ r.ref_identity }}">{{ '%.1f' % r.ref_identity }}</td>
   <td class="note">{% if r.has_beta %}beta {% endif %}{% if r.has_ferredoxin %}ferredoxin {% endif %}{% if r.has_reductase %}reductase{% endif %}{% if not (r.has_beta or r.has_ferredoxin or r.has_reductase) %}none detected{% endif %}</td>
   <td class="small">{{ r.product }}</td>
 </tr>
