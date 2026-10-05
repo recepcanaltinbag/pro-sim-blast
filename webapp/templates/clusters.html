@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Clusters{% endblock %}
+{% block body %}
+<h1>Reference RO types</h1>
+<p class="muted">Each confirmed entry is assigned to the reference type whose profile scores highest (bit score, not E-value).
+Click a column header to sort.</p>
+{% include "_cluster_table.html" %}
+{% endblock %}

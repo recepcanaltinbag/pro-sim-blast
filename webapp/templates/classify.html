@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Classify a sequence{% endblock %}
+{% block body %}
+<h1>Classify protein sequences</h1>
+<p class="muted">Paste up to 50 protein sequences (FASTA). Each is searched against the 71 reference RO profiles
+(hmmsearch, best bit score with model coverage ≥ 0.45) and aligned to the catalytic-centre model to check the
+Rieske ligands (C-x-H…C-x-x-H) and the mononuclear-iron triad (His, His, Asp/Glu). This is the same test every
+database entry passed.</p>
+<form method="post">
+  <textarea name="sequences" rows="12" placeholder=">my_protein&#10;MSNQ...">{{ text }}</textarea>
+  <p><button class="btn primary">Classify</button>
+  <button type="button" class="btn" onclick="document.querySelector('textarea').value=EXAMPLE">Load example (NdoB)</button></p>
+</form>
+{% if error %}<p class="callout warn">{{ error }}</p>{% endif %}
+{% if results %}
+<h2>Results</h2>
+<div class="tablewrap">
+<table class="data">
+  <thead><tr><th>Sequence</th><th class="num">Length</th><th>Verdict</th><th>Best type</th><th class="num">Score</th><th class="num">Coverage</th><th>Rieske</th><th>Catalytic</th><th>Other hits</th></tr></thead>
+  <tbody>
+  {% for r in results %}
+  <tr class="{{ 'ok' if r.confirmed else '' }}">
+    <td class="mono">{{ r.name }}</td>
+    <td class="num">{{ r.length }}</td>
+    <td><span class="chip {{ 'chip--ok' if r.confirmed else 'chip--bad' }}">{{ r.verdict }}</span></td>
+    <td>{% if r.cluster %}<a href="{{ u('/cluster/' ~ r.cluster) }}">{{ r.cluster }}</a>{% else %}–{% endif %}</td>
+    <td class="num">{{ '%.1f' % r.score if r.score is not none else '–' }}</td>
+    <td class="num">{{ '%.2f' % r.coverage if r.coverage is not none else '–' }}</td>
+    <td>{{ r.rieske }}</td>
+    <td>{{ r.catalytic }}{% if r.bridging %} <span class="muted small">+bridging Asp</span>{% endif %}
+        {% if r.missing %}<div class="muted small">{{ r.missing }}</div>{% endif %}</td>
+    <td class="small">{% for a in r.alts[1:] %}{{ a[0] }} ({{ '%.0f' % a[1] }}, cov {{ a[2] }}){% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}
+<script>
+const EXAMPLE = `>NdoB_Pseudomonas_putida_NCIB9816 WP_011117400.1
+MNYNNKILVSESGLSQKHLIHGDEELFQHELKTIFARNWLFLTHDSLIPAPGDYVTAKMGIDEVIVSRQNDGSIRAFLNVCRHRGKTLVSVEAGNAKGFVCSYHGWGFGSNGELQSVPFEKDLYGESLNKKCLGLKEVARVESFHGFIYGCFDQEAPPLMDYLGDAAWYLEPMFKHSGGLELVGPPGKVVIKANWKAPAENFVGDAYHVGWTHASSLRSGESIFSSLAGNAALPPEGAGLQMTSKYGSGMGVLWDGYSGVHSADLVPELMAFGGAKQERLNKEIGDVRARIYRSHLNCTVFPNNSMLTCSGVFKVWNPIDANTTEVWTYAIVEKDMPEDLKRRLADSVQRTFGPAGFWESDDNDNMETASQNGKKYQSRDSDLLSNLGFGEDVYGDAVYPGVVGKSAIGETSYRGFYRAYQAHVSSSNWAEFEHASSTWHTELTKTTDR`;
+</script>
+{% endblock %}

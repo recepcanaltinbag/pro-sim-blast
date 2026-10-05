@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block body %}
+<h1>Search</h1>
+<form class="bigsearch" method="get">
+  <input type="search" name="q" value="{{ q }}" placeholder="organism, product, protein ID, locus tag, entry ID or reference type">
+  <button>Search</button>
+</form>
+{% if q %}
+  {% if clusters %}
+  <h2>Reference types</h2>
+  <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> – {{ c.substrate }} ({{ c.n }} members)</li>{% endfor %}</ul>
+  {% endif %}
+  <h2>Entries <span class="muted">({{ total|fmt }})</span></h2>
+  {% include "_members.html" %}
+{% else %}
+<p class="muted">Examples: <a href="{{ u('/search', q='Pseudomonas putida') }}">Pseudomonas putida</a>,
+<a href="{{ u('/search', q='naphthalene') }}">naphthalene</a>, <a href="{{ u('/search', q='WP_011117400.1') }}">WP_011117400.1</a>,
+<a href="{{ u('/search', q='KshA') }}">KshA</a>.</p>
+{% endif %}
+{% endblock %}

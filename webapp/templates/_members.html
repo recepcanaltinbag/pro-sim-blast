@@ -1,0 +1,32 @@
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>Class</th><th class="num">Score</th><th>Operon</th>
+  </tr></thead>
+  <tbody>
+  {% for m in members %}
+  <tr>
+    <td><a href="{{ u('/ro/' ~ slug(m.candidate_id)) }}">{{ m.protein_id or m.locus_tag or m.candidate_id }}</a>
+        {% if m.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
+    <td>{{ m.organism }}</td>
+    <td class="small">{{ m.product }}</td>
+    <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ m.ro_cluster.split('_', 2)[-1] }}</a></td>
+    <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
+    <td><span class="chip chip--{{ m.assignment_class }}">{{ m.assignment_class or '–' }}</span></td>
+    <td class="num">{{ '%.0f' % m.hmm_score if m.hmm_score else '–' }}</td>
+    <td class="small mono">{{ m.layout or '' }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="8" class="empty">No entries.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% if pages > 1 %}
+<nav class="pager">
+  {% if page > 1 %}<a href="{{ u(request.url.path, page=page-1, q=q) }}">← previous</a>{% endif %}
+  <span>page {{ page }} / {{ pages }} · {{ total|fmt }} entries</span>
+  {% if page < pages %}<a href="{{ u(request.url.path, page=page+1, q=q) }}">next →</a>{% endif %}
+</nav>
+{% endif %}

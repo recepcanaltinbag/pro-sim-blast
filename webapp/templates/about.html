@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Methods{% endblock %}
+{% block body %}
+<h1>Methods</h1>
+
+<h2>1. What counts as a Rieske oxygenase alpha subunit</h2>
+<p>Rieske-domain proteins (Pfam PF00355) include many proteins that are <em>not</em> oxygenases:
+ferredoxins, cytochrome <i>bc</i><sub>1</sub>/<i>b</i><sub>6</sub><i>f</i> iron–sulfur proteins, NirD and others.
+An E-value threshold cannot separate them, because their Rieske domains are genuinely homologous.
+ROAR-DB therefore requires the full architecture:</p>
+<ol>
+  <li><b>Profile coverage.</b> 71 experimentally characterised RO alpha subunits were curated from the literature
+    (two originally included sequences, IsoMO and CdnD, were removed because they lack the Rieske centre or the catalytic domain).
+    Each seeds a profile HMM built from its close homologues. A protein must cover ≥ 45 % of the best-scoring model
+    (calibrated on 2,788 full-length alphas and 1,570 known non-alphas: 99.8 % sensitivity, 95.8 % rejection).</li>
+  <li><b>Catalytic-centre residues.</b> The protein is aligned to a 71-reference motif model and checked at fixed columns
+    for the four Rieske ligands (Cys-X-His … Cys-X-X-His, all required) and the mononuclear-iron 2-His-1-carboxylate triad
+    (≥ 2 of 3 within ±2 columns).</li>
+  <li><b>Type assignment.</b> The reference model with the highest bit score gives the reference type (cluster); the first
+    digit of the model name is the historical RO group.</li>
+</ol>
+
+<h2>2. Genomic context</h2>
+<p>Every GenBank record was scanned directly for CDS translations carrying the Rieske ligand signature, candidates were
+tested as above, and all CDS within ±10 kb were stored with strand, signed distance and gene offset
+(origin-spanning genes on circular replicons are handled). Neighbour products are categorised by keyword
+(regulator, transposon, β subunit, ferredoxin, reductase, transporter, ring cleavage …) and regulator families are recorded separately.</p>
+
+<h2>3. Operons</h2>
+<p>Annotation text is unreliable for operon components (many are "hypothetical protein"). The neighbour <em>protein sequences</em>
+are therefore searched with Pfam models: Ring_hydroxyl_B (β subunit), Fer2 / Rieske / Rieske_2 (ferredoxin, ≤ 250 aa),
+NAD_binding_1 / FAD_binding_6 / FAD_binding_8 / Pyr_redox_2 / Pyr_redox_dim (FNR- and GR-type reductases).
+An operon is the run of same-strand genes around the alpha subunit with intergenic gaps ≤ 150 bp.
+Component presence is reported both inside the operon and anywhere within ±10 kb.</p>
+
+<h2>4. Variants and novelty</h2>
+<p>Within each reference type, members were split recursively (CD-HIT at decreasing identity) until leaves reached a
+median pairwise identity target; leaves are reported as variants with their genus composition and distinguishing neighbours.
+Each member's identity to its nearest reference sequence gives an assignment class: <b>core</b>, <b>divergent</b>, or
+<b>novel_candidate</b> (confidently an RO alpha, but far from every reference type).</p>
+
+<h2>5. Current content</h2>
+<ul>
+  <li>{{ totals.candidates|fmt }} candidates tested, {{ totals.confirmed|fmt }} confirmed RO alpha entries</li>
+  <li>{{ totals.clusters|fmt }} reference types, {{ totals.leaves|fmt }} variants</li>
+  <li>{{ totals.replicons|fmt }} annotated replicons scanned, {{ totals.genomes_with_ro|fmt }} with at least one RO</li>
+</ul>
+
+<h2>6. Known limits</h2>
+<ul>
+  <li>Substrate labels are per reference type and come from the literature for the reference enzyme; members of a type may act on different substrates.</li>
+  <li>Operon prediction uses a simple distance rule; it does not model promoters or terminators.</li>
+  <li>Contig ends truncate neighbourhoods; entries on short contigs may appear to lack components.</li>
+  <li>Entries that share an identical RefSeq protein (WP_ accession) across genomes are kept as separate genomic entries.</li>
+</ul>
+
+<h2>7. Programmatic access</h2>
+<pre class="seq">GET  /api/stats
+GET  /api/clusters
+GET  /api/cluster/{cluster}
+GET  /api/ro/{entry-slug}            (slug: replace ':' with '_' in the entry ID)
+GET  /api/search?q=...&amp;page=1
+POST /api/classify                   (body: FASTA text, or JSON {"sequences": "..."})</pre>
+{% endblock %}

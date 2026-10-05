@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}ROAR-DB{% endblock %} · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<link rel="stylesheet" href="{{ u('/static/style.css') }}">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="{{ u('/') }}"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav>
+    <a href="{{ u('/clusters') }}">Clusters</a>
+    <a href="{{ u('/search') }}">Search</a>
+    {% if not static_mode %}<a href="{{ u('/classify') }}">Classify a sequence</a>{% endif %}
+    <a href="{{ u('/about') }}">Methods</a>
+    {% if not static_mode %}<a href="{{ u('/api/docs') }}">API</a>{% endif %}
+  </nav>
+  {% if not static_mode %}
+  <form class="qs" action="{{ u('/search') }}" method="get">
+    <input type="search" name="q" placeholder="organism, product, protein ID, cluster…" value="{{ q or '' }}">
+    <button>Go</button>
+  </form>
+  {% endif %}
+</header>
+<main>
+{% block body %}{% endblock %}
+</main>
+<footer>
+  ROAR-DB · Rieske Oxygenase Annotation Resource · built from RefSeq/GenBank records with HMMER profile models of 71 curated reference ROs.
+  Data are provided as-is for research use.
+</footer>
+</body>
+</html>

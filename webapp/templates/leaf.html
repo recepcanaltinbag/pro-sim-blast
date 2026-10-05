@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Variant {{ leaf.leaf_id }}{% endblock %}
+{% block body %}
+<nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/cluster/' ~ leaf.cluster) }}">{{ c.gene }}</a> › variant {{ leaf.leaf_id.split('#')[-1] }}</nav>
+<h1>Variant {{ leaf.leaf_id }}</h1>
+<dl class="kv">
+  <dt>Reference type</dt><dd><a href="{{ u('/cluster/' ~ leaf.cluster) }}">{{ leaf.cluster }}</a></dd>
+  <dt>Label</dt><dd>{{ leaf.label or '–' }}</dd>
+  <dt>Size</dt><dd>{{ leaf.size }} members, {{ leaf.genus_n or '?' }} genera · split depth {{ leaf.depth }}</dd>
+  <dt>Median identity</dt><dd>{{ '%.3f' % leaf.median_identity }} {% if not leaf.is_homogeneous %}<span class="chip chip--warn">did not reach homogeneity target</span>{% endif %}</dd>
+  <dt>Top genera</dt><dd>{{ (leaf.top_genera or '').replace(';', ', ') }}</dd>
+  <dt>Signature neighbours</dt><dd>{{ leaf.neighbor_signature or '–' }}</dd>
+  <dt>Enriched categories</dt><dd>{{ leaf.enriched_categories or '–' }}</dd>
+  <dt>Plasmid / transposon rate</dt><dd>{{ '%.0f%%' % (100 * (leaf.plasmid_rate or 0)) }} / {{ '%.0f%%' % (100 * (leaf.transposon_rate or 0)) }}</dd>
+  <dt>Representative</dt><dd><a href="{{ u('/ro/' ~ slug(leaf.representative)) }}">{{ leaf.representative }}</a></dd>
+</dl>
+<p class="dl"><a class="btn" href="{{ u('/download/leaf/' ~ leaf_slug(leaf.leaf_id) ~ '.fasta') }}">⬇ FASTA of members</a></p>
+<h2>Members</h2>
+{% set q = '' %}
+{% include "_members.html" %}
+{% endblock %}

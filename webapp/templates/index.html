@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<section class="hero">
+  <h1>Rieske oxygenase alpha subunits, with their genomic neighbourhoods</h1>
+  <p class="lede">
+    Every entry is a protein found in a GenBank record that passed two independent tests:
+    profile-HMM coverage of a full-length RO alpha model and the presence of the
+    Rieske [2Fe-2S] ligands plus the mononuclear-iron catalytic triad at the aligned positions.
+    For each one the ±10 kb neighbourhood is stored, operon structure is inferred from
+    neighbour protein sequences (Pfam models for beta subunit, ferredoxin and reductase),
+    and the entry is assigned to one of the reference RO types and to a sequence-homogeneous variant.
+  </p>
+  {% if not static_mode %}
+  <form class="bigsearch" action="{{ u('/search') }}" method="get">
+    <input type="search" name="q" placeholder="Search by organism, product, protein ID, locus tag or cluster name">
+    <button>Search</button>
+  </form>
+  {% endif %}
+</section>
+
+<section class="tiles">
+  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed RO alpha entries</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">reference RO types</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence-homogeneous variants</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">replicons with an RO</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.neighbors|fmt }}</div><div class="tile__l">neighbouring genes recorded</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.operon_any|fmt }}</div><div class="tile__l">operons with β / ferredoxin / reductase</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.plasmid|fmt }}</div><div class="tile__l">entries on plasmids</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.novel|fmt }}</div><div class="tile__l">novel-type candidates</div></div>
+</section>
+
+<section>
+  <h2>Reference RO types</h2>
+  <p class="muted">Sorted by number of confirmed members. Operon columns count members whose
+    same-strand gene run (gap ≤ 150 bp) contains a sequence-verified component.</p>
+  {% include "_cluster_table.html" %}
+</section>
+
+<section class="dl">
+  <h2>Downloads</h2>
+  <ul>
+    <li><a href="{{ u('/download/all_confirmed.fasta') }}">All confirmed RO alpha sequences (FASTA)</a></li>
+    <li><a href="{{ u('/download/all_confirmed.csv') }}">All confirmed entries with annotation (CSV)</a></li>
+    <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
+  </ul>
+</section>
+{% endblock %}

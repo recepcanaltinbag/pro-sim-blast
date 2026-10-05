@@ -29,4 +29,50 @@ protein-matching-PF00355.tsv
 /heatmaps/
 /out_Relative_Infov2/
 /sankey_outputs
+/Filtered_Proteins
 /trees
+# --- yeniden kurulan pipeline uretilen ciktilari ---
+/genomic_context/
+/analysis_out/
+/ROs_71_Clean/refs71_aln.sto
+roar.sqlite
+roar.sqlite-*
+RieskeDB71.hmm
+ro_domtbl.out
+ro_alpha.csv
+ro_alpha.fasta
+ro_not_alpha.csv
+ro_fragment.csv
+ro_filter_run.log
+genomic_context_run.log
+annotate_run.log
+null_model_run.log
+variants_run.log
+subfam_run.log
+recursive_run.log
+report.html
+explorer.html
+hub.html
+# stray analiz PDF/PNG'leri
+[0-9]*.pdf
+[0-9]*violin*.pdf
+scatter_*.pdf
+scatter_*.png
+violin*.pdf
+boxplot_*.pdf
+
+# operon adimi / web
+/operon_work/
+component_hmms/*.h3*
+/webapp/site/
+/webapp/__pycache__/
+*_run.log
+rerun_done.flag
+docker_build.log
+
+# buyuk ara ciktilar
+RieskeDB.hmm.h3*
+RieskeDB71.hmm.h3*
+Enzyme_Regulator_summary*.csv
+Per_File_Diversity_Values*.csv
+/Proteins_ROs_alphaSubUnitsY/
