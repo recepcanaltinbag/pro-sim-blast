@@ -19,11 +19,23 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
    kendi alt-ailesinin cekirdegi oldugu halde hicbir referansa yakin degil).
    Adaylarin %33'u okaryot.
 
-4. **Aramayi guclendir.** SQLite FTS5 indeksi (organizma, urun, protein_id,
-   locus_tag, kume, substrat) + tip/varyant/kanit duzeyi filtreleri.
+4. ~~Aramayi guclendir.~~ **BITTI.** `build_search_index.py` → FTS5 (`ro_fts`)
+   + filtre tablosu (`ro_search`). Sunucuda ve statik sitede ayni yuzeyler:
+   kanit duzeyi, yasam alani, kimyasal aile, tip, plazmit, operon ortagi,
+   divergent duzenleyici. Cok kelimeli sorgu, tirnakli ifade ve onek (`naphth*`)
+   destekleniyor; sonuclar bm25 ile siraliniyor.
 
 5. **Hugging Face Space** (tam uygulama + dizi siniflandirici). `webapp/Dockerfile`
    hazir ve test edildi; kullanicinin HF hesabi gerekiyor.
+
+## Sirada
+
+6. **Operon tamligini yapisal olarak dogrula.** Simdilik ortaklar Pfam ile
+   bulunuyor; beta alt biriminin gercekten ayni operonda olup olmadigini
+   transkripsiyon verisi olmadan soyleyemiyoruz. En azindan ortak gen mesafesi
+   dagilimi ile rastgele beklentiyi karsilastiran bir test eklenebilir.
+7. **Tip sayfalarina reaksiyon semasi.** chemistry.csv'de substrat ve urun var;
+   SMILES'ten substrat → urun oku ile kucuk bir reaksiyon cizimi eklenebilir.
 
 ## Acik sorular (kullaniciya)
 

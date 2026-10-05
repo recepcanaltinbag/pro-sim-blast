@@ -2,20 +2,114 @@
 {% block title %}Search{% endblock %}
 {% block body %}
 <h1>Search</h1>
+
 <form class="bigsearch" method="get">
-  <input type="search" name="q" value="{{ q }}" placeholder="organism, product, protein ID, locus tag, entry ID or reference type">
+  <input type="search" name="q" value="{{ q }}"
+         placeholder="organism, product, protein identifier, locus tag, enzyme type or substrate">
+  {% for k, v in filters.items() if v %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+  {% for k, v in flags.items() if v %}<input type="hidden" name="{{ k }}" value="1">{% endfor %}
   <button>Search</button>
 </form>
-{% if q %}
-  {% if clusters %}
-  <h2>Reference types</h2>
-  <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> – {{ c.substrate }} ({{ c.n }} members)</li>{% endfor %}</ul>
-  {% endif %}
-  <h2>Entries <span class="muted">({{ total|fmt }})</span></h2>
-  {% include "_members.html" %}
+<p class="note">Several words are combined with AND. Use quotes for an exact phrase, a trailing
+asterisk for a prefix, and OR between alternatives. Example:
+<a href="{{ u('/search', q='Mycobacterium steroid') }}">Mycobacterium steroid</a>,
+<a href="{{ u('/search', q='\"glycine betaine\"') }}">"glycine betaine"</a>,
+<a href="{{ u('/search', q='naphthalene OR phenanthrene') }}">naphthalene OR phenanthrene</a>.</p>
+
+{% if active %}
+<p class="note">Active filters:
+{% for k, v in active.items() %}<span class="chip">{{ k.replace('_', ' ') }}{{ ': ' ~ v if v != '1' else '' }}</span> {% endfor %}
+<a href="{{ u('/search', q=q) }}">clear all</a></p>
+{% endif %}
+
+{% if q or active %}
+<div class="searchlayout">
+  <aside class="facets">
+    {% for field, label in [('tier','Evidence level'), ('domain','Domain of life'),
+                            ('family','Chemical family'), ('cluster','Enzyme type')] %}
+    {% if facets.get(field) %}
+    <div class="facet">
+      <h3>{{ label }}</h3>
+      <ul>
+      {% for row in facets[field] %}
+        <li>
+          {% if filters.get(field) == row.v %}
+          <b>{{ row.v }}</b> <span class="note">{{ row.n|fmt }}</span>
+          {% else %}
+          <a href="{{ u('/search', q=q, tier=filters.tier if field != 'tier' else row.v,
+                        domain=filters.domain if field != 'domain' else row.v,
+                        family=filters.family if field != 'family' else row.v,
+                        cluster=filters.cluster if field != 'cluster' else row.v,
+                        plasmid=flags.plasmid, partner=flags.partner, regulator=flags.regulator) }}">{{ row.v }}</a>
+          <span class="note">{{ row.n|fmt }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="facet">
+      <h3>Genomic context</h3>
+      <ul>
+        <li><a href="{{ u('/search', q=q, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid='' if flags.plasmid else '1', partner=flags.partner, regulator=flags.regulator) }}">{{ 'remove' if flags.plasmid else 'only' }} on a plasmid</a></li>
+        <li><a href="{{ u('/search', q=q, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner='' if flags.partner else '1', regulator=flags.regulator) }}">{{ 'remove' if flags.partner else 'only' }} with a verified operon partner</a></li>
+        <li><a href="{{ u('/search', q=q, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner=flags.partner, regulator='' if flags.regulator else '1') }}">{{ 'remove' if flags.regulator else 'only' }} with a divergent regulator</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="results">
+    {% if clusters %}
+    <h2>Enzyme types</h2>
+    <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> — {{ c.substrate or 'substrate not established' }} ({{ c.n }} entries)</li>{% endfor %}</ul>
+    {% endif %}
+    <h2>Entries <span class="note">{{ total|fmt }}</span></h2>
+    {% if total %}
+    <div class="tablewrap">
+    <table class="data">
+      <thead><tr><th>Entry</th><th>Organism</th><th>Product</th><th>Type</th>
+      <th>Evidence</th><th>Variant</th><th>Operon</th></tr></thead>
+      <tbody>
+      {% for m in members %}
+      <tr>
+        <td><a href="{{ u('/ro/' ~ slug(m.candidate_id)) }}">{{ m.protein_id or m.locus_tag or m.candidate_id }}</a>
+            {% if m.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
+        <td><i>{{ m.organism }}</i>{% if m.domain and m.domain != 'Bacteria' %} <span class="chip">{{ m.domain }}</span>{% endif %}</td>
+        <td class="small">{{ m.product }}</td>
+        <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ m.ro_cluster.split('_', 2)[-1] }}</a></td>
+        <td>{% if m.tier %}<span class="chip" style="background:{{ TIER_COLORS[m.tier] }};color:#fff;border:0">{{ m.tier.replace('_',' ') }}</span>{% endif %}</td>
+        <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
+        <td class="small mono">{{ m.layout or '' }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% if pages > 1 %}
+    <nav class="pager">
+      {% if page > 1 %}<a href="{{ u('/search', q=q, page=page-1, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner=flags.partner, regulator=flags.regulator) }}">previous</a>{% endif %}
+      <span>page {{ page }} of {{ pages }}</span>
+      {% if page < pages %}<a href="{{ u('/search', q=q, page=page+1, tier=filters.tier, domain=filters.domain, family=filters.family, cluster=filters.cluster, plasmid=flags.plasmid, partner=flags.partner, regulator=flags.regulator) }}">next</a>{% endif %}
+    </nav>
+    {% endif %}
+    {% else %}
+    <p class="note">No entry matches. Try fewer words, a prefix such as <code>naphth*</code>, or
+    remove a filter.</p>
+    {% endif %}
+  </div>
+</div>
 {% else %}
-<p class="muted">Examples: <a href="{{ u('/search', q='Pseudomonas putida') }}">Pseudomonas putida</a>,
-<a href="{{ u('/search', q='naphthalene') }}">naphthalene</a>, <a href="{{ u('/search', q='WP_011117400.1') }}">WP_011117400.1</a>,
-<a href="{{ u('/search', q='KshA') }}">KshA</a>.</p>
+<h2>Start from a question</h2>
+<div class="cards">
+  <a class="card" href="{{ u('/search', tier='novel') }}"><h3>What is unexplained?</h3>
+    <p>Entries with no close characterised relative.</p></a>
+  <a class="card" href="{{ u('/search', domain='Eukaryota') }}"><h3>Which are eukaryotic?</h3>
+    <p>Plant, fungal and animal Rieske oxygenases.</p></a>
+  <a class="card" href="{{ u('/search', plasmid='1', partner='1') }}"><h3>Mobile complete operons</h3>
+    <p>Plasmid-borne entries whose operon carries a verified partner.</p></a>
+  <a class="card" href="{{ u('/search', family='quaternary_amines') }}"><h3>Non-aromatic substrates</h3>
+    <p>Enzymes acting on choline, betaines and carnitine.</p></a>
+</div>
 {% endif %}
 {% endblock %}

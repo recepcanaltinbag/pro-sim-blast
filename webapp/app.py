@@ -482,17 +482,106 @@ def ro_page(request: Request, ro_slug: str):
 
 
 # ------------------------------------------------------------------ search
+FACETS = [("tier", "Evidence level"), ("domain", "Domain of life"),
+          ("family", "Chemical family"), ("cluster", "Enzyme type")]
+FLAGS = [("plasmid", "is_plasmid", "on a plasmid"),
+         ("partner", "has_partner", "operon partner verified"),
+         ("regulator", "has_regulator", "divergent regulator upstream")]
+
+
+def fts_expression(text):
+    """Turn user input into a safe FTS5 expression.
+
+    Raw input is tried first so that power users keep AND / OR / NEAR and prefix
+    search. If SQLite rejects it, every token is quoted instead, which can never
+    be a syntax error.
+    """
+    tokens = [t for t in re.split(r"[^\w*]+", text) if t]
+    fallback = " ".join('"%s"' % t.replace('"', "") for t in tokens)
+    return text.strip(), fallback
+
+
+def search_query(con, q, filters, flags, page=1, size=PAGE_SIZE):
+    """Full-text search with facet filters. Returns (total, rows, facet_counts)."""
+    where, params = [], []
+    for field, _ in FACETS:
+        value = filters.get(field)
+        if value:
+            where.append(f"s.{field} = ?")
+            params.append(value)
+    for name, column, _ in FLAGS:
+        if flags.get(name):
+            where.append(f"s.{column} = 1")
+    clause = (" AND " + " AND ".join(where)) if where else ""
+
+    text_query = bool(q and q.strip() and q.strip() != "*")
+    joins = ("FROM ro_fts f JOIN ro_search s ON s.rowid = f.rowid "
+             if text_query else "FROM ro_search s ") + (
+        "JOIN ro r ON r.candidate_id = s.candidate_id "
+        "LEFT JOIN ro_subfamily rs ON rs.candidate_id = s.candidate_id "
+        "LEFT JOIN operon o ON o.candidate_id = s.candidate_id")
+    cond = ("WHERE ro_fts MATCH ?" + clause) if text_query else (
+        ("WHERE " + " AND ".join(where)) if where else "")
+    order = "ORDER BY bm25(ro_fts)" if text_query else "ORDER BY s.organism, s.candidate_id"
+
+    def run(expr):
+        head = ([expr] + params) if text_query else list(params)
+        total = con.execute(f"SELECT COUNT(*) {joins} {cond}", head).fetchone()[0]
+        rows = con.execute(f"""
+            SELECT s.candidate_id, s.protein_id, s.organism, s.product, s.cluster ro_cluster,
+                   s.leaf_id, s.tier, s.domain, s.is_plasmid, s.family,
+                   r.locus_tag, r.hmm_score, r.model_coverage,
+                   rs.assignment_class, rs.core_identity, o.completeness, o.layout
+            {joins} {cond} {order} LIMIT ? OFFSET ?""",
+            head + [size, (page - 1) * size]).fetchall()
+        facets = {}
+        for field, _ in FACETS:
+            glue = "AND" if cond else "WHERE"
+            facets[field] = con.execute(
+                f"SELECT s.{field} v, COUNT(*) n {joins} {cond} "
+                f"{glue} s.{field} IS NOT NULL AND s.{field} != '' "
+                f"GROUP BY 1 ORDER BY n DESC LIMIT 12", head).fetchall()
+        return total, rows, facets
+
+    raw, fallback = fts_expression(q)
+    try:
+        return run(raw)
+    except sqlite3.OperationalError:
+        if not fallback:
+            return 0, [], {}
+        try:
+            return run(fallback)
+        except sqlite3.OperationalError:
+            return 0, [], {}
+
+
 @app.get("/search", response_class=HTMLResponse)
-def search(request: Request, q: str = "", page: int = 1):
+def search(request: Request, q: str = "", page: int = 1, tier: Optional[str] = None,
+           domain: Optional[str] = None, family: Optional[str] = None,
+           cluster: Optional[str] = None, plasmid: Optional[str] = None,
+           partner: Optional[str] = None, regulator: Optional[str] = None):
     con = connect()
     try:
-        q = q.strip()
-        total, rows = (0, []) if not q else members_query(con, q=q, page=page)
+        q = (q or "").strip()
+        filters = {"tier": tier, "domain": domain, "family": family, "cluster": cluster}
+        flags = {"plasmid": plasmid, "partner": partner, "regulator": regulator}
+        active = {k: v for k, v in filters.items() if v}
+        active.update({k: "1" for k, v in flags.items() if v})
+        if not q and not active:
+            return render(request, "search.html", q="", members=[], total=0, page=1, pages=0,
+                          clusters=[], facets={}, filters=filters, flags=flags, active=active)
+        if not atlas.table_exists(con, "ro_fts"):
+            total, rows = members_query(con, q=q, page=page)
+            return render(request, "search.html", q=q, members=rows, total=total, page=page,
+                          pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, clusters=[], facets={},
+                          filters=filters, flags=flags, active=active)
+        total, rows, facets = search_query(con, q, filters, flags, page)
         clusters = [c for c in cluster_table(con)
                     if q and (q.lower() in c["cluster"].lower()
                               or q.lower() in (c["substrate"] or "").lower())] if q else []
         return render(request, "search.html", q=q, members=rows, total=total, page=page,
-                      pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, clusters=clusters)
+                      pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, clusters=clusters,
+                      facets=facets, filters=filters, flags=flags, active=active)
     finally:
         con.close()
 

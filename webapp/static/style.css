@@ -186,3 +186,14 @@ table.sdp td, table.sdp th { font-family: ui-monospace, Menlo, Consolas, monospa
 table.sdp td.diff { background: rgba(140,47,34,.14); font-weight: 700; color: var(--accent-ink); }
 table.sdp thead tr:nth-child(2) th { border-bottom: 2px solid var(--rule); }
 table.sdp sup { font-size: .7em; color: var(--accent-ink); }
+
+/* faceted search */
+.searchlayout { display: grid; grid-template-columns: 230px 1fr; gap: 22px; align-items: start; }
+.facets { position: sticky; top: 10px; }
+.facet { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px;
+         padding: 8px 12px 10px; margin-bottom: 10px; }
+.facet h3 { margin: .3em 0 .35em; font-size: .85rem; text-transform: uppercase;
+            letter-spacing: .04em; color: var(--dim); font-family: inherit; }
+.facet ul { list-style: none; margin: 0; padding: 0; }
+.facet li { font-size: .86rem; padding: 1px 0; display: flex; justify-content: space-between; gap: 8px; }
+@media (max-width: 760px) { .searchlayout { grid-template-columns: 1fr; } .facets { position: static; } }

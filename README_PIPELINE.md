@@ -50,6 +50,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 13 | `analyze_ecology.py` | substrat sınıfı × mobilite hipotez testi |
 | 12b | `variant_signature.py` | varyantlari ayiran hizalama kolonlari → `cluster_sdp`, `leaf_sdp` |
 | 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
+| 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
 | 14 | `make_report.py` / `make_explorer.py` / `make_hub.py` | üç HTML sayfa |
@@ -171,6 +172,15 @@ DNA yok, yalnizca komsu protein cevirileri var.
 hizalanir, >%50 bosluklu kolonlar atilir (426 → 350 kolon), FastTree ile agac
 kurulur. Ayrica diamond all-vs-all ile SSN (30.935 kenar ≥%30) ve kume×kume
 en yuksek temsilci kimligi matrisi uretilir. 44 kume icin ayri agac.
+
+## Arama (adim 12d)
+
+Eski arama bes alanda `LIKE '%...%'` yapiyordu: kelime siniri yok, siralama yok,
+iki kelime yazinca hic sonuc yok. Simdi her dogrulanmis RO icin tek bir arama
+belgesi (`ro_search.doc`) kurulur ve FTS5 ile indekslenir; sonuclar bm25 ile
+siralanir. Filtre alanlari ayni tabloda: kanit duzeyi, yasam alani, kimyasal
+aile, tip, plazmit, operon ortagi, divergent duzenleyici.
+Statik sitede ayni filtreler tarayicida calisir (`search_index.json`, 2,3 MB).
 
 ## Web uygulaması
 
