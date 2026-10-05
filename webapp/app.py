@@ -17,6 +17,7 @@ Environment:
 """
 
 import csv
+import datetime as _dt
 import io
 import os
 import re
@@ -117,7 +118,26 @@ def pct(a, b):
     return f"{100.0 * a / b:.1f}%" if b else "–"
 
 
-templates.env.globals.update(u=u, slug=slug, leaf_slug=leaf_slug, fmt=fmt, pct=pct)
+def build_info():
+    """Sayfa altinda gosterilen surum bilgisi: commit, tarih, icerik sayilari.
+
+    Bilimsel bir kaynakta "hangi surumu kullandim" sorusu cevaplanabilir olmali;
+    statik site de sunucu da ayni bilgiyi basar.
+    """
+    info = {"commit": None, "commit_date": None,
+            "built": _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d")}
+    try:
+        out = subprocess.run(["git", "-C", PARENT, "log", "-1", "--format=%h|%cs"],
+                             capture_output=True, text=True, timeout=10)
+        if out.returncode == 0 and "|" in out.stdout:
+            info["commit"], info["commit_date"] = out.stdout.strip().split("|", 1)
+    except (subprocess.SubprocessError, OSError):
+        pass
+    return info
+
+
+BUILD = build_info()
+templates.env.globals.update(u=u, slug=slug, leaf_slug=leaf_slug, fmt=fmt, pct=pct, build=BUILD)
 templates.env.filters["fmt"] = fmt
 
 
@@ -1082,7 +1102,8 @@ def atlas_evidence(request: Request):
             "n_diff_over_60": sum(1 for p in diff if float(p["identity"]) >= 60),
             "n_diff": len(diff), "n_same": len(same)}
         return render(request, "atlas_evidence.html", over=over, tot=tot, mism=mism,
-                      sweep=sweep, calib=calib)
+                      sweep=sweep, calib=calib,
+                      pred=atlas.read_json(apath("substrate_predictability.json")))
     finally:
         con.close()
 
@@ -1203,7 +1224,7 @@ def dl_analysis(name: str):
                "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-               "redundancy.json", "cooccurrence.json",
+               "redundancy.json", "cooccurrence.json", "substrate_predictability.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")

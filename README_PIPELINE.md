@@ -53,6 +53,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12c2 | `operon_validation.py` | operon kuralinin sinanmasi + esik duyarliligi → `operon_validation.json` |
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
+| 12c5 | `substrate_predictability.py` | kimlik → substrat ongorusunun ROC/kesinlik olcumu → `substrate_predictability.json` |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
@@ -230,6 +231,30 @@ genomik baglam bu veritabaninin asil konusudur. Onun yerine `stats_overview.py`
 her ikili testi **uc duzeyde** kosar: giris basina, tekil dizi basina, tip×cins
 basina. Plazmit bulgusu ucunde de ayakta (4,20x / 3,48x / 4,46x), yani tekrarlanan
 suslarin eseri degil.
+
+## Kimlik substrati ne kadar ongoruyor (adim 12c5)
+
+"Kimlik substrat garantisi vermez" iddiasi tek ornekle (EdoA1/CumA1) degil,
+871 referans cifti uzerinde SINIFLANDIRICI olarak olculdu. Ciftlerin yalnizca
+%3,1'i ayni substrati paylasiyor; kesinlik bu taban orana karsi okunmali.
+
+| esik | cift | ayni | kesinlik | lift | duyarlilik |
+|---|---|---|---|---|---|
+| %40 | 171 | 18 | %10,5 | 3,4x | %67 |
+| %70 | 42 | 8 | %19,1 | 6,1x | %30 |
+| %90 | 15 | 4 | %26,7 | 8,6x | %15 |
+| %95 | 5 | 4 | %80,0 | 25,8x | %15 |
+
+**AUC = 0,859**: kimlik siralama sinyali olarak gercekten bilgi tasiyor
+(0,5 = hicbir bilgi). Ama KARAR KURALI olarak basarisiz: %90 kimlikte 15 ciftin
+yalnizca 4'u ayni substrati paylasiyor ve **hicbir esik (n>=10 iken) %90 kesinlige
+ulasmiyor**. En benzer farkli-substratli cift EdoA1/CumA1 %99,8; ayni substrati
+paylasan en uzak cift %32,4.
+
+Substrat SINIFI duzeyinde (ksenobiyotik/dogal) kesinlik %99'a cikiyor ama bu
+yanıltici: ciftlerin **%83'u zaten ayni sinifta** cunku karakterize enzimlerin
+cogu ksenobiyotik uzerine. Lift hicbir esikte 1,2'yi gecmiyor, yani esik bilgi
+katmiyor; dogru ozet AUC = 0,706.
 
 ## Tip birliktelikleri (adim 12c4)
 

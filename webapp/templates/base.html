@@ -29,8 +29,15 @@
 {% block body %}{% endblock %}
 </main>
 <footer>
-  ROAR-DB · Rieske Oxygenase Annotation Resource · built from RefSeq/GenBank records with HMMER profile models of 71 curated reference ROs.
-  Data are provided as-is for research use.
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="{{ u('/atlas/quality') }}">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build {{ build.built }}{% if build.commit %} · pipeline revision
+  <code>{{ build.commit }}</code> of {{ build.commit_date }}{% endif %} ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
 </footer>
 </body>
 </html>

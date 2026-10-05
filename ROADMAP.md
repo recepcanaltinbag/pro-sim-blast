@@ -91,6 +91,12 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     en guclu birliktelikler ayni asagi yola besleyen enzimler (BPDO+PhnA1a
     123x, AntA+XylX 5,6x). Iplik bilgisi "tek operon" ile "ayni genom"u ayiriyor.
 
+16. ~~Kimlik → substrat ongorusunun olcumu.~~ **BITTI.**
+    `substrate_predictability.py` + kanit sayfasi bolum 3. AUC 0,859 ama hicbir
+    esik %90 kesinlige ulasmiyor; sinif duzeyinde lift <=1,2.
+17. ~~Surum ve atif bilgisi.~~ **BITTI.** Sayfa altinda derleme tarihi, pipeline
+    commit'i ve atif notu (tip atamalari pipeline yeniden kosunca degisebilir).
+
 ## Acik sorular (kullaniciya)
 
 - 7 kume substrati bilinmiyor: OxoO, CndA, cadA, OMO, PsbAb, ROCH34, OxyA.

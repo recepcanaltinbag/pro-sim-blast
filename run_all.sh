@@ -112,6 +112,11 @@ python3 redundancy.py --db roar.sqlite --out "$OUT/redundancy.json"
 step "12c4/14 Tip birliktelikleri"
 python3 cooccurrence.py --db roar.sqlite --out "$OUT/cooccurrence.json"
 
+# --- 12c5. Kimlik substrati ne kadar ongoruyor (merkezi uyarinin olcumu)
+step "12c5/14 Substrat ongorulebilirligi"
+python3 substrate_predictability.py --pairs "$OUT/reference_pairs.csv" \
+  --ecology cluster_ecology.csv --out "$OUT/substrate_predictability.json"
+
 # --- 12d. Arama indeksi (FTS5 + filtre alanlari)
 step "12d/14 Arama indeksi"
 python3 build_search_index.py --db roar.sqlite --ecology cluster_ecology.csv --chemistry chemistry.csv

@@ -53,7 +53,60 @@ explicitly. <a href="{{ u('/download/analysis/evidence_by_cluster.csv') }}">Down
 </div>
 {% endif %}
 
-<h2>3 · Sensitivity to the threshold</h2>
+{% if pred %}
+{% set at90 = (pred.exact_substrate.curve | selectattr('threshold', 'equalto', 90) | list | first) %}
+<h2>3 · How well does identity actually predict the substrate?</h2>
+<p>The claim above rests on one example. Tested across all
+{{ pred.pairs_with_both_substrates_known|fmt }} reference pairs whose substrates are both known, the
+rule "if two proteins are more than X % identical they act on the same substrate" performs as
+follows. Only {{ '%.1f %%' % (100 * pred.exact_substrate.prevalence) }} of pairs share a substrate
+to begin with, so precision has to be read against that base rate; the lift column does that.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Identity threshold</th><th class="num">Pairs at or above</th>
+<th class="num">Same substrate</th><th class="num">Different</th><th class="num">Precision</th>
+<th class="num">Lift over base rate</th><th class="num">Recall</th></tr></thead>
+<tbody>
+{% for p in pred.exact_substrate.curve if p.pairs_at_or_above %}
+<tr class="{{ 'hl' if p.threshold == 90 }}">
+  <td class="num">{{ p.threshold }} %</td><td class="num">{{ p.pairs_at_or_above }}</td>
+  <td class="num">{{ p.same }}</td><td class="num">{{ p.different }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * p.precision) }}</td>
+  <td class="num">{{ '%.1f×' % p.lift }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * p.recall) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Identity is informative but not reliable.</b> As a ranking signal it works: the area
+under the ROC curve is {{ '%.3f' % pred.exact_substrate.auc }}, well above the 0.5 of no
+information, and at 90 % identity a pair is {{ '%.1f' % at90.lift }} times
+more likely to share a substrate than a random pair. As a <em>decision rule</em> it fails: at 90 %
+identity only {{ at90.same }} of
+{{ at90.pairs_at_or_above }} pairs actually share one, and
+{% if pred.exact_substrate.threshold_for_precision_90 %}the first threshold reaching 90 % precision
+is {{ pred.exact_substrate.threshold_for_precision_90 }} %{% else %}<b>no threshold reaches 90 %
+precision at all</b> on a set of ten pairs or more{% endif %}. The most similar pair with different
+substrates is {{ pred.most_similar_different_substrate.ref_a }} and
+{{ pred.most_similar_different_substrate.ref_b }} at
+{{ '%.1f %%' % (pred.most_similar_different_substrate.identity|float) }}
+({{ pred.most_similar_different_substrate.substrate_a }} against
+{{ pred.most_similar_different_substrate.substrate_b }}); the least similar pair sharing a substrate
+is {{ pred.least_similar_same_substrate.ref_a }} and {{ pred.least_similar_same_substrate.ref_b }}
+at {{ '%.1f %%' % (pred.least_similar_same_substrate.identity|float) }}.</figcaption>
+</figure>
+
+<h3>At the coarser level of substrate class</h3>
+<p class="note">One might expect the broad class, xenobiotic against natural, to be more
+predictable. It is not, and the reason is instructive:
+{{ '%.0f %%' % (100 * pred.substrate_class.prevalence) }} of pairs already share a class because
+most characterised enzymes act on xenobiotics. Precision therefore looks excellent at every
+threshold while the lift never exceeds
+{{ '%.1f×' % (pred.substrate_class.curve | map(attribute='lift') | reject('none') | list | max) }},
+so the threshold is adding almost nothing. The area under the curve,
+{{ '%.3f' % pred.substrate_class.auc }}, is the honest summary.
+<a href="{{ u('/download/analysis/substrate_predictability.json') }}">Download the full curves</a></p>
+{% endif %}
+
+<h2>4 · Sensitivity to the threshold</h2>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th class="num">Identity to nearest reference</th><th class="num">Members at or above</th><th class="num">Share</th></tr></thead>
@@ -68,7 +121,7 @@ entirely on where the line is drawn. The thresholds used here are configurable i
 the counts above let a reader re-derive the figures under their own choice.</figcaption>
 </figure>
 
-<h2>4 · Evidence composition of each type</h2>
+<h2>5 · Evidence composition of each type</h2>
 <figure class="fig">
 <div id="ev" class="chart" style="height:1500px"></div>
 <figcaption><b>Reading it.</b> A type coloured mostly dark green is a well-sampled enzyme whose
@@ -77,7 +130,7 @@ that recruits distant homologues: real Rieske oxygenases, but with unknown funct
 types where naming members after the reference enzyme would be misleading.</figcaption>
 </figure>
 
-<h2>5 · Types dominated by distant members</h2>
+<h2>6 · Types dominated by distant members</h2>
 <div class="tablewrap"><table class="data compact sortable">
 <thead><tr><th>Type</th><th>Reference substrate</th><th class="num">Members</th>
 <th>Evidence composition</th><th class="num">Characterised or close</th></tr></thead>
@@ -95,7 +148,7 @@ types where naming members after the reference enzyme would be misleading.</figc
 </tbody></table></div>
 
 {% if mism %}
-<h2>6 · When the profile and the nearest sequence disagree</h2>
+<h2>7 · When the profile and the nearest sequence disagree</h2>
 <p>For a share of members the best-scoring profile belongs to one type while the most similar
 individual reference protein belongs to another. This is expected at low identity, where a profile
 built from many homologues outscores any single sequence, but it marks pairs of types that are

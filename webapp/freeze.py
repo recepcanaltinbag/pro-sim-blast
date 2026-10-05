@@ -85,7 +85,7 @@ def main():
                  "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                  "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                  "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-                 "redundancy.json", "cooccurrence.json",
+                 "redundancy.json", "cooccurrence.json", "substrate_predictability.json",
                  "null_model.csv", "sdp_positions.csv", "stats.json"):
         save("/download/analysis/" + name, "download/analysis/" + name)
     print(f"[pages] {len(clusters)} clusters")
