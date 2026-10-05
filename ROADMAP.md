@@ -13,10 +13,11 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 2. ~~Varyant duzeyinde kalinti imzasi.~~ **BITTI.** `variant_signature.py`,
    `cluster_sdp` + `leaf_sdp`; tip ve varyant sayfalarinda matris olarak gosteriliyor.
 
-3. **Novel adaylar sayfasi (Atlas).**
-   `ro_subfamily.assignment_class='novel_candidate'` (2.283) ve
-   `analysis_out/novel_high_confidence.fasta` (155). Taksonomi, operon ve
-   komsuluk imzasiyla birlikte tablolanmali; "neden novel" gerekcesi ile.
+3. ~~Novel adaylar sayfasi (Atlas).~~ **BITTI.** `/atlas/novel`: 318 aday,
+   63 varyant. Tanim seffaf (merkezler tam + >=300 aa + <%25 kimlik + varyant >=3
+   uye) ve iki novellik olcutunun uyusmazlik matrisi gosteriliyor (223 protein
+   kendi alt-ailesinin cekirdegi oldugu halde hicbir referansa yakin degil).
+   Adaylarin %33'u okaryot.
 
 4. **Aramayi guclendir.** SQLite FTS5 indeksi (organizma, urun, protein_id,
    locus_tag, kume, substrat) + tip/varyant/kanit duzeyi filtreleri.

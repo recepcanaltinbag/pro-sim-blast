@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Novel candidates{% endblock %}
+{% set page_id = 'novel' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Proteins with no close characterised relative</h1>
+<p class="lede">These are confirmed Rieske oxygenase alpha subunits that no curated enzyme explains.
+Each has both metal centres complete, yet is less than 25 % identical to every one of the 71
+characterised references. They are the places where this family still has unknown chemistry.</p>
+
+<h2>1 · How the set is defined</h2>
+<div class="caveat">
+A protein enters this list only if all of the following hold, so that annotation noise and one-off
+sequencing artefacts are excluded:
+<ul>
+  <li>confirmed entry: all four Rieske ligands and a complete 2-His-1-carboxylate triad;</li>
+  <li>at least 300 residues, so fragments cannot qualify;</li>
+  <li>under 25 % identity to every curated reference protein;</li>
+  <li>a member of a variant with at least three members, so the sequence is reproduced in more than
+    one genome rather than standing alone.</li>
+</ul>
+That leaves <b>{{ n_total|fmt }}</b> proteins in <b>{{ variants|length }}</b> variants.
+</div>
+
+<h2>2 · Two definitions of novelty, and where they disagree</h2>
+<p>This database measures novelty twice, by different means. The <em>evidence level</em> compares
+each protein with the reference proteins directly. The <em>assignment class</em> asks whether the
+protein is typical of the cluster it was placed in, by comparing it with the consensus of its own
+subfamily. A protein can be the solid core of its own subfamily and still be far from anything
+characterised, which is exactly the case worth looking at.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence level \\ assignment class</th>{% for c in classes %}<th class="num">{{ c.replace('_',' ') }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for t in tiers %}
+<tr><td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:#fff;border:0">{{ t.replace('_',' ') }}</span></td>
+  {% for c in classes %}<td class="num {{ 'diff' if t == 'novel' and c == 'core' else '' }}">{{ matrix[(t, c)]|fmt }}</td>{% endfor %}</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>The highlighted cell is the interesting disagreement: proteins that sit at the centre of
+a well-populated subfamily and are nonetheless unlike any characterised enzyme. Counting only
+subfamily outliers, as the earlier version of this pipeline did, would have missed them entirely.</figcaption>
+</figure>
+
+<h2>3 · Who carries them</h2>
+<p>{% for d, n in domains.most_common() %}<b>{{ d }}</b> {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}.
+A third of the most divergent proteins are eukaryotic. Rieske oxygenases of plants, algae and fungi
+are under-represented among characterised enzymes, so divergence from the reference set partly
+measures what has been studied rather than what exists.</p>
+
+<h2>4 · Candidates by variant</h2>
+<p class="note">Grouped by variant, largest first. Identity is to the nearest curated reference,
+which names the closest relative without implying the same function. Operon columns show
+sequence-verified partners.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Variant</th><th>Entry</th><th>Organism</th><th>Domain</th>
+<th>Nearest reference</th><th class="num">Identity</th><th>Partners in operon</th><th>Product annotation</th></tr></thead>
+<tbody>
+{% for leaf_id, items in variants %}
+{% for r in items %}
+<tr>
+  {% if loop.first %}<td rowspan="{{ items|length }}"><a href="{{ u('/leaf/' ~ leaf_slug(leaf_id)) }}">{{ leaf_id }}</a>
+    <div class="note">{{ items|length }} candidate{{ 's' if items|length > 1 }}</div></td>{% endif %}
+  <td><a href="{{ u('/ro/' ~ slug(r.candidate_id)) }}">{{ r.protein_id or r.candidate_id }}</a>
+      {% if r.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
+  <td><i>{{ r.organism }}</i></td>
+  <td class="note">{{ r.domain or '–' }}{% if r.euk_group %} / {{ r.euk_group }}{% endif %}</td>
+  <td><a href="{{ u('/cluster/' ~ r.nearest_ref) }}">{{ r.nearest_ref }}</a></td>
+  <td class="num">{{ '%.1f %%' % r.ref_identity }}</td>
+  <td class="note">{% if r.has_beta %}beta {% endif %}{% if r.has_ferredoxin %}ferredoxin {% endif %}{% if r.has_reductase %}reductase{% endif %}{% if not (r.has_beta or r.has_ferredoxin or r.has_reductase) %}none detected{% endif %}</td>
+  <td class="small">{{ r.product }}</td>
+</tr>
+{% endfor %}
+{% endfor %}
+</tbody></table></div>
+
+<h2>5 · What would settle it</h2>
+<p>Nothing here is a functional claim. A candidate becomes an enzyme with a known reaction only
+through experiment, and the most informative next steps are the ones this database can point at:
+the variants with the most members and the most complete operons, because a conserved gene
+neighbourhood is independent evidence that the protein is used. Sequences are provided so that any
+of them can be synthesised and tested.</p>
+<p class="dl">
+  <a class="btn" href="{{ u('/download/novel_candidates.fasta') }}">Candidate sequences (FASTA)</a>
+  <a class="btn" href="{{ u('/download/analysis/evidence_by_cluster.csv') }}">Evidence per type (CSV)</a>
+</p>
+{% endblock %}

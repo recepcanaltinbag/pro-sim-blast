@@ -983,6 +983,72 @@ def atlas_evidence(request: Request):
         con.close()
 
 
+NOVEL_WHERE = """
+    FROM ro r
+    JOIN ro_evidence e ON e.candidate_id = r.candidate_id
+    JOIN replicon p ON p.nucleotide_id = r.nucleotide_id
+    LEFT JOIN ro_leaf rl ON rl.candidate_id = r.candidate_id
+    LEFT JOIN leaf l ON l.leaf_id = rl.leaf_id
+    LEFT JOIN ro_domain d ON d.candidate_id = r.candidate_id
+    LEFT JOIN operon o ON o.candidate_id = r.candidate_id
+    LEFT JOIN ro_subfamily s ON s.candidate_id = r.candidate_id
+    WHERE r.is_confirmed = 1 AND e.tier = 'novel' AND r.rieske_intact = 1
+      AND r.catalytic_intact = 1 AND LENGTH(r.sequence) >= 300 AND l.size >= 3"""
+
+
+@app.get("/atlas/novel", response_class=HTMLResponse)
+def atlas_novel(request: Request):
+    con = connect()
+    try:
+        if not atlas.table_exists(con, "ro_evidence"):
+            raise HTTPException(404, "evidence table not built (run evidence_tiers.py)")
+        rows = con.execute(f"""
+            SELECT r.candidate_id, r.protein_id, r.ro_cluster, r.product, p.organism,
+                   p.is_plasmid, e.ref_identity, e.nearest_ref, rl.leaf_id, l.size leaf_size,
+                   d.domain, d.euk_group, o.has_beta, o.has_ferredoxin, o.has_reductase,
+                   o.layout, s.assignment_class
+            {NOVEL_WHERE} ORDER BY l.size DESC, e.ref_identity ASC""").fetchall()
+        by_variant = {}
+        for r in rows:
+            by_variant.setdefault(r["leaf_id"], []).append(r)
+        variants = sorted(by_variant.items(), key=lambda kv: -len(kv[1]))
+        agreement = con.execute("""
+            SELECT e.tier, s.assignment_class, COUNT(*) n
+            FROM ro_evidence e JOIN ro_subfamily s USING(candidate_id)
+            GROUP BY 1, 2""").fetchall()
+        tiers = atlas.TIERS
+        classes = ["core", "divergent", "alt_type", "novel_candidate"]
+        matrix = {(t, c): 0 for t in tiers for c in classes}
+        for r in agreement:
+            if (r["tier"], r["assignment_class"]) in matrix:
+                matrix[(r["tier"], r["assignment_class"])] = r["n"]
+        domains = Counter(r["domain"] or "unassigned" for r in rows)
+        return render(request, "atlas_novel.html", rows=rows, variants=variants,
+                      matrix=matrix, tiers=tiers, classes=classes, domains=domains,
+                      n_total=len(rows))
+    finally:
+        con.close()
+
+
+@app.get("/download/novel_candidates.fasta")
+def dl_novel():
+    con = connect()
+    try:
+        rows = con.execute(f"""
+            SELECT r.candidate_id, r.protein_id, r.ro_cluster, r.sequence, p.organism,
+                   e.ref_identity, e.nearest_ref, rl.leaf_id
+            {NOVEL_WHERE} ORDER BY l.size DESC""").fetchall()
+        buf = io.StringIO()
+        for r in rows:
+            buf.write(f">{r['candidate_id']} {r['protein_id'] or ''} nearest={r['nearest_ref']} "
+                      f"identity={r['ref_identity']:.1f} variant={r['leaf_id']} "
+                      f"organism=\"{r['organism']}\"\n{r['sequence']}\n")
+        return PlainTextResponse(buf.getvalue(), headers={
+            "Content-Disposition": 'attachment; filename="roar_novel_candidates.fasta"'})
+    finally:
+        con.close()
+
+
 @app.get("/atlas/statistics", response_class=HTMLResponse)
 def atlas_statistics(request: Request):
     data = atlas.read_json(apath("stats.json"))
