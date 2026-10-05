@@ -50,21 +50,26 @@ def is_generic(product):
 
 
 def label_leaf(top_genus, genus_n, plasmid_rate, transposon_rate, signature):
-    """Yaprak icin okunabilir otomatik etiket."""
+    """Yaprak icin okunabilir otomatik etiket.
+
+    METIN INGILIZCE: bu etiket varyant ve tip sayfalarinda dogrudan gosteriliyor,
+    yani arayuz metnidir. Kod yorumlari Turkce kalir, kullanicinin okudugu her sey
+    Ingilizce olmak zorunda.
+    """
     parts = []
     if genus_n == 1:
-        parts.append(f"{top_genus}'e ozgu")
+        parts.append(f"confined to {top_genus}")
     elif genus_n <= 3:
-        parts.append(f"{top_genus} agirlikli (dar)")
+        parts.append(f"mostly {top_genus}, narrow host range")
     else:
-        parts.append(f"{top_genus} agirlikli")
+        parts.append(f"mostly {top_genus}")
     if plasmid_rate >= 0.30:
-        parts.append("plazmit-tasili")
+        parts.append("often plasmid-borne")
     if transposon_rate >= 0.30:
-        parts.append("mobil-element yakini")
+        parts.append("near a mobile element")
     if signature:
-        parts.append(f"komsu: {signature[0]}")
-    return ", ".join(parts)
+        parts.append(f"neighbour: {signature[0]}")
+    return "; ".join(parts)
 
 
 def main():
@@ -218,7 +223,7 @@ def main():
         for r in sorted(leaf_rows, key=lambda x: -x[2])[:4]:
             print(f"  {r[0]:20s} n={r[2]:>4d} id={r[3]:.2f}  {r[11]}")
             if r[9]:
-                print(f"       komsu: {r[9][:64]}")
+                print(f"       neighbour: {r[9][:64]}")
         shown += 1
         if shown >= 6:
             break

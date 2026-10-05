@@ -32,7 +32,7 @@ from collections import Counter, defaultdict
 
 
 VALID_CLASSES = {"xenobiotic", "natural_aromatic", "natural_specialized", "unknown"}
-VALID_CONFIDENCE = {"dusuk", "orta", "yuksek"}
+VALID_CONFIDENCE = {"low", "medium", "high"}
 
 
 def load_ecology(path):
@@ -134,7 +134,7 @@ def collect(connection, ecology, window=5000):
         info = ecology.get(cluster, {})
         entry["substrate"] = info.get("substrate", "bilinmiyor")
         entry["class"] = info.get("substrate_class", "unknown")
-        entry["confidence"] = info.get("confidence", "dusuk")
+        entry["confidence"] = info.get("confidence", "low")
         entry["note"] = info.get("ecology_note", "")
     return stats
 
@@ -166,7 +166,7 @@ def report(stats, min_n=30, out_csv=None, euk_threshold=0.25):
                                     "syn_entropy": [], "op_c": 0, "op_t": 0})
     for cluster, entry in stats.items():
         # Dusuk guvenli substrat atamalari toplu istatistige girmez
-        if entry["confidence"] == "dusuk" or entry["class"] == "unknown":
+        if entry["confidence"] == "low" or entry["class"] == "unknown":
             continue
         # OKARYOT-AGIRLIKLI kumeler bakteriyel plazmit/transpozon testini bozar
         # (okaryotta plazmit/mobil element farkli calisir) -- dislanir.

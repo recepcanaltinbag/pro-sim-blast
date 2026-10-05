@@ -131,6 +131,36 @@ tutar. Sonuç (11.422 RO): operonda beta %21,9, ferredoksin %10,5, redüktaz %28
 üçü birden %4,4. Beta yalnızca beklenen tiplerde (TdnA1, XylX, NBDO…) çıkıyor;
 KshA/CntA/VanA'da yok — biyolojiyle tutarlı.
 
+## Yeni referans ekleme ve modulerlik
+
+Referans seti kapali bir liste degil; literaturde karakterize edilmis ve burada
+olmayan RO'lar eklenebilir. Eskiden bu, bes dosyayi elle tutarli tutmayi ve
+**motif kolon numaralarini elle yeniden cikarmayi** gerektiriyordu: kolonlar
+`ro_motif.py` icinde SABIT yaziliydi, referans seti degisince hizalama kayar ve
+kod sessizce yanlis pozisyonlara bakardi.
+
+Simdi iki script var:
+
+- **`add_reference.py`** — tek komutla ekler, once dogrular: ID bicimi ve
+  cakismasi, dizi karakterleri ve uzunlugu, ayni dizinin zaten var olup olmadigi,
+  SMILES'in ayraç dengesi, PDB kimliginin bicimi, ve **kaynak alaninin bos
+  olmamasi** (bu veri nereden geliyor sorusu cevapsiz birakilamaz). Yazmadan
+  once `.bak-<tarih>` yedegi alir, sonra uc dosyayi birlikte guncelleyip
+  sonraki adimlari ekrana yazar. `--dry-run` ve `--list-vocabularies` var.
+- **`build_reference_models.py`** — hizalama + hmmbuild + hmmalign zincirini
+  kosar ve **motif kolonlarini VERIDEN cikarir**: kolonlari mutlak pozisyonla
+  degil bagil yapiyla arar (Rieske C-x-H...C-x-x-H, katalitik H..H..D/E,
+  aralik kisitlari modul basinda sabit olarak tanimli) ve korunmayi en yuksek
+  yapan kombinasyonu secer. Sonuc `ROs_71_Clean/motif_columns.json`'a yazilir;
+  `ro_motif.py` bu dosya varsa onu okur, yoksa gomulu varsayilanlari kullanir.
+  **Dogrulama:** mevcut 71-referans seti uzerinde cikarim, koda elle yazilmis
+  sekiz kolonun tamamini birebir yeniden uretti (85/87/105/108, 212/217/355,
+  kopru 209), yani hem kod hem algoritma karsilikli dogrulanmis oldu.
+
+Istatistik adimlarinin hepsi bagimsiz kosulabilir ve hepsi `--db` alir; referans
+seti degismediyse yalnizca istatistikleri tazelemek icin pipeline'in basina
+donmek gerekmez.
+
 ## Kanit duzeyi (adim 4c) — en onemli metodolojik nokta
 
 HMM atamasi bir proteini **en yakin kuratorlu referansa** koyar; bu fonksiyon
@@ -330,8 +360,14 @@ dogrulanmis baglanma cebi kalintilari degildir; veritabaninda yapi yok.
 11.422 dogrulanmis RO'da: Rieske ligandlarinin 4/4'u %100, kopru Asp/Glu %100,
 katalitik triad 3/3 %87,3 (kalan %12,7'de 2/3). En oynak pozisyon Fe(II)
 karboksilati (kolon 355, %87,6) — hem Asp hem Glu kabul ediyor.
-- **7 küme substratı bilinmiyor** (`OxoO/CndA/cadA/OMO/PsbAb/ROCH34/OxyA`): standart
-  veritabanlarında bulunamadı, orijinal referans makaleleri gerekir.
+- ~~7 küme substratı bilinmiyor~~ **COZULDU** (2026-10-06): hepsi literaturden
+  belirlendi ve `chemistry.csv`'ye kaynakla birlikte islendi. OxoO ve OMO ayni
+  enzim (2-oksokinolin 8-monooksijenaz, PDB 1Z03) — referans seti bu enzimi iki
+  kez iceriyor, ki ikisinin %100 kimlikli olmasi bunu zaten gosteriyordu.
+  CndA kloroasetanilid herbisit N-dealkilazi, PsbAb 4-sulfobenzoat
+  3,4-dioksijenazi, ROCH34 ftalat 4,5-dioksijenazi (PDB 7FHR), OxyA/qxyA
+  benzalkonyum klorur (QAC) oksijenazi. cadA 2,4-D oksijenazi olarak
+  **kesin degil** diye isaretlendi.
 - **Substrat ataması küme düzeyinde**: heterojen kümelerde tek substrat tüm üyeler
   için geçerli değil; yaprak (varyant) düzeyinde yapılmalı.
 

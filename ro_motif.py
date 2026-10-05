@@ -27,6 +27,8 @@ Ferredoksin, sitokrom bc1 Rieske ISP ve NirD'de Rieske ligandlari VAR ama
 katalitik triad YOK -- ayrimin biyokimyasal temeli tam olarak bu.
 """
 
+import json
+import os
 from collections import Counter
 
 # Kolon numaralari MODELE OZGUdur -- hizalama degisince kayarlar.
@@ -72,6 +74,44 @@ MODEL_COLUMNS = {
 }
 
 DEFAULT_MODEL = "ROmotif71"
+
+# --- Kolonlari VERIDEN okuma (modulerlik) ---
+#
+# Yukaridaki sabitler bu projenin 71-referans modeli icin dogrudur ve
+# build_reference_models.py tarafindan birebir yeniden uretilmistir. Ama referans
+# seti degisirse (literaturde olup burada olmayan bir enzim eklenirse) hizalama
+# kayar ve sabit sayilar SESSIZCE yanlis pozisyonlara bakar. Bu yuzden
+# build_reference_models.py kolonlari veriden cikarip bir JSON'a yazar; varsa o
+# dosya kazanir. Dosya yoksa davranis birebir eskisi gibi kalir.
+_COLUMNS_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             "ROs_71_Clean", "motif_columns.json")
+
+
+def _load_derived_columns(path=_COLUMNS_JSON):
+    """build_reference_models.py'nin yazdigi kolonlari yukle. Donen: dict veya {}."""
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path) as handle:
+            payload = json.load(handle)
+    except (ValueError, OSError):
+        return {}
+    out = {}
+    for name, entry in payload.items():
+        try:
+            out[name] = {
+                "rieske": [(int(c), r, l) for c, r, l in entry["rieske"]],
+                "catalytic": [(int(c), r, l) for c, r, l in entry["catalytic"]],
+                "bridging": (int(entry["bridging"][0]), entry["bridging"][1],
+                             entry["bridging"][2]),
+            }
+        except (KeyError, TypeError, ValueError):
+            continue
+    return out
+
+
+DERIVED_COLUMNS = _load_derived_columns()
+MODEL_COLUMNS.update(DERIVED_COLUMNS)
 
 RIESKE_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["rieske"]
 CATALYTIC_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["catalytic"]

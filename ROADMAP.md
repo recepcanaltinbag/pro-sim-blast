@@ -97,10 +97,21 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 17. ~~Surum ve atif bilgisi.~~ **BITTI.** Sayfa altinda derleme tarihi, pipeline
     commit'i ve atif notu (tip atamalari pipeline yeniden kosunca degisebilir).
 
+18. ~~Bilinmeyen substratlar.~~ **BITTI** (2026-10-06). Yedisi de literaturden
+    cozuldu, kaynaklariyla `chemistry.csv`'de. cadA "tentative" isaretli.
+19. ~~PDB yapilari.~~ **BITTI.** 17 tipe RCSB'den tek tek dogrulanmis yapi
+    baglandi (1NDO, 1Z03, 1WW9, 2BMO, 1WQL, 3EN1, 2GBW, 2XR8, 2ZYL, 6Y9C,
+    7FHR, 3GKE, 3VCA). Arayuzde 3D gosterim ajan tarafindan ekleniyor.
+20. ~~Yeni referans ekleme + modulerlik.~~ **BITTI.** `add_reference.py` ve
+    `build_reference_models.py`; motif kolonlari artik veriden cikariliyor.
+21. ~~Varyant etiketleri Turkce.~~ **BITTI.** `characterize_leaves.py` ingilizce
+    uretiyor, tablo yeniden kuruldu.
+
 ## Acik sorular (kullaniciya)
 
-- 7 kume substrati bilinmiyor: OxoO, CndA, cadA, OMO, PsbAb, ROCH34, OxyA.
-  Orijinal makaleler ya da enzim/organizma adlari gerekiyor.
+- cadA'nin substrati 2,4-D olarak isaretlendi ama KESIN DEGIL; Bradyrhizobium
+  HW13 cadABC makalesi hem 2,4-D hem 2,4,5-T aktivitesinden soz ediyor.
+  Elindeki orijinal referans hangisiyse soyler misin?
 - Varyant kumelemesi ham dizide tekrarlanacak mi (madde 1)? Site genelinde
   sayilar degisir.
 - Site Ingilizce; Turkce surum de istenir mi?
