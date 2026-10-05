@@ -393,3 +393,91 @@ def median(values):
     s = sorted(values)
     n = len(s)
     return float(s[n // 2]) if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2.0
+
+
+def _field(row, key, default=None):
+    """Read a key from a sqlite3.Row or a plain dict."""
+    try:
+        value = row[key]
+    except (KeyError, IndexError, TypeError):
+        return default
+    return default if value is None else value
+
+
+REG_SHORT = {"LysR": "LysR", "TetR": "TetR", "AraC": "AraC", "MarR": "MarR", "IclR": "IclR",
+             "GntR": "GntR", "LuxR": "LuxR", "ArsR": "ArsR", "Crp_Fnr": "Crp", "sigma54": "s54",
+             "two_component": "2comp", "sigma_factor": "sig", "regulator_unclassified": "Reg"}
+
+
+def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
+    """Operon arrows preceded by the upstream regulator and the promoter region.
+
+    The regulator is drawn pointing away from the operon when the architecture is
+    divergent, the arrangement in which both share one intergenic promoter region.
+    """
+    tokens = [t.strip() for t in (layout or "").split(">") if t.strip()]
+    if not tokens:
+        return ""
+    arch = _field(reg, "architecture", "") if reg is not None else ""
+    family = _field(reg, "upstream_family", "") if reg is not None else ""
+    bp = _field(reg, "intergenic_bp", None) if reg is not None else None
+    show_reg = arch in ("divergent_regulator", "codirectional_regulator")
+    divergent = arch == "divergent_regulator"
+
+    pad, prom_w, row_h, height = 6, 54, 24, 72
+    y0 = 20
+    y1 = y0 + row_h
+    mid = (y0 + y1) / 2.0
+    width = pad * 2 + ((prom_w + gap) if (show_reg or bp) else 0) \
+        + ((gene_w + gap) if show_reg else 0) + len(tokens) * (gene_w + gap)
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+             f'height="{height}" width="{min(width, 980)}" class="oplayout">']
+    x = pad
+    head = 9
+
+    if show_reg:
+        label = REG_SHORT.get(family, "Reg")
+        if divergent:
+            pts = f"{x + gene_w},{y0} {x + head},{y0} {x},{mid:.1f} {x + head},{y1} {x + gene_w},{y1}"
+        else:
+            pts = f"{x},{y0} {x + gene_w - head},{y0} {x + gene_w},{mid:.1f} {x + gene_w - head},{y1} {x},{y1}"
+        product = html.escape(str(_field(reg, "upstream_product", "regulator")))
+        parts.append(
+            f'<polygon points="{pts}" fill="#8e44ad" stroke="#4a235a" stroke-width="0.9">'
+            f'<title>{product}</title></polygon>'
+            f'<text x="{x + gene_w / 2:.1f}" y="{mid + 3.5:.1f}" font-size="9" text-anchor="middle" '
+            f'fill="#fff" font-weight="600">{html.escape(label)}</text>'
+            f'<text x="{x + gene_w / 2:.1f}" y="{y0 - 6:.1f}" font-size="9" text-anchor="middle" '
+            f'fill="currentColor">{"divergent" if divergent else "same strand"}</text>')
+        x += gene_w + gap
+
+    if show_reg or bp:
+        gap_label = (str(int(bp)) + " bp") if bp is not None else "promoter"
+        parts.append(
+            f'<rect x="{x}" y="{y0 - 2}" width="{prom_w}" height="{row_h + 4}" fill="none" '
+            f'stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/>'
+            f'<text x="{x + prom_w / 2:.1f}" y="{y1 + 14:.1f}" font-size="9" text-anchor="middle" '
+            f'fill="currentColor">{gap_label}</text>')
+        x += prom_w + gap
+
+    for token in tokens:
+        fill = COMPONENT_FILL.get(token, "#b2bec3")
+        is_alpha = token in ("[alpha]", "alpha")
+        ay0, ay1 = (y0 - 2, y1 + 2) if is_alpha else (y0, y1)
+        amid = (ay0 + ay1) / 2.0
+        pts = (f"{x},{ay0} {x + gene_w - head},{ay0} {x + gene_w},{amid:.1f} "
+               f"{x + gene_w - head},{ay1} {x},{ay1}")
+        parts.append(
+            f'<polygon points="{pts}" fill="{fill}" '
+            f'stroke="{"#111" if is_alpha else "#5a5a5a"}" '
+            f'stroke-width="{1.4 if is_alpha else 0.7}">'
+            f'<title>{html.escape(token)}</title></polygon>'
+            f'<text x="{x + (gene_w - head) / 2:.1f}" y="{amid + 3.5:.1f}" font-size="10" '
+            f'text-anchor="middle" fill="#fff" font-weight="600">'
+            f'{html.escape(SHORT.get(token, token[:3]))}</text>')
+        x += gene_w + gap
+
+    parts.append(f'<text x="{pad}" y="{height - 4}" font-size="9" fill="currentColor">'
+                 f'operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text>')
+    parts.append("</svg>")
+    return "".join(parts)

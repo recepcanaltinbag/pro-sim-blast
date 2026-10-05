@@ -104,7 +104,17 @@
 </div>
 
 {% if x.regulation %}
-<h2>Regulation</h2>
+<h2>Regulation and promoter region</h2>
+{% if x.canonical_svg %}
+<figure class="fig">
+{{ x.canonical_svg|safe }}
+<figcaption><b>Canonical arrangement for this type:</b> the most frequent operon gene order,
+preceded by the architecture seen in most of its members
+({{ x.canonical_arch.replace('_', ' ') }}) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+{% endif %}
 <div class="cols">
   <div>
     <table class="data compact">

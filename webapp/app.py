@@ -812,7 +812,8 @@ import atlas  # noqa: E402
 
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
-    layout_svg=atlas.layout_svg, gap_histogram=atlas.gap_histogram,
+    layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
+    gap_histogram=atlas.gap_histogram,
     amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
     TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,
     COMPONENT_COLORS=COMPONENT_COLORS)
@@ -900,8 +901,9 @@ def atlas_operons(request: Request):
                 "SELECT r.ro_cluster, o.layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id) "
                 "WHERE r.is_confirmed=1 GROUP BY 1,2 ORDER BY 1, n DESC"):
             layouts.setdefault(cl, []).append((lay, n))
+        reg_rows = {r["cluster"]: r for r in atlas.read_csv(apath("regulation_by_cluster.csv"))}
         return render(request, "atlas_operons.html", over=_overview(con), profiles=profiles,
-                      by_group=[list(r) for r in by_group], layouts=layouts,
+                      by_group=[list(r) for r in by_group], layouts=layouts, reg_rows=reg_rows,
                       stats=atlas.read_json(apath("stats.json")))
     finally:
         con.close()
@@ -1026,6 +1028,23 @@ def cluster_extras(con, cluster):
         WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()[0]
     x["nearest"] = atlas.nearest_types(
         atlas.identity_matrix(apath("cluster_identity_matrix.csv")), cluster)
+    reg_rows = {r["cluster"]: r for r in atlas.read_csv(apath("regulation_by_cluster.csv"))}
+    x["reg_row"] = reg_rows.get(cluster)
+    top_layout = con.execute(
+        "SELECT o.layout FROM operon o JOIN ro r USING(candidate_id) "
+        "WHERE r.is_confirmed=1 AND r.ro_cluster=? GROUP BY o.layout "
+        "ORDER BY COUNT(*) DESC LIMIT 1", (cluster,)).fetchone()
+    if top_layout and x["reg_row"]:
+        row = x["reg_row"]
+        dominant = max(("divergent_regulator", "codirectional_regulator", "divergent_other",
+                        "codirectional_other", "unknown"),
+                       key=lambda k: int(row.get(k) or 0))
+        x["canonical_arch"] = dominant
+        x["canonical_svg"] = atlas.operon_regulator_svg(top_layout[0], {
+            "architecture": dominant,
+            "upstream_family": row.get("top_regulator_family") or "",
+            "intergenic_bp": int(row["median_intergenic_bp"]) if row.get("median_intergenic_bp") else None,
+            "upstream_product": "typical upstream regulator of this type"})
     tpath = apath("trees", f"{cluster}.nwk")
     if os.path.exists(tpath) and os.path.getsize(tpath) > 0:
         try:

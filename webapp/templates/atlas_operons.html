@@ -58,24 +58,33 @@ cassettes. Types with a reductase but no ferredoxin draw on a two-component elec
 partners encoded elsewhere in the genome.</figcaption>
 </figure>
 
-<h2>4 · Canonical gene order per type</h2>
-<p class="note">The most frequent operon layout for each type, drawn 5' to 3' with the alpha subunit
-outlined. α β Fd Red mark verified components; other boxes are annotation categories.</p>
+<h2>4 · Canonical gene order, with the regulator that faces it</h2>
+<p class="note">For each type: the most frequent operon gene order, preceded by the regulatory
+architecture of most of its members and the median intergenic region in which the promoter must lie.
+Boxes marked a, b, Fd and Red are sequence-verified components, Reg is the upstream regulator with
+its family; other boxes are annotation categories.</p>
 <div class="tablewrap"><table class="data compact">
-<thead><tr><th>Type</th><th class="num">Members</th><th>Most frequent layout</th><th class="num">Members with it</th></tr></thead>
+<thead><tr><th>Type</th><th class="num">Members</th>
+<th>Canonical regulator, promoter region and operon</th>
+<th class="num">Members with this order</th><th class="num">Divergent regulator</th></tr></thead>
 <tbody>
 {% for d in over %}
 {% set rows = layouts.get(d.cluster, []) %}
+{% set rr = reg_rows.get(d.cluster) %}
 {% if rows %}
 <tr>
-  <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a><br><span class="note">{{ d.substrate or '–' }}</span></td>
+  <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a><br><span class="note">{{ d.substrate or '-' }}</span></td>
   <td class="num">{{ d.n|fmt }}</td>
-  <td>{{ layout_svg(rows[0][0])|safe }}<div class="note mono">{{ rows[0][0] }}</div></td>
+  <td>{% if rr and (rr.divergent_regulator_rate|float) >= 0.2 %}{{ operon_regulator_svg(rows[0][0], {'architecture': 'divergent_regulator', 'upstream_family': rr.top_regulator_family, 'intergenic_bp': (rr.median_intergenic_bp|int) if rr.median_intergenic_bp else None, 'upstream_product': 'typical upstream regulator of this type'})|safe }}{% else %}{{ layout_svg(rows[0][0])|safe }}{% endif %}
+      <div class="note mono">{{ rows[0][0] }}</div></td>
   <td class="num">{{ rows[0][1] }}</td>
+  <td class="num">{% if rr %}{{ '%.0f %%' % (100 * (rr.divergent_regulator_rate|float)) }}{% if rr.top_regulator_family %}<br><span class="note">{{ rr.top_regulator_family }}</span>{% endif %}{% else %}-{% endif %}</td>
 </tr>
 {% endif %}
 {% endfor %}
 </tbody></table></div>
+<p class="note">A regulator is drawn when at least one member in five has one facing the operon start.
+Per-type detail is on the <a href="{{ u('/atlas/regulation') }}">regulation page</a>.</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
 <script>

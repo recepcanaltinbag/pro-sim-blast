@@ -121,7 +121,7 @@ label.</figcaption>
 <p class="note">Within 10 kb but outside the operon: beta {{ 'yes' if operon.nearby_beta else 'no' }},
   ferredoxin {{ 'yes' if operon.nearby_ferredoxin else 'no' }},
   reductase {{ 'yes' if operon.nearby_reductase else 'no' }}.</p>
-{{ layout_svg(operon.layout)|safe }}
+{{ operon_regulator_svg(operon.layout, reg)|safe }}
 <table class="data compact">
   <thead><tr><th class="num">Position</th><th>Component by sequence</th><th>Category by annotation</th>
   <th>Product</th><th class="num">Gap to previous gene</th></tr></thead>

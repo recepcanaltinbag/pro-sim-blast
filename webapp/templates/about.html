@@ -6,6 +6,87 @@
 alpha subunits characterised in the literature. Every step below is a script in the repository, and
 every table it produces is downloadable from the page that displays it.</p>
 
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" width="100%" class="flow">
+  <style>
+    .bx { fill: var(--panel); stroke: var(--rule); }
+    .bxa { fill: var(--panel); stroke: #8c2f22; stroke-width: 1.6; }
+    .ti { font-size: 12px; font-weight: 700; fill: currentColor; }
+    .sub { font-size: 10.5px; fill: currentColor; opacity: .75; }
+    .nm { font-size: 13px; font-weight: 700; fill: #8c2f22; }
+    .ar { stroke: currentColor; stroke-width: 1.2; fill: none; marker-end: url(#ah); }
+  </style>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+    orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+
+  <rect class="bx" x="4" y="16" width="168" height="64" rx="6"/>
+  <text class="ti" x="16" y="38">Genome records</text>
+  <text class="nm" x="16" y="58">{{ totals.replicons|fmt }}</text>
+  <text class="sub" x="16" y="72">annotated replicons from GenBank</text>
+
+  <rect class="bx" x="4" y="104" width="168" height="64" rx="6"/>
+  <text class="ti" x="16" y="126">Curated references</text>
+  <text class="nm" x="16" y="146">71</text>
+  <text class="sub" x="16" y="160">enzymes characterised in the literature</text>
+
+  <path class="ar" d="M172,48 H208"/>
+  <path class="ar" d="M172,136 H190 V60 H208"/>
+
+  <rect class="bx" x="210" y="16" width="178" height="152" rx="6"/>
+  <text class="ti" x="222" y="38">Two independent tests</text>
+  <text class="sub" x="222" y="56">1. profile coverage &#8805; 0.45 of a</text>
+  <text class="sub" x="222" y="70">full-length alpha model</text>
+  <text class="sub" x="222" y="88">2. Rieske ligands 4 of 4 and</text>
+  <text class="sub" x="222" y="102">catalytic triad 2 of 3 at the</text>
+  <text class="sub" x="222" y="116">aligned columns</text>
+  <text class="sub" x="222" y="138">calibrated on 2,788 alpha and</text>
+  <text class="sub" x="222" y="152">1,570 non-alpha proteins</text>
+
+  <path class="ar" d="M388,92 H424"/>
+
+  <rect class="bxa" x="426" y="16" width="168" height="152" rx="6"/>
+  <text class="ti" x="438" y="38">Confirmed entries</text>
+  <text class="nm" x="438" y="60">{{ totals.confirmed|fmt }}</text>
+  <text class="sub" x="438" y="76">of {{ totals.candidates|fmt }} candidates</text>
+  <text class="sub" x="438" y="96">assigned to {{ totals.clusters|fmt }} types</text>
+  <text class="sub" x="438" y="110">by highest profile bit score</text>
+  <text class="sub" x="438" y="130">split into {{ totals.leaves|fmt }} variants</text>
+  <text class="sub" x="438" y="144">by recursive clustering</text>
+
+  <path class="ar" d="M594,60 H630"/>
+  <path class="ar" d="M594,124 H612 V200 H630"/>
+
+  <rect class="bx" x="632" y="16" width="168" height="88" rx="6"/>
+  <text class="ti" x="644" y="38">Genomic context</text>
+  <text class="nm" x="644" y="58">{{ totals.neighbors|fmt }}</text>
+  <text class="sub" x="644" y="72">neighbouring genes within 10 kb,</text>
+  <text class="sub" x="644" y="86">with strand and signed distance</text>
+
+  <rect class="bx" x="632" y="168" width="168" height="112" rx="6"/>
+  <text class="ti" x="644" y="190">Evidence level</text>
+  <text class="sub" x="644" y="208">identity of each entry to the</text>
+  <text class="sub" x="644" y="222">nearest curated reference,</text>
+  <text class="sub" x="644" y="236">so a substrate label is never</text>
+  <text class="sub" x="644" y="250">implied by type membership</text>
+  <text class="sub" x="644" y="270">five levels, see section 2</text>
+
+  <path class="ar" d="M800,60 H836"/>
+  <path class="ar" d="M800,224 H818 V100 H836"/>
+
+  <rect class="bx" x="838" y="16" width="138" height="152" rx="6"/>
+  <text class="ti" x="850" y="38">Derived layers</text>
+  <text class="sub" x="850" y="56">operons and partners</text>
+  <text class="sub" x="850" y="70">promoter region and</text>
+  <text class="sub" x="850" y="84">regulator family</text>
+  <text class="sub" x="850" y="102">phylogeny and network</text>
+  <text class="sub" x="850" y="116">taxonomy and ecology</text>
+  <text class="sub" x="850" y="134">statistics at entry and</text>
+  <text class="sub" x="850" y="148">genus level</text>
+</svg>
+<figcaption>Flow of the pipeline, with the current content of each stage. Numbers are read from the
+database when this page is generated, so they always match the rest of the site.</figcaption>
+</figure>
+
 <h2>1 · What qualifies as a Rieske oxygenase alpha subunit</h2>
 <p>Proteins carrying a Rieske [2Fe-2S] domain, Pfam PF00355, include many that are not oxygenases:
 ferredoxins, the iron–sulfur proteins of the cytochrome <i>bc</i><sub>1</sub> and
@@ -45,6 +126,36 @@ determined by a few active-site positions, so no global identity threshold can c
 member therefore carries an <a href="{{ u('/atlas/evidence') }}">evidence level</a> stating how
 close it actually is to a characterised enzyme, and substrate labels are shown together with that
 level.</p>
+
+<h3>Thresholds in one place</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Threshold</th><th>Value</th><th>Where it comes from</th><th>What changes if it moves</th></tr></thead>
+<tbody>
+<tr><td>Profile coverage</td><td class="num">0.45</td>
+    <td>calibrated on 2,788 full-length alpha subunits and 1,570 known non-alpha proteins</td>
+    <td>at 0.80, rejection improves by under two points while a fifth of true alpha subunits are lost</td></tr>
+<tr><td>Rieske ligands required</td><td class="num">4 of 4</td>
+    <td>conserved in every curated reference</td><td>relaxing it admits ferredoxins and bc<sub>1</sub> iron-sulfur proteins</td></tr>
+<tr><td>Catalytic triad required</td><td class="num">2 of 3</td>
+    <td>five curated references fail a strict 3 of 3 through alignment shift alone</td>
+    <td>3 of 3 would discard genuine enzymes, including CARDO and PobA</td></tr>
+<tr><td>Column search window</td><td class="num">&#177;2</td><td>sub-family alignment shifts</td>
+    <td>a window of zero rejects references that are known to be active</td></tr>
+<tr><td>Minimum length</td><td class="num">300 aa</td><td>shortest curated alpha subunit</td>
+    <td>shorter records are kept but flagged as fragments rather than rejected</td></tr>
+<tr><td>Operon gap</td><td class="num">150 bp</td><td>conventional prokaryotic operon spacing</td>
+    <td>larger gaps merge adjacent transcription units; the raw gaps are stored so this can be re-derived</td></tr>
+<tr><td>Ferredoxin length ceiling</td><td class="num">250 aa</td>
+    <td>separates small electron carriers from oxygenase alpha subunits, which exceed 300 aa</td>
+    <td>raising it mislabels second alpha subunits as ferredoxins</td></tr>
+<tr><td>Evidence levels</td><td class="num">95 / 60 / 40 / 25 %</td>
+    <td>general limits of enzyme function transfer by identity</td>
+    <td>every level boundary is configurable, and the sensitivity of the counts is tabulated on the
+        <a href="{{ u('/atlas/evidence') }}">evidence page</a></td></tr>
+</tbody></table></div>
+<p class="note">No threshold here is a natural constant. Each was chosen against a measurable
+trade-off, and the measurement is given so that a reader can disagree with the choice and re-derive
+the consequence.</p>
 
 <h2>3 · Genomic context</h2>
 <p>Rather than locating proteins by translated search and recording coordinates alone, each genome
