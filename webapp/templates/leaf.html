@@ -14,7 +14,13 @@
   <dt>Plasmid / transposon rate</dt><dd>{{ '%.0f%%' % (100 * (leaf.plasmid_rate or 0)) }} / {{ '%.0f%%' % (100 * (leaf.transposon_rate or 0)) }}</dd>
   <dt>Representative</dt><dd><a href="{{ u('/ro/' ~ slug(leaf.representative)) }}">{{ leaf.representative }}</a></dd>
 </dl>
+{% if static_mode %}
+<p class="note">Per-variant FASTA files are not published on the static site. The
+<a href="{{ u('/download/cluster/' ~ leaf.cluster ~ '.fasta') }}">FASTA of this whole type</a>
+contains these members, and the member table below gives their identifiers.</p>
+{% else %}
 <p class="dl"><a class="btn" href="{{ u('/download/leaf/' ~ leaf_slug(leaf.leaf_id) ~ '.fasta') }}">Member sequences (FASTA)</a></p>
+{% endif %}
 
 {% if sdp %}
 <h2>Residue signature</h2>

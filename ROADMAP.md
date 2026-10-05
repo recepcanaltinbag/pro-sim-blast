@@ -58,7 +58,17 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     sinirlarin listesi, ve her indirilebilir dosyanin hangi scriptten geldigi.
     `redundancy.py` + `stats_overview.py`'ye "sequence" duzeyi eklendi.
 
-13. **Intergenik DNA'yi sakla.** Promotor DIZISI analizi (-35/-10, operator
+13. **GitHub Pages derleme gecikmesi (COZULUYOR).** Site 26.683 dosya / 371 MB'a
+    cikinca Pages derlemesi push'un bir saat gerisinde kaldi. Iki duzeltme
+    yapildi: (a) `deploy_pages.sh` artik artimli (kalici klon + rsync + normal
+    push), eskiden her yayinda sifirdan repo kurup tum agaci force-push
+    ediyordu; (b) giris ve varyant basina FASTA dosyalari statik siteden
+    cikarildi (-13.200 dosya, ~-52 MB) cunku dizi sayfada zaten var ve toplu
+    dosyalar hepsini kapsiyor. Hala geride kalirsa sonraki adim: giris
+    sayfalarini 11.422 HTML yerine tip basina JSON + tarayicida render etmek
+    (dosya sayisi ~2.000'e duser).
+
+14. **Intergenik DNA'yi sakla.** Promotor DIZISI analizi (-35/-10, operator
     tekrarlari) icin `extract_genomic_context.py`'nin komsu genler arasindaki
     nukleotid dizisini de kaydetmesi gerekir. Su an yalnizca protein cevirileri
     var, bu yuzden regulasyon sayfasi bolgeyi gosteriyor ama diziyi analiz

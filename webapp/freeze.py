@@ -8,7 +8,10 @@ needs a server and is omitted from the static site (the Docker/HF Space has it).
     python3 freeze.py --out site --base /pro-sim-blast      # base = repo name for GitHub project pages
     python3 freeze.py --out site --base ""             # user/organisation pages or custom domain
 
-Output size: roughly 11k entry pages * ~25 kB + downloads; fits GitHub Pages limits.
+Per-entry and per-variant download files are deliberately NOT exported: they would
+add about 13,000 files and 50 MB while the sequence is already shown on the page
+and the bulk FASTA covers every entry. GitHub Pages builds a site of this size
+slowly, so file count is worth spending carefully.
 """
 
 import argparse
@@ -93,7 +96,6 @@ def main():
     print(f"[pages] {len(leaves)} leaves")
     for l in leaves:
         save(f"/leaf/{A.leaf_slug(l)}", f"leaf/{A.leaf_slug(l)}.html")
-        save(f"/download/leaf/{A.leaf_slug(l)}.fasta", f"download/leaf/{A.leaf_slug(l)}.fasta")
     if args.pages_only:
         print("[search] index")
         write_search_index(con, out, A)
@@ -105,7 +107,6 @@ def main():
     for i, e in enumerate(entries, 1):
         s = A.slug(e)
         save(f"/ro/{s}", f"ro/{s}.html")
-        save(f"/download/ro/{s}.fasta", f"download/ro/{s}.fasta")
         if i % 1000 == 0:
             print(f"   {i}/{len(entries)}")
     print("[downloads] bulk")

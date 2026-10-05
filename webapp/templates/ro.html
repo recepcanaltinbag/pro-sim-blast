@@ -160,10 +160,16 @@ label.</figcaption>
 </div>
 
 <h2>Sequence</h2>
+{% if static_mode %}
+<p class="note">The sequence is below for copying. Per-entry FASTA files are not published on the
+static site; <a href="{{ u('/download/all_confirmed.fasta') }}">the bulk FASTA</a> contains every
+entry, keyed by the identifier shown above.</p>
+{% else %}
 <p class="dl">
   <a class="btn" href="{{ u('/download/ro/' ~ slug(ro.candidate_id) ~ '.fasta') }}">This protein (FASTA)</a>
   <a class="btn" href="{{ u('/download/neighborhood/' ~ slug(ro.candidate_id) ~ '.fasta') }}">All neighbouring proteins (FASTA)</a>
 </p>
+{% endif %}
 <pre class="seq">&gt;{{ ro.candidate_id }} {{ ro.protein_id }} {{ ro.product }} [{{ ro.organism }}]
 {% for i in range(0, ro.sequence|length, 60) %}{{ ro.sequence[i:i+60] }}
 {% endfor %}</pre>
