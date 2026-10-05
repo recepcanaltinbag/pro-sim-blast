@@ -53,8 +53,16 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     bekleniyor.
 11. **Hugging Face Space.** Docker imaji hazir ve test edildi; kullanicinin
     hesabi gerekiyor.
-12. **Operon sayfasina transkripsiyon yonu testi.** Ayni iplikteki gen dizisinin
-    kesilme noktalariyla (terminator benzeri bosluk) karsilastirilmasi.
+12. ~~Veri kalitesi sayfasi.~~ **BITTI.** `/atlas/quality`: dizi fazlaligi
+    (%12,3) ve her sayima etkisi, uc duzeyli test tablosu, olculemeyen
+    sinirlarin listesi, ve her indirilebilir dosyanin hangi scriptten geldigi.
+    `redundancy.py` + `stats_overview.py`'ye "sequence" duzeyi eklendi.
+
+13. **Intergenik DNA'yi sakla.** Promotor DIZISI analizi (-35/-10, operator
+    tekrarlari) icin `extract_genomic_context.py`'nin komsu genler arasindaki
+    nukleotid dizisini de kaydetmesi gerekir. Su an yalnizca protein cevirileri
+    var, bu yuzden regulasyon sayfasi bolgeyi gosteriyor ama diziyi analiz
+    etmiyor. Yeniden tum gbk parse'i gerektirir (~30 dk).
 
 ## Acik sorular (kullaniciya)
 

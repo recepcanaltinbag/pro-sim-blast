@@ -764,3 +764,64 @@ def taxonomy_tree(con, max_children=25, min_count=2, max_depth=7):
     root = build(())
     root["name"] = "all confirmed entries"
     return root
+
+
+# ---------------------------------------------------- provenance of downloads
+PROVENANCE = [
+    ("all_confirmed.fasta", "route", "Amino acid sequence of every confirmed alpha subunit.",
+     "extract_genomic_context.py, build_operons.py"),
+    ("all_confirmed.csv", "route", "One row per confirmed entry: coordinates, type, variant, "
+     "evidence level and operon summary.", "the whole pipeline"),
+    ("operons.csv", "route", "Every gene of every predicted operon, with its component call.",
+     "build_operons.py"),
+    ("novel_candidates.fasta", "route", "Sequences with no close characterised relative.",
+     "evidence_tiers.py"),
+    ("tree_all.nwk", "file", "Maximum-likelihood tree of references and variant representatives.",
+     "build_phylogeny.py"),
+    ("reference_pairs.csv", "file", "Pairwise identity between the 71 curated references, with "
+     "their substrates; the calibration for every identity threshold.", "evidence_tiers.py"),
+    ("evidence_by_cluster.csv", "file", "Evidence level composition of each type.",
+     "evidence_tiers.py"),
+    ("etc_by_cluster.csv", "file", "Electron-transport configurations per type.", "etc_types.py"),
+    ("regulation_by_cluster.csv", "file", "Upstream architecture and promoter region per type.",
+     "analyze_regulation.py"),
+    ("operon_validation.json", "file", "Position and strand tests of the operon rule, with the "
+     "negative control and threshold sensitivity.", "operon_validation.py"),
+    ("variant_signatures.csv", "file", "Residue signature of every variant at the columns that "
+     "separate variants.", "variant_signature.py"),
+    ("motif_stats.json", "file", "Conservation of the eight defining columns.", "motif_stats.py"),
+    ("redundancy.json", "file", "Sequence redundancy and its effect on every count.",
+     "redundancy.py"),
+    ("stats.json", "file", "All hypothesis tests with effect sizes at three levels.",
+     "stats_overview.py"),
+    ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
+     "build_phylogeny.py"),
+    ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
+    ("cluster_identity_matrix.csv", "file", "Highest identity between representatives of each "
+     "pair of types.", "build_phylogeny.py"),
+    ("leaf_profiles.csv", "file", "Variant profiles: genus composition, plasmid rate, "
+     "distinguishing neighbours.", "characterize_leaves.py"),
+    ("cluster_ecology_stats.csv", "file", "Ecology and mobility per type.", "analyze_ecology.py"),
+    ("null_model.csv", "file", "Neighbourhood enrichment against random windows.",
+     "null_model.py"),
+    ("sdp_positions.csv", "file", "Specificity-determining positions at type level.",
+     "analyze_variants.py"),
+]
+
+
+def download_table(analysis_dir):
+    """Her indirilebilir dosya: ne oldugu, hangi scriptin urettigi, kac satir."""
+    rows = []
+    for name, kind, description, script in PROVENANCE:
+        entry = {"name": name, "kind": kind, "description": description, "script": script,
+                 "size": None, "rows": None, "exists": kind == "route"}
+        if kind == "file":
+            path = os.path.join(analysis_dir, name)
+            if os.path.exists(path):
+                entry["exists"] = True
+                entry["size"] = os.path.getsize(path)
+                if name.endswith(".csv"):
+                    with open(path) as fh:
+                        entry["rows"] = max(0, sum(1 for _ in fh) - 1)
+        rows.append(entry)
+    return rows

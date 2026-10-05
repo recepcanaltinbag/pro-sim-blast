@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Data quality{% endblock %}
+{% set page_id = 'quality' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>What this database cannot tell you</h1>
+<p class="lede">Every count on this site is a count of sequenced genomes, not of organisms in the
+world, and several of its numbers depend on conventions rather than measurements. This page gathers
+those limits in one place, with the size of each effect measured where that is possible.</p>
+
+{% if red %}
+<h2>1 · The same protein, counted many times</h2>
+<p>Public genome collections contain hundreds of strains of the same species, so identical alpha
+subunits recur. The database keeps every copy, because the same protein in a different genome sits
+in a different neighbourhood and genomic context is the subject here. But a percentage over entries
+is therefore a percentage over sequenced strains.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<tbody>
+<tr><td>Confirmed entries</td><td class="num">{{ red.entries|fmt }}</td></tr>
+<tr><td>Distinct amino acid sequences</td><td class="num">{{ red.unique_sequences|fmt }}</td></tr>
+<tr><td><b>Redundancy</b></td><td class="num"><b>{{ '%.1f %%' % (100 * red.redundancy) }}</b></td></tr>
+<tr><td>Entries whose sequence occurs more than once</td><td class="num">{{ red.entries_with_a_duplicated_sequence|fmt }}</td></tr>
+<tr><td>Largest number of copies of one sequence</td><td class="num">{{ red.max_copies_of_one_sequence }}</td></tr>
+<tr><td>Entries sharing a RefSeq protein accession</td><td class="num">{{ red.entries_sharing_a_protein_id|fmt }}</td></tr>
+<tr><td>Sequences appearing twice in <em>one</em> replicon, so plausibly a real gene duplication</td>
+    <td class="num">{{ red.sequences_twice_in_one_replicon }}</td></tr>
+</tbody></table></div>
+<figcaption>Redundancy is {{ '%.1f %%' % (100 * red.redundancy) }} overall. The effect on a typical
+statement is modest but real: the share of entries on plasmids is
+{{ '%.2f %%' % (100 * red.plasmid_rate_per_entry) }} counted per entry and
+{{ '%.2f %%' % (100 * red.plasmid_rate_per_unique_sequence) }} counted once per distinct sequence.
+<a href="{{ u('/download/analysis/redundancy.json') }}">Download the full breakdown</a></figcaption>
+</figure>
+
+<h3>Which types are most affected</h3>
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type</th><th class="num">Entries</th><th class="num">Distinct sequences</th><th class="num">Redundancy</th></tr></thead>
+<tbody>
+{% for c in red.clusters if c.entries >= 20 %}
+<tr><td><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster.split('_', 2)[-1] }}</a>
+    <span class="note">{{ c.cluster }}</span></td>
+  <td class="num" data-v="{{ c.entries }}">{{ c.entries|fmt }}</td>
+  <td class="num" data-v="{{ c.unique_sequences }}">{{ c.unique_sequences|fmt }}</td>
+  <td class="num" data-v="{{ (100 * c.redundancy)|round(2) }}">{{ '%.0f %%' % (100 * c.redundancy) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Redundancy concentrates in the most heavily sequenced genera:
+{% for g, n in red.top_redundant_genera[:6] %}<i>{{ g }}</i> {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}.
+These are clinical and model environmental isolates, which is a property of sequencing effort rather
+than of the enzymes.</p>
+
+{% if stats %}
+<h2>2 · Does it change the conclusions?</h2>
+<p>Each association test is therefore run at three levels: once per entry, once per distinct
+sequence, and once per type and genus. A conclusion that survives all three does not depend on how
+the copies are counted.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Question</th><th>Level</th><th class="num">Xenobiotic</th><th class="num">Natural</th>
+<th class="num">Ratio</th><th class="num">p</th><th class="num">Observations</th></tr></thead>
+<tbody>
+{% for t in stats.tests if t.levels is defined %}
+{% for level, r in t.levels.items() %}
+<tr>{% if loop.first %}<td rowspan="{{ t.levels|length }}" class="small">{{ t.question }}</td>{% endif %}
+  <td>{{ {'entry': 'per entry', 'sequence': 'per distinct sequence', 'genus': 'per type and genus'}[level] }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * r.rate_a) }}</td><td class="num">{{ '%.1f %%' % (100 * r.rate_b) }}</td>
+  <td class="num">{{ '%.2f×' % r.ratio }}</td><td class="num">{{ '%.0e' % r.p }}</td>
+  <td class="num">{{ r.n|fmt }}</td></tr>
+{% endfor %}
+{% endfor %}
+</tbody></table></div>
+<p class="note">Both effects hold at every level, so neither is an artefact of repeated strains.
+<a href="{{ u('/atlas/statistics') }}">All tests</a></p>
+{% endif %}
+{% endif %}
+
+<h2>3 · Limits that cannot be measured away</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Limit</th><th>What it affects</th><th>What would resolve it</th></tr></thead>
+<tbody>
+<tr><td><b>Substrate labels belong to the reference enzyme</b>, not to its members. Among the curated
+    references, pairs with different substrates reach 99.8 % identity.</td>
+    <td>Every substrate statement on type and entry pages.</td>
+    <td>Biochemical assays on individual members. The database marks how far each member is from the
+    reference so the claim is never implicit. <a href="{{ u('/atlas/evidence') }}">Evidence</a></td></tr>
+<tr><td><b>Operons are defined by a distance rule</b>, not by transcription.</td>
+    <td>All operon composition percentages.</td>
+    <td>Transcriptomics. In the meantime the rule is tested against a background and the effect of
+    the threshold is tabulated. <a href="{{ u('/atlas/operons') }}">Operons</a></td></tr>
+<tr><td><b>Promoters are located, not predicted.</b> The database stores neighbour protein
+    translations, not intergenic DNA.</td>
+    <td>Everything on the regulation page: no &minus;35 or &minus;10 boxes, no operator sites, no
+    transcription start.</td>
+    <td>Keeping the intergenic sequence during extraction, then motif analysis.
+    <a href="{{ u('/atlas/regulation') }}">Regulation</a></td></tr>
+<tr><td><b>Missing partners are not absent partners.</b> Contig ends truncate neighbourhoods and the
+    window is 10 kb.</td>
+    <td>Beta, ferredoxin and reductase percentages are lower bounds.</td>
+    <td>Complete genomes only, at the cost of sample size. Replicon coding-sequence counts are
+    stored so any analysis can restrict itself.</td></tr>
+<tr><td><b>Discriminating residue positions are statistical</b>, not structural.</td>
+    <td>Variant signature tables.</td>
+    <td>Structures or docking. No structure is used anywhere in this database.</td></tr>
+<tr><td><b>Sequencing is biased</b> towards cultured organisms, clinical isolates and model soil
+    bacteria.</td>
+    <td>Every taxonomic and ecological figure.</td>
+    <td>Nothing available here. The taxonomy tree shows the shape of the bias directly.
+    <a href="{{ u('/atlas/taxonomy') }}">Taxonomy</a></td></tr>
+<tr><td><b>Seven types have no recorded substrate</b> because their original publications could not
+    be traced during this work.</td>
+    <td>They appear as "substrate not established" and are excluded from chemistry groupings.</td>
+    <td>The primary literature for OxoO, CndA, cadA, OMO, PsbAb, ROCH34 and OxyA.</td></tr>
+<tr><td><b>Clustering compares sequences, not function.</b> Variants are sequence-homogeneous
+    subgroups; nothing guarantees that a variant boundary is a functional boundary.</td>
+    <td>Variant counts and the claim that variants are candidate functional units.</td>
+    <td>Experiments. The residue signatures are offered as the strongest available circumstantial
+    evidence.</td></tr>
+</tbody></table></div>
+
+{% if motif %}
+<h2>4 · What is solid</h2>
+<p>Not everything here is provisional. The selection criterion itself is directly observed rather
+than inferred: in all {{ motif.n|fmt }} confirmed entries every one of the four Rieske ligands is
+present at its aligned position, and the inter-subunit bridging carboxylate is present in
+{{ '%.1f %%' % (100 * motif.bridging_present / motif.n) }}. The complete 2-His-1-carboxylate iron
+triad is present in {{ '%.1f %%' % (100 * motif.catalytic_triad['3'] / motif.n) }}, and the
+remainder carry two of the three. Those are measurements on the alignment, not predictions.</p>
+{% if validation %}
+<p>The operon rule is likewise supported by a control rather than by assertion: a second alpha
+subunit in the same window shows no positional enrichment at all
+({{ '%.2f×' % validation.components.alpha_other.position.ratio }}, p =
+{{ '%.2f' % validation.components.alpha_other.strand.p }} on strand), while beta subunits are
+{{ '%.2f×' % validation.components.beta.position.ratio }} enriched beside the alpha with a median
+intergenic gap of {{ validation.components.beta.gap_median }} base pairs.</p>
+{% endif %}
+{% endif %}
+
+<h2>5 · Every file, and the script that made it</h2>
+<p class="note">Nothing on this site is hand-entered except the two curated tables
+(<code>cluster_ecology.csv</code> and <code>chemistry.csv</code>, both from the literature on the
+reference enzymes). Everything else is produced by a script in the repository and can be regenerated
+with <code>bash run_all.sh</code>.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>File</th><th class="num">Rows</th><th>Produced by</th><th>Contents</th></tr></thead>
+<tbody>
+{% for d in downloads if d.exists %}
+<tr>
+  <td>{% if d.kind == 'route' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
+      {% else %}<a href="{{ u('/download/analysis/' ~ d.name) }}">{{ d.name }}</a>{% endif %}</td>
+  <td class="num">{{ d.rows|fmt if d.rows is not none else '–' }}</td>
+  <td class="mono small">{{ d.script }}</td>
+  <td class="small">{{ d.description }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<script>
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a, b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

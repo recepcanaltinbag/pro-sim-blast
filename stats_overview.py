@@ -55,8 +55,8 @@ def load(con, ecology_path):
         for r in csv.DictReader(fh):
             eco[r["cluster"]] = r
     rows = con.execute("""
-        SELECT r.candidate_id, r.ro_cluster cluster, r.ro_group grp, p.organism, p.taxonomy,
-               p.is_plasmid, p.cds_count,
+        SELECT r.candidate_id, r.sequence, r.ro_cluster cluster, r.ro_group grp, p.organism,
+               p.taxonomy, p.is_plasmid, p.cds_count,
                o.has_beta, o.has_ferredoxin, o.has_reductase, o.completeness,
                e.tier, e.ref_identity, t.reductase_type, t.ferredoxin_type, d.domain,
                (SELECT COUNT(*) FROM neighbor nb JOIN gene_category c ON c.neighbor_id=nb.neighbor_id
@@ -67,7 +67,8 @@ def load(con, ecology_path):
         LEFT JOIN ro_etc t ON t.candidate_id=r.candidate_id
         LEFT JOIN ro_domain d ON d.candidate_id=r.candidate_id
         WHERE r.is_confirmed=1""").fetchall()
-    cols = ["candidate_id", "cluster", "group", "organism", "taxonomy", "is_plasmid", "cds_count",
+    cols = ["candidate_id", "sequence", "cluster", "group", "organism", "taxonomy",
+            "is_plasmid", "cds_count",
             "has_beta", "has_ferredoxin", "has_reductase", "completeness", "tier", "ref_identity",
             "reductase_type", "ferredoxin_type", "domain", "transposons"]
     data = []
@@ -82,6 +83,26 @@ def load(con, ecology_path):
         d["mobile"] = int(bool(d["is_plasmid"]) or (d["transposons"] or 0) > 0)
         data.append(d)
     return data
+
+
+def collapse_sequence(data):
+    """Ayni amino asit dizisi basina tek gozlem.
+
+    Genom veritabanlarinda ayni protein yuzlerce susta tekrarlanir; her kopyayi
+    bagimsiz gozlem saymak etki buyuklugunu degil guven araligini sisirir.
+    Ozellik degerleri kopyalar arasinda cogunluk oyuyla belirlenir.
+    """
+    groups = defaultdict(list)
+    for d in data:
+        groups[d.get("sequence") or d["candidate_id"]].append(d)
+    out = []
+    for _, items in groups.items():
+        base = dict(items[0])
+        for k in ("is_plasmid", "mobile", "has_beta", "has_ferredoxin", "has_reductase"):
+            base[k] = int(np.mean([bool(i[k]) for i in items]) >= 0.5)
+        base["n_entries"] = len(items)
+        out.append(base)
+    return out
 
 
 def collapse_genus(data):
@@ -102,7 +123,8 @@ def collapse_genus(data):
 def test_binary_by_class(data, field, label, exclude_euk_heavy):
     """substrat sinifi (xenobiotic vs natural) x ikili ozellik, iki duzeyde."""
     res = {"question": label, "levels": {}}
-    for level, rows in (("entry", data), ("genus", collapse_genus(data))):
+    for level, rows in (("entry", data), ("sequence", collapse_sequence(data)),
+                        ("genus", collapse_genus(data))):
         rows = [r for r in rows if r["sclass"] in SUBSTRATE_CLASSES
                 and r["cluster"] not in exclude_euk_heavy and r["domain"] == "Bacteria"]
         x = [r for r in rows if r["sclass"] == "xenobiotic"]
@@ -232,9 +254,10 @@ def main():
     print(f"[yazildi] {args.out}")
     for t in out["tests"]:
         if "levels" in t:
-            e, g = t["levels"]["entry"], t["levels"]["genus"]
-            print(f"  {t['id']:32s} entry: {e['rate_a']:.3f} vs {e['rate_b']:.3f} ({e['ratio']:.2f}x, p={e['p']:.1e}) | "
-                  f"genus: {g['rate_a']:.3f} vs {g['rate_b']:.3f} ({g['ratio']:.2f}x, p={g['p']:.1e}, n={g['n']})")
+            print(f"  {t['id']}")
+            for level, r in t["levels"].items():
+                print(f"      {level:9s} {r['rate_a']:.3f} vs {r['rate_b']:.3f} "
+                      f"({r['ratio']:.2f}x, p={r['p']:.1e}, n={r['n']})")
         elif "cramers_v" in t:
             print(f"  {t['id']:32s} chi2={t['chi2']:.0f} dof={t['dof']} p={t['p']:.1e} V={t['cramers_v']:.2f}")
         else:

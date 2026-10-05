@@ -104,6 +104,10 @@ python3 motif_stats.py --db roar.sqlite --out "$OUT/motif_stats.json"
 step "12c2/14 Operon kurali ve esik duyarliligi"
 python3 operon_validation.py --db roar.sqlite --out "$OUT/operon_validation.json"
 
+# --- 12c3. Veri fazlaligi olcumu
+step "12c3/14 Veri fazlaligi"
+python3 redundancy.py --db roar.sqlite --out "$OUT/redundancy.json"
+
 # --- 12d. Arama indeksi (FTS5 + filtre alanlari)
 step "12d/14 Arama indeksi"
 python3 build_search_index.py --db roar.sqlite --ecology cluster_ecology.csv --chemistry chemistry.csv

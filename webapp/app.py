@@ -1153,6 +1153,20 @@ def dl_novel():
         con.close()
 
 
+@app.get("/atlas/quality", response_class=HTMLResponse)
+def atlas_quality(request: Request):
+    con = connect()
+    try:
+        red = atlas.read_json(apath("redundancy.json"))
+        return render(request, "atlas_quality.html", red=red,
+                      stats=atlas.read_json(apath("stats.json")),
+                      motif=atlas.read_json(apath("motif_stats.json")),
+                      validation=atlas.read_json(apath("operon_validation.json")),
+                      downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
+    finally:
+        con.close()
+
+
 @app.get("/atlas/statistics", response_class=HTMLResponse)
 def atlas_statistics(request: Request):
     data = atlas.read_json(apath("stats.json"))
@@ -1175,6 +1189,7 @@ def dl_analysis(name: str):
                "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
+               "redundancy.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")

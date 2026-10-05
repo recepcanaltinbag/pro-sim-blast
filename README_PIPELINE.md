@@ -51,6 +51,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12b | `variant_signature.py` | varyantlari ayiran hizalama kolonlari → `cluster_sdp`, `leaf_sdp` |
 | 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
 | 12c2 | `operon_validation.py` | operon kuralinin sinanmasi + esik duyarliligi → `operon_validation.json` |
+| 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
@@ -207,6 +208,19 @@ her REAKSIYON SINIFI icin genel mekanizma semasi cizilir (`atlas.reaction_scheme
 bunlar substrattan bagimsiz ve kesindir. Taksonomi sayfasinda yigili cubugun
 yaninda NCBI soyu uzerinde katlanabilir agac var (`atlas.taxonomy_tree`), kirpilan
 dugum sayisi acikca yaziliyor.
+
+## Veri fazlaligi (adim 12c3)
+
+11.422 giris, 10.019 tekil dizi → **%12,3 fazlalik**. Bir dizinin en fazla 29
+kopyasi var; 2.322 giris kopyali bir dizi tasiyor. Kume boyutlari tekillestirmede
+%5-16 dusuyor (VanA -%15, CntA -%12, KshA -%10). Fazlalik en cok dizilenmis
+cinslerde birikiyor (Pseudomonas 415, Acinetobacter 304).
+
+Girisler SILINMIYOR: ayni protein farkli genomda farkli komsulukta bulunur ve
+genomik baglam bu veritabaninin asil konusudur. Onun yerine `stats_overview.py`
+her ikili testi **uc duzeyde** kosar: giris basina, tekil dizi basina, tip×cins
+basina. Plazmit bulgusu ucunde de ayakta (4,20x / 3,48x / 4,46x), yani tekrarlanan
+suslarin eseri degil.
 
 ## Arama (adim 12d)
 
