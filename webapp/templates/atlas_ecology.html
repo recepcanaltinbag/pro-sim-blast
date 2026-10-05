@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Ecology{% endblock %}
+{% set page_id = 'ecology' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Ecology and mobility</h1>
+<p class="lede">Enzymes that degrade industrial compounds have had decades to spread, while enzymes
+acting on plant-derived aromatics have had hundreds of millions of years to diverge in place. Those
+two histories leave different traces in the genome: the first on plasmids and beside insertion
+sequences, the second spread evenly across many genera of one lineage.</p>
+
+<h2>1 · Mobility against substrate class</h2>
+<figure class="fig">
+<div id="eco" class="chart" style="height:540px"></div>
+<figcaption><b>Shown.</b> One bubble per type, sized by number of members. Horizontal axis: share of
+members carried on a plasmid. Vertical axis: share with a transposase or insertion-sequence gene
+within 10 kb. Colour: substrate class of the characterised reference enzyme.
+<b>Caveat.</b> The substrate class describes the reference, not every member, and plasmid status
+comes from the GenBank record, so an unlabelled plasmid contig counts as chromosomal.</figcaption>
+</figure>
+
+<h2>2 · Taxonomic spread</h2>
+<figure class="fig">
+<div id="spread" class="chart" style="height:520px"></div>
+<figcaption><b>Shown.</b> Number of distinct genera against number of members, for types with at
+least ten members, on logarithmic axes. A type lying above the general trend occurs in many genera
+for its size, pointing to repeated transfer or to ancient presence; a type lying below is confined
+to a narrow group of close relatives.</figcaption>
+</figure>
+
+{% if stats %}
+<h2>3 · Tests</h2>
+<p>Each association is evaluated twice. The entry level treats every alpha subunit as an
+observation, which is optimistic because sequencing databases contain many near-identical strains.
+The genus level keeps one observation per type and genus, which is conservative. A result is called
+robust only when both levels agree in direction and the genus level remains significant.</p>
+{% for t in stats.tests if t.levels is defined %}
+<section class="stat">
+<h2>{{ t.question }}</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level</th><th class="num">Xenobiotic types</th><th class="num">Natural-substrate types</th>
+<th class="num">Ratio</th><th class="num">Odds ratio</th><th class="num">Fisher exact p</th><th class="num">Observations</th></tr></thead>
+<tbody>
+{% for lvl, r in t.levels.items() %}
+<tr><td>{{ 'per entry' if lvl == 'entry' else 'per type and genus' }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * r.rate_a) }}</td><td class="num">{{ '%.1f %%' % (100 * r.rate_b) }}</td>
+  <td class="num">{{ '%.2f' % r.ratio }}</td><td class="num">{{ '%.2f' % r.odds_ratio }}</td>
+  <td class="num">{{ '%.1e' % r.p }}</td><td class="num">{{ r.n|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">
+{% if t.levels.genus.p < 0.05 and t.levels.entry.ratio > 1 and t.levels.genus.ratio > 1 %}
+<span class="verdict verdict--robust">robust</span> The direction and the significance survive collapsing strains to genera.
+{% else %}
+<span class="verdict verdict--weak">not robust</span> The effect does not hold once repeated strains are collapsed.
+{% endif %}
+Non-bacterial entries and eukaryote-heavy types are excluded:
+{{ stats.excluded_euk_heavy_clusters|join(', ') or 'none' }}.</p>
+</section>
+{% endfor %}
+{% endif %}
+
+<h2>4 · Per type</h2>
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type</th><th>Substrate</th><th>Class</th><th class="num">Members</th>
+<th class="num">Plasmid</th><th class="num">Transposon nearby</th><th class="num">Genera</th><th>Label confidence</th></tr></thead>
+<tbody>
+{% for d in over %}
+<tr><td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a></td>
+  <td>{{ d.substrate or '–' }}</td>
+  <td><span class="chip chip--{{ d.sclass }}">{{ d.sclass }}</span></td>
+  <td class="num" data-v="{{ d.n }}">{{ d.n|fmt }}</td>
+  <td class="num" data-v="{{ (100 * (d.plasmid or 0) / d.n)|round(2) }}">{{ pct(d.plasmid or 0, d.n) }}</td>
+  <td class="num" data-v="{{ (100 * d.transposon / d.n)|round(2) }}">{{ pct(d.transposon, d.n) }}</td>
+  <td class="num" data-v="{{ d.genera_n }}">{{ d.genera_n }}</td>
+  <td>{{ d.confidence or '–' }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><a href="{{ u('/download/analysis/cluster_ecology_stats.csv') }}">Download ecology table</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const OVER = {{ over|tojson }};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const font = {color: dark ? '#e8e6e1' : '#15202b'};
+const CC = {xenobiotic:'#8c2f22', natural_aromatic:'#1f7a4d', natural_specialized:'#1f4e79', unknown:'#8a8a8a'};
+const LBL = {xenobiotic:'xenobiotic', natural_aromatic:'natural aromatic',
+             natural_specialized:'natural specialised', unknown:'substrate unknown'};
+const classes = ['xenobiotic','natural_aromatic','natural_specialized','unknown'];
+Plotly.newPlot('eco', classes.map(c => {
+  const d = OVER.filter(o => o.sclass === c);
+  return {type:'scatter', mode:'markers+text', name:LBL[c], text:d.map(o=>o.gene),
+    textposition:'top center', textfont:{size:9, color: dark ? '#cfcdc8' : '#44505b'},
+    x:d.map(o=>100*(o.plasmid||0)/o.n), y:d.map(o=>100*o.transposon/o.n),
+    marker:{size:d.map(o=>7+2.2*Math.sqrt(o.n)), color:CC[c], opacity:0.72, line:{color:'#333', width:0.6}},
+    customdata:d.map(o=>[o.cluster, o.substrate || 'unknown', o.n, o.genera_n]),
+    hovertemplate:'%{customdata[0]}<br>substrate: %{customdata[1]}<br>%{customdata[2]} members, %{customdata[3]} genera<br>plasmid %{x:.1f} %, transposon %{y:.1f} %<extra></extra>'};
+}), {xaxis:{title:'members on plasmids (%)'}, yaxis:{title:'members with a transposase within 10 kb (%)'},
+     margin:{l:60,r:10,t:10,b:50}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
+     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+Plotly.newPlot('spread', classes.map(c => {
+  const d = OVER.filter(o => o.sclass === c && o.n >= 10);
+  return {type:'scatter', mode:'markers+text', name:LBL[c], text:d.map(o=>o.gene),
+    textposition:'top center', textfont:{size:9, color: dark ? '#cfcdc8' : '#44505b'},
+    x:d.map(o=>o.n), y:d.map(o=>o.genera_n), marker:{size:11, color:CC[c], opacity:0.8, line:{color:'#333', width:0.6}},
+    hovertemplate:d.map(o=>o.cluster + ': ' + o.n + ' members, ' + o.genera_n + ' genera<extra></extra>')};
+}), {xaxis:{title:'members (log scale)', type:'log'}, yaxis:{title:'distinct genera (log scale)', type:'log'},
+     margin:{l:60,r:10,t:10,b:50}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
+     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

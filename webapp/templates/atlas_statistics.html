@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Statistics{% endblock %}
+{% set page_id = 'statistics' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Statistical inferences</h1>
+<p class="lede">Each association below is stated as a question, tested, and given an explicit verdict.
+Effect sizes are reported alongside every p value, because with {{ stats.n_entries|fmt }} alpha
+subunits almost any difference reaches significance while only some are large enough to matter.</p>
+
+<div class="caveat">
+  <b>Entries are not independent observations.</b> Sequence databases contain many near-identical
+  strains of the same species, so treating each alpha subunit as one sample inflates the effective
+  sample size. Where the design allows it, every test is therefore repeated after collapsing the
+  data to one observation per type and genus. A finding is called robust only if both levels agree
+  in direction and the genus level stays significant.
+</div>
+
+{% for t in stats.tests %}
+<section class="stat">
+<h2>{{ loop.index }} · {{ t.question }}</h2>
+
+{% if t.levels is defined %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level</th><th class="num">Xenobiotic</th><th class="num">Natural substrate</th>
+<th class="num">Ratio</th><th class="num">Odds ratio</th><th class="num">Fisher exact p</th><th class="num">Observations</th></tr></thead>
+<tbody>
+{% for lvl, r in t.levels.items() %}
+<tr><td>{{ 'per entry' if lvl == 'entry' else 'per type and genus' }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * r.rate_a) }}</td><td class="num">{{ '%.1f %%' % (100 * r.rate_b) }}</td>
+  <td class="num">{{ '%.2f' % r.ratio }}</td><td class="num">{{ '%.2f' % r.odds_ratio }}</td>
+  <td class="num">{{ '%.1e' % r.p }}</td><td class="num">{{ r.n|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">{% if t.levels.genus.p < 0.05 and t.levels.entry.ratio > 1 and t.levels.genus.ratio > 1 %}
+<span class="verdict verdict--robust">robust</span> The effect holds after collapsing strains to genera.
+{% else %}<span class="verdict verdict--weak">not robust</span> The effect weakens or disappears at genus level.{% endif %}
+Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types excluded.</p>
+
+{% elif t.table is defined %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>RO group</th>{% for c in t.cols %}<th class="num">{{ c }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for row in t.table %}
+<tr><td>group {{ t.rows[loop.index0] }}</td>{% for v in row %}<td class="num">{{ v|fmt }}</td>{% endfor %}</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">
+{% set v = t.cramers_v %}
+{% if v >= 0.5 %}<span class="verdict verdict--robust">strong association</span>
+{% elif v >= 0.25 %}<span class="verdict verdict--weak">moderate association</span>
+{% elif v >= 0.1 %}<span class="verdict verdict--weak">weak association</span>
+{% else %}<span class="verdict verdict--none">negligible association</span>{% endif %}
+Chi-squared contingency test: χ² = {{ '%.0f' % t.chi2 }}, degrees of freedom {{ t.dof }},
+p = {{ '%.1e' % t.p }}, Cramér's V = {{ '%.2f' % v }}.
+{% if t.id == 'beta_by_group' %}The beta subunit is close to diagnostic for the group, recovering the
+α₃β₃ against α₃ split of the classical classification from genomic context alone.
+{% elif t.id in ('reductase_by_group', 'ferredoxin_by_group') %}The association exists but is far
+from deterministic, so electron-transport partners cannot by themselves reproduce the historical
+class boundaries.
+{% elif t.id == 'phylum_by_group' %}Groups differ markedly in host range: some are concentrated in
+Actinomycetota, others in Pseudomonadota, and two carry most of the eukaryotic members.{% endif %}
+</p>
+
+{% elif t.id == 'taxonomic_breadth' %}
+<p>Unit of analysis: {{ t.unit }}. Metric: {{ t.metric }}.
+Xenobiotic types, {{ t.xenobiotic.n }} of them, have a median of {{ '%.2f' % t.xenobiotic.median }};
+natural-substrate types, {{ t.natural.n }} of them, a median of {{ '%.2f' % t.natural.median }}.
+Mann–Whitney U = {{ '%.0f' % t.mannwhitney_U }}, p = {{ '%.2f' % t.p }}.</p>
+<p class="note">{% if t.p < 0.05 %}<span class="verdict verdict--robust">significant</span>
+{% else %}<span class="verdict verdict--none">not significant</span>
+With {{ t.xenobiotic.n + t.natural.n }} types the test has little power, so the apparent direction
+should not be reported as a result. This is the one hypothesis in the set that the data do not
+support.{% endif %}</p>
+
+{% elif t.id == 'operon_completeness_by_plasmid' %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Location</th><th class="num">Alpha subunits</th><th class="num">Mean verified partners in operon</th></tr></thead>
+<tbody>
+<tr><td>plasmid</td><td class="num">{{ t.plasmid.n|fmt }}</td><td class="num">{{ '%.2f' % t.plasmid.mean_components }}</td></tr>
+<tr><td>chromosome</td><td class="num">{{ t.chromosome.n|fmt }}</td><td class="num">{{ '%.2f' % t.chromosome.mean_components }}</td></tr>
+</tbody></table></div>
+<p class="note">
+{% if t.mannwhitney_p and t.mannwhitney_p < 0.05 %}<span class="verdict verdict--robust">significant</span>{% else %}<span class="verdict verdict--none">not significant</span>{% endif %}
+Mann–Whitney p = {{ '%.1e' % t.mannwhitney_p }}. Restricted to replicons with at least twenty coding
+sequences, so that short contigs do not create artificially empty neighbourhoods. A plasmid that
+carries the oxygenase together with its electron-transport partners is a complete, transferable
+catabolic module, which is what this difference suggests.</p>
+{% endif %}
+</section>
+{% endfor %}
+
+<section class="stat">
+<h2>{{ stats.tests|length + 1 }} · How much of the database supports a substrate claim</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence level</th>{% for t in stats.evidence.tiers %}<th class="num">{{ t.replace('_',' ') }}</th>{% endfor %}</tr></thead>
+<tbody><tr><td>members</td>{% for c in stats.evidence.counts %}<td class="num">{{ c|fmt }}</td>{% endfor %}</tr></tbody>
+</table></div>
+<p class="note">Substrate labels transfer to
+{{ '%.1f %%' % (100 * stats.evidence.fraction_substrate_transferable) }} of members.
+{{ stats.evidence.clusters_mostly_distant|length }} types consist of at least 80 % distant or novel
+members: {{ stats.evidence.clusters_mostly_distant|join(', ') }}.
+<a href="{{ u('/atlas/evidence') }}">Evidence page</a></p>
+</section>
+
+<h2>Reproducing these numbers</h2>
+<p class="note">All tests are computed by <code>stats_overview.py</code> from the database and
+written to a single JSON file, which this page renders without further arithmetic.
+<a href="{{ u('/download/analysis/stats.json') }}">Download stats.json</a></p>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Evidence{% endblock %}
+{% set page_id = 'evidence' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>How much is actually known about each member</h1>
+<p class="lede">Profile assignment answers one question: which characterised enzyme does this protein
+resemble most? It does not answer the question users care about, which is what the protein does.
+This page quantifies the gap between the two, so that every substrate label in the database can be
+read with the right amount of confidence.</p>
+
+{% set total = tot.values()|sum %}
+<h2>1 · Evidence levels</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level</th><th>Criterion</th><th>What may be claimed</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+<tbody>
+{% for t in TIERS %}
+<tr>
+  <td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:#fff;border:0">{{ t.replace('_', ' ') }}</span></td>
+  <td>{{ TIER_LABEL[t] }}</td>
+  <td class="small">{{ TIER_MEANING[t] }}</td>
+  <td class="num">{{ tot[t]|fmt }}</td>
+  <td class="num">{{ pct(tot[t], total) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Method.</b> Every confirmed alpha subunit was compared with DIAMOND blastp against
+the 71 curated reference proteins; the level follows from identity to the best hit, with the top
+level additionally requiring 90 % query coverage.
+<b>Consequence.</b> A substrate taken from the literature transfers to roughly
+{{ pct(tot['characterized'] + tot['close_homolog'], total) }} of members. For the remainder the
+database presents the label as the nearest characterised type, and entry pages state this
+explicitly. <a href="{{ u('/download/analysis/evidence_by_cluster.csv') }}">Download per-type table</a></figcaption>
+</figure>
+
+{% if calib and calib.max_diff %}
+<h2>2 · Why the levels are about enzyme type, not substrate</h2>
+<div class="caveat">
+  Among the characterised references themselves, the most similar pair with <b>different</b>
+  substrates is <b>{{ calib.max_diff_pair.ref_a }}</b> and <b>{{ calib.max_diff_pair.ref_b }}</b> at
+  {{ '%.1f' % (calib.max_diff_pair.identity|float) }} % identity
+  ({{ calib.max_diff_pair.substrate_a }} against {{ calib.max_diff_pair.substrate_b }}), while the
+  least similar pair that <b>shares</b> a substrate is
+  <b>{{ calib.min_same_pair.ref_a }}</b> and <b>{{ calib.min_same_pair.ref_b }}</b> at
+  {{ '%.1f' % (calib.min_same_pair.identity|float) }} %.
+  {{ calib.n_diff_over_60 }} of {{ calib.n_diff }} reference pairs with different substrates exceed
+  60 % identity. No global identity cut-off can therefore certify a substrate in this family;
+  specificity is set by a few active-site positions. The levels above express confidence that two
+  proteins are the <em>same kind of enzyme</em>, which is a weaker and defensible claim.
+  <a href="{{ u('/atlas/network') }}">See the full calibration table</a>
+</div>
+{% endif %}
+
+<h2>3 · Sensitivity to the threshold</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Identity to nearest reference</th><th class="num">Members at or above</th><th class="num">Share</th></tr></thead>
+<tbody>
+{% for cut, n, tot_n in sweep %}
+<tr><td class="num">{{ cut }} %</td><td class="num">{{ n|fmt }}</td><td class="num">{{ pct(n, tot_n) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Why this table is here.</b> Choosing a different boundary moves large numbers of
+members between levels, so any statement of the form "most members are well characterised" depends
+entirely on where the line is drawn. The thresholds used here are configurable in the pipeline, and
+the counts above let a reader re-derive the figures under their own choice.</figcaption>
+</figure>
+
+<h2>4 · Evidence composition of each type</h2>
+<figure class="fig">
+<div id="ev" class="chart" style="height:1500px"></div>
+<figcaption><b>Reading it.</b> A type coloured mostly dark green is a well-sampled enzyme whose
+substrate annotation extends to its members. A type coloured mostly orange or purple is a profile
+that recruits distant homologues: real Rieske oxygenases, but with unknown function. Those are the
+types where naming members after the reference enzyme would be misleading.</figcaption>
+</figure>
+
+<h2>5 · Types dominated by distant members</h2>
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type</th><th>Reference substrate</th><th class="num">Members</th>
+<th>Evidence composition</th><th class="num">Characterised or close</th></tr></thead>
+<tbody>
+{% for d in over %}
+{% set near = d.tiers['characterized'] + d.tiers['close_homolog'] %}
+<tr>
+  <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a> <span class="note">{{ d.cluster }}</span></td>
+  <td>{{ d.substrate or '–' }}</td>
+  <td class="num" data-v="{{ d.n }}">{{ d.n|fmt }}</td>
+  <td><span class="tierbar">{% for t in TIERS %}{% if d.tiers[t] %}<i style="background:{{ TIER_COLORS[t] }};width:{{ (100 * d.tiers[t] / d.n)|round(2) }}%" title="{{ t }}: {{ d.tiers[t] }}"></i>{% endif %}{% endfor %}</span></td>
+  <td class="num" data-v="{{ (100 * near / d.n)|round(2) }}">{{ pct(near, d.n) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+
+{% if mism %}
+<h2>6 · When the profile and the nearest sequence disagree</h2>
+<p>For a share of members the best-scoring profile belongs to one type while the most similar
+individual reference protein belongs to another. This is expected at low identity, where a profile
+built from many homologues outscores any single sequence, but it marks pairs of types that are
+better treated as one lineage.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Assigned by profile</th><th>Nearest reference protein</th><th class="num">Members</th><th class="num">Mean identity</th></tr></thead>
+<tbody>
+{% for m in mism %}
+<tr><td><a href="{{ u('/cluster/' ~ m.hmm) }}">{{ m.hmm }}</a></td>
+    <td><a href="{{ u('/cluster/' ~ m.nearest) }}">{{ m.nearest }}</a></td>
+    <td class="num">{{ m.n|fmt }}</td>
+    <td class="num">{{ '%.1f %%' % m.ident if m.ident else '–' }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const OVER = {{ over|tojson }}, TIERS = {{ TIERS|tojson }}, TC = {{ TIER_COLORS|tojson }};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const y = OVER.map(d => d.gene + ' (' + d.n + ')').reverse();
+Plotly.newPlot('ev', TIERS.map(t => ({type:'bar', orientation:'h', name:t.replace('_',' '), y,
+  x:OVER.map(d => 100*(d.tiers[t]||0)/d.n).reverse(), marker:{color:TC[t]},
+  hovertemplate:t + ': %{x:.1f} %<extra></extra>'})),
+  {barmode:'stack', margin:{l:180,r:10,t:10,b:45}, xaxis:{title:'share of members (%)', range:[0,100]},
+   yaxis:{tickfont:{size:10}}, legend:{orientation:'h', y:1.015, font:{size:10}},
+   font:{color: dark ? '#e8e6e1' : '#15202b'},
+   paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

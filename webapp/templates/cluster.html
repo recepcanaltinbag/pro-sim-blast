@@ -1,85 +1,183 @@
 {% extends "base.html" %}
-{% block title %}{{ c.gene }} ({{ c.cluster }}){% endblock %}
+{% block title %}{{ c.gene }}{% endblock %}
 {% block body %}
-<nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/clusters') }}">Clusters</a> › {{ c.cluster }}</nav>
-<h1>{{ c.gene }} <span class="muted">· reference type {{ c.cluster }} · group {{ c.group }}</span></h1>
+<nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/clusters') }}">Types</a> › {{ c.cluster }}</nav>
+
+<h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · RO group {{ c.group }}</span></h1>
+
+{% set tiers = x.tiers %}
+{% set tier_total = tiers.values()|sum if tiers else 0 %}
+{% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}
+<div class="caveat">
+  <b>{{ c.substrate or 'Substrate not established' }}</b>
+  {% if c.sclass %}<span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>{% endif %}
+  {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  {% if tier_total %}Of the {{ c.n|fmt }} members assigned here,
+  <b>{{ pct(near, tier_total) }}</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  {% endif %}
+  {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
+</div>
 
 <div class="cols">
   <div>
+    <h3>Key facts</h3>
     <dl class="kv">
-      <dt>Substrate</dt><dd>{{ c.substrate or 'unknown' }} <span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>
-        {% if c.confidence %}<span class="muted small">(annotation confidence: {{ c.confidence }})</span>{% endif %}</dd>
-      {% if c.note %}<dt>Note</dt><dd>{{ c.note }}</dd>{% endif %}
-      <dt>Members</dt><dd>{{ c.n|fmt }} confirmed entries on {{ c.replicons|fmt }} replicons, {{ c.genera_n }} genera</dd>
-      <dt>Plasmid</dt><dd>{{ pct(c.plasmid, c.n) }} of members ({{ c.plasmid|fmt }})</dd>
-      <dt>Mean HMM score</dt><dd>{{ '%.0f' % (c.score or 0) }} bits · mean model coverage {{ '%.2f' % (c.coverage or 0) }}</dd>
-      <dt>Assignment classes</dt><dd>{% for k in c.classes %}<span class="chip chip--{{ k.assignment_class }}">{{ k.assignment_class }} {{ k.n }}</span> {% endfor %}</dd>
-      <dt>Domain of life</dt><dd>{% for d in c.domains %}{{ d.domain }}{% if d.euk_group %} / {{ d.euk_group }}{% endif %}: {{ d.n }}{% if not loop.last %} · {% endif %}{% endfor %}</dd>
+      <dt>Members</dt><dd>{{ c.n|fmt }} confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>{{ c.leaves|length }} sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>{{ c.replicons|fmt }} replicons, {{ c.genera_n }} genera</dd>
+      <dt>On plasmids</dt><dd>{{ pct(c.plasmid or 0, c.n) }} ({{ (c.plasmid or 0)|fmt }})</dd>
+      <dt>Transposase within 10 kb</dt><dd>{{ pct(x.transposon, c.n) }}</dd>
+      <dt>Profile match</dt><dd>mean score {{ '%.0f' % (c.score or 0) }} bits, mean coverage {{ '%.2f' % (c.coverage or 0) }}</dd>
+      <dt>Domains of life</dt><dd>{% for d in c.domains %}{{ d.domain }}{% if d.euk_group %} / {{ d.euk_group }}{% endif %} {{ d.n }}{% if not loop.last %} · {% endif %}{% endfor %}</dd>
+      <dt>Phyla</dt><dd class="small">{% for p, n in x.phyla %}{{ p }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</dd>
       <dt>Top genera</dt><dd>{% for g, n in c.top_genera %}<span class="chip">{{ g }} {{ n }}</span> {% endfor %}</dd>
     </dl>
     <p class="dl">
-      <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.fasta') }}">⬇ FASTA</a>
-      <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.csv') }}">⬇ CSV</a>
+      <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.fasta') }}">Sequences (FASTA)</a>
+      <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.csv') }}">Annotation (CSV)</a>
     </p>
   </div>
+
   <div>
-    <h3>Operon components (sequence-verified, same strand, gap ≤ 150 bp)</h3>
+    {% if tier_total %}
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%">{% for t in TIERS %}{% if tiers[t] %}<i style="background:{{ TIER_COLORS[t] }};width:{{ (100 * tiers[t] / tier_total)|round(2) }}%" title="{{ t }}: {{ tiers[t] }}"></i>{% endif %}{% endfor %}</span>
     <table class="data compact">
-      <thead><tr><th>Component</th><th class="num">In operon</th><th class="num">Within ±10 kb</th></tr></thead>
       <tbody>
-      <tr><td>β subunit (Ring_hydroxyl_B)</td><td class="num">{{ pct(c.operon.beta or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_beta or 0, c.operon.total) }}</td></tr>
-      <tr><td>Ferredoxin (Fer2 / Rieske, ≤250 aa)</td><td class="num">{{ pct(c.operon.ferredoxin or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_ferredoxin or 0, c.operon.total) }}</td></tr>
-      <tr><td>Reductase (FNR / GR type)</td><td class="num">{{ pct(c.operon.reductase or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_reductase or 0, c.operon.total) }}</td></tr>
-      <tr><td>All three in operon</td><td class="num">{{ pct(c.operon.complete or 0, c.operon.total) }}</td><td></td></tr>
+      {% for t in TIERS %}{% if tiers[t] %}
+      <tr><td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:#fff;border:0">{{ t.replace('_',' ') }}</span></td>
+          <td class="small">{{ TIER_LABEL[t] }}</td>
+          <td class="num">{{ tiers[t]|fmt }}</td><td class="num">{{ pct(tiers[t], tier_total) }}</td></tr>
+      {% endif %}{% endfor %}
       </tbody>
     </table>
-    <h3>Most common operon layouts</h3>
-    <table class="data compact">
-      <tbody>{% for l in c.layouts %}<tr><td class="mono small">{{ l.layout }}</td><td class="num">{{ l.n }}</td></tr>{% endfor %}</tbody>
-    </table>
+    <p class="note"><a href="{{ u('/atlas/evidence') }}">How these levels are defined</a></p>
+    {% endif %}
+
+    {% if x.nearest %}
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      {% for name, ident in x.nearest %}
+      <tr><td><a href="{{ u('/cluster/' ~ name) }}">{{ name }}</a></td><td class="num">{{ '%.1f %%' % ident }}</td></tr>
+      {% endfor %}
+    </tbody></table>
+    {% endif %}
   </div>
 </div>
 
+<h2>Operon and electron transport</h2>
 <div class="cols">
   <div>
-    <h3>Neighbourhood (±4 genes): share of members with ≥1 gene of each category</h3>
     <table class="data compact">
-      <thead><tr><th>Category</th><th class="num">Members</th><th class="num">Genes</th></tr></thead>
-      <tbody>{% for r in c.neighborhood %}<tr><td>{{ r.category }}</td><td class="num">{{ pct(r.ros, c.n) }}</td><td class="num">{{ r.genes }}</td></tr>{% endfor %}</tbody>
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">{{ pct(c.operon.beta or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_beta or 0, c.operon.total) }}</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">{{ pct(c.operon.ferredoxin or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_ferredoxin or 0, c.operon.total) }}</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">{{ pct(c.operon.reductase or 0, c.operon.total) }}</td><td class="num">{{ pct(c.operon.nb_reductase or 0, c.operon.total) }}</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">{{ pct(c.operon.complete or 0, c.operon.total) }}</td><td></td></tr>
+      </tbody>
+    </table>
+    {% if x.etc %}
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      {% for e in x.etc %}<tr><td class="mono small">{{ e.p }}</td><td class="num">{{ e.n|fmt }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% endif %}
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    <p class="note">Most frequent same-strand gene runs around the alpha subunit, 5' to 3'.</p>
+    <table class="data compact"><tbody>
+      {% for l in c.layouts[:6] %}
+      <tr><td>{{ layout_svg(l.layout)|safe }}<div class="note mono">{{ l.layout }}</div></td><td class="num">{{ l.n }}</td></tr>
+      {% endfor %}
+    </tbody></table>
+  </div>
+</div>
+
+{% if x.regulation %}
+<h2>Regulation</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      {% set rtot = x.regulation|sum(attribute='n') %}
+      {% for r in x.regulation %}
+      <tr><td>{% if r.a == 'divergent_regulator' %}<b>regulator, divergent</b> (shared promoter region)
+          {% elif r.a == 'codirectional_regulator' %}regulator, co-directional
+          {% elif r.a == 'divergent_other' %}non-regulator, divergent
+          {% elif r.a == 'codirectional_other' %}non-regulator, co-directional
+          {% else %}no upstream gene in the window{% endif %}</td>
+        <td class="num">{{ r.n|fmt }}</td><td class="num">{{ pct(r.n, rtot) }}</td></tr>
+      {% endfor %}
+      </tbody>
     </table>
   </div>
   <div>
-    <h3>Regulator families nearby (±4 genes)</h3>
-    <table class="data compact">
-      <tbody>{% for r in c.regulators %}<tr><td>{{ r.family }}</td><td class="num">{{ r.n }}</td></tr>{% else %}<tr><td class="empty">none</td></tr>{% endfor %}</tbody>
-    </table>
+    {% if x.reg_families %}
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      {% for f in x.reg_families %}<tr><td>{{ f.f if f.f != 'regulator_unclassified' else 'not assignable' }}</td><td class="num">{{ f.n }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% endif %}
+    {% if c.regulators %}
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      {% for r in c.regulators[:8] %}<tr><td>{{ r.family }}</td><td class="num">{{ r.n }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% endif %}
+    <p class="note"><a href="{{ u('/atlas/regulation') }}">What the promoter region does and does not tell us</a></p>
   </div>
 </div>
+{% endif %}
 
-<h2>Variants (sequence-homogeneous leaves)</h2>
-<p class="muted">Members were split recursively until each leaf reached a median pairwise identity target; a leaf is a candidate functional variant. Labels summarise the dominant genus and distinguishing neighbours.</p>
-<div class="tablewrap">
-<table class="data compact">
-  <thead><tr><th>Leaf</th><th class="num">Size</th><th class="num">Median identity</th><th>Top genera</th><th>Signature neighbours</th><th class="num">Plasmid</th></tr></thead>
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody>{% for r in c.neighborhood %}<tr><td>{{ r.category }}</td><td class="num">{{ pct(r.ros, c.n) }}</td><td class="num">{{ r.genes|fmt }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+{% if x.tree_svg %}
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap">{{ x.tree_svg|safe }}</div>
+{% endif %}
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Variant</th><th class="num">Members</th><th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th><th class="num">Plasmid</th></tr></thead>
   <tbody>
   {% for l in c.leaves %}
-  <tr>
-    <td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id }}</a>{% if not l.is_homogeneous %} <span class="chip chip--warn">heterogeneous</span>{% endif %}</td>
-    <td class="num">{{ l.size }}</td>
-    <td class="num">{{ '%.2f' % l.median_identity }}</td>
+  <tr><td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id }}</a>{% if not l.is_homogeneous %} <span class="chip chip--warn">heterogeneous</span>{% endif %}</td>
+    <td class="num">{{ l.size }}</td><td class="num">{{ '%.2f' % l.median_identity }}</td>
     <td class="small">{{ (l.top_genera or '').replace(';', ', ') }}</td>
     <td class="small">{{ l.neighbor_signature or '' }}</td>
-    <td class="num">{{ '%.0f%%' % (100 * (l.plasmid_rate or 0)) }}</td>
-  </tr>
+    <td class="num">{{ '%.0f %%' % (100 * (l.plasmid_rate or 0)) }}</td></tr>
   {% endfor %}
   </tbody>
-</table>
-</div>
+</table></div>
 
-<h2>Members <span class="muted">({{ total|fmt }})</span></h2>
+<h2>Members <span class="note">{{ total|fmt }}</span></h2>
 {% if not static_mode %}
 <form class="inline" method="get">
-  <input type="search" name="q" value="{{ q }}" placeholder="filter by organism / product / ID">
+  <input type="search" name="q" value="{{ q }}" placeholder="filter by organism, product or identifier">
   <button>Filter</button>
 </form>
 {% endif %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Taxonomy{% endblock %}
+{% set page_id = 'taxonomy' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Which organisms carry which enzyme</h1>
+<p class="lede">Every confirmed alpha subunit is placed in the taxonomy of the genome record that
+contains it. Reading the composition of a type together with the number of distinct genera
+separates two histories: an enzyme inherited vertically within one lineage, and an enzyme that has
+moved between distant hosts.</p>
+
+<figure class="fig">
+<div id="tax" class="chart" style="height:1500px"></div>
+<figcaption><b>Shown.</b> Phylum of each member, as a percentage of the type, for the twelve most
+frequent phyla; eukaryotes are shown at kingdom-group level. Types are ordered by number of
+members, given in brackets.
+<b>Interpretation.</b> A single-phylum type spread over many genera within that phylum is the
+signature of ancient vertical inheritance. A type split across unrelated phyla, especially with a
+high plasmid rate on the <a href="{{ u('/atlas/ecology') }}">ecology page</a>, indicates horizontal
+acquisition. <b>Caveat.</b> Sequenced genomes are heavily biased towards cultured pathogens and
+model soil bacteria, so absence from a phylum is weak evidence.</figcaption>
+</figure>
+
+<h2>Composition table</h2>
+<p class="note">Eukaryotic Rieske oxygenases are not a contamination artefact: chloroplast enzymes
+such as choline monooxygenase, fungal and animal proteins carry an intact Rieske centre and
+catalytic triad and pass exactly the same test as the bacterial enzymes. Types with a substantial
+eukaryotic share are therefore excluded from the bacterial mobility statistics rather than silently
+mixed in.</p>
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type</th><th>Substrate</th><th class="num">Members</th><th class="num">Genera</th>
+<th>Dominant phylum</th><th class="num">Share</th><th class="num">Eukaryotic</th><th>Eukaryotic groups</th></tr></thead>
+<tbody>
+{% for d in over %}
+{% set top = (d.phyla.items()|list)[0] if d.phyla else ('–', 0) %}
+{% set euk = d.euk %}
+<tr>
+  <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a>
+      <span class="note">{{ d.cluster }}</span></td>
+  <td>{{ d.substrate or '–' }}</td>
+  <td class="num" data-v="{{ d.n }}">{{ d.n|fmt }}</td>
+  <td class="num" data-v="{{ d.genera_n }}">{{ d.genera_n }}</td>
+  <td>{{ top[0] }}</td>
+  <td class="num" data-v="{{ (100 * top[1] / d.n)|round(1) }}">{{ pct(top[1], d.n) }}</td>
+  <td class="num" data-v="{{ (100 * euk / d.n)|round(1) }}">{{ pct(euk, d.n) }}</td>
+  <td class="note">{% for p, n in d.phyla.items() if p in ('Viridiplantae','Fungi','Metazoa','Sar','Streptophyta','Dikarya','Chordata','Ecdysozoa','Haptista','Discoba') %}{{ p }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const OVER = {{ over|tojson }}, TOP = {{ top_phyla|tojson }};
+const pal = ['#1f4e79','#8c2f22','#1f7a4d','#d9a13b','#6b4c9a','#c2703f','#2a8f87','#b5503f',
+             '#5b6670','#2d4356','#7fa650','#9e6b7d'];
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const y = OVER.map(d => d.gene + ' (' + d.n + ')').reverse();
+const traces = TOP.map((p, i) => ({type:'bar', orientation:'h', name:p,
+  marker:{color:pal[i % pal.length]}, y,
+  x: OVER.map(d => 100*(d.phyla[p]||0)/d.n).reverse(),
+  hovertemplate: p + ': %{x:.1f} %<extra></extra>'}));
+traces.push({type:'bar', orientation:'h', name:'other', marker:{color:'#b9b4ab'}, y,
+  x: OVER.map(d => { let s = 0; for (const [k,v] of Object.entries(d.phyla)) if (!TOP.includes(k)) s += v; return 100*s/d.n; }).reverse(),
+  hovertemplate:'other: %{x:.1f} %<extra></extra>'});
+Plotly.newPlot('tax', traces, {barmode:'stack', margin:{l:180,r:10,t:10,b:45},
+  xaxis:{title:'share of members (%)', range:[0,100]}, yaxis:{tickfont:{size:10}},
+  legend:{orientation:'h', y:1.015, font:{size:10}}, font:{color: dark ? '#e8e6e1' : '#15202b'},
+  paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

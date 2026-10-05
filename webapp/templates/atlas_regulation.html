@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Regulation{% endblock %}
+{% set page_id = 'regulation' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Operon start, promoter region and the regulator facing it</h1>
+<p class="lede">Transcription of a catabolic operon begins at its 5' end, and the promoter lies in
+the intergenic region immediately upstream. This page locates that region for every confirmed alpha
+subunit, measures it, and reports what sits on the other side of it.</p>
+
+<div class="caveat">
+  <b>What is measured and what is not.</b>
+  The database contains the protein sequences of neighbouring genes, their coordinates and their
+  strands, but not the intergenic DNA. So the <em>promoter region</em> is located and measured here,
+  while the promoter <em>sequence</em> is not predicted: no &minus;35 or &minus;10 boxes, no operator
+  repeats, no transcription start site. Statements below concern genomic architecture, which is
+  observable, and stop short of regulatory mechanism, which is not.
+</div>
+
+<h2>1 · Four architectures</h2>
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" width="100%" style="max-width:760px" class="schematic">
+  <style>
+    .lbl { font-size: 11px; fill: currentColor; }
+    .ttl { font-size: 12px; font-weight: 700; fill: currentColor; }
+    .pr  { font-size: 10px; fill: currentColor; }
+  </style>
+  <!-- divergent regulator -->
+  <text class="ttl" x="0" y="14">Divergent regulator: shared promoter region</text>
+  <polygon points="150,22 60,22 40,34 60,46 150,46" fill="#8e44ad" stroke="#333"/>
+  <text class="lbl" x="95" y="38" text-anchor="middle" fill="#fff">regulator</text>
+  <rect x="152" y="22" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
+  <text class="pr" x="180" y="60" text-anchor="middle">promoter region</text>
+  <polygon points="210,22 300,22 320,34 300,46 210,46" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <text class="lbl" x="255" y="38" text-anchor="middle" fill="#fff">alpha</text>
+  <polygon points="322,22 392,22 412,34 392,46 322,46" fill="#2980b9" stroke="#333"/>
+  <text class="lbl" x="357" y="38" text-anchor="middle" fill="#fff">beta</text>
+  <text class="lbl" x="430" y="38">one intergenic region controls both genes</text>
+
+  <!-- codirectional regulator -->
+  <text class="ttl" x="0" y="96">Co-directional regulator: read-through or separate promoter</text>
+  <polygon points="40,104 130,104 150,116 130,128 40,128" fill="#8e44ad" stroke="#333"/>
+  <text class="lbl" x="90" y="120" text-anchor="middle" fill="#fff">regulator</text>
+  <rect x="152" y="104" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
+  <polygon points="210,104 300,104 320,116 300,128 210,128" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <text class="lbl" x="255" y="120" text-anchor="middle" fill="#fff">alpha</text>
+  <text class="lbl" x="340" y="120">same strand: the two may be one transcript</text>
+
+  <!-- no regulator -->
+  <text class="ttl" x="0" y="178">No regulator upstream</text>
+  <polygon points="150,186 60,186 40,198 60,210 150,210" fill="#b2bec3" stroke="#333"/>
+  <text class="lbl" x="95" y="202" text-anchor="middle" fill="#fff">other gene</text>
+  <rect x="152" y="186" width="56" height="24" fill="none" stroke="#8c2f22" stroke-dasharray="4,3"/>
+  <polygon points="210,186 300,186 320,198 300,210 210,210" fill="#c0392b" stroke="#111" stroke-width="1.4"/>
+  <text class="lbl" x="255" y="202" text-anchor="middle" fill="#fff">alpha</text>
+  <text class="lbl" x="340" y="202">regulation from a distant locus, or none</text>
+  <text class="pr" x="0" y="238">Arrows point 5' to 3'. The dashed box is the intergenic region measured on this page.</text>
+</svg>
+<figcaption><b>Why the divergent case matters.</b> A regulator transcribed away from the operon
+shares the single intergenic region with it and can control both its own gene and the catabolic
+genes from one site. This is the classical arrangement for LysR-family activators of aromatic
+degradation pathways, and it makes regulator and operon one transferable unit. Detecting it requires
+gene strand, which is why this analysis was impossible in the earlier version of this pipeline.</figcaption>
+</figure>
+
+<h2>2 · How often each architecture occurs</h2>
+{% set total = arch|sum(attribute='n') %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Architecture of the gene upstream of the operon</th><th class="num">Alpha subunits</th><th class="num">Share</th><th class="num">Median intergenic region</th></tr></thead>
+<tbody>
+{% for a in arch %}
+<tr><td>{% if a.architecture == 'divergent_regulator' %}<b>regulator, divergent</b> (shared promoter region)
+    {% elif a.architecture == 'codirectional_regulator' %}regulator, co-directional
+    {% elif a.architecture == 'divergent_other' %}non-regulator, divergent
+    {% elif a.architecture == 'codirectional_other' %}non-regulator, co-directional
+    {% else %}no upstream gene in the window{% endif %}</td>
+  <td class="num">{{ a.n|fmt }}</td><td class="num">{{ pct(a.n, total) }}</td>
+  <td class="num">{% set m = amedian(gaps.get(a.architecture, [])) %}{% if m %}{{ '%.0f bp' % m }}{% else %}–{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Finding.</b> Regulators in the divergent position sit closer to the operon start than
+other upstream genes do, and almost all of them fall within a few hundred base pairs, the range
+occupied by shared bacterial promoter regions. Short spacing is what a shared regulatory site
+requires, so the geometry is consistent across the family rather than incidental.</figcaption>
+</figure>
+
+<h2>3 · Distance from the operon start</h2>
+<figure class="fig">
+<div id="gaps" class="chart" style="height:420px"></div>
+<figcaption><b>Shown.</b> Distribution of the intergenic distance between the 5' end of the predicted
+operon and the nearest upstream gene, split by architecture, truncated at 2 kb.
+<b>Caveat.</b> Operon boundaries come from a gap rule rather than from transcript data, so an operon
+whose true 5' gene was missed will show an inflated distance.</figcaption>
+</figure>
+
+<h2>4 · Which regulator families face the operon</h2>
+<figure class="fig">
+<div class="cols">
+<div><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Divergent cases</th></tr></thead>
+<tbody>{% for f in fams %}<tr><td>{{ f.f if f.f != 'regulator_unclassified' else 'not assignable to a family' }}</td><td class="num">{{ f.n|fmt }}</td></tr>{% endfor %}</tbody>
+</table></div>
+<div><table class="data compact">
+<thead><tr><th>Most frequent upstream products</th><th class="num">n</th></tr></thead>
+<tbody>{% for p in products %}<tr><td class="small">{{ p.p }}</td><td class="num">{{ p.n }}</td></tr>{% endfor %}</tbody>
+</table></div>
+</div>
+<figcaption><b>Finding.</b> LysR is the largest assignable family in the divergent position, followed
+by TetR, MarR, IclR and GntR. The LysR dominance matches the literature on aromatic catabolism,
+where LysR-type activators respond to a pathway intermediate and induce the operon they face.
+<b>Caveat.</b> Families are assigned from product name text, so a sizeable group remains
+unassignable and the counts are conservative.</figcaption>
+</figure>
+
+<h2>5 · Per type</h2>
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type</th><th class="num">Members</th><th class="num">Divergent regulator</th>
+<th class="num">Median intergenic</th><th>Dominant family</th></tr></thead>
+<tbody>
+{% for r in per_cluster %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}"><b>{{ r.cluster.split('_', 2)[-1] }}</b></a>
+    <span class="note">{{ r.cluster }}</span></td>
+  <td class="num" data-v="{{ r.n }}">{{ r.n|fmt }}</td>
+  <td class="num" data-v="{{ (100 * (r.divergent_regulator_rate|float))|round(1) }}">{{ '%.0f %%' % (100 * (r.divergent_regulator_rate|float)) }} <span class="note">({{ r.divergent_regulator }})</span></td>
+  <td class="num" data-v="{{ r.median_intergenic_bp or 0 }}">{{ (r.median_intergenic_bp ~ ' bp') if r.median_intergenic_bp else '–' }}</td>
+  <td>{{ r.top_regulator_family or '–' }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><a href="{{ u('/download/analysis/regulation_by_cluster.csv') }}">Download this table</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const GAPS = {{ gaps|tojson }};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const names = {divergent_regulator:'regulator, divergent', codirectional_regulator:'regulator, co-directional',
+               divergent_other:'non-regulator, divergent', codirectional_other:'non-regulator, co-directional'};
+const cols = {divergent_regulator:'#8e44ad', codirectional_regulator:'#b08bc9',
+              divergent_other:'#7f8c8d', codirectional_other:'#bdc3c7'};
+Plotly.newPlot('gaps', Object.keys(names).filter(k => (GAPS[k]||[]).length).map(k => ({
+  type:'histogram', name:names[k], x:GAPS[k], marker:{color:cols[k]},
+  xbins:{start:0, end:2000, size:50}, histnorm:'percent', opacity:0.75,
+  hovertemplate:names[k] + ': %{y:.1f} % of cases in %{x} bp<extra></extra>'})),
+  {barmode:'overlay', xaxis:{title:'intergenic distance to the nearest upstream gene (bp)'},
+   yaxis:{title:'share within architecture (%)'}, margin:{l:60,r:10,t:10,b:50},
+   legend:{orientation:'h', y:1.02, font:{size:10}}, font:{color: dark ? '#e8e6e1' : '#15202b'},
+   paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a,b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

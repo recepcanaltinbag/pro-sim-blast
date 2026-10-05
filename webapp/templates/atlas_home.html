@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Atlas{% endblock %}
+{% set page_id = 'home' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Atlas of the Rieske oxygenase family</h1>
+<p class="lede">A Rieske oxygenase (RO) alpha subunit carries two metal centres: a Rieske
+[2Fe-2S] cluster that receives electrons and a mononuclear Fe(II) site where the substrate is
+oxidised. This atlas describes every protein in the database that demonstrably has both, together
+with the genes around it, the partners that feed it electrons, the regulator upstream of its
+operon, and the organisms that carry it.</p>
+
+<div class="caveat">
+  <b>Three units, three different claims.</b>
+  A <b>type</b> is one of the 71 enzymes characterised in the literature and curated here; its
+  substrate is experimental fact.
+  A <b>member</b> is a protein assigned to the type whose profile it scores highest against; this
+  states closest characterised relative, not identical function.
+  A <b>variant</b> is a sequence-homogeneous subgroup of members, the finest unit at which a
+  distinct function can reasonably be proposed.
+  Pages that show substrates always show the evidence level alongside, because in this family
+  references with different substrates reach 99 % identity to each other.
+</div>
+
+<section class="tiles">
+  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed alpha subunits</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">characterised types</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">variants</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">replicons</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.operon_any|fmt }}</div><div class="tile__l">operons with a verified partner</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.novel|fmt }}</div><div class="tile__l">novel-type candidates</div></div>
+</section>
+
+<h2>Sections</h2>
+<div class="cards">
+  <a class="card" href="{{ u('/atlas/phylogeny') }}"><h3>Phylogeny</h3>
+    <p>Maximum-likelihood tree of the curated references and one representative per variant, built
+    from the aligned catalytic core. Shows which types are lineages and which are arbitrary cuts
+    through a continuum.</p></a>
+  <a class="card" href="{{ u('/atlas/network') }}"><h3>Sequence space</h3>
+    <p>Similarity network and type-versus-type identity matrix, with the identities between
+    characterised references as the calibration for any threshold.</p></a>
+  <a class="card" href="{{ u('/atlas/taxonomy') }}"><h3>Taxonomy</h3>
+    <p>Phylum composition of every type, including the plant, fungal and animal branches that pass
+    the same catalytic-centre test as the bacterial enzymes.</p></a>
+  <a class="card" href="{{ u('/atlas/operons') }}"><h3>Operons and electron transport</h3>
+    <p>Beta subunits, ferredoxins and reductases detected from neighbour protein sequences rather
+    than annotation text, per type and per RO group.</p></a>
+  <a class="card" href="{{ u('/atlas/regulation') }}"><h3>Regulation</h3>
+    <p>The 5' end of each operon, the intergenic region where its promoter must lie, and the
+    regulator family facing it.</p></a>
+  <a class="card" href="{{ u('/atlas/ecology') }}"><h3>Ecology and mobility</h3>
+    <p>Plasmid and transposon association against substrate class, and taxonomic spread as a proxy
+    for how long a type has been inherited vertically.</p></a>
+  <a class="card" href="{{ u('/atlas/evidence') }}"><h3>Evidence</h3>
+    <p>How close each member actually is to a characterised enzyme, and which types consist almost
+    entirely of distant relatives.</p></a>
+  <a class="card" href="{{ u('/atlas/statistics') }}"><h3>Statistics</h3>
+    <p>Each association tested twice, once per entry and once per genus, with effect sizes and an
+    explicit verdict on robustness.</p></a>
+</div>
+
+{% if stats %}
+<h2>What the data support</h2>
+<ul class="findings">
+  <li><b>Substrate labels transfer to a minority of members.</b>
+    {{ '%.0f' % (100 * stats.evidence.fraction_substrate_transferable) }} % of members are at least
+    60 % identical to a characterised enzyme;
+    {{ stats.evidence.clusters_mostly_distant|length }} types consist mostly of distant relatives.
+    <a href="{{ u('/atlas/evidence') }}">Evidence</a></li>
+  {% for t in stats.tests if t.id == 'beta_by_group' %}
+  <li><b>The beta subunit is a property of the RO group, not of the substrate</b>
+    (Cramér's V = {{ '%.2f' % t.cramers_v }}). Groups 2 to 4 are α₃β₃ enzymes; groups 1 and 5 are
+    almost exclusively α₃. <a href="{{ u('/atlas/operons') }}">Operons</a></li>
+  {% endfor %}
+  {% for t in stats.tests if t.id == 'plasmid_by_class' %}
+  <li><b>Xenobiotic-degrading types are plasmid-borne far more often</b> than natural-substrate
+    types, {{ '%.1f' % t.levels.genus.ratio }}-fold after collapsing repeated strains to one
+    observation per genus. <a href="{{ u('/atlas/ecology') }}">Ecology</a></li>
+  {% endfor %}
+  {% for t in stats.tests if t.id == 'operon_completeness_by_plasmid' %}
+  <li><b>Plasmid-borne alpha subunits carry more complete operons</b>
+    ({{ '%.2f' % t.plasmid.mean_components }} verified partners versus
+    {{ '%.2f' % t.chromosome.mean_components }}), as expected for self-contained catabolic modules
+    that move between hosts. <a href="{{ u('/atlas/operons') }}">Operons</a></li>
+  {% endfor %}
+  <li><b>Regulators sit head-to-head with the operon, with LysR the dominant family.</b> The
+    regulator is closer to the operon start than a non-regulator gene would be, which is the
+    expected geometry for a shared promoter region.
+    <a href="{{ u('/atlas/regulation') }}">Regulation</a></li>
+</ul>
+<p class="note">Every figure in this atlas is generated from the database at build time; the
+underlying tables are downloadable from each page.</p>
+{% endif %}
+{% endblock %}

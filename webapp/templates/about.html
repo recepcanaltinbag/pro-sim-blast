@@ -2,63 +2,134 @@
 {% block title %}Methods{% endblock %}
 {% block body %}
 <h1>Methods</h1>
+<p class="lede">This database is built from GenBank genome records and a set of 71 Rieske oxygenase
+alpha subunits characterised in the literature. Every step below is a script in the repository, and
+every table it produces is downloadable from the page that displays it.</p>
 
-<h2>1. What counts as a Rieske oxygenase alpha subunit</h2>
-<p>Rieske-domain proteins (Pfam PF00355) include many proteins that are <em>not</em> oxygenases:
-ferredoxins, cytochrome <i>bc</i><sub>1</sub>/<i>b</i><sub>6</sub><i>f</i> iron–sulfur proteins, NirD and others.
-An E-value threshold cannot separate them, because their Rieske domains are genuinely homologous.
-ROAR-DB therefore requires the full architecture:</p>
+<h2>1 · What qualifies as a Rieske oxygenase alpha subunit</h2>
+<p>Proteins carrying a Rieske [2Fe-2S] domain, Pfam PF00355, include many that are not oxygenases:
+ferredoxins, the iron–sulfur proteins of the cytochrome <i>bc</i><sub>1</sub> and
+<i>b</i><sub>6</sub><i>f</i> complexes, nitrite reductase subunits and others. An expectation-value
+threshold cannot separate them, because their Rieske domains are genuinely homologous and score
+just as well. We measured this: in a test set of several hundred proteins of each kind, every
+member of both groups passed a 10<sup>−10</sup> cut-off. What distinguishes an oxygenase is not the
+Rieske domain but the mononuclear Fe(II) catalytic site that accompanies it.</p>
+<p>Two independent criteria are therefore required.</p>
 <ol>
-  <li><b>Profile coverage.</b> 71 experimentally characterised RO alpha subunits were curated from the literature
-    (two originally included sequences, IsoMO and CdnD, were removed because they lack the Rieske centre or the catalytic domain).
-    Each seeds a profile HMM built from its close homologues. A protein must cover ≥ 45 % of the best-scoring model
-    (calibrated on 2,788 full-length alphas and 1,570 known non-alphas: 99.8 % sensitivity, 95.8 % rejection).</li>
-  <li><b>Catalytic-centre residues.</b> The protein is aligned to a 71-reference motif model and checked at fixed columns
-    for the four Rieske ligands (Cys-X-His … Cys-X-X-His, all required) and the mononuclear-iron 2-His-1-carboxylate triad
-    (≥ 2 of 3 within ±2 columns).</li>
-  <li><b>Type assignment.</b> The reference model with the highest bit score gives the reference type (cluster); the first
-    digit of the model name is the historical RO group.</li>
+  <li><b>Profile coverage.</b> Each of the 71 curated references seeds a profile hidden Markov model
+    built from its close homologues; these models span the Rieske domain and the catalytic domain
+    together. A protein must cover at least 45 % of the best-scoring model. The threshold was
+    calibrated on 2,788 full-length alpha subunits and 1,570 proteins known not to be alpha
+    subunits, retaining 99.8 % of the former while rejecting 95.8 % of the latter. Raising it to
+    80 % improves rejection by less than two points but loses a fifth of true positives.</li>
+  <li><b>Catalytic-centre residues.</b> The protein is aligned to a motif model built from the same
+    references, and specific match-state columns are checked directly: the four Rieske ligands
+    Cys-X-His and Cys-X-X-His, all four required, and the 2-His-1-carboxylate triad of the
+    mononuclear iron site, at least two of three within a two-column window. The window tolerates
+    sub-family alignment shifts, which otherwise reject five of the curated references themselves.</li>
 </ol>
+<p>Two sequences originally in the reference set were removed during this work: one lacks a Rieske
+centre altogether and belongs to the soluble di-iron monooxygenase family, the other has the Rieske
+centre but no catalytic site and is an electron-transfer component. Both had been propagating into
+the classification as if they were oxygenases.</p>
 
-<h2>2. Genomic context</h2>
-<p>Every GenBank record was scanned directly for CDS translations carrying the Rieske ligand signature, candidates were
-tested as above, and all CDS within ±10 kb were stored with strand, signed distance and gene offset
-(origin-spanning genes on circular replicons are handled). Neighbour products are categorised by keyword
-(regulator, transposon, β subunit, ferredoxin, reductase, transporter, ring cleavage …) and regulator families are recorded separately.</p>
+<h2>2 · Type assignment, and what it does not mean</h2>
+<p>Each confirmed protein is assigned to the reference type whose profile it scores highest against,
+by bit score rather than expectation value, since the latter depends on sequence length and database
+size. The assignment names the closest characterised relative. It is not a functional annotation,
+and the database never presents it as one.</p>
+<p>The reason is measurable within the reference set itself. Among the curated enzymes, pairs with
+<em>different</em> experimentally determined substrates reach nearly 100 % identity to one another,
+while pairs sharing a substrate fall to roughly 32 %. Substrate selection in this family is
+determined by a few active-site positions, so no global identity threshold can certify it. Every
+member therefore carries an <a href="{{ u('/atlas/evidence') }}">evidence level</a> stating how
+close it actually is to a characterised enzyme, and substrate labels are shown together with that
+level.</p>
 
-<h2>3. Operons</h2>
-<p>Annotation text is unreliable for operon components (many are "hypothetical protein"). The neighbour <em>protein sequences</em>
-are therefore searched with Pfam models: Ring_hydroxyl_B (β subunit), Fer2 / Rieske / Rieske_2 (ferredoxin, ≤ 250 aa),
-NAD_binding_1 / FAD_binding_6 / FAD_binding_8 / Pyr_redox_2 / Pyr_redox_dim (FNR- and GR-type reductases).
-An operon is the run of same-strand genes around the alpha subunit with intergenic gaps ≤ 150 bp.
-Component presence is reported both inside the operon and anywhere within ±10 kb.</p>
+<h2>3 · Genomic context</h2>
+<p>Rather than locating proteins by translated search and recording coordinates alone, each genome
+record is scanned directly for coding sequences whose translation carries the Rieske ligand
+signature. Candidates are then tested as in section 1. For every confirmed protein, all coding
+sequences within 10 kb on either side are stored with their strand, signed distance and gene offset.
+Genes spanning the origin of a circular replicon are handled explicitly, since treating their
+coordinates naively makes a short gene appear to span the whole replicon and become a neighbour of
+everything on it. No keyword filter is applied at extraction: neighbours annotated as "hypothetical
+protein" are exactly the ones a context database should be able to characterise, so they are kept
+and classified at query time.</p>
 
-<h2>4. Variants and novelty</h2>
-<p>Within each reference type, members were split recursively (CD-HIT at decreasing identity) until leaves reached a
-median pairwise identity target; leaves are reported as variants with their genus composition and distinguishing neighbours.
-Each member's identity to its nearest reference sequence gives an assignment class: <b>core</b>, <b>divergent</b>, or
-<b>novel_candidate</b> (confidently an RO alpha, but far from every reference type).</p>
+<h2>4 · Operons and electron-transport partners</h2>
+<p>Annotation text is unreliable for the partners that matter here, so the <em>protein sequences</em>
+of all stored neighbours are searched with Pfam profiles: Ring_hydroxyl_B for the beta subunit,
+Rieske or Fer2 domains in proteins under 250 residues for Rieske-type and plant-type ferredoxins,
+and FAD/NAD-binding or pyridine-nucleotide-disulfide domains for FNR-type and
+glutathione-reductase-type reductases. An operon is defined as the run of same-strand genes around
+the alpha subunit with intergenic gaps of at most 150 base pairs. Partner presence is reported both
+inside that run and anywhere within the 10 kb window, and both are lower bounds: contig ends and
+distant loci hide partners that exist.</p>
 
-<h2>5. Current content</h2>
+<h2>5 · Regulation</h2>
+<p>For every confirmed protein the 5' end of its predicted operon is determined from the strand, and
+the intergenic distance to the nearest upstream gene is measured. That interval is where the
+promoter must lie. The upstream gene's orientation separates a shared, divergent promoter region
+from a possible read-through arrangement, and its product name assigns a regulator family where one
+can be recognised. The promoter <em>sequence</em> is not predicted: the database stores neighbour
+protein translations, not intergenic DNA, so no −35 or −10 boxes, operator repeats or transcription
+start sites are inferred. <a href="{{ u('/atlas/regulation') }}">Results</a></p>
+
+<h2>6 · Variants and novelty</h2>
+<p>Within each type, members are split recursively at decreasing identity until each subgroup reaches
+a median pairwise identity target. The resulting leaves are reported as variants, each with its
+genus composition, plasmid rate and distinguishing neighbours. A variant is the finest unit at which
+a distinct function can reasonably be proposed; several types that look homogeneous at the type
+level separate into variants with clearly different genomic contexts.</p>
+<p class="note">Known limitation: the clustering step operates on match-state columns of the
+alignment, so insertions and fused extra domains are excised before sequences are compared. A
+protein with a large additional domain can therefore group with a plain enzyme. Pairwise identities
+quoted on variant pages share this definition.</p>
+
+<h2>7 · Phylogeny and sequence space</h2>
+<p>The 71 references and one representative per variant are aligned to the catalytic-centre model;
+columns with gaps in more than half the sequences are discarded, leaving the conserved core, and the
+tree is inferred with FastTree. Separately, an all-against-all search provides a similarity network
+and a type-against-type identity matrix. Together these show which types are coherent lineages and
+which are arbitrary cuts through a continuum.
+<a href="{{ u('/atlas/phylogeny') }}">Tree</a> · <a href="{{ u('/atlas/network') }}">Network</a></p>
+
+<h2>8 · Statistics</h2>
+<p>Alpha subunits are not independent observations: sequence databases contain many near-identical
+strains of the same species. Every association test is therefore run twice, once per entry and once
+after collapsing the data to one observation per type and genus, and a result is reported as robust
+only when both agree. Effect sizes accompany every p value.
+<a href="{{ u('/atlas/statistics') }}">Results</a></p>
+
+<h2>9 · Current content</h2>
 <ul>
-  <li>{{ totals.candidates|fmt }} candidates tested, {{ totals.confirmed|fmt }} confirmed RO alpha entries</li>
-  <li>{{ totals.clusters|fmt }} reference types, {{ totals.leaves|fmt }} variants</li>
-  <li>{{ totals.replicons|fmt }} annotated replicons scanned, {{ totals.genomes_with_ro|fmt }} with at least one RO</li>
+  <li>{{ totals.candidates|fmt }} candidates tested, {{ totals.confirmed|fmt }} confirmed alpha subunits</li>
+  <li>{{ totals.clusters|fmt }} characterised types, {{ totals.leaves|fmt }} variants</li>
+  <li>{{ totals.replicons|fmt }} annotated replicons scanned, {{ totals.genomes_with_ro|fmt }} carrying at least one</li>
+  <li>{{ totals.neighbors|fmt }} neighbouring genes recorded, {{ totals.operon_any|fmt }} operons with a sequence-verified partner</li>
 </ul>
 
-<h2>6. Known limits</h2>
+<h2>10 · Remaining limitations</h2>
 <ul>
-  <li>Substrate labels are per reference type and come from the literature for the reference enzyme; members of a type may act on different substrates.</li>
-  <li>Operon prediction uses a simple distance rule; it does not model promoters or terminators.</li>
-  <li>Contig ends truncate neighbourhoods; entries on short contigs may appear to lack components.</li>
-  <li>Entries that share an identical RefSeq protein (WP_ accession) across genomes are kept as separate genomic entries.</li>
+  <li>Substrate labels belong to the reference enzyme of each type, not to its members.</li>
+  <li>Operon boundaries come from a distance rule, without promoter or terminator models.</li>
+  <li>Contig ends truncate neighbourhoods, so missing partners are not evidence of absence.</li>
+  <li>Sequenced genomes are heavily biased towards cultured organisms, which shapes every
+    taxonomic and ecological figure in this database.</li>
+  <li>Several types have no substrate recorded because the original publications were not
+    available; they are shown as unknown rather than guessed.</li>
 </ul>
 
-<h2>7. Programmatic access</h2>
+<h2>11 · Programmatic access</h2>
 <pre class="seq">GET  /api/stats
 GET  /api/clusters
-GET  /api/cluster/{cluster}
-GET  /api/ro/{entry-slug}            (slug: replace ':' with '_' in the entry ID)
+GET  /api/cluster/{type}
+GET  /api/ro/{entry}             entry identifier with ':' replaced by '_'
 GET  /api/search?q=...&amp;page=1
-POST /api/classify                   (body: FASTA text, or JSON {"sequences": "..."})</pre>
+POST /api/classify               body: FASTA text, or JSON {"sequences": "..."}</pre>
+<p class="note">Bulk downloads: <a href="{{ u('/download/all_confirmed.fasta') }}">all sequences</a>,
+<a href="{{ u('/download/all_confirmed.csv') }}">all annotation</a>,
+<a href="{{ u('/download/operons.csv') }}">operon gene tables</a>,
+<a href="{{ u('/download/tree_all.nwk') }}">tree in Newick format</a>.</p>
 {% endblock %}

@@ -57,6 +57,14 @@ step "4b/14 Operon bilesenleri ve operon turetme"
 [ -f component_hmms/components.hmm ] || { echo "EKSIK: component_hmms/components.hmm (bkz. README)"; exit 1; }
 python3 build_operons.py --db roar.sqlite --gbk-dir gbk_files --cpu "$CPU"
 
+# --- 4c. Kanit duzeyi, ETC tipi, regulasyon mimarisi
+step "4c/14 Kanit duzeyi (kuratorlu referanslara kimlik)"
+python3 evidence_tiers.py --db roar.sqlite --out-dir "$OUT" --threads "$CPU"
+step "4d/14 Elektron tasima zinciri bilesen tipleri"
+python3 etc_types.py --db roar.sqlite --out-dir "$OUT"
+step "4e/14 Operon 5' ucu, promotor bolgesi ve regulator"
+python3 analyze_regulation.py --db roar.sqlite --out-dir "$OUT"
+
 # --- 5-6. Temel analizler + null model
 step "5/14  Genomik baglam analizleri"
 python3 analyze.py --db roar.sqlite --out-dir "$OUT"
@@ -83,6 +91,19 @@ python3 classify_domains.py --db roar.sqlite --out-dir "$OUT"
 # --- 13. Ekoloji
 step "13/14  Ekoloji hipotez testi"
 python3 analyze_ecology.py --db roar.sqlite --out "$OUT/cluster_ecology_stats.csv"
+
+# --- 13b. Filogeni + dizi benzerlik agi (FastTree gerekir)
+step "13b/14 Filogeni ve dizi benzerlik agi"
+if command -v FastTree >/dev/null 2>&1 || [ -x ./bin/FastTree ]; then
+  FT=$(command -v FastTree || echo ./bin/FastTree)
+  python3 build_phylogeny.py --db roar.sqlite --out-dir "$OUT" --threads "$CPU" --fasttree "$FT"
+else
+  echo "  [atlandi] FastTree yok; agac ve ag uretilmedi (web Atlas filogeni sayfasi bos kalir)"
+fi
+
+# --- 13c. Istatistiksel cikarimlar
+step "13c/14 Istatistiksel cikarimlar"
+python3 stats_overview.py --db roar.sqlite --out "$OUT/stats.json"
 
 # --- 14. HTML sayfalar
 step "14/14  HTML sayfalar uretiliyor"

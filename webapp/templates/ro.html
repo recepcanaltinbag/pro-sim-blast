@@ -3,78 +3,152 @@
 {% block body %}
 <nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/cluster/' ~ ro.ro_cluster) }}">{{ cluster.gene }}</a>
   {% if ro.leaf_id %}› <a href="{{ u('/leaf/' ~ leaf_slug(ro.leaf_id)) }}">variant {{ ro.leaf_id.split('#')[-1] }}</a>{% endif %} › entry</nav>
-<h1>{{ ro.product }} <span class="muted small">{{ ro.candidate_id }}</span></h1>
-{% if not ro.is_confirmed %}<p class="callout warn">This candidate did <b>not</b> pass confirmation (coverage or catalytic motif). It is shown for completeness only.</p>{% endif %}
+
+<h1>{{ ro.product }}</h1>
+<p class="note mono">{{ ro.candidate_id }}</p>
+
+{% if not ro.is_confirmed %}
+<div class="caveat"><b>Not confirmed.</b> This candidate failed the coverage or catalytic-motif test
+and is shown for completeness only.</div>
+{% endif %}
+
+{% set ev = x.ro_evidence %}
+<div class="caveat">
+  <b>What is known about this protein.</b>
+  {% if ev and ev.tier %}
+  <span class="chip" style="background:{{ TIER_COLORS[ev.tier] }};color:#fff;border:0">{{ ev.tier.replace('_',' ') }}</span>
+  {{ TIER_MEANING[ev.tier] }}
+  <br>
+  Nearest curated reference:
+  <a href="{{ u('/cluster/' ~ ev.nearest_ref) }}">{{ ev.nearest_ref }}</a>
+  at {{ '%.1f' % ev.ref_identity if ev.ref_identity else '–' }} % identity over
+  {{ '%.0f' % ev.ref_qcov if ev.ref_qcov else '–' }} % of the sequence.
+  {% if ev.same_as_hmm == 0 %} The highest-scoring profile belongs to a different type,
+  <a href="{{ u('/cluster/' ~ ro.ro_cluster) }}">{{ ro.ro_cluster }}</a>; where profile and nearest
+  sequence disagree, neither should be read as a functional assignment.{% endif %}
+  {% if eco.substrate %}<br>The characterised enzyme of the assigned type acts on
+  <b>{{ eco.substrate }}</b>. Whether this protein shares that substrate follows from the evidence
+  level above, not from the type name.{% endif %}
+  {% else %}
+  This protein carries an intact Rieske centre and catalytic triad. Its assigned type is the profile
+  it scores highest against, which names its closest characterised relative rather than its
+  function.
+  {% endif %}
+</div>
 
 <div class="cols">
   <dl class="kv">
-    <dt>Organism</dt><dd><i>{{ ro.organism }}</i>{% if ro.is_plasmid %} <span class="chip chip--plasmid">plasmid</span>{% endif %}
+    <dt>Organism</dt><dd><i>{{ ro.organism }}</i>
+      {% if ro.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}
       {% if ro.domain %}<span class="chip">{{ ro.domain }}{% if ro.euk_group %} / {{ ro.euk_group }}{% endif %}</span>{% endif %}</dd>
-    <dt>Taxonomy</dt><dd class="small">{{ ro.taxonomy }}</dd>
-    <dt>Record</dt><dd><a href="https://www.ncbi.nlm.nih.gov/nuccore/{{ ro.nucleotide_id }}" rel="noopener">{{ ro.nucleotide_id }}</a>
-      <span class="muted small">{{ ro.description }} · {{ ro.replicon_length|fmt }} bp · {{ ro.cds_count|fmt }} CDS{% if ro.is_circular %} · circular{% endif %}</span></dd>
+    <dt>Lineage</dt><dd class="small">{{ ro.taxonomy }}</dd>
+    <dt>Genome record</dt><dd><a href="https://www.ncbi.nlm.nih.gov/nuccore/{{ ro.nucleotide_id }}" rel="noopener">{{ ro.nucleotide_id }}</a>
+      <span class="note">{{ ro.description }} · {{ ro.replicon_length|fmt }} bp ·
+      {{ ro.cds_count|fmt }} coding sequences{% if ro.is_circular %} · circular{% endif %}</span></dd>
     <dt>Protein</dt><dd>{% if ro.protein_id %}<a href="https://www.ncbi.nlm.nih.gov/protein/{{ ro.protein_id }}" rel="noopener">{{ ro.protein_id }}</a>{% else %}–{% endif %}
-      {% if ro.locus_tag %}· locus {{ ro.locus_tag }}{% endif %}{% if ro.gene %} · gene <i>{{ ro.gene }}</i>{% endif %}</dd>
-    <dt>Coordinates</dt><dd>{{ ro.start|fmt }}–{{ ro.end|fmt }} ({{ '+' if ro.strand == 1 else '−' }} strand) · {{ ((ro.end - ro.start) // 3)|fmt }} aa</dd>
+      {% if ro.locus_tag %} · {{ ro.locus_tag }}{% endif %}{% if ro.gene %} · gene <i>{{ ro.gene }}</i>{% endif %}
+      · {{ ro.sequence|length }} residues</dd>
+    <dt>Position</dt><dd>{{ ro.start|fmt }}–{{ ro.end|fmt }} on the {{ '+' if ro.strand == 1 else '−' }} strand</dd>
   </dl>
   <dl class="kv">
-    <dt>Reference type</dt><dd><a href="{{ u('/cluster/' ~ ro.ro_cluster) }}"><b>{{ cluster.gene }}</b></a> ({{ ro.ro_cluster }}, group {{ ro.ro_group }})
-      {% if eco.substrate %}· {{ eco.substrate }} <span class="chip chip--{{ eco.substrate_class }}">{{ eco.substrate_class }}</span>{% endif %}</dd>
-    <dt>HMM evidence</dt><dd>score {{ '%.1f' % (ro.hmm_score or 0) }} bits · E = {{ '%.1e' % (ro.hmm_evalue or 0) }} · model coverage {{ '%.2f' % (ro.model_coverage or 0) }}</dd>
-    <dt>Catalytic centre</dt><dd>
-      <span class="chip {{ 'chip--ok' if ro.rieske_intact else 'chip--bad' }}">Rieske C-x-H…C-x-x-H {{ '4/4' if ro.rieske_intact else 'incomplete' }}</span>
-      <span class="chip {{ 'chip--ok' if ro.catalytic_intact else 'chip--bad' }}">mononuclear Fe 2-His-1-carboxylate {{ 'present' if ro.catalytic_intact else 'incomplete' }}</span></dd>
-    <dt>Variant</dt><dd>{% if ro.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(ro.leaf_id)) }}">{{ ro.leaf_id }}</a> ({{ ro.leaf_size }} members){% else %}–{% endif %}</dd>
+    <dt>Assigned type</dt><dd><a href="{{ u('/cluster/' ~ ro.ro_cluster) }}"><b>{{ cluster.gene }}</b></a>
+      <span class="note">{{ ro.ro_cluster }}, RO group {{ ro.ro_group }}</span></dd>
+    <dt>Variant</dt><dd>{% if ro.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(ro.leaf_id)) }}">{{ ro.leaf_id }}</a>
+      <span class="note">{{ ro.leaf_size }} members</span>{% else %}–{% endif %}</dd>
+    <dt>Profile evidence</dt><dd>{{ '%.1f' % (ro.hmm_score or 0) }} bits · E = {{ '%.1e' % (ro.hmm_evalue or 0) }}
+      · model coverage {{ '%.2f' % (ro.model_coverage or 0) }}</dd>
+    <dt>Metal centres</dt><dd>
+      <span class="chip {{ 'chip--ok' if ro.rieske_intact else 'chip--bad' }}">Rieske [2Fe-2S] C-x-H…C-x-x-H {{ 'complete' if ro.rieske_intact else 'incomplete' }}</span>
+      <span class="chip {{ 'chip--ok' if ro.catalytic_intact else 'chip--bad' }}">mononuclear Fe(II) 2-His-1-carboxylate {{ 'complete' if ro.catalytic_intact else 'incomplete' }}</span></dd>
+    {% if x.ro_etc %}
+    <dt>Electron transport</dt><dd class="mono">{{ x.ro_etc.etc_profile }}
+      <span class="note">{{ 'a partner is inside the operon' if x.ro_etc.in_operon else 'partners only outside the operon' }}</span></dd>
+    {% endif %}
     <dt>Assignment class</dt><dd><span class="chip chip--{{ ro.assignment_class }}">{{ ro.assignment_class or '–' }}</span>
-      {% if ro.core_identity is not none %}<span class="muted small">identity to nearest reference type {{ '%.2f' % ro.core_identity }}</span>{% endif %}</dd>
+      {% if ro.core_identity is not none %}<span class="note">alignment identity to nearest reference {{ '%.2f' % ro.core_identity }}</span>{% endif %}</dd>
   </dl>
 </div>
 
-<h2>Genomic neighbourhood (±10 kb)</h2>
+<h2>Genomic neighbourhood</h2>
 <div class="legend">
-  <span><i style="background:#c0392b"></i>RO α (this entry)</span><span><i style="background:#e67e22"></i>other RO α</span>
-  <span><i style="background:#2980b9"></i>β subunit</span><span><i style="background:#27ae60"></i>ferredoxin</span>
+  <span><i style="background:#c0392b"></i>this alpha subunit</span><span><i style="background:#e67e22"></i>another alpha</span>
+  <span><i style="background:#2980b9"></i>beta subunit</span><span><i style="background:#27ae60"></i>ferredoxin</span>
   <span><i style="background:#f39c12"></i>reductase</span><span><i style="background:#8e44ad"></i>regulator</span>
-  <span><i style="background:#2c3e50"></i>transposon / IS</span><span><i style="background:#d35400"></i>ring cleavage</span>
+  <span><i style="background:#2c3e50"></i>transposase or IS</span><span><i style="background:#d35400"></i>ring cleavage</span>
   <span><i style="background:#b2bec3"></i>other</span><span><i class="dash"></i>predicted operon</span>
 </div>
+<figure class="fig">
 {{ svg|safe }}
+<figcaption>Genes within 10 kb on either side, drawn to scale; arrow direction is the coding strand.
+The dashed outline marks the predicted operon, the run of same-strand genes separated by at most 150
+base pairs. Hover any gene for its product, coordinates and the Pfam evidence behind its component
+label.</figcaption>
+</figure>
+
+{% set reg = x.ro_regulation %}
+{% if reg and reg.architecture %}
+<h2>Operon start and promoter region</h2>
+<dl class="kv">
+  <dt>Architecture</dt><dd>
+    {% if reg.architecture == 'divergent_regulator' %}<b>Regulator in divergent orientation.</b>
+      The regulator and this operon face each other across a single intergenic region, the
+      arrangement in which one regulatory site can control both.
+    {% elif reg.architecture == 'codirectional_regulator' %}A regulator lies upstream on the same
+      strand, so the two may belong to one transcript rather than facing each other.
+    {% elif reg.architecture == 'divergent_other' %}The upstream gene is transcribed away from the
+      operon but is not a recognised regulator.
+    {% elif reg.architecture == 'codirectional_other' %}The upstream gene is on the same strand and
+      is not a recognised regulator, so the operon may extend further than predicted.
+    {% else %}No upstream gene inside the analysed window.{% endif %}</dd>
+  <dt>Operon 5' end</dt><dd>{{ reg.operon_5p|fmt }}</dd>
+  <dt>Intergenic region</dt><dd>{{ reg.intergenic_bp|fmt }} bp
+    <span class="note">the promoter lies in this interval; its sequence is not analysed here</span></dd>
+  <dt>Upstream gene</dt><dd>{{ reg.upstream_product or '–' }}
+    {% if reg.upstream_family and reg.upstream_family != 'regulator_unclassified' %}
+    <span class="chip">{{ reg.upstream_family }} family</span>{% endif %}
+    <span class="note">{{ 'opposite strand' if reg.upstream_divergent else 'same strand' }}</span></dd>
+</dl>
+<p class="note"><a href="{{ u('/atlas/regulation') }}">How this is measured across the family</a></p>
+{% endif %}
 
 {% if operon %}
-<h3>Predicted operon <span class="muted small">(same strand, intergenic gap ≤ 150 bp; components verified by Pfam HMM on neighbour protein sequences)</span></h3>
-<p>
-  {{ operon.n_genes }} genes, {{ operon.start|fmt }}–{{ operon.end|fmt }} ·
-  <span class="chip {{ 'chip--ok' if operon.has_beta else '' }}">β {{ 'yes' if operon.has_beta else 'no' }}</span>
-  <span class="chip {{ 'chip--ok' if operon.has_ferredoxin else '' }}">ferredoxin {{ 'yes' if operon.has_ferredoxin else 'no' }}</span>
-  <span class="chip {{ 'chip--ok' if operon.has_reductase else '' }}">reductase {{ 'yes' if operon.has_reductase else 'no' }}</span>
-  · within ±10 kb: β {{ 'yes' if operon.nearby_beta else 'no' }}, Fd {{ 'yes' if operon.nearby_ferredoxin else 'no' }}, reductase {{ 'yes' if operon.nearby_reductase else 'no' }}
+<h2>Predicted operon</h2>
+<p>{{ operon.n_genes }} genes spanning {{ operon.start|fmt }}–{{ operon.end|fmt }}:
+  <span class="chip {{ 'chip--ok' if operon.has_beta else 'chip--bad' }}">beta {{ 'present' if operon.has_beta else 'not detected' }}</span>
+  <span class="chip {{ 'chip--ok' if operon.has_ferredoxin else 'chip--bad' }}">ferredoxin {{ 'present' if operon.has_ferredoxin else 'not detected' }}</span>
+  <span class="chip {{ 'chip--ok' if operon.has_reductase else 'chip--bad' }}">reductase {{ 'present' if operon.has_reductase else 'not detected' }}</span>
 </p>
-<p class="mono">{{ operon.layout }}</p>
+<p class="note">Within 10 kb but outside the operon: beta {{ 'yes' if operon.nearby_beta else 'no' }},
+  ferredoxin {{ 'yes' if operon.nearby_ferredoxin else 'no' }},
+  reductase {{ 'yes' if operon.nearby_reductase else 'no' }}.</p>
+{{ layout_svg(operon.layout)|safe }}
 <table class="data compact">
-  <thead><tr><th>5'→3'</th><th>Component (HMM)</th><th>Category (annotation)</th><th>Product</th><th class="num">Gap (bp)</th></tr></thead>
+  <thead><tr><th class="num">Position</th><th>Component by sequence</th><th>Category by annotation</th>
+  <th>Product</th><th class="num">Gap to previous gene</th></tr></thead>
   <tbody>
   {% for g in operon_genes %}
   <tr class="{{ 'hl' if g.position == 0 else '' }}">
     <td class="num">{{ g.position }}</td>
-    <td><span class="comp comp--{{ g.component }}">{{ g.component }}</span></td>
+    <td>{% if g.component and g.component != 'none' %}<span class="comp comp--{{ g.component }}">{{ g.component }}</span>{% else %}<span class="note">not detected</span>{% endif %}</td>
     <td>{{ g.category }}</td><td class="small">{{ g.product }}</td>
-    <td class="num">{{ g.gap_bp if g.position != 0 else '' }}</td>
+    <td class="num">{% if g.position != 0 %}{{ g.gap_bp|fmt }} bp{% endif %}</td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
 {% endif %}
 
-<h3>All neighbours</h3>
+<h2>All neighbouring genes</h2>
 <div class="tablewrap">
 <table class="data compact">
-  <thead><tr><th class="num">Offset</th><th class="num">Distance (bp)</th><th>Strand</th><th>Component</th><th>Category</th><th>Product</th><th>Protein</th></tr></thead>
+  <thead><tr><th class="num">Gene offset</th><th class="num">Distance</th><th>Strand</th>
+  <th>Component by sequence</th><th>Category</th><th>Product</th><th>Protein</th></tr></thead>
   <tbody>
   {% for n in neighbors %}
   <tr class="{{ 'op' if n.neighbor_id in operon_ids else '' }}">
     <td class="num">{{ n.gene_offset }}</td>
-    <td class="num">{{ n.distance }}</td>
-    <td>{{ '+' if n.strand == 1 else '−' }}{% if n.same_strand %} <span class="muted small">same</span>{% endif %}</td>
+    <td class="num">{{ n.distance|fmt }} bp</td>
+    <td>{{ '+' if n.strand == 1 else '−' }}{% if n.same_strand %} <span class="note">same</span>{% endif %}</td>
     <td>{% if n.component and n.component != 'none' %}<span class="comp comp--{{ n.component }}" title="{{ n.evidence }}">{{ n.component }}</span>{% endif %}</td>
     <td>{{ n.category }}</td>
     <td class="small">{{ n.product }}{% if n.gene %} <i>({{ n.gene }})</i>{% endif %}</td>
@@ -85,10 +159,10 @@
 </table>
 </div>
 
-<h2>Sequence <span class="muted small">{{ ro.sequence|length }} aa</span></h2>
+<h2>Sequence</h2>
 <p class="dl">
-  <a class="btn" href="{{ u('/download/ro/' ~ slug(ro.candidate_id) ~ '.fasta') }}">⬇ FASTA</a>
-  <a class="btn" href="{{ u('/download/neighborhood/' ~ slug(ro.candidate_id) ~ '.fasta') }}">⬇ neighbour proteins (FASTA)</a>
+  <a class="btn" href="{{ u('/download/ro/' ~ slug(ro.candidate_id) ~ '.fasta') }}">This protein (FASTA)</a>
+  <a class="btn" href="{{ u('/download/neighborhood/' ~ slug(ro.candidate_id) ~ '.fasta') }}">All neighbouring proteins (FASTA)</a>
 </p>
 <pre class="seq">&gt;{{ ro.candidate_id }} {{ ro.protein_id }} {{ ro.product }} [{{ ro.organism }}]
 {% for i in range(0, ro.sequence|length, 60) %}{{ ro.sequence[i:i+60] }}

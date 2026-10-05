@@ -87,7 +87,17 @@ def per_cluster_overview(con, ecology):
         d["tiers"] = Counter()
         d["etc"] = Counter()
         d["transposon"] = 0
+        d["euk"] = 0
+        d["leaves"] = 0
         rows[d["cluster"]] = d
+    for cluster, n in con.execute("SELECT cluster, COUNT(*) FROM leaf GROUP BY cluster"):
+        if cluster in rows:
+            rows[cluster]["leaves"] = n
+    if table_exists(con, "ro_domain"):
+        for cluster, n in con.execute(
+                "SELECT cluster, SUM(domain = 'Eukaryota') FROM ro_domain GROUP BY cluster"):
+            if cluster in rows:
+                rows[cluster]["euk"] = n or 0
     for cl, tax, org in con.execute(
             "SELECT r.ro_cluster, p.taxonomy, p.organism FROM ro r JOIN replicon p USING(nucleotide_id) "
             "WHERE r.is_confirmed=1"):
@@ -300,6 +310,18 @@ def tip_info_from_db(con, url, ecology=None):
         for cid, tier in con.execute("SELECT candidate_id, tier FROM ro_evidence"):
             if cid in info:
                 info[cid]["title"] += f" | {tier}"
+    # agac/ag ucu adlari YAPRAK kimligidir ("3_313_KshA15#0"); temsilci girise baglanir
+    for leaf_id, rep, cluster, size, ident in con.execute(
+            "SELECT leaf_id, representative, cluster, size, median_identity FROM leaf"):
+        org = con.execute("SELECT p.organism FROM ro r JOIN replicon p USING(nucleotide_id) "
+                          "WHERE r.candidate_id=?", (rep,)).fetchone()
+        org = org[0] if org else ""
+        info[leaf_id] = {
+            "label": f"{cluster.split('_', 2)[-1]}#{leaf_id.split('#')[-1]} · {org or ''} (n={size})",
+            "color": GROUP_COLORS.get(group_of(cluster), "#95a5a6"),
+            "href": url("/leaf/" + leaf_id.replace("#", "-")),
+            "title": f"variant {leaf_id} | {size} members | median identity "
+                     f"{ident:.2f} | representative {org}"}
     for (cluster,) in con.execute("SELECT DISTINCT ro_cluster FROM ro WHERE is_confirmed=1"):
         name = "REF|" + cluster
         sub = (ecology or {}).get(cluster, {}).get("substrate", "")
@@ -309,3 +331,65 @@ def tip_info_from_db(con, url, ecology=None):
                       "title": f"curated reference enzyme for {cluster}"}
     # references whose cluster has no confirmed members still appear in the tree
     return info
+
+
+# ----------------------------------------------------------- schematic SVGs
+COMPONENT_FILL = {
+    "alpha": "#c0392b", "[alpha]": "#c0392b", "alpha_other": "#e67e22", "beta": "#2980b9",
+    "ferredoxin": "#27ae60", "reductase": "#f39c12", "rieske_other": "#16a085",
+    "regulator": "#8e44ad", "transposon": "#2c3e50", "ring_cleavage": "#d35400",
+    "transporter": "#7f8c8d", "dehydrogenase": "#95a5a6", "hydrolase": "#9aa5a8",
+    "hypothetical": "#d8dcdd", "other": "#b2bec3", "none": "#b2bec3",
+}
+SHORT = {"[alpha]": "α", "alpha": "α", "alpha_other": "α′", "beta": "β", "ferredoxin": "Fd",
+         "reductase": "Red", "rieske_other": "Rsk", "regulator": "Reg", "transposon": "IS",
+         "ring_cleavage": "ring", "transporter": "tra", "dehydrogenase": "dh",
+         "hydrolase": "hyd", "hypothetical": "?", "other": "·", "none": "·"}
+
+
+def layout_svg(layout, height=34, gene_w=46, gap=3):
+    """Render an operon layout string ('reductase > [alpha] > beta') as gene arrows, 5'->3'."""
+    if not layout:
+        return ""
+    tokens = [t.strip() for t in layout.split(">") if t.strip()]
+    width = len(tokens) * (gene_w + gap) + 10
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+             f'height="{height}" width="{width}" class="oplayout">']
+    x = 5
+    for token in tokens:
+        fill = COMPONENT_FILL.get(token, "#b2bec3")
+        is_alpha = token in ("[alpha]", "alpha")
+        head = 9
+        y0, y1 = (4, height - 10) if is_alpha else (7, height - 13)
+        pts = (f"{x},{y0} {x + gene_w - head},{y0} {x + gene_w},{(y0 + y1) / 2:.1f} "
+               f"{x + gene_w - head},{y1} {x},{y1}")
+        stroke = "#111" if is_alpha else "#5a5a5a"
+        label = SHORT.get(token, token[:3])
+        parts.append(
+            f'<polygon points="{pts}" fill="{fill}" stroke="{stroke}" '
+            f'stroke-width="{1.4 if is_alpha else 0.7}"><title>{html.escape(token)}</title></polygon>'
+            f'<text x="{x + (gene_w - head) / 2:.1f}" y="{(y0 + y1) / 2 + 3.5:.1f}" font-size="10" '
+            f'text-anchor="middle" fill="#fff" font-weight="600">{html.escape(label)}</text>')
+        x += gene_w + gap
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def gap_histogram(values, bins=(0, 25, 50, 100, 150, 200, 300, 400, 600, 1000, 2000)):
+    """Bucket intergenic distances for a compact bar chart."""
+    counts = [0] * (len(bins) - 1)
+    for v in values:
+        for i in range(len(bins) - 1):
+            if bins[i] <= v < bins[i + 1]:
+                counts[i] += 1
+                break
+    labels = [f"{bins[i]}–{bins[i + 1]}" for i in range(len(bins) - 1)]
+    return labels, counts
+
+
+def median(values):
+    if not values:
+        return None
+    s = sorted(values)
+    n = len(s)
+    return float(s[n // 2]) if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2.0

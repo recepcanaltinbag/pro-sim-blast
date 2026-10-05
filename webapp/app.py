@@ -330,7 +330,8 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
             raise HTTPException(404, "cluster not found")
         total, rows = members_query(con, cluster=cluster, q=q, page=page)
         return render(request, "cluster.html", c=info, members=rows, total=total, page=page,
-                      pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "")
+                      pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "",
+                      x=cluster_extras(con, cluster))
     finally:
         con.close()
 
@@ -459,7 +460,7 @@ def ro_page(request: Request, ro_slug: str):
         d = ro_detail(con, unslug(ro_slug))
         if not d:
             raise HTTPException(404, "entry not found")
-        return render(request, "ro.html", **d)
+        return render(request, "ro.html", x=ro_extras(con, d["ro"]["candidate_id"]), **d)
     finally:
         con.close()
 
@@ -804,3 +805,241 @@ async def api_classify(request: Request):
         return {"results": classify_sequences(seqs)}
     except ValueError as exc:
         return JSONResponse({"error": str(exc)}, status_code=400)
+
+
+# ===================================================================== ATLAS
+import atlas  # noqa: E402
+
+ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
+templates.env.globals.update(
+    layout_svg=atlas.layout_svg, gap_histogram=atlas.gap_histogram,
+    amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
+    TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,
+    COMPONENT_COLORS=COMPONENT_COLORS)
+
+
+def apath(*parts):
+    return os.path.join(ANALYSIS_DIR, *parts)
+
+
+def _overview(con):
+    return atlas.per_cluster_overview(con, ECOLOGY)
+
+
+@app.get("/atlas", response_class=HTMLResponse)
+def atlas_home(request: Request):
+    con = connect()
+    try:
+        return render(request, "atlas_home.html", over=_overview(con), totals=totals(con),
+                      stats=atlas.read_json(apath("stats.json")))
+    finally:
+        con.close()
+
+
+@app.get("/atlas/phylogeny", response_class=HTMLResponse)
+def atlas_phylogeny(request: Request):
+    if not os.path.exists(apath("tree_all.nwk")):
+        raise HTTPException(404, "tree not built (run build_phylogeny.py)")
+    con = connect()
+    try:
+        svg, n = atlas.render_tree_svg(open(apath("tree_all.nwk")).read(),
+                                       atlas.tip_info_from_db(con, u, ECOLOGY),
+                                       width=1040, row_h=11, label_w=380)
+        return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n)
+    finally:
+        con.close()
+
+
+@app.get("/atlas/network", response_class=HTMLResponse)
+def atlas_network(request: Request, min_identity: float = 35.0):
+    return render(request, "atlas_network.html",
+                  data=atlas.ssn(apath("ssn_nodes.csv"), apath("ssn_edges.csv"), min_identity),
+                  matrix=atlas.identity_matrix(apath("cluster_identity_matrix.csv")),
+                  refpairs=atlas.read_csv(apath("reference_pairs.csv"))[:40],
+                  min_identity=min_identity)
+
+
+@app.get("/atlas/taxonomy", response_class=HTMLResponse)
+def atlas_taxonomy(request: Request):
+    con = connect()
+    try:
+        over = _overview(con)
+        counted = Counter()
+        for d in over:
+            counted.update(d["phyla"])
+        return render(request, "atlas_taxonomy.html", over=over,
+                      top_phyla=[p for p, _ in counted.most_common(12)],
+                      all_phyla=counted.most_common(20))
+    finally:
+        con.close()
+
+
+@app.get("/atlas/ecology", response_class=HTMLResponse)
+def atlas_ecology(request: Request):
+    con = connect()
+    try:
+        return render(request, "atlas_ecology.html", over=_overview(con),
+                      stats=atlas.read_json(apath("stats.json")))
+    finally:
+        con.close()
+
+
+@app.get("/atlas/operons", response_class=HTMLResponse)
+def atlas_operons(request: Request):
+    con = connect()
+    try:
+        profiles = con.execute("SELECT etc_profile, COUNT(*) n FROM ro_etc GROUP BY 1 "
+                               "ORDER BY n DESC LIMIT 14").fetchall() \
+            if atlas.table_exists(con, "ro_etc") else []
+        by_group = con.execute(
+            "SELECT r.ro_group grp, t.reductase_type red, t.ferredoxin_type fd, t.has_beta beta, "
+            "COUNT(*) n FROM ro_etc t JOIN ro r USING(candidate_id) GROUP BY 1,2,3,4").fetchall() \
+            if atlas.table_exists(con, "ro_etc") else []
+        layouts = {}
+        for cl, lay, n in con.execute(
+                "SELECT r.ro_cluster, o.layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id) "
+                "WHERE r.is_confirmed=1 GROUP BY 1,2 ORDER BY 1, n DESC"):
+            layouts.setdefault(cl, []).append((lay, n))
+        return render(request, "atlas_operons.html", over=_overview(con), profiles=profiles,
+                      by_group=[list(r) for r in by_group], layouts=layouts,
+                      stats=atlas.read_json(apath("stats.json")))
+    finally:
+        con.close()
+
+
+@app.get("/atlas/regulation", response_class=HTMLResponse)
+def atlas_regulation(request: Request):
+    con = connect()
+    try:
+        if not atlas.table_exists(con, "ro_regulation"):
+            raise HTTPException(404, "regulation table not built (run analyze_regulation.py)")
+        arch = con.execute("SELECT architecture, COUNT(*) n FROM ro_regulation "
+                           "GROUP BY 1 ORDER BY n DESC").fetchall()
+        fams = con.execute("SELECT upstream_family f, COUNT(*) n FROM ro_regulation "
+                           "WHERE architecture='divergent_regulator' AND upstream_family IS NOT NULL "
+                           "GROUP BY 1 ORDER BY n DESC").fetchall()
+        gaps = {a: [r[0] for r in con.execute(
+            "SELECT intergenic_bp FROM ro_regulation WHERE architecture=? AND intergenic_bp "
+            "IS NOT NULL AND intergenic_bp <= 2000", (a,))] for a in
+            ("divergent_regulator", "codirectional_regulator", "divergent_other", "codirectional_other")}
+        products = con.execute(
+            "SELECT upstream_product p, COUNT(*) n FROM ro_regulation "
+            "WHERE architecture='divergent_regulator' GROUP BY 1 ORDER BY n DESC LIMIT 15").fetchall()
+        return render(request, "atlas_regulation.html", arch=arch, fams=fams, gaps=gaps,
+                      products=products, per_cluster=atlas.read_csv(apath("regulation_by_cluster.csv")),
+                      over=_overview(con))
+    finally:
+        con.close()
+
+
+@app.get("/atlas/evidence", response_class=HTMLResponse)
+def atlas_evidence(request: Request):
+    con = connect()
+    try:
+        over = _overview(con)
+        tot = Counter()
+        for d in over:
+            tot.update(d["tiers"])
+        mism = con.execute(
+            "SELECT r.ro_cluster hmm, e.nearest_ref nearest, COUNT(*) n, AVG(e.ref_identity) ident "
+            "FROM ro_evidence e JOIN ro r USING(candidate_id) "
+            "WHERE e.same_as_hmm=0 AND e.nearest_ref IS NOT NULL GROUP BY 1,2 "
+            "ORDER BY n DESC LIMIT 15").fetchall() if atlas.table_exists(con, "ro_evidence") else []
+        idents = [r[0] or 0.0 for r in con.execute("SELECT ref_identity FROM ro_evidence")] \
+            if atlas.table_exists(con, "ro_evidence") else []
+        sweep = [(t, sum(1 for i in idents if i >= t), len(idents))
+                 for t in (25, 30, 35, 40, 50, 60, 70, 80, 90, 95)]
+        pairs = atlas.read_csv(apath("reference_pairs.csv"))
+        diff = [p for p in pairs if p["same_substrate_label"] == "0"]
+        same = [p for p in pairs if p["same_substrate_label"] == "1"]
+        calib = {
+            "max_diff": max((float(p["identity"]) for p in diff), default=None),
+            "max_diff_pair": max(diff, key=lambda p: float(p["identity"])) if diff else None,
+            "min_same": min((float(p["identity"]) for p in same), default=None),
+            "min_same_pair": min(same, key=lambda p: float(p["identity"])) if same else None,
+            "n_diff_over_60": sum(1 for p in diff if float(p["identity"]) >= 60),
+            "n_diff": len(diff), "n_same": len(same)}
+        return render(request, "atlas_evidence.html", over=over, tot=tot, mism=mism,
+                      sweep=sweep, calib=calib)
+    finally:
+        con.close()
+
+
+@app.get("/atlas/statistics", response_class=HTMLResponse)
+def atlas_statistics(request: Request):
+    data = atlas.read_json(apath("stats.json"))
+    if not data:
+        raise HTTPException(404, "stats.json not found (run stats_overview.py)")
+    return render(request, "atlas_statistics.html", stats=data)
+
+
+@app.get("/download/tree_all.nwk")
+def dl_tree():
+    if not os.path.exists(apath("tree_all.nwk")):
+        raise HTTPException(404, "tree not built")
+    return PlainTextResponse(open(apath("tree_all.nwk")).read(), headers={
+        "Content-Disposition": 'attachment; filename="roar_tree.nwk"'})
+
+
+@app.get("/download/analysis/{name}")
+def dl_analysis(name: str):
+    allowed = {"ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
+               "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
+               "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
+               "null_model.csv", "sdp_positions.csv", "stats.json"}
+    if name not in allowed or not os.path.exists(apath(name)):
+        raise HTTPException(404, "not available")
+    media = "application/json" if name.endswith(".json") else "text/csv"
+    return Response(open(apath(name)).read(), media_type=media,
+                    headers={"Content-Disposition": f'attachment; filename="{name}"'})
+
+
+# --- per-page extras -------------------------------------------------------
+def cluster_extras(con, cluster):
+    x = {"tiers": {}, "etc": [], "tree_svg": None, "nearest": [], "phyla": [],
+         "transposon": 0, "regulation": None, "reg_families": []}
+    if atlas.table_exists(con, "ro_evidence"):
+        counted = dict(con.execute(
+            "SELECT e.tier, COUNT(*) FROM ro_evidence e JOIN ro r USING(candidate_id) "
+            "WHERE r.ro_cluster=? GROUP BY 1", (cluster,)))
+        x["tiers"] = {t: counted.get(t, 0) for t in atlas.TIERS}
+    if atlas.table_exists(con, "ro_etc"):
+        x["etc"] = con.execute(
+            "SELECT t.etc_profile p, COUNT(*) n FROM ro_etc t JOIN ro r USING(candidate_id) "
+            "WHERE r.ro_cluster=? GROUP BY 1 ORDER BY n DESC LIMIT 8", (cluster,)).fetchall()
+    if atlas.table_exists(con, "ro_regulation"):
+        x["regulation"] = con.execute(
+            "SELECT architecture a, COUNT(*) n FROM ro_regulation g JOIN ro r USING(candidate_id) "
+            "WHERE r.ro_cluster=? GROUP BY 1 ORDER BY n DESC", (cluster,)).fetchall()
+        x["reg_families"] = con.execute(
+            "SELECT upstream_family f, COUNT(*) n FROM ro_regulation g JOIN ro r USING(candidate_id) "
+            "WHERE r.ro_cluster=? AND g.architecture='divergent_regulator' AND upstream_family IS NOT NULL "
+            "GROUP BY 1 ORDER BY n DESC LIMIT 8", (cluster,)).fetchall()
+    x["phyla"] = Counter(atlas.phylum_of(t) for (t,) in con.execute(
+        "SELECT p.taxonomy FROM ro r JOIN replicon p USING(nucleotide_id) "
+        "WHERE r.is_confirmed=1 AND r.ro_cluster=?", (cluster,))).most_common(8)
+    x["transposon"] = con.execute("""
+        SELECT COUNT(DISTINCT r.candidate_id) FROM ro r
+        JOIN neighbor nb ON nb.candidate_id=r.candidate_id
+        JOIN gene_category c ON c.neighbor_id=nb.neighbor_id AND c.method='regex_v1'
+             AND c.category='transposon'
+        WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()[0]
+    x["nearest"] = atlas.nearest_types(
+        atlas.identity_matrix(apath("cluster_identity_matrix.csv")), cluster)
+    tpath = apath("trees", f"{cluster}.nwk")
+    if os.path.exists(tpath) and os.path.getsize(tpath) > 0:
+        try:
+            x["tree_svg"], _ = atlas.render_tree_svg(
+                open(tpath).read(), atlas.tip_info_from_db(con, u, ECOLOGY),
+                width=900, row_h=12, label_w=360)
+        except Exception:
+            x["tree_svg"] = None
+    return x
+
+
+def ro_extras(con, candidate_id):
+    x = {}
+    for table in ("ro_evidence", "ro_etc", "ro_regulation"):
+        x[table] = con.execute(f"SELECT * FROM {table} WHERE candidate_id=?",
+                               (candidate_id,)).fetchone() if atlas.table_exists(con, table) else None
+    return x

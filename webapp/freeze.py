@@ -64,6 +64,16 @@ def main():
 
     print("[pages] fixed")
     save("/", "index.html"); save("/clusters", "clusters.html"); save("/about", "about.html")
+    print("[pages] atlas")
+    for p in ("atlas", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
+              "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/statistics"):
+        save("/" + p, p + ".html")
+    save("/download/tree_all.nwk", "download/tree_all.nwk")
+    for name in ("ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
+                 "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
+                 "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
+                 "null_model.csv", "sdp_positions.csv", "stats.json"):
+        save("/download/analysis/" + name, "download/analysis/" + name)
     print(f"[pages] {len(clusters)} clusters")
     for c in clusters:
         save(f"/cluster/{c}", f"cluster/{c}.html")

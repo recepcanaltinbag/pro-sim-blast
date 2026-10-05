@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Operons{% endblock %}
+{% set page_id = 'operons' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Operon architecture and electron transport</h1>
+<p class="lede">A Rieske oxygenase cannot work alone. Electrons travel from NAD(P)H through a
+reductase, usually via a small ferredoxin, into the Rieske centre of the alpha subunit, and many
+alphas additionally assemble with a beta subunit into an α₃β₃ hexamer. This page reports which of
+those partners are actually encoded next to each alpha, and in what order.</p>
+
+<div class="caveat">
+  <b>Partners are identified by sequence, not by annotation text.</b>
+  Product names in GenBank call a large share of these genes "hypothetical protein", so counting
+  annotation keywords measures vocabulary rather than biology. Every neighbour protein sequence was
+  extracted from the genome record and searched with Pfam profiles: Ring_hydroxyl_B for the beta
+  subunit, Rieske or Fer2 under 250 residues for ferredoxins, and FAD/NAD-binding or
+  pyridine-nucleotide-disulfide domains for reductases.
+  <b>A missing partner is not proof of absence</b>: contig ends, genes outside the 10 kb window and
+  unsequenced regions all hide partners, so the percentages below are lower bounds.
+</div>
+
+<h2>1 · Partner composition by RO group</h2>
+<figure class="fig">
+<div id="grp" class="chart" style="height:400px"></div>
+<figcaption><b>Finding.</b> The beta subunit tracks the RO group almost perfectly: groups 2, 3 and 4
+encode it, groups 1 and 5 essentially never do. This recovers the α₃β₃ versus α₃ distinction of the
+classical Batie classification from genomic context alone. Reductase and ferredoxin types, by
+contrast, are mixed within every group, which is why electron-transport composition alone cannot
+reproduce the historical class boundaries.
+<a href="{{ u('/atlas/statistics') }}">Statistical tests</a></figcaption>
+</figure>
+
+<h2>2 · Most frequent electron-transport configurations</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Configuration</th><th class="num">Alpha subunits</th></tr></thead>
+<tbody>
+{% for p in profiles %}
+<tr><td class="mono">{{ p.etc_profile }}</td><td class="num">{{ p.n|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Notation.</b> α₃ or α₃β₃ for the oxygenase itself, then the ferredoxin type
+(Rieske-type or plant-type [2Fe-2S]) and the reductase type (FNR-type or glutathione-reductase-type)
+seen within 10 kb. "none" means not detected in that window.
+<a href="{{ u('/download/analysis/etc_by_cluster.csv') }}">Download per-type table</a></figcaption>
+</figure>
+
+<h2>3 · Verified partners per type</h2>
+<figure class="fig">
+<div id="ops" class="chart" style="height:1500px"></div>
+<figcaption><b>Shown.</b> Percentage of each type's members whose predicted operon, meaning the run
+of same-strand genes with intergenic gaps of at most 150 base pairs, contains a sequence-verified
+beta subunit, ferredoxin or reductase.
+<b>Reading it.</b> Types reaching high values for all three encode self-contained catabolic
+cassettes. Types with a reductase but no ferredoxin draw on a two-component electron chain or on
+partners encoded elsewhere in the genome.</figcaption>
+</figure>
+
+<h2>4 · Canonical gene order per type</h2>
+<p class="note">The most frequent operon layout for each type, drawn 5' to 3' with the alpha subunit
+outlined. α β Fd Red mark verified components; other boxes are annotation categories.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th class="num">Members</th><th>Most frequent layout</th><th class="num">Members with it</th></tr></thead>
+<tbody>
+{% for d in over %}
+{% set rows = layouts.get(d.cluster, []) %}
+{% if rows %}
+<tr>
+  <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a><br><span class="note">{{ d.substrate or '–' }}</span></td>
+  <td class="num">{{ d.n|fmt }}</td>
+  <td>{{ layout_svg(rows[0][0])|safe }}<div class="note mono">{{ rows[0][0] }}</div></td>
+  <td class="num">{{ rows[0][1] }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const OVER = {{ over|tojson }}, BG = {{ by_group|tojson }};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const font = {color: dark ? '#e8e6e1' : '#15202b'};
+const y = OVER.map(d => d.gene + ' (' + d.n + ')').reverse();
+Plotly.newPlot('ops', [
+  {type:'bar', orientation:'h', name:'beta subunit', y, x:OVER.map(d=>100*(d.beta||0)/d.n).reverse(), marker:{color:'#2980b9'}, hovertemplate:'beta: %{x:.1f} %<extra></extra>'},
+  {type:'bar', orientation:'h', name:'ferredoxin', y, x:OVER.map(d=>100*(d.fd||0)/d.n).reverse(), marker:{color:'#27ae60'}, hovertemplate:'ferredoxin: %{x:.1f} %<extra></extra>'},
+  {type:'bar', orientation:'h', name:'reductase', y, x:OVER.map(d=>100*(d.red||0)/d.n).reverse(), marker:{color:'#f39c12'}, hovertemplate:'reductase: %{x:.1f} %<extra></extra>'}
+], {barmode:'group', margin:{l:180,r:10,t:10,b:45}, xaxis:{title:'members with partner in operon (%)', range:[0,100]},
+    yaxis:{tickfont:{size:10}}, legend:{orientation:'h', y:1.015}, font,
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+
+const groups = ['1','2','3','4','5'], agg = {};
+groups.forEach(g => agg[g] = {n:0, beta:0, FNR:0, GR:0, rieske:0, plant:0});
+for (const row of BG) {
+  const [g, red, fd, beta, n] = row;
+  if (!agg[g]) continue;
+  agg[g].n += n;
+  if (beta) agg[g].beta += n;
+  if (red && red.indexOf('FNR') >= 0) agg[g].FNR += n;
+  if (red && red.indexOf('GR') >= 0) agg[g].GR += n;
+  if (fd && fd.indexOf('rieske') >= 0) agg[g].rieske += n;
+  if (fd && fd.indexOf('plant') >= 0) agg[g].plant += n;
+}
+const x = groups.map(g => 'group ' + g + '\n(n=' + agg[g].n + ')');
+const pc = (g,k) => agg[g].n ? 100*agg[g][k]/agg[g].n : 0;
+Plotly.newPlot('grp', [
+  {type:'bar', name:'beta subunit', x, y:groups.map(g=>pc(g,'beta')), marker:{color:'#2980b9'}},
+  {type:'bar', name:'FNR-type reductase', x, y:groups.map(g=>pc(g,'FNR')), marker:{color:'#f39c12'}},
+  {type:'bar', name:'GR-type reductase', x, y:groups.map(g=>pc(g,'GR')), marker:{color:'#d98324'}},
+  {type:'bar', name:'Rieske-type ferredoxin', x, y:groups.map(g=>pc(g,'rieske')), marker:{color:'#27ae60'}},
+  {type:'bar', name:'plant-type ferredoxin', x, y:groups.map(g=>pc(g,'plant')), marker:{color:'#7fb069'}}
+], {barmode:'group', yaxis:{title:'members with partner within 10 kb (%)'}, margin:{l:60,r:10,t:10,b:60},
+    legend:{orientation:'h', y:-0.18, font:{size:10}}, font,
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+</script>
+{% endblock %}

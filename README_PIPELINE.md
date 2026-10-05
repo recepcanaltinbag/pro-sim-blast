@@ -36,6 +36,9 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 3 | `build_db.py` | `genomic_context/` → `roar.sqlite` — replicon/ro/neighbor/gene_category |
 | 4 | `annotate_ro.py` | hmmsearch + hmmalign → `ro` tablosu doğrulanır (11.422 RO) |
 | 4b | `build_operons.py` | komşu protein dizileri (gbk) + Pfam HMM (`component_hmms/`) → `neighbor_protein`, `neighbor_component`, `operon`, `operon_gene`; `ro.sequence` |
+| 4c | `evidence_tiers.py` | diamond blastp → `ro_evidence` (kanit kademesi: characterized / close_homolog / family_member / distant / novel) |
+| 4d | `etc_types.py` | komsu Pfam domainleri → `ro_etc` (FNR/GR reduktaz, Rieske/bitki ferredoksin, α3 vs α3β3) |
+| 4e | `analyze_regulation.py` | operon 5' ucu + yukari intergenik bolge + regulator ailesi → `ro_regulation` |
 | 5 | `analyze.py` | orientation, divergent regülatör, transpozon×takson |
 | 6 | `null_model.py` | komşuluk zenginleşmesi — rastgele pencere kontrolü |
 | 7 | `analyze_variants.py` | küme içi kimlik, alt-aile, SDP pozisyonları |
@@ -45,6 +48,8 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 11 | `extract_representatives.py` | her yaprak/küme için temsilci dizi + katalitik doğrulama |
 | 12 | `classify_domains.py` | yaşam alanı (bakteri/ökaryot/arke) — `ro_domain` |
 | 13 | `analyze_ecology.py` | substrat sınıfı × mobilite hipotez testi |
+| 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
+| 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
 | 14 | `make_report.py` / `make_explorer.py` / `make_hub.py` | üç HTML sayfa |
 
 Tümünü koşmak için: `bash run_all.sh` (bkz. aşağı).
@@ -119,11 +124,61 @@ tutar. Sonuç (11.422 RO): operonda beta %21,9, ferredoksin %10,5, redüktaz %28
 üçü birden %4,4. Beta yalnızca beklenen tiplerde (TdnA1, XylX, NBDO…) çıkıyor;
 KshA/CntA/VanA'da yok — biyolojiyle tutarlı.
 
+## Kanit duzeyi (adim 4c) — en onemli metodolojik nokta
+
+HMM atamasi bir proteini **en yakin kuratorlu referansa** koyar; bu fonksiyon
+atamasi DEGILDIR. `evidence_tiers.py` her uyenin 71 referans proteine diamond
+kimligini olcer ve kademelendirir (varsayilan esikler, `--cut-*` ile degisir):
+
+| kademe | kimlik | ne soylenebilir |
+|---|---|---|
+| characterized | ≥95% (+%90 kaplama) | referans enzimin kendisi / sus varyanti |
+| close_homolog | ≥60% | ayni reaksiyon cok olasi |
+| family_member | 40–60% | ayni tip, substrat belirsiz |
+| distant | 25–40% | RO alpha, tip yalnizca homolojiyle atandi |
+| novel | <25% | yakin referans yok, yeni tip adayi |
+
+Olculen dagilim: characterized %1,9 · close_homolog %23,2 · family_member %16,7 ·
+distant %54,9 · novel %3,3. Yani substrat etiketi uyelerin yalnizca **%25'ine**
+aktarilabilir. 16 kume ≥%80 distant/novel uyeden olusuyor. Uyelerin %29,3'unde
+en yuksek skorlu profil ile en yakin referans protein FARKLI tipe ait.
+
+**Esik kalibrasyonu** (`analysis_out/reference_pairs.csv`): 71 referansin kendi
+aralarinda farkli substratli ciftler %99,8 kimlige kadar cikiyor (EdoA1 etilbenzen /
+CumA1 kumen; TDO toluen / BedC1 benzen %92; NarAa naftalen / NidA piren %91), ayni
+substratli ciftlerin en dusugu %32,4. Sonuc: **hicbir global kimlik esigi "ayni
+substrat" garantisi veremez**; substrat secimi birkac aktif-bolge kalintisiyla
+belirlenir. Kademeler "ayni enzim TIPI" guvenini olcer, substrat garantisi degil.
+
+## Regulasyon mimarisi (adim 4e)
+
+Operonun 5' ucu belirlenir, yukari akistaki ilk gene kadarki intergenik bolge
+(putatif promotor bolgesi) olculur, o genin yonu ve duzenleyici ailesi kaydedilir.
+Sonuc: divergent duzenleyici %25,2 · ayni yonde duzenleyici %4,2 · divergent
+baska gen %42,9 · ayni yonde baska gen %16,9 · pencerede gen yok %10,8.
+Divergent duzenleyicilerde intergenik medyan 165 bp, digerlerinde 248 bp; divergent
+duzenleyicilerin %94,6'si ≤400 bp (paylasilan promotor bolgesi araligi).
+Aileler: LysR 878, TetR 487, MarR 281, IclR 275, GntR 167 — LysR baskinligi
+aromatik katabolizma literaturuyle ortusuyor.
+**Sinir:** promotor DIZISI tahmin edilmiyor (-35/-10, operator). DB'de intergenik
+DNA yok, yalnizca komsu protein cevirileri var.
+
+## Filogeni ve dizi uzayi (adim 13b)
+
+71 referans + her yaprak icin 1 temsilci (1.195) hmmalign ile katalitik cekirdege
+hizalanir, >%50 bosluklu kolonlar atilir (426 → 350 kolon), FastTree ile agac
+kurulur. Ayrica diamond all-vs-all ile SSN (30.935 kenar ≥%30) ve kume×kume
+en yuksek temsilci kimligi matrisi uretilir. 44 kume icin ayri agac.
+
 ## Web uygulaması
 
-`webapp/` — FastAPI + Jinja2; gezinme, arama, küme/varyant/giriş sayfaları,
-gen komşuluğu çizimi, operon tablosu, FASTA/CSV indirme, JSON API ve dizi
-sınıflandırıcı (hmmsearch + motif testi). Yayınlama: `webapp/README_DEPLOY.md`
+`webapp/` — FastAPI + Jinja2. Sayfalar: ana sayfa, tip listesi, tip sayfasi
+(kanit kademesi, operon ortaklari, regulasyon, kume agaci, varyantlar, uyeler),
+varyant sayfasi, giris sayfasi (gen komsulugu SVG, operon tablosu, promotor
+bolgesi, kanit kademesi), arama, dizi siniflandirici ve **Atlas** bolumu:
+filogeni, dizi uzayi (SSN + kimlik matrisi + referans kalibrasyonu), taksonomi,
+operonlar/ETC, regulasyon, ekoloji, kanit duzeyleri, istatistikler.
+Her sekilde yontem + uyari notu var. Yayınlama: `webapp/README_DEPLOY.md`
 (GitHub Pages statik dışa aktarım `freeze.py`; tam uygulama için Docker /
 Hugging Face Spaces).
 

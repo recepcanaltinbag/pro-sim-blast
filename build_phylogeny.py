@@ -82,6 +82,7 @@ def main():
     leaf_of = dict(con.execute("SELECT candidate_id, leaf_id FROM ro_leaf"))
     cluster_of = dict(con.execute("SELECT candidate_id, ro_cluster FROM ro WHERE is_confirmed=1"))
     leaf_size = dict(con.execute("SELECT leaf_id, size FROM leaf"))
+    leaf_rep = dict(con.execute("SELECT leaf_id, representative FROM leaf"))
     organism = dict(con.execute(
         "SELECT r.candidate_id, p.organism FROM ro r JOIN replicon p USING(nucleotide_id)"))
     tier = dict(con.execute("SELECT candidate_id, tier FROM ro_evidence")) \
@@ -125,9 +126,17 @@ def main():
         print(f"[yazildi] {tree_path}")
 
         # --- kume agaclari: kumenin yapraklari + kumenin referansi (+ en yakin 2 referans yok; sade)
+        def cluster_of_name(name):
+            """Agac/ag dugum adindan kume cikar: 'REF|X' -> X, 'X#3' -> X."""
+            if name.startswith("REF|"):
+                return name[4:]
+            if "#" in name:
+                return name.split("#")[0]
+            return cluster_of.get(name, "?")
+
         by_cluster = defaultdict(list)
         for k in reps:
-            by_cluster[cluster_of.get(k, "?")].append(k)
+            by_cluster[cluster_of_name(k)].append(k)
         for cl, members in by_cluster.items():
             names = members + [n for n in refs if n == "REF|" + cl]
             if len(names) < 3:
@@ -165,8 +174,7 @@ def main():
                 key = (a, b)
                 if pid > edges.get(key, (0,))[0]:
                     edges[key] = (pid, bits)
-                ca = cluster_of.get(a, a[4:] if a.startswith("REF|") else "?")
-                cb = cluster_of.get(b, b[4:] if b.startswith("REF|") else "?")
+                ca, cb = cluster_of_name(a), cluster_of_name(b)
                 if ca != cb:
                     k2 = tuple(sorted((ca, cb)))
                     best_pair[k2] = max(best_pair[k2], pid)
@@ -179,8 +187,9 @@ def main():
             if k.startswith("REF|"):
                 w.writerow([k, "reference", k[4:], "", "", "", "characterized"])
             else:
-                w.writerow([k, "representative", cluster_of.get(k, ""), leaf_of.get(k, ""),
-                            leaf_size.get(leaf_of.get(k, ""), ""), organism.get(k, ""), tier.get(k, "")])
+                rep = leaf_rep.get(k, "")
+                w.writerow([k, "representative", cluster_of_name(k), k,
+                            leaf_size.get(k, ""), organism.get(rep, ""), tier.get(rep, "")])
     edges_path = os.path.join(args.out_dir, "ssn_edges.csv")
     kept = 0
     with open(edges_path, "w", newline="") as fh:

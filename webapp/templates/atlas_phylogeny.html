@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Phylogeny{% endblock %}
+{% set page_id = 'phylogeny' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Phylogeny of the catalytic core</h1>
+<p class="lede">Maximum-likelihood tree of the {{ n_tips|fmt }} tips: the 71 curated reference
+enzymes, drawn as squares in bold, and one representative sequence for each
+sequence-homogeneous variant. Branch lengths are substitutions per site in the aligned
+Rieske-plus-catalytic core.</p>
+
+<div class="legend">
+  {% for g, col in GROUP_COLORS.items() if g != '?' %}<span><i style="background:{{ col }}"></i>group {{ g }}</span>{% endfor %}
+  <span><i style="background:#8a8a8a;border:1px solid currentColor"></i>curated reference</span>
+</div>
+
+<div class="caveat">
+  <b>How to read this tree.</b>
+  A reference embedded in a tight clade of tips of its own colour is a type that is well sampled by
+  close relatives, and its substrate label is informative for that clade. A reference on a long
+  branch, or a clade whose tips are coloured for a different type than the nearest reference, marks
+  a region where profile assignment and phylogeny disagree; there, type membership carries no
+  functional claim. Deep nodes separating the colour blocks correspond to the historical RO groups,
+  which this tree recovers from sequence alone.
+</div>
+
+<figure class="fig">
+  <div class="treewrap">{{ svg|safe }}</div>
+  <figcaption>
+    <b>Method.</b> Representatives and references were aligned with <code>hmmalign</code> to the
+    71-reference catalytic-centre profile; only match-state columns present in at least half the
+    sequences were kept, so insertions and fused domains do not contribute. The tree was inferred
+    with FastTree under the JTT model.
+    <b>Caveat.</b> One sequence stands for a whole variant, so clade sizes reflect sampled
+    diversity, not abundance; branch support values are not shown on tip labels. Hover a tip for
+    organism, variant size and median within-variant identity; click to open the variant.
+    <a href="{{ u('/download/tree_all.nwk') }}">Download Newick</a>
+  </figcaption>
+</figure>
+{% endblock %}

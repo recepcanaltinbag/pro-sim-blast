@@ -1,0 +1,12 @@
+{% set page = page_id|default('') %}
+<nav class="subnav">
+  <a href="{{ u('/atlas') }}" class="{{ 'on' if page == 'home' }}">Overview</a>
+  <a href="{{ u('/atlas/phylogeny') }}" class="{{ 'on' if page == 'phylogeny' }}">Phylogeny</a>
+  <a href="{{ u('/atlas/network') }}" class="{{ 'on' if page == 'network' }}">Sequence space</a>
+  <a href="{{ u('/atlas/taxonomy') }}" class="{{ 'on' if page == 'taxonomy' }}">Taxonomy</a>
+  <a href="{{ u('/atlas/operons') }}" class="{{ 'on' if page == 'operons' }}">Operons</a>
+  <a href="{{ u('/atlas/regulation') }}" class="{{ 'on' if page == 'regulation' }}">Regulation</a>
+  <a href="{{ u('/atlas/ecology') }}" class="{{ 'on' if page == 'ecology' }}">Ecology</a>
+  <a href="{{ u('/atlas/evidence') }}" class="{{ 'on' if page == 'evidence' }}">Evidence</a>
+  <a href="{{ u('/atlas/statistics') }}" class="{{ 'on' if page == 'statistics' }}">Statistics</a>
+</nav>

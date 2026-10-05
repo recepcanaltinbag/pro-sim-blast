@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Sequence space{% endblock %}
+{% set page_id = 'network' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Sequence space and the limits of a similarity threshold</h1>
+<p class="lede">Where the phylogeny shows descent, this page shows distance: which types are
+separable by sequence identity and which are not. It begins with the calibration that matters most,
+the identities <em>between the characterised enzymes themselves</em>.</p>
+
+<h2>1 · Why no single identity cut-off defines a function</h2>
+<p>Each row is a pair of curated reference enzymes with their experimentally determined substrates.
+Pairs with different substrates reach the top of the identity range, and pairs sharing a substrate
+reach far down it, because substrate selection in this family is set by a handful of active-site
+residues rather than by overall sequence.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Reference A</th><th>Reference B</th><th class="num">Identity</th><th>Substrate A</th><th>Substrate B</th><th>Same label</th></tr></thead>
+<tbody>
+{% for r in refpairs %}
+<tr><td><a href="{{ u('/cluster/' ~ r.ref_a) }}">{{ r.ref_a }}</a></td>
+    <td><a href="{{ u('/cluster/' ~ r.ref_b) }}">{{ r.ref_b }}</a></td>
+    <td class="num">{{ '%.1f %%' % (r.identity|float) }}</td>
+    <td>{{ r.substrate_a }}</td><td>{{ r.substrate_b }}</td>
+    <td>{% if r.same_substrate_label == '1' %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Method.</b> All-against-all DIAMOND blastp of the 71 curated references, pairs with
+at least 60 % query coverage, sorted by identity; the 40 most similar pairs are shown.
+<b>Consequence for this database.</b> Membership of a type is reported as nearest characterised
+relative, and every substrate statement is paired with an evidence level rather than a bare
+percentage. <a href="{{ u('/download/analysis/reference_pairs.csv') }}">Download full table</a></figcaption>
+</figure>
+
+<h2>2 · Similarity network</h2>
+<p>Nodes are the references, outlined and enlarged, together with one representative per variant.
+Two nodes are joined when they are at least {{ min_identity }} % identical over at least 70 % of
+their length. Drag to pan, scroll to zoom, click a node to open it.</p>
+<figure class="fig">
+<div id="ssn" class="chart" style="height:620px"></div>
+<figcaption><b>Reading the layout.</b> A compact single-colour component is a type with a coherent,
+well-separated sequence neighbourhood. Components containing several colours are types that cannot
+be told apart at this threshold and are better treated as one lineage. Isolated nodes are variants
+with no close relative in the sampled diversity, the candidates for genuinely new chemistry.
+<b>Caveat.</b> Edge density depends on the threshold, which changes the apparent number of
+components; the layout is a force simulation and carries no quantitative axis.
+<a href="{{ u('/download/analysis/ssn_edges.csv') }}">Edges</a> ·
+<a href="{{ u('/download/analysis/ssn_nodes.csv') }}">Nodes</a></figcaption>
+</figure>
+
+{% if matrix %}
+<h2>3 · Type against type</h2>
+<figure class="fig">
+<div id="heat" class="chart" style="height:780px"></div>
+<figcaption><b>Value shown.</b> Highest identity between any representative of one type and any
+representative of another, so the matrix answers "could a member of this type be mistaken for that
+one". Values above roughly 40 % mean the two types are not reliably separable by sequence alone,
+and their members' substrate labels should be read together.
+<a href="{{ u('/download/analysis/cluster_identity_matrix.csv') }}">Download matrix</a></figcaption>
+</figure>
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<script>
+const DATA = {{ data|tojson }}, COL = {{ GROUP_COLORS|tojson }};
+const STATIC = {{ 'true' if static_mode else 'false' }};
+const clusterUrl = c => "{{ u('/cluster/') }}" + c + (STATIC ? ".html" : "");
+const leafUrl = l => "{{ u('/leaf/') }}" + l.replace('#','-') + (STATIC ? ".html" : "");
+(function(){
+  const el = document.getElementById('ssn'), W = el.clientWidth || 900, H = 620;
+  const svg = d3.select(el).append('svg').attr('viewBox', [0,0,W,H]).attr('width','100%').attr('height',H);
+  const g = svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.25, 8]).on('zoom', e => g.attr('transform', e.transform)));
+  const nodes = DATA.nodes.map(d => ({...d})), byId = new Map(nodes.map(n => [n.id, n]));
+  const links = DATA.edges.filter(e => byId.has(e.source) && byId.has(e.target)).map(e => ({...e}));
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id)
+      .distance(d => 70 - d.identity/2).strength(d => Math.min(1, d.identity/120)))
+    .force('charge', d3.forceManyBody().strength(-22))
+    .force('center', d3.forceCenter(W/2, H/2))
+    .force('collide', d3.forceCollide(d => d.kind === 'reference' ? 9 : 4));
+  const link = g.append('g').attr('stroke','#8a8a8a').attr('stroke-opacity',0.3)
+    .selectAll('line').data(links).join('line').attr('stroke-width', d => 0.3 + d.identity/70);
+  const node = g.append('g').selectAll('circle').data(nodes).join('circle')
+    .attr('r', d => d.kind === 'reference' ? 7 : 3 + Math.sqrt(d.size || 1))
+    .attr('fill', d => COL[d.group] || '#95a5a6')
+    .attr('stroke', d => d.kind === 'reference' ? '#111' : '#fff')
+    .attr('stroke-width', d => d.kind === 'reference' ? 1.6 : 0.5)
+    .style('cursor','pointer')
+    .on('click', (e,d) => { location.href = d.kind === 'reference' ? clusterUrl(d.cluster) : leafUrl(d.leaf || d.id); });
+  node.append('title').text(d => d.kind === 'reference'
+    ? 'curated reference · ' + d.cluster
+    : d.cluster + ' · variant ' + d.leaf + ' · ' + d.size + ' members · ' + (d.organism||'') + (d.tier ? ' · ' + d.tier : ''));
+  sim.on('tick', () => {
+    link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+    node.attr('cx',d=>d.x).attr('cy',d=>d.y);
+  });
+})();
+{% if matrix %}
+(function(){
+  const M = {{ matrix|tojson }};
+  const names = M.clusters.map(c => c.split('_').slice(2).join('_'));
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  Plotly.newPlot('heat', [{type:'heatmap', z:M.matrix, x:names, y:names, zmin:20, zmax:100,
+    colorscale:[[0,'#f6f4f0'],[0.3,'#f2d6ae'],[0.55,'#e0a070'],[0.8,'#c25b3f'],[1,'#7a2a1f']],
+    colorbar:{title:{text:'% identity', side:'right'}, thickness:12},
+    hovertemplate:'%{y} vs %{x}: %{z:.1f} %<extra></extra>'}],
+    {margin:{l:120,r:20,t:10,b:120}, xaxis:{tickangle:-60, tickfont:{size:9}},
+     yaxis:{tickfont:{size:9}, autorange:'reversed'},
+     font:{color: dark ? '#e8e6e1' : '#15202b'},
+     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'},
+    {responsive:true, displaylogo:false});
+})();
+{% endif %}
+</script>
+{% endblock %}
