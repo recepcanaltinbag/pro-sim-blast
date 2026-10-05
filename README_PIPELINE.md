@@ -52,6 +52,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
 | 12c2 | `operon_validation.py` | operon kuralinin sinanmasi + esik duyarliligi → `operon_validation.json` |
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
+| 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
@@ -165,8 +166,16 @@ Divergent duzenleyicilerde intergenik medyan 165 bp, digerlerinde 248 bp; diverg
 duzenleyicilerin %94,6'si ≤400 bp (paylasilan promotor bolgesi araligi).
 Aileler: LysR 878, TetR 487, MarR 281, IclR 275, GntR 167 — LysR baskinligi
 aromatik katabolizma literaturuyle ortusuyor.
-**Sinir:** promotor DIZISI tahmin edilmiyor (-35/-10, operator). DB'de intergenik
-DNA yok, yalnizca komsu protein cevirileri var.
+**Sinir — ve asil nedeni:** promotor DIZISI tahmin edilmiyor. Bunun sebebi
+sadece veritabani tasarimi degil, KAYNAK VERININ KENDISI: indirilen 17.073
+GenBank kaydinin **%88,9'u `CON` tipinde**, yani dizi dosyada yok, referansla
+kuruluyor (olculdu: `awk '/^LOCUS/ && / CON /'`). BioPython bu kayitlarda
+`len(record.seq)` icin bildirilen uzunlugu verir ama icerige erisilemez
+(`UndefinedSequenceError`). Dizi tasiyan 1.897 kayit ise ookaryot mRNA'lari
+(`XM_`/`NM_`), yani operon analizi icin uygun degil.
+Sonuc: -35/-10 kutulari, operator tekrarlari ve transkripsiyon baslangici bu
+veriyle ANALIZ EDILEMEZ; bunun icin 15.000 kaydin dizili surumunun yeniden
+indirilmesi gerekir (bkz. ROADMAP).
 
 ## Filogeni ve dizi uzayi (adim 13b)
 
@@ -221,6 +230,37 @@ genomik baglam bu veritabaninin asil konusudur. Onun yerine `stats_overview.py`
 her ikili testi **uc duzeyde** kosar: giris basina, tekil dizi basina, tip×cins
 basina. Plazmit bulgusu ucunde de ayakta (4,20x / 3,48x / 4,46x), yani tekrarlanan
 suslarin eseri degil.
+
+## Tip birliktelikleri (adim 12c4)
+
+Operon dogrulamasinda ortaya cikan 1.833 "komsu alfa alt birimi" takip edildi.
+Ayni +-10 kb icinde 854 dogrulanmis RO cifti var: **214 ayni tip** (duplikasyon),
+**640 farkli tip**. Yani bu agirlikla gen duplikasyonu degil.
+
+Iplik bilgisi iki deseni ayiriyor:
+- `CntA + BmoA` 54 cift, 44'u ayni iplikte → tek transkripsiyon birimi adayi;
+  ikisi de metilamin birakir, metabolik olarak tutarli.
+- `KshA15 + CntA` 61 cift, 0'i ayni iplikte → ayni genomda ama ayri transkribe
+  ediliyor; buyuk bir genomda iki alakasiz yetenek.
+
+Replikon duzeyinde permutasyon null'i (2.000 tekrar; replikon basina RO sayisi ve
+tip toplamlari SABIT, boylece "ikisi de yaygin" aciklamasi elenir):
+
+| cift | gozlenen | beklenen | oran | z |
+|---|---|---|---|---|
+| BPDO + PhnA1a | 16 | 0,13 | 123,6x | 43,2 |
+| BPDO + TPDO | 19 | 0,39 | 48,2x | 30,2 |
+| PhnA1a + TPDO | 31 | 1,39 | 22,3x | 25,6 |
+| TPDO + CmoS | 42 | 4,14 | 10,1x | 19,0 |
+| AntA + XylX | 23 | ~4,1 | 5,6x | 10,6 |
+| TdnA1 + AntA | 25 | ~4,3 | 5,8x | 10,3 |
+
+En guclu birliktelikler **urunleri ayni asagi yola giren** enzimler: anilin,
+antranilat ve benzoat oksijenazlarinin ucu de katekol veriyor (beta-ketoadipat
+yolu). Yani genomlar tek enzim degil, tum huni ediniyor gibi gorunuyor.
+**Sinir:** ayni replikonu paylasmak tek organizmada ortak yol KANITI degildir;
+bunlar dizilenmis genomlar uzerinde sayimlar ve PAH yikan izolatlar iyi
+calisilmis bir grup oldugu icin orneklem yanliligi da ayni yone iter.
 
 ## Arama (adim 12d)
 

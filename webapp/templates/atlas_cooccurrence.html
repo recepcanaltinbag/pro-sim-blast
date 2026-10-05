@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Co-occurrence{% endblock %}
+{% set page_id = 'cooccurrence' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+{% set nb = data.neighbour_level %}
+{% set rep = data.replicon_level %}
+
+<h1>Enzymes that occur together</h1>
+<p class="lede">Testing the operon rule turned up something worth following: {{ (nb.pairs_same_type + nb.pairs_different_type)|fmt }}
+times, a gene within 10 kb of an alpha subunit is itself a confirmed Rieske oxygenase. That can mean
+two different things, and separating them says something about how these pathways are built.</p>
+
+<h2>1 · Duplication or division of labour?</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Pairs of confirmed oxygenases within {{ (nb.window_bp / 1000)|int }} kb of each other</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+<tbody>
+{% set total_pairs = nb.pairs_same_type + nb.pairs_different_type %}
+<tr><td>Same enzyme type: a second copy of the same reference type</td>
+    <td class="num">{{ nb.pairs_same_type|fmt }}</td><td class="num">{{ pct(nb.pairs_same_type, total_pairs) }}</td></tr>
+<tr><td>Different enzyme types: two different reactions side by side</td>
+    <td class="num">{{ nb.pairs_different_type|fmt }}</td><td class="num">{{ pct(nb.pairs_different_type, total_pairs) }}</td></tr>
+</tbody></table></div>
+<figcaption>Most neighbouring pairs are of <em>different</em> types, so this is predominantly not
+gene duplication. Note that type assignment is by profile score, so two members assigned to the
+same type may still differ in sequence; the figure is about assignment, not identity.</figcaption>
+</figure>
+
+<h2>2 · Which pairs sit next to each other</h2>
+<p>Strand matters here. Two oxygenases on the <em>same</em> strand with a short gap can belong to one
+transcription unit. Two on opposite strands share a genome and a neighbourhood but are transcribed
+separately, so their association is about gene content rather than regulation.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type A</th><th>Type B</th><th class="num">Pairs within 10 kb</th>
+<th class="num">Of those, same strand</th><th>Substrates</th></tr></thead>
+<tbody>
+{% for p in nb.top_different_type_pairs %}
+<tr>
+  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ p.type_a.split('_', 2)[-1] }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ p.type_b.split('_', 2)[-1] }}</a></td>
+  <td class="num">{{ p.n }}</td>
+  <td class="num">{{ p.same_strand }} <span class="note">({{ pct(p.same_strand, p.n) }})</span></td>
+  <td class="small">{{ chem.get(p.type_a, {}).get('substrate_en', '?') }} + {{ chem.get(p.type_b, {}).get('substrate_en', '?') }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>Two patterns are visible. Pairs with a high same-strand share are candidates for one
+operon: carnitine and glycine betaine oxygenases are the clearest case, and both reactions release a
+methylamine, so a shared transcription unit makes metabolic sense. Pairs with a near-zero same-strand
+share, such as the steroid and carnitine enzymes, co-reside without being co-transcribed, which is
+what one expects of two unrelated capabilities in a large genome.</figcaption>
+</figure>
+
+<h2>3 · Which types share a genome more often than chance allows</h2>
+<p>Co-residence on its own is not informative, because two common enzymes will share a genome
+often simply by being common. The test below shuffles type labels across all
+{{ rep.replicons_with_an_ro|fmt }} replicons that carry an oxygenase, {{ rep.permutations|fmt }}
+times, while holding two things fixed: how many oxygenases each replicon has, and how many members
+each type has in total. Enrichment above that null is therefore not explained by abundance.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact sortable">
+<thead><tr><th>Type A</th><th>Type B</th><th class="num">Replicons observed</th>
+<th class="num">Expected</th><th class="num">Ratio</th><th class="num">z</th>
+<th class="num">Also neighbours</th><th>Substrates</th></tr></thead>
+<tbody>
+{% for p in rep.pairs %}
+<tr>
+  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ p.type_a.split('_', 2)[-1] }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ p.type_b.split('_', 2)[-1] }}</a></td>
+  <td class="num" data-v="{{ p.observed }}">{{ p.observed|fmt }}</td>
+  <td class="num">{{ '%.2f' % p.expected }}</td>
+  <td class="num" data-v="{{ p.ratio }}">{{ '%.1f×' % p.ratio if p.ratio else '–' }}</td>
+  <td class="num" data-v="{{ p.z }}">{{ p.z }}</td>
+  <td class="num">{{ p.neighbours_within_10kb }}</td>
+  <td class="small">{{ chem.get(p.type_a, {}).get('substrate_en', '?') }} + {{ chem.get(p.type_b, {}).get('substrate_en', '?') }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Reading the result.</b> The strongest associations are between enzymes whose products
+enter the same downstream route. Biphenyl, phenanthrene and terephthalate oxygenases turn up
+together far above chance, and these are the capabilities of the organisms that specialise in
+polycyclic aromatics. Aniline, anthranilate and benzoate oxygenases also cluster, and all three
+yield catechol, the intermediate of the beta-ketoadipate pathway. So the pattern is consistent with
+genomes acquiring whole funnels rather than single enzymes.
+<b>What it is not.</b> Sharing a replicon is not evidence of a shared pathway in any single
+organism: these are counts over sequenced genomes, and the enrichment could also reflect which
+organisms get sequenced together, since PAH-degrading isolates are a well-studied group.
+Pairs with fewer than five observed replicons are not shown.
+<a href="{{ u('/download/analysis/cooccurrence.json') }}">Download the full test output</a></figcaption>
+</figure>
+
+<p class="note">{{ rep.replicons_with_more_than_one_type|fmt }} of {{ rep.replicons_with_an_ro|fmt }}
+replicons carry more than one type of Rieske oxygenase, so multi-capability genomes are a minority
+but not a rarity.</p>
+
+<script>
+document.querySelectorAll('table.sortable th').forEach((th, i) => th.addEventListener('click', () => {
+  const tb = th.closest('table').tBodies[0], rows = [...tb.rows], asc = th.dataset.asc !== '1';
+  th.dataset.asc = asc ? '1' : '0';
+  const val = r => { const c = r.cells[i]; const v = c.dataset.v ?? c.textContent.trim();
+    const n = parseFloat(v); return isNaN(n) ? v.toLowerCase() : n; };
+  rows.sort((a, b) => { const x = val(a), z = val(b); return (x > z ? 1 : x < z ? -1 : 0) * (asc ? 1 : -1); });
+  rows.forEach(r => tb.appendChild(r));
+}));
+</script>
+{% endblock %}

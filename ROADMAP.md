@@ -68,11 +68,28 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     sayfalarini 11.422 HTML yerine tip basina JSON + tarayicida render etmek
     (dosya sayisi ~2.000'e duser).
 
-14. **Intergenik DNA'yi sakla.** Promotor DIZISI analizi (-35/-10, operator
-    tekrarlari) icin `extract_genomic_context.py`'nin komsu genler arasindaki
-    nukleotid dizisini de kaydetmesi gerekir. Su an yalnizca protein cevirileri
-    var, bu yuzden regulasyon sayfasi bolgeyi gosteriyor ama diziyi analiz
-    etmiyor. Yeniden tum gbk parse'i gerektirir (~30 dk).
+14. **Promotor dizisi analizi — VERI YOK, kullanici karari gerekiyor.**
+    Olculdu: indirilen 17.073 GenBank kaydinin %88,9'u `CON` tipinde, yani
+    dizi dosyada BULUNMUYOR (BioPython `UndefinedSequenceError` veriyor).
+    Dizi tasiyan 1.897 kayit ookaryot mRNA'si. Yani -35/-10, operator
+    tekrarlari ve transkripsiyon baslangici bu veriyle analiz edilemez;
+    `extract_genomic_context.py`'yi degistirmek yetmez.
+    Cozum icin iki yol var, ikisi de disa donuk ve kullanici onayi ister:
+      (a) NCBI E-utilities ile yalnizca gereken intergenik bolgeleri cekmek
+          (`efetch` + `seq_start`/`seq_stop`): ~10.200 kucuk istek, API
+          anahtari olmadan ~1 saat, NCBI kullanim politikasi geregi e-posta
+          ve anahtar belirtmek gerekir.
+      (b) 15.173 kaydin dizili surumunu yeniden indirmek: cok daha buyuk
+          trafik ve disk, ama tek seferlik.
+    Onerim (a); hangi bolgelerin cekilecegi zaten `ro_regulation` tablosunda
+    hazir (10.186 giriste intergenik bolge koordinatli olarak duruyor).
+
+## Sirada
+
+15. ~~RO tiplerinin birlikte bulunmasi.~~ **BITTI.** `cooccurrence.py` +
+    `/atlas/cooccurrence`. 854 ciftin 640'i farkli tip; permutasyon null'inda
+    en guclu birliktelikler ayni asagi yola besleyen enzimler (BPDO+PhnA1a
+    123x, AntA+XylX 5,6x). Iplik bilgisi "tek operon" ile "ayni genom"u ayiriyor.
 
 ## Acik sorular (kullaniciya)
 

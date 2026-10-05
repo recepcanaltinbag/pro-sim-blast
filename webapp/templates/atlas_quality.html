@@ -88,11 +88,14 @@ the copies are counted.</p>
     <td>All operon composition percentages.</td>
     <td>Transcriptomics. In the meantime the rule is tested against a background and the effect of
     the threshold is tabulated. <a href="{{ u('/atlas/operons') }}">Operons</a></td></tr>
-<tr><td><b>Promoters are located, not predicted.</b> The database stores neighbour protein
-    translations, not intergenic DNA.</td>
-    <td>Everything on the regulation page: no &minus;35 or &minus;10 boxes, no operator sites, no
-    transcription start.</td>
-    <td>Keeping the intergenic sequence during extraction, then motif analysis.
+<tr><td><b>Promoters are located, not predicted</b>, and this is a property of the source data
+    rather than a design choice: 88.9 % of the 17,073 downloaded GenBank records are
+    <code>CON</code> records, which declare a length but contain no sequence. The 1,897 records that
+    do carry sequence are eukaryotic transcripts, which have no operons.</td>
+    <td>Everything on the regulation page: the intergenic region is located and measured, but no
+    &minus;35 or &minus;10 box, operator repeat or transcription start can be analysed.</td>
+    <td>Re-fetching the intergenic regions from NCBI. Their coordinates are already stored for
+    10,186 entries, so the request set is defined; it is the download that is missing.
     <a href="{{ u('/atlas/regulation') }}">Regulation</a></td></tr>
 <tr><td><b>Missing partners are not absent partners.</b> Contig ends truncate neighbourhoods and the
     window is 10 kb.</td>

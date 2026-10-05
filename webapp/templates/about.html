@@ -183,10 +183,10 @@ distant loci hide partners that exist.</p>
 the intergenic distance to the nearest upstream gene is measured. That interval is where the
 promoter must lie. The upstream gene's orientation separates a shared, divergent promoter region
 from a possible read-through arrangement, and its product name assigns a regulator family where one
-can be recognised. The promoter <em>sequence</em> is not predicted: the database stores neighbour
-protein translations, not intergenic DNA, so no −35 or −10 boxes, operator repeats or transcription
-start sites are inferred. <a href="{{ u('/atlas/regulation') }}">Results</a></p>
-
+can be recognised. The promoter <em>sequence</em> is not analysed, and the reason lies in the source
+data rather than in the design of this database: 88.9 % of the GenBank records used here are <code>CON</code>
+records, which state a sequence length but contain no sequence at all. No boxes, operator repeats or
+transcription start sites can be inferred from this material. <a href="{{ u('/atlas/regulation') }}">Results</a></p>
 <h2>6 · Variants and novelty</h2>
 <p>Within each type, members are split recursively at decreasing identity until each subgroup reaches
 a median pairwise identity target. The resulting leaves are reported as variants, each with its

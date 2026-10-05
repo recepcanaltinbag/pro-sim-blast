@@ -77,7 +77,7 @@ def main():
     print("[pages] atlas")
     for p in ("atlas", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
-              "atlas/statistics", "atlas/quality"):
+              "atlas/cooccurrence", "atlas/statistics", "atlas/quality"):
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")
@@ -85,7 +85,7 @@ def main():
                  "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                  "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                  "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-                 "redundancy.json",
+                 "redundancy.json", "cooccurrence.json",
                  "null_model.csv", "sdp_positions.csv", "stats.json"):
         save("/download/analysis/" + name, "download/analysis/" + name)
     print(f"[pages] {len(clusters)} clusters")

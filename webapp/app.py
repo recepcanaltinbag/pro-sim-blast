@@ -1153,6 +1153,20 @@ def dl_novel():
         con.close()
 
 
+@app.get("/atlas/cooccurrence", response_class=HTMLResponse)
+def atlas_cooccurrence(request: Request):
+    data = atlas.read_json(apath("cooccurrence.json"))
+    if not data:
+        raise HTTPException(404, "cooccurrence.json not found (run cooccurrence.py)")
+    con = connect()
+    try:
+        chem = {k: v for k, v in CHEMISTRY.items()}
+        return render(request, "atlas_cooccurrence.html", data=data, chem=chem,
+                      totals=totals(con))
+    finally:
+        con.close()
+
+
 @app.get("/atlas/quality", response_class=HTMLResponse)
 def atlas_quality(request: Request):
     con = connect()
@@ -1189,7 +1203,7 @@ def dl_analysis(name: str):
                "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
                "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-               "redundancy.json",
+               "redundancy.json", "cooccurrence.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")
