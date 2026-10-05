@@ -111,15 +111,19 @@ shows that the <em>cis</em>-dihydroxylation the family is named for is only the 
 the whole story.</p>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact">
-<thead><tr><th>Reaction</th><th class="num">Types</th><th class="num">Entries</th><th>What happens</th></tr></thead>
+<thead><tr><th>Reaction</th><th class="num">Types</th><th class="num">Entries</th>
+<th>Generic scheme</th><th>What happens</th></tr></thead>
 <tbody>
 {% for r in reactions %}
 <tr><td><span class="chip" style="background:{{ r.color }};color:#fff;border:0">{{ r.label }}</span></td>
     <td class="num">{{ r.types }}</td><td class="num">{{ r.members|fmt }}</td>
+    <td>{{ reaction_scheme_svg(r.key)|safe }}</td>
     <td class="small">{{ r.note }}</td></tr>
 {% endfor %}
 </tbody></table></div>
-<figcaption>Reaction assignments come from the literature on each type's reference enzyme and are
+<figcaption>The schemes are generic: they show what each reaction class does to any substrate,
+because drawing a product for every type would mean assuming which ring position is attacked.
+Reaction assignments come from the literature on each type's reference enzyme and are
 curated in <code>chemistry.csv</code>. They describe the characterised enzyme; whether a given
 member performs the same reaction depends on how close it is to that reference, which every entry
 page states. <a href="{{ u('/atlas/evidence') }}">Evidence levels</a></figcaption>

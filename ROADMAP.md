@@ -38,11 +38,23 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
    yapisi cizmek hangi halka pozisyonunun saldiriya ugradigini varsaymayi
    gerektirirdi).
 
-8. **Urun SMILES'leri.** cis-dihidroksilasyon urunleri icin halka pozisyonu
-   bilinen tiplerde (NDO 1,2; TDO 2,3; BPDO 2,3 ...) urun yapisi da cizilebilir.
-   Elle kuratorluk gerekir, yanlis yapi gostermektense bos birakildi.
-9. **Taksonomi sayfasina agac.** Filum dagilimi su an yigili cubuk; NCBI
-   taksonomi agaci uzerinde gosterim daha okunur olur.
+8. ~~Reaksiyon gorselleri.~~ **BITTI.** Urun SMILES'i kuratorlemek yerine her
+   reaksiyon sinifi icin genel mekanizma semasi cizildi (ana sayfa reaksiyon
+   tablosu + tip sayfalari). Substrattan bagimsiz oldugu icin regiokimya
+   varsayimi gerektirmiyor.
+9. ~~Taksonomi agaci.~~ **BITTI.** `/atlas/taxonomy` icinde katlanabilir NCBI
+   soy agaci; cins dugumleri aramaya baglaniyor, kirpilan taksonlar sayisiyla
+   belirtiliyor.
+
+## Sirada
+
+10. **Per-tip substrat kuratorlugu.** 7 tip hala `bilinmiyor` (OxoO, CndA, cadA,
+    OMO, PsbAb, ROCH34, OxyA) — orijinal makaleler gerekiyor, kullanicidan
+    bekleniyor.
+11. **Hugging Face Space.** Docker imaji hazir ve test edildi; kullanicinin
+    hesabi gerekiyor.
+12. **Operon sayfasina transkripsiyon yonu testi.** Ayni iplikteki gen dizisinin
+    kesilme noktalariyla (terminator benzeri bosluk) karsilastirilmasi.
 
 ## Acik sorular (kullaniciya)
 

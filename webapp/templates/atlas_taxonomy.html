@@ -22,6 +22,42 @@ acquisition. <b>Caveat.</b> Sequenced genomes are heavily biased towards culture
 model soil bacteria, so absence from a phylum is weak evidence.</figcaption>
 </figure>
 
+<h2>Where the enzymes sit in the tree of life</h2>
+<p class="note">Counts of confirmed entries along the NCBI lineage of the genome that carries them.
+Branches open on click. Crowded nodes show their largest children and state how many taxa and
+entries were left out, so the pruning is visible rather than silent.</p>
+
+{% macro node(n) %}
+{% if n.children %}
+<details class="taxnode"{% if n.depth < 2 %} open{% endif %}>
+  <summary><span class="taxname">{{ n.name }}</span>
+    <span class="taxbar"><i style="width:{{ (100 * n.n / tree.n)|round(2) }}%"></i></span>
+    <span class="taxn">{{ n.n|fmt }}</span></summary>
+  <div class="taxkids">
+    {% for child in n.children %}{{ node(child) }}{% endfor %}
+    {% if n.hidden_taxa %}
+    <div class="taxnode taxnode--more">{{ n.hidden_taxa }} further {{ 'taxon' if n.hidden_taxa == 1 else 'taxa' }}
+      not shown, {{ n.hidden_entries|fmt }} entries</div>
+    {% endif %}
+  </div>
+</details>
+{% else %}
+<div class="taxnode taxnode--leaf">
+  <a href="{{ u('/search', q='"' ~ n.name ~ '"') }}" class="taxname">{{ n.name }}</a>
+  <span class="taxbar"><i style="width:{{ (100 * n.n / tree.n)|round(2) }}%"></i></span>
+  <span class="taxn">{{ n.n|fmt }}</span>
+</div>
+{% endif %}
+{% endmacro %}
+
+<figure class="fig">
+<div class="taxtree">{{ node(tree) }}</div>
+<figcaption>Bar length is the share of all {{ tree.n|fmt }} confirmed entries. Clicking a genus
+searches the database for it. The shape of this tree reflects which organisms have been sequenced
+as much as where the enzymes are: isolates from soil and from clinical samples dominate every
+public genome collection.</figcaption>
+</figure>
+
 <h2>Composition table</h2>
 <p class="note">Eukaryotic Rieske oxygenases are not a contamination artefact: chloroplast enzymes
 such as choline monooxygenase, fungal and animal proteins carry an intact Rieske centre and

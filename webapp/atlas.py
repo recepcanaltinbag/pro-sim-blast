@@ -608,3 +608,159 @@ def reaction_summary(groups):
             out.append({"key": key, "label": REACTION_LABEL[key], "note": REACTION_NOTE[key],
                         "color": REACTION_COLORS[key], **per[key]})
     return out
+
+
+# ------------------------------------------------- generic reaction schemes
+#
+# Substrat basina URUN YAPISI cizilmiyor: bu, her tipte hangi halka
+# pozisyonunun saldiriya ugradigini varsaymayi gerektirir ve yanlis regiokimya
+# gostermek hic gostermemekten kotudur. Onun yerine her REAKSIYON SINIFI icin
+# genel mekanizma cizilir; bunlar substrattan bagimsiz ve kesindir.
+
+def _hex_points(cx, cy, r):
+    import math
+    return [(cx + r * math.cos(math.radians(90 + 60 * i)),
+             cy - r * math.sin(math.radians(90 + 60 * i))) for i in range(6)]
+
+
+def _arene(cx, cy, r, aromatic=True, saturated=(), subs=(), fused=False):
+    """Bir halka ciz. subs: [(vertex_index, 'OH')], saturated: sp3 kose indeksleri."""
+    pts = _hex_points(cx, cy, r)
+    poly = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    out = [f'<polygon points="{poly}" fill="none" stroke="currentColor" stroke-width="1.3"/>']
+    if aromatic:
+        out.append(f'<circle cx="{cx}" cy="{cy}" r="{r * 0.55:.1f}" fill="none" '
+                   f'stroke="currentColor" stroke-width="1.1"/>')
+    else:
+        # kalan cift baglari ic cizgi olarak ciz (sp3 kosesi olmayan kenarlar)
+        for i in range(6):
+            j = (i + 1) % 6
+            if i in saturated or j in saturated:
+                continue
+            if i % 2:
+                continue
+            x1, y1 = pts[i]
+            x2, y2 = pts[j]
+            mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+            dx, dy = (cx - mx) * 0.22, (cy - my) * 0.22
+            out.append(f'<line x1="{x1 + dx:.1f}" y1="{y1 + dy:.1f}" x2="{x2 + dx:.1f}" '
+                       f'y2="{y2 + dy:.1f}" stroke="currentColor" stroke-width="1.1"/>')
+    for index, label in subs:
+        x, y = pts[index % 6]
+        ox = (x - cx) * 0.55
+        oy = (y - cy) * 0.55
+        anchor = "start" if ox > 1 else ("end" if ox < -1 else "middle")
+        out.append(f'<text x="{x + ox:.1f}" y="{y + oy + 3.5:.1f}" font-size="10" '
+                   f'text-anchor="{anchor}" fill="currentColor">{html.escape(label)}</text>')
+    return "".join(out)
+
+
+def _arrow(x, y, width=56, above="", below=""):
+    out = [f'<line x1="{x}" y1="{y}" x2="{x + width}" y2="{y}" stroke="currentColor" '
+           f'stroke-width="1.3" marker-end="url(#rxarrow)"/>']
+    if above:
+        out.append(f'<text x="{x + width / 2:.1f}" y="{y - 6}" font-size="9" '
+                   f'text-anchor="middle" fill="currentColor">{above}</text>')
+    if below:
+        out.append(f'<text x="{x + width / 2:.1f}" y="{y + 13}" font-size="9" '
+                   f'text-anchor="middle" fill="currentColor">{below}</text>')
+    return "".join(out)
+
+
+_DEFS = ('<defs><marker id="rxarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" '
+         'markerHeight="7" orient="auto-start-reverse">'
+         '<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>')
+
+
+def reaction_scheme_svg(kind, width=300, height=96):
+    """Reaksiyon sinifi icin genel mekanizma semasi."""
+    r, cy = 19, 46
+    body = ""
+    if kind == "cis_dihydroxylation":
+        body = (_arene(34, cy, r) + _arrow(62, cy, 58, "O₂, NAD(P)H")
+                + _arene(150, cy, r, aromatic=False, saturated=(4, 5),
+                         subs=[(4, "OH"), (5, "OH")])
+                + '<text x="196" y="50" font-size="9" fill="currentColor">cis-diol, '
+                  'ring no longer aromatic</text>')
+    elif kind == "angular_dioxygenation":
+        body = (_arene(30, cy, r) + _arene(30 + r * 1.73, cy, r)
+                + f'<circle cx="{30 + r * 0.87:.1f}" cy="{cy}" r="3" fill="#8c2f22"/>'
+                + _arrow(96, cy, 52, "O₂, NAD(P)H")
+                + _arene(176, cy, r, subs=[(1, "OH")])
+                + _arene(176 + r * 1.9, cy, r, subs=[(4, "OH")])
+                + '<text x="150" y="80" font-size="9" fill="currentColor">attack at the ring '
+                  'junction, so the fused system falls apart</text>')
+    elif kind == "dioxygenation_with_release":
+        body = (_arene(34, cy, r, subs=[(0, "X")]) + _arrow(62, cy, 58, "O₂, NAD(P)H", "− X")
+                + _arene(150, cy, r, aromatic=True, subs=[(0, "OH"), (1, "OH")])
+                + '<text x="196" y="50" font-size="9" fill="currentColor">X leaves as nitrite,</text>'
+                + '<text x="196" y="62" font-size="9" fill="currentColor">halide, sulfite, NH₃ or CO₂</text>')
+    elif kind == "O_demethylation":
+        body = (_arene(34, cy, r, subs=[(0, "OCH₃")]) + _arrow(76, cy, 54, "O₂, NAD(P)H", "− HCHO")
+                + _arene(164, cy, r, subs=[(0, "OH")])
+                + '<text x="204" y="50" font-size="9" fill="currentColor">free phenol plus</text>'
+                + '<text x="204" y="62" font-size="9" fill="currentColor">formaldehyde</text>')
+    elif kind == "N_demethylation":
+        body = ('<text x="18" y="52" font-size="13" fill="currentColor">R₂N–CH₃</text>'
+                + _arrow(86, cy, 54, "O₂, NAD(P)H", "− HCHO")
+                + '<text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text>'
+                + '<text x="204" y="50" font-size="9" fill="currentColor">one methyl removed</text>'
+                + '<text x="204" y="62" font-size="9" fill="currentColor">per reaction cycle</text>')
+    elif kind == "hydroxylation":
+        body = ('<text x="22" y="52" font-size="13" fill="currentColor">R–CH</text>'
+                + _arrow(74, cy, 54, "O₂, NAD(P)H", "+ H₂O")
+                + '<text x="138" y="52" font-size="13" fill="currentColor">R–C–OH</text>'
+                + '<text x="200" y="50" font-size="9" fill="currentColor">one oxygen atom inserted,</text>'
+                + '<text x="200" y="62" font-size="9" fill="currentColor">the other reduced to water</text>')
+    elif kind == "C_N_cleavage":
+        body = ('<text x="12" y="52" font-size="13" fill="currentColor">R–CH₂–N⁺(CH₃)₃</text>'
+                + _arrow(116, cy, 50, "O₂, NAD(P)H")
+                + '<text x="172" y="46" font-size="11" fill="currentColor">R–CHO</text>'
+                + '<text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text>'
+                + '<text x="232" y="52" font-size="9" fill="currentColor">C–N bond broken</text>')
+    else:
+        return ""
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+            f'width="100%" style="max-width:{width}px;height:auto" class="rxnscheme">'
+            + _DEFS + body + "</svg>")
+
+
+# ----------------------------------------------------------- taxonomy tree
+def taxonomy_tree(con, max_children=25, min_count=2, max_depth=7):
+    """NCBI soy dizgilerinden ic ice gecmis sayim agaci.
+
+    Yigili cubuk grafigi "hangi filum ne kadar" sorusunu cevapliyor ama
+    "bu enzim hangi dalda oturuyor" sorusunu cevaplamiyor. Agac onu gosterir.
+    Kalabalik dugumlerde cocuk sayisi kirpilir ve kirpilan miktar ayrica
+    yazilir, boylece eksik gosterim gizli kalmaz.
+    """
+    counts = Counter()
+    for (taxonomy,) in con.execute("""
+            SELECT p.taxonomy FROM ro r JOIN replicon p USING(nucleotide_id)
+            WHERE r.is_confirmed = 1"""):
+        parts = [t.strip() for t in (taxonomy or "").split(";") if t.strip()][:max_depth]
+        if not parts:
+            parts = ["unassigned"]
+        for depth in range(1, len(parts) + 1):
+            counts[tuple(parts[:depth])] += 1
+
+    children = defaultdict(list)
+    for path in counts:
+        children[path[:-1]].append(path)
+
+    def build(path, depth=0):
+        kids = sorted(children.get(path, []), key=lambda p: -counts[p])
+        kept = [k for k in kids if counts[k] >= min_count or depth < 3][:max_children]
+        hidden = sum(counts[k] for k in kids if k not in kept)
+        return {
+            "name": path[-1] if path else "all entries",
+            "n": counts[path] if path else sum(counts[p] for p in children[()]),
+            "depth": depth,
+            "children": [build(k, depth + 1) for k in kept],
+            "hidden_taxa": len(kids) - len(kept),
+            "hidden_entries": hidden,
+        }
+
+    root = build(())
+    root["name"] = "all confirmed entries"
+    return root

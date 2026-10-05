@@ -39,6 +39,8 @@
       </svg>
       <div class="rxn__below">{{ chem.reaction }}</div>
     </div>
+    <div class="rxn__scheme">{{ reaction_scheme_svg(chem.reaction_class)|safe }}
+      <div class="rxn__label">how this reaction class works, in general</div></div>
     <div class="rxn__side">
       <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
       <div class="rxn__label">product</div>

@@ -930,6 +930,7 @@ import atlas  # noqa: E402
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
+    reaction_scheme_svg=atlas.reaction_scheme_svg,
     gap_histogram=atlas.gap_histogram,
     amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
     TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,
@@ -987,7 +988,8 @@ def atlas_taxonomy(request: Request):
             counted.update(d["phyla"])
         return render(request, "atlas_taxonomy.html", over=over,
                       top_phyla=[p for p, _ in counted.most_common(12)],
-                      all_phyla=counted.most_common(20))
+                      all_phyla=counted.most_common(20),
+                      tree=atlas.taxonomy_tree(con))
     finally:
         con.close()
 

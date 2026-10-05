@@ -198,6 +198,16 @@ satir da zenginlesmis gorunurdu. Beta'nin medyan boslugunun 0 bp olmasi
 ferredoksin 921→1.317 (%43), reduktaz 2.214→3.411 (%54). Yani beta sonucu saglam,
 ferredoksin/reduktaz yuzdeleri 150 bp konvansiyonuna bagli okunmali.
 
+## Reaksiyon semalari ve taksonomi agaci (web)
+
+Tip sayfalarinda substrat SMILES'ten cizilir, urun ADLA verilir. Urun yapisi
+cizilmedi: bu her tipte hangi halka pozisyonunun saldiriya ugradigini varsaymayi
+gerektirir ve yanlis regiokimya gostermek hic gostermemekten kotudur. Onun yerine
+her REAKSIYON SINIFI icin genel mekanizma semasi cizilir (`atlas.reaction_scheme_svg`);
+bunlar substrattan bagimsiz ve kesindir. Taksonomi sayfasinda yigili cubugun
+yaninda NCBI soyu uzerinde katlanabilir agac var (`atlas.taxonomy_tree`), kirpilan
+dugum sayisi acikca yaziliyor.
+
 ## Arama (adim 12d)
 
 Eski arama bes alanda `LIKE '%...%'` yapiyordu: kelime siniri yok, siralama yok,
