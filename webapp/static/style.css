@@ -197,3 +197,14 @@ table.sdp sup { font-size: .7em; color: var(--accent-ink); }
 .facet ul { list-style: none; margin: 0; padding: 0; }
 .facet li { font-size: .86rem; padding: 1px 0; display: flex; justify-content: space-between; gap: 8px; }
 @media (max-width: 760px) { .searchlayout { grid-template-columns: 1fr; } .facets { position: static; } }
+
+/* reaction scheme on type pages */
+figure.reaction .rxn { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 18px; }
+.rxn__side { text-align: center; min-width: 170px; }
+.rxn__label { font-size: .8rem; color: var(--dim); margin-top: 4px; }
+.rxn__product { font-size: .95rem; font-weight: 600; max-width: 230px; margin: 0 auto;
+  padding: 16px 10px; border: 1px dashed var(--rule); border-radius: 6px; }
+.rxn__arrow { text-align: center; color: var(--ink); min-width: 150px; }
+.rxn__above { font-size: .8rem; color: var(--dim); }
+.rxn__below { font-size: .78rem; color: var(--dim); max-width: 220px; margin: 2px auto 0; line-height: 1.3; }

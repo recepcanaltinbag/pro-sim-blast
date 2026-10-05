@@ -21,6 +21,37 @@
   {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
 </div>
 
+{% if chem and chem.reaction_class != 'unknown' %}
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      {% if chem.substrate_smiles %}
+      <svg class="struct" data-smiles="{{ chem.substrate_smiles }}" aria-label="{{ chem.substrate_en }}"></svg>
+      {% else %}<div class="struct struct--none">structure<br>not drawn</div>{% endif %}
+      <div class="rxn__label">{{ chem.substrate_en }}</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">{{ chem.reaction }}</div>
+    </div>
+    <div class="rxn__side">
+      <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  {% if chem.notes %}<br><b>Note.</b> {{ chem.notes }}{% endif %}</figcaption>
+</figure>
+{% endif %}
+
 <div class="cols">
   <div>
     <h3>Key facts</h3>
@@ -229,4 +260,20 @@ target. A variant is the finest unit at which a distinct function can reasonably
 </form>
 {% endif %}
 {% include "_members.html" %}
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script>
+(function () {
+  const els = document.querySelectorAll('svg.struct[data-smiles]');
+  if (!els.length || typeof SmilesDrawer === 'undefined') return;
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const drawer = new SmilesDrawer.SvgDrawer({width: 210, height: 165, bondThickness: 1.1,
+    bondLength: 18, terminalCarbons: false, padding: 6});
+  els.forEach(function (el) {
+    try {
+      SmilesDrawer.parse(el.dataset.smiles, t => drawer.draw(t, el, dark ? 'dark' : 'light', false),
+        () => { el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>'); el.remove(); });
+    } catch (e) { el.remove(); }
+  });
+})();
+</script>
 {% endblock %}

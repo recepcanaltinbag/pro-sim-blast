@@ -32,7 +32,79 @@ reproduce the historical class boundaries.
 <a href="{{ u('/atlas/statistics') }}">Statistical tests</a></figcaption>
 </figure>
 
-<h2>2 · Most frequent electron-transport configurations</h2>
+<h2>2 · Does the operon rule measure anything?</h2>
+{% if validation %}
+<p>The operon is defined by a convention: same strand, intergenic gap of at most 150 base pairs.
+Without transcription data that convention cannot be verified directly. What can be tested is
+whether it captures a real pattern, by asking where the sequence-verified partners actually sit
+compared with any gene in the same windows.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Component</th><th class="num">Genes found</th><th class="num">Same strand</th>
+<th class="num">vs background</th><th class="num">Within 2 genes</th><th class="num">vs background</th>
+<th class="num">Median gap</th><th class="num">Gap ≤ 150 bp</th></tr></thead>
+<tbody>
+{% for key, label in [('beta','beta subunit'), ('ferredoxin','ferredoxin'),
+                      ('reductase','reductase'), ('alpha_other','another alpha subunit')] %}
+{% set c = validation.components.get(key) %}
+{% if c %}
+<tr class="{{ 'hl' if key == 'alpha_other' }}">
+  <td>{{ label }}{% if key == 'alpha_other' %} <span class="note">negative control</span>{% endif %}</td>
+  <td class="num">{{ c.n|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * c.strand.rate) }}</td>
+  <td class="num">{{ '%.2f×' % c.strand.ratio }}<div class="note">p = {{ '%.0e' % c.strand.p }}</div></td>
+  <td class="num">{{ '%.1f %%' % (100 * c.position.rate) }}</td>
+  <td class="num">{{ '%.2f×' % c.position.ratio }}<div class="note">p = {{ '%.0e' % c.position.p }}</div></td>
+  <td class="num">{{ c.gap_median }} bp</td>
+  <td class="num">{{ '%.0f %%' % (100 * c.gap_under_150) if c.gap_under_150 else '–' }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Background.</b> All {{ validation.n_neighbour_genes|fmt }} genes recorded in the same
+windows: {{ '%.1f %%' % (100 * validation.background.same_strand_rate) }} lie on the same strand as
+their alpha subunit and {{ '%.1f %%' % (100 * validation.background.near_rate) }} within two genes
+of it. Comparing inside the same windows means genome composition and annotation bias affect both
+sides equally.
+<b>Result.</b> The beta subunit is the sharpest case: nine in ten are co-directional and most sit
+immediately beside the alpha with a median gap of zero base pairs, meaning the stop and start codons
+touch. Ferredoxins and reductases are enriched but looser.
+<b>The control matters most.</b> A second alpha subunit in the window is <em>not</em> enriched at
+all, on either measure. If the method were simply finding whatever lies near an alpha subunit, that
+row would look like the others. It does not, so the enrichment reflects operon organisation rather
+than the window or the search.</figcaption>
+</figure>
+
+<figure class="fig">
+<div id="offsets" class="chart" style="height:380px"></div>
+<figcaption>Position of each verified partner relative to the alpha subunit, in genes. Negative is
+upstream in genome coordinates. The beta subunit peaks immediately next to the alpha; another alpha
+subunit is spread flat across the window.</figcaption>
+</figure>
+
+<h3>What the 150 base pair threshold decides</h3>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Gap threshold</th><th class="num">Beta in operon</th>
+<th class="num">Ferredoxin</th><th class="num">Reductase</th><th class="num">At least one partner</th></tr></thead>
+<tbody>
+{% for gap in validation.threshold_sensitivity.thresholds %}
+{% set s = validation.threshold_sensitivity.counts[gap|string] %}
+<tr class="{{ 'hl' if gap == 150 }}"><td class="num">{{ gap }} bp</td>
+  <td class="num">{{ s.beta|fmt }}</td><td class="num">{{ s.ferredoxin|fmt }}</td>
+  <td class="num">{{ s.reductase|fmt }}</td><td class="num">{{ s['any']|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>Counts of alpha subunits whose operon contains each partner, as the threshold moves from
+50 to 500 base pairs, out of {{ validation.threshold_sensitivity.n_ro|fmt }} entries. The beta
+subunit barely moves, so that conclusion does not depend on the choice. Ferredoxin and reductase
+counts rise by roughly half over the range, so their percentages elsewhere on this page should be
+read as a function of the 150 base pair convention, not as a property of the genomes.
+<a href="{{ u('/download/analysis/operon_validation.json') }}">Download the full test output</a></figcaption>
+</figure>
+{% endif %}
+
+<h2>3 · Most frequent electron-transport configurations</h2>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Configuration</th><th class="num">Alpha subunits</th></tr></thead>
@@ -47,7 +119,7 @@ seen within 10 kb. "none" means not detected in that window.
 <a href="{{ u('/download/analysis/etc_by_cluster.csv') }}">Download per-type table</a></figcaption>
 </figure>
 
-<h2>3 · Verified partners per type</h2>
+<h2>4 · Verified partners per type</h2>
 <figure class="fig">
 <div id="ops" class="chart" style="height:1500px"></div>
 <figcaption><b>Shown.</b> Percentage of each type's members whose predicted operon, meaning the run
@@ -58,7 +130,7 @@ cassettes. Types with a reductase but no ferredoxin draw on a two-component elec
 partners encoded elsewhere in the genome.</figcaption>
 </figure>
 
-<h2>4 · Canonical gene order, with the regulator that faces it</h2>
+<h2>5 · Canonical gene order, with the regulator that faces it</h2>
 <p class="note">For each type: the most frequent operon gene order, preceded by the regulatory
 architecture of most of its members and the median intergenic region in which the promoter must lie.
 Boxes marked a, b, Fd and Red are sequence-verified components, Reg is the upstream regulator with
@@ -89,6 +161,7 @@ Per-type detail is on the <a href="{{ u('/atlas/regulation') }}">regulation page
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
 <script>
 const OVER = {{ over|tojson }}, BG = {{ by_group|tojson }};
+const VAL = {{ validation|tojson }};
 const dark = matchMedia('(prefers-color-scheme: dark)').matches;
 const font = {color: dark ? '#e8e6e1' : '#15202b'};
 const y = OVER.map(d => d.gene + ' (' + d.n + ')').reverse();
@@ -123,5 +196,22 @@ Plotly.newPlot('grp', [
 ], {barmode:'group', yaxis:{title:'members with partner within 10 kb (%)'}, margin:{l:60,r:10,t:10,b:60},
     legend:{orientation:'h', y:-0.18, font:{size:10}}, font,
     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+
+if (VAL && VAL.components) {
+  const names = {beta:'beta subunit', ferredoxin:'ferredoxin', reductase:'reductase',
+                 alpha_other:'another alpha subunit (control)'};
+  const cols = {beta:'#2980b9', ferredoxin:'#27ae60', reductase:'#f39c12', alpha_other:'#95a5a6'};
+  const xs = []; for (let i = -10; i <= 10; i++) if (i) xs.push(i);
+  const traces = Object.keys(names).filter(k => VAL.components[k]).map(k => {
+    const o = VAL.components[k].offsets, total = VAL.components[k].n;
+    return {type:'bar', name:names[k], x:xs, y:xs.map(i => 100*(o[String(i)]||0)/total),
+            marker:{color:cols[k]}, hovertemplate:names[k]+': %{y:.1f} % at offset %{x}<extra></extra>'};
+  });
+  Plotly.newPlot('offsets', traces, {barmode:'group',
+    xaxis:{title:'position relative to the alpha subunit (genes)', dtick:1},
+    yaxis:{title:'share of that component (%)'}, margin:{l:60,r:10,t:10,b:50},
+    legend:{orientation:'h', y:1.02, font:{size:10}}, font,
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+}
 </script>
 {% endblock %}

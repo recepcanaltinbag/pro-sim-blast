@@ -50,6 +50,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 13 | `analyze_ecology.py` | substrat sınıfı × mobilite hipotez testi |
 | 12b | `variant_signature.py` | varyantlari ayiran hizalama kolonlari → `cluster_sdp`, `leaf_sdp` |
 | 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
+| 12c2 | `operon_validation.py` | operon kuralinin sinanmasi + esik duyarliligi → `operon_validation.json` |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
 | 13c | `stats_overview.py` | hipotez testleri (entry + genus duzeyi, etki buyuklugu) → `stats.json` |
@@ -172,6 +173,30 @@ DNA yok, yalnizca komsu protein cevirileri var.
 hizalanir, >%50 bosluklu kolonlar atilir (426 → 350 kolon), FastTree ile agac
 kurulur. Ayrica diamond all-vs-all ile SSN (30.935 kenar ≥%30) ve kume×kume
 en yuksek temsilci kimligi matrisi uretilir. 44 kume icin ayri agac.
+
+## Operon kuralinin sinanmasi (adim 12c2)
+
+Operon tanimi bir konvansiyondur (ayni iplik, bosluk ≤150 bp) ve transkripsiyon
+verisi olmadan dogrudan dogrulanamaz. Dogrulanabilen sey, dizi ile dogrulanmis
+ortaklarin rastgele bir genden daha yakin ve daha sik ayni iplikte olup
+olmadigidir. Arka plan ayni pencerelerdeki 192.541 genin tamamidir
+(ayni iplik %56,6, ±2 gen icinde %21,5):
+
+| bilesen | n | ayni iplik | ±2 gen | medyan bosluk |
+|---|---|---|---|---|
+| beta | 3.050 | %90,7 (1,60x) | %83,5 (3,89x) | 0 bp |
+| ferredoksin | 1.849 | %80,9 (1,43x) | %64,9 (3,02x) | 514 bp |
+| reduktaz | 6.492 | %70,2 (1,24x) | %47,8 (2,23x) | 770 bp |
+| **baska alfa (kontrol)** | 1.833 | %54,7 (0,97x, p=0,10) | %25,1 (1,17x) | 2.380 bp |
+
+Son satir negatif kontroldur: pencerede bulunan baska bir RO alfa alt birimi
+arka plandan FARKSIZDIR. Yontem "alfanin yanindaki her seyi" buluyor olsaydi o
+satir da zenginlesmis gorunurdu. Beta'nin medyan boslugunun 0 bp olmasi
+(stop ve start kodonlarinin bitismesi) translasyonel eslesmenin klasik imzasidir.
+
+**Esik duyarliligi** (50→500 bp): beta 2.371→2.518 (%6 degisim, esikten bagimsiz),
+ferredoksin 921→1.317 (%43), reduktaz 2.214→3.411 (%54). Yani beta sonucu saglam,
+ferredoksin/reduktaz yuzdeleri 150 bp konvansiyonuna bagli okunmali.
 
 ## Arama (adim 12d)
 

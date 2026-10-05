@@ -30,12 +30,19 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
-6. **Operon tamligini yapisal olarak dogrula.** Simdilik ortaklar Pfam ile
-   bulunuyor; beta alt biriminin gercekten ayni operonda olup olmadigini
-   transkripsiyon verisi olmadan soyleyemiyoruz. En azindan ortak gen mesafesi
-   dagilimi ile rastgele beklentiyi karsilastiran bir test eklenebilir.
-7. **Tip sayfalarina reaksiyon semasi.** chemistry.csv'de substrat ve urun var;
-   SMILES'ten substrat → urun oku ile kucuk bir reaksiyon cizimi eklenebilir.
+6. ~~Operon kuralinin sinanmasi.~~ **BITTI.** `operon_validation.py`; Atlas
+   operon sayfasinda yon/konum testleri, negatif kontrol (baska alfa: p=0,10)
+   ve esik duyarliligi tablosu.
+7. ~~Tip sayfalarina reaksiyon semasi.~~ **BITTI.** Substrat SMILES'ten ciziliyor,
+   ok uzerinde O2 + NAD(P)H, altinda reaksiyon; urun ad olarak veriliyor (urun
+   yapisi cizmek hangi halka pozisyonunun saldiriya ugradigini varsaymayi
+   gerektirirdi).
+
+8. **Urun SMILES'leri.** cis-dihidroksilasyon urunleri icin halka pozisyonu
+   bilinen tiplerde (NDO 1,2; TDO 2,3; BPDO 2,3 ...) urun yapisi da cizilebilir.
+   Elle kuratorluk gerekir, yanlis yapi gostermektense bos birakildi.
+9. **Taksonomi sayfasina agac.** Filum dagilimi su an yigili cubuk; NCBI
+   taksonomi agaci uzerinde gosterim daha okunur olur.
 
 ## Acik sorular (kullaniciya)
 

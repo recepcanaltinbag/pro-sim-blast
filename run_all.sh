@@ -100,6 +100,10 @@ python3 variant_signature.py --db roar.sqlite --out-dir "$OUT"
 step "12c/14 Korunmus merkez istatistigi"
 python3 motif_stats.py --db roar.sqlite --out "$OUT/motif_stats.json"
 
+# --- 12c2. Operon kuralinin sinanmasi
+step "12c2/14 Operon kurali ve esik duyarliligi"
+python3 operon_validation.py --db roar.sqlite --out "$OUT/operon_validation.json"
+
 # --- 12d. Arama indeksi (FTS5 + filtre alanlari)
 step "12d/14 Arama indeksi"
 python3 build_search_index.py --db roar.sqlite --ecology cluster_ecology.csv --chemistry chemistry.csv

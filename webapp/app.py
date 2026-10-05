@@ -133,6 +133,18 @@ def load_ecology():
 ECOLOGY = load_ecology()
 
 
+def load_chemistry():
+    rows = {}
+    if os.path.exists(CHEMISTRY_PATH):
+        with open(CHEMISTRY_PATH) as fh:
+            for r in csv.DictReader(fh):
+                rows[r["cluster"]] = r
+    return rows
+
+
+CHEMISTRY = load_chemistry()
+
+
 def cluster_parts(cluster):
     parts = (cluster or "").split("_", 2)
     return {"group": parts[0] if parts else "", "id": parts[1] if len(parts) > 1 else "",
@@ -337,7 +349,7 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
         total, rows = members_query(con, cluster=cluster, q=q, page=page)
         return render(request, "cluster.html", c=info, members=rows, total=total, page=page,
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "",
-                      x=cluster_extras(con, cluster))
+                      chem=CHEMISTRY.get(cluster), x=cluster_extras(con, cluster))
     finally:
         con.close()
 
@@ -1009,6 +1021,7 @@ def atlas_operons(request: Request):
         reg_rows = {r["cluster"]: r for r in atlas.read_csv(apath("regulation_by_cluster.csv"))}
         return render(request, "atlas_operons.html", over=_overview(con), profiles=profiles,
                       by_group=[list(r) for r in by_group], layouts=layouts, reg_rows=reg_rows,
+                      validation=atlas.read_json(apath("operon_validation.json")),
                       stats=atlas.read_json(apath("stats.json")))
     finally:
         con.close()
@@ -1159,7 +1172,7 @@ def dl_analysis(name: str):
     allowed = {"ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
                "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
-               "variant_signatures.csv", "motif_stats.json",
+               "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
                "null_model.csv", "sdp_positions.csv", "stats.json"}
     if name not in allowed or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")

@@ -28,8 +28,9 @@ def main():
     ap.add_argument("--base", default="", help="URL prefix, e.g. /pro-sim-blast for a GitHub project page")
     ap.add_argument("--limit", type=int, default=0, help="only N entry pages (for testing)")
     ap.add_argument("--pages-only", action="store_true",
-                    help="refresh just the overview pages, static files and bulk downloads; "
-                         "leave the per-type, per-variant and per-entry pages in place")
+                    help="refresh the overview, type and variant pages plus static files and "
+                         "bulk downloads; leave the per-entry pages in place (they are the slow "
+                         "part and change only when the database itself changes)")
     args = ap.parse_args()
 
     os.environ["ROAR_BASE"] = args.base
@@ -80,16 +81,9 @@ def main():
     for name in ("ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
                  "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
                  "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
-                 "variant_signatures.csv", "motif_stats.json",
+                 "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
                  "null_model.csv", "sdp_positions.csv", "stats.json"):
         save("/download/analysis/" + name, "download/analysis/" + name)
-    if args.pages_only:
-        print("[search] index")
-        write_search_index(con, out, A)
-        con.close()
-        print(f"[done] {out} (overview pages only)")
-        return
-
     print(f"[pages] {len(clusters)} clusters")
     for c in clusters:
         save(f"/cluster/{c}", f"cluster/{c}.html")
@@ -99,6 +93,13 @@ def main():
     for l in leaves:
         save(f"/leaf/{A.leaf_slug(l)}", f"leaf/{A.leaf_slug(l)}.html")
         save(f"/download/leaf/{A.leaf_slug(l)}.fasta", f"download/leaf/{A.leaf_slug(l)}.fasta")
+    if args.pages_only:
+        print("[search] index")
+        write_search_index(con, out, A)
+        con.close()
+        print(f"[done] {out} (entry pages left untouched)")
+        return
+
     print(f"[pages] {len(entries)} entries")
     for i, e in enumerate(entries, 1):
         s = A.slug(e)
