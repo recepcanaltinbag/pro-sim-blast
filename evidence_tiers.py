@@ -12,9 +12,15 @@ kademelendirilir:
     distant         25-40%                          -- RO alpha, en yakin tip X, fonksiyon bilinmiyor
     novel           < 25% veya hit yok              -- bilinen tiplere uymuyor
 
-Esikler literatürdeki genel enzim-fonksiyon aktarim kurallarina dayanir
-(>=60% kimlikte EC transferi guvenilir; 40%'in altinda substrat tahmini zayif)
-ve kullanici arayuzunde substrat etiketinin NASIL sunulacagini belirler.
+Esikler genel enzim-fonksiyon aktarim kurallarina dayanir (>=60% kimlikte EC
+transferi genelde guvenilir; 40%'in altinda zayif) ve --cut-* ile degistirilebilir.
+
+ONEMLI SINIR (analysis_out/reference_pairs.csv): 71 kuratorlu referansin kendi
+aralarinda, FARKLI substrat etiketli ciftler %99,8 kimlige kadar cikiyor
+(EdoA1 etilbenzen / CumA1 kumen), naftalen vs nitrotoluen dioksijenazlari ~%90.
+Yani RO'larda substrat secimi birkac aktif-bolge kalintisiyla belirlenir; HICBIR
+global kimlik esigi "ayni substrat" garantisi vermez. Kademeler "ayni enzim TIPI"
+guvenini olcer; substrat etiketi her kademede referansin substratidir, uyenin degil.
 
 Cikti: ro_evidence tablosu + analysis_out/evidence_by_cluster.csv
 """
@@ -49,7 +55,13 @@ def main():
     ap.add_argument("--refs", default="ROs_71_Clean/refs71.fasta")
     ap.add_argument("--out-dir", default="analysis_out")
     ap.add_argument("--threads", type=int, default=8)
+    ap.add_argument("--cut-characterized", type=float, default=95.0)
+    ap.add_argument("--cut-close", type=float, default=60.0)
+    ap.add_argument("--cut-family", type=float, default=40.0)
+    ap.add_argument("--cut-distant", type=float, default=25.0)
     args = ap.parse_args()
+    TIERS[:] = [("characterized", args.cut_characterized), ("close_homolog", args.cut_close),
+                ("family_member", args.cut_family), ("distant", args.cut_distant)]
 
     con = sqlite3.connect(args.db)
     con.executescript("""

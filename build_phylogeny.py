@@ -110,8 +110,18 @@ def main():
         aln_fa = os.path.join(tmp, "aln.fa")
         write_phylip_free(aln, aln_fa)
         tree_path = os.path.join(args.out_dir, "tree_all.nwk")
-        with open(tree_path, "w") as out:
-            run([args.fasttree, "-quiet", "-quote", "-lg", aln_fa], stdout=out)
+        # FastTree tek-duyarlikli ikili bazi hizalamalarda PairLogLk assertion'i ile
+        # cokuyor; sirayla LG -> JTT -> ML'siz (NJ+ME) dene.
+        for extra in (["-lg"], [], ["-noml"]):
+            try:
+                with open(tree_path, "w") as out:
+                    run([args.fasttree, "-quiet", "-quote"] + extra + [aln_fa], stdout=out)
+                print(f"[agac] model secenegi: {extra or ['JTT']}")
+                break
+            except subprocess.CalledProcessError:
+                print(f"[uyari] FastTree {extra} basarisiz, sonraki secenek")
+        else:
+            raise RuntimeError("FastTree hicbir modelde calismadi")
         print(f"[yazildi] {tree_path}")
 
         # --- kume agaclari: kumenin yapraklari + kumenin referansi (+ en yakin 2 referans yok; sade)
@@ -125,8 +135,14 @@ def main():
             sub = {k: aln[k] for k in names if k in aln}
             sub_fa = os.path.join(tmp, "sub.fa")
             write_phylip_free(sub, sub_fa)
-            with open(os.path.join(args.out_dir, "trees", f"{cl}.nwk"), "w") as out:
-                subprocess.run([args.fasttree, "-quiet", "-quote", "-lg", sub_fa], check=True, stdout=out)
+            for extra in (["-lg"], [], ["-noml"]):
+                try:
+                    with open(os.path.join(args.out_dir, "trees", f"{cl}.nwk"), "w") as out:
+                        subprocess.run([args.fasttree, "-quiet", "-quote"] + extra + [sub_fa],
+                                       check=True, stdout=out, stderr=subprocess.DEVNULL)
+                    break
+                except subprocess.CalledProcessError:
+                    continue
         print(f"[yazildi] {len(by_cluster)} kume agaci -> {args.out_dir}/trees/")
 
         # --- 2. SSN (diamond all-vs-all)
