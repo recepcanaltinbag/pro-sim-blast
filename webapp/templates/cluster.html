@@ -306,6 +306,27 @@ the characterised enzyme.</p>
 <div class="treewrap">{{ x.tree_svg|safe }}</div>
 {% endif %}
 
+{% if x.habitats %}
+<h2>Where its carriers were isolated from</h2>
+{% set hc = x.habitat_coverage %}
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+{% if hc %}Recorded for {{ hc[0]|fmt }} of this type's {{ hc[1]|fmt }} entries
+({{ pct(hc[0], hc[1]) }}); the rest state no source.{% endif %}
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+{% for row in x.habitats %}
+<tr><td>{{ hab_label.get(row.h, row.h.replace('_', ' ')) if hab_label else row.h.replace('_', ' ') }}</td>
+    <td class="num" data-v="{{ row.n }}">{{ row.n|fmt }}</td>
+    <td class="num" data-v="{{ row.species }}">{{ row.species|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><a href="{{ u('/atlas/ecology') }}">How the habitat vocabulary is built, and what it
+cannot classify</a></p>
+{% endif %}
+
 <h2>Variants</h2>
 <p class="note">Members were split recursively until each subgroup reached a median pairwise identity
 target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>

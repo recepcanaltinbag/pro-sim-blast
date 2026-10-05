@@ -107,6 +107,34 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 21. ~~Varyant etiketleri Turkce.~~ **BITTI.** `characterize_leaves.py` ingilizce
     uretiyor, tablo yeniden kuruldu.
 
+22. ~~Izolasyon kaynagi ve habitat.~~ **BITTI.** `isolation_source.py` ile
+    9.308 kayittan izolasyon kaynagi, konak, cografya ve toplama yili cikarildi;
+    serbest metin 21 kategorili kontrollu bir sozluge normalize edildi.
+    Kapsam: girislerin %60,9'unda kaynak var, %55,6'si bir habitate
+    yerlestirilebiliyor. Ekoloji sayfasinda tur-bazli normalize tablolar ve
+    tip sayfalarinda habitat dagilimi gosteriliyor.
+    Sozlukte iki duzeltme yapildi (eleştiri turu): madencilik ayri kategoriye
+    cikarildi (asit maden drenaji organik kirlilik degil, sinyali suluyordu) ve
+    hipersalin kurali tatli su kuralinin onune alindi ("hypersaline lake"
+    icinde "lake" gectigi icin tatli suya dusuyordu). Kapsam %52,2 → %55,6.
+23. ~~Veri koken takibi ve hata onlemleri.~~ **BITTI.** `provenance.py`
+    (30 tablo, 77 dosya, uretici + girdi + satir sayisi + kaynak veri koku) ve
+    `validate_curation.py` (55 kontrol, hata varsa sifirdan farkli cikis, run_all
+    icinde HTML uretiminden ONCE kapi olarak). Bulunan ve duzeltilen dort hata
+    icin bkz. README "Safeguards".
+
+## Sirada
+
+24. **Referans setindeki tekrarlar (KULLANICI KARARI).** 71 kayit, 68 tekil dizi.
+    OxoO=OMO, NahAc=NDO(3_315), NDO(3_314)=NarAa birebir ayni; NdmC, NdmB'nin
+    alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
+    keyfi bolunuyor. Hangi ikiz tutulacak?
+25. **Habitat sozlugunun kalan zayif noktalari.** Ajan sekiz tanesini isaretledi;
+    en onemlileri: `hospital` anahtari lavabo/yuzey orneklerini de klinige
+    sokuyor, `lymph node` fare deneylerini insan kliniğine sokuyor, ve
+    `rhizosphere_plant` rizosfer/endofit/yaprak/colemen hepsini tek kovada
+    tutuyor. Insan ve hayvan dokusu hic ayrilmiyor.
+
 ## Acik sorular (kullaniciya)
 
 - cadA'nin substrati 2,4-D olarak isaretlendi ama KESIN DEGIL; Bradyrhizobium

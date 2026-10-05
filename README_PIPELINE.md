@@ -320,6 +320,45 @@ yolu). Yani genomlar tek enzim degil, tum huni ediniyor gibi gorunuyor.
 bunlar dizilenmis genomlar uzerinde sayimlar ve PAH yikan izolatlar iyi
 calisilmis bir grup oldugu icin orneklem yanliligi da ayni yone iter.
 
+## Izolasyon kaynagi ve habitat (adim 12c6)
+
+GenBank kayitlarinin `source` ozelliklerinde kullanilmayan ekolojik veri vardi:
+9.591 dosyada `/isolation_source`, 4.911'inde `/host`, 11.485'inde cografi konum.
+`isolation_source.py` bunlari cikarir, serbest metni 21 kategorili siralı ve
+denetlenebilir bir kelime haritasiyla normalize eder (`replicon_source` tablosu +
+`analysis_out/habitat.json`).
+
+**Kapsam durust verilir:** girislerin %60,9'unda kaynak var, **%55,6'si** bir
+habitate yerlestirilebiliyor. 4.493 girişte kaynak hic yok, 578'inde metin
+siniflandirilamiyor (214 farkli dizgi: etiketsiz ontoloji numaralari, bitki ve
+hayvan orneklerinde de gecen ciplak anatomik kelimeler, "culture"/"tissue").
+Yanlis siniflamaktansa siniflamamak yegdir.
+
+**Tur bazinda normalizasyon neden zorunlu:** giris sayisi dizilenmis suslari
+sayar. Insan klinigi ve bitki iliskili kaynaklarda tur basina 6,3 ve 6,0 giris
+var, denizde 3,0. Bu yuzden her ekolojik ifade TUR uzerinden kurulur.
+
+**Sonuc.** Kirli/sanayi sahasi arka plani tum tur-habitat gozlemlerinin %2,4'u.
+Tur bazinda zenginlesme:
+
+| | tur payi | kat |
+|---|---|---|
+| alkilbenzenler | %17,9 | 7,6x |
+| nitroaromatikler | %16,7 | 7,1x |
+| PAH | %13,3 | 5,6x |
+| biaril/eterler | %11,5 | 4,9x |
+| ksenobiyotik (sinif) | %6,1 | 2,6x |
+
+Yani ilişki **sinifa degil belirli kimyasal ailelere** ait. Alkilbenzen ve
+nitroaromatik satirlari birkac ture dayaniyor, oran olarak okunmamali; PAH
+16 turle en guvenilir olani.
+
+**Bir sozluk karari sonucu degistirdi.** Madencilik ve asit maden drenaji
+baslangicta kirli/sanayi kategorisinin icindeydi. Kirliliktir ama metaliktir,
+organik degil, ve kategoriyi suluyordu: ayirinca PAH zenginlesmesi ~3x'ten
+5,6x'e cikti. Madencilik artik ayri bir habitat ve FARKLI, daha zayif bir aile
+kumesini zenginlestiriyor — ayirmanin dogru oldugunun capraz kontrolu bu.
+
 ## Arama (adim 12d)
 
 Eski arama bes alanda `LIKE '%...%'` yapiyordu: kelime siniri yok, siralama yok,

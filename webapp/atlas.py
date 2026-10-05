@@ -834,3 +834,84 @@ def download_table(analysis_dir):
                         entry["rows"] = max(0, sum(1 for _ in fh) - 1)
         rows.append(entry)
     return rows
+
+
+# ------------------------------------------------------------------ habitat
+HABITAT_LABEL = {
+    "soil": "soil", "rhizosphere_plant": "plant and rhizosphere",
+    "freshwater": "freshwater", "marine": "marine", "sediment": "sediment",
+    "wastewater_sludge": "wastewater and sludge",
+    "contaminated_industrial": "contaminated or industrial site",
+    "mining_acid_drainage": "mine and acid drainage",
+    "human_clinical": "human clinical", "animal_host": "animal host",
+    "gut_faecal": "gut and faecal", "food_fermented": "food and fermentation",
+    "air_dust": "air and dust", "extreme_thermal": "hot spring and thermal",
+    "laboratory_strain": "laboratory strain",
+    "water_unspecified": "water, compartment unstated",
+    "engineered_system": "engineered system", "cave": "cave",
+    "subsurface_deep": "deep subsurface", "fungal_associated": "fungus associated",
+    "hypersaline": "hypersaline", "other": "not classifiable", "unknown": "no source recorded",
+}
+
+
+def habitat_rows(habitat, min_species=1):
+    """Habitat dagilimi: giris ve TEKIL TUR sayisi yan yana.
+
+    Ikisini birlikte vermek bu sayfanin butun noktasi: giris sayisi cok
+    dizilenmis suslari sayar, tur sayisi saymaz. Aradaki fark yanliligin
+    kendisidir, bu yuzden gizlenmez.
+    """
+    if not habitat:
+        return []
+    total_e = sum(v["entries"] for v in habitat["habitats"].values())
+    total_s = sum(v["species"] for v in habitat["habitats"].values())
+    rows = []
+    for key, v in habitat["habitats"].items():
+        if v["species"] < min_species:
+            continue
+        rows.append({
+            "key": key, "label": HABITAT_LABEL.get(key, key.replace("_", " ")),
+            "entries": v["entries"], "replicons": v["replicons"], "species": v["species"],
+            "entry_share": v["entries"] / total_e if total_e else 0,
+            "species_share": v["species"] / total_s if total_s else 0,
+            "bias": (v["entries"] / total_e - v["species"] / total_s)
+                    if total_e and total_s else 0,
+            "entries_per_species": v["entries"] / v["species"] if v["species"] else None,
+            "informative": key not in ("unknown", "other"),
+        })
+    return sorted(rows, key=lambda r: -r["species"])
+
+
+def habitat_enrichment(habitat, profile_key, habitat_key, min_pairs=10):
+    """Bir habitatin TUR BAZINDA zenginlesmesi, arka plana gore kat olarak.
+
+    Arka plan tum tur-habitat ciftleri uzerinden hesaplanir. Giris sayisi degil
+    tur sayisi kullanilir, cunku 400 dizilenmis Pseudomonas susu tek bir
+    ekolojik gozlemdir.
+    """
+    if not habitat:
+        return None
+    prof = habitat.get(profile_key) or {}
+    all_h = habitat.get("habitats") or {}
+    bg_species = (all_h.get(habitat_key) or {}).get("species", 0)
+    bg_total = sum(v.get("species", 0) for v in all_h.values())
+    if not bg_total or not bg_species:
+        return None
+    background = bg_species / bg_total
+    rows = []
+    for key, entry in prof.items():
+        pairs = entry.get("species_habitat_pairs") or 0
+        if pairs < min_pairs:
+            continue
+        h = (entry.get("habitats") or {}).get(habitat_key) or {}
+        share = h.get("species_fraction", 0.0)
+        rows.append({
+            "key": key, "label": key.replace("_", " "),
+            "species": h.get("species", 0), "pairs": pairs,
+            "entries_total": entry.get("entries_total", 0),
+            "species_share": share, "entry_share": h.get("entry_fraction", 0.0),
+            "fold": share / background if background else None,
+        })
+    return {"background": background, "background_species": bg_species,
+            "background_pairs": bg_total,
+            "rows": sorted(rows, key=lambda r: -(r["fold"] or 0))}

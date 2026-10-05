@@ -973,6 +973,7 @@ import atlas  # noqa: E402
 
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
+    hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
     reaction_scheme_svg=atlas.reaction_scheme_svg,
     gap_histogram=atlas.gap_histogram,
@@ -1043,9 +1044,17 @@ def atlas_taxonomy(request: Request):
 def atlas_ecology(request: Request):
     con = connect()
     try:
+        hab = atlas.read_json(apath("habitat.json"))
         return render(request, "atlas_ecology.html", over=_overview(con),
-                      stats=atlas.read_json(apath("stats.json")),
-                      habitat=atlas.read_json(apath("habitat.json")))
+                      stats=atlas.read_json(apath("stats.json")), habitat=hab,
+                      hab_rows=atlas.habitat_rows(hab),
+                      hab_label=atlas.HABITAT_LABEL,
+                      enrich_family=atlas.habitat_enrichment(
+                          hab, "chemical_family_habitat_profile", "contaminated_industrial"),
+                      enrich_class=atlas.habitat_enrichment(
+                          hab, "substrate_class_habitat_profile", "contaminated_industrial"),
+                      enrich_mining=atlas.habitat_enrichment(
+                          hab, "chemical_family_habitat_profile", "mining_acid_drainage"))
     finally:
         con.close()
 

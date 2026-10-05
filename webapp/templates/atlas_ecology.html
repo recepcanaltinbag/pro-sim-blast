@@ -30,7 +30,129 @@ to a narrow group of close relatives.</figcaption>
 </figure>
 
 {% if stats %}
-<h2>3 · Tests</h2>
+
+{% if habitat %}
+<h2>3 · Where the organisms were isolated from</h2>
+{% set cov = habitat.coverage %}
+<div class="caveat">
+  <b>Read every number below against this denominator.</b> The isolation source is a free-text
+  field that submitters fill in when they choose to. Of the
+  {{ cov.replicons_with_confirmed_ro|fmt }} genome records carrying a confirmed alpha subunit,
+  {{ cov.replicons_with_isolation_source|fmt }} state one. Of the
+  {{ cov.confirmed_ros_total|fmt }} confirmed alpha subunits,
+  {{ '%.1f %%' % (100 * cov.confirmed_ros_with_isolation_source_fraction) }} sit on a record with
+  an isolation source, and after normalising that free text into a controlled vocabulary
+  <b>{{ '%.1f %%' % (100 * cov.confirmed_ros_with_classified_habitat_fraction) }}</b> can be placed
+  in a habitat at all. The remainder is not error, it is silence:
+  {{ cov.confirmed_ros_habitat_unknown|fmt }} entries have no source recorded and
+  {{ cov.confirmed_ros_habitat_other|fmt }} have text that the vocabulary deliberately refuses to
+  guess at, across {{ cov.unclassified_strings_distinct }} distinct strings. Those include bare
+  anatomical words that occur in plant, animal and clinical samples alike, ontology accessions with
+  no label, and single words such as "culture" or "tissue". Mis-sorting them would be worse than
+  leaving them out, and {{ cov.replicons_unclassified_but_host_present|fmt }} of them do carry a
+  host name, which is the sampled organism rather than the environment and so is not used here.
+</div>
+
+<h3>3.1 · Entries against species, which is the whole problem</h3>
+<figure class="fig">
+<div class="tablewrap"><table class="data" data-filter="Filter habitats…">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Records</th>
+<th class="num">Species</th><th class="num">Entries per species</th>
+<th class="num">Share of entries<span class="unit">%</span></th>
+<th class="num">Share of species<span class="unit">%</span></th></tr></thead>
+<tbody>
+{% for r in hab_rows %}
+<tr class="{{ '' if r.informative else 'op' }}">
+  <td>{{ r.label }}{% if not r.informative %} <span class="note">not a habitat</span>{% endif %}</td>
+  <td class="num" data-v="{{ r.entries }}">{{ r.entries|fmt }}</td>
+  <td class="num" data-v="{{ r.replicons }}">{{ r.replicons|fmt }}</td>
+  <td class="num" data-v="{{ r.species }}">{{ r.species|fmt }}</td>
+  <td class="num" data-v="{{ r.entries_per_species|round(2) if r.entries_per_species else 0 }}">{{ '%.1f' % r.entries_per_species if r.entries_per_species else '–' }}</td>
+  <td class="num" data-v="{{ (100 * r.entry_share)|round(2) }}">{{ '%.1f' % (100 * r.entry_share) }}</td>
+  <td class="num" data-v="{{ (100 * r.species_share)|round(2) }}">{{ '%.1f' % (100 * r.species_share) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Why both columns.</b> Counting entries counts sequenced strains, and some habitats
+attract far more sequencing than others: the entries-per-species column makes that visible directly.
+Human clinical and plant-associated sources carry the most repeated strains, while marine and
+sediment sources carry many species with one genome each. Any ecological statement therefore has to
+be made on species, not on entries, which is what the next two sections do.</figcaption>
+</figure>
+
+{% if enrich_family and enrich_class %}
+<h3>3.2 · Who actually comes from contaminated sites</h3>
+<p>The expectation is that enzymes acting on industrial compounds are found at industrial sites.
+Tested on species rather than entries, the expectation holds, but not at the level it is usually
+stated. Background: {{ '%.1f %%' % (100 * enrich_family.background) }} of all
+{{ enrich_family.background_pairs|fmt }} species-by-habitat observations are from a contaminated or
+industrial site.</p>
+<figure class="fig">
+<div class="cols">
+<div>
+<h4>By substrate class</h4>
+<table class="data compact">
+<thead><tr><th>Class</th><th class="num">Species</th><th class="num">Share<span class="unit">%</span></th><th class="num">Fold</th></tr></thead>
+<tbody>
+{% for r in enrich_class.rows %}
+<tr><td>{{ r.label }}</td><td class="num">{{ r.species }}</td>
+    <td class="num">{{ '%.1f' % (100 * r.species_share) }}</td>
+    <td class="num">{{ '%.1f×' % r.fold if r.fold else '–' }}</td></tr>
+{% endfor %}
+</tbody></table>
+</div>
+<div>
+<h4>By chemical family</h4>
+<table class="data compact">
+<thead><tr><th>Family</th><th class="num">Species</th><th class="num">Share<span class="unit">%</span></th><th class="num">Fold</th></tr></thead>
+<tbody>
+{% for r in enrich_family.rows %}
+<tr class="{{ 'hl' if r.fold and r.fold >= 4 and r.species >= 10 }}">
+    <td>{{ r.label }}</td><td class="num">{{ r.species }}</td>
+    <td class="num">{{ '%.1f' % (100 * r.species_share) }}</td>
+    <td class="num">{{ '%.1f×' % r.fold if r.fold else '–' }}</td></tr>
+{% endfor %}
+</tbody></table>
+</div>
+</div>
+<figcaption><b>The claim belongs to families, not to the class.</b> As a class, xenobiotic-acting
+types are enriched about two and a half fold, which is real but modest and not much above the
+natural-substrate classes. One level down the signal is much sharper: the families whose substrates
+are the classic pollutants of fuel, tar and explosives residue carry it, and the highlighted rows
+are the ones with enough species to be worth quoting. Rows with fewer than ten species are shown
+but should not be read as rates; alkylbenzenes and nitroaromatics rest on a handful of species each.
+<b>One vocabulary decision changed this result.</b> Mining and acid mine drainage were originally
+inside the contaminated category. They are contamination, but metallic rather than organic, and they
+diluted it: separating them raised the PAH enrichment from about three fold to the value shown here.
+Mining is now its own habitat, and it enriches a different and weaker set of families, which is the
+cross-check that the separation was right.</figcaption>
+</figure>
+{% endif %}
+
+{% if habitat.countries %}
+<h3>3.3 · The same bias, seen nakedly</h3>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Country of isolation</th><th class="num">Entries</th><th class="num">Species</th>
+<th class="num">Entries per species</th></tr></thead>
+<tbody>
+{% for name, v in (habitat.countries.items() | sort(attribute='1.entries', reverse=true)) %}
+{% if loop.index <= 12 %}
+<tr><td>{{ name }}</td><td class="num" data-v="{{ v.entries }}">{{ v.entries|fmt }}</td>
+    <td class="num" data-v="{{ v.species }}">{{ v.species|fmt }}</td>
+    <td class="num" data-v="{{ (v.entries / v.species)|round(2) if v.species else 0 }}">{{ '%.1f' % (v.entries / v.species) if v.species else '–' }}</td></tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+<figcaption>Geography is not an ecological variable here, it is a sampling variable. A country with
+hundreds of entries from a handful of species represents one or two sequencing projects, not a place
+where these enzymes are unusually common. This table is included so that the same correction can be
+applied by eye to every other figure on this page.</figcaption>
+</figure>
+{% endif %}
+{% endif %}
+
+<h2>4 · Tests</h2>
 <p>Each association is evaluated twice. The entry level treats every alpha subunit as an
 observation, which is optimistic because sequencing databases contain many near-identical strains.
 The genus level keeps one observation per type and genus, which is conservative. A result is called
@@ -62,7 +184,7 @@ Non-bacterial entries and eukaryote-heavy types are excluded:
 {% endfor %}
 {% endif %}
 
-<h2>4 · Per type</h2>
+<h2>5 · Per type</h2>
 <div class="tablewrap"><table class="data compact" data-filter="Filter types by name or substrate…">
 <thead><tr><th>Type</th><th>Substrate</th><th data-facet="Substrate class">Class</th><th class="num">Members</th>
 <th class="num">Plasmid</th><th class="num">Transposon nearby</th><th class="num">Genera</th><th data-facet="Label confidence">Label confidence</th></tr></thead>
