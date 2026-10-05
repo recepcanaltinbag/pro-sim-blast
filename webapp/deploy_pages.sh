@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # webapp/site/ icerigini gh-pages dalina gonderir (GitHub Pages).
 # Kullanim: bash deploy_pages.sh [repo-url] [branch]
-#   varsayilan repo: https://github.com/recepcanaltinbag/RieskeDB.git  (Pages: recepcanaltinbag.github.io/RieskeDB/)
-#   site/ bu repo icin --base /RieskeDB ile uretilmis olmali.
+#   varsayilan repo: https://github.com/recepcanaltinbag/pro-sim-blast.git  (Pages: recepcanaltinbag.github.io/pro-sim-blast/)
+#   site/ bu repo icin --base /pro-sim-blast ile uretilmis olmali.
 set -euo pipefail
 cd "$(dirname "$0")"
-URL="${1:-https://github.com/recepcanaltinbag/RieskeDB.git}"
+URL="${1:-https://github.com/recepcanaltinbag/pro-sim-blast.git}"
 BRANCH="${2:-gh-pages}"
-[ -d site ] || { echo "site/ yok -- once: python3 freeze.py --out site --base /RieskeDB"; exit 1; }
+[ -d site ] || { echo "site/ yok -- once: python3 freeze.py --out site --base /pro-sim-blast"; exit 1; }
 
 TMP=$(mktemp -d)
 cp -r site/. "$TMP"/

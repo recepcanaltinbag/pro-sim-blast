@@ -5,7 +5,7 @@ Renders every page through the FastAPI app with STATIC_MODE on (links get .html)
 writes a client-side search index, and copies downloads. The sequence classifier
 needs a server and is omitted from the static site (the Docker/HF Space has it).
 
-    python3 freeze.py --out site --base /RieskeDB      # base = repo name for GitHub project pages
+    python3 freeze.py --out site --base /pro-sim-blast      # base = repo name for GitHub project pages
     python3 freeze.py --out site --base ""             # user/organisation pages or custom domain
 
 Output size: roughly 11k entry pages * ~25 kB + downloads; fits GitHub Pages limits.
@@ -25,7 +25,7 @@ sys.path.insert(0, HERE)
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default=os.path.join(HERE, "site"))
-    ap.add_argument("--base", default="", help="URL prefix, e.g. /RieskeDB for a GitHub project page")
+    ap.add_argument("--base", default="", help="URL prefix, e.g. /pro-sim-blast for a GitHub project page")
     ap.add_argument("--limit", type=int, default=0, help="only N entry pages (for testing)")
     args = ap.parse_args()
 

@@ -23,12 +23,12 @@ sunucu ister; bkz. Seçenek B).
 
 ```bash
 cd webapp
-python3 freeze.py --out site --base /RieskeDB   # --base: Pages'in yayınlanacağı repo adı
-bash deploy_pages.sh                            # site/ → github.com/recepcanaltinbag/RieskeDB gh-pages dalı
+python3 freeze.py --out site --base /pro-sim-blast   # --base: Pages'in yayınlanacağı repo adı
+bash deploy_pages.sh                            # site/ → github.com/recepcanaltinbag/pro-sim-blast gh-pages dalı
 ```
 
 Sonra GitHub → Settings → Pages → Branch: `gh-pages` / root. Adres:
-`https://recepcanaltinbag.github.io/RieskeDB/`. (Kod `pro-sim-blast` reposunda kalır; Pages yalnızca üretilmiş `site/` içeriğini taşır.)
+`https://recepcanaltinbag.github.io/pro-sim-blast/`.
 
 Özel alan adı ya da `<kullanıcı>.github.io` deposu kullanırsan `--base ""`.
 Site boyutu ~1 GB sınırının altında kalır (bkz. `freeze_full.log`); büyürse
