@@ -839,6 +839,10 @@ def download_table(analysis_dir):
 # ------------------------------------------------------------------ habitat
 HABITAT_LABEL = {
     "soil": "soil", "rhizosphere_plant": "plant and rhizosphere",
+    "rhizosphere_soil": "rhizosphere soil",
+    "plant_tissue": "plant tissue and endophytes",
+    "plant_associated": "plant associated, position unstated",
+    "built_environment": "built environment",
     "freshwater": "freshwater", "marine": "marine", "sediment": "sediment",
     "wastewater_sludge": "wastewater and sludge",
     "contaminated_industrial": "contaminated or industrial site",
@@ -879,7 +883,10 @@ def habitat_rows(habitat, min_species=1):
             "entries_per_species": v["entries"] / v["species"] if v["species"] else None,
             "informative": key not in ("unknown", "other"),
         })
-    return sorted(rows, key=lambda r: -r["species"])
+    # Gercek habitatlar once, "kaynak yok" ve "siniflanamaz" en sona: ikisi
+    # habitat degil ve tur sayisi en yuksek olanlar oldugu icin tabloyu
+    # tepeden isgal ediyorlardi.
+    return sorted(rows, key=lambda r: (r["informative"] is False, -r["species"]))
 
 
 def habitat_enrichment(habitat, profile_key, habitat_key, min_pairs=10):

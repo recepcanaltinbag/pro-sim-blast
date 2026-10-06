@@ -328,6 +328,18 @@ GenBank kayitlarinin `source` ozelliklerinde kullanilmayan ekolojik veri vardi:
 denetlenebilir bir kelime haritasiyla normalize eder (`replicon_source` tablosu +
 `analysis_out/habitat.json`).
 
+**Sozlukte yapilan uc duzeltme ve bedeli.** Ilk surum daha fazla kayit
+siniflandiriyordu ama bir kismi yanlisti: ciplak organ adlari (lung, lymph node,
+brain, spleen) insan kliniğine sokuyordu, oysa bunlari tasiyan 46 kayitta hicbir
+insan isareti yok ve aralarinda cigerotu simbiyotik dokusu ile mantar dokusu
+vardi. O anahtarlar cikarildi (247 giris klinikten ayrildi), hastane lavabosu ve
+temiz oda gibi 97 kayit icin `built_environment` eklendi, ve tek bitki kovasi
+uce bolundu (`plant_tissue` / `rhizosphere_soil` / `plant_associated`), cunku
+ekin adi hangi bitki oldugunu soyler neresi oldugunu soylemez. Sonuc: kapsam
+%55,6'dan **%54,3'e dustu**. Bu bir gerileme degil, yanlis etiketlemeyi
+birakmanin bedeli. Capraz kontrol: PAH zenginlesmesi 5,64x'ten 5,76x'e, yani
+degisiklikler kirlilik sinyaline dokunmadi.
+
 **Kapsam durust verilir:** girislerin %60,9'unda kaynak var, **%55,6'si** bir
 habitate yerlestirilebiliyor. 4.493 girişte kaynak hic yok, 578'inde metin
 siniflandirilamiyor (214 farkli dizgi: etiketsiz ontoloji numaralari, bitki ve

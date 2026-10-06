@@ -146,20 +146,39 @@ HABITAT_RULES = (
     )),
     # 5. Insan klinigi. Bilincli olarak DISARIDA tutulanlar: "tumor", "lesion",
     #    "tissue", "skin", "hip", "ear" -- bitki/hayvan orneklerinde de geciyor.
+    # Yapili cevre: klinik ORTAM ile HASTA ornegi ayri seylerdir. Hastane
+    # lavabosu, temiz oda, uzay araci yuzeyi, cihaz yuzeyi -- hepsi insan
+    # yapimi ortam, hicbiri hasta degil. human_clinical'dan ONCE gelir, cunku
+    # "hospital sink" ikisine de uyar ve dogru olani ortamdir.
+    # Olculdu: 97 replikon; 45'i yanlisca human_clinical'da, 42'si siniflanamamis.
+    ("built_environment", (
+        "clean room", "cleanroom", "spacecraft", "space station", "sink",
+        "drain", "shower", "faucet", "silicone seal", "heater-cooler",
+        "air conditioner", "indoor", "built environment", "surface swab",
+        "chair", "cushion", "keyboard", "door handle", "hospital surface",
+        "hospital environment", "pharmaceutical factory", "cooling tower",
+        "humidifier", "dental unit",
+    )),
     ("human_clinical", (
-        "sputum", "sputa", "blood", "urine", "urinary", "wound", "pus",
+        # ACIK insan/klinik isaretleri. Belirsiz anatomi terimleri (lung,
+        # lymph node, brain, spleen, tissue) BILEREK CIKARILDI: olculdu, bunlari
+        # tasiyan 46 kayitta hicbir insan isareti yok ve aralarinda "Blasia
+        # pusilla cigerotunun simbiyotik dokusu" ve "mantar dokusu" gibi
+        # ornekler var. Tek basina bir organ adi konagi belirlemez.
+        "sputum", "sputa", "urine", "urinary", "wound", "pus",
         "abscess", "patient", "clinical", "nosocomial", "hospital",
         "intensive care", "health care", "icu", "nicu", "catheter",
         "bronchoscopy", "bronchial", "bronchus", "trachea", "tracheal",
-        "endotracheal", "lung", "pulmonary", "respiratory", "throat",
+        "endotracheal", "pulmonary", "respiratory", "throat",
         "pharyngeal", "nasopharyngeal", "nasal", "sinus", "antral",
-        "conjunctiva", "cornea", "cerebrospinal", "cerebral", "brain",
-        "lymph node", "spleen", "biopsy", "vagina", "vaginal", "cervical",
-        "perirectal", "rectal swab", "oral", "surgical", "dialysis",
+        "conjunctiva", "cornea", "cerebrospinal",
+        "biopsy", "vagina", "vaginal", "cervical",
+        "perirectal", "rectal swab", "surgical", "dialysis",
         "peritoneal", "aids", "cystic fibrosis", "mycobacteriosis",
         "granuloma", "granulomatous", "ulcer", "celiac", "duodenal",
         "gastric", "mucosa", "sepsis", "septicemia", "bacteremia",
-        "expectoration", "bodily fluid", "homo sapiens", "human",
+        "blood culture", "expectoration", "bodily fluid", "homo sapiens",
+        "human",
     )),
     # 6. Sindirim sistemi / diski -- insan ya da hayvan olabilir, ayirmiyoruz.
     ("gut_faecal", (
@@ -190,15 +209,37 @@ HABITAT_RULES = (
     )),
     # 9. Bitki ile iliskili her sey (rizosfer, nodul, filosfer, bitki dokusu).
     #    Topraktan ONCE: "rhizosphere soil" bitki, "forest soil" toprak.
-    ("rhizosphere_plant", (
-        "rhizosphere", "rhizospheric", "rhizoplane", "phyllosphere",
-        "endophyte", "endophytic", "root", "nodule", "leaf", "leaves",
+    # Bitki DOKUSU: bitkinin icinde ya da uzerinde yasayan. Rizosferden ONCE,
+    # cunku "endophytic root tissue" ikisine de uyar ve dogru olani dokudur.
+    # Olculdu: eski tek kovada 344 kayit vardi; endofit ile kok cevresi topragi
+    # ayri ekolojilerdir ve bunu tek kategoride tutmak bilgi kaybiydi.
+    # Bitkiyle iliskili kayitlar UC kademede okunur, cunku metin iki ayri sey
+    # soyluyor olabilir: bitkinin NERESI (doku) ve HANGI bitki (tur adi). Ekin
+    # adlari konum bilgisi tasimaz, bu yuzden en sona birakilir. Olculdu:
+    # "maize rhizosphere" bir doku ornegi degil, rizosferdir.
+    ("plant_tissue", (
+        # Ciplak "leaf" BILEREK yok: "leaf litter" olu bitki materyalidir,
+        # canli doku degil ve yaprak yuzeyi ile ayni sey degildir. Konum
+        # belirtmeyen yaprak kayitlari plant_associated'a duser.
+        "endophyte", "endophytic", "phyllosphere", "leaf surface",
+        "leaf tissue", "nodule",
         "stem", "shoot", "seedling", "seed", "grain", "tuber", "flower",
-        "pollen", "bark", "wood", "trunk", "gall", "phloem", "plant",
-        "moss", "fruit", "apple", "grape", "grapevine", "peach",
-        "strawberry", "tomato", "potato", "rice", "wheat", "maize", "corn",
-        "soybean", "bean", "pea", "vegetable", "watercress", "straw",
-        "leaf litter",
+        "pollen", "bark", "trunk", "gall", "phloem", "fruit",
+        "plant tissue", "symbiotic tissue", "tissue culture",
+    )),
+    # Rizosfer: kok cevresi. Bitki iliskilidir ama ortam TOPRAKTIR.
+    ("rhizosphere_soil", (
+        "rhizosphere", "rhizospheric", "rhizoplane", "root", "straw",
+        "leaf litter", "litter", "wood", "moss",
+    )),
+    # Konum belirtmeyen bitki/ekin adlari: bitki iliskili oldugunu biliyoruz,
+    # neresi oldugunu bilmiyoruz. Yukaridaki ikisinden SONRA gelir.
+    ("plant_associated", (
+        "plant", "apple", "grape", "grapevine", "peach", "strawberry",
+        "tomato", "potato", "rice", "wheat", "maize", "corn", "soybean",
+        "bean", "pea", "vegetable", "watercress", "lettuce", "willow",
+        "leaf", "leaves",
+        "pine", "phaseolus", "crop", "orchard", "vineyard",
     )),
     # 10. Sediment, deniz/tatli sudan ONCE: "marine sediment" sediment olur.
     # Hipersalin: tatli su/deniz kurallarindan ONCE, cunku "hypersaline lake"

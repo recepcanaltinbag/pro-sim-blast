@@ -129,11 +129,32 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     OxoO=OMO, NahAc=NDO(3_315), NDO(3_314)=NarAa birebir ayni; NdmC, NdmB'nin
     alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
     keyfi bolunuyor. Hangi ikiz tutulacak?
-25. **Habitat sozlugunun kalan zayif noktalari.** Ajan sekiz tanesini isaretledi;
-    en onemlileri: `hospital` anahtari lavabo/yuzey orneklerini de klinige
-    sokuyor, `lymph node` fare deneylerini insan kliniğine sokuyor, ve
-    `rhizosphere_plant` rizosfer/endofit/yaprak/colemen hepsini tek kovada
-    tutuyor. Insan ve hayvan dokusu hic ayrilmiyor.
+25. ~~Habitat sozlugunun zayif noktalari.~~ **BITTI.** Uc duzeltme, her biri
+    once olculup sonra yapildi:
+    (a) `built_environment` eklendi -- hastane lavabosu, temiz oda, uzay araci
+        yuzeyi bir HASTA degildir (97 replikon: 45'i yanlisca klinikte, 42'si
+        siniflanamamis durumdaydi);
+    (b) `human_clinical`'dan belirsiz organ adlari (lung, lymph node, brain,
+        spleen) cikarildi -- bunlari tasiyan 46 kayitta hicbir insan isareti
+        yoktu ve aralarinda cigerotu simbiyotik dokusu ve mantar dokusu vardi;
+        247 giris klinik kategorisinden cikti;
+    (c) tek bitki kovasi uce bolundu: `plant_tissue` (endofit, nodul, yaprak
+        yuzeyi), `rhizosphere_soil` (kok cevresi, yaprak coplugu) ve
+        `plant_associated` (konum belirtmeyen ekin adlari) -- cunku ekin adi
+        hangi bitki oldugunu soyler, neresi oldugunu soylemez.
+    Kapsam %55,6 → %54,3'e DUSTU ve bu bilincli: yanlis etiketlemeyi birakmanin
+    bedeli. Capraz kontrol olarak PAH zenginlesmesi 5,64x → 5,76x, yani
+    degisiklikler kirlilik sinyaline dokunmadi.
+
+## Sirada
+
+26. **Habitat sozlugunun kalan bilinen sinirlari.** `sediment` deniz/tatli
+    sudan once geliyor, yani "marine sediment" sediment sayiliyor ve deniz
+    sayilari kompartman acisindan eksik kaliyor (konvansiyon, belgeli).
+    Insan ve hayvan dokusu ACIK isaret olmadan hala ayrilmiyor: isaretsiz
+    anatomi `other`'a dusuyor, ki bu yanlis etiketlemekten iyi ama bilgi kaybi.
+    `food_fermented` endustriyel/laboratuvar fermentasyonlarini da yakaliyor
+    (21 kayit).
 
 ## Acik sorular (kullaniciya)
 
