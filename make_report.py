@@ -1167,8 +1167,8 @@ def domain_section(db="roar.sqlite", csv_path="analysis_out/domain_by_cluster.cs
   """ + stat_tiles([
       (f"%{100*b/total:.1f}", "bakteri", f"{b:,} RO", True),
       (f"%{100*e/total:.1f}", "okaryot", f"{e:,} RO", False),
-      (f"{euk.get('bitki/alg', 0):,}", "bitki/alg", "kloroplast RO dali", False),
-      (f"{euk.get('mantar', 0)+euk.get('hayvan', 0):,}", "mantar + hayvan", "supheli", False),
+      (f"{euk.get('plant/alga', 0):,}", "bitki/alg", "kloroplast RO dali", False),
+      (f"{euk.get('fungus', 0)+euk.get('animal', 0):,}", "mantar + hayvan", "supheli", False),
   ]) + """
   <div class="callout callout--warn">
     <strong>Katalitik-triad filtresi yasam alanini ayirmaz.</strong> Filtre

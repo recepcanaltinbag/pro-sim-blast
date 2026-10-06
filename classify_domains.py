@@ -25,15 +25,17 @@ import os
 import sqlite3
 from collections import Counter, defaultdict
 
-# Okaryot alt-gruplarini kaba grupla
+# Okaryot alt-gruplarini kaba grupla. Degerler INGILIZCE, cunku bu sutun
+# dogrudan web arayuzunde gosteriliyor: etiketi burada Turkce yazmak onu
+# sayfaya tasiyor. Arayuz dili ile kod yorumlarinin dili ayri seylerdir.
 EUK_GROUPS = {
-    "Viridiplantae": "bitki/alg",
-    "Fungi": "mantar",
-    "Metazoa": "hayvan",
-    "Rhodophyta": "kirmizi alg",
+    "Viridiplantae": "plant/alga",
+    "Fungi": "fungus",
+    "Metazoa": "animal",
+    "Rhodophyta": "red alga",
     "Sar": "SAR",
-    "Haptista": "diger-ok",
-    "Amoebozoa": "diger-ok",
+    "Haptista": "other eukaryote",
+    "Amoebozoa": "other eukaryote",
 }
 
 
@@ -45,7 +47,7 @@ def classify(taxonomy):
     domain = parts[0]
     if domain == "Eukaryota":
         second = parts[1] if len(parts) > 1 else "?"
-        return "Eukaryota", EUK_GROUPS.get(second, "diger-ok")
+        return "Eukaryota", EUK_GROUPS.get(second, "other eukaryote")
     return domain, domain
 
 
@@ -65,7 +67,7 @@ def main():
             candidate_id TEXT PRIMARY KEY,
             cluster      TEXT,
             domain       TEXT,   -- Bacteria | Eukaryota | Archaea | Viruses
-            euk_group    TEXT    -- okaryotsa bitki/alg, mantar, hayvan...
+            euk_group    TEXT    -- okaryotsa plant/alga, fungus, animal...
         );
         CREATE INDEX idx_rodom_cluster ON ro_domain(cluster);
         CREATE INDEX idx_rodom_domain  ON ro_domain(domain);

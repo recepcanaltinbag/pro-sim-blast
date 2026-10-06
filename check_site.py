@@ -1,0 +1,174 @@
+"""
+Yayina cikmadan once sitenin kendisini denetler: her sayfa aciliyor mu, her
+dahili baglanti 200 donuyor mu, arayuzde Turkce metin kalmis mi.
+
+NEDEN BU SCRIPT VAR. Arayuzde Turkce etiketler bulundu ("bitki/alg"), ve ilk
+elle yapilan tarama bunlari KACIRDI, cunku sadece islev sozcuklerine (ve, icin,
+bir) bakiyordu; kacan sey bir ICERIK sozcuguydu ve veritabanina bir Python
+sozlugunden geliyordu. Ayni sekilde uye sayisi sifir olan tipler anasayfada
+listelenirken sayfalari 404 donuyordu. Iki hata da ayni sebepten gorunmez
+kaldi: kimse sayfalari toptan, otomatik olarak denemiyordu. Bu script onu
+yapar ve FAIL varsa sifirdan farkli cikar, boylece deploy oncesi durur.
+
+Kullanim:
+    python3 check_site.py              # hepsi
+    python3 check_site.py --quick      # tip sayfalarini orneklem al
+"""
+
+import argparse
+import glob
+import os
+import re
+import sqlite3
+import sys
+from collections import defaultdict
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "webapp"))
+
+# Turkce arama listesi. Hem islev hem ICERIK sozcukleri; birincisi ilk taramada
+# yeterli sanilmisti ve yetmedi.
+TURKISH_WORDS = """
+ve veya icin ile olan bir bu su daha cok az yok var gore sayisi degil kayit
+kayitlar ama cunku iliskili tablo sonuc hepsi tum bitki bitkiler algler mantar
+mantarlar hayvan hayvanlar diger digerleri kume kumeler tur turler yuksek
+dusuk orta buyuk kucuk toplam oran orani sayi adet yeni eski okaryot
+okaryotlar bakteri bakteriyel yikim enzim enzimler dizisi dizi diziler kaynak
+kaynagi bilinmeyen bilinmiyor belirsiz supheli guven guvenli dogrulanan
+dogrulanmis adaylar aday bulundu bulunan hata hatali eksik tamam secili secim
+ornek ornekler ortalama topraktan toprak deniz tatli tuzlu sulak hava yuzey
+derin kaya kirmizi yesil mavi sari siyah beyaz baskin ayri ortak ozel genel
+yerel sadece ayrica ancak yani ise hem yazildi bilgi uyari sayfasi sayfa
+baslik aciklama ozet detay ayrinti nerede nasil neden hangi kac kadar sonra
+simdi zaman yil gun olarak olmasi olmak yapilan yapan eden edilen veren
+verilen alinan icinde uzerinde altinda yaninda arasinda disinda kisi insan
+klinik hasta hastane ciger beyin doku analizi hesap hesaplanan olcum olculen
+sonuclar dagilim dagilimi grafik tablosu sekil resim harita kloroplast yaprak
+kok govde tohum meyve cicek
+""".split()
+
+# Ingilizce ile ESYAZIMLI olanlar ve Latin ikili adlandirma kisaltmalari.
+# Bunlar listede kalirsa her sayfa yanlisca isaretlenir.
+HOMOGRAPHS = {"var", "sp", "subsp", "cf", "str", "ssp", "protein", "proteinler",
+              "test", "testi", "once", "an", "su", "kan", "analiz", "alg", "sari",
+              "ice", "tam", "son", "ton", "pan", "ban", "men", "ten"}
+
+TURKISH_RE = re.compile(
+    r"\b(" + "|".join(sorted(set(TURKISH_WORDS) - HOMOGRAPHS, key=len, reverse=True)) + r")\b",
+    re.I)
+TAGS_RE = re.compile(r"<script.*?</script>|<style.*?</style>", re.S)
+HREF_RE = re.compile(r'href="([^"#?][^"]*)"')
+
+
+def visible_text(html):
+    """Gorunur metin: script ve style ICERIGI atilir, sonra etiketler silinir.
+
+    Script icerigi atilmak zorunda, cunku orada href'ler JavaScript ile
+    birlestiriliyor ("' + rcsb + '") ve tarayici onlari baglanti sanmaz.
+    """
+    return re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--quick", action="store_true",
+                        help="tip sayfalarinin onda birini dene")
+    args = parser.parse_args()
+
+    from fastapi.testclient import TestClient
+    import app as appmod
+
+    client = TestClient(appmod.app)
+    connection = sqlite3.connect(appmod.DB_PATH)
+
+    types = [r[0] for r in connection.execute(
+        "SELECT DISTINCT ro_cluster FROM ro "
+        "WHERE ro_cluster IS NOT NULL AND ro_cluster <> 'N/A' ORDER BY 1")]
+    if args.quick:
+        types = types[::10]
+
+    pages = (["/", "/clusters", "/classify", "/about", "/atlas",
+              "/search?q=naphthalene"]
+             + ["/atlas/" + name for name in
+                ("phylogeny", "network", "taxonomy", "ecology", "operons", "regulation",
+                 "evidence", "novel", "cooccurrence", "quality", "statistics")]
+             + ["/cluster/" + t for t in types])
+
+    failures, turkish = [], []
+    link_status, broken = {}, defaultdict(set)
+
+    for page in pages:
+        response = client.get(page)
+        if response.status_code != 200:
+            failures.append((page, response.status_code))
+            continue
+        body = response.text
+        words = sorted({m.group(1).lower() for m in TURKISH_RE.finditer(visible_text(body))})
+        if words:
+            turkish.append((page, words))
+        for href in sorted(set(HREF_RE.findall(TAGS_RE.sub(" ", body)))):
+            if href.startswith(("http", "mailto:", "//", "javascript:")):
+                continue
+            target = href if href.startswith("/") else "/" + href
+            if target not in link_status:
+                link_status[target] = client.get(target).status_code
+            if link_status[target] != 200:
+                broken[page].add((target, link_status[target]))
+
+    # Yayinlanan veri dosyalarinda da Turkce aranir: indirme baglantilari
+    # sayfanin bir parcasi, icerikleri de kullaniciya gidiyor.
+    published = set()
+    freeze_source = open(os.path.join("webapp", "freeze.py")).read()
+    for match in re.finditer(r'"([A-Za-z0-9_.]+\.(?:csv|json))"', freeze_source):
+        published.add(match.group(1))
+    data_turkish = []
+    for name in sorted(published):
+        path = os.path.join("analysis_out", name)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8", errors="replace").read()
+        words = sorted({m.group(1).lower() for m in TURKISH_RE.finditer(text)})
+        if words:
+            data_turkish.append((name, words))
+
+    print("=" * 72)
+    print("SITE DENETIMI")
+    print("=" * 72)
+    print(f"  pages requested          {len(pages)}")
+    print(f"  pages served             {len(pages) - len(failures)}")
+    print(f"  internal links checked   {len(link_status)}")
+    print(f"  published data files     {len(published)}")
+
+    problems = 0
+    if failures:
+        problems += len(failures)
+        print(f"\n[FAIL] {len(failures)} page(s) did not return 200")
+        for page, code in failures[:20]:
+            print(f"        {code}  {page}")
+    if broken:
+        instances = sum(len(v) for v in broken.values())
+        problems += instances
+        print(f"\n[FAIL] {instances} broken internal link(s) on {len(broken)} page(s)")
+        for page, items in list(broken.items())[:20]:
+            for target, code in sorted(items)[:4]:
+                print(f"        {code}  {target}   (linked from {page})")
+    if turkish:
+        problems += len(turkish)
+        print(f"\n[FAIL] Turkish text visible on {len(turkish)} page(s)")
+        for page, words in turkish[:20]:
+            print(f"        {page}: {', '.join(words[:6])}")
+    if data_turkish:
+        problems += len(data_turkish)
+        print(f"\n[FAIL] Turkish text in {len(data_turkish)} published data file(s)")
+        for name, words in data_turkish[:20]:
+            print(f"        {name}: {', '.join(words[:6])}")
+
+    if problems:
+        print(f"\n{problems} problem(s). Not ready to deploy.")
+        return 1
+    print("\nAll checks passed. Ready to deploy.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

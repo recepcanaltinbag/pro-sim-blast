@@ -3,7 +3,25 @@
 Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 `gh-pages` dalindan statik site: https://recepcanaltinbag.github.io/pro-sim-blast/
 
-## Sirada (oncelik sirasina gore)
+## Sirada
+
+27. ~~Arayuzde kalan Turkce metin.~~ **BITTI.** Okaryot alt-grup etiketleri
+    (`bitki/alg`, `mantar`, `hayvan`, `kirmizi alg`, `diger-ok`)
+    `classify_domains.py` icindeki bir sozlukten DOGRUDAN veritabanina ve
+    oradan sayfaya gidiyordu. Ilk tarama bunu kacirdi cunku sadece islev
+    sozcuklerine bakiyordu; kacan sey bir icerik sozcuguydu. Etiketler
+    ingilizceye cevrildi, `ro_domain` tablosu yeniden kuruldu, ve eski rapor
+    scriptlerindeki (`make_report.py`) anahtar aramalari da guncellendi --
+    aksi halde sessizce sifir okuyacaklardi.
+
+28. ~~Deploy oncesi otomatik site denetimi.~~ **BITTI.** `check_site.py`:
+    78 sayfayi acar, 6.217 dahili baglantiyi dener, gorunur metinde ve
+    YAYINLANAN veri dosyalarinda Turkce arar, FAIL varsa sifirdan farkli
+    cikar. Negatif testi yapildi: duzeltilen etiket hatasini yakaliyor,
+    `Vigna radiata var. radiata` ve `protein`/`test`/`once` gibi
+    esyazimlilarda yanlis alarm vermiyor.
+
+## Sirada (devam) (oncelik sirasina gore)
 
 1. ~~Varyant kumelemesini ham dizide tekrarla.~~ **BITTI.** CD-HIT artik ham
    protein dizisinde bolme yapiyor, kimlik olcumu hizalamada kaliyor
