@@ -76,7 +76,60 @@ the copies are counted.</p>
 {% endif %}
 {% endif %}
 
-<h2>3 · Limits that cannot be measured away</h2>
+{% if sens and sens.levels %}
+<h2>3 · Does it change the conclusions if the inclusion threshold moves?</h2>
+<p>The previous section asks whether a result survives the way copies are counted. This one asks a
+harder question: whether it survives the decision about what counts as a Rieske oxygenase at all.
+A protein enters this database by covering at least 45 % of its best-scoring profile, and that
+number was calibrated against a set of known alpha subunits and known non-alpha proteins. Calibration
+justifies the choice but says nothing about how much the database's own figures depend on it. So the
+gate is moved and every figure recomputed.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Coverage threshold</th><th class="num">Entries</th>
+<th class="num">Share of published</th><th class="num">Types with members</th>
+<th class="num">Genera</th><th class="num">On a plasmid</th><th class="num">Eukaryotic</th>
+<th class="num">Bridging Asp per Glu</th><th class="num">Bridging association V</th></tr></thead>
+<tbody>
+{% for l in sens.levels %}
+<tr{{ ' class="hl"'|safe if l.threshold == sens.method.published_threshold }}>
+  <td class="num" data-v="{{ l.threshold }}">{{ '%.2f' % l.threshold }}{% if l.threshold == sens.method.published_threshold %} <span class="chip chip--ok">published</span>{% endif %}</td>
+  <td class="num" data-v="{{ l.entries }}">{{ l.entries|fmt }}</td>
+  <td class="num" data-v="{{ l.entries_vs_published }}">{{ '%.0f %%' % (100 * l.entries_vs_published) }}</td>
+  <td class="num" data-v="{{ l.types_with_members }}">{{ l.types_with_members }}</td>
+  <td class="num" data-v="{{ l.genera }}">{{ l.genera|fmt }}</td>
+  <td class="num" data-v="{{ l.plasmid_share }}">{{ '%.1f %%' % (100 * l.plasmid_share) }}</td>
+  <td class="num" data-v="{{ l.eukaryote_share }}">{{ '%.1f %%' % (100 * l.eukaryote_share) }}</td>
+  <td class="num" data-v="{{ l.bridging_asp_per_glu or 0 }}">{% if l.bridging_asp_per_glu %}{{ '%.2f' % l.bridging_asp_per_glu }}{% else %}<span class="note">not measured</span>{% endif %}</td>
+  <td class="num" data-v="{{ l.bridging_cramers_v or 0 }}">{% if l.bridging_cramers_v %}{{ '%.3f' % l.bridging_cramers_v }}{% else %}<span class="note">not measured</span>{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The answer is that the conclusions do not rest on the threshold.</b> Nearly doubling
+the strictness, from 0.45 to 0.80, discards a third of the entries and still keeps
+{{ sens.levels[-1].types_with_members }} of {{ sens.levels[2].types_with_members }} types. The
+strongest association the database reports, between the bridging carboxylate and the enzyme group,
+does not weaken under a stricter gate; it strengthens, from
+{{ '%.2f' % sens.levels[2].bridging_cramers_v }} to {{ '%.2f' % sens.levels[-1].bridging_cramers_v }}.
+The share of entries on a plasmid barely moves.
+<b>One figure does depend on it, and predictably.</b> The eukaryotic share falls from
+{{ '%.1f %%' % (100 * sens.levels[2].eukaryote_share) }} to
+{{ '%.1f %%' % (100 * sens.levels[-1].eukaryote_share) }}, because eukaryotic Rieske proteins match
+these bacterial models only partially. A stricter gate would therefore buy a cleaner bacterial
+database by quietly deleting the eukaryotic branch, which is an argument for keeping the looser
+threshold and labelling the domain of every entry instead.
+<b>Two caveats stated rather than hidden.</b> Lowering the gate below the published value adds
+almost nothing, because the candidate set is itself sparse there, and the residue identity was
+measured only for the confirmed set, so those rows are left empty rather than guessed. The
+recomputed gate also omits one further status check used by the pipeline, which is why it keeps
+{{ sens.levels[2].entries|fmt }} entries against the published
+{{ sens.method.published_confirmed_entries|fmt }}; the purpose here is the direction and size of
+the change, not the absolute count.
+<a href="{{ u('/download/analysis/threshold_sensitivity.json') }}">Download the full output</a></figcaption>
+</figure>
+{% endif %}
+
+<h2>4 · Limits that cannot be measured away</h2>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Limit</th><th>What it affects</th><th>What would resolve it</th></tr></thead>
 <tbody>
@@ -127,7 +180,7 @@ the copies are counted.</p>
 </tbody></table></div>
 
 {% if motif %}
-<h2>4 · What is solid</h2>
+<h2>5 · What is solid</h2>
 <p>Not everything here is provisional. The selection criterion itself is directly observed rather
 than inferred: in all {{ motif.n|fmt }} confirmed entries every one of the four Rieske ligands is
 present at its aligned position, and the inter-subunit bridging carboxylate is present in
@@ -144,7 +197,7 @@ intergenic gap of {{ validation.components.beta.gap_median }} base pairs.</p>
 {% endif %}
 {% endif %}
 
-<h2>5 · Every file, and the script that made it</h2>
+<h2>6 · Every file, and the script that made it</h2>
 <p class="note">Nothing on this site is hand-entered except the two curated tables
 (<code>cluster_ecology.csv</code> and <code>chemistry.csv</code>, both from the literature on the
 reference enzymes). Everything else is produced by a script in the repository and can be regenerated

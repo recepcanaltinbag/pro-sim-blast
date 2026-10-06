@@ -644,6 +644,32 @@ VALID_HOST_KINGDOM = {"human", "animal", "plant", "fungus", "alga",
                       "ambiguous", "not_a_host", "unresolved"}
 
 
+def check_published_files(rep, out_dir):
+    """Belgelenen her analiz dosyasi diskte VAR mi?
+
+    Indirme izin listesi artik `atlas.PROVENANCE`tan turetiliyor, yani tablo
+    bir dosyayi sayiyorsa site onu indirmeye sunuyor. O halde tablodaki bir
+    satirin karsiligi yoksa sitede kirik bir indirme baglantisi olur.
+    """
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "webapp"))
+    import atlas as _atlas
+    missing = sorted(name for name in _atlas.ANALYSIS_FILES
+                     if not os.path.exists(os.path.join(out_dir, name)))
+    rep.check("every documented analysis file exists on disk",
+              not missing, len(missing),
+              f"{len(_atlas.ANALYSIS_FILES)} documented" if not missing
+              else first(missing, 5))
+    # Ters yon: analysis_out'ta olup tabloda olmayan dosyalar. Bu bir FAIL
+    # degil uyaridir, cunku ara ciktilar yayinlanmak zorunda degil.
+    on_disk = {f for f in os.listdir(out_dir)
+               if f.endswith((".csv", ".json"))} if os.path.isdir(out_dir) else set()
+    undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES))
+    rep.check("analysis files that exist but are not documented",
+              not undocumented, len(undocumented), first(undocumented, 6),
+              severity="WARN")
+
+
 def check_host_kingdom(rep, con, path="host_kingdom.csv"):
     """Konak alemi eslemesi tam ve kontrollu mu?
 
@@ -1087,6 +1113,7 @@ def main():
         check_chemistry_csv(rep, chem)
         check_display_names(rep, chem)
         check_host_kingdom(rep, con)
+        check_published_files(rep, args.out_dir)
         check_cross_file_substrate(rep, eco, chem)
         check_text_fields_classified(con, rep)
         check_turkish(con, rep, args.ecology, args.chemistry, eco, chem,

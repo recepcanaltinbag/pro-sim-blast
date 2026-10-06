@@ -93,13 +93,13 @@ def main():
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")
-    for name in ("ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
-                 "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
-                 "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
-                 "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-                 "redundancy.json", "cooccurrence.json", "substrate_predictability.json",
-                 "habitat.json",
-                 "null_model.csv", "sdp_positions.csv", "stats.json"):
+    # Liste atlas.PROVENANCE'tan turetilir. Daha once burada ve indirme
+    # rotasinda iki ayri kopya vardi; biri guncellenip oteki unutulunca dosya
+    # ya sitede gorunup indirilemiyor ya da indirilip belgelenmemis oluyordu.
+    import atlas as _atlas
+    for name in sorted(_atlas.ANALYSIS_FILES):
+        if name.endswith(".nwk"):
+            continue          # agac /download/tree_all.nwk yolundan gidiyor
         save("/download/analysis/" + name, "download/analysis/" + name)
     print(f"[pages] {len(clusters)} clusters")
     for c in clusters:

@@ -1254,6 +1254,7 @@ def atlas_quality(request: Request):
                       stats=atlas.read_json(apath("stats.json")),
                       motif=atlas.read_json(apath("motif_stats.json")),
                       validation=atlas.read_json(apath("operon_validation.json")),
+                      sens=atlas.read_json(apath("threshold_sensitivity.json")),
                       downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
     finally:
         con.close()
@@ -1277,14 +1278,8 @@ def dl_tree():
 
 @app.get("/download/analysis/{name}")
 def dl_analysis(name: str):
-    allowed = {"ssn_edges.csv", "ssn_nodes.csv", "cluster_identity_matrix.csv",
-               "reference_pairs.csv", "regulation_by_cluster.csv", "evidence_by_cluster.csv",
-               "etc_by_cluster.csv", "leaf_profiles.csv", "cluster_ecology_stats.csv",
-               "variant_signatures.csv", "motif_stats.json", "operon_validation.json",
-               "redundancy.json", "cooccurrence.json", "substrate_predictability.json",
-               "habitat.json",
-               "null_model.csv", "sdp_positions.csv", "stats.json"}
-    if name not in allowed or not os.path.exists(apath(name)):
+    # Izin listesi atlas.PROVENANCE'tan turetilir; bkz. oradaki not.
+    if name not in atlas.ANALYSIS_FILES or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")
     media = "application/json" if name.endswith(".json") else "text/csv"
     return Response(open(apath(name)).read(), media_type=media,

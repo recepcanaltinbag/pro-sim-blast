@@ -182,10 +182,12 @@ def main():
 
     # Yayinlanan veri dosyalarinda da Turkce aranir: indirme baglantilari
     # sayfanin bir parcasi, icerikleri de kullaniciya gidiyor.
-    published = set()
-    freeze_source = open(os.path.join("webapp", "freeze.py")).read()
-    for match in re.finditer(r'"([A-Za-z0-9_.]+\.(?:csv|json))"', freeze_source):
-        published.add(match.group(1))
+    # Liste atlas.PROVENANCE'tan ALINIR, freeze.py kaynagindan KAZINMAZ.
+    # Kazima bir donem calisiyordu cunku dosya adlari orada duz dizgi olarak
+    # yaziliydi; liste turetilmis hale gelince regex hicbir sey bulamadi ve bu
+    # kontrol sessizce bos calisti. Olculdu: 21 dosya yerine 2.
+    import atlas as _atlas
+    published = set(_atlas.ANALYSIS_FILES)
     data_turkish = []
     for name in sorted(published):
         path = os.path.join("analysis_out", name)

@@ -832,6 +832,19 @@ PROVENANCE = [
      "redundancy.py"),
     ("stats.json", "file", "All hypothesis tests with effect sizes at three levels.",
      "stats_overview.py"),
+    ("threshold_sensitivity.json", "file", "Every headline figure recomputed across eight "
+     "inclusion thresholds, so the reader can see what the choice of threshold costs.",
+     "threshold_sensitivity.py"),
+    # Bu uc dosya indirme rotasindan SUNULUYORDU ama bu tabloda yoktu, yani
+    # indirilebilir olup belgelenmemislerdi. Izin listesi artik bu tablodan
+    # turetildigi icin eksiklik sessiz kalamaz.
+    ("cooccurrence.json", "file", "Permutation test of which enzyme types share a replicon "
+     "more often than their abundance explains.", "cooccurrence.py"),
+    ("substrate_predictability.json", "file", "How well sequence identity predicts a shared "
+     "substrate label, measured on the curated references.", "substrate_predictability.py"),
+    ("habitat.json", "file", "Isolation source, host kingdom and geography per replicon, "
+     "with the habitat vocabulary and every keyword that decided an assignment.",
+     "isolation_source.py"),
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
@@ -845,6 +858,15 @@ PROVENANCE = [
     ("sdp_positions.csv", "file", "Specificity-determining positions at type level.",
      "analyze_variants.py"),
 ]
+
+
+# Yayinlanan analiz dosyalari TEK yerden turetilir. Daha once ayni liste
+# hem `app.py` indirme rotasinda hem `freeze.py` icinde ayri ayri duruyordu;
+# yeni bir dosya eklenince biri guncellenip oteki unutuluyordu ve dosya
+# indirme tablosunda GORUNUP indirilemiyordu. PROVENANCE zaten her dosyayi
+# ureticisiyle birlikte sayiyor, dolayisiyla dogru kaynak odur.
+ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE
+                           if kind == "file")
 
 
 def download_table(analysis_dir):

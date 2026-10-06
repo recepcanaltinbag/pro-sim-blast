@@ -320,6 +320,22 @@ yolu). Yani genomlar tek enzim degil, tum huni ediniyor gibi gorunuyor.
 bunlar dizilenmis genomlar uzerinde sayimlar ve PAH yikan izolatlar iyi
 calisilmis bir grup oldugu icin orneklem yanliligi da ayni yone iter.
 
+## Esik duyarliligi
+
+Yontem sayfasindaki esikler kalibrasyon setinde gerekcelendirildi; o, esigin
+neye karsi korudugunu soyler. Veritabaninin KENDI sayilarinin esige ne kadar
+bagli oldugu ayri bir sorudur ve `threshold_sensitivity.py` ile olculur: kapsama
+kapisi 0,35'ten 0,80'e tasinir ve her basligi olusturan sayi yeniden hesaplanir.
+HMMER yeniden kosturulmaz, cunku kapsama ve motif durumu giris basina sakli.
+
+Sonuc: sonuclar esige dayanmiyor. 0,80'de girislerin %34'u gidiyor, 61 tipin
+59'u kaliyor, ve en guclu iliski (kopruleyen karboksilat x grup) V=0,843'ten
+**0,956'ya cikiyor**. Esige gercekten bagli tek sayi okaryot orani (%8,2 →
+%3,6), cunku okaryot Rieske proteinleri bakteriyel modellere kismi uyuyor; bu da
+gevsek esigi koruyup yasam alanini etiketlemek icin bir gerekce. Kalinti kimligi
+yalnizca onaylanmis kume icin olculdugu icin 0,45 altindaki satirlarda o
+sutunlar bos birakilir.
+
 ## Izolasyon kaynagi ve habitat (adim 12c6)
 
 GenBank kayitlarinin `source` ozelliklerinde kullanilmayan ekolojik veri vardi:

@@ -33,6 +33,44 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+37. ~~Esik degisince sonuclar ne kadar degisiyor?~~ **BITTI.**
+    `threshold_sensitivity.py` + veri kalitesi sayfasinda 3. bolum. Yontem
+    sayfasi 0,45 kapsama esigini KALIBRASYON setinde gerekcelendiriyordu
+    (2.788 alfa, 1.570 alfa-olmayan) ama sorulan soru farkliydi: "o esik
+    degisince burdaki bir suru sey degisebilir". Dogru cevap veritabaninin
+    KENDI sayilarini esik boyunca yeniden hesaplamakti; kapsama, motif durumu
+    ve karboksilat kimligi giris basina sakli oldugu icin HMMER'i yeniden
+    kosturmak gerekmedi. Sekiz esik (0,35 - 0,80):
+    * Sertlik iki katina cikarildiginda (0,45 → 0,80) girislerin %34'u
+      gidiyor ama 61 tipin 59'u kaliyor.
+    * En guclu yayinlanan iliski (kopruleyen karboksilat x grup) ZAYIFLAMIYOR,
+      GUCLENIYOR: V 0,843 → 0,956. Asp:Glu 2,53 → 2,91. Plazmid orani
+      %2,6 → %3,2, yani neredeyse sabit.
+    * Esige GERCEKTEN bagli tek sayi okaryot orani: %8,2 → %3,6, cunku
+      okaryot Rieske proteinleri bu bakteriyel modellere kismi uyuyor. Yani
+      daha sert bir esik "daha temiz" bir veritabanini okaryot dalini sessizce
+      silerek satin alirdi. Bu, gevsek esigi KORUYUP her girisin yasam alanini
+      etiketlemek icin bir gerekce.
+    * Esigi asagi cekmek neredeyse hicbir sey eklemiyor (0,35'te +27 giris),
+      cunku aday kumesi orada zaten seyrek.
+    Sinirlar gizlenmiyor: kalinti kimligi yalnizca onaylanmis kume icin
+    olculdu, bu yuzden 0,45 altindaki satirlarda o sutunlar BOS birakiliyor;
+    ve yeniden hesaplanan kapi pipeline'in bir durum kontrolunu atladigi icin
+    0,45'te 11.441 giris tutuyor (yayinlanan 11.422).
+
+38. ~~Indirme izin listesi iki yerde kopyaydi.~~ **BITTI.** Ayni dosya listesi
+    hem `app.py` indirme rotasinda hem `freeze.py` icinde duruyordu. Yeni
+    dosya eklenirken biri guncellenip oteki unutulunca sonuc sessiz oluyordu:
+    `threshold_sensitivity.json` indirme tablosunda GORUNDU ama rota 404
+    donuyordu. Liste artik `atlas.PROVENANCE`tan turetiliyor (tek kaynak) ve
+    bu turetme hemen bir eskisini de ortaya cikardi: `cooccurrence.json`,
+    `substrate_predictability.json` ve `habitat.json` indirilebilir olup
+    BELGELENMEMISTI. Uc dosya da tabloya eklendi; artik 21 dosya hem
+    belgeli hem indirilebilir. `validate_curation.py` iki yonu de kontrol
+    ediyor. Refaktor kendi denetim scriptimi de bozdu (`check_site.py` dosya
+    listesini `freeze.py` KAYNAGINDAN kaziyordu ve liste turetilince 21 yerine
+    2 dosya buldu); o da ayni kaynaga baglandi.
+
 35. ~~Konak alemi ile enzim kimyasi arasinda iliski var mi?~~ **BITTI** --
     cevap **YOK**, ve bu sayfadaki en ogretici negatif sonuc. Yeni konak
     boyutu bu soruyu sorulabilir kildi. Dort test, iki duzeyde:
