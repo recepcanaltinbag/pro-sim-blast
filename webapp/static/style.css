@@ -50,6 +50,11 @@
      edilemiyordu. Ayri token olunca her palette kendi kontrastini alirlar. */
   --th-bg:      #f4f2ec;
   --struct-bg:  #f4f2ec;
+  /* Vurgu renginin UZERINE yazilan metin. Sabit #fff yaziliydi ve karanlik
+     modda --accent-ink acik bir somon oldugu icin beyaz uzerine beyaz gibi
+     davraniyordu: "RO" rozeti, birincil dugme ve secili filtre cipi olculen
+     2,6:1 kontrastla okunmuyordu. Token ile her palette dogru taraf secilir. */
+  --on-accent:  #ffffff;
 
   /* legacy aliases: older rules and templates still reference these */
   --bg: var(--paper);
@@ -152,6 +157,7 @@
 
     --th-bg:      #222834;
     --struct-bg:  #14181d;
+    --on-accent:  #12151a;
 
     --fig-rieske:  #1e3346;
     --fig-cat:     #3d3222;
@@ -191,6 +197,7 @@
 
   --th-bg:      #222834;
   --struct-bg:  #14181d;
+  --on-accent:  #12151a;
 
   --fig-rieske:  #1e3346;
   --fig-cat:     #3d3222;
@@ -295,7 +302,7 @@ table.data th.sortable:focus-visible { outline-offset: -2px; }
 .brand__mark {
   display: inline-block;
   background: var(--accent-ink);
-  color: #fff;
+  color: var(--on-accent);
   border-radius: 6px;
   padding: 0 6px;
   margin-right: var(--s1);
@@ -343,7 +350,7 @@ button, .btn {
 button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: none; }
 .btn.primary, button.primary {
   background: var(--accent-ink);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--accent-ink);
 }
 
@@ -687,8 +694,22 @@ table.data .num, table.data th.num {
 }
 table.data td.mono, table.data td .mono { font-family: var(--mono); }
 
-table.data.compact { font-size: .85rem; }
+/* Sitedeki tablolarin cogu .compact; olcege bagli olmasi gerekir, yoksa
+   "tablo govdesi" basamagi iki ayri degere bolunur. */
+table.data.compact { font-size: var(--t3); }
 table.data.compact th, table.data.compact td { padding: 5px 8px; }
+
+/* Bir .tablewrap icinde OLMAYAN tablolar -- iki kolonlu bloklardaki kucuk
+   tablolar -- ne cerceve ne de kapanis cizgisi aliyordu: baslik satiri
+   havada basliyor, son satir asagidaki metne karisiyordu. Ustte ve altta
+   birer sac cizgisi (dizgideki toprule/bottomrule) tabloyu genisligine
+   dokunmadan kapatir ve cerceveli tablolarla ayni agirlikta gorunmesini
+   saglar. */
+:not(.tablewrap) > table.data {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s3);
+}
 
 /* row emphasis. tbody + > td ile yaziliyor, cunku zebra kuraliyla ayni
    ozgullukte olmali ve ondan SONRA geldigi icin kazanmali. */
@@ -778,16 +799,20 @@ form.inline { margin: var(--s2) 0; }
 .facetchip.on {
   background: var(--accent-ink);
   border-color: var(--accent-ink);
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 600;
 }
+/* Cip icindeki sayac saydamlikla soluklastiriliyordu ve bu metni de
+   soluklastiriyordu: olculen kontrast 3,6:1, esigin altinda. Saydamlik yerine
+   --dim tokeni; sayac yine geri planda ama okunuyor. Secili cipte vurgu
+   dolgusunun uzerinde oldugu icin kendi metin rengini miras alir. */
 .facetchip__n {
   margin-left: 5px;
   font-size: .9em;
-  opacity: .65;
+  color: var(--dim);
   font-variant-numeric: tabular-nums;
 }
-.facetchip.on .facetchip__n { opacity: .8; }
+.facetchip.on .facetchip__n { color: inherit; opacity: .85; }
 
 /* set by table.js when a row, card or whole family section is filtered out */
 .is-hidden { display: none !important; }
@@ -892,7 +917,9 @@ h2[id] { scroll-margin-top: var(--s3); }
 .kv dt { color: var(--dim); font-size: var(--t3); line-height: 1.5; }
 .kv dd { margin: 0; }
 
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--s5); }
+/* min(330px, 100%): kapsayici 330 pikselden darken sabit alt sinir kutuyu
+   disari tasiriyordu. */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: var(--s5); }
 .cols > div > :first-child { margin-top: 0; }
 
 .bigsearch { display: flex; gap: var(--s2); margin: var(--s3) 0 var(--s5); max-width: 720px; }
@@ -951,6 +978,27 @@ footer p { max-width: var(--measure-2); }
 }
 .chip--unknown, .chip--None { color: var(--dim); }
 
+/* Kanit kademesi, reaksiyon sinifi ve RO grubu cipleri rengi VERIDEN aliyor
+   ve sablon bunu satir ici stil olarak yaziyor: `background:#f2c14e;color:#fff`.
+   Satir ici stil yalnizca !important ile gecilebilir. Asagidaki alti ton acik
+   ve uzerlerinde beyaz metin vardi; olculen kontrast 1,68:1 (family member),
+   2,53:1 (close homolog), 2,55:1 (distant), 3,86-3,91:1 (O demethylation,
+   angular dioxygenation) ve 3,45:1 (unknown) idi -- yani etiketler
+   okunmuyordu, en cok da tam bu etiketlerin anlami olan Evidence sayfasinda.
+   Renklerin KENDISI degismiyor: onlar verinin parcasi ve cizimlerdeki gen
+   renkleriyle esleniyor; degisen yalnizca uzerlerine yazilan metnin tarafi.
+   DIKKAT: eslesme hex degerine bagli. Tonlardan biri atlas.py icinde
+   (TIER_COLORS / REACTION_COLORS) degisirse buradaki hex de degismeli; kalici
+   cozum o alti tonu orada koyulastirmaktir. */
+.chip[style*="#7fb069"],   /* close_homolog */
+.chip[style*="#f2c14e"],   /* family_member */
+.chip[style*="#f78154"],   /* distant */
+.chip[style*="#2a8f87"],   /* angular_dioxygenation */
+.chip[style*="#b5731f"],   /* O_demethylation */
+.chip[style*="#8a8a8a"] {  /* unknown */
+  color: #10161c !important;
+}
+
 .verdict {
   display: inline-block;
   font-size: .78rem;
@@ -985,9 +1033,14 @@ footer p { max-width: var(--measure-2); }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: var(--s1); vertical-align: -1px; }
 .legend i.dash { border: 1px dashed var(--ink); background: none; }
 
-.comp { padding: 0 6px; border-radius: 4px; font-size: .8em; color: #fff; background: #7f8a8c; }
-.comp--alpha { background: #a8352a; } .comp--alpha_other { background: #b4651c; } .comp--beta { background: #23628f; }
-.comp--ferredoxin { background: #1f7a4d; } .comp--reductase { background: #b07d11; } .comp--rieske_other { background: #13796f; }
+/* Bilesen rozetleri. Zeminler, cizimlerdeki gen renklerinin KOYULASTIRILMIS
+   karsiliklari: uzerlerinde beyaz metin var ve 11 pikselde okunmalari gerek.
+   Uc tanesi esigin altindaydi (olculdu: varsayilan gri 3,6:1, reduktaz 3,6:1,
+   alpha_other 4,4:1); ayni tonun bir basamak koyusu ile 4,8-5,6:1 oldular.
+   Renk degil, sadece aydinlik degisti, dolayisiyla cizimle esleme bozulmadi. */
+.comp { padding: 0 6px; border-radius: 4px; font-size: .8em; color: #fff; background: #5f6a6c; }
+.comp--alpha { background: #a8352a; } .comp--alpha_other { background: #a55c19; } .comp--beta { background: #23628f; }
+.comp--ferredoxin { background: #1f7a4d; } .comp--reductase { background: #96690e; } .comp--rieske_other { background: #13796f; }
 .comp--none { background: transparent; color: var(--dim); }
 
 /* statistics blocks: each test is one panel, numbered by its own heading */
@@ -1046,9 +1099,16 @@ svg.struct { width: 100%; height: auto; max-height: 260px; }
 .structcard__rx { font-size: .76rem; color: var(--dim); margin-top: var(--s1); }
 .structcard__rx i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
 .structcard__n { font-size: .74rem; color: var(--dim); margin-top: 2px; }
-/* a type with no confirmed entries cannot have a page, so its card is inert */
-.structcard--empty { opacity: .72; border-style: dashed; cursor: default; }
-.structcard--empty:hover { border-color: var(--rule); background: var(--panel); }
+/* Uyesi olmayan tip. Iki sey degisti:
+   1. Kart ARTIK baglaniyor (sayfa referans enzimin kuratorlu bilgisini
+      gosteriyor), ama stil hala `cursor: default` diyordu ve hover geri
+      bildirimini bastiriyordu: tiklanabilir bir sey tiklanamaz gorunuyordu.
+   2. Solgunluk `opacity: .72` ile yapiliyordu, yani kartin METNI de soluyordu:
+      olculen kontrast 3,1:1 (isik) ve 4,2:1 (karanlik), ikisi de 4,5 esiginin
+      altinda. Ayni "bu kart farkli" isareti artik kesik cerceve ve bir ton
+      koyu zemin ile veriliyor; metin tam kontrastini koruyor. */
+.structcard--empty { border-style: dashed; background: var(--paper-2); }
+.structcard--empty:hover { border-color: var(--rule-2); background: var(--paper-2); }
 
 figure.reaction .rxn {
   display: flex;
@@ -1124,7 +1184,7 @@ figure.reaction .rxn {
 }
 .pdbbar__styles { display: flex; gap: var(--s1); margin-left: auto; }
 .pdbbar__styles button { font-size: .78rem; padding: 2px 9px; }
-.pdbbar__styles button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: #fff; }
+.pdbbar__styles button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
 
 /* -------- 11  hand-written and generated SVGs, including dark mode     */
 svg.arch, svg.flowfig {
@@ -1203,7 +1263,10 @@ pre.seq {
 }
 
 /* ------------------------ 12  search, taxonomy tree, miscellany        */
-.searchlayout { display: grid; grid-template-columns: 236px 1fr; gap: var(--s5); align-items: start; }
+/* minmax(0, ...): duz bir 1fr'in alt siniri auto'dur ve icerigin en kucuk
+   genisligi kolonu zorla buyutuyordu; arama sayfasi telefonda bu yuzden yana
+   kayiyordu (375 piksellik ekranda olculen 736 piksel). */
+.searchlayout { display: grid; grid-template-columns: minmax(0, 236px) minmax(0, 1fr); gap: var(--s5); align-items: start; }
 .facets { position: sticky; top: var(--s3); }
 .facet {
   background: var(--panel);
@@ -1272,14 +1335,17 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 }
 
 @media (max-width: 900px) {
-  .searchlayout { grid-template-columns: 1fr; }
+  .searchlayout { grid-template-columns: minmax(0, 1fr); }
   .facets { position: static; }
   .facet { margin-bottom: var(--s2); }
 }
 
 @media (max-width: 860px) {
-  /* one column is better than two cramped ones */
-  .cols { grid-template-columns: 1fr; gap: var(--s4); }
+  /* one column is better than two cramped ones.
+     minmax(0, 1fr) yaziliyor, duz 1fr degil: 1fr'in alt siniri auto'dur ve
+     icindeki tablonun en kucuk genisligi kolonu zorla genisletir; sayfa da
+     onunla birlikte yana kayar. */
+  .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
   figure.reaction .rxn { gap: var(--s4); padding: var(--s3); }
   .rxn__scheme { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: var(--s3); }
   .rxn__side, .rxn__arrow { min-width: 140px; }
@@ -1287,6 +1353,18 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 
 @media (max-width: 700px) {
   main { padding: var(--s3) var(--s3) var(--s6); }
+  /* Kendi kaydirma kutusu olmayan tablolar telefon genisliginde SAYFAYI yana
+     kaydiriyordu (tip sayfasinda olculdu: 375 piksellik ekranda 597 piksel).
+     display:block tabloyu blok kutusuna cevirir, ic tablo kendi en kucuk
+     genisliginde kalir ve kutu kendi icinde kaydirilir. Yalnizca dar ekranda:
+     masaustunde kolon genislikleri aynen korunur. */
+  :not(.tablewrap) > table.data {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
   /* Olcek daraldikca sikisir ama basamaklar korunur. */
   h1 { font-size: 1.62rem; }
   h2 { font-size: 1.26rem; margin-top: var(--s6); }
@@ -1339,6 +1417,14 @@ details.taxnode[open] > summary::before { content: "\25be"; }
   .rxn__side, .rxn__arrow, .rxn__scheme { min-width: 0; }
   .pdbwrap { height: 280px; }
   .pdbbar__styles { margin-left: 0; }
+  /* Operon dizilimi cizimleri sabit genislikli SVG'ler ve kendi kaydirma
+     kutulari yok; telefonda SAYFAYI yana kaydiriyorlardi (olculdu: 375
+     piksellik ekranda tip sayfasinda 412, giris sayfasinda 559 piksel).
+     viewBox'lari oldugu icin orantili olarak kuculebilirler. Bir TD
+     icindekiler disarida birakilir: onlar zaten tablonun kendi kaydirma
+     kutusunda tam boyutta duruyor. */
+  :not(td) > svg.oplayout { max-width: 100%; height: auto; }
+
   /* an 8-position schematic cannot stay legible at 390px; it scrolls instead
      of shrinking its text to four pixels */
   .archscroll { overflow-x: auto; overscroll-behavior-x: contain; }
@@ -1362,7 +1448,9 @@ details.taxnode[open] > summary::before { content: "\25be"; }
     --paper: #fff; --paper-2: #fff; --panel: #fff;
     --ink: #000; --ink-2: #1a1a1a; --dim: #444;
     --rule: #bbb; --rule-2: #888;
-    --th-bg: #f0f0f0; --struct-bg: #fff;
+    --th-bg: #f0f0f0; --struct-bg: #fff; --on-accent: #fff;
+    --accent-ink: #8c2f22; --link: #1f4e79;
+    --ok: #1f7a4d; --bad: #a2362a; --warn: #9a6b14;
     --svg-ink: #111; --svg-mid: #5a5a5a; --svg-gene: #2d3436;
     --svg-line-a: #999; --svg-line-b: #333; --svg-line-c: #777; --svg-line-d: #555;
   }
