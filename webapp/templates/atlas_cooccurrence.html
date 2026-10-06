@@ -39,8 +39,8 @@ separately, so their association is about gene content rather than regulation.</
 <tbody>
 {% for p in nb.top_different_type_pairs %}
 <tr>
-  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ p.type_a.split('_', 2)[-1] }}</a></td>
-  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ p.type_b.split('_', 2)[-1] }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ gene(p.type_a) }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ gene(p.type_b) }}</a></td>
   <td class="num">{{ p.n }}</td>
   <td class="num">{{ p.same_strand }} <span class="note">({{ pct(p.same_strand, p.n) }})</span></td>
   <td class="small">{{ chem.get(p.type_a, {}).get('substrate_en', '?') }} + {{ chem.get(p.type_b, {}).get('substrate_en', '?') }}</td>
@@ -68,8 +68,8 @@ each type has in total. Enrichment above that null is therefore not explained by
 <tbody>
 {% for p in rep.pairs %}
 <tr>
-  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ p.type_a.split('_', 2)[-1] }}</a></td>
-  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ p.type_b.split('_', 2)[-1] }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_a) }}">{{ gene(p.type_a) }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ p.type_b) }}">{{ gene(p.type_b) }}</a></td>
   <td class="num" data-v="{{ p.observed }}">{{ p.observed|fmt }}</td>
   <td class="num">{{ '%.2f' % p.expected }}</td>
   <td class="num" data-v="{{ p.ratio }}">{{ '%.1f×' % p.ratio if p.ratio else '–' }}</td>

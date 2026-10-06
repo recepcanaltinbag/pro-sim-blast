@@ -296,14 +296,23 @@ def render_tree_svg(newick, tip_info, width=900, row_h=11, label_w=330):
     return "".join(parts), n
 
 
-def tip_info_from_db(con, url, ecology=None):
-    """Build the tip_info map for all representatives and references."""
+def tip_info_from_db(con, url, ecology=None, names=None):
+    """Build the tip_info map for all representatives and references.
+
+    `names` cakisan kisa adlari ayristirilmis haliyle verir; verilmezse sade
+    kisa ad kullanilir, boylece modul tek basina da calisir.
+    """
+    names = names or {}
+
+    def gene(cluster):
+        return names.get(cluster, cluster.split("_", 2)[-1])
+
     info = {}
     for cid, cluster, org, leaf in con.execute("""
         SELECT r.candidate_id, r.ro_cluster, p.organism, rl.leaf_id
         FROM ro r JOIN replicon p USING(nucleotide_id)
         LEFT JOIN ro_leaf rl ON rl.candidate_id=r.candidate_id WHERE r.is_confirmed=1"""):
-        info[cid] = {"label": f"{cluster.split('_', 2)[-1]} · {org or ''}",
+        info[cid] = {"label": f"{gene(cluster)} · {org or ''}",
                      "color": GROUP_COLORS.get(group_of(cluster), "#95a5a6"),
                      "href": url("/ro/" + cid.replace(":", "_")),
                      "title": f"{cid} | {cluster} | {org} | variant {leaf}"}
@@ -318,7 +327,7 @@ def tip_info_from_db(con, url, ecology=None):
                           "WHERE r.candidate_id=?", (rep,)).fetchone()
         org = org[0] if org else ""
         info[leaf_id] = {
-            "label": f"{cluster.split('_', 2)[-1]}#{leaf_id.split('#')[-1]} · {org or ''} (n={size})",
+            "label": f"{gene(cluster)}#{leaf_id.split('#')[-1]} · {org or ''} (n={size})",
             "color": GROUP_COLORS.get(group_of(cluster), "#95a5a6"),
             "href": url("/leaf/" + leaf_id.replace("#", "-")),
             "title": f"variant {leaf_id} | {size} members | median identity "
@@ -567,14 +576,34 @@ REACTION_COLORS = {
 }
 
 
+def short_names(path):
+    """Tip id'sinden gosterilecek kisa ad. Cakisanlara grup-numara eklenir.
+
+    Uc kisa ad referans setinde IKI kez geciyor: BphA1 (2_201 ve 2_218),
+    NDO (3_314 ve 3_315) ve NidA (3_317 ve 3_318). Her ikisini de ayni
+    etiketle gostermek, iki ayri sayfaya giden iki satiri ayirt edilemez
+    hale getiriyordu. Cakisma yoksa sade kisa ad kullanilir, cunku 68 tipin
+    hepsine numara eklemek okunurlugu bosa dusurur.
+    """
+    clusters = [r["cluster"] for r in read_csv(path)]
+    counts = Counter(c.split("_", 2)[-1] for c in clusters)
+    names = {}
+    for cluster in clusters:
+        parts = cluster.split("_", 2)
+        gene = parts[-1]
+        names[cluster] = gene if counts[gene] == 1 else f"{gene} ({parts[1]})"
+    return names
+
+
 def chemistry_groups(path, counts, ecology=None):
     """Group the curated chemistry table by chemical family, newest counts attached."""
     rows = read_csv(path)
+    names = short_names(path)
     by_family = defaultdict(list)
     for r in rows:
         r = dict(r)
         r["n"] = counts.get(r["cluster"], 0)
-        r["gene"] = r["cluster"].split("_", 2)[-1]
+        r["gene"] = names.get(r["cluster"], r["cluster"].split("_", 2)[-1])
         r["group"] = group_of(r["cluster"])
         r["reaction_label"] = REACTION_LABEL.get(r["reaction_class"], r["reaction_class"])
         r["color"] = REACTION_COLORS.get(r["reaction_class"], "#8a8a8a")

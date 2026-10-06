@@ -41,6 +41,29 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+29. ~~Cakisan kisa tip adlari.~~ **BITTI.** Uc kisa ad referans setinde iki
+    kez geciyor: `BphA1` (2_201 ve 2_218), `NDO` (3_314 ve 3_315), `NidA`
+    (3_317 ve 3_318). Tablolarda iki satir ayni etiketle IKI AYRI sayfaya
+    baglaniyordu. Ad uretimi tek bir yere toplandi (`atlas.short_names`,
+    sablonlara `gene()` olarak gecti, ag grafigine JSON ile gidiyor) ve
+    yalnizca cakisanlara grup numarasi ekleniyor: "NDO (314)". 68 tipin
+    hepsine numara eklemek okunurlugu bosa dusurecekti. Yeni bir cakismayi
+    `validate_curation.py` yakalar.
+
+30. ~~Dil kontrolunun yapisal bosluklari.~~ **BITTI.** `euk_group` sutununun
+    aylarca Turkce kalabilmesinin iki sebebi vardi ve ikisi de kapatildi:
+    (a) kelime listesi dokuz ISLEV sozcugunden olusuyordu, kacan sey bir
+        ICERIK sozcuguydu ("bitki/alg"); liste icerik sozcukleriyle
+        genisletildi ve onek eslesemesi yuzunden Ingilizce ile cakisabilecek
+        kisa parcalar bilincli olarak disarida tutuldu;
+    (b) kontrol elle tutulan bir sutun listesine bakiyordu ve o sutun listede
+        hic yoktu, yani kontrol calismadi bile. Artik DB'deki 107 metin
+        sutununun hepsi uc listeden birinde olmak ZORUNDA (denetlenen,
+        GenBank'tan gelen, kimlik); siniflanmamis bir sutun FAIL verir.
+    Dil denetimi 5 sutundan 15 sutuna cikti. Iki kontrol de negatif test
+    edildi: siniflanmamis sutunu ve eski etiketleri yakaliyor, `plant/alga`
+    ve `Pseudomonas putida` gibi mesru metinde sessiz kaliyor.
+
 1. ~~Varyant kumelemesini ham dizide tekrarla.~~ **BITTI.** CD-HIT artik ham
    protein dizisinde bolme yapiyor, kimlik olcumu hizalamada kaliyor
    (`discover_subfamilies.py`, `recursive_homogenize.py`, `analyze_variants.py`).

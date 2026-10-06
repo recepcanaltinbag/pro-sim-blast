@@ -31,6 +31,7 @@ import os
 import re
 import sqlite3
 import sys
+from collections import Counter
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -71,8 +72,17 @@ TURKISH_LETTERS = {chr(c) for c in (
     0x00E7, 0x011F, 0x0131, 0x00F6, 0x015F, 0x00FC,
     0x00C7, 0x011E, 0x0130, 0x00D6, 0x015E, 0x00DC,
 )}
+# Liste hem islev hem ICERIK sozcugu icerir. Bir donem yalnizca islev
+# sozcukleri vardi ve okaryot alt-grup etiketleri ("bitki/alg", "mantar",
+# "hayvan") aradan gecip arayuze cikti; eksik olan icerik sozcukleriydi.
+# Arama ONEK esleseme yapar, bu yuzden Ingilizce bir kelimenin basiyla
+# cakisabilecek kisa parcalar (ornegin "alg", "ana", "son") listeye GIRMEZ.
 TURKISH_WORDS = ["agirlikli", "komsu", "kume", "yaprak", "bilinmiyor",
-                 "dusuk", "orta", "yuksek", "degil"]
+                 "dusuk", "orta", "yuksek", "degil",
+                 "bitki", "mantar", "hayvan", "diger", "kirmizi",
+                 "okaryot", "bakteriyel", "kaynak", "kayit", "sayisi",
+                 "toprak", "tanimsiz", "belirsiz", "bulunmayan", "supheli",
+                 "icin", "dogrulan", "ornek", "siniflan"]
 TURKISH_WORD_RE = re.compile(r"\b(" + "|".join(TURKISH_WORDS) + r")", re.IGNORECASE)
 
 # Kelime arama ONEK esleseme yapar (Turkce eklemeli: komsu -> komsular,
@@ -91,7 +101,78 @@ USER_FACING_DB_FIELDS = [
     # Proje tarafindan URETILEN habitat etiketi (serbest metin degil, sozluk).
     # isolation_source.py'nin HABITAT_RULES sonucu; web'de gosteriliyor.
     ("replicon_source", "nucleotide_id", "habitat"),
+    # Okaryot alt-grubu: classify_domains.py'deki sozlukten geliyor ve giris
+    # sayfalarinda gosteriliyor. Bir donem Turkce idi ve bu liste onu
+    # icermedigi icin kontrol hic calismadi.
+    ("ro_domain", "candidate_id", "euk_group"),
+    ("ro_etc", "candidate_id", "reductase_type"),
+    ("ro_etc", "candidate_id", "ferredoxin_type"),
+    ("ro_evidence", "candidate_id", "tier"),
+    ("ro_regulation", "candidate_id", "upstream_category"),
+    ("ro_regulation", "candidate_id", "architecture"),
+    ("ro_subfamily", "candidate_id", "assignment_class"),
+    ("operon_gene", "candidate_id", "category"),
+    ("gene_category", "category", "method"),
+    ("leaf_profile", "leaf_id", "enriched_categories"),
 ]
+
+# GenBank'tan OLDUGU GIBI kopyalanan metin sutunlari. Bunlarda yabanci dil
+# olmasi normaldir (organizma adlari, /product aciklamalari, yer adlari) ve
+# dil kontrolune girmezler. Liste, asagidaki "her metin sutunu siniflanmis mi"
+# kontrolu icin var: yeni bir sutun ne burada ne yukarida ise kontrol FAIL
+# verir, boylece `euk_group` gibi bir sutun bir daha sessizce denetim disinda
+# kalmaz.
+EXTERNAL_TEXT_FIELDS = {
+    ("replicon", "organism"), ("replicon", "taxonomy"), ("replicon", "description"),
+    ("replicon", "file"), ("replicon", "mol_type"), ("replicon", "status"),
+    ("replicon_source", "isolation_source"), ("replicon_source", "host"),
+    ("replicon_source", "geo"), ("replicon_source", "country"),
+    ("ro", "product"), ("ro", "locus_tag"), ("ro", "gene"), ("ro", "sequence"),
+    ("neighbor", "product"), ("neighbor", "locus_tag"), ("neighbor", "gene"),
+    ("neighbor_protein", "translation"), ("neighbor_domain", "hmm"),
+    ("operon_gene", "product"), ("ro_regulation", "upstream_product"),
+    ("ro_search", "organism"), ("ro_search", "genus"), ("ro_search", "product"),
+    ("ro_search", "doc"),
+}
+
+# Kimlik, kod ve olcum sutunlari: serbest metin tasimadiklari icin dil
+# kontrolune girmezler.
+IDENTIFIER_TEXT_FIELDS = {
+    ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
+    ("gene_category", "category"),
+    ("leaf", "leaf_id"), ("leaf", "cluster"), ("leaf", "representative"),
+    ("leaf", "top_genera"),
+    ("leaf_profile", "leaf_id"), ("leaf_profile", "cluster"),
+    ("leaf_profile", "top_genera"), ("leaf_profile", "neighbor_signature"),
+    ("leaf_sdp", "leaf_id"), ("leaf_sdp", "cluster"), ("leaf_sdp", "residues"),
+    ("leaf_sdp", "signature"),
+    ("neighbor", "candidate_id"), ("neighbor", "nucleotide_id"),
+    ("neighbor", "protein_id"),
+    ("neighbor_component", "protein_key"), ("neighbor_component", "component"),
+    ("neighbor_component", "evidence"), ("neighbor_domain", "protein_key"),
+    ("neighbor_protein", "protein_key"), ("neighbor_protein", "nucleotide_id"),
+    ("operon", "candidate_id"), ("operon", "nucleotide_id"),
+    ("operon_gene", "candidate_id"), ("operon_gene", "protein_key"),
+    ("operon_gene", "component"),
+    ("replicon", "nucleotide_id"), ("replicon_source", "nucleotide_id"),
+    ("ro", "candidate_id"), ("ro", "nucleotide_id"), ("ro", "protein_id"),
+    ("ro", "ro_cluster"), ("ro", "ro_group"),
+    ("ro_carboxylate", "candidate_id"), ("ro_carboxylate", "catalytic_residue"),
+    ("ro_carboxylate", "bridging_residue"),
+    ("ro_domain", "candidate_id"), ("ro_domain", "cluster"), ("ro_domain", "domain"),
+    ("ro_etc", "candidate_id"),
+    ("ro_evidence", "candidate_id"), ("ro_evidence", "nearest_ref"),
+    ("ro_leaf", "candidate_id"), ("ro_leaf", "cluster"), ("ro_leaf", "leaf_id"),
+    ("ro_regulation", "candidate_id"), ("ro_regulation", "upstream_family"),
+    ("ro_search", "candidate_id"), ("ro_search", "protein_id"),
+    ("ro_search", "cluster"), ("ro_search", "gene"), ("ro_search", "leaf_id"),
+    ("ro_search", "substrate"), ("ro_search", "family"), ("ro_search", "reaction"),
+    ("ro_search", "tier"), ("ro_search", "domain"),
+    ("ro_subfamily", "candidate_id"), ("ro_subfamily", "cluster"),
+    ("ro_subfamily", "subfamily_id"),
+    ("subfamily", "cluster"), ("subfamily", "subfamily_id"),
+    ("subfamily", "representative"), ("subfamily", "top_genera"),
+}
 
 # analysis_out/ icinde web arayuzunun DOGRUDAN yayinladigi metin dosyalari.
 # Turkce sizintisi burada da yayina gider; bu yuzden ayrica taraniyor.
@@ -556,6 +637,29 @@ def check_ecology_csv(rep, eco):
               not bad, len(bad))
 
 
+def check_display_names(rep, chem):
+    """Gosterilen kisa adlar birbirinden ayirt edilebiliyor mu?
+
+    Uc kisa ad referans setinde iki kez geciyor (BphA1, NDO, NidA) ve tablolarda
+    iki satir ayni etiketle iki AYRI sayfaya baglaniyordu. Cozum ayristirma
+    kurali; bu kontrol kuralin yeni bir cakismayi kacirmadigini dogrular.
+    """
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "webapp"))
+    import atlas as _atlas
+    names = _atlas.short_names(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                            "chemistry.csv"))
+    missing = [r["cluster"] for r in chem if r["cluster"] not in names]
+    rep.check("display name assigned to every type",
+              not missing, len(missing), first(missing))
+    seen = Counter(names.values())
+    clashes = sorted(n for n, c in seen.items() if c > 1)
+    rep.check("display names are unique after disambiguation",
+              not clashes, len(clashes), first(clashes))
+    empty = sorted(c for c, n in names.items() if not n.strip())
+    rep.check("no display name is blank", not empty, len(empty), first(empty))
+
+
 def check_chemistry_csv(rep, chem):
     bad = [(r["cluster"], r["reaction_class"]) for r in chem
            if r.get("reaction_class") not in VALID_REACTION_CLASS]
@@ -604,6 +708,41 @@ def check_chemistry_csv(rep, chem):
            and not (r.get("source") or "").strip()]
     rep.check("chemistry.csv: a named substrate always cites a source",
               not bad, len(bad), first(bad))
+
+
+def check_text_fields_classified(con, rep):
+    """DB'deki her metin sutunu uc listeden birinde kayitli mi?
+
+    Dil kontrolu elle tutulan bir sutun listesine bakiyordu ve `euk_group` o
+    listede YOKTU: sutun hic denetlenmedi, Turkce etiketler aylarca arayuzde
+    kaldi. Bu kontrol eksigi kapatmaz, GORUNUR kilar: yeni bir metin sutunu
+    ne "kontrol edilecek", ne "disaridan gelen", ne de "kimlik" listesinde
+    degilse FAIL verir ve birinin karar vermesi gerekir.
+    """
+    checked = {(t, c) for t, _k, c in USER_FACING_DB_FIELDS}
+    known = checked | EXTERNAL_TEXT_FIELDS | IDENTIFIER_TEXT_FIELDS
+    tables = [r[0] for r in con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' "
+        "AND name NOT LIKE '%_fts%' AND name NOT LIKE 'sqlite_%'")]
+    unclassified, total = [], 0
+    for table in sorted(tables):
+        for row in con.execute(f'PRAGMA table_info("{table}")'):
+            name, decl = row[1], (row[2] or "").upper()
+            if not (decl.startswith(("TEXT", "VARCHAR", "CHAR")) or decl == ""):
+                continue
+            total += 1
+            if (table, name) not in known:
+                unclassified.append(f"{table}.{name}")
+    rep.check("every DB text column is classified for language checking",
+              not unclassified, len(unclassified),
+              f"{total} text columns, {len(checked)} language-checked"
+              if not unclassified else first(unclassified, 5))
+    stale = sorted(f"{t}.{c}" for t, c in known
+                   if t in tables and (t, c) not in {
+                       (tt, row[1]) for tt in tables
+                       for row in con.execute(f'PRAGMA table_info("{tt}")')})
+    rep.check("no language-check entry points at a dropped column",
+              not stale, len(stale), first(stale, 5), severity="WARN")
 
 
 def check_turkish(con, rep, eco_path, chem_path, eco, chem, out_dir):
@@ -897,7 +1036,9 @@ def main():
         check_cluster_coverage(con, rep, eco, chem)
         check_ecology_csv(rep, eco)
         check_chemistry_csv(rep, chem)
+        check_display_names(rep, chem)
         check_cross_file_substrate(rep, eco, chem)
+        check_text_fields_classified(con, rep)
         check_turkish(con, rep, args.ecology, args.chemistry, eco, chem,
                       args.out_dir)
         check_referential(con, rep)

@@ -246,6 +246,12 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
   border-color: var(--accent-ink);
 }
 
+/* Grafik ustundeki kucuk kontrol dugmeleri: ayni gorunum, daha az yer. */
+.btn--small, button.btn--small {
+  padding: 2px 8px;
+  font-size: .82rem;
+}
+
 /* atlas sub-navigation. Ten pages is too many for one undifferentiated row,
    so related pages are grouped and the groups are separated by a rule. */
 .subnav {

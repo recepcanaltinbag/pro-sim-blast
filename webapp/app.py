@@ -19,6 +19,7 @@ Environment:
 import csv
 import datetime as _dt
 import io
+import functools
 import os
 import re
 import sqlite3
@@ -137,7 +138,24 @@ def build_info():
 
 
 BUILD = build_info()
-templates.env.globals.update(u=u, slug=slug, leaf_slug=leaf_slug, fmt=fmt, pct=pct, build=BUILD)
+# Kisa tip adi tek yerden gelir: uc ad cakisiyor ve cakisanlara numara
+# eklenmesi her sayfada ayni sekilde olmak zorunda. Tembel yuklenir, cunku
+# atlas modulu bu dosyanin sonunda import ediliyor.
+@functools.lru_cache(maxsize=1)
+def short_names():
+    import atlas as _atlas
+    return _atlas.short_names(os.path.join(PARENT, "chemistry.csv"))
+
+
+def gene(cluster):
+    """Tip id'sinin gosterilecek kisa adi."""
+    if not cluster:
+        return ""
+    return short_names().get(cluster, cluster.split("_", 2)[-1])
+
+
+templates.env.globals.update(u=u, slug=slug, leaf_slug=leaf_slug, fmt=fmt, pct=pct,
+                             build=BUILD, gene=gene)
 templates.env.filters["fmt"] = fmt
 
 
@@ -1008,7 +1026,7 @@ def atlas_phylogeny(request: Request):
     con = connect()
     try:
         svg, n = atlas.render_tree_svg(open(apath("tree_all.nwk")).read(),
-                                       atlas.tip_info_from_db(con, u, ECOLOGY),
+                                       atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
                                        width=1040, row_h=11, label_w=380)
         return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n)
     finally:
@@ -1021,7 +1039,7 @@ def atlas_network(request: Request, min_identity: float = 35.0):
                   data=atlas.ssn(apath("ssn_nodes.csv"), apath("ssn_edges.csv"), min_identity),
                   matrix=atlas.identity_matrix(apath("cluster_identity_matrix.csv")),
                   refpairs=atlas.read_csv(apath("reference_pairs.csv"))[:40],
-                  min_identity=min_identity)
+                  names=short_names(), min_identity=min_identity)
 
 
 @app.get("/atlas/taxonomy", response_class=HTMLResponse)
@@ -1353,7 +1371,7 @@ def cluster_extras(con, cluster):
     if os.path.exists(tpath) and os.path.getsize(tpath) > 0:
         try:
             x["tree_svg"], _ = atlas.render_tree_svg(
-                open(tpath).read(), atlas.tip_info_from_db(con, u, ECOLOGY),
+                open(tpath).read(), atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
                 width=900, row_h=12, label_w=360)
         except Exception:
             x["tree_svg"] = None

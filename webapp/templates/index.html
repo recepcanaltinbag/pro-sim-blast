@@ -272,7 +272,7 @@ site, which is why membership requires only two of the three iron ligands.</p>
 <tbody>
 {% for t in glu[:10] %}
 <tr{% if t.fraction >= 0.8 %} class="hl"{% endif %}>
-  <td>{% if t.n %}<a href="{{ u('/cluster/' ~ t.cluster) }}">{{ t.cluster.split('_', 2)[-1] }}</a>
+  <td>{% if t.n %}<a href="{{ u('/cluster/' ~ t.cluster) }}">{{ gene(t.cluster) }}</a>
       <span class="note small">{{ t.cluster }}</span>{% else %}{{ t.cluster }}{% endif %}</td>
   <td class="num">{{ t.cluster.split('_')[0] }}</td>
   <td class="num" data-v="{{ t.glu }}">{{ t.glu|fmt }}</td>

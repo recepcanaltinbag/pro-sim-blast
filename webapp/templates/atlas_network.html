@@ -42,16 +42,21 @@ percentage. <a href="{{ u('/download/analysis/reference_pairs.csv') }}">Download
 </figure>
 
 <h2>2 · Similarity network</h2>
-<p>Nodes are the references, outlined and enlarged, together with one representative per variant.
-Two nodes are joined when they are at least {{ min_identity }} % identical over at least 70 % of
-their length. Drag to pan, scroll to zoom, click a node to open it.</p>
+<p>Nodes are the references, outlined and enlarged and labelled with the type name, together with
+one representative per variant. Two nodes are joined when they are at least {{ min_identity }} %
+identical over at least 70 % of their length. Drag the background to pan, scroll to zoom, drag a
+node to pull a component apart, and click a node to open it. Labels keep a constant size as you
+zoom, so a crowded region becomes readable by zooming into it.</p>
+<p class="note"><label><input type="checkbox" id="ssn-lab" checked> type labels</label>
+&nbsp; <label><input type="checkbox" id="ssn-iso"> hide nodes with no edge</label>
+&nbsp; <button class="btn btn--small" id="ssn-reset" type="button">reset view</button></p>
 <figure class="fig">
-<div id="ssn" class="chart" style="height:620px"></div>
+<div id="ssn" class="chart" style="height:720px"></div>
 <figcaption><b>Reading the layout.</b> A compact single-colour component is a type with a coherent,
 well-separated sequence neighbourhood. Components containing several colours are types that cannot
 be told apart at this threshold and are better treated as one lineage. Isolated nodes are variants
 with no close relative in the sampled diversity, the candidates for genuinely new chemistry.
-<b>Caveat.</b> Edge density depends on the threshold, which changes the apparent number of
+Only the curated references carry a label; a representative is identified by hovering it. <b>Caveat.</b> Edge density depends on the threshold, which changes the apparent number of
 components; the layout is a force simulation and carries no quantitative axis.
 <a href="{{ u('/download/analysis/ssn_edges.csv') }}">Edges</a> ·
 <a href="{{ u('/download/analysis/ssn_nodes.csv') }}">Nodes</a></figcaption>
@@ -73,48 +78,106 @@ and their members' substrate labels should be read together.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
 <script>
 const DATA = {{ data|tojson }}, COL = {{ GROUP_COLORS|tojson }};
+/*  Kisa adlar sunucudan gelir: uc tanesi cakisiyor ve ayni
+    ayristirma kurali butun sayfalarda gecerli olmak zorunda.  */
+const NAMES = {{ names|tojson }};
+const gene = c => NAMES[c] || c.split('_').slice(2).join('_');
 const STATIC = {{ 'true' if static_mode else 'false' }};
 /* Types with no confirmed member have no page; see the note on the table above. */
 const LIVE = new Set(DATA.nodes.filter(n => n.kind !== 'reference').map(n => n.cluster));
 const clusterUrl = c => LIVE.has(c) ? "{{ u('/cluster/') }}" + c + (STATIC ? ".html" : "") : null;
 const leafUrl = l => "{{ u('/leaf/') }}" + l.replace('#','-') + (STATIC ? ".html" : "");
 (function(){
-  const el = document.getElementById('ssn'), W = el.clientWidth || 900, H = 620;
-  const svg = d3.select(el).append('svg').attr('viewBox', [0,0,W,H]).attr('width','100%').attr('height',H);
+  const el = document.getElementById('ssn'), W = el.clientWidth || 900, H = 720;
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const svg = d3.select(el).append('svg').attr('viewBox', [0,0,W,H])
+    .attr('width','100%').attr('height',H).style('cursor','grab');
   const g = svg.append('g');
-  svg.call(d3.zoom().scaleExtent([0.25, 8]).on('zoom', e => g.attr('transform', e.transform)));
   const nodes = DATA.nodes.map(d => ({...d})), byId = new Map(nodes.map(n => [n.id, n]));
   const links = DATA.edges.filter(e => byId.has(e.source) && byId.has(e.target)).map(e => ({...e}));
+  /*  Kenari olmayan dugumler: "izole" filtresi bunlari gizler. Kenar listesi
+      id ile geldigi icin sayim simulasyon baslamadan once yapilir.          */
+  const degree = new Map(nodes.map(n => [n.id, 0]));
+  links.forEach(e => { degree.set(e.source, degree.get(e.source) + 1);
+                       degree.set(e.target, degree.get(e.target) + 1); });
   const sim = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id)
       .distance(d => 70 - d.identity/2).strength(d => Math.min(1, d.identity/120)))
     .force('charge', d3.forceManyBody().strength(-22))
     .force('center', d3.forceCenter(W/2, H/2))
-    .force('collide', d3.forceCollide(d => d.kind === 'reference' ? 9 : 4));
+    .force('collide', d3.forceCollide(d => d.kind === 'reference' ? 14 : 4));
   const link = g.append('g').attr('stroke','#8a8a8a').attr('stroke-opacity',0.3)
     .selectAll('line').data(links).join('line').attr('stroke-width', d => 0.3 + d.identity/70);
   const node = g.append('g').selectAll('circle').data(nodes).join('circle')
     .attr('r', d => d.kind === 'reference' ? 7 : 3 + Math.sqrt(d.size || 1))
     .attr('fill', d => COL[d.group] || '#95a5a6')
-    .attr('stroke', d => d.kind === 'reference' ? '#111' : '#fff')
+    .attr('stroke', d => d.kind === 'reference' ? (dark ? '#f5f3ef' : '#111') : '#fff')
     .attr('stroke-width', d => d.kind === 'reference' ? 1.6 : 0.5)
     .style('cursor','pointer')
     .on('click', (e,d) => {
+      if (e.defaultPrevented) return;      /* surukleme tiklama sayilmaz */
       const href = d.kind === 'reference' ? clusterUrl(d.cluster) : leafUrl(d.leaf || d.id);
       if (href) location.href = href;      /* null for a type with no page */
     });
   node.append('title').text(d => d.kind === 'reference'
     ? 'curated reference · ' + d.cluster
     : d.cluster + ' · variant ' + d.leaf + ' · ' + d.size + ' members · ' + (d.organism||'') + (d.tier ? ' · ' + d.tier : ''));
+
+  /*  Etiketler yalnizca referans dugumlerinde: 1.276 dugumun hepsini
+      yazmak okunmaz olurdu, kullanici da "en azindan kumeler icin" dedi.
+      Beyaz kontur (paint-order) etiketi kenarlarin uzerinde okutur.        */
+  const label = g.append('g').attr('pointer-events','none')
+    .selectAll('text').data(nodes.filter(d => d.kind === 'reference')).join('text')
+    .text(d => gene(d.cluster))
+    .attr('text-anchor','middle')
+    .attr('font-size', 13).attr('font-weight', 600)
+    .attr('fill', dark ? '#f5f3ef' : '#15202b')
+    .attr('stroke', dark ? '#1a1a1a' : '#fff').attr('stroke-width', 3.2)
+    .attr('paint-order','stroke');
+
+  /*  Yakinlastirmada etiket boyu SABIT kalir: olcek k ise yazi k'ya bolunur,
+      yoksa 8 kat yakinlastirmada yazi ekrani kaplar.                       */
+  let k = 1;
+  function restyle() {
+    label.attr('font-size', 13 / k).attr('stroke-width', 3.2 / k)
+         .attr('dy', -11 / k);
+  }
+  const zoom = d3.zoom().scaleExtent([0.25, 8]).on('zoom', e => {
+    k = e.transform.k; g.attr('transform', e.transform); restyle();
+  });
+  svg.call(zoom);
+  restyle();
+
+  node.call(d3.drag()
+    .on('start', (e,d) => { if (!e.active) sim.alphaTarget(0.1).restart();
+                            d.fx = d.x; d.fy = d.y; })
+    .on('drag',  (e,d) => { d.fx = e.x; d.fy = e.y; })
+    .on('end',   (e,d) => { if (!e.active) sim.alphaTarget(0);
+                            d.fx = null; d.fy = null; }));
+
   sim.on('tick', () => {
     link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
     node.attr('cx',d=>d.x).attr('cy',d=>d.y);
+    label.attr('x',d=>d.x).attr('y',d=>d.y);
   });
+
+  const labBox = document.getElementById('ssn-lab');
+  if (labBox) labBox.addEventListener('change', () =>
+    label.attr('display', labBox.checked ? null : 'none'));
+  const isoBox = document.getElementById('ssn-iso');
+  if (isoBox) isoBox.addEventListener('change', () => {
+    const hide = isoBox.checked;
+    node.attr('display', d => hide && !degree.get(d.id) ? 'none' : null);
+    label.attr('display', d => (hide && !degree.get(d.id)) || !labBox.checked ? 'none' : null);
+  });
+  const resetBtn = document.getElementById('ssn-reset');
+  if (resetBtn) resetBtn.addEventListener('click', () =>
+    svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity));
 })();
 {% if matrix %}
 (function(){
   const M = {{ matrix|tojson }};
-  const names = M.clusters.map(c => c.split('_').slice(2).join('_'));
+  const names = M.clusters.map(gene);
   const dark = matchMedia('(prefers-color-scheme: dark)').matches;
   Plotly.newPlot('heat', [{type:'heatmap', z:M.matrix, x:names, y:names, zmin:20, zmax:100,
     colorscale:[[0,'#f6f4f0'],[0.3,'#f2d6ae'],[0.55,'#e0a070'],[0.8,'#c25b3f'],[1,'#7a2a1f']],

@@ -73,7 +73,7 @@ sequence-verified partners.</p>
       of its members. The nearest reference by sequence is a different thing and
       may be one of the curated references with no confirmed member in this
       build, which has no page - so it is shown as a label, not a link.      #}
-  <td><a href="{{ u('/cluster/' ~ r.ro_cluster) }}">{{ r.ro_cluster.split('_', 2)[-1] }}</a></td>
+  <td><a href="{{ u('/cluster/' ~ r.ro_cluster) }}">{{ gene(r.ro_cluster) }}</a></td>
   <td class="mono small">{{ r.nearest_ref }}</td>
   <td class="num" data-v="{{ r.ref_identity }}">{{ '%.1f' % r.ref_identity }}</td>
   <td class="note">{% if r.has_beta %}beta {% endif %}{% if r.has_ferredoxin %}ferredoxin {% endif %}{% if r.has_reductase %}reductase{% endif %}{% if not (r.has_beta or r.has_ferredoxin or r.has_reductase) %}none detected{% endif %}</td>

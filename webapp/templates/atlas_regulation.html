@@ -130,7 +130,7 @@ unassignable and the counts are conservative.</figcaption>
 <th class="num">Median intergenic<span class="unit">bp</span></th><th data-facet="Dominant regulator family">Dominant family</th></tr></thead>
 <tbody>
 {% for r in per_cluster %}
-<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}"><b>{{ r.cluster.split('_', 2)[-1] }}</b></a>
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}"><b>{{ gene(r.cluster) }}</b></a>
     <span class="note">{{ r.cluster }}</span></td>
   <td class="num" data-v="{{ r.n }}">{{ r.n|fmt }}</td>
   <td class="num" data-v="{{ (100 * (r.divergent_regulator_rate|float))|round(1) }}">{{ '%.0f %%' % (100 * (r.divergent_regulator_rate|float)) }} <span class="note">({{ r.divergent_regulator }})</span></td>

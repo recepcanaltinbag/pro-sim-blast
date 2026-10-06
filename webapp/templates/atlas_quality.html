@@ -39,7 +39,7 @@ statement is modest but real: the share of entries on plasmids is
 <thead><tr><th>Type</th><th class="num">Entries</th><th class="num">Distinct sequences</th><th class="num">Redundancy</th></tr></thead>
 <tbody>
 {% for c in red.clusters if c.entries >= 20 %}
-<tr><td><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster.split('_', 2)[-1] }}</a>
+<tr><td><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ gene(c.cluster) }}</a>
     <span class="note">{{ c.cluster }}</span></td>
   <td class="num" data-v="{{ c.entries }}">{{ c.entries|fmt }}</td>
   <td class="num" data-v="{{ c.unique_sequences }}">{{ c.unique_sequences|fmt }}</td>

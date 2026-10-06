@@ -19,7 +19,7 @@
         {% if m.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
     <td><i>{{ m.organism }}</i></td>
     <td class="small">{{ m.product }}</td>
-    <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ m.ro_cluster.split('_', 2)[-1] }}</a></td>
+    <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ gene(m.ro_cluster) }}</a></td>
     <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
     <td><span class="chip chip--{{ m.assignment_class or 'unknown' }}">{{ m.assignment_class or 'unassigned' }}</span></td>
     <td class="num" data-v="{{ m.hmm_score or '' }}">{{ '%.0f' % m.hmm_score if m.hmm_score else '–' }}</td>
