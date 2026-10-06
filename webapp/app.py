@@ -1357,6 +1357,13 @@ def atlas_control(request: Request):
                   rel=atlas.operon_relations_view(apath("operon_relations.json")))
 
 
+@app.get("/atlas/origin", response_class=HTMLResponse)
+def atlas_origin(request: Request):
+    """Yakin ve uzak akrabalarin nerelerden geldigi."""
+    return render(request, "atlas_origin.html",
+                  eco=atlas.ecological_origin_view(apath("ecological_origin.json")))
+
+
 @app.get("/atlas/structure", response_class=HTMLResponse)
 def atlas_structure(request: Request):
     """Aktif bolge: kristal yapilardan ve tahmin modellerinden."""

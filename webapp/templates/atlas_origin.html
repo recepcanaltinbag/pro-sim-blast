@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Where they came from{% endblock %}
+{% set page_id = 'origin' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Where the close and the distant relatives were found</h1>
+<p class="lede">If an enzyme type spread from one setting into others, its close and its distant
+members should have been isolated from different places. This page tests that, type by type, and
+reaches a mostly negative answer worth understanding.</p>
+
+{% if eco %}
+<h2>1 · The pooled picture</h2>
+<p>Across the whole database, close and distant members do occupy different habitats, but the effect
+is small. Close members are over-represented in human clinical, gut, contaminated and wastewater
+settings; distant ones in plant tissue, marine and thermal settings. Habitat is known for only part
+of the data, so every share below is a share of what is classified, not of everything.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence level</th><th class="num">Entries</th><th class="num">With a classified habitat</th>
+<th class="num">Share classified</th><th class="num">Species</th></tr></thead>
+<tbody>
+{% for tier, v in eco.pooled.by_tier.items() %}
+<tr><td>{{ tier.replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ v.entries_total }}">{{ v.entries_total|fmt }}</td>
+  <td class="num" data-v="{{ v.entries_classified }}">{{ v.entries_classified|fmt }}</td>
+  <td class="num" data-v="{{ v.classified_fraction }}">{{ '%.0f %%' % (100 * v.classified_fraction) }}</td>
+  <td class="num" data-v="{{ v.species_with_habitat }}">{{ v.species_with_habitat|fmt }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Coverage itself depends on how well studied a member is: the entries we understand
+least are also the ones whose origin is least often recorded.</p>
+
+<h2>2 · Per type, and the control that changes the answer</h2>
+<p>Only {{ eco.ranking|length }} types have enough classified members on both sides to test at all.
+Several show a large difference. But habitat is a property of the <em>organism</em>, not of the
+enzyme, and the close and distant members of a type are frequently different organisms, so the
+difference may be reporting taxonomy rather than ecology. The last column repeats each test using
+only the genera present on both sides.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th class="num">Close</th><th class="num">Distant</th>
+<th>Close members mostly from</th><th>Distant members mostly from</th>
+<th class="num">Divergence</th><th class="num">p</th><th class="num">After the genus control</th></tr></thead>
+<tbody>
+{% for r in eco.ranking %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="num" data-v="{{ r.close_n }}">{{ r.close_n }}</td>
+  <td class="num" data-v="{{ r.distant_n }}">{{ r.distant_n }}</td>
+  <td class="small">{{ r.close_top }}</td><td class="small">{{ r.distant_top }}</td>
+  <td class="num" data-v="{{ r.jsd }}">{{ '%.3f' % r.jsd }}</td>
+  <td class="num" data-v="{{ r.p }}">{{ '%.3f' % r.p }}</td>
+  <td class="num" data-v="{{ r.control_p if r.control_p is not none else 1 }}">
+    {% if r.control_p is not none %}p = {{ '%.3f' % r.control_p }}
+    {% else %}<span class="note">cannot be run</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>No type survives the control at a corrected five per cent level.</b> The strongest
+raw signals come from types whose close members are marine genera and whose distant members are soil
+and plant genera; when only the genera present on both sides are kept, the difference goes. For two
+types the control cannot be run at all because the two sides share almost no genus, and that is
+itself the finding: the ecological difference and the taxonomic difference are the same difference.
+<b>The pooled signal does survive the same control</b>, so something shifts with evidence distance
+across the database as a whole. At the resolution of a single type it cannot be separated from which
+organism happens to carry the gene.</figcaption>
+</figure>
+
+{% if eco.wastewater %}
+<h2>3 · Wastewater, separately</h2>
+<p>{{ eco.wastewater.definition }}</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measure</th><th class="num">Value</th></tr></thead>
+<tbody>
+<tr><td>Entries from wastewater or sludge</td><td class="num">{{ eco.wastewater.entries|fmt }}</td></tr>
+<tr><td>Species behind them</td><td class="num">{{ eco.wastewater.species|fmt }}</td></tr>
+<tr><td>Enzyme types present</td><td class="num">{{ eco.wastewater.types_present }}</td></tr>
+<tr><td>Share that are close to a curated enzyme</td>
+    <td class="num">{{ '%.0f %%' % (100 * eco.wastewater.close_share_in_wastewater) }}
+    <span class="unit">against {{ '%.0f %%' % (100 * eco.wastewater.close_share_in_all_classified) }} overall</span></td></tr>
+<tr><td>Median identity to the nearest reference</td>
+    <td class="num">{{ '%.1f %%' % eco.wastewater.median_identity_to_nearest_reference.wastewater }}
+    <span class="unit">against {{ '%.1f %%' % eco.wastewater.median_identity_to_nearest_reference.all_classified }} overall</span></td></tr>
+<tr><td>Variants dominated by wastewater members</td>
+    <td class="num">{{ eco.wastewater.wastewater_dominated_variant_count }}</td></tr>
+</tbody></table></div>
+<p class="note"><b>The reading runs opposite to the obvious expectation.</b> Wastewater members are
+<em>closer</em> to the characterised enzymes than the database average, not more divergent, and not
+one variant is dominated by them. Activated sludge is where the already-characterised enzymes were
+isolated from, rather than a reservoir of unexplored relatives. {{ eco.wastewater.rule_precedence_caveat.note if eco.wastewater.rule_precedence_caveat is mapping else eco.wastewater.rule_precedence_caveat }}</p>
+{% endif %}
+
+{% if eco.main_variants %}
+<h2>4 · Where each type's main variant was seen</h2>
+<p class="note">The largest variant of each type, with the habitat most often recorded for its
+members. Read the share column first: for most of these the commonest habitat accounts for only
+about a quarter of the classified members, so the main variant is ecologically mixed rather than
+tied to one setting.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type or habitat…">
+<thead><tr><th>Type</th><th>Variant</th><th class="num">Members</th>
+<th class="num">With a habitat</th><th>Commonest habitat</th><th class="num">Its share</th></tr></thead>
+<tbody>
+{% for v in eco.main_variants %}
+<tr><td><a href="{{ u('/cluster/' ~ v.cluster) }}">{{ gene(v.cluster) }}</a></td>
+  <td><a href="{{ u('/leaf/' ~ leaf_slug(v.leaf_id)) }}">{{ v.leaf_id.split('#')[-1] }}</a></td>
+  <td class="num" data-v="{{ v.size }}">{{ v.size|fmt }}</td>
+  <td class="num" data-v="{{ v.entries_classified or 0 }}">{{ (v.entries_classified or 0)|fmt }}</td>
+  <td>{{ (v.dominant_habitat or 'too few to name').replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ v.dominant_share or 0 }}">
+    {% if v.dominant_share %}{{ '%.0f %%' % (100 * v.dominant_share) }}{% else %}–{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endif %}
+
+<h2>5 · What this cannot answer</h2>
+<p>Evidence levels are a ladder of identity to a curated enzyme, not a phylogeny. A distant relative
+is not demonstrably older, so "where did this enzyme evolve" is not derivable from these data. What
+is derivable is whether a type's ecological signature changes with distance from its reference, and
+for all but the pooled case the answer is that it cannot be separated from taxonomy.</p>
+<p class="dl"><a class="btn" href="{{ u('/download/analysis/ecological_origin.json') }}">Full output (JSON)</a></p>
+{% else %}
+<p class="note">This analysis has not been run for this build.</p>
+{% endif %}
+{% endblock %}

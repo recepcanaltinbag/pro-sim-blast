@@ -230,6 +230,51 @@ def active_site_view(path):
     }
 
 
+def ecological_origin_view(path):
+    """Ekolojik koken raporunu sayfanin ihtiyaci kadarina indirir."""
+    raw = read_json(path)
+    if not raw:
+        return None
+    waste = raw.get("wastewater") or {}
+    variants = raw.get("variants") or {}
+
+    ranking = []
+    for row in raw.get("divergence_ranking") or []:
+        if not row.get("measurable"):
+            continue
+        control = row.get("shared_genus_control") or {}
+        ranking.append({
+            "cluster": row.get("cluster"),
+            "close_n": row.get("close_classified"),
+            "distant_n": row.get("distant_classified"),
+            "jsd": row.get("jsd_species_bits"),
+            "p": row.get("permutation_p_species"),
+            "q": row.get("permutation_q_species"),
+            "close_top": (row.get("close_top_habitat") or "").replace("_", " "),
+            "distant_top": (row.get("distant_top_habitat") or "").replace("_", " "),
+            "control_p": control.get("permutation_p_species") if control else None,
+            "control_shared_genera": control.get("shared_genera") if control else None,
+            "control_runnable": bool(control) and control.get("measurable", True),
+        })
+    ranking.sort(key=lambda r: -(r["jsd"] or 0))
+
+    enrich = []
+    for item in (waste.get("enrichment_by_type") or []):
+        enrich.append(item)
+
+    return {
+        "coverage": raw.get("coverage") or {},
+        "pooled": raw.get("pooled") or {},
+        "ranking": ranking,
+        "wastewater": waste,
+        "wastewater_enrichment": enrich[:12],
+        "variants": variants,
+        "main_variants": (variants.get("main_variant_per_type") or [])[:14]
+        if isinstance(variants.get("main_variant_per_type"), list) else [],
+        "limits": raw.get("method", {}).get("limits") or [],
+    }
+
+
 def novelty_budget(con):
     """Bu veritabaninin NE KADARI yeni kimya tasiyor olabilir?
 
