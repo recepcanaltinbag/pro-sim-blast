@@ -59,6 +59,7 @@ def load(con, ecology_path):
                p.taxonomy, p.is_plasmid, p.cds_count,
                o.has_beta, o.has_ferredoxin, o.has_reductase, o.completeness,
                e.tier, e.ref_identity, t.reductase_type, t.ferredoxin_type, d.domain,
+               s.host_kingdom,
                (SELECT COUNT(*) FROM neighbor nb JOIN gene_category c ON c.neighbor_id=nb.neighbor_id
                  AND c.method='regex_v1' WHERE nb.candidate_id=r.candidate_id AND c.category='transposon') transposons
         FROM ro r JOIN replicon p USING(nucleotide_id)
@@ -66,11 +67,12 @@ def load(con, ecology_path):
         LEFT JOIN ro_evidence e ON e.candidate_id=r.candidate_id
         LEFT JOIN ro_etc t ON t.candidate_id=r.candidate_id
         LEFT JOIN ro_domain d ON d.candidate_id=r.candidate_id
+        LEFT JOIN replicon_source s ON s.nucleotide_id=r.nucleotide_id
         WHERE r.is_confirmed=1""").fetchall()
     cols = ["candidate_id", "sequence", "cluster", "group", "organism", "taxonomy",
             "is_plasmid", "cds_count",
             "has_beta", "has_ferredoxin", "has_reductase", "completeness", "tier", "ref_identity",
-            "reductase_type", "ferredoxin_type", "domain", "transposons"]
+            "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "transposons"]
     data = []
     for r in rows:
         d = dict(zip(cols, r))
@@ -205,6 +207,64 @@ def main():
         "id": "ferredoxin_by_group", "question": "Is the ferredoxin type associated with the RO group?",
         "rows": groups_f, "cols": fd_types, "table": table,
         "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
+    # Konak alemi x RO grubu. Yeni bir boyut: /host alani habitat'tan AYRI
+    # tutuluyor ve bu, "hangi enzim hangi canliyla yasayan bakteride bulunuyor"
+    # sorusunu sorulabilir kiliyor. Yalnizca alemi COZULMUS kayitlar girer;
+    # "not_a_host" ve "ambiguous" disarida kalir cunku ekoloji tasimiyorlar.
+    # Hem giris hem CINS duzeyinde olculur, cunku orneklem yanliligi burada
+    # asiri: tek bir Arabidopsis ya da klinik projesi yuzlerce giris uretiyor.
+    HOST_KINGDOMS = ["human", "animal", "plant"]
+    for level, rows in (("entry", data), ("genus", collapse_genus(data))):
+        hosted = [d for d in rows if d.get("host_kingdom") in HOST_KINGDOMS]
+        if len(hosted) < 30:
+            continue
+        keys = sorted({d["group"] for d in hosted})
+        table = [[sum(1 for d in hosted if d["group"] == k and d["host_kingdom"] == c)
+                  for c in HOST_KINGDOMS] for k in keys]
+        keys_t, cols_t, table_t = trim_table(keys, HOST_KINGDOMS, table)
+        if len(keys_t) < 2 or len(cols_t) < 2:
+            continue
+        chi2, p, dof, _ = stats.chi2_contingency(table_t)
+        out["tests"].append({
+            "id": f"host_kingdom_by_group_{level}",
+            "question": ("Do the RO groups differ in the kind of organism their carrier "
+                         "was isolated from?" if level == "entry" else
+                         "Does that difference survive collapsing strains to one "
+                         "observation per type and genus?"),
+            "rows": keys_t, "cols": cols_t, "table": table_t,
+            "chi2": float(chi2), "dof": int(dof), "p": float(p),
+            "cramers_v": cramers_v(table_t),
+            "unit": "alpha subunit" if level == "entry" else "type and genus",
+            "row_header": "RO group", "row_prefix": "group ",
+            "n": sum(sum(r) for r in table_t)})
+
+    # Ayni soru substrat SINIFI icin: ksenobiyotik kimya bitkiyle mi insanla mi
+    # yasayan bakterilerde yogunlasiyor?
+    for level, rows in (("entry", data), ("genus", collapse_genus(data))):
+        hosted = [d for d in rows if d.get("host_kingdom") in HOST_KINGDOMS
+                  and d["sclass"] in SUBSTRATE_CLASSES]
+        if len(hosted) < 30:
+            continue
+        keys = sorted({d["sclass"] for d in hosted})
+        table = [[sum(1 for d in hosted if d["sclass"] == k and d["host_kingdom"] == c)
+                  for c in HOST_KINGDOMS] for k in keys]
+        keys_t, cols_t, table_t = trim_table(keys, HOST_KINGDOMS, table)
+        if len(keys_t) < 2 or len(cols_t) < 2:
+            continue
+        chi2, p, dof, _ = stats.chi2_contingency(table_t)
+        out["tests"].append({
+            "id": f"host_kingdom_by_class_{level}",
+            "question": ("Is the substrate class of the enzyme associated with the kind of "
+                         "organism its carrier was isolated from?" if level == "entry" else
+                         "Does that association survive collapsing strains to one "
+                         "observation per type and genus?"),
+            "rows": keys_t, "cols": cols_t, "table": table_t,
+            "chi2": float(chi2), "dof": int(dof), "p": float(p),
+            "cramers_v": cramers_v(table_t),
+            "unit": "alpha subunit" if level == "entry" else "type and genus",
+            "row_header": "Substrate class", "row_prefix": "",
+            "n": sum(sum(r) for r in table_t)})
+
     table = [[sum(1 for d in data if d["group"] == g and d["has_beta"] == b) for b in (1, 0)] for g in groups]
     groups_b, beta_cols, table = trim_table(groups, ["beta", "no beta"], table)
     chi2, p, dof, _ = stats.chi2_contingency(table)

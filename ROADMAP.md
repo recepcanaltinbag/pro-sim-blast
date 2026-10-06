@@ -33,6 +33,28 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+35. ~~Konak alemi ile enzim kimyasi arasinda iliski var mi?~~ **BITTI** --
+    cevap **YOK**, ve bu sayfadaki en ogretici negatif sonuc. Yeni konak
+    boyutu bu soruyu sorulabilir kildi. Dort test, iki duzeyde:
+    * RO grubu x konak alemi, GIRIS basina: chi2=258, p=3e-51, V=0,19 --
+      bakan goz "kesin" der.
+    * Ayni test TIP+CINS basina: p=0,38, V=0,10 -- **anlamli degil.**
+      Yani giris duzeyindeki devasa p degeri enzimlerin nerede yasadigini
+      degil, hangi canlinin dizilendigini olcuyordu.
+    * Substrat sinifi x konak alemi: normalizasyondan ONCE bile anlamsiz
+      (p=0,078), cins duzeyinde hicbir sey (p=0,98, V=0,02). Yani ksenobiyotik
+      yikim yetenegi belirli bir konak iliskisinde yogunlasmiyor.
+    Bu cift, sitede "neden her ekolojik ifade cins duzeyinde kuruluyor"
+    sorusunun en net kaniti oldugu icin oldugu gibi yayinlaniyor.
+
+36. ~~Istatistik sayfasinda karar etiketi anlamliligi YOK SAYIYORDU.~~
+    **BITTI.** Karar yalnizca Cramer's V'ye bakiyordu, bu yuzden p=0,38 olan
+    bir test "weak association" diye etiketleniyordu. Artik p >= 0,05 ise
+    etiket "not significant" oluyor. On bir capraz tablonun hepsi tek tek
+    dogrulandi. Ayni sablonda satir basligi da SABIT "group X" idi; substrat
+    sinifi satirlari "group xenobiotic" diye goruluyordu, bu da testten gelen
+    bir basliga cevrildi.
+
 34. ~~Konak alani (`/host`) kullanilmiyordu.~~ **BITTI.** Olculdu: 9.308
     replikonun 2.962'sinde (%31,8) `/host` var ve bunlarin **728'inde
     `/isolation_source` HIC YOK**. Yani habitat sozlugunun sessiz kaldigi

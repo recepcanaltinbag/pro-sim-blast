@@ -41,15 +41,24 @@ Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types exc
 
 {% elif t.table is defined %}
 <div class="tablewrap"><table class="data compact">
-<thead><tr><th>RO group</th>{% for c in t.cols %}<th class="num">{{ c }}</th>{% endfor %}</tr></thead>
+{#  Satir basligi testten gelir: bu sablon bir donem "group X" yazisini
+    sabit tutuyordu ve substrat sinifi satirlari "group xenobiotic" diye
+    goruluyordu.                                                           #}
+<thead><tr><th>{{ t.row_header|default('RO group') }}</th>
+{% for c in t.cols %}<th class="num">{{ c.replace('_', ' ') }}</th>{% endfor %}</tr></thead>
 <tbody>
 {% for row in t.table %}
-<tr><td>group {{ t.rows[loop.index0] }}</td>{% for v in row %}<td class="num">{{ v|fmt }}</td>{% endfor %}</tr>
+<tr><td>{{ t.row_prefix|default('group ') }}{{ t.rows[loop.index0].replace('_', ' ') }}</td>
+{% for v in row %}<td class="num">{{ v|fmt }}</td>{% endfor %}</tr>
 {% endfor %}
 </tbody></table></div>
 <p class="note">
 {% set v = t.cramers_v %}
-{% if v >= 0.5 %}<span class="verdict verdict--robust">strong association</span>
+{#  Karar once ANLAMLILIGA bakar. Onceki surum yalnizca etki buyuklugune
+    bakiyordu ve p=0,38 olan bir testi "weak association" diye etiketliyordu;
+    oysa orada gosterilecek bir iliski yok.                                 #}
+{% if t.p >= 0.05 %}<span class="verdict verdict--none">not significant</span>
+{% elif v >= 0.5 %}<span class="verdict verdict--robust">strong association</span>
 {% elif v >= 0.25 %}<span class="verdict verdict--weak">moderate association</span>
 {% elif v >= 0.1 %}<span class="verdict verdict--weak">weak association</span>
 {% else %}<span class="verdict verdict--none">negligible association</span>{% endif %}
@@ -61,7 +70,19 @@ p = {{ '%.1e' % t.p }}, Cramér's V = {{ '%.2f' % v }}.
 from deterministic, so electron-transport partners cannot by themselves reproduce the historical
 class boundaries.
 {% elif t.id == 'phylum_by_group' %}Groups differ markedly in host range: some are concentrated in
-Actinomycetota, others in Pseudomonadota, and two carry most of the eukaryotic members.{% endif %}
+Actinomycetota, others in Pseudomonadota, and two carry most of the eukaryotic members.
+{% elif t.id == 'host_kingdom_by_group_entry' %}Counted per alpha subunit this looks decisive, and
+the p value is tiny. Read the genus-level row below before believing it.
+{% elif t.id == 'host_kingdom_by_group_genus' %}<b>The entry-level association does not survive.</b>
+Collapsing strains to one observation per type and genus leaves no significant difference, so what
+the entry-level table measured was how often each kind of organism gets sequenced, not where these
+enzymes live. This pair is the clearest demonstration on the site of why every ecological claim here
+is made at genus level.
+{% elif t.id == 'host_kingdom_by_class_entry' %}No association even before normalisation.
+{% elif t.id == 'host_kingdom_by_class_genus' %}<b>A clean negative result.</b> Whether an enzyme
+acts on a man-made or a natural substrate is unrelated to whether its carrier was isolated from a
+plant, an animal or a human. Xenobiotic-degrading capability is not concentrated in one kind of
+host association.{% endif %}
 </p>
 
 {% elif t.id == 'taxonomic_breadth' %}
