@@ -26,12 +26,45 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     Onerim (a); hangi bolgelerin cekilecegi zaten `ro_regulation` tablosunda
     hazir (10.186 giriste intergenik bolge koordinatli olarak duruyor).
 
-24. **Referans setindeki tekrarlar (KULLANICI KARARI).** 71 kayit, 68 tekil dizi.
-    OxoO=OMO, NahAc=NDO(3_315), NDO(3_314)=NarAa birebir ayni; NdmC, NdmB'nin
-    alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
-    keyfi bolunuyor. Hangi ikiz tutulacak?
+24. **Referans setindeki tekrarlar (KULLANICI KARARI).** 71 kayit, 68 tekil
+    dizi. Durum artik OLCULDU ve sitede GORUNUR (39. madde); karar hala sende,
+    cunku duzeltme profil kutuphanesini yeniden kurup her sayiyi yeniden
+    uretmeyi gerektiriyor.
+    * Birebir ayni: OxoO(2)=OMO(11), NahAc(0)=NDO 3_315(0),
+      NDO 3_314(2)=NarAa(30). Hangisini tutsan bilimsel olarak AYNI sey kalir,
+      cunku diziler ayni; karar hangi ADIN tutulacagi.
+    * Parca: NdmC (355 aa) NdmB'nin (373 aa) icinde tam geciyor. Burada secim
+      yok, kisa kayit bir parca.
+    * En kotu durum bir kopya DEGIL: EdoA1 / cumA1 %99,8 ayni ama deneysel
+      substratlari FARKLI (etilbenzen / kumen) ve uyeler 29'a 6 bolunuyor,
+      yani fazlalik bir substrat ETIKETINE siziyor. CARDO / CarAa %99,2 ama
+      ikisinin substrati da karbazol, dolayisiyla zararsiz.
+    Onerim: birebir ayni ciftleri tek tipte birlestirip iki adi da es anlamli
+    gostermek (hicbir sey atilmaz), NdmC'yi parca olarak isaretlemek, EdoA1 ile
+    cumA1'i ayri tutup ikisine de "bu cift ayirt edilemiyor" notu koymak.
 
 ## Bitti
+
+39. ~~Referans fazlaligi okuyucuya gorunmuyordu.~~ **BITTI.**
+    `reference_redundancy.py` + veri kalitesi sayfasinda 4. bolum + etkilenen
+    her tip sayfasinda uyari kutusu. Sorun 24. maddede duruyordu ama SITEDE
+    hicbir izi yoktu: okuyucu NahAc sayfasinda "0 uye" goruyordu ve nedenini
+    ogrenemiyordu. Artik etkilenen 12 tipin her birinde, uye sayisinin kismen
+    sayisal bir kazadan geldigini ve ciftin toplaminin kac oldugunu soyleyen
+    bir kutu var. 150 uye bu durumda.
+    Olcumu ilk kosuda YANLIS yaptim ve kendi capraz kontrolum yakaladi: FASTA
+    basliklari gen islevini de tasiyor ("3_309_NahAc_dioxygenase_pro") oysa tip
+    kimligi "3_309_NahAc"; eslesme olmadigi icin butun uye sayilari 0 cikti ve
+    yakin-ayni ciftler iki kez listelendi. Kimlikler kuratorlu tip listesiyle
+    onek eslesemesine baglandi; `validate_curation.py`'ye bes capraz kontrol
+    eklendi ve biri tam olarak bu hatayi yakaliyor.
+
+40. ~~ROADMAP duzenlerken neredeyse yarisini sildim.~~ **BITTI** (ders).
+    Maddeyi "24'ten 26'ya kadar" diye DILIMLEYEREK degistirmeye calistim, oysa
+    24 acik bolumde, 26 bitmis bolumde: dilim arada kalan `## Bitti` basligini
+    ve 37-39. maddeleri de kapsiyordu. `assert` yazma islemini durdurdugu icin
+    dosya bozulmadi. Ders: metin dosyalarinda ARALIK dilimlemek yerine tam blok
+    eslesmesi yapilacak, ve her duzenlemeden sonra dosya boyu kontrol edilecek.
 
 37. ~~Esik degisince sonuclar ne kadar degisiyor?~~ **BITTI.**
     `threshold_sensitivity.py` + veri kalitesi sayfasinda 3. bolum. Yontem
