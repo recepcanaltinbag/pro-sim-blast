@@ -246,6 +246,22 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
   border-color: var(--accent-ink);
 }
 
+/* Bilinen bir kusuru bildiren uyari kutusu: normal nottan ayrilmasi gerekiyor,
+   cunku burada "dikkat et" degil "bu sayi kismen rastgele" deniyor. Renk tek
+   isaret degil; metin de kendi basina aciklayici. */
+.caveat--warn {
+  border-left-color: #b4612a;
+  background: color-mix(in srgb, #b4612a 7%, var(--panel));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .caveat--warn {
+    background: color-mix(in srgb, #b4612a 16%, var(--panel));
+  }
+}
+:root[data-theme="dark"] .caveat--warn {
+  background: color-mix(in srgb, #b4612a 16%, var(--panel));
+}
+
 /* Bilgi tasimayan tablo satiri: silinmez, cunku eksikligi de bir bulgudur,
    ama goz once bilgi tasiyanlari okusun diye soluklastirilir. */
 tr.dim td { opacity: .62; }

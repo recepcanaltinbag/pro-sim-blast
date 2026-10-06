@@ -6,6 +6,39 @@
 <h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · RO group {{ c.group }}</span></h1>
 <div class="numbered">
 
+{% if x.redundancy %}
+{% set rr = x.redundancy %}
+<div class="caveat caveat--warn">
+  <b>The member count on this page is not fully determined by biology.</b>
+  {% if rr.kind == 'identical' %}
+  This type's reference sequence is <b>byte-identical</b> to
+  {% for o in rr.others %}<a href="{{ u('/cluster/' ~ o) }}">{{ gene(o) }}</a>{% if not loop.last %}, {% endif %}{% endfor %},
+  so the profile library contains the same sequence twice. A member is assigned to whichever
+  profile scores fractionally higher, which is a numerical accident rather than a biological
+  distinction. Across the identical set there are {{ rr.entries_total|fmt }} members in total, of
+  which {{ rr.entries|fmt }} fell here. <b>Read the set as one type.</b>
+  {% elif rr.kind == 'contained_in' %}
+  This type's reference sequence occurs <b>exactly inside</b> that of
+  {% for o in rr.others %}<a href="{{ u('/cluster/' ~ o) }}">{{ gene(o) }}</a>{% endfor %},
+  so it is a fragment of the longer record rather than an independent enzyme. The longer reference
+  takes the members: {{ rr.entries_total|fmt }} between the two, {{ rr.entries|fmt }} here.
+  {% elif rr.kind == 'contains' %}
+  The reference sequence of
+  {% for o in rr.others %}<a href="{{ u('/cluster/' ~ o) }}">{{ gene(o) }}</a>{% endfor %}
+  occurs exactly inside this one, so that record is a fragment of this one and the two should not
+  be counted as separate enzymes.
+  {% elif rr.kind == 'near_identical' %}
+  This type's reference is {{ '%.1f %%' % rr.identity }} identical to
+  {% for o in rr.others %}<a href="{{ u('/cluster/' ~ o) }}">{{ gene(o) }}</a>{% endfor %},
+  which is close enough that the split of members between the two profiles is partly arbitrary.
+  {{ rr.entries_total|fmt }} members fall across the pair and {{ rr.entries|fmt }} here.
+  {% endif %}
+  <br><span class="note">This is a known defect of the curated reference set, not of the
+  assignment method. It is measured and listed on the
+  <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+</div>
+{% endif %}
+
 {% set tiers = x.tiers %}
 {% set tier_total = tiers.values()|sum if tiers else 0 %}
 {% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}

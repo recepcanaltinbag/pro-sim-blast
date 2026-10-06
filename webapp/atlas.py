@@ -835,6 +835,9 @@ PROVENANCE = [
     ("threshold_sensitivity.json", "file", "Every headline figure recomputed across eight "
      "inclusion thresholds, so the reader can see what the choice of threshold costs.",
      "threshold_sensitivity.py"),
+    ("reference_redundancy.json", "file", "Where the curated reference set repeats itself, and "
+     "how many members sit under a reference that is not uniquely defined.",
+     "reference_redundancy.py"),
     # Bu uc dosya indirme rotasindan SUNULUYORDU ama bu tabloda yoktu, yani
     # indirilebilir olup belgelenmemislerdi. Izin listesi artik bu tablodan
     # turetildigi icin eksiklik sessiz kalamaz.

@@ -27,6 +27,7 @@ SINIR: burada gecen her sey DOGRU demek degildir; bkz. README_PIPELINE.md
 
 import argparse
 import csv
+import json
 import os
 import re
 import sqlite3
@@ -644,6 +645,70 @@ VALID_HOST_KINGDOM = {"human", "animal", "plant", "fungus", "alga",
                       "ambiguous", "not_a_host", "unresolved"}
 
 
+def check_reference_redundancy_agrees(rep, out_dir, refs_path):
+    """`reference_redundancy.py` ile bu dosyanin bulgulari ayni mi?
+
+    Ayni gercek iki yerde bagimsiz hesaplaniyor: burada FASTA'dan, orada yine
+    FASTA'dan ama farkli kodla ve tip kimligi normalizasyonuyla. Ikisinin
+    AYRILMASI bir hata isaretidir; ornegin normalizasyon bozulursa orada
+    sayilar sessizce sifira duser ve sayfadaki uyarilar kaybolur. Bu kontrol
+    o sessizligi engeller.
+    """
+    path = os.path.join(out_dir, "reference_redundancy.json")
+    if not os.path.exists(path):
+        rep.check("reference_redundancy.json exists", False, 0,
+                  "run reference_redundancy.py")
+        return
+    with open(path, encoding="utf-8") as fh:
+        report = json.load(fh)
+    if not os.path.exists(refs_path):
+        rep.check("reference redundancy: FASTA available for cross-check", False, 0,
+                  refs_path)
+        return
+
+    records, name, chunks = {}, None, []
+    with open(refs_path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if line.startswith(">"):
+                if name:
+                    records[name] = "".join(chunks)
+                name, chunks = line[1:].split()[0], []
+            elif line:
+                chunks.append(line)
+    if name:
+        records[name] = "".join(chunks)
+
+    totals = report.get("totals", {})
+    rep.check("reference redundancy: reference count agrees",
+              totals.get("references") == len(records),
+              abs((totals.get("references") or 0) - len(records)),
+              f"report {totals.get('references')} vs FASTA {len(records)}")
+    distinct = len({seq for seq in records.values()})
+    rep.check("reference redundancy: distinct-sequence count agrees",
+              totals.get("distinct_sequences") == distinct,
+              abs((totals.get("distinct_sequences") or 0) - distinct),
+              f"report {totals.get('distinct_sequences')} vs FASTA {distinct}")
+    expected_groups = sum(1 for seq in {s for s in records.values()}
+                          if sum(1 for v in records.values() if v == seq) > 1)
+    rep.check("reference redundancy: identical-group count agrees",
+              len(report.get("identical_groups", [])) == expected_groups,
+              abs(len(report.get("identical_groups", [])) - expected_groups),
+              f"report {len(report.get('identical_groups', []))} vs {expected_groups}")
+    # Her etkilenen referans gercekten kuratorlu tip kimligi mi? Normalizasyon
+    # bozulursa burada uzun FASTA basliklari gorunur ve sayfada hicbir uyari
+    # eslesmez.
+    affected = report.get("affected") or {}
+    rep.check("reference redundancy: affected ids are type ids, not FASTA headers",
+              all("_pro" not in key and key.count("_") == 2 for key in affected),
+              sum(1 for key in affected if "_pro" in key or key.count("_") != 2),
+              first(k for k in affected if "_pro" in k or k.count("_") != 2))
+    rep.check("reference redundancy: at least one reference is flagged",
+              bool(affected), 0,
+              f"{len(affected)} references flagged, "
+              f"{totals.get('entries_under_an_ambiguous_reference')} members affected")
+
+
 def check_published_files(rep, out_dir):
     """Belgelenen her analiz dosyasi diskte VAR mi?
 
@@ -1114,6 +1179,7 @@ def main():
         check_display_names(rep, chem)
         check_host_kingdom(rep, con)
         check_published_files(rep, args.out_dir)
+        check_reference_redundancy_agrees(rep, args.out_dir, args.refs)
         check_cross_file_substrate(rep, eco, chem)
         check_text_fields_classified(con, rep)
         check_turkish(con, rep, args.ecology, args.chemistry, eco, chem,

@@ -1255,6 +1255,7 @@ def atlas_quality(request: Request):
                       motif=atlas.read_json(apath("motif_stats.json")),
                       validation=atlas.read_json(apath("operon_validation.json")),
                       sens=atlas.read_json(apath("threshold_sensitivity.json")),
+                      refdup=reference_redundancy(),
                       downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
     finally:
         con.close()
@@ -1287,9 +1288,19 @@ def dl_analysis(name: str):
 
 
 # --- per-page extras -------------------------------------------------------
+@functools.lru_cache(maxsize=1)
+def reference_redundancy():
+    """Referans fazlaligi raporu; tip sayfalarinda uyari olarak gosteriliyor."""
+    return atlas.read_json(apath("reference_redundancy.json")) or {}
+
+
 def cluster_extras(con, cluster):
     x = {"tiers": {}, "etc": [], "tree_svg": None, "nearest": [], "phyla": [],
          "transposon": 0, "regulation": None, "reg_families": []}
+    # Bu tipin referansi bir baskasiyla ayni ya da neredeyse ayni mi? Eger
+    # oyleyse uyelerin hangi profile dustugu kismen rastgele ve sayfadaki
+    # sayinin bunu SOYLEMESI gerekiyor.
+    x["redundancy"] = (reference_redundancy().get("affected") or {}).get(cluster)
     if atlas.table_exists(con, "ro_evidence"):
         counted = dict(con.execute(
             "SELECT e.tier, COUNT(*) FROM ro_evidence e JOIN ro r USING(candidate_id) "

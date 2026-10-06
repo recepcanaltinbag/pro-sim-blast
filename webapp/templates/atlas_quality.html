@@ -129,7 +129,69 @@ the change, not the absolute count.
 </figure>
 {% endif %}
 
-<h2>4 · Limits that cannot be measured away</h2>
+{% if refdup and refdup.totals %}
+<h2>4 · Where the reference set repeats itself</h2>
+<p>Everything above concerns the members. This section concerns the 71 curated enzymes they are
+compared against, and it is the one unresolved defect in the database. Those 71 records contain only
+{{ refdup.totals.distinct_sequences }} distinct sequences. A repeated sequence enters the profile
+library twice, and a member then falls to whichever of the two copies scores fractionally higher.
+That is arithmetic, not biology, and it is why some type pages report a member count far below their
+twin and two report none at all.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Relationship</th><th>References</th><th class="num">Identity</th>
+<th class="num">Members each</th><th class="num">Members in total</th><th>Same substrate</th></tr></thead>
+<tbody>
+{% for g in refdup.identical_groups %}
+<tr><td>byte-identical</td>
+  <td>{% for m in g.members %}<a href="{{ u('/cluster/' ~ m.id) }}">{{ gene(m.id) }}</a>{% if not loop.last %} = {% endif %}{% endfor %}
+      <div class="note">{{ g.length }} residues</div></td>
+  <td class="num">100.0 %</td>
+  <td class="num">{% for m in g.members %}{{ m.entries }}{% if not loop.last %} / {% endif %}{% endfor %}</td>
+  <td class="num">{{ g.entries_total }}</td>
+  <td><span class="chip chip--ok">identical sequence</span></td></tr>
+{% endfor %}
+{% for p in refdup.contained_pairs %}
+<tr><td>fragment of another</td>
+  <td><a href="{{ u('/cluster/' ~ p.contained) }}">{{ gene(p.contained) }}</a> inside
+      <a href="{{ u('/cluster/' ~ p.container) }}">{{ gene(p.container) }}</a>
+      <div class="note">{{ p.contained_length }} of {{ p.container_length }} residues</div></td>
+  <td class="num">exact substring</td>
+  <td class="num">{{ p.contained_entries }} / {{ p.container_entries }}</td>
+  <td class="num">{{ p.contained_entries + p.container_entries }}</td>
+  <td><span class="chip chip--bad">different labels</span></td></tr>
+{% endfor %}
+{% for p in refdup.near_identical_pairs %}
+<tr><td>near-identical</td>
+  <td><a href="{{ u('/cluster/' ~ p.ref_a) }}">{{ gene(p.ref_a) }}</a> /
+      <a href="{{ u('/cluster/' ~ p.ref_b) }}">{{ gene(p.ref_b) }}</a>
+      <div class="note">{{ p.substrate_a }} against {{ p.substrate_b }}</div></td>
+  <td class="num">{{ '%.1f %%' % p.identity }}</td>
+  <td class="num">{{ p.entries_a }} / {{ p.entries_b }}</td>
+  <td class="num">{{ p.entries_a + p.entries_b }}</td>
+  <td>{% if p.same_substrate %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>How much of the database this touches.</b>
+{{ refdup.totals.affected_references }} of {{ refdup.totals.references }} references are not uniquely
+defined, and {{ refdup.totals.entries_under_an_ambiguous_reference|fmt }} members sit under one of
+them. That is a small fraction of the database, and every other type is unaffected.
+<b>The worst case is not a duplicate.</b> It is the near-identical pair at 99.8 % whose two
+reference enzymes have <em>different</em> experimentally determined substrates, ethylbenzene against
+cumene. The members split 29 to 6 between them, and that split carries a substrate label, so here
+the redundancy does propagate into a functional claim. This is the same lesson the
+<a href="{{ u('/atlas/network') }}">sequence space page</a> draws from the reference set as a whole:
+identity does not determine substrate.
+<b>Why it is not simply fixed.</b> Repairing it means removing records from the curated set and
+rebuilding the profile library, which re-derives every number on this site. For the byte-identical
+pairs nothing scientific is lost either way, because the sequences are the same; what has to be
+decided is which name the merged type should carry, and that is a nomenclature question for a
+curator rather than something to settle by script.
+<a href="{{ u('/download/analysis/reference_redundancy.json') }}">Download the full report</a></figcaption>
+</figure>
+{% endif %}
+
+<h2>5 · Limits that cannot be measured away</h2>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Limit</th><th>What it affects</th><th>What would resolve it</th></tr></thead>
 <tbody>
@@ -180,7 +242,7 @@ the change, not the absolute count.
 </tbody></table></div>
 
 {% if motif %}
-<h2>5 · What is solid</h2>
+<h2>6 · What is solid</h2>
 <p>Not everything here is provisional. The selection criterion itself is directly observed rather
 than inferred: in all {{ motif.n|fmt }} confirmed entries every one of the four Rieske ligands is
 present at its aligned position, and the inter-subunit bridging carboxylate is present in
@@ -197,7 +259,7 @@ intergenic gap of {{ validation.components.beta.gap_median }} base pairs.</p>
 {% endif %}
 {% endif %}
 
-<h2>6 · Every file, and the script that made it</h2>
+<h2>7 · Every file, and the script that made it</h2>
 <p class="note">Nothing on this site is hand-entered except the two curated tables
 (<code>cluster_ecology.csv</code> and <code>chemistry.csv</code>, both from the literature on the
 reference enzymes). Everything else is produced by a script in the repository and can be regenerated

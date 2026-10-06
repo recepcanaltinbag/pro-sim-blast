@@ -54,6 +54,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
 | 12c5 | `substrate_predictability.py` | kimlik → substrat ongorusunun ROC/kesinlik olcumu → `substrate_predictability.json` |
+| 12c8 | `reference_redundancy.py` | `ROs_71_Clean/refs71.fasta` + `analysis_out/reference_pairs.csv` → `analysis_out/reference_redundancy.json`; referans setinin kendi fazlaligi ve bunun atamaya etkisi |
 | 12c6 | `isolation_source.py` | `gbk_files/` `source` nitelikleri + `cluster_ecology.csv`/`chemistry.csv` → `replicon_source` tablosu (izolasyon kaynagi, konak, cografya, yil, habitat) + `analysis_out/habitat.json`; habitat × substrat sinifi tur-normalize capraz tablolari |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |
 | 13b | `build_phylogeny.py` | hmmalign + FastTree → `tree_all.nwk`, `trees/<kume>.nwk`; diamond all-vs-all → `ssn_*.csv`, `cluster_identity_matrix.csv` |
@@ -319,6 +320,30 @@ yolu). Yani genomlar tek enzim degil, tum huni ediniyor gibi gorunuyor.
 **Sinir:** ayni replikonu paylasmak tek organizmada ortak yol KANITI degildir;
 bunlar dizilenmis genomlar uzerinde sayimlar ve PAH yikan izolatlar iyi
 calisilmis bir grup oldugu icin orneklem yanliligi da ayni yone iter.
+
+## Referans setinin kendi fazlaligi
+
+71 kuratorlu kaydin yalnizca **68'i farkli dizi**. Tekrarlanan bir dizi profil
+kutuphanesine iki kez giriyor ve bir uye, skoru kil payi yuksek olan kopyaya
+dusuyor; bu aritmetik, biyoloji degil. Gorunur sonucu: NarAa 30 uye toplarken
+birebir ikizi NDO(3_314) 2 topluyor, NahAc ile ikizi NDO(3_315) ise hicbir uye
+toplamiyor cunku ucuncu bir profil hepsini aliyor.
+
+`reference_redundancy.py` bunu olcer (`analysis_out/reference_redundancy.json`):
+3 birebir ayni grup, 1 parca iliskisi (NdmC, NdmB'nin icinde), 2 adet >=%99
+kimlikli cift. **12 referans tekil tanimli degil ve 150 uye bunlarin altinda.**
+Etkilenen her tip sayfasinda bir uyari kutusu bu durumu soyler; sitede bir
+sayinin neden 0 oldugu artik aciklamasiz kalmiyor.
+
+En kotu durum bir KOPYA degil: EdoA1 ile cumA1 %99,8 ayni ama deneysel
+substratlari FARKLI (etilbenzen / kumen). Uyeler 29'a 6 bolunuyor ve bu bolunme
+bir substrat etiketi tasiyor, yani fazlalik burada islevsel bir iddiaya
+sizuyor.
+
+Duzeltme bu modulun isi degil: kuratorlu seti degistirip profil kutuphanesini
+yeniden kurmak sitedeki her sayiyi yeniden uretir ve birebir ayni ciftlerde
+bilimsel olarak hicbir sey kaybedilmedigi icin asil karar hangi ADIN
+tutulacagidir -- bu bir isimlendirme karari.
 
 ## Esik duyarliligi
 
