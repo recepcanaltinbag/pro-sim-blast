@@ -60,6 +60,22 @@ TAGS_RE = re.compile(r"<script.*?</script>|<style.*?</style>", re.S)
 HREF_RE = re.compile(r'href="([^"#?][^"]*)"')
 
 
+# Uc harfli amino asit kodlari Turkce taramasindan CIKARILIR. Yapisal veri
+# dosyasi "ILE" (izolosin) kodunu 62 kez tasiyor ve bu, Turkce "ile" sozcugu
+# olarak yakalaniyordu. Sozcugu toptan muaf tutmak kolay olurdu ama o zaman
+# gercek bir Turkce "ile" de gozden kacardi; bunun yerine YALNIZCA kalinti
+# kodu olarak yazildigi yerler temizleniyor.
+RESIDUE_FIELD_RE = re.compile(r'"(?:residue_3letter|residue|resname|aa3)"\s*:\s*"[A-Za-z]{3}"')
+RESIDUE_TOKEN_RE = re.compile(r'\b(?:ALA|ARG|ASN|ASP|CYS|GLN|GLU|GLY|HIS|ILE|LEU|LYS|'
+                              r'MET|PHE|PRO|SER|THR|TRP|TYR|VAL)\b')
+
+
+def strip_residue_codes(text):
+    """Amino asit kodlarini siler; geri kalan metin olduğu gibi taranir."""
+    text = RESIDUE_FIELD_RE.sub(" ", text)
+    return RESIDUE_TOKEN_RE.sub(" ", text)
+
+
 def visible_text(html):
     """Gorunur metin: script ve style ICERIGI atilir, sonra etiketler silinir.
 
@@ -319,7 +335,7 @@ def main():
         if not os.path.exists(path):
             continue
         text = open(path, encoding="utf-8", errors="replace").read()
-        words = sorted({m.group(1).lower() for m in TURKISH_RE.finditer(text)})
+        words = sorted({m.group(1).lower() for m in TURKISH_RE.finditer(strip_residue_codes(text))})
         if words:
             data_turkish.append((name, words))
 

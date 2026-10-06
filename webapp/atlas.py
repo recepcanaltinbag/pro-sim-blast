@@ -26,6 +26,85 @@ def _relative_luminance(colour):
     return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
 
+def active_site_view(path):
+    """2,6 MB'lik yapi raporunu SAYFANIN ihtiyaci kadarina indirir.
+
+    Dosyanin tamami tarayiciya gonderilmez: her yapinin tam kalinti listesi ve
+    her sutunun uye dagilimi onun buyuk kismini olusturuyor ve sayfada
+    gosterilmiyor. Burada yalnizca ozetler cikariliyor.
+    """
+    raw = read_json(path)
+    if not raw:
+        return None
+    cover = raw.get("coverage") or {}
+    validation = (raw.get("predicted_pocket_transfer_validation") or {}).get("summary") or {}
+
+    universal = []
+    for radius in ("5.0", "8.0"):
+        block = (raw.get("pocket_columns") or {}).get(radius) or {}
+        for column in block.get("columns", []):
+            universal.append({
+                "radius": float(radius),
+                "column": column.get("column"),
+                "n_types": column.get("n_types"),
+                "residues": column.get("residues") or column.get("residue") or {},
+            })
+
+    # Uye degiskenligi: hangi sutun korunuyor, hangisi oynuyor.
+    variation = []
+    merged = {}
+    for source, store in (("crystal", raw.get("pocket_variation_across_members") or {}),
+                          ("predicted", raw.get("predicted_pocket_variation_across_members") or {})):
+        for cluster, info in store.items():
+            if info.get("status") != "measured":
+                continue
+            # Kristal olcumu VARSA onu tercih et; tahmin ikincil.
+            if cluster in merged and merged[cluster]["source"] == "crystal":
+                continue
+            merged[cluster] = {
+                "cluster": cluster, "source": source,
+                "members": info.get("n_members"),
+                "columns": info.get("n_pocket_columns"),
+                "invariant": len(info.get("invariant_columns") or []),
+                "variable": len(info.get("variable_columns") or []),
+            }
+    for row in merged.values():
+        if row["columns"]:
+            row["invariant_share"] = round(row["invariant"] / row["columns"], 3)
+            variation.append(row)
+    variation.sort(key=lambda r: (r["invariant_share"], -(r["members"] or 0)))
+
+    charge = []
+    per_type = (raw.get("electrostatics") or {}).get("per_type") or []
+    rows = per_type.values() if isinstance(per_type, dict) else per_type
+    for item in rows:
+        comp = item.get("composition") or {}
+        charge.append({
+            "cluster": item.get("type"), "pdb": item.get("pdb_id"),
+            "family": (item.get("family") or "").replace("_", " "),
+            "substrate": item.get("substrate"),
+            "residues": comp.get("n_residues"),
+            "acidic": comp.get("acidic_D_E"), "basic": comp.get("basic_K_R"),
+            "aromatic": comp.get("aromatic_F_W_Y") or comp.get("aromatic"),
+            "net": comp.get("net_formal_charge"),
+            "net_excl": comp.get("net_formal_charge_excluding_iron_ligands"),
+        })
+    charge.sort(key=lambda r: (r["net"] if r["net"] is not None else 0))
+
+    return {
+        "coverage": cover,
+        "validation": validation,
+        "universal": universal,
+        "variation": variation,
+        "charge": charge,
+        "not_electrostatics": (raw.get("electrostatics") or {}).get("explicitly_not_done"),
+        "limitations": raw.get("limitations") or [],
+        "n_predicted": len(raw.get("predicted_structures") or []),
+        "n_predicted_failed": len(raw.get("predicted_undetermined") or []),
+        "parameters": raw.get("parameters") or {},
+    }
+
+
 def assignment_agreement(con):
     """Her tip icin: uyelerin kaci GERCEKTEN bu tipin referansina en yakin?
 
@@ -985,6 +1064,14 @@ PROVENANCE = [
     ("carboxylate_rows.json", "file", "One compact row per entry (group, type, residue, evidence "
      "level, assignment class) so the association can be recomputed in the browser.",
      "stratified_stats.py"),
+    ("active_site.json", "file", "Catalytic-iron pocket of every type with a structure, from "
+     "crystals where they exist and from predicted models elsewhere, with the validation of "
+     "that transfer and how each pocket column varies across members.", "active_site.py"),
+    ("operon_relations.json", "file", "Regulator, operon architecture and transposon "
+     "associations, with the annotation bias measured.", "operon_relations.py"),
+    ("learning.json", "file", "What can and cannot be predicted from sequence and from genomic "
+     "context, with grouped cross-validation and the leaked figure shown alongside.",
+     "learn_from_data.py"),
     ("ecological_origin.json", "file", "Habitat of each type's close and distant members, the "
      "dominant habitat of its main variant, and the wastewater picture, with a genus control.",
      "ecological_origin.py"),

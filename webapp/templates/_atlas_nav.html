@@ -16,6 +16,8 @@
      {% if page == 'network' %}aria-current="page"{% endif %}>Sequence space</a>
   <a href="{{ u('/atlas/taxonomy') }}" class="{{ 'on' if page == 'taxonomy' }}"
      {% if page == 'taxonomy' %}aria-current="page"{% endif %}>Taxonomy</a>
+  <a href="{{ u('/atlas/structure') }}" class="{{ 'on' if page == 'structure' }}"
+     {% if page == 'structure' %}aria-current="page"{% endif %}>Active site</a>
 
   <span class="subnav__sep" aria-hidden="true"></span>
   <span class="subnav__group">Genomic context</span>

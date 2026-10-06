@@ -1302,6 +1302,13 @@ def atlas_cooccurrence(request: Request):
         con.close()
 
 
+@app.get("/atlas/structure", response_class=HTMLResponse)
+def atlas_structure(request: Request):
+    """Aktif bolge: kristal yapilardan ve tahmin modellerinden."""
+    return render(request, "atlas_structure.html",
+                  site=atlas.active_site_view(apath("active_site.json")))
+
+
 @app.get("/atlas/closeness", response_class=HTMLResponse)
 def atlas_closeness(request: Request):
     """Yakinliga gore tabakalanmis sonuclar.

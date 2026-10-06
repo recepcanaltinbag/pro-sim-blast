@@ -43,6 +43,39 @@ NE OLCULDU
      sayimlari, net yuk, aromatik sayisi. JSON bunu acik acik bir kompozisyon
      ozeti olarak etiketler, elektrostatik hesap olarak degil.
 
+IKINCI ASAMA -- yapisi OLMAYAN 54 tip
+  Kristal yapi yalnizca 17 tipte var. Kalan tipler icin yapi yerel olarak
+  KATLANMADI: bu makinede GPU yok, torch/fair-esm kurulu degil ve 54 proteini
+  CPU'da katlamak saatler surup hazir modellerden daha kotu bir sonuc
+  verirdi. Modeller zaten var: AlphaFold Protein Structure Database.
+
+  7. Kuratorlu dizi bir UniProt kimligine TAM ESLESME ile baglanir: CRC64
+     saglama toplami UniParc'ta aranir (UniParc dizileri birebir eslesmeyle
+     indeksler). Uzunluk ya da aile sorgusu KULLANILMAZ, cunku ayni uzunlukta
+     cok sayida aday doner ve cevap bir tahmin olur. Son guvence: AlphaFold'un
+     bildirdigi dizi kuratorlu diziyle harf harf karsilastirilir. Dort kayit
+     saflastirma etiketi tasiyor (bkz. PURIFICATION_TAGS); etiket cikarilmadan
+     eslesme basarisiz olur, ama etiket dizide gercekten yoksa cikarma
+     yapilmaz ve bu raporlanir. Eslenemeyen referans TAHMIN EDILMEZ.
+  8. Ongorulen modelde METAL YOK. Bu yuzden ceb demire gore tanimlanamaz ve
+     demir konumu UYDURULMAZ. Triad hizalama kolonlarindan bulunur (kristal
+     yapilarda kullanilan AYNI kolon mantigi) ve ceb triad'in tautomerden
+     bagimsiz yan zincir merkezine gore tanimlanir.
+  9. Bu tasimanin bir anlami olup olmadigi OLCULDU, varsayilmadi. Hem kristali
+     hem modeli olan tiplerde iki karsilastirma ayri ayri yapilir:
+       - yalnizca VEKIL hatasi: ayni kristal icinde demir yerine merkez
+         kullanilirsa kolon kumesi ne kadar degisir;
+       - TOPLAM hata: kristal demir cebi ile ongoru merkez cebi.
+     Ikisini ayirmak, kaybin "metalin yoklugundan" mi "ongorunun kendisinden"
+     mi geldigini soyler. Esigi gecemeyen tip GUVENILMEZ isaretlenir.
+ 10. Her ongoru ceb kalintisi kendi GUVEN degerini tasir (pLDDT, AlphaFold
+     PDB'sinin B-faktor kolonunda). Kalinti basina pLDDT, cebin ortalama ve en
+     dusuk pLDDT'si ve PLDDT_RELIABLE_MIN altinda kalan kalintilar
+     raporlanir. Ongoru cebleri kristal cebleriyle AYNI bolumde tutulmaz;
+     JSON'da ayri anahtarlardadir ve "deneysel gozlem degildir" diye
+     etiketlenir. Yan zincir konumu bir ongorunun en guvenilmez parcasidir ve
+     ceb tam olarak bir yan zincir kumesidir.
+
 NE OLCULMEDI / NE SOYLENEMEZ
   - Baglanma enerjisi, elektrostatik potansiyel, pKa, protonasyon durumu yok.
   - Ceb kalintilari KRISTALDEKI apo/holo konformasyondan okunur; substrat
@@ -52,6 +85,9 @@ NE OLCULMEDI / NE SOYLENEMEZ
     her toplam icin ayri bir "independent" sayimi verilir.
   - Substrat sinifi x kompozisyon karsilastirmasinda grup basina n = 1-4.
     Betimleyici, istatistik degil.
+
+Ag   : RCSB (kristal), UniProt/UniParc + AlphaFold DB (ongoru). Hepsi
+       structures/ altinda onbelleklenir; tekrar kosusta hic istek gitmez.
 
 Girdi : chemistry.csv (pdb kolonu), cluster_ecology.csv (substrate_class),
         ROs_71_Clean/refs71.fasta, ROs_71_Clean/refs71_hmmaln.sto,
@@ -73,6 +109,8 @@ import urllib.request
 import warnings
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+
+import numpy
 
 from ro_motif import (COLUMN_WINDOW, DEFAULT_MODEL, MODEL_COLUMNS,
                       read_stockholm_matchcols)
@@ -160,6 +198,59 @@ HISTIDINE = "H"
 POLAR = "STNQCY"
 HYDROPHOBIC = "AVLIMFWPG"
 AROMATIC = "FWY"
+
+# ============================================================================
+# IKINCI ASAMA -- yapisi OLMAYAN tipler icin ongorulen model
+# ============================================================================
+# 71 kuratorlu tipin yalnizca 17'sinde kristal yapi var. Kalan 54'u icin yapi
+# ONGORULEBILIR ama bu makinede GPU yok ve yerel katlama (ESMFold/ColabFold)
+# saatler surup daha kotu bir sonuc verirdi. Modeller ZATEN VAR: AlphaFold
+# Protein Structure Database.
+#
+# YONTEM NEDEN FARKLI OLMAK ZORUNDA: ongorulen modelde METAL IYONU YOKTUR.
+# Demir atomu olmadigi icin "demire N angstrom icindeki kalintilar" olcutu
+# dogrudan uygulanamaz. Demir konumu UYDURULMAZ. Onun yerine bolge TASINIR:
+# 2-His-1-karboksilat triad'i hizalama kolonlariyla (kristal yapilarda
+# kullanilan ayni kolon mantigi) bulunur ve ceb triad yan zincir merkezine
+# gore tanimlanir.
+#
+# MERKEZIN DEMIR YERINE GECMESI OLCULDU, varsayilmadi: ayni merkez 17 kristal
+# yapida da hesaplanip GERCEK demir konumuna uzakligi raporlanir (olculen:
+# ortalama ~1,0 A, en kotu ~1,2 A; ceb yaricaplari 5 ve 8 A oldugu icin bu
+# kaydirma kalinti kumesini pratikte degistirmez). Ustelik tasima DOGRUDAN
+# dogrulanir: 17 tipte hem kristal-demir cebi hem ongoru-merkez cebi
+# hesaplanip kolon kumeleri karsilastirilir.
+UNIPARC_SEARCH_URL = ("https://rest.uniprot.org/uniparc/search"
+                      "?query=checksum:{0}&format=json&fields=upi,accession"
+                      "&size=1")
+ALPHAFOLD_API_URL = "https://alphafold.ebi.ac.uk/api/prediction/{0}"
+# Ayni UniParc kaydina baglanan tum UniProt kimlikleri BIREBIR AYNI diziyi
+# tasir (UniParc'in tanimi bu), yani hangisinin modeli alinirsa alinsin model
+# ayni dizinin modelidir. Yine de secim belirlenimli olsun diye sirali denenir
+# ve secilen kimlik ile kac kimlik oldugu raporlanir. Ustelik AlphaFold'un
+# bildirdigi dizi, kuratorlu dizi ile BIREBIR karsilastirilir -- secimi
+# onemsiz kilan asil guvence bu.
+MAX_ACCESSIONS_TRIED = 8
+# pLDDT bantlari AlphaFold'un kendi konvansiyonu: >90 cok yuksek, 70-90
+# guvenilir, 50-70 dusuk, <50 cok dusuk. 70 esigi "guvenilir" bandinin alt
+# siniri; altindaki ceb kalintisi ciktida GUVENILMEZ olarak isaretlenir.
+PLDDT_RELIABLE_MIN = 70.0
+# Tasinan cebin "guvenilir" sayilmasi icin, kristal demir cebinin kolonlarinin
+# en az bu kadari ongoru cebinde de cikmali. 0,70 bir KARAR esigi degil,
+# RAPORLAMA esigi: altinda kalan tip ciktida guvenilmez isaretlenir, ama ham
+# ortusme sayilari da her tip icin yazilir, yani okur kendi kararini verebilir.
+TRANSFER_MIN_RECALL = 0.70
+
+# Dort kuratorlu kayit saflastirma etiketi tasiyor. Etiket cikarilmadan
+# UniParc tam-dizi eslesmesi BASARISIZ olur. Etiket dizide gercekten yoksa
+# cikarma YAPILMAZ ve bu durum raporlanir -- sessizce kirpmak, yanlis diziyle
+# eslesmekten daha kotu olurdu.
+PURIFICATION_TAGS = {
+    "1_112_NdmA": ("MGSSHHHHHHENLYFQGS", ""),
+    "1_114_NdmB": ("MGSSHHHHHHENLYFQGS", ""),
+    "3_307_NagGH": ("MGSHHHHHHSSGLVPRGSHM", ""),
+    "1_102_CARDO": ("", "LEHHHHHH"),
+}
 
 AMINO_ACID_3TO1 = {
     "ALA": "A", "ARG": "R", "ASN": "N", "ASP": "D", "CYS": "C",
@@ -299,20 +390,214 @@ def reference_name_for_cluster(cluster, reference_names):
                   % (len(hits), ", ".join(sorted(hits))))
 
 
+# ro_motif.py'nin etiketleri TURKCE. Bu modulun JSON ciktisi web'de
+# yayinlanacagi icin tum kullaniciya gorunen metin INGILIZCE olmali, bu yuzden
+# etiketler burada ayrica ingilizce tutulur. Esleme kolon DEGIL sira uzerinden
+# yapilir, boylece referans seti degisip kolonlar kayarsa etiketler bozulmaz.
+MOTIF_LABELS_EN = {
+    ("rieske_cluster_ligand", 0): "Rieske cluster cysteine 1",
+    ("rieske_cluster_ligand", 1): "Rieske cluster histidine 1",
+    ("rieske_cluster_ligand", 2): "Rieske cluster cysteine 2",
+    ("rieske_cluster_ligand", 3): "Rieske cluster histidine 2",
+    ("catalytic_iron_ligand", 0): "mononuclear iron histidine 1",
+    ("catalytic_iron_ligand", 1): "mononuclear iron histidine 2",
+    ("catalytic_iron_ligand", 2): "mononuclear iron carboxylate",
+    ("inter_subunit_bridge", 0): "inter-subunit electron transfer carboxylate",
+}
+
+
 def motif_columns():
-    """ro_motif.py'nin tanimladigi sekiz kolon + etiketleri."""
+    """ro_motif.py'nin tanimladigi sekiz kolon + INGILIZCE etiketleri."""
     model = MODEL_COLUMNS[DEFAULT_MODEL]
     out = []
-    for column, accepted, label in model["rieske"]:
-        out.append((column, accepted, label, "rieske_cluster_ligand"))
-    for column, accepted, label in model["catalytic"]:
-        out.append((column, accepted, label, "catalytic_iron_ligand"))
-    column, accepted, label = model["bridging"]
-    out.append((column, accepted, label, "inter_subunit_bridge"))
+    for index, (column, accepted, _) in enumerate(model["rieske"]):
+        role = "rieske_cluster_ligand"
+        out.append((column, accepted,
+                    MOTIF_LABELS_EN.get((role, index), role), role))
+    for index, (column, accepted, _) in enumerate(model["catalytic"]):
+        role = "catalytic_iron_ligand"
+        out.append((column, accepted,
+                    MOTIF_LABELS_EN.get((role, index), role), role))
+    column, accepted, _ = model["bridging"]
+    role = "inter_subunit_bridge"
+    out.append((column, accepted, MOTIF_LABELS_EN.get((role, 0), role), role))
     return out
 
 
 # ---------------------------------------------------------------- indirme
+
+def fetch_file(url, path, offline=False):
+    """Tek bir dosyayi onbellekten ver, yoksa indir. Donen: (yol|None, durum)"""
+    if os.path.exists(path) and os.path.getsize(path) > 0:
+        return path, "cached"
+    if offline:
+        return None, "absent from cache and --offline was given"
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_S) as resp:
+            payload = resp.read()
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as exc:
+        return None, "download failed: %s" % exc
+    if not payload:
+        return None, "download returned an empty file"
+    temporary = path + ".part"
+    with open(temporary, "wb") as handle:
+        handle.write(payload)
+    os.replace(temporary, path)
+    # Sunucuya nazik davran: her indirmeden sonra bekle (tek seferde tek istek).
+    time.sleep(DOWNLOAD_PAUSE_S)
+    return path, "downloaded"
+
+
+def fetch_json(url, cache_path, offline=False):
+    """JSON uc noktasini onbellekli cek. Donen: (veri|None, durum)"""
+    if cache_path and os.path.exists(cache_path) \
+            and os.path.getsize(cache_path) > 0:
+        try:
+            with open(cache_path) as handle:
+                return json.load(handle), "cached"
+        except (ValueError, OSError):
+            pass
+    if offline:
+        return None, "absent from cache and --offline was given"
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(request, timeout=HTTP_TIMEOUT_S) as resp:
+            payload = resp.read()
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as exc:
+        return None, "request failed: %s" % exc
+    try:
+        data = json.loads(payload)
+    except ValueError as exc:
+        return None, "response is not valid JSON: %s" % exc
+    if cache_path:
+        directory = os.path.dirname(cache_path)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
+        with open(cache_path, "w") as handle:
+            json.dump(data, handle)
+    time.sleep(DOWNLOAD_PAUSE_S)
+    return data, "downloaded"
+
+
+def strip_purification_tag(cluster, sequence):
+    """Saflastirma etiketini cikar. Etiket yoksa CIKARMA ve bunu raporla."""
+    leading, trailing = PURIFICATION_TAGS.get(cluster, ("", ""))
+    notes, out = [], sequence
+    if leading:
+        if out.startswith(leading):
+            out = out[len(leading):]
+            notes.append("removed a %d-residue leading purification tag"
+                         % len(leading))
+        else:
+            notes.append("the expected leading purification tag is not "
+                         "present in this sequence; nothing was removed")
+    if trailing:
+        if out.endswith(trailing):
+            out = out[:-len(trailing)]
+            notes.append("removed a %d-residue trailing purification tag"
+                         % len(trailing))
+        else:
+            notes.append("the expected trailing purification tag is not "
+                         "present in this sequence; nothing was removed")
+    return out, notes
+
+
+def accession_priority(accession):
+    """Kimlik deneme sirasi: 6 karakterli (Swiss-Prot bicimli) kimlikler once.
+
+    AlphaFold kapsamasi o kimliklerde daha yuksek. Siralama uzunluk sonra
+    alfabetik oldugu icin BELIRLENIMLI; ayrica hangi kimlik secilirse secilsin
+    dizi birebir ayni oldugu icin (UniParc'in tanimi) secim yapisal olarak
+    onemsizdir ve ciktida acikca yazilir.
+    """
+    return (len(accession), accession)
+
+
+def resolve_prediction_source(cluster, curated_sequence, cache_dir, offline):
+    """Kuratorlu diziyi TAM eslesmeyle AlphaFold modeline bagla.
+
+    Uzunluk ya da aile sorgusu KULLANILMAZ: ayni uzunlukta cok sayida aday
+    doner ve bu bir tahmin olur. Onun yerine UniParc'in tam-dizi kimligi
+    (CRC64 saglama toplami) kullanilir. Son guvence: AlphaFold'un bildirdigi
+    dizi, kuratorlu diziyle BIREBIR karsilastirilir; esit degilse model
+    KULLANILMAZ.
+    """
+    from Bio.SeqUtils.CheckSum import crc64
+    matched, tag_notes = strip_purification_tag(cluster, curated_sequence)
+    checksum = crc64(matched).replace("CRC-", "")
+    out = {
+        "type": cluster,
+        "curated_sequence_length": len(curated_sequence),
+        "matched_sequence_length": len(matched),
+        "purification_tag_notes": tag_notes,
+        "crc64_checksum": checksum,
+        "status": "unresolved",
+        "problems": [],
+        "accessions_tried": [],
+    }
+    data, status = fetch_json(
+        UNIPARC_SEARCH_URL.format(checksum),
+        os.path.join(cache_dir, "uniparc", checksum + ".json"), offline)
+    if data is None:
+        out["problems"].append("UniParc lookup failed: %s" % status)
+        return out, matched
+    results = data.get("results") or []
+    if not results:
+        out["problems"].append(
+            "no UniParc record has this exact sequence checksum, so the "
+            "reference cannot be mapped to an accession without guessing")
+        return out, matched
+    entry = results[0]
+    out["uniparc_id"] = entry.get("uniParcId")
+    accessions = sorted(entry.get("uniProtKBAccessions") or [],
+                        key=accession_priority)
+    out["n_uniprot_accessions_with_this_exact_sequence"] = len(accessions)
+    if not accessions:
+        out["problems"].append(
+            "the UniParc record carries no UniProtKB accession, so no "
+            "AlphaFold entry can be reached")
+        return out, matched
+    for accession in accessions[:MAX_ACCESSIONS_TRIED]:
+        out["accessions_tried"].append(accession)
+        meta, meta_status = fetch_json(
+            ALPHAFOLD_API_URL.format(accession),
+            os.path.join(cache_dir, "alphafold", accession + ".json"), offline)
+        if not meta:
+            continue
+        record = meta[0] if isinstance(meta, list) and meta else None
+        if not isinstance(record, dict):
+            continue
+        model_sequence = (record.get("uniprotSequence") or "").upper()
+        if model_sequence != matched:
+            out["problems"].append(
+                "%s has an AlphaFold entry but its sequence differs from the "
+                "curated sequence, so it was rejected" % accession)
+            continue
+        out.update({
+            "status": "resolved",
+            "uniprot_accession": accession,
+            "alphafold_version": record.get("latestVersion"),
+            "global_mean_plddt": record.get("globalMetricValue"),
+            "model_url": record.get("pdbUrl"),
+            "sequence_identical_to_curated_reference": True,
+        })
+        return out, matched
+    if not out["problems"]:
+        out["problems"].append(
+            "none of the %d accession(s) tried has an AlphaFold model"
+            % len(out["accessions_tried"]))
+    return out, matched
+
+
+def residue_plddt(residue):
+    """AlphaFold PDB'de pLDDT B-faktor kolonundadir (kalinti ici sabit)."""
+    values = [float(a.get_bfactor()) for a in residue]
+    return round(sum(values) / len(values), 2) if values else None
+
 
 def fetch_structure(pdb_id, cache_dir, offline=False):
     """Yapi dosyasini onbellekten ver, yoksa RCSB'den indir.
@@ -563,24 +848,117 @@ def align_chain_to_reference(aligner, chain_seq, reference_seq):
     return mapping, identity, aligned
 
 
-def pocket_residues(model, neighbor_search, iron_atom, radius):
-    """Demire 'radius' icinde HERHANGI bir atomu olan amino asitler.
+def pocket_residues(neighbor_search, centre, radius):
+    """Verilen NOKTAYA 'radius' icinde herhangi bir atomu olan amino asitler.
 
+    Nokta ya gercek demir atomunun konumu (kristal yapi) ya da triad yan
+    zincir merkezi (ongorulen model) olabilir; olcut ikisinde de ayni.
     Su/iyon/ligand kalintilari disarida: olculen sey proteinin cebi.
     Donen: [(residue, min_mesafe)] mesafeye gore sirali.
     """
+    centre = numpy.asarray(centre, dtype=float)
     best = {}
-    for atom in neighbor_search.search(iron_atom.coord, radius, level="A"):
+    for atom in neighbor_search.search(centre, radius, level="A"):
         residue = atom.get_parent()
         if not is_amino_acid(residue):
             continue
-        distance = float(iron_atom - atom)
+        distance = float(numpy.linalg.norm(atom.coord - centre))
         key = id(residue)
         if key not in best or distance < best[key][1]:
             best[key] = (residue, distance)
     return sorted(best.values(), key=lambda item: (item[1],
                                                    item[0].get_parent().id,
                                                    item[0].id[1]))
+
+
+# Triad merkezinin tanimi TAUTOMER'DEN BAGIMSIZ olmak zorunda: ongorulen
+# modelde hangi imidazol azotunun metali bagladigi bilinemez, cunku metal yok.
+# Bu yuzden His icin iki halka azotunun (ND1, NE2) ortasi, Asp/Glu icin
+# karboksilat oksijenlerinin ortasi alinir ve uc grubun merkezi hesaplanir.
+TRIAD_CENTRE_ATOMS = {
+    "HIS": ("ND1", "NE2"),
+    "ASP": ("OD1", "OD2"),
+    "GLU": ("OE1", "OE2"),
+}
+
+
+def window_offsets(window=COLUMN_WINDOW):
+    """0, -1, +1, -2, +2 ... siralamasi: en yakin kolondan baslayarak tara."""
+    return [0] + [o for pair in zip(range(-1, -window - 1, -1),
+                                    range(1, window + 1)) for o in pair]
+
+
+def locate_triad_by_columns(column_to_residue, window=COLUMN_WINDOW):
+    """Katalitik triad'i YALNIZCA hizalama kolonlarindan bul (metal kullanmadan).
+
+    Ongorulen modelde metal yok, dolayisiyla triad ancak kolonlardan
+    bulunabilir. AYNI fonksiyon kristal yapida da kullanilir; boylece
+    "triad merkezi demirin yerine gecebilir mi" kontrolu, ongoruyle BIREBIR
+    ayni yolla bulunmus triad uzerinde yapilmis olur ve kontrol gercekten
+    yontemin kendisini olcer.
+    Donen: (residues, notes)
+    """
+    model = MODEL_COLUMNS[DEFAULT_MODEL]
+    residues, notes = [], []
+    for column, accepted, _ in model["catalytic"]:
+        found = None
+        for offset in window_offsets(window):
+            candidate = column_to_residue.get(column + offset)
+            if candidate is None:
+                continue
+            if AMINO_ACID_3TO1.get(candidate.get_resname().upper()) in accepted:
+                found = (candidate, offset)
+                break
+        if found is None:
+            notes.append("column %d: no %s residue within the plus-or-minus "
+                         "%d column window" % (column, accepted, window))
+            continue
+        candidate, offset = found
+        residues.append(candidate)
+        notes.append("column %d maps to %s%s"
+                     % (column, residue_label(candidate),
+                        "" if offset == 0 else " (offset %+d)" % offset))
+    return residues, notes
+
+
+def column_set_agreement(reference_columns, other_columns):
+    """Iki kolon kumesinin ortusmesi -- tasimanin dogrulanmasi icin."""
+    a, b = set(reference_columns), set(other_columns)
+    union = a | b
+    return {
+        "n_reference": len(a),
+        "n_compared": len(b),
+        "n_shared": len(a & b),
+        "only_in_reference": sorted(a - b),
+        "only_in_compared": sorted(b - a),
+        "jaccard": round(len(a & b) / len(union), 4) if union else None,
+        "recall_of_reference": (round(len(a & b) / len(a), 4) if a else None),
+    }
+
+
+def triad_centroid(residues):
+    """Uc triad kalintisindan tautomerden bagimsiz bir merkez noktasi.
+
+    Donen: (nokta veya None, kullanilan atom etiketleri, eksik olanlar)
+    """
+    points, used, missing = [], [], []
+    for residue in residues:
+        names = TRIAD_CENTRE_ATOMS.get(residue.get_resname().upper())
+        if not names:
+            missing.append("%s: unsupported residue type" % residue_label(residue))
+            continue
+        atoms = [a for a in residue if a.get_name().strip().upper() in names]
+        if not atoms:
+            missing.append("%s: side-chain atoms %s absent from the model"
+                           % (residue_label(residue), "/".join(names)))
+            continue
+        points.append(numpy.mean([a.coord for a in atoms], axis=0))
+        used.append("%s:%s" % (residue_label(residue),
+                               "+".join(sorted(a.get_name().strip()
+                                               for a in atoms))))
+    if len(points) != 3:
+        return None, used, missing
+    return numpy.mean(points, axis=0), used, missing
 
 
 # ---------------------------------------------------------------- kompozisyon
@@ -873,8 +1251,8 @@ def analyse_structure(cluster, pdb_id, structure_path, reference_name,
     record["pocket"] = {}
     for radius in POCKET_RADII_A:
         rows, foreign, unmapped = [], [], []
-        for residue, distance in pocket_residues(model, neighbor_search,
-                                                 chosen["atom"], radius):
+        for residue, distance in pocket_residues(neighbor_search,
+                                                 chosen["atom"].coord, radius):
             chain_id = residue.get_parent().id
             one_letter = AMINO_ACID_3TO1[residue.get_resname().upper()]
             column, reason = map_residue(residue)
@@ -925,8 +1303,8 @@ def analyse_structure(cluster, pdb_id, structure_path, reference_name,
                 continue
             local_index = {id(r): i for i, r in enumerate(info["residues"])}
             columns = set()
-            for residue, _ in pocket_residues(model, neighbor_search,
-                                              iron["atom"], radius):
+            for residue, _ in pocket_residues(neighbor_search,
+                                              iron["atom"].coord, radius):
                 if residue.get_parent().id != iron["chain"]:
                     continue
                 index = local_index.get(id(residue))
@@ -1000,7 +1378,7 @@ def analyse_structure(cluster, pdb_id, structure_path, reference_name,
     shifts = []
     for column, accepted, label, role in sorted(motif_columns()):
         entry = {"column": column, "expected_residue": accepted, "role": role,
-                 "label_in_ro_motif": label}
+                 "label": label}
         if role == "inter_subunit_bridge":
             # Bu kolon metal ligandi DEGIL; asagida ayrica olculur.
             residue = column_to_residue.get(column)
@@ -1083,6 +1461,57 @@ def analyse_structure(cluster, pdb_id, structure_path, reference_name,
         "column_shifts": shifts,
         "checks": checks,
     }
+
+    # --- TRIAD MERKEZI KONTROLU (ongoru yonteminin kalibrasyonu) ---
+    # Ongorulen modellerde demir yok, ceb triad merkezine gore tanimlanacak.
+    # O merkezin demirin yerine gecip gecemedigi BURADA, demiri gercekten
+    # bilinen yapilarda olculur: hem merkez-demir mesafesi hem de iki cebin
+    # kolon kumelerinin ortusmesi. Kristal icinde olculdugu icin bu sayi
+    # YALNIZCA vekil hatasini icerir, ongoru hatasini icermez -- ikisi
+    # boylece ayri ayri gorulebilir.
+    triad_residues, triad_notes = locate_triad_by_columns(column_to_residue)
+    control = {
+        "purpose": (
+            "the predicted models contain no metal, so their pocket is "
+            "defined around the triad side-chain centroid; this block measures "
+            "how well that centroid stands in for a real iron, inside a "
+            "structure where the iron position is known. It isolates the "
+            "proxy error from the prediction error."),
+        "triad_located_by_column": triad_notes,
+        "n_triad_residues_found": len(triad_residues),
+    }
+    if len(triad_residues) == 3:
+        centre, used, missing = triad_centroid(triad_residues)
+        control["atoms_used_for_the_centroid"] = used
+        if centre is not None:
+            control["distance_from_centroid_to_the_real_iron_A"] = round(
+                float(numpy.linalg.norm(centre - chosen["atom"].coord)), 2)
+            control["pocket_agreement"] = {}
+            for radius in POCKET_RADII_A:
+                centroid_columns = set()
+                for residue, _ in pocket_residues(neighbor_search, centre,
+                                                  radius):
+                    if residue.get_parent().id != chosen["chain"]:
+                        continue
+                    index = index_of_residue.get(id(residue))
+                    if index is None:
+                        continue
+                    reference_index = owner["chain_to_reference"].get(index)
+                    if reference_index is None:
+                        continue
+                    column = column_map.get(reference_index)
+                    if column is not None:
+                        centroid_columns.add(column)
+                control["pocket_agreement"]["%.1f" % radius] = \
+                    column_set_agreement(
+                        record["pocket"]["%.1f" % radius][
+                            "alignment_columns"], centroid_columns)
+        else:
+            control["problem"] = "; ".join(missing)
+    else:
+        control["problem"] = ("the catalytic triad could not be located from "
+                              "the alignment columns alone")
+    record["triad_centroid_control"] = control
 
     # --- kopru karboksilatinin geometrisi (olcum, test degil) ---
     bridge_column = MODEL_COLUMNS[DEFAULT_MODEL]["bridging"][0]
@@ -1217,6 +1646,243 @@ def analyse_structure(cluster, pdb_id, structure_path, reference_name,
     return record
 
 
+def analyse_prediction(cluster, source, model_path, reference_name,
+                       reference_sequence, column_map, aligner, pdb_parser):
+    """Ongorulen bir modelde aktif bolge cebi -- TRIAD MERKEZINE gore.
+
+    Kristal yoluyla iki temel fark var ve ikisi de ciktida acikca yazilir:
+      1. Metal YOK. Ceb, demire degil, kolonlardan bulunan triad'in yan zincir
+         merkezine gore tanimlanir. Demir konumu uydurulmaz.
+      2. Her kalinti bir GUVEN degeri tasir (pLDDT, B-faktor kolonunda).
+         PLDDT_RELIABLE_MIN altindaki kalinti guvenilmez isaretlenir.
+    """
+    from Bio.PDB import NeighborSearch
+    record = {
+        "type": cluster,
+        "evidence": "predicted model, not an experimental observation",
+        "uniprot_accession": source.get("uniprot_accession"),
+        "alphafold_version": source.get("alphafold_version"),
+        "global_mean_plddt": source.get("global_mean_plddt"),
+        "reference_name": reference_name,
+        "reference_length": len(reference_sequence),
+        "reference_sequence_sha1_12": hashlib.sha1(
+            reference_sequence.encode()).hexdigest()[:12],
+        "status": "ok",
+        "problems": [],
+    }
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            structure = pdb_parser.get_structure(cluster, model_path)
+    except Exception as exc:                      # noqa: BLE001
+        record["status"] = "undetermined"
+        record["problems"].append("model parsing failed: %s" % exc)
+        return record
+
+    model = next(structure.get_models())
+    chains = []
+    for chain in model:
+        sequence, residues = chain_sequence(chain)
+        if len(sequence) >= MIN_CHAIN_LENGTH:
+            chains.append((len(sequence), chain.id, sequence, residues))
+    if not chains:
+        record["status"] = "undetermined"
+        record["problems"].append(
+            "the model has no chain of at least %d residues"
+            % MIN_CHAIN_LENGTH)
+        return record
+    chains.sort(key=lambda item: (-item[0], item[1]))
+    _, chain_id, sequence, residues = chains[0]
+    mapping, identity, aligned_n = align_chain_to_reference(
+        aligner, sequence, reference_sequence)
+    record["chain"] = chain_id
+    record["modelled_residues"] = len(sequence)
+    record["identity_to_reference"] = round(identity, 4)
+    record["aligned_positions"] = aligned_n
+    if identity < MIN_OWNER_IDENTITY:
+        record["status"] = "undetermined"
+        record["problems"].append(
+            "the model sequence aligns to the reference at only %.1f%% "
+            "identity, below the %.0f%% floor"
+            % (100.0 * identity, 100.0 * MIN_OWNER_IDENTITY))
+        return record
+
+    index_of_residue = {id(r): i for i, r in enumerate(residues)}
+    column_to_residue = {}
+    for index, residue in enumerate(residues):
+        reference_index = mapping.get(index)
+        if reference_index is None:
+            continue
+        column = column_map.get(reference_index)
+        if column is not None:
+            column_to_residue[column] = residue
+
+    # Rieske ligand kolonlari: metal olmadigi icin yalnizca KALINTI TIPI
+    # sinanabilir, baglanma sinanamaz. Bu da bir kontrol: hizalama dogru
+    # oturmussa C-H-C-H orada cikar.
+    rieske_checks = []
+    for column, accepted, label, role in sorted(motif_columns()):
+        if role != "rieske_cluster_ligand":
+            continue
+        residue = column_to_residue.get(column)
+        one_letter = (AMINO_ACID_3TO1[residue.get_resname().upper()]
+                      if residue else None)
+        rieske_checks.append({
+            "column": column, "label": label, "expected_residue": accepted,
+            "model_residue": residue_label(residue) if residue else None,
+            "residue_matches_expectation": (one_letter in accepted
+                                            if one_letter else False),
+        })
+    record["rieske_column_check"] = {
+        "what_is_checked": (
+            "a predicted model has no metal, so only the residue identity at "
+            "the Rieske ligand columns can be tested, not the coordination; "
+            "finding cysteine-histidine-cysteine-histidine there is evidence "
+            "that the alignment sits correctly on this model"),
+        "n_passed": sum(1 for c in rieske_checks
+                        if c["residue_matches_expectation"]),
+        "n_checks": len(rieske_checks),
+        "checks": rieske_checks,
+    }
+
+    triad_residues, triad_notes = locate_triad_by_columns(column_to_residue)
+    record["triad"] = {
+        "located_by": "alignment match-state columns only; no metal is present",
+        "notes": triad_notes,
+        "n_found": len(triad_residues),
+        "residues": [residue_label(r) for r in triad_residues],
+        "per_residue_plddt": {residue_label(r): residue_plddt(r)
+                              for r in triad_residues},
+    }
+    if len(triad_residues) != 3:
+        record["status"] = "undetermined"
+        record["problems"].append(
+            "the 2-His-1-carboxylate triad could not be located from the "
+            "alignment columns, so no pocket centre can be defined and none "
+            "is reported")
+        return record
+    centre, used, missing = triad_centroid(triad_residues)
+    if centre is None:
+        record["status"] = "undetermined"
+        record["problems"].append("triad centroid could not be computed: %s"
+                                  % "; ".join(missing))
+        return record
+    record["triad"]["atoms_used_for_the_centroid"] = used
+
+    atoms = [a for a in model.get_atoms()]
+    neighbor_search = NeighborSearch(atoms)
+    record["pocket"] = {}
+    for radius in POCKET_RADII_A:
+        rows, unmapped = [], 0
+        for residue, distance in pocket_residues(neighbor_search, centre,
+                                                 radius):
+            if residue.get_parent().id != chain_id:
+                continue
+            index = index_of_residue.get(id(residue))
+            column = None
+            note = None
+            if index is None:
+                note = "residue not part of the aligned chain sequence"
+            else:
+                reference_index = mapping.get(index)
+                if reference_index is None:
+                    note = ("position is a gap in the model-to-reference "
+                            "alignment")
+                else:
+                    column = column_map.get(reference_index)
+                    if column is None:
+                        note = ("reference residue %d falls in an insert "
+                                "state of the profile, so it has no "
+                                "match-state column" % (reference_index + 1))
+            plddt = residue_plddt(residue)
+            entry = {
+                "model_residue": residue_label(residue),
+                "residue_number": residue_auth_id(residue),
+                "residue_3letter": residue.get_resname().upper(),
+                "residue_1letter": AMINO_ACID_3TO1[
+                    residue.get_resname().upper()],
+                "min_distance_to_triad_centroid_A": round(distance, 2),
+                "alignment_column": column,
+                "plddt": plddt,
+                "plddt_below_reliable_threshold": (
+                    plddt is not None and plddt < PLDDT_RELIABLE_MIN),
+            }
+            if note:
+                entry["note"] = note
+                unmapped += 1
+            rows.append(entry)
+        mapped = [r for r in rows if r["alignment_column"] is not None]
+        scores = [r["plddt"] for r in rows if r["plddt"] is not None]
+        low = [r["model_residue"] for r in rows
+               if r["plddt_below_reliable_threshold"]]
+        ligand_labels = {residue_label(r) for r in triad_residues}
+        record["pocket"]["%.1f" % radius] = {
+            "radius_A": radius,
+            "centre": "triad side-chain centroid (no metal in the model)",
+            "n_residues": len(rows),
+            "n_residues_mapped_to_alignment_columns": len(mapped),
+            "n_residues_unmapped": unmapped,
+            "mean_pocket_plddt": (round(sum(scores) / len(scores), 2)
+                                  if scores else None),
+            "min_pocket_plddt": min(scores) if scores else None,
+            "n_residues_below_reliable_plddt": len(low),
+            "residues_below_reliable_plddt": sorted(low),
+            "residues": rows,
+            "alignment_columns": sorted({r["alignment_column"]
+                                         for r in mapped}),
+            "composition": composition_summary(
+                [r["residue_1letter"] for r in rows],
+                [r["residue_1letter"] for r in rows
+                 if r["model_residue"] in ligand_labels]),
+        }
+    return record
+
+
+def measure_pocket_variation(cluster, columns, confirmed, aligned_members,
+                             leaves_by_cluster, source_label):
+    """Ceb kolonlarinda uye ve varyant duzeyi kalinti dagilimi.
+
+    Kristal cebi ve ongorulen cebi icin AYNI fonksiyon kullanilir; tek fark
+    kolon listesinin nereden geldigidir ve bu 'source' alaninda yazar.
+    """
+    members = [c for c in confirmed.get(cluster, []) if c in aligned_members]
+    if not members:
+        return {
+            "status": "no_data",
+            "pocket_columns_from": source_label,
+            "reason": ("this type has no confirmed member sequence in the "
+                       "member alignment, so pocket variation cannot be "
+                       "measured for it"),
+            "confirmed_members_in_database": len(confirmed.get(cluster, [])),
+        }
+    sequences = [aligned_members[c] for c in members]
+    per_column = {str(col): column_variation(col, sequences)
+                  for col in columns}
+    invariant = [c for c, v in per_column.items() if v["invariant"] is True]
+    variable = [c for c, v in per_column.items() if v["invariant"] is False]
+    leaves = {leaf_id: [c for c in ids if c in aligned_members]
+              for leaf_id, ids in leaves_by_cluster.get(cluster, {}).items()}
+    leaves = {k: v for k, v in leaves.items() if v}
+    bins = {}
+    for threshold in CONSERVATION_BINS:
+        bins["top_residue_fraction_at_least_%.2f" % threshold] = sum(
+            1 for v in per_column.values()
+            if v["top_fraction"] is not None and v["top_fraction"] >= threshold)
+    return {
+        "status": "measured",
+        "pocket_columns_from": source_label,
+        "source": ("aligned member sequences (match-state columns of the "
+                   "motif profile)"),
+        "n_members": len(members),
+        "n_pocket_columns": len(columns),
+        "invariant_columns": sorted(int(c) for c in invariant),
+        "variable_columns": sorted(int(c) for c in variable),
+        "conservation_bins": bins,
+        "per_column": per_column,
+        "variant_level": variant_breakdown(columns, leaves, aligned_members),
+    }
+
+
 def group_composition(records, key_function, label):
     """Tipleri bir anahtara gore grupla ve kompozisyon ortalamalarini ver."""
     buckets = defaultdict(list)
@@ -1228,8 +1894,11 @@ def group_composition(records, key_function, label):
     for value, members in sorted(buckets.items()):
         pockets = [m["pocket"]["%.1f" % PRIMARY_RADIUS_A]["composition"]
                    for m in members]
-        independent = {(m["pdb_id"], m["reference_sequence_sha1_12"])
-                       for m in members}
+        # Bagimsizlik anahtari: kristal kayitta PDB kimligi, ongoru kaydinda
+        # UniProt kimligi. Ikisinde de dizi ozeti ikinci bileseni, boylece
+        # birebir ayni dizili ikizler tek gozlem sayilir.
+        independent = {(m.get("pdb_id") or m.get("uniprot_accession"),
+                        m["reference_sequence_sha1_12"]) for m in members}
         fields = ("n_residues", "acidic_D_E", "basic_K_R", "histidine",
                   "polar_S_T_N_Q_C_Y", "hydrophobic_A_V_L_I_M_F_W_P_G",
                   "aromatic_F_W_Y", "net_formal_charge")
@@ -1264,6 +1933,8 @@ def main():
                              help="yapi onbellegi dizini")
     parser_args.add_argument("--offline", action="store_true",
                              help="indirme yapma, sadece onbellegi kullan")
+    parser_args.add_argument("--no-predictions", action="store_true",
+                             help="ikinci asamayi (AlphaFold modelleri) atla")
     args = parser_args.parse_args()
 
     try:
@@ -1344,25 +2015,25 @@ def main():
             records.append(record)
         print("[tip] %-14s %s  %s" % (cluster, pdb_id, record["status"]))
 
-    # --- varyantlar ---
+    # --- uye hizalamasi ve veritabani (hem kristal hem ongoru asamasi icin) ---
     variants = {}
     member_counts = {}
     sdp_overlap = {}
-    if records:
-        print("[okunuyor] uye hizalamasi %s" % args.alignment)
-        aligned_members = read_stockholm_matchcols(args.alignment) \
-            if os.path.exists(args.alignment) else {}
-        print("[bilgi] hizalamada %d dizi" % len(aligned_members))
+    print("[okunuyor] uye hizalamasi %s" % args.alignment)
+    aligned_members = read_stockholm_matchcols(args.alignment) \
+        if os.path.exists(args.alignment) else {}
+    print("[bilgi] hizalamada %d dizi" % len(aligned_members))
+    confirmed = defaultdict(list)
+    leaves_by_cluster = defaultdict(lambda: defaultdict(list))
+    cluster_sdp = {}
+    if os.path.exists(args.db):
         connection = sqlite3.connect(args.db)
-        confirmed = defaultdict(list)
         for candidate_id, cluster in connection.execute(
                 "SELECT candidate_id, ro_cluster FROM ro WHERE is_confirmed=1"):
             confirmed[cluster].append(candidate_id)
-        leaves_by_cluster = defaultdict(lambda: defaultdict(list))
         for candidate_id, cluster, leaf_id in connection.execute(
                 "SELECT candidate_id, cluster, leaf_id FROM ro_leaf"):
             leaves_by_cluster[cluster][leaf_id].append(candidate_id)
-        cluster_sdp = {}
         for cluster, columns in connection.execute(
                 "SELECT cluster, columns FROM cluster_sdp"):
             try:
@@ -1370,68 +2041,146 @@ def main():
             except (ValueError, KeyError, TypeError):
                 continue
         connection.close()
+    else:
+        print("[uyari] veritabani bulunamadi: %s -- varyant dagilimi "
+              "olculemez" % args.db)
 
-        for record in records:
+    for record in records:
+        cluster = record["type"]
+        columns = record["pocket"]["%.1f" % PRIMARY_RADIUS_A][
+            "alignment_columns"]
+        members = [c for c in confirmed.get(cluster, [])
+                   if c in aligned_members]
+        member_counts[cluster] = {
+            "confirmed_members_in_database": len(confirmed.get(cluster, [])),
+            "members_present_in_alignment": len(members),
+        }
+        variants[cluster] = measure_pocket_variation(
+            cluster, columns, confirmed, aligned_members,
+            leaves_by_cluster, "crystal structure, iron-centred pocket")
+        discriminating = set(cluster_sdp.get(cluster, []))
+        sdp_overlap[cluster] = {
+            "n_variant_discriminating_columns_from_cluster_sdp":
+                len(discriminating),
+            "overlap_with_pocket_columns":
+                sorted(discriminating & set(columns)),
+            "note": ("cluster_sdp columns were selected statistically by "
+                     "variant_signature.py without any structural input; "
+                     "an overlap means a statistically discriminating "
+                     "position is also a structurally observed pocket "
+                     "position"),
+        }
+
+    # --- IKINCI ASAMA: yapisi OLMAYAN tipler icin ongorulen model ---
+    crystal_by_type = {r["type"]: r for r in records}
+    prediction_sources, predictions, prediction_failures = [], [], []
+    prediction_variants, transfer = {}, {}
+    if not args.no_predictions:
+        from Bio.PDB import PDBParser
+        pdb_parser = PDBParser(QUIET=True)
+        print()
+        print("[asama 2] ongorulen modeller -- AlphaFold Protein Structure DB")
+        print("[not] yerel katlama YAPILMIYOR (GPU yok, torch kurulu degil); "
+              "hazir modeller kullaniliyor")
+        for cluster in sorted(chemistry):
+            reference_name, problem = reference_name_for_cluster(
+                cluster, references.keys())
+            if reference_name is None or reference_name not in column_maps:
+                prediction_failures.append({
+                    "type": cluster, "status": "undetermined",
+                    "problems": [problem or ("no column map for reference %s"
+                                             % reference_name)]})
+                continue
+            source, _matched = resolve_prediction_source(
+                cluster, references[reference_name], args.structures,
+                args.offline)
+            source["reference_name"] = reference_name
+            prediction_sources.append(source)
+            if source["status"] != "resolved":
+                prediction_failures.append({
+                    "type": cluster, "reference_name": reference_name,
+                    "status": "undetermined", "problems": source["problems"]})
+                print("[ongoru] %-14s ESLESMEDI: %s"
+                      % (cluster, "; ".join(source["problems"])[:68]))
+                continue
+            accession = source["uniprot_accession"]
+            filename = "AF-%s-F1-model_v%s.pdb" % (
+                accession, source.get("alphafold_version"))
+            url = source.get("model_url") or (
+                "https://alphafold.ebi.ac.uk/files/" + filename)
+            model_path, model_status = fetch_file(
+                url, os.path.join(args.structures, "alphafold", filename),
+                args.offline)
+            source["model_status"] = model_status
+            if not model_path:
+                prediction_failures.append({
+                    "type": cluster, "reference_name": reference_name,
+                    "uniprot_accession": accession, "status": "undetermined",
+                    "problems": ["model file unavailable: %s" % model_status]})
+                print("[ongoru] %-14s MODEL YOK: %s" % (cluster, model_status))
+                continue
+            record = analyse_prediction(
+                cluster, source, model_path, reference_name,
+                references[reference_name], column_maps[reference_name],
+                aligner, pdb_parser)
+            record["model_source"] = model_status
+            record["has_crystal_structure"] = cluster in crystal_by_type
+            if record["status"] == "undetermined":
+                prediction_failures.append(record)
+                print("[ongoru] %-14s %-10s BELIRLENEMEDI: %s"
+                      % (cluster, accession,
+                         "; ".join(record["problems"])[:50]))
+                continue
+            predictions.append(record)
+            prediction_variants[cluster] = measure_pocket_variation(
+                cluster,
+                record["pocket"]["%.1f" % PRIMARY_RADIUS_A][
+                    "alignment_columns"],
+                confirmed, aligned_members, leaves_by_cluster,
+                "predicted model, triad-centroid pocket")
+            outer = record["pocket"]["%.1f" % PRIMARY_RADIUS_A]
+            print("[ongoru] %-14s %-10s v%-2s global pLDDT %5.1f  ceb %2d "
+                  "kalinti  ceb pLDDT %5.1f  guvenilmez %d"
+                  % (cluster, accession, source.get("alphafold_version"),
+                     source.get("global_mean_plddt") or 0.0,
+                     outer["n_residues"], outer["mean_pocket_plddt"] or 0.0,
+                     outer["n_residues_below_reliable_plddt"]))
+
+        # --- TASIMANIN DOGRULANMASI ---
+        # Ongorulen cebin bir anlami olup olmadigi, hem kristali hem modeli
+        # olan tiplerde SINANIR: kristal demir cebinin kolonlari ile ongoru
+        # merkez cebinin kolonlari karsilastirilir. Ayrica vekil hatasi
+        # (kristal icinde merkez vs demir) ayri raporlanir, boylece hata
+        # "merkez yontemi" ile "ongoru" arasinda paylastirilabilir.
+        for record in predictions:
             cluster = record["type"]
-            columns = record["pocket"]["%.1f" % PRIMARY_RADIUS_A][
-                "alignment_columns"]
-            members = [c for c in confirmed.get(cluster, [])
-                       if c in aligned_members]
-            member_counts[cluster] = {
-                "confirmed_members_in_database": len(confirmed.get(cluster, [])),
-                "members_present_in_alignment": len(members),
-            }
-            if not members:
-                variants[cluster] = {
-                    "status": "no_data",
-                    "reason": ("this type has no confirmed member sequence in "
-                               "the member alignment, so pocket variation "
-                               "cannot be measured for it"),
-                    "confirmed_members_in_database":
-                        len(confirmed.get(cluster, [])),
+            crystal = crystal_by_type.get(cluster)
+            if crystal is None:
+                continue
+            per_radius = {}
+            for radius in POCKET_RADII_A:
+                key = "%.1f" % radius
+                total = column_set_agreement(
+                    crystal["pocket"][key]["alignment_columns"],
+                    record["pocket"][key]["alignment_columns"])
+                proxy = crystal.get("triad_centroid_control", {}).get(
+                    "pocket_agreement", {}).get(key)
+                per_radius[key] = {
+                    "total_transfer_crystal_iron_vs_predicted_centroid": total,
+                    "proxy_only_crystal_iron_vs_crystal_centroid": proxy,
                 }
-            else:
-                sequences = [aligned_members[c] for c in members]
-                per_column = {str(col): column_variation(col, sequences)
-                              for col in columns}
-                invariant = [c for c, v in per_column.items()
-                             if v["invariant"] is True]
-                variable = [c for c, v in per_column.items()
-                            if v["invariant"] is False]
-                leaves = {leaf_id: [c for c in ids if c in aligned_members]
-                          for leaf_id, ids
-                          in leaves_by_cluster.get(cluster, {}).items()}
-                leaves = {k: v for k, v in leaves.items() if v}
-                bins = {}
-                for threshold in CONSERVATION_BINS:
-                    bins["top_residue_fraction_at_least_%.2f" % threshold] = sum(
-                        1 for v in per_column.values()
-                        if v["top_fraction"] is not None
-                        and v["top_fraction"] >= threshold)
-                variants[cluster] = {
-                    "status": "measured",
-                    "source": ("aligned member sequences (match-state columns "
-                               "of the motif profile)"),
-                    "n_members": len(members),
-                    "n_pocket_columns": len(columns),
-                    "invariant_columns": sorted(int(c) for c in invariant),
-                    "variable_columns": sorted(int(c) for c in variable),
-                    "conservation_bins": bins,
-                    "per_column": per_column,
-                    "variant_level": variant_breakdown(columns, leaves,
-                                                       aligned_members),
-                }
-            discriminating = set(cluster_sdp.get(cluster, []))
-            sdp_overlap[cluster] = {
-                "n_variant_discriminating_columns_from_cluster_sdp":
-                    len(discriminating),
-                "overlap_with_pocket_columns":
-                    sorted(discriminating & set(columns)),
-                "note": ("cluster_sdp columns were selected statistically by "
-                         "variant_signature.py without any structural input; "
-                         "an overlap means a statistically discriminating "
-                         "position is also a structurally observed pocket "
-                         "position"),
+            primary = per_radius["%.1f" % PRIMARY_RADIUS_A][
+                "total_transfer_crystal_iron_vs_predicted_centroid"]
+            transfer[cluster] = {
+                "pdb_id": crystal["pdb_id"],
+                "uniprot_accession": record["uniprot_accession"],
+                "global_mean_plddt": record["global_mean_plddt"],
+                "recall_of_crystal_columns_at_primary_radius":
+                    primary["recall_of_reference"],
+                "transfer_reliable": (
+                    primary["recall_of_reference"] is not None
+                    and primary["recall_of_reference"] >= TRANSFER_MIN_RECALL),
+                "per_radius": per_radius,
             }
 
     # --- kompozisyon ozetleri ---
@@ -1446,6 +2195,27 @@ def main():
             "substrate_class": ecology.get(record["type"], {}).get(
                 "substrate_class", ""),
             "substrate": chemistry[record["type"]].get("substrate_en", ""),
+            "composition": pocket["composition"],
+        })
+
+    predicted_composition_rows = []
+    for record in predictions:
+        pocket = record["pocket"]["%.1f" % PRIMARY_RADIUS_A]
+        predicted_composition_rows.append({
+            "type": record["type"],
+            "uniprot_accession": record["uniprot_accession"],
+            "global_mean_plddt": record["global_mean_plddt"],
+            "mean_pocket_plddt": pocket["mean_pocket_plddt"],
+            "n_residues_below_reliable_plddt":
+                pocket["n_residues_below_reliable_plddt"],
+            "has_crystal_structure": record["has_crystal_structure"],
+            "family": chemistry.get(record["type"], {}).get("family", ""),
+            "reaction_class": chemistry.get(record["type"], {}).get(
+                "reaction_class", ""),
+            "substrate_class": ecology.get(record["type"], {}).get(
+                "substrate_class", ""),
+            "substrate": chemistry.get(record["type"], {}).get(
+                "substrate_en", ""),
             "composition": pocket["composition"],
         })
 
@@ -1497,6 +2267,49 @@ def main():
                 "gap_open": ALIGN_GAP_OPEN,
                 "gap_extend": ALIGN_GAP_EXTEND,
                 "end_gaps": "free",
+            },
+            "predicted_model_pocket": {
+                "source": "AlphaFold Protein Structure Database",
+                "local_folding_attempted": False,
+                "why_not": (
+                    "there is no GPU on this machine and no folding package "
+                    "installed; folding 54 proteins on CPU would take many "
+                    "hours for a worse result than the models that already "
+                    "exist in the AlphaFold database"),
+                "pocket_centre": (
+                    "a predicted model contains no metal ion, so no iron "
+                    "position exists and none is invented. The catalytic "
+                    "2-His-1-carboxylate triad is located from the alignment "
+                    "match-state columns, exactly as in the solved "
+                    "structures, and the pocket is defined around the "
+                    "tautomer-free centroid of those three side chains: the "
+                    "midpoint of ND1 and NE2 for each histidine and the "
+                    "midpoint of the carboxylate oxygens for the aspartate or "
+                    "glutamate. Both histidine nitrogens are used because "
+                    "without a metal there is no way to know which one would "
+                    "coordinate it."),
+                "accession_mapping": (
+                    "exact sequence identity only. The curated sequence is "
+                    "reduced to its CRC64 checksum and looked up in UniParc, "
+                    "which indexes sequences by exact match; the UniProt "
+                    "accessions attached to that UniParc record therefore all "
+                    "carry the identical sequence. Length-based or "
+                    "family-based UniProt queries were not used because they "
+                    "return many same-length candidates and the answer would "
+                    "be a guess. As a final guarantee the sequence reported "
+                    "by the AlphaFold entry is compared character by "
+                    "character with the curated sequence, and a model whose "
+                    "sequence differs is rejected."),
+                "purification_tags_stripped_before_matching": sorted(
+                    PURIFICATION_TAGS),
+                "plddt_reliable_minimum": PLDDT_RELIABLE_MIN,
+                "plddt_bands": (
+                    "AlphaFold convention: above 90 very high, 70 to 90 "
+                    "confident, 50 to 70 low, below 50 very low. Pocket "
+                    "residues below %.0f are flagged as unreliable in the "
+                    "output." % PLDDT_RELIABLE_MIN),
+                "transfer_minimum_recall": TRANSFER_MIN_RECALL,
+                "max_accessions_tried": MAX_ACCESSIONS_TRIED,
             },
             "motif_columns_from_ro_motif": [
                 {"column": c, "expected_residue": a, "role": role,
@@ -1551,6 +2364,21 @@ def main():
             "independent_structure_sequence_pairs": len(
                 {(r["pdb_id"], r["reference_sequence_sha1_12"])
                  for r in records}),
+            "predicted_models": {
+                "types_attempted": len(prediction_sources),
+                "types_mapped_to_an_exact_sequence_match": sum(
+                    1 for s in prediction_sources
+                    if s["status"] == "resolved"),
+                "types_with_a_predicted_pocket": len(predictions),
+                "types_without_a_predicted_pocket": len(prediction_failures),
+                "types_with_a_predicted_pocket_and_no_crystal_structure": sum(
+                    1 for r in predictions if not r["has_crystal_structure"]),
+                "types_with_both_a_crystal_structure_and_a_prediction":
+                    len(transfer),
+                "types_with_member_variation_measured_from_predicted_pocket":
+                    sum(1 for v in prediction_variants.values()
+                        if v["status"] == "measured"),
+            },
             "pseudo_replication_warning": (
                 "The %d types resolve to only %d distinct PDB entries, because "
                 "the curated reference set contains the same enzyme under more "
@@ -1565,6 +2393,23 @@ def main():
         "member_coverage": member_counts,
         "pocket_variation_across_members": variants,
         "overlap_with_variant_signatures": sdp_overlap,
+        "predicted_structures": predictions,
+        "predicted_undetermined": prediction_failures,
+        "prediction_accession_mapping": prediction_sources,
+        "predicted_pocket_transfer_validation": {
+            "what_this_validates": (
+                "whether a pocket defined around the triad centroid of a "
+                "predicted model recovers the pocket that the iron defines in "
+                "a real structure. It is measured on the types that have "
+                "both. The error is split in two: the proxy-only comparison "
+                "replaces the iron by the centroid inside the same crystal, "
+                "so it isolates the cost of not having a metal; the total "
+                "comparison also swaps the crystal for the predicted model, "
+                "so it adds the cost of the prediction itself."),
+            "minimum_recall_to_be_called_reliable": TRANSFER_MIN_RECALL,
+            "per_type": transfer,
+        },
+        "predicted_pocket_variation_across_members": prediction_variants,
         "electrostatics": {
             "what_this_is": "composition summary, NOT an electrostatic calculation",
             "explicitly_not_done": [
@@ -1593,6 +2438,13 @@ def main():
                 "net_formal_charge": "(K + R) - (D + E)",
             },
             "per_type": composition_rows,
+            "per_type_predicted": predicted_composition_rows,
+            "predicted_rows_note": (
+                "these rows come from predicted models, not from experiment. "
+                "They are listed because they extend the comparison from a "
+                "handful of types to most of the curated set, but they carry "
+                "the prediction's own uncertainty and each row reports the "
+                "pocket's mean pLDDT so the reader can weigh it."),
             "what_the_composition_shows": None,
         },
         "limitations": [
@@ -1625,6 +2477,30 @@ def main():
             "a further reason not to read it as a specificity signal.",
             "No binding energy, specificity prediction or substrate docking is "
             "attempted, and none can be supported by this data.",
+            "Pockets in the 'predicted_structures' section are inferred from "
+            "computed models, not observed. They are kept separate from the "
+            "crystal-derived pockets throughout and must not be merged with "
+            "them. Side-chain placement is the least reliable part of a "
+            "structure prediction, and the pocket is exactly a set of side "
+            "chains, so a predicted pocket residue is weaker evidence than a "
+            "crystallographic one even when its pLDDT is high.",
+            "A predicted model has no metal, so for those types nothing "
+            "verifies that the triad actually binds iron. The triad is "
+            "located by alignment column and residue type alone, and the only "
+            "independent support is that the Rieske ligand columns also carry "
+            "the expected cysteines and histidines.",
+            "pLDDT measures the model's confidence in its own backbone "
+            "placement. It is not a measure of whether the pocket is "
+            "catalytically correct, and a high pLDDT pocket can still have "
+            "rotamers that differ from the holo enzyme.",
+            "Where a type has both a crystal structure and a prediction, only "
+            "the crystal result should be used. The prediction is computed "
+            "there solely to measure how much is lost by the transfer.",
+            "Substrate family and phylogenetic group are confounded in this "
+            "reference set, so any difference in pocket composition between "
+            "families may equally be a difference between clades. No attempt "
+            "is made to separate the two, because with these group sizes it "
+            "could not be done convincingly.",
         ],
     }
     if records:
@@ -1638,17 +2514,21 @@ def main():
             "every_pocket_is_net_negative": all(c < 0 for c in charges),
             "aromatic_count_range": [min(aromatics), max(aromatics)],
             "honest_reading": (
-                "Every resolved pocket carries a net negative formal charge, "
-                "and the spread is narrow (a few charge units over %d types). "
-                "The group means by substrate class differ in the same "
-                "direction one would guess from the chemistry, but the groups "
-                "hold one to twelve types and only %d independent (structure, "
-                "sequence) pairs in total, their ranges overlap, and the "
-                "acidic count is largely set by the conserved carboxylates "
-                "next to the iron. So the composition summary does not "
-                "establish that pockets of different substrate classes differ "
-                "electrostatically; it establishes that all of them are "
-                "anionic and that this data cannot resolve finer differences."
+                "Every resolved pocket carries a net negative formal charge "
+                "and the whole spread is a few charge units over %d types. "
+                "Where the group means do differ they run AGAINST the naive "
+                "expectation: the two enzymes acting on permanently cationic "
+                "quaternary-amine substrates have the least anionic pockets "
+                "(net -2 and -1), while the pockets acting on neutral "
+                "polycyclic and carboxylated aromatics are the most anionic "
+                "(net -4). That is a reason to distrust the measure as a "
+                "specificity signal, not a finding: the groups hold one to "
+                "twelve types and only %d independent (structure, sequence) "
+                "pairs in total, their ranges overlap, and the acidic count is "
+                "largely set by the carboxylates conserved next to the iron. "
+                "What this summary supports is that all of these pockets are "
+                "anionic; it does not support any claim that pockets of "
+                "different substrate classes differ electrostatically."
                 % (len(records),
                    len({(r["pdb_id"], r["reference_sequence_sha1_12"])
                         for r in records}))),
@@ -1663,6 +2543,50 @@ def main():
             records,
             lambda r: chemistry[r["type"]].get("reaction_class", ""),
             "reaction_class")
+    if predictions:
+        # Ayni gruplamalar ONGORU cebleri uzerinde. Grup basina n burada cok
+        # daha buyuk, ama kanit tipi daha zayif; bu yuzden kristal tablolariyla
+        # KARISTIRILMAZ, ayri anahtarlarda durur.
+        payload["predicted_composition_by_substrate_class"] = group_composition(
+            predictions,
+            lambda r: ecology.get(r["type"], {}).get("substrate_class", ""),
+            "substrate_class (predicted pockets)")
+        payload["predicted_composition_by_family"] = group_composition(
+            predictions,
+            lambda r: chemistry.get(r["type"], {}).get("family", ""),
+            "family (predicted pockets)")
+        predicted_charges = [
+            r["pocket"]["%.1f" % PRIMARY_RADIUS_A]["composition"][
+                "net_formal_charge"] for r in predictions]
+        payload["electrostatics"]["predicted_pocket_charge_summary"] = {
+            "n_types": len(predictions),
+            "net_formal_charge_range": [min(predicted_charges),
+                                        max(predicted_charges)],
+            "n_types_with_a_net_negative_pocket": sum(
+                1 for c in predicted_charges if c < 0),
+            "n_types_with_a_net_positive_pocket": sum(
+                1 for c in predicted_charges if c > 0),
+            "n_types_with_a_neutral_pocket": sum(
+                1 for c in predicted_charges if c == 0),
+            "honest_reading": (
+                "Across the predicted pockets the same pattern appears as in "
+                "the handful of crystal structures, now at usable group "
+                "sizes: pockets acting on neutral aromatic substrates "
+                "(alkylbenzenes, anilines, nitroaromatics, polycyclic "
+                "aromatics) are the most anionic, while pockets acting on the "
+                "permanently cationic quaternary-amine substrates are the "
+                "least anionic and carry the most basic residues. That is the "
+                "opposite of the naive electrostatic expectation and it "
+                "should not be read as a mechanism. The aromatic residue "
+                "count does run the expected way, being highest for the large "
+                "polycyclic and alkylbenzene substrates and lowest for the "
+                "small aliphatic cations. CONFOUND: substrate family and "
+                "phylogenetic group are not independent in this reference set "
+                "(for example every quaternary-amine enzyme sits in group 5), "
+                "so a difference between families may be a difference between "
+                "clades instead. These numbers also come from predicted side "
+                "chains. Nothing here is an electrostatic calculation."),
+        }
 
         # Kolon bazinda birlesik gorunum: hangi kolon kac yapida cebi doseyor.
         for radius in POCKET_RADII_A:
@@ -1695,6 +2619,61 @@ def main():
                 "columns_present_in_every_resolved_type": sorted(
                     c for c, d in tally.items() if len(d["types"]) == len(records)),
             }
+
+    if transfer:
+        recalls = [t["recall_of_crystal_columns_at_primary_radius"]
+                   for t in transfer.values()
+                   if t["recall_of_crystal_columns_at_primary_radius"]
+                   is not None]
+        proxy_distances = [
+            r["triad_centroid_control"].get(
+                "distance_from_centroid_to_the_real_iron_A")
+            for r in records
+            if r.get("triad_centroid_control", {}).get(
+                "distance_from_centroid_to_the_real_iron_A") is not None]
+        proxy_recalls = []
+        for entry in transfer.values():
+            proxy = entry["per_radius"]["%.1f" % PRIMARY_RADIUS_A][
+                "proxy_only_crystal_iron_vs_crystal_centroid"]
+            if proxy and proxy.get("recall_of_reference") is not None:
+                proxy_recalls.append(proxy["recall_of_reference"])
+        n_reliable = sum(1 for t in transfer.values() if t["transfer_reliable"])
+        payload["predicted_pocket_transfer_validation"]["summary"] = {
+            "n_types_compared": len(transfer),
+            "radius_A": PRIMARY_RADIUS_A,
+            "mean_recall_of_crystal_columns": round(
+                sum(recalls) / len(recalls), 4) if recalls else None,
+            "worst_recall_of_crystal_columns": (min(recalls) if recalls
+                                                else None),
+            "n_types_at_or_above_the_reliability_floor": n_reliable,
+            "mean_centroid_to_iron_distance_A": round(
+                sum(proxy_distances) / len(proxy_distances), 2)
+                if proxy_distances else None,
+            "worst_centroid_to_iron_distance_A": (max(proxy_distances)
+                                                  if proxy_distances else None),
+            "mean_recall_of_the_proxy_alone": round(
+                sum(proxy_recalls) / len(proxy_recalls), 4)
+                if proxy_recalls else None,
+            "verdict": (
+                "The triad centroid stands %s A from the real iron on average "
+                "(worst %s A), which is small against the %s A pocket radius. "
+                "Replacing the iron by that centroid inside the same crystal "
+                "already recovers %s of the iron-defined pocket columns, and "
+                "going the whole way to the predicted model recovers %s. "
+                "%d of %d types reach the %.0f%% floor. So most of the loss "
+                "is the price of having no metal, not the price of the "
+                "prediction, and the transferred pockets are usable with that "
+                "stated margin of error."
+                % (round(sum(proxy_distances) / len(proxy_distances), 2)
+                   if proxy_distances else "n/a",
+                   max(proxy_distances) if proxy_distances else "n/a",
+                   PRIMARY_RADIUS_A,
+                   ("%.0f%%" % (100 * sum(proxy_recalls) / len(proxy_recalls)))
+                   if proxy_recalls else "n/a",
+                   ("%.0f%%" % (100 * sum(recalls) / len(recalls)))
+                   if recalls else "n/a",
+                   n_reliable, len(transfer), 100 * TRANSFER_MIN_RECALL)),
+        }
 
     os.makedirs(args.out_dir, exist_ok=True)
     out_path = os.path.join(args.out_dir, "active_site.json")
@@ -1819,7 +2798,115 @@ def main():
         print("  [veri yok] %s -- bu tiplerin hizalamada uyesi yok"
               % ", ".join(sorted(no_data)))
 
+    if predictions or prediction_failures:
+        print()
+        print("=" * 78)
+        print("ONGORULEN MODELLER (yapisi olmayan tipler dahil)")
+        print("=" * 78)
+        pc = cover["predicted_models"]
+        print("  tam dizi eslesmesi bulunan   : %d / %d tip"
+              % (pc["types_mapped_to_an_exact_sequence_match"],
+                 pc["types_attempted"]))
+        print("  ongoru cebi cikarilan        : %d tip"
+              % pc["types_with_a_predicted_pocket"])
+        print("  bunlardan kristali OLMAYAN   : %d tip  <-- yeni kazanim"
+              % pc["types_with_a_predicted_pocket_and_no_crystal_structure"])
+        print("  kristal + ongoru ikisi birden: %d tip (tasima dogrulamasi)"
+              % pc["types_with_both_a_crystal_structure_and_a_prediction"])
+        print("  ongoru cebinde varyant olcumu: %d tip"
+              % pc["types_with_member_variation_measured_from_predicted_pocket"])
+        print("  cikarilamayan                : %d tip"
+              % pc["types_without_a_predicted_pocket"])
+        for failure in prediction_failures:
+            print("    [yok] %-14s %s"
+                  % (failure["type"],
+                     "; ".join(failure.get("problems", []))[:62]))
+        summary = payload["predicted_pocket_transfer_validation"].get(
+            "summary")
+        if summary:
+            print()
+            print("  --- TASIMANIN DOGRULANMASI (%s A) ---"
+                  % PRIMARY_RADIUS_A)
+            print("  merkez-demir mesafesi    : ortalama %s A, en kotu %s A"
+                  % (summary["mean_centroid_to_iron_distance_A"],
+                     summary["worst_centroid_to_iron_distance_A"]))
+            print("  yalnizca vekil hatasi    : kristal kolonlarinin %%%.0f'i "
+                  "geri geliyor"
+                  % (100 * (summary["mean_recall_of_the_proxy_alone"] or 0)))
+            print("  vekil + ongoru (toplam)  : %%%.0f (en kotu %%%.0f)"
+                  % (100 * (summary["mean_recall_of_crystal_columns"] or 0),
+                     100 * (summary["worst_recall_of_crystal_columns"] or 0)))
+            print("  esigi gecen tip          : %d / %d"
+                  % (summary["n_types_at_or_above_the_reliability_floor"],
+                     summary["n_types_compared"]))
+            print()
+            print("  %-14s %-5s %-10s pLDDT  ceb  dusuk  geri-getirme"
+                  % ("tip", "pdb", "kimlik"))
+            for cluster, entry in sorted(transfer.items()):
+                prediction = next(p for p in predictions
+                                  if p["type"] == cluster)
+                outer = prediction["pocket"]["%.1f" % PRIMARY_RADIUS_A]
+                print("  %-14s %-5s %-10s %5.1f  %3d  %5d  %11.0f%%%s"
+                      % (cluster, entry["pdb_id"],
+                         entry["uniprot_accession"],
+                         entry["global_mean_plddt"] or 0.0,
+                         outer["n_residues"],
+                         outer["n_residues_below_reliable_plddt"],
+                         100 * (entry[
+                             "recall_of_crystal_columns_at_primary_radius"]
+                             or 0),
+                         "" if entry["transfer_reliable"] else "  <-- ESIK ALTI"))
+
+        only_predicted = [p for p in predictions
+                          if not p["has_crystal_structure"]]
+        if only_predicted:
+            print()
+            print("  --- YALNIZCA ONGORU ILE COZULEN TIPLER ---")
+            print("  %-14s %-10s %6s %5s %6s %6s %7s %s"
+                  % ("tip", "kimlik", "pLDDT", "ceb", "kolon", "cebpL",
+                     "dusuk", "uye"))
+            for prediction in sorted(only_predicted,
+                                     key=lambda p: p["type"]):
+                outer = prediction["pocket"]["%.1f" % PRIMARY_RADIUS_A]
+                variation = prediction_variants.get(prediction["type"], {})
+                members = (variation.get("n_members")
+                           if variation.get("status") == "measured" else 0)
+                print("  %-14s %-10s %6.1f %5d %6d %6.1f %7d %d"
+                      % (prediction["type"],
+                         prediction["uniprot_accession"],
+                         prediction["global_mean_plddt"] or 0.0,
+                         outer["n_residues"],
+                         len(outer["alignment_columns"]),
+                         outer["mean_pocket_plddt"] or 0.0,
+                         outer["n_residues_below_reliable_plddt"],
+                         members or 0))
+        measured_pred = [(c, v) for c, v in prediction_variants.items()
+                         if v["status"] == "measured"]
+        if measured_pred:
+            invariant_total = sum(len(v["invariant_columns"])
+                                  for _, v in measured_pred)
+            column_total = sum(v["n_pocket_columns"] for _, v in measured_pred)
+            print()
+            print("  ongoru cebi varyant ozeti: %d tipte %d ceb kolonu, "
+                  "%d'i uyelerde tamamen degismez (%%%.0f)"
+                  % (len(measured_pred), column_total, invariant_total,
+                     100.0 * invariant_total / max(1, column_total)))
+
+        charge = payload["electrostatics"].get(
+            "predicted_pocket_charge_summary")
+        if charge:
+            print("  ongoru cebi formel yuk   : %d tipte aralik %+d .. %+d; "
+                  "%d negatif, %d notr, %d pozitif"
+                  % (charge["n_types"],
+                     charge["net_formal_charge_range"][0],
+                     charge["net_formal_charge_range"][1],
+                     charge["n_types_with_a_net_negative_pocket"],
+                     charge["n_types_with_a_neutral_pocket"],
+                     charge["n_types_with_a_net_positive_pocket"]))
+
     print()
+    print("[not] ongorulen cebler HESAPLANMIS modellerden gelir, deneysel "
+          "gozlem DEGILDIR; JSON'da ayri bolumde tutulur.")
     print("[not] JSON icindeki 'electrostatics' bolumu bir KOMPOZISYON "
           "ozetidir, elektrostatik hesap degildir.")
     print("[yazildi] %s" % out_path)

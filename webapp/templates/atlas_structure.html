@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Active site{% endblock %}
+{% set page_id = 'structure' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>The active site, and how much of it varies</h1>
+<p class="lede">Every page before this one reasons about sequence. This one puts the sequence into
+three dimensions: which residues actually line the pocket around the catalytic iron, and which of
+them change between the members of a type.</p>
+
+{% if site %}
+<h2>1 · Telling the two irons apart</h2>
+<p>A Rieske oxygenase carries two iron sites and they must not be confused. The Rieske centre is an
+iron pair bridged by inorganic sulfur, held by two cysteines and two histidines; the catalytic
+centre is a single iron held by two histidines and a carboxylate, with no sulfur. They were
+separated by that geometry rather than by trusting the file's labels, in all
+{{ site.coverage.types_with_catalytic_iron_resolved }} types that have a structure.</p>
+<div class="tablewrap"><table class="data compact">
+<tbody>
+<tr><td>Types with a deposited structure</td><td class="num">{{ site.coverage.types_with_pdb_identifier }} of {{ site.coverage.types_in_chemistry_csv }}</td></tr>
+<tr><td>Distinct structures behind them</td><td class="num">{{ site.coverage.distinct_pdb_entries }}</td></tr>
+<tr><td>Catalytic iron located</td><td class="num">{{ site.coverage.types_with_catalytic_iron_resolved }}</td></tr>
+<tr><td>Catalytic triad landing on the expected alignment columns</td><td class="num">{{ site.coverage.types_with_catalytic_triad_verified_at_exact_columns }} exactly, {{ site.coverage.types_with_catalytic_triad_verified_within_window }} within the search window</td></tr>
+<tr><td>Pockets added from predicted models</td><td class="num">{{ site.n_predicted }}<span class="unit"> {{ site.n_predicted_failed }} could not be mapped</span></td></tr>
+</tbody></table></div>
+<p class="note">The four types that need the search window are the OxoO, OMO, CARDO and CarAa group.
+The profile had always tolerated an odd residue at one catalytic column in those four; the crystals
+show why. Their second catalytic histidine sits one column earlier, so it is an alignment shift in
+that subfamily rather than a missing residue.</p>
+
+<h2>2 · Pockets for the types with no crystal, and whether they can be trusted</h2>
+<p>Most types have never been crystallised. Their structures were not folded here; AlphaFold has
+already modelled them, and each model was accepted only when its sequence matched the curated one
+character for character. A predicted model contains no metal, so the pocket cannot be found by
+asking what sits near the iron. It is placed instead at the centre of the catalytic triad, which
+alignment locates reliably.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Test on the {{ site.validation.n_types_compared }} types that have both</th><th class="num">Result</th></tr></thead>
+<tbody>
+<tr><td>Distance from the triad centre to the real iron</td>
+    <td class="num">{{ site.validation.mean_centroid_to_iron_distance_A }} Å mean, {{ site.validation.worst_centroid_to_iron_distance_A }} Å worst</td></tr>
+<tr><td>Pocket recovered using the centre instead of the iron, inside the same crystal</td>
+    <td class="num">{{ '%.0f %%' % (100 * site.validation.mean_recall_of_the_proxy_alone) }}</td></tr>
+<tr><td>Pocket recovered using the centre <em>and</em> the predicted model</td>
+    <td class="num">{{ '%.0f %%' % (100 * site.validation.mean_recall_of_crystal_columns) }}</td></tr>
+<tr><td>Types reaching the reliability floor</td>
+    <td class="num">{{ site.validation.n_types_at_or_above_the_reliability_floor }} of {{ site.validation.n_types_compared }}</td></tr>
+</tbody></table></div>
+<figcaption><b>The two numbers in the middle are the point.</b> Replacing the iron with the triad
+centre already costs most of what is lost, and going on to use a predicted structure costs almost
+nothing more. So the predicted pockets are limited by having no metal, not by the prediction being
+wrong. Where a crystal exists it is used in preference, and the predicted pockets are kept separate
+throughout.</figcaption>
+</figure>
+
+<h2>3 · Which pocket positions never change, and which do</h2>
+<p>Within {{ site.parameters.get('pocket_radius_primary_A', 8) }} Å of the iron the pocket is 16 to
+24 residues. The table counts, for each type, how many of its pocket columns are the same residue in
+every member and how many vary.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type…">
+<thead><tr><th>Type</th><th>Pocket from</th><th class="num">Members</th>
+<th class="num">Pocket columns</th><th class="num">Invariant</th><th class="num">Variable</th>
+<th class="num">Share invariant</th></tr></thead>
+<tbody>
+{% for r in site.variation %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="small">{% if r.source == 'crystal' %}crystal structure{% else %}<span class="note">predicted model</span>{% endif %}</td>
+  <td class="num" data-v="{{ r.members }}">{{ r.members|fmt }}</td>
+  <td class="num" data-v="{{ r.columns }}">{{ r.columns }}</td>
+  <td class="num" data-v="{{ r.invariant }}">{{ r.invariant }}</td>
+  <td class="num" data-v="{{ r.variable }}">{{ r.variable }}</td>
+  <td class="num" data-v="{{ r.invariant_share }}">{{ '%.0f %%' % (100 * r.invariant_share) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><b>Read the bottom of the table first.</b> In the largest and most heterogeneous
+types almost nothing but the metal ligands is fixed. That is the structural counterpart of what the
+<a href="{{ u('/atlas/closeness') }}">closeness page</a> shows from sequence alone: a type is a
+region of sequence space, and only the residues that hold the iron are common to all of it. A
+column that varies is not necessarily functional, because most members are distant relatives whose
+reaction is unknown, so variation there may be heterogeneity rather than tuning.</p>
+
+<h2>4 · What the pocket is made of</h2>
+<p>This is a composition count, not an electrostatic calculation. No Poisson-Boltzmann solver was
+run and no pKa was estimated. {{ site.not_electrostatics }}</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th>Structure</th><th>Substrate</th><th class="num">Pocket residues</th>
+<th class="num">Acidic</th><th class="num">Basic</th><th class="num">Aromatic</th>
+<th class="num">Net charge</th><th class="num">Without the iron ligands</th></tr></thead>
+<tbody>
+{% for r in site.charge %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="mono small">{{ r.pdb }}</td><td class="small">{{ r.substrate }}</td>
+  <td class="num">{{ r.residues }}</td><td class="num">{{ r.acidic }}</td>
+  <td class="num">{{ r.basic }}</td><td class="num">{{ r.aromatic }}</td>
+  <td class="num" data-v="{{ r.net }}">{{ r.net }}</td>
+  <td class="num" data-v="{{ r.net_excl }}">{{ r.net_excl }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Every pocket carries a net negative charge</b>, in all
+{{ site.charge|length }} crystal structures. The pattern across substrate families runs against the
+obvious expectation and is a reason to distrust the measure rather than a finding: the enzymes
+acting on quaternary amines, whose substrates carry a permanent positive charge, have the
+<em>least</em> anionic pockets, while those acting on neutral aromatics are the most anionic. Two
+things confound it. The acidic count is largely set by the carboxylates that hold the iron, which is
+why the last column repeats it with those removed. And substrate family is tangled with
+phylogenetic group, since every quaternary-amine enzyme here belongs to group 5.</figcaption>
+</figure>
+
+<h2>5 · What this cannot tell you</h2>
+<ul>
+{% for item in site.limitations[:8] %}<li>{{ item }}</li>{% endfor %}
+</ul>
+<p class="dl"><a class="btn" href="{{ u('/download/analysis/active_site.json') }}">Full structural output (JSON)</a></p>
+{% else %}
+<p class="note">The structural analysis has not been run for this build.</p>
+{% endif %}
+{% endblock %}
