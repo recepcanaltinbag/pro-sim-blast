@@ -748,7 +748,39 @@ def _defs(marker_id="rxarrow"):
             '<path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>')
 
 
-def reaction_scheme_svg(kind, width=300, height=96):
+# Reaksiyon semalarinin ACIKLAMA cumleleri. SVG'nin ICINDE DEGIL burada
+# duruyorlar ve sayfada HTML olarak yaziliyorlar. Sebep olculdu: cumleler SVG
+# icinde sabit x konumlarina yaziliyordu ve ornegin "cis-diol, ring no longer
+# aromatic" etiketi x=196'dan baslayip yaklasik 340 piksele uzaniyordu, oysa
+# viewBox 300 piksel genisti. Sonuc: metin ya kirpiliyor ya da alttaki satirla
+# ust uste biniyordu. HTML metni kendiliginden satir kirar, olceklenir ve
+# secilebilir; SVG'de her satirin yerini elle hesaplamak gerekir. Cizim SVG'nin
+# isi, kelime HTML'in isi.
+REACTION_SCHEME_NOTE = {
+    "cis_dihydroxylation":
+        "Both oxygen atoms are added to the same face of the ring, giving a "
+        "cis-diol. The ring is no longer aromatic.",
+    "angular_dioxygenation":
+        "The attack is at the ring junction, so the fused ring system comes "
+        "apart rather than simply gaining hydroxyls.",
+    "dioxygenation_with_release":
+        "The substituent leaves during the reaction, as nitrite, a halide, "
+        "sulfite, ammonia or carbon dioxide.",
+    "O_demethylation":
+        "The methyl group is released as formaldehyde, leaving a free phenol.",
+    "N_demethylation":
+        "One methyl group is removed per catalytic cycle and released as "
+        "formaldehyde.",
+    "hydroxylation":
+        "One oxygen atom is inserted into the substrate; the other is reduced "
+        "to water.",
+    "C_N_cleavage":
+        "The carbon-nitrogen bond is broken, releasing the amine and leaving "
+        "an aldehyde.",
+}
+
+
+def reaction_scheme_svg(kind, width=262, height=86):
     """Reaksiyon sinifi icin genel mekanizma semasi."""
     r, cy = 19, 46
     # Tekil marker id: ayni sayfadaki yedi sema ayni id'yi paylasmasin.
@@ -758,45 +790,32 @@ def reaction_scheme_svg(kind, width=300, height=96):
     if kind == "cis_dihydroxylation":
         body = (_arene(34, cy, r) + arrow(62, cy, 58, "O₂, NAD(P)H")
                 + _arene(150, cy, r, aromatic=False, saturated=(4, 5),
-                         subs=[(4, "OH"), (5, "OH")])
-                + '<text x="196" y="50" font-size="9" fill="currentColor">cis-diol, '
-                  'ring no longer aromatic</text>')
+                         subs=[(4, "OH"), (5, "OH")]))
     elif kind == "angular_dioxygenation":
         body = (_arene(30, cy, r) + _arene(30 + r * 1.73, cy, r)
                 + f'<circle cx="{30 + r * 0.87:.1f}" cy="{cy}" r="3" fill="#8c2f22"/>'
                 + arrow(96, cy, 52, "O₂, NAD(P)H")
                 + _arene(176, cy, r, subs=[(1, "OH")])
-                + _arene(176 + r * 1.9, cy, r, subs=[(4, "OH")])
-                + '<text x="150" y="80" font-size="9" fill="currentColor">attack at the ring '
-                  'junction, so the fused system falls apart</text>')
+                + _arene(176 + r * 1.9, cy, r, subs=[(4, "OH")]))
     elif kind == "dioxygenation_with_release":
         body = (_arene(34, cy, r, subs=[(0, "X")]) + arrow(62, cy, 58, "O₂, NAD(P)H", "− X")
-                + _arene(150, cy, r, aromatic=True, subs=[(0, "OH"), (1, "OH")])
-                + '<text x="196" y="50" font-size="9" fill="currentColor">X leaves as nitrite,</text>'
-                + '<text x="196" y="62" font-size="9" fill="currentColor">halide, sulfite, NH₃ or CO₂</text>')
+                + _arene(150, cy, r, aromatic=True, subs=[(0, "OH"), (1, "OH")]))
     elif kind == "O_demethylation":
         body = (_arene(34, cy, r, subs=[(0, "OCH₃")]) + arrow(76, cy, 54, "O₂, NAD(P)H", "− HCHO")
-                + _arene(164, cy, r, subs=[(0, "OH")])
-                + '<text x="204" y="50" font-size="9" fill="currentColor">free phenol plus</text>'
-                + '<text x="204" y="62" font-size="9" fill="currentColor">formaldehyde</text>')
+                + _arene(164, cy, r, subs=[(0, "OH")]))
     elif kind == "N_demethylation":
         body = ('<text x="18" y="52" font-size="13" fill="currentColor">R₂N–CH₃</text>'
                 + arrow(86, cy, 54, "O₂, NAD(P)H", "− HCHO")
-                + '<text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text>'
-                + '<text x="204" y="50" font-size="9" fill="currentColor">one methyl removed</text>'
-                + '<text x="204" y="62" font-size="9" fill="currentColor">per reaction cycle</text>')
+                + '<text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text>')
     elif kind == "hydroxylation":
         body = ('<text x="22" y="52" font-size="13" fill="currentColor">R–CH</text>'
                 + arrow(74, cy, 54, "O₂, NAD(P)H", "+ H₂O")
-                + '<text x="138" y="52" font-size="13" fill="currentColor">R–C–OH</text>'
-                + '<text x="200" y="50" font-size="9" fill="currentColor">one oxygen atom inserted,</text>'
-                + '<text x="200" y="62" font-size="9" fill="currentColor">the other reduced to water</text>')
+                + '<text x="138" y="52" font-size="13" fill="currentColor">R–C–OH</text>')
     elif kind == "C_N_cleavage":
         body = ('<text x="12" y="52" font-size="13" fill="currentColor">R–CH₂–N⁺(CH₃)₃</text>'
                 + arrow(116, cy, 50, "O₂, NAD(P)H")
                 + '<text x="172" y="46" font-size="11" fill="currentColor">R–CHO</text>'
-                + '<text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text>'
-                + '<text x="232" y="52" font-size="9" fill="currentColor">C–N bond broken</text>')
+                + '<text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text>')
     else:
         return ""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '

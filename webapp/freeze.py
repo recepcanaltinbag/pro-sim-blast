@@ -134,6 +134,94 @@ def main():
     print(f"[done] {out}")
 
 
+
+def write_fallback_pages(out, A):
+    """Adresi elle yazan ya da eski bir baglantiyi takip eden okuyucu icin.
+
+    NEDEN. Yayindaki site olculdu: `/classify` ve `/classify.html` 404
+    donuyordu, cunku dizi siniflandirici sunucu gerektiriyor ve statik ihracata
+    hic girmiyor. Gezinme cubugu baglantiyi gizliyor ama ADRES tahmin edilebilir
+    ve eski derlemelerde vardi, yani yer imi olan biri bos bir GitHub 404
+    sayfasina dusuyor. Ayni sekilde `/atlas/` (sondaki egik cizgiyle) 404
+    donuyordu, `/atlas` ise 200: Pages, egik cizgili yolda `index.html` ariyor.
+    Ve sitenin HIC 404 sayfasi yoktu, dolayisiyla yanlis bir adres okuyucuyu
+    siteden tamamen cikariyordu.
+
+    Uc sayfa yazilir: bir 404, siteye donus yollariyla; bir `classify` sayfasi,
+    neden burada calismadigini ve nerede calistigini soyleyen; ve her atlas
+    sayfasi icin egik cizgili surumun karsiligi.
+    """
+    def page(title, heading, body):
+        return (f'<!doctype html><html lang="en"><head><meta charset="utf-8">'
+                f'<meta name="viewport" content="width=device-width, initial-scale=1">'
+                f'<title>{title} · ROAR-DB</title>'
+                f'<link rel="stylesheet" href="{A.BASE}/static/style.css"></head><body>'
+                f'<header class="top"><a class="brand" href="{A.BASE}/index.html">'
+                f'<span class="brand__mark">RO</span> ROAR-DB</a>'
+                f'<nav><a href="{A.BASE}/atlas.html">Atlas</a>'
+                f'<a href="{A.BASE}/clusters.html">Types</a>'
+                f'<a href="{A.BASE}/search.html">Search</a>'
+                f'<a href="{A.BASE}/about.html">Methods</a></nav></header>'
+                f'<main><h1>{heading}</h1>{body}</main></body></html>')
+
+    links = (f'<ul><li><a href="{A.BASE}/index.html">Home: the shared architecture, the '
+             f'reactions and the enzyme types grouped by chemistry</a></li>'
+             f'<li><a href="{A.BASE}/search.html">Search by organism, protein identifier, '
+             f'enzyme type or a chemical</a></li>'
+             f'<li><a href="{A.BASE}/clusters.html">Every enzyme type</a></li>'
+             f'<li><a href="{A.BASE}/atlas.html">Atlas: phylogeny, sequence space, ecology, '
+             f'operons, regulation, evidence and the statistics</a></li>'
+             f'<li><a href="{A.BASE}/about.html">Methods, with every threshold and its '
+             f'justification</a></li></ul>')
+
+    with open(os.path.join(out, "404.html"), "w") as fh:
+        fh.write(page("Page not found", "That page is not here",
+                      '<p class="lede">The address does not match any page of this database. '
+                      'Two common reasons: a link from an older version of the site, or a '
+                      'trailing slash. Everything below is a working entry point.</p>'
+                      + links +
+                      '<p class="note">If you reached this from a link inside the site, that is '
+                      'a fault worth reporting, because every internal link is checked '
+                      'automatically before each release.</p>'))
+
+    # Siniflandirici: 404 yerine NEDEN burada olmadigini soyleyen bir sayfa.
+    with open(os.path.join(out, "classify.html"), "w") as fh:
+        fh.write(page("Classify a sequence", "Classifying your own sequence",
+                      '<p class="lede">This page needs a server and the published site does not '
+                      'have one, so the classifier is not available here.</p>'
+                      '<p>Classification runs the same two tests every entry in this database '
+                      'passed: profile coverage against the 71 reference models, and a direct '
+                      'check of the eight catalytic-centre columns. Both require HMMER, which '
+                      'cannot run in a browser.</p>'
+                      '<h2>Where it does run</h2>'
+                      '<p>The full application, including the classifier and the faceted '
+                      'full-text search, is in the repository with a Dockerfile. Running it '
+                      'locally gives the complete feature set over the same database.</p>'
+                      '<pre>git clone https://github.com/recepcanaltinbag/pro-sim-blast\n'
+                      'cd pro-sim-blast/webapp\n'
+                      'docker build -t roar-db . &amp;&amp; docker run -p 8000:8000 roar-db</pre>'
+                      '<h2>What you can do here instead</h2>'
+                      f'<p>If you have a protein identifier or an organism, the '
+                      f'<a href="{A.BASE}/search.html">search</a> will find it among the '
+                      f'11,422 confirmed entries. If you want to know what defines membership, '
+                      f'the <a href="{A.BASE}/about.html">methods page</a> gives every '
+                      f'threshold and the measurement behind it.</p>'))
+
+    # Egik cizgili atlas adresleri: Pages bu yolda index.html ariyor.
+    for name in ("atlas", "cluster", "leaf", "ro", "download"):
+        folder = os.path.join(out, name)
+        if not os.path.isdir(folder):
+            continue
+        target = f"{A.BASE}/{name}.html" if name == "atlas" else f"{A.BASE}/index.html"
+        with open(os.path.join(folder, "index.html"), "w") as fh:
+            fh.write('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+                     f'<meta http-equiv="refresh" content="0; url={target}">'
+                     f'<link rel="canonical" href="{target}">'
+                     '<title>Redirecting · ROAR-DB</title></head><body>'
+                     f'<p>Redirecting to <a href="{target}">{target}</a>.</p>'
+                     '</body></html>')
+    print("[pages] 404, classify notice and directory redirects")
+
 def write_search_index(con, out, A):
     """Client-side index plus the static search page.
 
@@ -190,6 +278,7 @@ def write_search_index(con, out, A):
         fh.write(SEARCH_PAGE.replace("__BASE__", A.BASE)
                             .replace("__CHEM__", json.dumps(chem, separators=(",", ":"))))
     print(f"   {len(data)} entries indexed, {len(chem)} types with chemistry")
+    write_fallback_pages(out, A)
 
 
 SEARCH_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">

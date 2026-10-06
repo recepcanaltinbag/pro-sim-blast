@@ -69,6 +69,67 @@ def visible_text(html):
     return re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
 
 
+def check_live_site(base, max_pages=400, workers=8):
+    """YAYINDAKI siteyi HTTP uzerinden gezer ve 404 donen baglantilari bulur.
+
+    Yerel derlemeyi denetlemek yetmiyor. Kullanici yayindaki sitede
+    "not found" goruyordu ve bunun iki ayri sebebi olabilir: dosya ihracata
+    hic girmemistir, ya da GitHub Pages henuz eski derlemeyi sunuyordur.
+    Ikisi de yalnizca CANLI adrese bakarak ayirt edilebilir.
+
+    Gezinme anasayfadan baslar ve yalnizca site ICINDEKI baglantilari izler;
+    dis baglantilar denenmez. Sayfa sayisi sinirlidir, cunku 13 bin sayfayi
+    her kosuda cekmek hem yavas hem gereksiz: kirik baglantilar sablonlardan
+    gelir ve ilk birkac yuz sayfada ortaya cikar.
+    """
+    import concurrent.futures
+    import urllib.error
+    import urllib.parse
+    import urllib.request
+
+    base = base.rstrip("/")
+    root = urllib.parse.urlsplit(base)
+    prefix = root.path.rstrip("/")
+
+    def fetch(url):
+        request = urllib.request.Request(url, headers={"User-Agent": "roar-db-check"})
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                body = response.read()
+                ctype = response.headers.get("Content-Type", "")
+                text = body.decode("utf-8", "replace") if "html" in ctype else ""
+                return url, response.status, text
+        except urllib.error.HTTPError as exc:
+            return url, exc.code, ""
+        except Exception as exc:                       # aglar kopar, bu bir bulgu degil
+            return url, f"error: {exc}", ""
+
+    seen = {base + "/"}
+    queue = [base + "/"]
+    broken, checked, pages = [], 0, 0
+    while queue and pages < max_pages:
+        batch, queue = queue[:workers], queue[workers:]
+        with concurrent.futures.ThreadPoolExecutor(workers) as pool:
+            for url, status, text in pool.map(fetch, batch):
+                checked += 1
+                if status != 200:
+                    broken.append((url, status))
+                    continue
+                if not text:
+                    continue
+                pages += 1
+                for href in set(HREF_RE.findall(TAGS_RE.sub(" ", text))):
+                    if href.startswith(("http", "mailto:", "//", "javascript:", "data:")):
+                        continue
+                    target = urllib.parse.urljoin(url, href).split("#")[0]
+                    if not target.startswith(base + "/") and target != base:
+                        continue
+                    if target not in seen:
+                        seen.add(target)
+                        queue.append(target)
+    return broken, checked, pages
+
+
 def check_search_parity(root, client):
     """Yayinlanan aramanin bir KIMYASALI bulabildigini dogrular.
 
@@ -197,6 +258,11 @@ def main():
                         help="yayinlanan statik sitenin klasoru")
     parser.add_argument("--skip-static", action="store_true",
                         help="statik site denetimini atla")
+    parser.add_argument("--live", nargs="?",
+                        const="https://recepcanaltinbag.github.io/pro-sim-blast",
+                        help="YAYINDAKI siteyi HTTP uzerinden gez ve 404 ara")
+    parser.add_argument("--live-pages", type=int, default=400,
+                        help="canli gezinmede en fazla kac sayfa cekilsin")
     args = parser.parse_args()
 
     from fastapi.testclient import TestClient
@@ -296,6 +362,19 @@ def main():
         print(f"\n[FAIL] Turkish text in {len(data_turkish)} published data file(s)")
         for name, words in data_turkish[:20]:
             print(f"        {name}: {', '.join(words[:6])}")
+
+    live_problems = []
+    if args.live:
+        live_problems, live_checked, live_pages = check_live_site(
+            args.live, max_pages=args.live_pages)
+        print(f"  live URLs fetched        {live_checked} ({live_pages} HTML pages)")
+        print(f"  live broken links        {len(live_problems)}")
+
+    if live_problems:
+        problems += len(live_problems)
+        print(f"\n[FAIL] {len(live_problems)} live URL(s) did not return 200")
+        for url, status in live_problems[:20]:
+            print(f"        {status}  {url}")
 
     if search_problems:
         problems += len(search_problems)

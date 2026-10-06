@@ -1035,6 +1035,9 @@ templates.env.globals.update(
     hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
     reaction_scheme_svg=atlas.reaction_scheme_svg,
+    # Sema aciklamalari SVG'nin icinde degil: orada sabit x konumlarina
+    # yazilinca kirpiliyorlardi. Sayfada HTML olarak yaziliyorlar.
+    REACTION_SCHEME_NOTE=atlas.REACTION_SCHEME_NOTE,
     gap_histogram=atlas.gap_histogram,
     amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
     TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,

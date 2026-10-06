@@ -90,6 +90,9 @@
       <div class="rxn__below">{{ chem.reaction }}</div>
     </div>
     <div class="rxn__scheme">{{ reaction_scheme_svg(chem.reaction_class)|safe }}
+      {% if REACTION_SCHEME_NOTE.get(chem.reaction_class) %}
+      <div class="rxnote">{{ REACTION_SCHEME_NOTE[chem.reaction_class] }}</div>
+      {% endif %}
       <div class="rxn__label">how this reaction class works, in general</div></div>
     <div class="rxn__side">
       <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
@@ -395,25 +398,7 @@ target. A variant is the finest unit at which a distinct function can reasonably
 
 {% block scripts %}
 <script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
-<script>
-(function () {
-  const els = document.querySelectorAll('svg.struct[data-smiles]');
-  if (!els.length || typeof SmilesDrawer === 'undefined') return;
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const drawer = new SmilesDrawer.SvgDrawer({width: 210, height: 165, bondThickness: 1.1,
-    bondLength: 18, terminalCarbons: false, padding: 6});
-  const fallback = function (el) {
-    el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
-    el.remove();
-  };
-  els.forEach(function (el) {
-    try {
-      SmilesDrawer.parse(el.dataset.smiles, t => drawer.draw(t, el, dark ? 'dark' : 'light', false),
-        () => fallback(el));
-    } catch (e) { fallback(el); }
-  });
-})();
-</script>
+<script src="{{ u('/static/structures.js') }}"></script>
 
 {% if chem and chem.pdb %}
 {#  3Dmol.js is loaded with async + onerror so a blocked or slow CDN leaves the

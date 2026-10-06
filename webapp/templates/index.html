@@ -323,7 +323,10 @@ the whole story.</p>
 {% for r in reactions %}
 <tr><td><span class="chip" style="background:{{ r.color }};color:#fff;border:0">{{ r.label }}</span></td>
     <td class="num" data-v="{{ r.types }}">{{ r.types }}</td><td class="num" data-v="{{ r.members }}">{{ r.members|fmt }}</td>
-    <td>{{ reaction_scheme_svg(r.key)|safe }}</td>
+    <td class="rxcell">{{ reaction_scheme_svg(r.key)|safe }}
+      {% if REACTION_SCHEME_NOTE.get(r.key) %}
+      <div class="rxnote">{{ REACTION_SCHEME_NOTE[r.key] }}</div>
+      {% endif %}</td>
     <td class="small">{{ r.note }}</td></tr>
 {% endfor %}
 </tbody></table></div>
@@ -394,26 +397,5 @@ duplicate entries in the reference set, rather than of the literature.
 
 {% block scripts %}
 <script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
-<script>
-(function () {
-  const els = document.querySelectorAll('svg.struct[data-smiles]');
-  if (!els.length || typeof SmilesDrawer === 'undefined') return;
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const drawer = new SmilesDrawer.SvgDrawer({
-    width: 190, height: 150, bondThickness: 1.1, bondLength: 17, atomVisualization: 'default',
-    terminalCarbons: false, explicitHydrogens: false, compactDrawing: false, padding: 6
-  });
-  const fallback = function (el) {
-    el.insertAdjacentHTML('afterend', '<div class="struct struct--none">structure<br>not drawn</div>');
-    el.remove();
-  };
-  els.forEach(function (el) {
-    try {
-      SmilesDrawer.parse(el.dataset.smiles, function (tree) {
-        drawer.draw(tree, el, dark ? 'dark' : 'light', false);
-      }, function () { fallback(el); });
-    } catch (e) { fallback(el); }
-  });
-})();
-</script>
+<script src="{{ u('/static/structures.js') }}"></script>
 {% endblock %}
