@@ -149,6 +149,19 @@
       <button type="button" data-style="trace">Backbone</button>
       {% if x.site %}<button type="button" data-style="site">Active site only</button>{% endif %}
     </span>
+    {% if x.site %}
+    {#  Katmanlar ayri ayri acilip kapanir: hepsini birden gostermek aktif
+        bolgeyi okunmaz hale getiriyor, hicbirini gostermemek de soruyu
+        cevaplamiyor. Varsayilan secim "ne baglaniyor ve neye" sorusunu
+        cevaplayacak kadar, kalabalik etmeyecek kadar.                     #}
+    <span class="pdbbar__layers" id="pdblayers" hidden>
+      <label><input type="checkbox" id="lay-pocket" checked> pocket residues</label>
+      <label><input type="checkbox" id="lay-bonds" checked> metal bonds</label>
+      <label><input type="checkbox" id="lay-ligand" checked> bound molecules</label>
+      <label><input type="checkbox" id="lay-labels"> distances</label>
+      <label><input type="checkbox" id="lay-chain" checked> protein outline</label>
+    </span>
+    {% endif %}
   </div>
   {% if x.site %}
   <details class="sitelist">
@@ -552,31 +565,58 @@ target. A variant is the finest unit at which a distinct function can reasonably
       zincir cok soluk bir iz olarak kalir ki bolgenin proteinin NERESINDE
       oldugu kaybolmasin. Koordinasyon baglari kesikli cizgiyle, mesafeleriyle
       birlikte gosterilir -- kullanicinin istedigi "etkilesimler" budur.      */
+  function layerOn(id) {
+    var el = document.getElementById(id);
+    return el ? el.checked : true;
+  }
+
   function showActiveSite() {
     if (!SITE) return;
     var faint = dark ? '#39434f' : '#c4ccd6';
-    viewer.setStyle({}, { cartoon: { color: faint, opacity: 0.35, thickness: 0.15 } });
+    viewer.setStyle({}, {});                       /* once her seyi temizle */
+    if (layerOn('lay-chain')) {
+      viewer.setStyle({}, { cartoon: { color: faint, opacity: 0.35, thickness: 0.15 } });
+    }
 
     var nums = SITE.residues.map(function (r) { return parseInt(r.number, 10); })
                             .filter(function (n) { return !isNaN(n); });
     var sel = { chain: SITE.iron_chain, resi: nums };
-    viewer.setStyle(sel, { stick: { radius: 0.17, colorscheme: 'default' } });
+    if (layerOn('lay-pocket')) {
+      viewer.setStyle(sel, { stick: { radius: 0.17, colorscheme: 'default' } });
+    }
 
     /* Demiri tutan uc kalinti vurgulanir: bu grubun tanimi odur. */
     var ligNums = (SITE.contacts || []).map(function (c) {
       var m = /\/([A-Z]{3})(\d+):/.exec(c.atom);
       return m ? parseInt(m[2], 10) : null;
     }).filter(Boolean);
-    if (ligNums.length) {
+    if (ligNums.length && layerOn('lay-pocket')) {
       viewer.setStyle({ chain: SITE.iron_chain, resi: ligNums },
                       { stick: { radius: 0.24, color: dark ? '#e0a96d' : '#9a5b18' } });
+    }
+
+    /*  BAGLI MOLEKULLER. Kristalde demirin yakininda duran her protein-disi
+        grup gosterilir: bazilarinda substrat analogu, bazilarinda dogrudan
+        molekuler oksijen var. Secim 3Dmol'un `within` secicisiyle yapiliyor,
+        yani kristalizasyon katkilari uzakta kaldigi icin kendiliginden
+        eleniyor; sunucuda ayrica geometri hesaplamak gerekmedi. Su ve basit
+        iyonlar acikca disarida. */
+    if (layerOn('lay-ligand')) {
+      var skip = ['HOH', 'WAT', 'NA', 'CL', 'MG', 'CA', 'ZN', 'K', 'SO4', 'PO4',
+                  'GOL', 'EDO', 'ACT', 'MPD', 'PEG', 'DMS', 'NO3', 'FE', 'FE2',
+                  'FES', 'SF4'];
+      var near = { within: { distance: 9.0, sel: { resn: ['FE', 'FE2'] } },
+                   hetflag: true, not: { resn: skip } };
+      viewer.setStyle(near, { stick: { radius: 0.22, colorscheme: 'greenCarbon' } });
+      viewer.addStyle(near, { sphere: { scale: 0.22 } });
     }
 
     viewer.setStyle({ resn: ['FE', 'FE2'] }, { sphere: { scale: 0.5, color: '#b5503f' } });
     viewer.setStyle({ resn: ['FES', 'SF4'] }, { sphere: { scale: 0.32 } });
 
     /* Koordinasyon baglari: demirden her baglanan atoma kesikli cizgi. */
-    var ironAtoms = viewer.selectedAtoms({ resn: ['FE', 'FE2'], chain: SITE.iron_chain });
+    var ironAtoms = layerOn('lay-bonds')
+      ? viewer.selectedAtoms({ resn: ['FE', 'FE2'], chain: SITE.iron_chain }) : [];
     if (ironAtoms.length) {
       var fe = ironAtoms[0];
       (SITE.contacts || []).forEach(function (c) {
@@ -588,6 +628,7 @@ target. A variant is the finest unit at which a distinct function can reasonably
         viewer.addLine({ start: { x: fe.x, y: fe.y, z: fe.z },
                          end: { x: target[0].x, y: target[0].y, z: target[0].z },
                          dashed: true, color: dark ? '#e8e6e1' : '#15202b', linewidth: 2 });
+        if (!layerOn('lay-labels')) return;
         viewer.addLabel(c.distance.toFixed(2) + ' A',
           { position: { x: (fe.x + target[0].x) / 2, y: (fe.y + target[0].y) / 2,
                         z: (fe.z + target[0].z) / 2 },
@@ -604,6 +645,9 @@ target. A variant is the finest unit at which a distinct function can reasonably
   function applyStyle(name) {
     viewer.removeAllLabels();
     viewer.removeAllShapes();
+    host.dataset.mode = name;
+    var layers = document.getElementById('pdblayers');
+    if (layers) layers.hidden = (name !== 'site');
     if (name === 'site') { showActiveSite(); return; }
     viewer.setStyle({}, styles[name] || styles.cartoon);
     /* keep the two metal centres visible: they are the point of this family */
@@ -621,6 +665,16 @@ target. A variant is the finest unit at which a distinct function can reasonably
         viewer.zoomTo();
         viewer.render();
         note.hidden = true;
+        var layers = document.getElementById('pdblayers');
+        if (layers) {
+          layers.addEventListener('change', function () {
+            if (host.dataset.mode === 'site') {
+              viewer.removeAllLabels();
+              viewer.removeAllShapes();
+              showActiveSite();
+            }
+          });
+        }
         if (bar) {
           bar.hidden = false;
           bar.addEventListener('click', function (e) {

@@ -287,6 +287,25 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
 .rxcell { min-width: 250px; }
 .rxnscheme { display: block; }
 
+/* Goruntuleyici katman anahtarlari: grafigin ustundeki kontrol seridi.
+   Dugmelerle ayni satirda durur ama onlardan ayirt edilir, cunku biri
+   GORUNUMU secer, otekiler o gorunumun KATMANLARINI acip kapar. */
+.pdbbar__layers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  align-items: center;
+  font-size: .8rem;
+  color: var(--dim);
+  padding-left: var(--s3);
+  margin-left: var(--s2);
+  border-left: 1px solid var(--rule);
+}
+.pdbbar__layers label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+@media (max-width: 700px) {
+  .pdbbar__layers { padding-left: 0; margin-left: 0; border-left: 0; width: 100%; }
+}
+
 /* Aktif bolge kalinti listesi: varsayilan olarak KAPALI, cunku sayfanin asil
    konusu degil, ama goruntuleyici yuklenemezse bilgi yine de burada. */
 .sitelist { margin: var(--s3) 0; }
