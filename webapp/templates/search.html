@@ -89,7 +89,7 @@ asterisk for a prefix, and OR between alternatives. Example:
         <td><i>{{ m.organism }}</i>{% if m.domain and m.domain != 'Bacteria' %} <span class="chip">{{ m.domain }}</span>{% endif %}</td>
         <td class="small">{{ m.product }}</td>
         <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ gene(m.ro_cluster) }}</a></td>
-        <td>{% if m.tier %}<span class="chip" style="background:{{ TIER_COLORS[m.tier] }};color:{{ chip_text(TIER_COLORS[m.tier]) }};border:0">{{ m.tier.replace('_',' ') }}</span>{% endif %}</td>
+        <td>{% if m.tier %}<span class="chip chip--data" style="--chip:{{ TIER_COLORS[m.tier] }}">{{ m.tier.replace('_',' ') }}</span>{% endif %}</td>
         <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
         <td class="small mono">{{ m.layout or '' }}</td>
       </tr>

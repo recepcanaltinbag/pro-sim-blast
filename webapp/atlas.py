@@ -9,6 +9,7 @@ import functools
 import html
 import json
 import os
+import re
 from collections import Counter, defaultdict
 
 GROUP_COLORS = {"1": "#c0392b", "2": "#8e44ad", "3": "#2980b9", "4": "#27ae60",
@@ -269,6 +270,56 @@ def assignment_agreement(con):
             "mean_identity_to_nearest": round(mean_identity or 0, 1),
         }
     return out
+
+
+# Kaynak alanindaki tanimlayicilar BAGLANTIYA cevrilir. Alan serbest metin:
+# icinde PDB kimligi, PMID, DOI, PMC numarasi ve bazen duz adres geciyor.
+# Okuyucunun bir referansi takip edebilmesi icin bunlari elle aramasi
+# gerekiyordu; desenler burada tek yerde tanimli, boylece her sayfada ayni
+# sekilde calisiyor.
+_CITATION_PATTERNS = (
+    (re.compile(r"\bPMID[:\s]+(\d{4,9})\b", re.I),
+     lambda m: ("https://pubmed.ncbi.nlm.nih.gov/%s/" % m.group(1), m.group(0))),
+    (re.compile(r"\b(PMC\d{5,9})\b"),
+     lambda m: ("https://pmc.ncbi.nlm.nih.gov/articles/%s/" % m.group(1), m.group(0))),
+    (re.compile(r"\bdoi[:\s]+(10\.\d{4,9}/[^\s,;)\]]+)", re.I),
+     lambda m: ("https://doi.org/%s" % m.group(1), m.group(0))),
+    # PDB kimligi: rakamla baslayan dort karakter. Desen DAR tutuldu, cunku
+    # dort harfli her kelimeyi yapi sanmak yanlis baglantilar uretirdi.
+    (re.compile(r"\bPDB\s+([0-9][A-Za-z0-9]{3})\b"),
+     lambda m: ("https://www.rcsb.org/structure/%s" % m.group(1).upper(), m.group(0))),
+    (re.compile(r"(https?://[^\s,;)\]]+)"),
+     lambda m: (m.group(1), m.group(1))),
+)
+
+
+def linkify_citation(text):
+    """Kaynak metnindeki tanimlayicilari tiklanabilir yapar.
+
+    Metin once KACISLANIR, sonra baglantilar eklenir; ters sirada yapmak
+    uretilen etiketleri de kacislardi.
+    """
+    if not text:
+        return ""
+    escaped = html.escape(str(text))
+    spans = []
+    for pattern, build in _CITATION_PATTERNS:
+        for match in pattern.finditer(escaped):
+            if any(start < match.end() and match.start() < end for start, end, _ in spans):
+                continue          # ust uste binen eslesmeyi atla
+            url, label = build(match)
+            spans.append((match.start(), match.end(), (url, label)))
+    if not spans:
+        return escaped
+    spans.sort()
+    out, cursor = [], 0
+    for start, end, (url, label) in spans:
+        out.append(escaped[cursor:start])
+        out.append(f'<a href="{html.escape(url, quote=True)}" rel="noopener noreferrer" '
+                   f'target="_blank">{label}</a>')
+        cursor = end
+    out.append(escaped[cursor:])
+    return "".join(out)
 
 
 def chip_text(background):

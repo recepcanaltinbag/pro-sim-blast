@@ -16,7 +16,7 @@ and is shown for completeness only.</div>
 <div class="caveat">
   <b>What is known about this protein.</b>
   {% if ev and ev.tier %}
-  <span class="chip" style="background:{{ TIER_COLORS[ev.tier] }};color:{{ chip_text(TIER_COLORS[ev.tier]) }};border:0">{{ ev.tier.replace('_',' ') }}</span>
+  <span class="chip chip--data" style="--chip:{{ TIER_COLORS[ev.tier] }}">{{ ev.tier.replace('_',' ') }}</span>
   {{ TIER_MEANING[ev.tier] }}
   <br>
   Nearest curated reference:

@@ -34,7 +34,7 @@ characterised, which is exactly the case worth looking at.</p>
 <thead><tr><th>Evidence level \\ assignment class</th>{% for c in classes %}<th class="num">{{ c.replace('_',' ') }}</th>{% endfor %}</tr></thead>
 <tbody>
 {% for t in tiers %}
-<tr><td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:{{ chip_text(TIER_COLORS[t]) }};border:0">{{ t.replace('_',' ') }}</span></td>
+<tr><td><span class="chip chip--data" style="--chip:{{ TIER_COLORS[t] }}">{{ t.replace('_',' ') }}</span></td>
   {% for c in classes %}<td class="num {{ 'diff' if t == 'novel' and c == 'core' else '' }}">{{ matrix[(t, c)]|fmt }}</td>{% endfor %}</tr>
 {% endfor %}
 </tbody></table></div>

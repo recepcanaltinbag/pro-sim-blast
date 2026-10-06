@@ -298,6 +298,41 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
 }
 .sitelist[open] > summary { margin-bottom: var(--s2); }
 
+/* VERIDEN gelen renkli etiketler. Renk sablondan `--chip` olarak geliyor ve
+   bicim BURADA kuruluyor; daha once sablonlar hem arka plani hem metin rengini
+   satir ici yaziyordu ve her yerde elle ayarlanmasi gerekiyordu.
+   Olculdu: dolu renk uzerine metin koymak orta tonlarda calismiyor --
+   "angular dioxygenation" (teal) ve "O demethylation" (turuncu-kahve) beyaz
+   metinle 3,9:1, koyu metinle 4,7:1 veriyordu, ikisi de rahat okunmuyor.
+   Cozum metni rengin UZERINDEN almak: zemin rengin cok acik bir tonu, metin
+   her zaman koyu murekkep (en kotu durumda 13,7:1), kimlik ise kenarlik ve
+   sol taraftaki dolu renk noktasi ile tasiniyor. */
+.chip--data {
+  background: color-mix(in srgb, var(--chip, var(--rule)) 16%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--chip, var(--rule)) 38%, var(--rule));
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip--data::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--chip, var(--rule));
+  flex: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chip--data {
+    background: color-mix(in srgb, var(--chip, var(--rule)) 26%, var(--panel));
+    border-color: color-mix(in srgb, var(--chip, var(--rule)) 46%, var(--rule));
+  }
+}
+:root[data-theme="dark"] .chip--data {
+  background: color-mix(in srgb, var(--chip, var(--rule)) 26%, var(--panel));
+  border-color: color-mix(in srgb, var(--chip, var(--rule)) 46%, var(--rule));
+}
+
 /* Bilgi tasimayan tablo satiri: silinmez, cunku eksikligi de bir bulgudur,
    ama goz once bilgi tasiyanlari okusun diye soluklastirilir. */
 tr.dim td { opacity: .62; }
@@ -363,9 +398,9 @@ h1 { font-size: 1.75rem; line-height: 1.22; margin: var(--s3) 0 var(--s3); max-w
 h2 {
   font-size: 1.3rem;
   line-height: 1.3;
-  margin: var(--s7) 0 var(--s3);
-  padding-bottom: var(--s1);
-  border-bottom: 1px solid var(--rule);
+  margin: var(--s7) 0 var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 2px solid var(--rule-2);
 }
 h3 { font-size: 1.06rem; margin: var(--s5) 0 var(--s2); }
 h4 { font-size: .95rem; margin: var(--s4) 0 var(--s1); }
@@ -402,7 +437,8 @@ code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); p
   background: var(--panel);
   border: 1px solid var(--rule);
   border-left: 3px solid var(--accent-ink);
-  border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
   padding: var(--s3) var(--s4);
   font-size: .9rem;
   max-width: 95ch;
@@ -440,20 +476,48 @@ code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); p
 }
 
 /* ------------------------------- 5  figures and captions (numbered)     */
+/* ---------------------------------------------------------------- MODULLER
+   Sayfa, birbirinden bagimsiz bicimlenmis parcalar yerine AYNI dilde kurulmus
+   modullerden olusur. Daha once figur, tablo kutusu ve uyari kutusu ayri ayri
+   bicimlenmisti: her birinin kendi kenarligi, kendi kosesi ve kendi ic paylari
+   vardi, bu yuzden uzun bir sayfa dagilmis gorunuyordu. Uc kural yeterli:
+   (1) her modul AYNI yuzeyi kullanir -- beyaz panel, ayni koselik, ayni ince
+       golge, serin gri zemin uzerinde;
+   (2) bir modul IC ICE kenarlik tasimaz -- figurun icindeki tablo kutusu kendi
+       cercevesini birakir, cerceve figurun olur;
+   (3) altyazi modulun DISINDA degil ICINDE durur, ustten ince bir cizgiyle
+       ayrilir, cunku altyazi burada argumanin parcasi, bir dipnot degil. */
 figure.fig {
   margin: var(--s4) 0 var(--s6);
   counter-increment: fig;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 1px 3px rgb(16 24 40 / 6%);
+  overflow: hidden;
 }
 figure.fig > :first-child { margin-top: 0; }
 
+/*  Kural 2: modulun icindeki kutular kendi cercevelerini birakir. */
+figure.fig > .tablewrap,
+figure.fig > .chart {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+figure.fig > .chart { padding: var(--s3) var(--s3) 0; }
+
+/*  Kural 3: altyazi modulun icinde, ustten cizgiyle ayrilmis. */
 figure.fig figcaption {
-  font-size: .85rem;
-  line-height: 1.5;
-  color: var(--dim);
-  margin-top: var(--s2);
-  border-left: 3px solid var(--rule);
-  padding-left: var(--s3);
-  max-width: 95ch;
+  font-size: .86rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-top: 0;
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--rule);
+  background: var(--paper-2);
+  max-width: none;
 }
 /* Captions are numbered by the stylesheet so that templates never have to
    renumber by hand when a figure is inserted. */

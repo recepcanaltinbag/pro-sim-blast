@@ -159,6 +159,16 @@ templates.env.globals.update(u=u, slug=slug, leaf_slug=leaf_slug, fmt=fmt, pct=p
 templates.env.filters["fmt"] = fmt
 
 
+def _cite(text):
+    """Kaynak metnini baglantili hale getirir; atlas gec import edildigi
+    icin tembel baglanir."""
+    import atlas as _atlas
+    return _atlas.linkify_citation(text)
+
+
+templates.env.filters["cite"] = _cite
+
+
 def load_ecology():
     eco = {}
     if os.path.exists(ECOLOGY_PATH):
@@ -449,6 +459,13 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
 @app.get("/leaf/{leaf_id}", response_class=HTMLResponse)
 def leaf_page(request: Request, leaf_id: str, page: int = 1):
     leaf_id = leaf_unslug(leaf_id)
+    # Yeniden adlandirilan tipin varyant adresleri de yonlendirilir: ad
+    # yaprak kimliginin ICINDE geciyor ve disarida verilmis baglantilar var.
+    for old_name, new_name in RENAMED_TYPES.items():
+        if leaf_id.startswith(old_name + "#"):
+            return RedirectResponse(
+                u("/leaf/" + leaf_slug(leaf_id.replace(old_name, new_name, 1))),
+                status_code=301)
     con = connect()
     try:
         leaf = con.execute("""

@@ -18,7 +18,7 @@ read with the right amount of confidence.</p>
 <tbody>
 {% for t in TIERS %}
 <tr>
-  <td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:{{ chip_text(TIER_COLORS[t]) }};border:0">{{ t.replace('_', ' ') }}</span></td>
+  <td><span class="chip chip--data" style="--chip:{{ TIER_COLORS[t] }}">{{ t.replace('_', ' ') }}</span></td>
   <td>{{ TIER_LABEL[t] }}</td>
   <td class="small">{{ TIER_MEANING[t] }}</td>
   <td class="num">{{ tot[t]|fmt }}</td>

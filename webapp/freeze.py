@@ -222,21 +222,40 @@ def write_fallback_pages(out, A):
                      f'<p>Redirecting to <a href="{target}">{target}</a>.</p>'
                      '</body></html>')
     # Yeniden adlandirilmis tiplerin ESKI adresleri. Statik sitede sunucu
-    # yonlendirmesi yok, bu yuzden meta-refresh tasiyan kucuk bir sayfa konur.
+    # yonlendirmesi yok, bu yuzden meta-refresh tasiyan kucuk sayfalar konur.
+    # Tip sayfasi TEK basina yetmiyor: ayni ad varyant sayfalarinin ve indirme
+    # dosyalarinin yolunda da geciyordu, ve onlar da disaridan baglanmis
+    # olabilir. Hepsi icin yonlendirme yazilir.
     renamed = getattr(A, "RENAMED_TYPES", {}) or {}
-    for old_name, new_name in renamed.items():
-        target = f"{A.BASE}/cluster/{new_name}.html"
-        folder = os.path.join(out, "cluster")
-        os.makedirs(folder, exist_ok=True)
-        with open(os.path.join(folder, old_name + ".html"), "w") as fh:
+    redirects = 0
+
+    def write_redirect(path, target, label):
+        nonlocal redirects
+        full = os.path.join(out, path)
+        os.makedirs(os.path.dirname(full), exist_ok=True)
+        with open(full, "w") as fh:
             fh.write('<!doctype html><html lang="en"><head><meta charset="utf-8">'
                      f'<meta http-equiv="refresh" content="0; url={target}">'
                      f'<link rel="canonical" href="{target}">'
-                     f'<title>Renamed to {new_name} · ROAR-DB</title></head><body>'
-                     f'<p>This type was renamed. Continuing to '
-                     f'<a href="{target}">{new_name}</a>.</p></body></html>')
-    if renamed:
-        print(f"[pages] {len(renamed)} redirect(s) for renamed types")
+                     f'<title>Renamed · ROAR-DB</title></head><body>'
+                     f'<p>{label} was renamed. Continuing to '
+                     f'<a href="{target}">{target}</a>.</p></body></html>')
+        redirects += 1
+
+    for old_name, new_name in renamed.items():
+        write_redirect(os.path.join("cluster", old_name + ".html"),
+                       f"{A.BASE}/cluster/{new_name}.html", "This type")
+        # Varyant sayfalari: yaprak kimligi tip adini tasiyor.
+        for leaf_id in leaves:
+            if leaf_id.startswith(new_name + "#"):
+                suffix = leaf_id.split("#", 1)[1]
+                write_redirect(os.path.join("leaf", f"{old_name}-{suffix}.html"),
+                               f"{A.BASE}/leaf/{new_name}-{suffix}.html", "This variant")
+        # Indirme dosyasi: eski yolu da calissin.
+        write_redirect(os.path.join("download", "cluster", old_name + ".fasta.html"),
+                       f"{A.BASE}/download/cluster/{new_name}.fasta", "This download")
+    if redirects:
+        print(f"[pages] {redirects} redirect(s) for renamed types")
     print("[pages] 404, classify notice and directory redirects")
 
 def write_search_index(con, out, A):

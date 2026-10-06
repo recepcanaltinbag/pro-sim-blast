@@ -34,6 +34,28 @@ if ! grep -q "href=\"/${EXPECTED_BASE}/static/style.css\"" site/index.html; then
 fi
 echo "[kontrol] taban onegi /${EXPECTED_BASE} dogrulandi"
 
+# Derlemenin TAM oldugu dogrulanir. Iki freeze.py ayni klasore ayni anda
+# yazinca biri otekinin dosyalarini silerken patladi ve geriye static/ klasoru
+# BOS olan bir agac kaldi; o agac yayinlaninca sitenin stil dosyasi 404 verdi
+# ve tema tamamen gitti. Eksik bir derlemeyi yayinlamak, yayinlamamaktan
+# kotudur: site ayakta gorunur ama kirilmistir.
+MIN_FILES=5000
+FILE_COUNT=$(find site -type f | wc -l)
+for required in site/index.html site/static/style.css site/static/table.js site/search_index.json; do
+  if [ ! -s "$required" ]; then
+    echo "HATA: derleme eksik, '$required' yok ya da bos."
+    echo "      Once tamamlanmis bir derleme uretin:"
+    echo "      python3 freeze.py --out site --base /${EXPECTED_BASE}"
+    exit 1
+  fi
+done
+if [ "$FILE_COUNT" -lt "$MIN_FILES" ]; then
+  echo "HATA: derlemede yalnizca $FILE_COUNT dosya var, en az $MIN_FILES bekleniyor."
+  echo "      Derleme yarida kalmis olabilir; tekrar uretip oyle yayinlayin."
+  exit 1
+fi
+echo "[kontrol] derleme tam: $FILE_COUNT dosya"
+
 if [ ! -d "$CLONE/.git" ]; then
   echo "[kuruluyor] kalici klon: $CLONE"
   rm -rf "$CLONE"

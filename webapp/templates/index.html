@@ -321,7 +321,7 @@ the whole story.</p>
 <th>Generic scheme</th><th>What happens</th></tr></thead>
 <tbody>
 {% for r in reactions %}
-<tr><td><span class="chip" style="background:{{ r.color }};color:{{ chip_text(r.color) }};border:0">{{ r.label }}</span></td>
+<tr><td><span class="chip chip--data" style="--chip:{{ r.color }}">{{ r.label }}</span></td>
     <td class="num" data-v="{{ r.types }}">{{ r.types }}</td><td class="num" data-v="{{ r.members }}">{{ r.members|fmt }}</td>
     <td class="rxcell">{{ reaction_scheme_svg(r.key)|safe }}
       {% if REACTION_SCHEME_NOTE.get(r.key) %}

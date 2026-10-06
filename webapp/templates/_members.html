@@ -22,7 +22,7 @@
     <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ gene(m.ro_cluster) }}</a></td>
     {#  Yakinlik sutunu: substrat etiketinin bu uye icin anlamli olup olmadigini
         soyleyen tek sey bu.                                                  #}
-    <td>{% if m.tier %}<span class="chip" style="background:{{ TIER_COLORS[m.tier] }};color:{{ chip_text(TIER_COLORS[m.tier]) }};border:0">{{ TIER_LABEL.get(m.tier, m.tier.replace('_',' ')) }}</span>
+    <td>{% if m.tier %}<span class="chip chip--data" style="--chip:{{ TIER_COLORS[m.tier] }}">{{ TIER_LABEL.get(m.tier, m.tier.replace('_',' ')) }}</span>
         {% if m.ref_identity %}<div class="note">{{ '%.0f %%' % m.ref_identity }} to {{ gene(m.nearest_ref) if m.nearest_ref else 'its reference' }}</div>{% endif %}
         {% else %}<span class="note">–</span>{% endif %}</td>
     <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
