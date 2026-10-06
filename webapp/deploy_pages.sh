@@ -20,6 +20,20 @@ BRANCH="${2:-gh-pages}"
 CLONE=".gh-pages"
 [ -d site ] || { echo "site/ yok -- once: python3 freeze.py --out site --base /pro-sim-blast"; exit 1; }
 
+# Taban onegi KONTROL EDILIR. GitHub proje sayfasi siteyi /pro-sim-blast/
+# altinda sunuyor, bu yuzden freeze.py --base verilmeden uretilirse butun
+# mutlak baglantilar /about.html gibi alan adinin kokune gider ve 404 doner.
+# Bu bir kere yayinlandi ve sitenin gezinmesini kirdi; bir daha gecmemesi
+# icin deploy burada durur.
+EXPECTED_BASE="$(basename "$URL" .git)"
+if ! grep -q "href=\"/${EXPECTED_BASE}/static/style.css\"" site/index.html; then
+  echo "HATA: site/index.html taban onegi /${EXPECTED_BASE} ile uretilmemis."
+  echo "      Butun mutlak baglantilar 404 donerdi. Dogrusu:"
+  echo "      python3 freeze.py --out site --base /${EXPECTED_BASE}"
+  exit 1
+fi
+echo "[kontrol] taban onegi /${EXPECTED_BASE} dogrulandi"
+
 if [ ! -d "$CLONE/.git" ]; then
   echo "[kuruluyor] kalici klon: $CLONE"
   rm -rf "$CLONE"

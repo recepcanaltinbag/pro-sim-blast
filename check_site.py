@@ -68,11 +68,76 @@ def visible_text(html):
     return re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
 
 
+def check_static_site(root):
+    """Yayinlanan statik siteyi DISKTE gezer: her baglanti bir dosyaya denk mi?
+
+    Dinamik uygulamayi denemek yetmiyor. Statik ihracat baglantilara `.html`
+    ekliyor ve yollari goreli hale getiriyor; o cevirinin bir yerde bozulmasi
+    uygulamada hic gorunmez. Kullanicinin "acilmayan sayfa" sikayetlerinin
+    bir kismi tam olarak buydu.
+    """
+    from urllib.parse import unquote, urljoin
+
+    pages = sorted(glob.glob(os.path.join(root, "**", "*.html"), recursive=True))
+    if not pages:
+        return ["static site not built; run webapp/freeze.py first"], 0, 0
+
+    # Taban yolu BUILD'DEN okunur, elle verilmez. GitHub proje sayfasi siteyi
+    # /pro-sim-blast/ altinda sunuyor; `freeze.py --base` verilmeden
+    # uretilince butun baglantilar /about.html gibi KOKE gider ve 404 olur.
+    # Bu bir kere gerceklesti ve yayinlanan sitenin gezinmesini kirdi, bu
+    # yuzden taban artik olculen bir sey.
+    index = os.path.join(root, "index.html")
+    base = ""
+    if os.path.exists(index):
+        m = re.search(r'href="([^"]*)/static/style\.css"',
+                      open(index, encoding="utf-8", errors="replace").read())
+        if m:
+            base = m.group(1)
+
+    problems, links = [], 0
+    for page in pages:
+        rel = os.path.relpath(page, root)
+        html = open(page, encoding="utf-8", errors="replace").read()
+        for href in set(HREF_RE.findall(TAGS_RE.sub(" ", html))):
+            if href.startswith(("http", "mailto:", "//", "javascript:", "data:")):
+                continue
+            links += 1
+            if href.startswith("/"):
+                # Mutlak yol taban onekiyle BASLAMAK zorunda, yoksa sunucuda
+                # site kokunun disina dusuyor.
+                if base and not (href == base or href.startswith(base + "/")):
+                    problems.append(f"{rel} -> {href} (missing base prefix {base!r})")
+                    continue
+                target = unquote(href[len(base):].lstrip("/").split("#")[0].split("?")[0])
+            else:
+                # Goreli yol, sayfanin KENDI konumuna gore cozulur.
+                target = unquote(urljoin(rel.replace(os.sep, "/"), href)
+                                 .split("#")[0].split("?")[0])
+            if not target or target.startswith(".."):
+                problems.append(f"{rel} -> {href} (escapes the site root)")
+                continue
+            path = os.path.join(root, target.replace("/", os.sep))
+            if os.path.isdir(path):
+                path = os.path.join(path, "index.html")
+            if not os.path.exists(path):
+                problems.append(f"{rel} -> {href}")
+    if not base:
+        problems.insert(0, "index.html carries no base prefix; the build was made "
+                           "without --base and every absolute link will 404 when the "
+                           "site is served from a subdirectory")
+    return problems, len(pages), links
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--quick", action="store_true",
                         help="tip sayfalarinin onda birini dene")
+    parser.add_argument("--static", default=os.path.join("webapp", "site"),
+                        help="yayinlanan statik sitenin klasoru")
+    parser.add_argument("--skip-static", action="store_true",
+                        help="statik site denetimini atla")
     args = parser.parse_args()
 
     from fastapi.testclient import TestClient
@@ -139,6 +204,12 @@ def main():
     print(f"  internal links checked   {len(link_status)}")
     print(f"  published data files     {len(published)}")
 
+    static_problems = []
+    if not args.skip_static:
+        static_problems, static_pages, static_links = check_static_site(args.static)
+        print(f"  static pages on disk     {static_pages}")
+        print(f"  static links resolved    {static_links}")
+
     problems = 0
     if failures:
         problems += len(failures)
@@ -162,6 +233,12 @@ def main():
         print(f"\n[FAIL] Turkish text in {len(data_turkish)} published data file(s)")
         for name, words in data_turkish[:20]:
             print(f"        {name}: {', '.join(words[:6])}")
+
+    if static_problems:
+        problems += len(static_problems)
+        print(f"\n[FAIL] {len(static_problems)} unresolved link(s) in the static export")
+        for item in static_problems[:20]:
+            print(f"        {item}")
 
     if problems:
         print(f"\n{problems} problem(s). Not ready to deploy.")

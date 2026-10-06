@@ -41,6 +41,32 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+31. ~~Statik sitede taban onegi eksikti -- YAYINDAKI GEZINME KIRIKTI.~~
+    **BITTI.** `freeze.py --base /pro-sim-blast` verilmeden uretilen bir
+    derleme yayinlandi. GitHub proje sayfasi siteyi `/pro-sim-blast/` altinda
+    sunuyor, ama sayfalardaki mutlak baglantilar `/about.html` seklindeydi,
+    yani alan adinin KOKUNE gidiyordu ve 404 donuyordu. Anasayfa acildigi
+    icin hata gorunmuyordu; kirik olan her ic baglantiydi. Olculdu:
+    `recepcanaltinbag.github.io/about.html` → 404,
+    `recepcanaltinbag.github.io/pro-sim-blast/about.html` → 200.
+    Dogru tabanla yeniden uretilip yayinlandi ve `deploy_pages.sh` artik
+    taban onegini `site/index.html` icinde ARIYOR; bulamazsa deploy etmeden
+    duruyor. Negatif testi yapildi (cikis kodu 1).
+
+32. ~~Uyesi olmayan tiplerin sayfalari statik sitede yoktu.~~ **BITTI.**
+    Kuratorlu 71 tipin 10'u bu derlemede dogrulanmis uye toplamiyor, ama
+    giris sayfalari "en yakin referans" olarak onlara baglaniyor. Dinamik
+    uygulama bu tipler icin bos bir sayfa veriyordu; ihracat ise tip
+    listesini VERITABANINDAN aldigi icin onlari hic uretmiyordu ve statik
+    sitede 90 baglanti 404 donuyordu. `freeze.py` artik listeyi
+    `chemistry.csv` ile birlestiriyor: 61 degil 71 tip sayfasi.
+
+33. ~~Statik ihracat icin baglanti denetimi.~~ **BITTI.** `check_site.py`
+    artik yayinlanan siteyi DISKTE de geziyor: 13.318 sayfa, 168.218
+    baglanti, hepsi bir dosyaya denk geliyor. Dinamik uygulamayi denemek
+    yetmiyordu, cunku `.html` eki ve taban onegi yalnizca ihracatta
+    uygulaniyor; yukaridaki iki hata da tam olarak orada yasiyordu.
+
 29. ~~Cakisan kisa tip adlari.~~ **BITTI.** Uc kisa ad referans setinde iki
     kez geciyor: `BphA1` (2_201 ve 2_218), `NDO` (3_314 ve 3_315), `NidA`
     (3_317 ve 3_318). Tablolarda iki satir ayni etiketle IKI AYRI sayfaya

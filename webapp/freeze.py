@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import shutil
+import csv
 import sqlite3
 import sys
 
@@ -64,8 +65,19 @@ def main():
             fh.write(r.content)
 
     con = sqlite3.connect(f"file:{A.DB_PATH}?mode=ro", uri=True)
-    clusters = [r[0] for r in con.execute(
-        "SELECT DISTINCT ro_cluster FROM ro WHERE is_confirmed=1")]
+    # Tip listesi, UYESI OLANLARLA sinirli kalamaz. Kuratorlu 71 tipin 10'u bu
+    # derlemede tek bir dogrulanmis uye toplamiyor (ornegin NahAc ve CarAa,
+    # birebir ikizleri varken profil atamayi digerine kaydiriyor). Yine de
+    # giris sayfalari "en yakin referans" olarak onlara BAGLANIYOR, ve bu
+    # sayfalar uretilmezse statik sitede 90 baglanti 404 donuyordu. Dinamik
+    # uygulama bu tipler icin bos bir sayfa veriyor; ihracat da onu almali.
+    clusters = {r[0] for r in con.execute(
+        "SELECT DISTINCT ro_cluster FROM ro WHERE is_confirmed=1") if r[0]}
+    chem_path = os.path.join(A.PARENT, "chemistry.csv")
+    if os.path.exists(chem_path):
+        with open(chem_path, newline="", encoding="utf-8") as fh:
+            clusters |= {row["cluster"] for row in csv.DictReader(fh) if row.get("cluster")}
+    clusters = sorted(clusters)
     leaves = [r[0] for r in con.execute("SELECT leaf_id FROM leaf")]
     entries = [r[0] for r in con.execute(
         "SELECT candidate_id FROM ro WHERE is_confirmed=1 ORDER BY candidate_id")]
