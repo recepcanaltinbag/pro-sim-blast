@@ -25,6 +25,8 @@
      {% if page == 'operons' %}aria-current="page"{% endif %}>Operons</a>
   <a href="{{ u('/atlas/regulation') }}" class="{{ 'on' if page == 'regulation' }}"
      {% if page == 'regulation' %}aria-current="page"{% endif %}>Regulation</a>
+  <a href="{{ u('/atlas/control') }}" class="{{ 'on' if page == 'control' }}"
+     {% if page == 'control' %}aria-current="page"{% endif %}>Regulators and mobility</a>
   <a href="{{ u('/atlas/cooccurrence') }}" class="{{ 'on' if page == 'cooccurrence' }}"
      {% if page == 'cooccurrence' %}aria-current="page"{% endif %}>Co-occurrence</a>
   <a href="{{ u('/atlas/ecology') }}" class="{{ 'on' if page == 'ecology' }}"

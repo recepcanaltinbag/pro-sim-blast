@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}Regulators and mobility{% endblock %}
+{% set page_id = 'control' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>What controls these operons, and what moves them</h1>
+<p class="lede">Three questions about the genes around the oxygenase: which regulator sits with
+which chemistry, how far the regulator diverges when the enzyme does, and whether the enzymes that
+move between genomes are really the ones that degrade man-made compounds.</p>
+
+{% if rel %}
+{% set reg = rel.regulation %}
+<h2>1 · Which regulator family goes with which chemistry</h2>
+<p>Each association below is given with the value chance alone produces for a table of the same
+shape, from {{ rel.method.get('permutations', 2000)|fmt }} label shufflings. That column is not
+decoration: the regulator family against enzyme type table has twelve rows and sixty-one columns,
+where shuffling alone yields a Cramér's V of about 0.26. Only the excess over it means anything.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Association</th><th>Unit</th><th class="num">V</th>
+<th class="num">Expected by chance</th><th class="num">Excess</th><th>Verdict</th></tr></thead>
+<tbody>
+{% for a in rel.assoc_rows %}
+<tr><td>{{ a.label }}</td><td class="small">{{ a.unit }}</td>
+  <td class="num" data-v="{{ a.v }}">{{ '%.3f' % a.v }}</td>
+  <td class="num" data-v="{{ a.null }}">{{ '%.3f' % a.null }}</td>
+  <td class="num" data-v="{{ a.excess }}">{{ '%.3f' % a.excess }}</td>
+  <td>{% if a.excess >= 0.10 %}<span class="verdict verdict--robust">real</span>
+      {% else %}<span class="verdict verdict--none">no more than chance</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">The strongest real association is between the regulator family and the enzyme type,
+which is the direct answer to the question. Three associations that look overwhelming by p value,
+all below 1e-20, carry no excess over chance at all; with this many entries a p value measures
+sample size rather than effect.</p>
+
+{% if reg.cell_enrichments %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter by regulator or chemistry…">
+<thead><tr><th>Regulator family</th><th>Chemical family</th><th class="num">Entries</th>
+<th class="num">Expected</th><th class="num">Observed over expected</th>
+<th class="num">Genera</th><th class="num">Types</th></tr></thead>
+<tbody>
+{% for c in reg.cell_enrichments[:18] %}
+<tr{{ ' class="dim"'|safe if c.rests_on_a_single_enzyme_type }}>
+  <td>{{ c.regulator_family }}</td><td>{{ c.chemical_family.replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ c.entries }}">{{ c.entries|fmt }}</td>
+  <td class="num">{{ '%.1f' % c.expected }}</td>
+  <td class="num" data-v="{{ c.observed_over_expected }}">{{ '%.1f×' % c.observed_over_expected }}</td>
+  <td class="num">{{ c.distinct_genera }}</td><td class="num">{{ c.distinct_types }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>{{ reg.cell_enrichment_rule }} Rows shown faint rest on a single enzyme type, so they
+describe that type rather than a property of the regulator family. The regulator is identified by
+position, as the first gene upstream of the operon, and no binding was measured; a distal or global
+regulator is invisible to this.</figcaption>
+</figure>
+{% endif %}
+
+{% set div = rel.divergence %}
+<h2>2 · Regulators diverge faster than the enzymes they control</h2>
+<p>For pairs of entries within one enzyme type, the identity between the two alpha subunits can be
+compared with the identity between their two regulators. The comparison is restricted to pairs whose
+regulators belong to the <em>same</em> family, because two regulators of different families are
+different proteins and a low identity between them measures replacement rather than divergence.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Enzyme identity band</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Enzyme identity</th><th class="num">Regulator identity</th>
+<th class="num">Gap</th><th class="num">Regulator less conserved</th></tr></thead>
+<tbody>
+{% for b in div.bands %}
+<tr><td>{{ b.label }} %</td>
+  <td class="num" data-v="{{ b.n_pairs }}">{{ b.n_pairs|fmt }}</td>
+  <td class="num">{{ b.n_types }}</td>
+  <td class="num">{{ '%.1f %%' % b.enzyme }}</td>
+  <td class="num">{{ '%.1f %%' % b.regulator }}</td>
+  <td class="num" data-v="{{ b.gap }}">{{ '%+.1f' % b.gap }}</td>
+  <td class="num" data-v="{{ b.share }}">{{ '%.0f %%' % (100 * b.share) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The gap widens as the enzymes diverge, then appears to close.</b> That last step is
+not regulators becoming conserved again; it is the measurement hitting its floor, since unrelated
+proteins already score around 25 % identity and a third of the pairs in the lowest band sit there.
+Pairs within a type are not independent observations, so the number of distinct types and genus
+pairs is given beside each band.</figcaption>
+</figure>
+
+{% if div.retention %}
+<h2>3 · The same chemistry under different control</h2>
+<p>A regulator can be replaced rather than merely diverge. Comparing the regulator family at both
+ends of a pair answers how often that happens.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Enzyme identity band</th><th class="num">Pairs</th>
+<th class="num">Regulator family switched</th></tr></thead>
+<tbody>
+{% for b in div.retention %}
+<tr><td>{{ b.band }} %</td><td class="num">{{ b.n_pairs|fmt }}</td>
+  <td class="num" data-v="{{ b.family_switch_rate }}">{{ '%.0f %%' % (100 * b.family_switch_rate) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">At near-identical enzymes the regulator family is always the same; below 60 %
+identity it differs in about seven pairs out of ten. So as an enzyme type spreads and diverges, the
+same chemistry repeatedly comes under a different kind of transcriptional control. This is also why
+the unrestricted comparison overstates regulator divergence, and why section 2 excludes these pairs.</p>
+{% endif %}
+
+{% set mob = rel.mobility %}
+<h2>4 · Mobility, and how much of it is an annotation artefact</h2>
+<p>The database has reported that enzymes acting on man-made substrates are more often mobile. That
+claim rested on a variable defined as "on a plasmid <em>or</em> with a transposon nearby", and the
+transposon half is a regular expression over the GenBank product text, which measures how a genome
+was annotated. Of {{ rel.totals.get('confirmed', 0)|fmt }} confirmed entries, {{ mob.regex_only|fmt }}
+are counted mobile <em>only</em> because of that text match. So the claim was recomputed three ways.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence used</th><th>Level</th><th class="num">Man-made substrate</th>
+<th class="num">Natural substrate</th><th class="num">Ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for t in mob.rows %}
+<tr{{ ' class="hl"'|safe if t.evidence == 'plasmid_only' }}>
+  <td>{{ t.evidence.replace('_', ' ') }}</td><td class="small">{{ t.level.replace('_', ' ') }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * t.rate_xenobiotic) }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * t.rate_natural) }}</td>
+  <td class="num" data-v="{{ t.ratio }}">{{ '%.2f×' % t.ratio }}</td>
+  <td class="num" data-v="{{ t.p }}">{{ '%.1e' % t.p }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The conclusion does not depend on the annotation half; it was being diluted by it.</b>
+On plasmid evidence alone, which is a checkable claim about which molecule the gene sits on, the
+effect is about three times stronger than the published figure. The text-derived half points the
+same way but far more weakly, and because it outnumbers the plasmid half roughly six to one the
+combined variable lands near the weaker value and was being read as though it were the stronger.</figcaption>
+</figure>
+
+{% if rel.bias %}
+<h2>5 · How large the annotation bias actually is</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Component</th><th>What it does to the transposon rate</th></tr></thead>
+<tbody>
+{% for b in rel.bias %}<tr><td>{{ b.label }}</td><td class="small">{{ b.text }}</td></tr>{% endfor %}
+</tbody></table></div>
+<p class="note">{{ rel.bias_verdict }}</p>
+{% endif %}
+
+<h2>6 · Limits</h2>
+<ul>{% for l in rel.limits[:7] %}<li>{{ l }}</li>{% endfor %}</ul>
+<p class="dl"><a class="btn" href="{{ u('/download/analysis/operon_relations.json') }}">Full output (JSON)</a></p>
+{% else %}
+<p class="note">This analysis has not been run for this build.</p>
+{% endif %}
+{% endblock %}

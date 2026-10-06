@@ -26,6 +26,81 @@ def _relative_luminance(colour):
     return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
 
+def operon_relations_view(path):
+    """Operon iliskileri raporunu sayfanin ihtiyaci kadarina indirir."""
+    raw = read_json(path)
+    if not raw:
+        return None
+    reg = raw.get("regulation") or {}
+
+    assoc = []
+    for item in reg.get("associations") or []:
+        v, null = item.get("cramers_v"), item.get("permuted_cramers_v_mean")
+        if v is None or null is None:
+            continue
+        assoc.append({
+            "label": item.get("question") or item.get("id", "").replace("_", " "),
+            "unit": item.get("unit", ""),
+            "v": v, "null": null,
+            "excess": item.get("cramers_v_above_chance", round(v - null, 4)),
+        })
+    assoc.sort(key=lambda r: -r["excess"])
+
+    mobility = raw.get("mobility_by_substrate_class") or {}
+    rows = []
+    for t in mobility.get("tests") or []:
+        if t.get("ratio") is None:
+            continue
+        rows.append(t)
+    # Yapisal kanit once, sonra metinden gelen, sonra ikisinin birlesimi.
+    order = {"plasmid_only": 0, "transposon_regex_only": 1, "plasmid_or_transposon": 2}
+    rows.sort(key=lambda t: (order.get(t.get("evidence"), 9), t.get("level") != "entry"))
+
+    div = raw.get("regulator_vs_enzyme_divergence") or {}
+    same = (div.get("same_regulator_family_only") or {}).get("by_enzyme_identity_band") or []
+    bands = []
+    for b in same:
+        bands.append({
+            "label": b.get("label"), "n_pairs": b.get("n_pairs"), "n_types": b.get("n_types"),
+            "enzyme": b.get("enzyme_identity_median"),
+            "regulator": b.get("regulator_identity_median"),
+            "gap": round((b.get("enzyme_identity_median") or 0)
+                         - (b.get("regulator_identity_median") or 0), 1),
+            "share": b.get("share_of_pairs_regulator_less_conserved"),
+        })
+
+    bias_block = raw.get("annotation_bias") or {}
+    bias = []
+    for key, label in (("hard_floor", "records with no annotated neighbour at all"),
+                       ("by_window_occupancy", "how many genes the submitter annotated nearby"),
+                       ("by_replicon_cds_count", "size of the replicon"),
+                       ("structural_evidence_also_tracks_annotation_density",
+                        "the same test applied to plasmid evidence")):
+        block = bias_block.get(key)
+        if isinstance(block, dict):
+            text = (block.get("finding") or block.get("what_it_shows")
+                    or block.get("note") or block.get("summary")
+                    or block.get("interpretation"))
+            if text:
+                bias.append({"label": label, "text": text})
+
+    return {
+        "method": raw.get("method") or {},
+        "totals": raw.get("totals") or {},
+        "regulation": reg,
+        "assoc_rows": assoc,
+        "divergence": {"bands": bands,
+                       "retention": (div.get("regulator_family_retention") or {})
+                       .get("by_enzyme_identity_band") or []},
+        "mobility": {"rows": rows,
+                     "regex_only": (mobility.get("composition") or {})
+                     .get("mobile_only_because_of_regex")},
+        "bias": bias,
+        "bias_verdict": (bias_block.get("verdict") or {}).get("size_of_the_bias", ""),
+        "limits": raw.get("limits") or [],
+    }
+
+
 def active_site_view(path):
     """2,6 MB'lik yapi raporunu SAYFANIN ihtiyaci kadarina indirir.
 

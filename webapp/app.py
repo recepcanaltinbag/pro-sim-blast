@@ -1302,6 +1302,13 @@ def atlas_cooccurrence(request: Request):
         con.close()
 
 
+@app.get("/atlas/control", response_class=HTMLResponse)
+def atlas_control(request: Request):
+    """Regulatorler, regulator ayrismasi ve hareketlilik."""
+    return render(request, "atlas_control.html",
+                  rel=atlas.operon_relations_view(apath("operon_relations.json")))
+
+
 @app.get("/atlas/structure", response_class=HTMLResponse)
 def atlas_structure(request: Request):
     """Aktif bolge: kristal yapilardan ve tahmin modellerinden."""
