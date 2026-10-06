@@ -350,6 +350,16 @@ kaybi, tahmin etmek hata olurdu. Kural yalnizca metin `other` dondurdugunde VE
 metinde anatomik kelime varken devreye girer; 219 kayit cozuldu ve dogrulanmis
 RO kapsami **%56,6** oldu.
 
+**Konak alemi, habitattan AYRI bir boyut.** Replikonlarin %31,8'inde `/host`
+var ve bunlarin 728'inde `/isolation_source` hic yok; yani habitat sozlugunun
+sessiz kaldigi yerde konak alani konusuyor. Iki boyut BIRLESTIRILMEZ, cunku
+habitat "nerede yasiyordu" sorusuna, konak "neyin icinde ya da uzerinde
+bulundu" sorusuna cevap verir; `Homo sapiens` bir habitat degildir. Esleme
+`host_kingdom.csv` dosyasinda elle tutulur (395 satir: dizgi, alem, kararin
+gerekcesi) ve eslenmeyen her dizgi tahmin edilmez, RAPOR EDILIR. Dagilim:
+bitki 1.379, insan 1.175, hayvan 353, alg 26, mantar 24 replikon. Habitati
+siniflanamamis ama konagi bilinen 906 replikon var.
+
 **Sediment kompartmani.** `sediment` kurali deniz ve tatli su kurallarindan
 once gelir, cunku "marine sediment" bir sediment ornegidir. Bu dogru ama deniz
 tabani ile nehir tabanini ayni kovaya koyuyordu. Eslesen kuralin RAFINESI

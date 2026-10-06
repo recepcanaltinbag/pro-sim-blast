@@ -33,6 +33,34 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+34. ~~Konak alani (`/host`) kullanilmiyordu.~~ **BITTI.** Olculdu: 9.308
+    replikonun 2.962'sinde (%31,8) `/host` var ve bunlarin **728'inde
+    `/isolation_source` HIC YOK**. Yani habitat sozlugunun sessiz kaldigi
+    yerde konak alani gercek bir ekolojik bilgi tasiyordu ve atiliyordu.
+    Cozum, iki boyutu BIRLESTIRMEK DEGIL ayri tutmak oldu: habitat "nerede
+    yasiyordu", konak "neyin icinde/uzerinde bulundu" sorusuna cevap verir ve
+    `Homo sapiens` bir habitat degildir (yara da, bagirsak da, deri de
+    olabilir). Birlestirmek habitat istatistiklerini bozardi.
+    * `host_kingdom.csv`: 395 satir, her satirda konak dizgisi, alemi ve
+      KARARIN GEREKCESI. 401 farkli dizginin tamami esleniyor.
+    * `replicon_source.host_kingdom` sutunu + `host_kingdom_by_habitat`
+      capraz tablosu; ekoloji sayfasinda 4. bolum.
+    * Dagilim: bitki 1.379, insan 1.175, hayvan 353, alg 26, mantar 24.
+      Habitat'i siniflanamamis ama konagi bilinen **906 replikon** var; alg
+      kayitlarinin %85'i bu durumda.
+    * Durustluk: 3 kayitta konak alanina mineral ya da "soil" yazilmis
+      (kaynak kayittaki kuratorluk hatasi, konak degil) ve 1 ad hem bitki hem
+      kelebek cinsi (`Pieris`, karar verilemez). Dordu de atilmadi, ayri
+      etiketle gosteriliyor.
+    * Genisletilebilir: eslenmeyen her dizgi pipeline tarafindan RAPOR
+      EDILIR, tahmin edilmez. `validate_curation.py` bes yeni kontrol:
+      sozluk, gerekce zorunlulugu, tekrar yok, veritabanindaki her dizgi
+      eslenmis, saklanan degerler sozlukte.
+    * Kendi kontrolum bir hata buldu: 6 dizgi yalnizca buyuk/kucuk harfte
+      ayriliyordu ("chicken"/"Chicken") ve arama kucuk harfe indirdigi icin
+      bunlar fazlaligi; ikisine ayri alem yazilsa kazanan dosya sirasina
+      kalirdi. Tek satira indirildi.
+
 26. ~~Habitat sozlugunun kalan bilinen sinirlari.~~ **BITTI.** Uc parca, her
     biri once olculdu:
     (a) **Isaretsiz anatomi artik konakla cozuluyor.** "lung", "blood",

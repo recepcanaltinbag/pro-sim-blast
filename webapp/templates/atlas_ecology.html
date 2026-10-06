@@ -160,7 +160,44 @@ applied by eye to every other figure on this page.</figcaption>
 {% endif %}
 {% endif %}
 
-<h2>4 · Tests</h2>
+{% if kingdom_rows %}
+<h2>4 · What the host field adds, and why it is kept separate</h2>
+<p>A second ecological field sits in the same GenBank records and answers a different question. The
+habitat vocabulary asks where the organism was living. The host field asks what it was found in or
+on. These are not the same thing, and a host name alone does not locate a sample: <i>Homo sapiens</i>
+is not a habitat, because a bacterium from a human could come from a wound, a gut or a skin swab.
+For that reason the host is never merged into the habitat vocabulary. It is reported here on its own,
+through a curated mapping from each host string to a kingdom, so that nothing is inferred beyond what
+the record states.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Host kingdom</th><th class="num">Replicons</th>
+<th class="num">Of those, habitat unclassified</th><th class="num">Share</th></tr></thead>
+<tbody>
+{% for r in kingdom_rows %}
+<tr{{ ' class="dim"'|safe if not r.informative }}>
+  <td>{{ r.label }}</td>
+  <td class="num" data-v="{{ r.replicons }}">{{ r.replicons|fmt }}</td>
+  <td class="num" data-v="{{ r.habitat_silent }}">{{ r.habitat_silent|fmt }}</td>
+  <td class="num" data-v="{{ r.silent_share }}">{{ '%.0f %%' % (100 * r.silent_share) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Read the third column.</b> It counts the records where the habitat vocabulary says
+nothing and the host field still does, which is the whole reason this dimension exists. Across the
+kingdoms that is {{ kingdom_rows | selectattr('informative') | sum(attribute='habitat_silent') | fmt }}
+replicons that would otherwise be reported only as unclassified. The effect is strongest for algae,
+where most records give a host and no environment at all.
+<b>Two rows are not ecology.</b> Three records name a mineral or plain soil in the host field, which
+is a curation error in the source record rather than a host, and one name is a genus shared by a
+plant and a butterfly, so it cannot be decided. Both are shown rather than dropped.
+<b>Extending it.</b> The mapping lives in <code>host_kingdom.csv</code>, one row per host string with
+the basis for the decision recorded. Any string missing from it is reported by the pipeline as
+unmapped rather than guessed.</figcaption>
+</figure>
+{% endif %}
+
+<h2>5 · Tests</h2>
 <p>Each association is evaluated twice. The entry level treats every alpha subunit as an
 observation, which is optimistic because sequencing databases contain many near-identical strains.
 The genus level keeps one observation per type and genus, which is conservative. A result is called
@@ -192,7 +229,7 @@ Non-bacterial entries and eukaryote-heavy types are excluded:
 {% endfor %}
 {% endif %}
 
-<h2>5 · Per type</h2>
+<h2>6 · Per type</h2>
 <div class="tablewrap"><table class="data compact" data-filter="Filter types by name or substrate…">
 <thead><tr><th>Type</th><th>Substrate</th><th data-facet="Substrate class">Class</th><th class="num">Members</th>
 <th class="num">Plasmid</th><th class="num">Transposon nearby</th><th class="num">Genera</th><th data-facet="Label confidence">Label confidence</th></tr></thead>

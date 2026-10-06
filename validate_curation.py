@@ -105,6 +105,9 @@ USER_FACING_DB_FIELDS = [
     # sayfalarinda gosteriliyor. Bir donem Turkce idi ve bu liste onu
     # icermedigi icin kontrol hic calismadi.
     ("ro_domain", "candidate_id", "euk_group"),
+    # Konak alemi: host_kingdom.csv'den gelen kontrollu sozluk, ekoloji
+    # sayfasinda gosteriliyor.
+    ("replicon_source", "nucleotide_id", "host_kingdom"),
     ("ro_etc", "candidate_id", "reductase_type"),
     ("ro_etc", "candidate_id", "ferredoxin_type"),
     ("ro_evidence", "candidate_id", "tier"),
@@ -637,6 +640,52 @@ def check_ecology_csv(rep, eco):
               not bad, len(bad))
 
 
+VALID_HOST_KINGDOM = {"human", "animal", "plant", "fungus", "alga",
+                      "ambiguous", "not_a_host", "unresolved"}
+
+
+def check_host_kingdom(rep, con, path="host_kingdom.csv"):
+    """Konak alemi eslemesi tam ve kontrollu mu?
+
+    Esleme ELLE tutuluyor ve yeni genomlar yeni konak adlari getiriyor. Eksik
+    bir dizgi sessizce `unresolved` olmasin diye burada sayilir: kontrol
+    eksikligi gizlemez, gorunur kilar.
+    """
+    if not os.path.exists(path):
+        rep.check(f"{path} exists", False, 0, "file missing")
+        return
+    with open(path, newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    bad = [(r.get("host"), r.get("kingdom")) for r in rows
+           if (r.get("kingdom") or "").strip() not in VALID_HOST_KINGDOM]
+    rep.check(f"{path}: kingdom in vocabulary", not bad, len(bad),
+              first(f"{h}={k!r}" for h, k in bad))
+    nobasis = [r.get("host") for r in rows if not (r.get("basis") or "").strip()]
+    rep.check(f"{path}: every row records the basis for its decision",
+              not nobasis, len(nobasis), first(nobasis))
+    seen = Counter((r.get("host") or "").strip().lower() for r in rows)
+    dupes = sorted(h for h, n in seen.items() if n > 1)
+    rep.check(f"{path}: no duplicate host string", not dupes, len(dupes), first(dupes))
+
+    if not con.execute("SELECT name FROM sqlite_master WHERE name='replicon_source'").fetchone():
+        return
+    mapped = {(r.get("host") or "").strip().lower() for r in rows}
+    hosts = {(h or "").strip() for (h,) in con.execute(
+        "SELECT DISTINCT host FROM replicon_source "
+        "WHERE host IS NOT NULL AND TRIM(host) <> ''")}
+    unmapped = sorted(h for h in hosts if h.lower() not in mapped)
+    rep.check("every /host string in the database is mapped to a kingdom",
+              not unmapped, len(unmapped),
+              f"{len(hosts)} distinct host strings" if not unmapped
+              else first(unmapped, 5))
+    stored = {k for (k,) in con.execute(
+        "SELECT DISTINCT host_kingdom FROM replicon_source "
+        "WHERE host_kingdom IS NOT NULL")}
+    off = sorted(stored - VALID_HOST_KINGDOM)
+    rep.check("stored host_kingdom values are all in the vocabulary",
+              not off, len(off), first(off))
+
+
 def check_display_names(rep, chem):
     """Gosterilen kisa adlar birbirinden ayirt edilebiliyor mu?
 
@@ -1037,6 +1086,7 @@ def main():
         check_ecology_csv(rep, eco)
         check_chemistry_csv(rep, chem)
         check_display_names(rep, chem)
+        check_host_kingdom(rep, con)
         check_cross_file_substrate(rep, eco, chem)
         check_text_fields_classified(con, rep)
         check_turkish(con, rep, args.ecology, args.chemistry, eco, chem,

@@ -1067,6 +1067,7 @@ def atlas_ecology(request: Request):
                       stats=atlas.read_json(apath("stats.json")), habitat=hab,
                       hab_rows=atlas.habitat_rows(hab),
                       hab_label=atlas.HABITAT_LABEL,
+                      kingdom_rows=atlas.host_kingdom_rows(hab),
                       enrich_family=atlas.habitat_enrichment(
                           hab, "chemical_family_habitat_profile", "contaminated_industrial"),
                       enrich_class=atlas.habitat_enrichment(

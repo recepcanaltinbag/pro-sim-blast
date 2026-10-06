@@ -246,6 +246,10 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
   border-color: var(--accent-ink);
 }
 
+/* Bilgi tasimayan tablo satiri: silinmez, cunku eksikligi de bir bulgudur,
+   ama goz once bilgi tasiyanlari okusun diye soluklastirilir. */
+tr.dim td { opacity: .62; }
+
 /* Grafik ustundeki kucuk kontrol dugmeleri: ayni gorunum, daha az yer. */
 .btn--small, button.btn--small {
   padding: 2px 8px;

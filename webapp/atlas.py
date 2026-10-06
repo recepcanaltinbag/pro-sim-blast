@@ -866,6 +866,40 @@ def download_table(analysis_dir):
 
 
 # ------------------------------------------------------------------ habitat
+KINGDOM_LABEL = {
+    "human": "human", "animal": "animal", "plant": "plant",
+    "fungus": "fungus", "alga": "alga",
+    "ambiguous": "name is ambiguous", "not_a_host": "not an organism",
+    "unresolved": "not yet mapped",
+}
+
+
+def host_kingdom_rows(habitat):
+    """Konak alemi tablosu: kac replikon, bunlarin kaci habitatsiz.
+
+    Son sutun asil gerekce: habitat sozlugunun sessiz kaldigi yerde konak
+    alaninin konustugu kayit sayisi.
+    """
+    block = (habitat or {}).get("host_kingdom") or {}
+    counts = block.get("counts") or {}
+    crosstab = (habitat or {}).get("host_kingdom_by_habitat") or {}
+    rows = []
+    for kingdom, n in counts.items():
+        if kingdom in ("<no host>", "none"):
+            continue
+        per_habitat = crosstab.get(kingdom, {})
+        silent = per_habitat.get("unknown", 0) + per_habitat.get("other", 0)
+        rows.append({
+            "key": kingdom,
+            "label": KINGDOM_LABEL.get(kingdom, kingdom.replace("_", " ")),
+            "replicons": n,
+            "habitat_silent": silent,
+            "silent_share": (silent / n) if n else 0.0,
+            "informative": kingdom not in ("not_a_host", "unresolved", "ambiguous"),
+        })
+    return sorted(rows, key=lambda r: (r["informative"] is False, -r["replicons"]))
+
+
 HABITAT_LABEL = {
     "soil": "soil", "rhizosphere_plant": "plant and rhizosphere",
     "rhizosphere_soil": "rhizosphere soil",

@@ -92,10 +92,27 @@ CREATE TABLE IF NOT EXISTS replicon_source (
     geo              TEXT,     -- /geo_loc_name veya /country, oldugu gibi
     country          TEXT,     -- geo'nun ilk parcasi (":" oncesi)
     collection_year  INTEGER,
-    habitat          TEXT      -- HABITAT_RULES sonucu
+    habitat          TEXT,     -- HABITAT_RULES sonucu
+    host_kingdom     TEXT      -- host_kingdom.csv'den; HABITAT'TAN BAGIMSIZ
 );
 CREATE INDEX IF NOT EXISTS idx_repsrc_habitat ON replicon_source(habitat);
 """
+
+# Eski veritabanlarinda sutun yok; CREATE TABLE IF NOT EXISTS onu eklemez.
+MIGRATIONS = (
+    ("replicon_source", "host_kingdom", "ALTER TABLE replicon_source "
+                                        "ADD COLUMN host_kingdom TEXT"),
+)
+
+
+def apply_migrations(connection):
+    """Eksik sutunlari ekler. Tablo zaten varsa SCHEMA onu degistirmiyor."""
+    for table, column, statement in MIGRATIONS:
+        existing = {row[1] for row in connection.execute(f'PRAGMA table_info("{table}")')}
+        if column not in existing:
+            connection.execute(statement)
+            print(f"[sema] {table}.{column} eklendi")
+    connection.commit()
 
 # ---------------------------------------------------------------- sozluk
 # Metin once normalize edilir: kucuk harf, [a-z0-9] disindaki her sey bosluk.
@@ -591,6 +608,82 @@ def parse_sources(connection, gbk_dir, processes, force):
     return fallbacks
 
 
+# ------------------------------------------------ 1b. konak alemi atamasi
+HOST_KINGDOM_PATH = "host_kingdom.csv"
+
+
+def load_host_kingdom(path=HOST_KINGDOM_PATH):
+    """host dizgisi -> alem. Kuratorlu CSV; eksik dizgi `unresolved` sayilir.
+
+    Bu bir HABITAT degil, ayri bir boyut. Habitat sorusu "bu organizma nerede
+    yasiyordu", konak sorusu "neyin icinde ya da uzerinde bulundu". GenBank
+    kayitlarinin %31,8'inde `/host` var ve bunlarin 728'inde `/isolation_source`
+    HIC YOK; yani habitat sozlugu o kayitlar icin sessiz kalirken konak alani
+    gercek bir ekolojik bilgi tasiyor. Iki boyutu birlestirmek habitat
+    istatistiklerini bozardi, atmak ise bilgi kaybi olurdu.
+    """
+    mapping = {}
+    if not os.path.exists(path):
+        sys.stderr.write(f"[uyari] {path} yok, konak alemi bos kalir\n")
+        return mapping
+    with open(path, newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            host = (row.get("host") or "").strip()
+            kingdom = (row.get("kingdom") or "").strip()
+            if host and kingdom:
+                mapping[host.lower()] = kingdom
+    return mapping
+
+
+def assign_host_kingdom(connection, path=HOST_KINGDOM_PATH):
+    """replicon_source.host_kingdom sutununu kuratorlu CSV'den doldurur."""
+    mapping = load_host_kingdom(path)
+    rows = connection.execute(
+        "SELECT nucleotide_id, host FROM replicon_source").fetchall()
+    counts = Counter()
+    missing = Counter()
+    updates = []
+    for nuc, host in rows:
+        text = (host or "").strip()
+        if not text:
+            kingdom = None
+        else:
+            kingdom = mapping.get(text.lower())
+            if kingdom is None:
+                kingdom = "unresolved"
+                missing[text] += 1
+        counts[kingdom or "<no host>"] += 1
+        updates.append((kingdom, nuc))
+    connection.executemany(
+        "UPDATE replicon_source SET host_kingdom = ? WHERE nucleotide_id = ?", updates)
+    connection.commit()
+    print(f"[konak] {sum(v for k, v in counts.items() if k != '<no host>')} "
+          f"replikonda /host var")
+    for kingdom, n in counts.most_common():
+        print(f"         {kingdom:12} {n:5}")
+    if missing:
+        print(f"[konak] {len(missing)} dizgi {path} icinde YOK -- eklenmeli:")
+        for text, n in missing.most_common(15):
+            print(f"         {n:4}  {text}")
+    return {"counts": dict(counts.most_common()),
+            "unmapped_strings": dict(missing.most_common())}
+
+
+def host_kingdom_crosstab(connection):
+    """Konak alemi x habitat. Iki boyutun ne kadar ortustugunu gosterir.
+
+    Asil soru su: konak alani ne zaman YENI bilgi veriyor. Habitat'i `unknown`
+    olan ama konagi bilinen bir kayit, habitat sozlugunun sessiz kaldigi yerde
+    konak alaninin konustugu anlamina gelir.
+    """
+    table = defaultdict(Counter)
+    for habitat, kingdom in connection.execute(
+            "SELECT COALESCE(habitat, 'unknown'), COALESCE(host_kingdom, 'none') "
+            "FROM replicon_source"):
+        table[kingdom][habitat] += 1
+    return {k: dict(v.most_common()) for k, v in table.items()}
+
+
 # -------------------------------------------------------- 2. habitat atamasi
 def assign_habitats(connection):
     """Depolanan metinden habitat'i her kosuda yeniden hesapla."""
@@ -938,6 +1031,8 @@ def main():
     ap.add_argument("--out", default="analysis_out/habitat.json")
     ap.add_argument("--ecology", default="cluster_ecology.csv")
     ap.add_argument("--chemistry", default="chemistry.csv")
+    ap.add_argument("--host-kingdom", default=HOST_KINGDOM_PATH,
+                    help="konak dizgisi -> alem kuratorlu eslemesi")
     ap.add_argument("--cpu", type=int, default=8)
     ap.add_argument("--force", action="store_true",
                     help="replicon_source dolu olsa da gbk'lari yeniden parse et")
@@ -946,8 +1041,10 @@ def main():
     connection = sqlite3.connect(args.db)
     connection.executescript(SCHEMA)
 
+    apply_migrations(connection)
     fallbacks = parse_sources(connection, args.gbk_dir, args.cpu, args.force)
     keyword_hits = assign_habitats(connection)
+    host_kingdoms = assign_host_kingdom(connection, args.host_kingdom)
 
     ecology = read_csv_map(args.ecology)
     chemistry = read_csv_map(args.chemistry)
@@ -970,6 +1067,11 @@ def main():
                                     "names a marine or a freshwater body; "
                                     "marine is tested first because salinity "
                                     "decides a coastal lagoon"),
+            "host_kingdom": ("the /host qualifier is mapped to a kingdom through "
+                             "the curated host_kingdom.csv; this is a separate "
+                             "dimension from habitat and is never merged into it, "
+                             "because a host names what the organism was found in "
+                             "or on, not where it lived"),
             "sediment_marine_markers": list(SEDIMENT_MARINE),
             "sediment_freshwater_markers": list(SEDIMENT_FRESH),
             "text_normalisation": ("lowercase, every non-alphanumeric character "
@@ -988,6 +1090,8 @@ def main():
         "coverage": coverage_block(connection, entries, fallbacks),
         "habitats": habitat_summary(entries),
         "habitat_keyword_hits": keyword_hits,
+        "host_kingdom": host_kingdoms,
+        "host_kingdom_by_habitat": host_kingdom_crosstab(connection),
         "habitat_by_substrate_class": crosstab(entries, "substrate_class"),
         "habitat_by_chemical_family": crosstab(entries, "family"),
         "substrate_class_habitat_profile":
