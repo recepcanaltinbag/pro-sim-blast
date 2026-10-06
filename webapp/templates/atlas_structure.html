@@ -81,7 +81,57 @@ region of sequence space, and only the residues that hold the iron are common to
 column that varies is not necessarily functional, because most members are distant relatives whose
 reaction is unknown, so variation there may be heterogeneity rather than tuning.</p>
 
-<h2>4 · What the pocket is made of</h2>
+{% if vo %}
+<h2>4 · Are pocket residues more conserved than the rest of the protein?</h2>
+<p>The obvious answer is yes, and the obvious answer is a tautology. Membership of this database
+requires all four Rieske ligands and at least two of the three iron ligands, so those residues are
+invariant <em>because an entry lacking them was never admitted</em>. They sit inside the pocket, so
+including them measures the admission rule rather than biology.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Pocket columns counted</th><th class="num">Divergence ratio</th>
+<th class="num">Types where the pocket changes more slowly</th><th class="num">p</th><th>Verdict</th></tr></thead>
+<tbody>
+{% set a = vo.conservation.per_type_ratio %}
+{% set sa = vo.conservation.sign_test_against_one %}
+{% set b = vo.conservation.per_type_ratio_excluding_metal_ligand_columns %}
+{% set sb = vo.conservation.sign_test_against_one_excluding_metal_ligand_columns %}
+<tr><td>All of them, including the metal ligands</td>
+  <td class="num" data-v="{{ a.median }}">{{ '%.2f' % a.median }}</td>
+  <td class="num">{{ sa.n_above_reference }} of {{ sa.n_types }}</td>
+  <td class="num">{{ '%.1e' % sa.p_sign_test }}</td>
+  <td><span class="verdict verdict--none">circular</span></td></tr>
+<tr class="hl"><td>Metal ligands removed</td>
+  <td class="num" data-v="{{ b.median }}">{{ '%.2f' % b.median }}</td>
+  <td class="num">{{ sb.n_above_reference }} of {{ sb.n_types }}</td>
+  <td class="num">{{ '%.3f' % sb.p_sign_test }}</td>
+  <td><span class="verdict verdict--none">not significant</span></td></tr>
+</tbody></table></div>
+<figcaption><b>Once the admission residues are removed the effect goes.</b> A ratio below one would
+mean the pocket changes more slowly than the protein average. With the ligands counted it is 0.73
+and every single type agrees, which looks decisive and is not: it is the membership test showing up
+in its own measurement. Without them the ratio is 0.91, only 23 of 35 types agree, and the sign test
+gives p = 0.09. The same conclusion comes from a null built by drawing random column sets of the
+same size: with the ligands the pocket sits in the first percentile, without them near the
+twenty-third.
+<b>So the non-ligand pocket of these enzymes is not measurably more conserved than the rest of the
+protein.</b> Comparing variants at the active site is still a more targeted question than comparing
+them across the whole chain, but it is not a sharper signal, and anyone reporting the first row has
+measured their own inclusion criterion.</figcaption>
+</figure>
+
+<h2>5 · What was wrong with the variant comparison</h2>
+<p>{{ vo.q1.what_was_wrong_with_the_old_comparison }}</p>
+{% if vo.discordant %}
+<p class="note">Pairs that are similar overall but differ in the pocket are the interesting case,
+and they are rare here, for a reason that is methodological rather than biological: variants are
+created by splitting a type until each piece is internally homogeneous, so two different variants of
+one type are by construction seldom very similar. The sample removes the candidates before the
+comparison begins.</p>
+{% endif %}
+{% endif %}
+
+<h2>6 · What the pocket is made of</h2>
 <p>This is a composition count, not an electrostatic calculation. No Poisson-Boltzmann solver was
 run and no pKa was estimated. {{ site.not_electrostatics }}</p>
 <figure class="fig">
@@ -109,7 +159,7 @@ why the last column repeats it with those removed. And substrate family is tangl
 phylogenetic group, since every quaternary-amine enzyme here belongs to group 5.</figcaption>
 </figure>
 
-<h2>5 · What this cannot tell you</h2>
+<h2>7 · What this cannot tell you</h2>
 <ul>
 {% for item in site.limitations[:8] %}<li>{{ item }}</li>{% endfor %}
 </ul>

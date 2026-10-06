@@ -143,7 +143,73 @@ combined variable lands near the weaker value and was being read as though it we
 <p class="note">{{ rel.bias_verdict }}</p>
 {% endif %}
 
-<h2>6 · Limits</h2>
+{% if vo %}
+<h2>6 · Is a transposon a property of the species or of the enzyme?</h2>
+<p>Both, but the enzyme more. Each factor is measured as the share of variance it explains in the
+binary outcome, next to what the same factor explains after the labels are shuffled. That column is
+essential here: genus has 508 levels and enzyme type only 61, and a factor with more levels explains
+more by chance alone.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Factor</th><th class="num">Levels</th><th class="num">Variance explained</th>
+<th class="num">Expected by chance</th><th class="num">Excess</th></tr></thead>
+<tbody>
+{% for f in vo.factors %}
+<tr{{ ' class="hl"'|safe if f.factor == 'type' }}>
+  <td>{{ f.factor }}</td>
+  <td class="num" data-v="{{ f.levels }}">{{ f.levels|fmt }}</td>
+  <td class="num" data-v="{{ f.raw }}">{{ '%.3f' % f.raw }}</td>
+  <td class="num" data-v="{{ f.null }}">{{ '%.3f' % f.null }}</td>
+  <td class="num" data-v="{{ f.excess }}">{{ '%.3f' % f.excess }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Read the last column, not the third.</b> Taken raw, genus appears to beat enzyme type,
+0.132 against 0.122. Against the shuffled baseline the order reverses, because genus was winning on
+having eight times as many levels. The enzyme type carries 0.117 above chance and genus 0.083, and
+the same ordering holds when one factor is held fixed and again when the data are collapsed to one
+observation per type and genus, where the margin is about twofold.
+<b>Two reservations.</b> The margin is not large and no formal test separates two permutation
+excesses; the evidence is that three independent ways of asking agree. And the two factors are
+genuinely entangled, since several types sit mostly in one genus, so no exact split exists. The
+transposon call also remains a regular expression over annotation text, with about a quarter of its
+apparent excess attributable to annotation density, as section 5 measures.</figcaption>
+</figure>
+
+<h2>7 · Do similar enzymes have similar operons?</h2>
+<p>They do, and the expectation is worth stating because its failures are interesting. Each measure
+below is shown against the level reached by pairs from <em>different</em> enzyme types, which is the
+floor: every operon contains the alpha subunit, so any similarity measure starts above zero.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measure of operon similarity</th><th class="num">Within a type</th>
+<th class="num">Between types</th><th class="num">Correlation with enzyme identity</th>
+<th class="num">Per type</th><th class="num">Types where it is positive</th></tr></thead>
+<tbody>
+{% for m in vo.measures %}
+<tr{{ ' class="hl"'|safe if 'component' in m.measure }}>
+  <td>{{ m.measure }}</td>
+  <td class="num" data-v="{{ m.within_median }}">{{ '%.2f' % m.within_median }}</td>
+  <td class="num" data-v="{{ m.chance_median }}">{{ '%.2f' % m.chance_median }}</td>
+  <td class="num" data-v="{{ m.rho }}">{{ '%.2f' % m.rho }}</td>
+  <td class="num" data-v="{{ m.per_type_rho }}">{{ '%.2f' % m.per_type_rho }}</td>
+  <td class="num">{{ m.types_positive }} of {{ m.types_total }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The strongest measure is also the only one free of annotation wording.</b> Component
+overlap compares the beta subunit, ferredoxin and reductase as called by profile models rather than
+by gene name, and it gives the highest correlation of all. So the agreement between enzyme identity
+and operon structure is not an artefact of two genomes being described in the same words. Gene order
+adds something beyond composition: the correlation remains when composition is held fixed.
+<b>The suspected meaningless match is real and very rare.</b> Of 2,196 pairs above 95 % identity,
+one has operons no more similar than two operons from different types, and four more appear if the
+threshold is relaxed to 90 %. All of them are same-genus pairs, which makes them look more like
+duplicated or relocated copies than like wrong assignments. A test that almost nothing fails cannot
+serve as a general filter, but an operon mismatch between near-identical proteins is worth looking
+at when you meet one.</figcaption>
+</figure>
+{% endif %}
+
+<h2>8 · Limits</h2>
 <ul>{% for l in rel.limits[:7] %}<li>{{ l }}</li>{% endfor %}</ul>
 <p class="dl"><a class="btn" href="{{ u('/download/analysis/operon_relations.json') }}">Full output (JSON)</a></p>
 {% else %}

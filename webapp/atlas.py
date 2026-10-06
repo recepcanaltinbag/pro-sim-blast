@@ -230,6 +230,55 @@ def active_site_view(path):
     }
 
 
+def variant_operon_view(path):
+    """Varyant-cep karsilastirmasi, transpozon atfi ve operon benzerligi."""
+    raw = read_json(path)
+    if not raw:
+        return None
+    q1 = raw.get("question_1_pocket_identity_between_variants") or {}
+    q2 = raw.get("question_2_transposon_species_or_enzyme") or {}
+    q3 = raw.get("question_3_operon_similarity_vs_enzyme_identity") or {}
+    cons = q1.get("is_the_pocket_more_conserved_than_the_protein") or {}
+
+    factors = []
+    for name, block in (q2.get("factor_effects_every_entry") or {}).items():
+        factors.append({
+            "factor": name.replace("_", " "),
+            "raw": block.get("eta_squared"),
+            "null": block.get("permuted_eta_squared_mean"),
+            "excess": block.get("eta_squared_above_chance"),
+            "levels": block.get("n_levels"),
+        })
+    factors.sort(key=lambda r: -(r["excess"] or 0))
+
+    measures = []
+    for name, block in (q3.get("measures") or {}).items():
+        within = block.get("within_type_pairs") or {}
+        corr = (block.get("correlation_with_enzyme_identity") or {})
+        per_type = corr.get("one_correlation_per_type_then_sign_test") or {}
+        measures.append({
+            "measure": name.replace("_", " "),
+            "within_median": within.get("median"),
+            "chance_median": block.get("chance_level_median"),
+            "rho": (corr.get("every_pair") or {}).get("spearman_rho"),
+            "per_type_rho": per_type.get("median"),
+            "types_positive": per_type.get("n_above_reference"),
+            "types_total": per_type.get("n_types"),
+        })
+    measures.sort(key=lambda r: -(r["rho"] or 0))
+
+    return {
+        "q1": q1,
+        "conservation": cons,
+        "discordant": q1.get("discordant_pairs") or {},
+        "q2": q2,
+        "factors": factors,
+        "q3": q3,
+        "measures": measures,
+        "limitations": raw.get("limitations") or [],
+    }
+
+
 def ecological_origin_view(path):
     """Ekolojik koken raporunu sayfanin ihtiyaci kadarina indirir."""
     raw = read_json(path)

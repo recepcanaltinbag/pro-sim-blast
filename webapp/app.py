@@ -1354,7 +1354,8 @@ def atlas_cooccurrence(request: Request):
 def atlas_control(request: Request):
     """Regulatorler, regulator ayrismasi ve hareketlilik."""
     return render(request, "atlas_control.html",
-                  rel=atlas.operon_relations_view(apath("operon_relations.json")))
+                  rel=atlas.operon_relations_view(apath("operon_relations.json")),
+                  vo=atlas.variant_operon_view(apath("variant_and_operon.json")))
 
 
 @app.get("/atlas/origin", response_class=HTMLResponse)
@@ -1368,7 +1369,8 @@ def atlas_origin(request: Request):
 def atlas_structure(request: Request):
     """Aktif bolge: kristal yapilardan ve tahmin modellerinden."""
     return render(request, "atlas_structure.html",
-                  site=atlas.active_site_view(apath("active_site.json")))
+                  site=atlas.active_site_view(apath("active_site.json")),
+                  vo=atlas.variant_operon_view(apath("variant_and_operon.json")))
 
 
 @app.get("/atlas/closeness", response_class=HTMLResponse)
