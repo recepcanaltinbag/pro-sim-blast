@@ -44,18 +44,6 @@
   --warn:       #9a6b14;
   --focus:      #1f4e79;
 
-  /* Tablo basligi ve yapi cizimi kutusu kendi tokenlerinde. Ikisi de dogrudan
-     --paper-2 kullaniyordu; karanlik modda --paper-2 ile --panel arasinda iki
-     basamak fark oldugu icin yapisik baslik satiri govdeden ayirt
-     edilemiyordu. Ayri token olunca her palette kendi kontrastini alirlar. */
-  --th-bg:      #f4f2ec;
-  --struct-bg:  #f4f2ec;
-  /* Vurgu renginin UZERINE yazilan metin. Sabit #fff yaziliydi ve karanlik
-     modda --accent-ink acik bir somon oldugu icin beyaz uzerine beyaz gibi
-     davraniyordu: "RO" rozeti, birincil dugme ve secili filtre cipi olculen
-     2,6:1 kontrastla okunmuyordu. Token ile her palette dogru taraf secilir. */
-  --on-accent:  #ffffff;
-
   /* legacy aliases: older rules and templates still reference these */
   --bg: var(--paper);
   --fg: var(--ink);
@@ -70,20 +58,6 @@
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* Tek bir tipografik olcek, --s1..--s7 ile ayni mantikta: her baslik ve her
-     ikincil metin buradan olculur. Eskiden boyutlar kural kural dagilmisti
-     (.8 / .82 / .85 / .88 / .9 / .92 / .95 / 1.04 / 1.06 ...) ve birbirine o
-     kadar yakin degerler ayri bir basamak gibi okunmuyordu; okuyucu bir
-     bilimsel sayfada yapiyi ancak basamaklar ayirt edilebilirse tarayabilir. */
-  --t1: .74rem;    /* birim alt satiri, mikro etiket, chip */
-  --t2: .8rem;     /* tablo basligi, arac cubugu etiketi, altyazi etiketi */
-  --t3: .86rem;    /* not ve tablo dipnotu */
-  --t4: .92rem;    /* tablo govdesi, figur altyazisi, uyari kutusu */
-  --t5: 1rem;      /* h4 */
-  --t6: 1.14rem;   /* h3 ve lede */
-  --t7: 1.42rem;   /* h2, sayi kutusu */
-  --t8: 2rem;      /* h1 */
-
   /* one spacing scale, used for every margin in the sheet */
   --s1: 4px;
   --s2: 8px;
@@ -96,11 +70,6 @@
   --radius: 8px;
   --radius-s: 5px;
   --measure: 76ch;          /* comfortable reading width for prose */
-  /* Ikincil metin icin ayri bir satir genisligi. Altyazi, not ve uyari
-     kutulari 95ch'ye kadar uzuyordu; o uzunlukta goz satir sonundan satir
-     basina geri donerken satiri kaybediyor, oysa bu sayfalarda altyazi
-     argumani tasidigi icin en cok okunan metin. */
-  --measure-2: 78ch;
   --wide: 1180px;
 
   /* figure palette: hand-written SVGs reference these instead of hex, so dark
@@ -114,31 +83,10 @@
   --fig-iron:     #8c2f22;
   --fig-sulfur:   #d9a13b;
   --fig-good:     #1f7a4d;
-
-  /* Python'un urettigi SVG'lerde (operon dizilimi, gen komsulugu, agac)
-     renkler sabit yazili ve buradan degistirilemez. Isik modunda bu tokenler
-     SVG'nin KENDI degerini tasir, yani ilgili kurallar gorsel olarak
-     etkisizdir; karanlik modda tek yerden duzeltilir. Boylece eskiden dort
-     ayri yerde duran karanlik mod bloklari tek bir token listesine indi. */
-  --svg-ink:    #111;       /* kalin anahat: RO oku, referans karesi */
-  --svg-mid:    #5a5a5a;    /* ince anahat: komsu gen */
-  --svg-gene:   #2d3436;    /* gen etiketi ve operon kutusu */
-  --svg-line-a: #999;       /* replikon ekseni */
-  --svg-line-b: #333;       /* olcek cubugu */
-  --svg-line-c: #777;       /* agac dallari */
-  --svg-line-d: #555;       /* komsu gen anahati (app.py arrow()) */
 }
 
-/* Karanlik modun IKI girisi var: isletim sistemi tercihi ve data-theme ile
-   elle secim. Token listesi ikisine de ayni sekilde veriliyor, cunku CSS'te bir
-   bildirim blogunu iki kosula baglamanin yolu yok; listeyi bolmek yerine
-   AYNI listeyi iki kez yazmak tercih edildi, boylece "OS karanlik ama
-   data-theme=light" ve "OS acik ama data-theme=dark" durumlari da dogru
-   calisir -- eskiden ikisi de yanlis paleti aliyordu. Biri degisirse oteki de
-   degismeli; sheet'te karanlik moda ozel baska bir blok YOK, geri kalan her
-   sey bu tokenlerden turetiliyor. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --paper:      #12151a;
     --paper-2:    #171b21;
     --panel:      #181c22;
@@ -155,10 +103,6 @@
     --warn:       #d9b263;
     --focus:      #8fbce0;
 
-    --th-bg:      #222834;
-    --struct-bg:  #14181d;
-    --on-accent:  #12151a;
-
     --fig-rieske:  #1e3346;
     --fig-cat:     #3d3222;
     --fig-red:     #3a3122;
@@ -168,54 +112,7 @@
     --fig-iron:    #d9705e;
     --fig-sulfur:  #d9a13b;
     --fig-good:    #66c295;
-
-    --svg-ink:    #e8e6e1;
-    --svg-mid:    #9aa4ae;
-    --svg-gene:   #e8e6e1;
-    --svg-line-a: #3a414a;
-    --svg-line-b: #9aa4ae;
-    --svg-line-c: #3a414a;
-    --svg-line-d: #6b7681;
   }
-}
-:root[data-theme="dark"] {
-  --paper:      #12151a;
-  --paper-2:    #171b21;
-  --panel:      #181c22;
-  --ink:        #e8e6e1;
-  --ink-2:      #c9c7c1;
-  --dim:        #9aa4ae;
-  --rule:       #2a2f37;
-  --rule-2:     #3a414a;
-
-  --accent-ink: #e08a7a;
-  --link:       #8fbce0;
-  --ok:         #66c295;
-  --bad:        #e8897c;
-  --warn:       #d9b263;
-  --focus:      #8fbce0;
-
-  --th-bg:      #222834;
-  --struct-bg:  #14181d;
-  --on-accent:  #12151a;
-
-  --fig-rieske:  #1e3346;
-  --fig-cat:     #3d3222;
-  --fig-red:     #3a3122;
-  --fig-fd:      #1d3a2b;
-  --fig-neutral: #1f242b;
-  --fig-stroke:  #8b949e;
-  --fig-iron:    #d9705e;
-  --fig-sulfur:  #d9a13b;
-  --fig-good:    #66c295;
-
-  --svg-ink:    #e8e6e1;
-  --svg-mid:    #9aa4ae;
-  --svg-gene:   #e8e6e1;
-  --svg-line-a: #3a414a;
-  --svg-line-b: #9aa4ae;
-  --svg-line-c: #3a414a;
-  --svg-line-d: #6b7681;
 }
 
 /* -------------------------------------------- 2  reset, document, focus  */
@@ -231,11 +128,6 @@ body {
   font-size: 15px;
   line-height: 1.55;
   text-underline-offset: 2px;
-  /* Tek uzun belirtec (erisim numarasi, DOI, lokus etiketi) telefon
-     genisliginde satira sigmadiginda sayfayi yana KAYDIRIYORDU. break-word
-     yalnizca sigmayan sozcugu boler, normal metne dokunmaz; tablolar kendi
-     kutusunda kaydirildigi icin oralari etkilemez. */
-  overflow-wrap: break-word;
 }
 
 main {
@@ -302,7 +194,7 @@ table.data th.sortable:focus-visible { outline-offset: -2px; }
 .brand__mark {
   display: inline-block;
   background: var(--accent-ink);
-  color: var(--on-accent);
+  color: #fff;
   border-radius: 6px;
   padding: 0 6px;
   margin-right: var(--s1);
@@ -350,27 +242,25 @@ button, .btn {
 button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: none; }
 .btn.primary, button.primary {
   background: var(--accent-ink);
-  color: var(--on-accent);
+  color: #fff;
   border-color: var(--accent-ink);
 }
 
 /* Bilinen bir kusuru bildiren uyari kutusu: normal nottan ayrilmasi gerekiyor,
    cunku burada "dikkat et" degil "bu sayi kismen rastgele" deniyor. Renk tek
-   isaret degil; metin de kendi basina aciklayici.
-   Ton artik tek bir hex (#b4612a) degil --warn tokeni: hem palet tek elden
-   yonetiliyor hem de iki ayri karanlik mod blogu gerekmiyor, cunku --warn ve
-   --panel zaten temayla birlikte donuyor. Oran .callout.warn ile ayni. */
+   isaret degil; metin de kendi basina aciklayici. */
 .caveat--warn {
-  border-left-color: var(--warn);
-  background: color-mix(in srgb, var(--warn) 10%, var(--panel));
+  border-left-color: #b4612a;
+  background: color-mix(in srgb, #b4612a 7%, var(--panel));
 }
-
-/* Tabaka secme kutulari: bir grafigin ustundeki kontrol seridi, form degil. */
-.controls { display: flex; flex-wrap: wrap; gap: var(--s3); margin-bottom: var(--s3); }
-.controls fieldset { border: 1px solid var(--rule); border-radius: var(--radius-s);
-  padding: var(--s2) var(--s3); margin: 0; }
-.controls legend { font-size: .76rem; color: var(--dim); padding: 0 4px; }
-.cbx__item { display: block; font-size: .83rem; line-height: 1.55; white-space: nowrap; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .caveat--warn {
+    background: color-mix(in srgb, #b4612a 16%, var(--panel));
+  }
+}
+:root[data-theme="dark"] .caveat--warn {
+  background: color-mix(in srgb, #b4612a 16%, var(--panel));
+}
 
 /* Reaksiyon semasinin yanindaki aciklama. SVG icinde sabit konuma yazilinca
    kirpiliyordu; HTML olarak satir kirabiliyor. */
@@ -438,11 +328,6 @@ tr.dim td { opacity: .62; }
 }
 
 /* ------------------------------------ 4  typography, vertical rhythm    */
-/* Dort basamak, dort ayri isaret. Boyut tek basina ayirt etmiyordu: h3 ile
-   govde metni arasinda 2 piksel, h4 ile govde arasinda sifir fark vardi.
-   Simdi her basamak hem olcekte bir adim atliyor hem de ustundeki bosluk
-   asagisindakinden belirgin olarak buyuk, ki baslik kendi bolumune yapissin
-   ve okuyucu sayfayi kaydirirken yapiyi gorsun. */
 h1, h2, h3, h4 {
   font-family: var(--serif);
   font-weight: 600;
@@ -450,51 +335,34 @@ h1, h2, h3, h4 {
   color: var(--ink);
   text-wrap: balance;
 }
-h1 {
-  font-size: var(--t8);
-  line-height: 1.16;
-  margin: var(--s4) 0 var(--s3);
-  max-width: 44ch;
-}
-/* Bolum cizgisi --rule-2 ile ciziliyor, tablo satir cizgileri --rule ile:
-   ikisi ayni tonda oldugunda sayfadaki en guclu ayrim (bolum) ile en zayif
-   ayrim (satir) ayni agirlikta gorunuyordu. */
+h1 { font-size: 1.75rem; line-height: 1.22; margin: var(--s3) 0 var(--s3); max-width: 46ch; }
 h2 {
-  font-size: var(--t7);
-  line-height: 1.26;
+  font-size: 1.3rem;
+  line-height: 1.3;
   margin: var(--s7) 0 var(--s3);
-  padding-bottom: var(--s2);
-  border-bottom: 1px solid var(--rule-2);
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--rule);
 }
-h3 { font-size: var(--t6); line-height: 1.35; margin: var(--s5) 0 var(--s2); }
-/* h4 govde boyutuna cok yakin, bu yuzden agirligi 700'e cikiyor: dorduncu
-   basamagi tasiyan tek isaret boyut olamaz. */
-h4 { font-size: var(--t5); font-weight: 700; line-height: 1.4; margin: var(--s4) 0 var(--s1); }
+h3 { font-size: 1.06rem; margin: var(--s5) 0 var(--s2); }
+h4 { font-size: .95rem; margin: var(--s4) 0 var(--s1); }
 
 /* first heading after a page title or sub-nav should not add a second gap */
 .subnav + h1, .crumbs + h1 { margin-top: var(--s2); }
 h1 + h2, .lede + h2 { margin-top: var(--s6); }
 h2 + h3, h2 + p + h3 { margin-top: var(--s4); }
-/* Baslik ile hemen altindaki tablo/figur arasinda ikinci bir bosluk olmasin:
-   basligin kendi alt bosluguyla yetinilir. */
-h2 + figure.fig, h3 + figure.fig, h4 + figure.fig { margin-top: var(--s2); }
 
 p { margin: 0 0 var(--s3); max-width: var(--measure); }
 ul, ol { margin: 0 0 var(--s3); padding-left: var(--s5); max-width: var(--measure); }
 li { margin-bottom: var(--s1); }
 
-/* Lede sayfanin ozeti; olcekte h3 ile ayni basamakta ama sans ve daha dar bir
-   satirda duruyor. 76ch bu boyutta 76 karakterlik satir demekti, ki goz
-   satir basina donerken kayiyor; 66ch rahat okunan ust sinirda. */
 .lede {
-  font-size: var(--t6);
-  line-height: 1.5;
-  max-width: 66ch;
+  font-size: 1.06rem;
+  line-height: 1.55;
+  max-width: var(--measure);
   color: var(--ink-2);
-  margin-bottom: var(--s4);
 }
 .muted, .note { color: var(--dim); }
-.note { font-size: var(--t3); max-width: var(--measure); }
+.note { font-size: .85rem; max-width: var(--measure); }
 .small { font-size: .85em; }
 .mono { font-family: var(--mono); font-size: .85em; }
 code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); padding: 0 4px; border-radius: 3px; }
@@ -502,7 +370,7 @@ code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); p
 .findings { max-width: 90ch; }
 .findings li { margin-bottom: var(--s2); }
 
-.crumbs { color: var(--dim); font-size: var(--t3); margin-top: var(--s2); }
+.crumbs { color: var(--dim); font-size: .85rem; margin-top: var(--s2); }
 .crumbs a { color: var(--dim); }
 
 /* a short, bordered aside that states a limit or a definition */
@@ -512,12 +380,10 @@ code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); p
   border-left: 3px solid var(--accent-ink);
   border-radius: 0 var(--radius-s) var(--radius-s) 0;
   padding: var(--s3) var(--s4);
-  font-size: var(--t4);
-  line-height: 1.55;
-  max-width: var(--measure-2);
+  font-size: .9rem;
+  max-width: 95ch;
   margin: 0 0 var(--s4);
 }
-.caveat > :last-child { margin-bottom: 0; }
 .callout {
   padding: var(--s3) var(--s4);
   border-radius: var(--radius);
@@ -536,7 +402,6 @@ code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); p
   margin: 0 0 var(--s5);
 }
 .panel > :last-child { margin-bottom: 0; }
-.panel > .tablewrap:last-child { margin-bottom: 0; }
 
 /* Opt-in automatic section numbering. Pages whose sections are conditional
    (the type page shows regulation, phylogeny or variant signatures only when
@@ -556,38 +421,23 @@ figure.fig {
   counter-increment: fig;
 }
 figure.fig > :first-child { margin-top: 0; }
-/* Figur icindeki tablo kendi alt boslugunu birakmaz; aradaki mesafeyi
-   altyazinin ust boslugu belirler, yoksa iki bosluk toplanir. */
-figure.fig > .tablewrap { margin-bottom: 0; }
 
-/* Bu sayfalarda altyazi dekor degil, argumanin kendisi: yontemi ve sinirini
-   yaziyor, bazen figurden uzun. Bu yuzden artik "kucuk gri yazi" degil --
-   govdeye bir basamak yakin boyut, --dim yerine --ink-2 ve 1.6 satir araligi.
-   Soldaki 3 piksellik cubuk kaldirildi: tam genislikte bir tablonun ya da
-   cercevesi olan bir grafigin altinda ikinci bir dikey cizgi olusturuyordu;
-   altyaziyi figure baglayan isaret artik basindaki FIGURE N etiketi. */
 figure.fig figcaption {
-  font-size: var(--t4);
-  line-height: 1.6;
-  color: var(--ink-2);
-  margin-top: var(--s3);
-  max-width: var(--measure-2);
+  font-size: .85rem;
+  line-height: 1.5;
+  color: var(--dim);
+  margin-top: var(--s2);
+  border-left: 3px solid var(--rule);
+  padding-left: var(--s3);
+  max-width: 95ch;
 }
 /* Captions are numbered by the stylesheet so that templates never have to
-   renumber by hand when a figure is inserted.
-   Etiket sans, kucuk ve harf araligi acik buyuk harf: boylece altyazinin ilk
-   cumlesi cogu zaman kalin basladigi icin iki kalin blok yan yana gelmiyor,
-   ve numara metnin bir parcasi gibi okunmuyor. */
+   renumber by hand when a figure is inserted. */
 figure.fig figcaption::before {
-  content: "Figure " counter(fig) " \00b7";
-  font-family: var(--sans);
-  font-size: var(--t2);
-  font-weight: 700;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin-right: .4em;
-  white-space: nowrap;
+  content: "Figure " counter(fig) " \00b7\00a0";
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
 }
 figure.fig figcaption b, figure.fig figcaption strong { color: var(--ink); }
 figure.fig.nonum { counter-increment: none; }
@@ -610,17 +460,6 @@ figure.fig.nonum figcaption::before { content: none; }
   background: var(--panel);
   /* a hint that there is more table to the right */
   overscroll-behavior-x: contain;
-  /* Tablonun hic alt boslugu YOKTU: ardindan gelen yontem notu kutunun alt
-     kenarina yapisiyordu ve sitede bunun 19 ornegi vardi. 12 piksel, notu
-     tabloya ait gosterecek kadar yakin, yapismayacak kadar uzak. */
-  margin: 0 0 var(--s3);
-}
-/* Tablonun hemen ardindan gelen not o tablonun DIPNOTUDUR. Tablo kutusunun
-   ic kenariyla hizalanir (1px cerceve + 10px hucre dolgusu), boylece hangi
-   tabloya ait oldugu okumadan once anlasilir. */
-.tablewrap + .note {
-  padding-left: 11px;
-  max-width: var(--measure-2);
 }
 
 /* A sticky header only works inside an element that actually scrolls. The
@@ -631,12 +470,6 @@ figure.fig.nonum figcaption::before { content: none; }
 .tablewrap--tall {
   max-height: min(72vh, 680px);
   overflow: auto;
-  /* Kendi icinde kaydirilan bir kutu, sayfayla birlikte akan kisa bir
-     tablodan farkli bir seydir; cercevesi bir ton koyu olunca okuyucu bunu
-     kaydirmadan once gorur. Kaydirma cubugu icin ayrilan yer sabit, yoksa
-     filtre uygulandiginda tablo iki piksel yana atliyordu. */
-  border-color: var(--rule-2);
-  scrollbar-gutter: stable;
 }
 
 table.data {
@@ -644,7 +477,7 @@ table.data {
   border-spacing: 0;
   width: 100%;
   background: var(--panel);
-  font-size: var(--t4);
+  font-size: .9rem;
   font-variant-numeric: tabular-nums;
 }
 table.data th, table.data td {
@@ -657,10 +490,10 @@ table.data th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: var(--th-bg);
+  background: var(--paper-2);
   color: var(--ink);
   font-weight: 600;
-  font-size: var(--t2);
+  font-size: .8rem;
   line-height: 1.3;
   white-space: nowrap;
   vertical-align: bottom;
@@ -675,15 +508,6 @@ table.data th .unit {
   white-space: nowrap;
 }
 table.data tbody tr:last-child td { border-bottom: none; }
-
-/* Uzun tabloda goz, saga kaydirirken satir basini kaybediyor. Cok soluk bir
-   zebra -- murekkebin %3,5'i, kagit dokusu kadar -- satiri yatay olarak
-   tutar. Yalnizca table.js'in "uzun" diye isaretledigi kutuda acilir, cunku
-   bes satirlik bir tabloda sadece gurultu olur. :where() ile yaziliyor ki
-   ozgulluk artmasin ve asagidaki satir vurgulari zebranin USTUNDE kalsin. */
-:where(.tablewrap--tall) table.data tbody tr:nth-child(even) > td {
-  background: color-mix(in srgb, var(--ink) 3.5%, transparent);
-}
 table.data tbody tr:hover td { background: color-mix(in srgb, var(--accent-ink) 5%, transparent); }
 
 /* numbers right-aligned with tabular figures, so columns of digits line up */
@@ -694,28 +518,13 @@ table.data .num, table.data th.num {
 }
 table.data td.mono, table.data td .mono { font-family: var(--mono); }
 
-/* Sitedeki tablolarin cogu .compact; olcege bagli olmasi gerekir, yoksa
-   "tablo govdesi" basamagi iki ayri degere bolunur. */
-table.data.compact { font-size: var(--t3); }
+table.data.compact { font-size: .85rem; }
 table.data.compact th, table.data.compact td { padding: 5px 8px; }
 
-/* Bir .tablewrap icinde OLMAYAN tablolar -- iki kolonlu bloklardaki kucuk
-   tablolar -- ne cerceve ne de kapanis cizgisi aliyordu: baslik satiri
-   havada basliyor, son satir asagidaki metne karisiyordu. Ustte ve altta
-   birer sac cizgisi (dizgideki toprule/bottomrule) tabloyu genisligine
-   dokunmadan kapatir ve cerceveli tablolarla ayni agirlikta gorunmesini
-   saglar. */
-:not(.tablewrap) > table.data {
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: var(--s3);
-}
-
-/* row emphasis. tbody + > td ile yaziliyor, cunku zebra kuraliyla ayni
-   ozgullukte olmali ve ondan SONRA geldigi icin kazanmali. */
-table.data tbody tr.hl > td { background: color-mix(in srgb, var(--accent-ink) 9%, transparent); }
-table.data tbody tr.op > td { background: color-mix(in srgb, var(--link) 8%, transparent); }
-table.data tbody tr.ok > td { background: color-mix(in srgb, var(--ok) 9%, transparent); }
+/* row emphasis */
+table.data tr.hl td { background: color-mix(in srgb, var(--accent-ink) 9%, transparent); }
+table.data tr.op td { background: color-mix(in srgb, var(--link) 8%, transparent); }
+table.data tr.ok td { background: color-mix(in srgb, var(--ok) 9%, transparent); }
 td.empty { color: var(--dim); text-align: center; font-style: italic; padding: var(--s4); }
 
 /* sortable headers: affordance and state */
@@ -734,7 +543,7 @@ table.data th.sortable::after {
   clip-path: polygon(50% 0, 100% 42%, 0 42%, 50% 100%, 100% 58%, 0 58%);
 }
 table.data th.sortable:hover::after { opacity: .6; }
-table.data th.sorted { color: var(--accent-ink); background: color-mix(in srgb, var(--accent-ink) 8%, var(--th-bg)); }
+table.data th.sorted { color: var(--accent-ink); background: color-mix(in srgb, var(--accent-ink) 8%, var(--paper-2)); }
 table.data th.sorted::after {
   opacity: 1;
   height: 6px;
@@ -745,7 +554,7 @@ table.data th[aria-sort="descending"]::after { clip-path: polygon(50% 100%, 100%
 
 /* residue-signature tables */
 table.sdp td, table.sdp th { font-family: var(--mono); }
-table.sdp tbody tr > td.diff {
+table.sdp td.diff {
   background: color-mix(in srgb, var(--accent-ink) 16%, transparent);
   font-weight: 700;
   color: var(--accent-ink);
@@ -799,20 +608,16 @@ form.inline { margin: var(--s2) 0; }
 .facetchip.on {
   background: var(--accent-ink);
   border-color: var(--accent-ink);
-  color: var(--on-accent);
+  color: #fff;
   font-weight: 600;
 }
-/* Cip icindeki sayac saydamlikla soluklastiriliyordu ve bu metni de
-   soluklastiriyordu: olculen kontrast 3,6:1, esigin altinda. Saydamlik yerine
-   --dim tokeni; sayac yine geri planda ama okunuyor. Secili cipte vurgu
-   dolgusunun uzerinde oldugu icin kendi metin rengini miras alir. */
 .facetchip__n {
   margin-left: 5px;
   font-size: .9em;
-  color: var(--dim);
+  opacity: .65;
   font-variant-numeric: tabular-nums;
 }
-.facetchip.on .facetchip__n { color: inherit; opacity: .85; }
+.facetchip.on .facetchip__n { opacity: .8; }
 
 /* set by table.js when a row, card or whole family section is filtered out */
 .is-hidden { display: none !important; }
@@ -828,7 +633,7 @@ form.inline { margin: var(--s2) 0; }
   background: var(--paper-2);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
-  font-size: var(--t3);
+  font-size: .86rem;
 }
 .toc__legend {
   font-size: .7rem;
@@ -850,19 +655,10 @@ form.inline { margin: var(--s2) 0; }
 h2[id] { scroll-margin-top: var(--s3); }
 
 /* -------------------------- 8  tiles, cards, key/value facts           */
-/* Ozet sayilari alti ayri kutu olarak duruyordu ve anasayfa bir gosterge
-   panosu gibi okunuyordu. Artik TEK bir cerceveli serit: 1 pikselik grid
-   araligi kutunun zemin rengini gosterdigi icin aralar sac cizgisine donuyor,
-   satir kaydiginda da duzgun kaliyor. Bir dergi sayfasinin ozet tablosu gibi
-   okunur, kart yigini gibi degil. */
 .tiles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  overflow: hidden;
+  gap: var(--s2);
   margin: var(--s4) 0 var(--s5);
 }
 .tile {
@@ -871,19 +667,14 @@ h2[id] { scroll-margin-top: var(--s3); }
   border-radius: var(--radius);
   padding: var(--s3);
 }
-/* Serit icinde kutucuklarin kendi cercevesi gerekmez; serit disinda tek
-   basina kullanilan bir .tile cercevesini korur. */
-.tiles > .tile { border: 0; border-radius: 0; padding: var(--s3) var(--s4); }
 .tile__n {
-  font-size: var(--t7);
+  font-size: 1.45rem;
   line-height: 1.15;
   font-weight: 700;
   font-family: var(--serif);
   font-variant-numeric: tabular-nums;
 }
-/* Etiket --dim idi; sayinin ne oldugunu soyleyen tek metin oldugu icin
-   --ink-2'ye cekildi, yani sayidan bir ton acik ama okunabilir. */
-.tile__l { color: var(--ink-2); font-size: var(--t3); line-height: 1.35; margin-top: 2px; }
+.tile__l { color: var(--dim); font-size: .82rem; line-height: 1.35; margin-top: 2px; }
 
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s3); }
 .card {
@@ -894,32 +685,24 @@ h2[id] { scroll-margin-top: var(--s3); }
   padding: var(--s3) var(--s4);
   color: var(--ink);
 }
-/* Golge yerine zemin: siyah bir golge karanlik panelde hic gorunmuyordu, ve
-   basili sayfa karakterine golge zaten yakismiyor. color-mix her iki palette
-   de kendiliginden calisir. */
 .card:hover {
   border-color: var(--accent-ink);
   text-decoration: none;
-  background: color-mix(in srgb, var(--accent-ink) 4%, var(--panel));
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
 }
-.card h3 { margin: 0 0 var(--s1); font-size: var(--t5); color: var(--accent-ink); }
-.card p { margin: 0; font-size: var(--t3); color: var(--ink-2); line-height: 1.5; max-width: none; }
+.card h3 { margin: 0 0 var(--s1); font-size: 1rem; color: var(--accent-ink); }
+.card p { margin: 0; font-size: .88rem; color: var(--dim); line-height: 1.45; max-width: none; }
 
 .kv {
   display: grid;
-  /* max-content tek basina KUCULMUYOR: uzun bir terim dar ekranda butun
-     izgarayi tasiriyordu. minmax(0, max-content) ayni genisligi hedefler ama
-     gerektiginde kirilir. */
-  grid-template-columns: minmax(0, max-content) 1fr;
+  grid-template-columns: max-content 1fr;
   gap: var(--s1) var(--s4);
   margin: var(--s2) 0 var(--s4);
 }
-.kv dt { color: var(--dim); font-size: var(--t3); line-height: 1.5; }
+.kv dt { color: var(--dim); font-size: .85rem; line-height: 1.5; }
 .kv dd { margin: 0; }
 
-/* min(330px, 100%): kapsayici 330 pikselden darken sabit alt sinir kutuyu
-   disari tasiriyordu. */
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: var(--s5); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--s5); }
 .cols > div > :first-child { margin-top: 0; }
 
 .bigsearch { display: flex; gap: var(--s2); margin: var(--s3) 0 var(--s5); max-width: 720px; }
@@ -935,7 +718,7 @@ footer {
   font-size: .8rem;
   border-top: 1px solid var(--rule);
 }
-footer p { max-width: var(--measure-2); }
+footer p { max-width: 95ch; }
 
 /* --------------------------------- 9  chips, verdicts, bars            */
 .chip {
@@ -947,56 +730,23 @@ footer p { max-width: var(--measure-2); }
   line-height: 1.6;
   white-space: nowrap;
 }
-
-/* Chip renkleri artik anlamsal tokenlerden color-mix ile TURETILIYOR. Eskiden
-   her ton isik ve karanlik icin ayri ayri on iki hex olarak yaziliydi; bu hem
-   paleti ikiye boluyordu (gri-mavi chip'ler sicak kagit paletinin yanina
-   oturmuyordu) hem de data-theme ile elle secilen karanlik mod bu hexlerin
-   hicbirini almiyordu. Oran her ailede ayni: dolgu %12, cerceve %45,
-   metin %85 murekkep ile karistirilmis. Boylece kontrast iki palette de
-   kendiliginden korunuyor ve bir ton degisince tek yer guncelleniyor. */
-.chip--xenobiotic, .chip--bad {
-  background: color-mix(in srgb, var(--bad) 12%, var(--panel));
-  border-color: color-mix(in srgb, var(--bad) 45%, var(--rule-2));
-  color: color-mix(in srgb, var(--bad) 85%, var(--ink));
-}
-.chip--natural_aromatic, .chip--ok, .chip--core {
-  background: color-mix(in srgb, var(--ok) 12%, var(--panel));
-  border-color: color-mix(in srgb, var(--ok) 45%, var(--rule-2));
-  color: color-mix(in srgb, var(--ok) 85%, var(--ink));
-}
-.chip--natural_specialized, .chip--novel_candidate {
-  background: color-mix(in srgb, var(--link) 12%, var(--panel));
-  border-color: color-mix(in srgb, var(--link) 45%, var(--rule-2));
-  color: color-mix(in srgb, var(--link) 85%, var(--ink));
-}
-/* Kehribar ailesinde oran biraz yuksek: --warn en soluk tonlanan token. */
-.chip--plasmid, .chip--warn, .chip--divergent {
-  background: color-mix(in srgb, var(--warn) 16%, var(--panel));
-  border-color: color-mix(in srgb, var(--warn) 50%, var(--rule-2));
-  color: color-mix(in srgb, var(--warn) 80%, var(--ink));
-}
+.chip--xenobiotic { background: #fde8e4; border-color: #f2b2a8; color: #7a2a1f; }
+.chip--natural_aromatic { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--natural_specialized { background: #e8eef9; border-color: #b4c6ec; color: #23407a; }
 .chip--unknown, .chip--None { color: var(--dim); }
+.chip--plasmid { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--ok { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--bad { background: #fde8e4; border-color: #f2b2a8; color: #7a2a1f; }
+.chip--warn { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--core { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--divergent { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--novel_candidate { background: #e8eef9; border-color: #b4c6ec; color: #23407a; }
 
-/* Kanit kademesi, reaksiyon sinifi ve RO grubu cipleri rengi VERIDEN aliyor
-   ve sablon bunu satir ici stil olarak yaziyor: `background:#f2c14e;color:#fff`.
-   Satir ici stil yalnizca !important ile gecilebilir. Asagidaki alti ton acik
-   ve uzerlerinde beyaz metin vardi; olculen kontrast 1,68:1 (family member),
-   2,53:1 (close homolog), 2,55:1 (distant), 3,86-3,91:1 (O demethylation,
-   angular dioxygenation) ve 3,45:1 (unknown) idi -- yani etiketler
-   okunmuyordu, en cok da tam bu etiketlerin anlami olan Evidence sayfasinda.
-   Renklerin KENDISI degismiyor: onlar verinin parcasi ve cizimlerdeki gen
-   renkleriyle esleniyor; degisen yalnizca uzerlerine yazilan metnin tarafi.
-   DIKKAT: eslesme hex degerine bagli. Tonlardan biri atlas.py icinde
-   (TIER_COLORS / REACTION_COLORS) degisirse buradaki hex de degismeli; kalici
-   cozum o alti tonu orada koyulastirmaktir. */
-.chip[style*="#7fb069"],   /* close_homolog */
-.chip[style*="#f2c14e"],   /* family_member */
-.chip[style*="#f78154"],   /* distant */
-.chip[style*="#2a8f87"],   /* angular_dioxygenation */
-.chip[style*="#b5731f"],   /* O_demethylation */
-.chip[style*="#8a8a8a"] {  /* unknown */
-  color: #10161c !important;
+@media (prefers-color-scheme: dark) {
+  .chip--xenobiotic, .chip--bad { background: #3a1f1a; border-color: #6d3328; color: #f0b3a8; }
+  .chip--natural_aromatic, .chip--ok, .chip--core { background: #16301f; border-color: #2c5a3b; color: #9fd9b4; }
+  .chip--natural_specialized, .chip--novel_candidate { background: #1a2638; border-color: #2f4566; color: #b4cdeb; }
+  .chip--plasmid, .chip--warn, .chip--divergent { background: #322814; border-color: #5e4c20; color: #e6c589; }
 }
 
 .verdict {
@@ -1006,18 +756,14 @@ footer p { max-width: var(--measure-2); }
   border-radius: 10px;
   font-weight: 600;
 }
-/* Chip'lerle ayni recete. --none icin notr gri (#f1f1f1) kullaniliyordu ve
-   sicak kagidin yaninda soguk bir leke birakiyordu; artik kagidin kendi
-   tonu. */
-.verdict--robust {
-  background: color-mix(in srgb, var(--ok) 14%, var(--panel));
-  color: color-mix(in srgb, var(--ok) 85%, var(--ink));
+.verdict--robust { background: #e3f1e8; color: #19603a; }
+.verdict--weak { background: #fdf0e3; color: #8a5a12; }
+.verdict--none { background: #f1f1f1; color: #5a5a5a; }
+@media (prefers-color-scheme: dark) {
+  .verdict--robust { background: #1b3c2a; color: #9fd9b4; }
+  .verdict--weak { background: #3c2f1b; color: #e6c589; }
+  .verdict--none { background: #2a2e34; color: #b9bfc6; }
 }
-.verdict--weak {
-  background: color-mix(in srgb, var(--warn) 18%, var(--panel));
-  color: color-mix(in srgb, var(--warn) 80%, var(--ink));
-}
-.verdict--none { background: var(--paper-2); color: var(--ink-2); }
 
 .tierbar {
   display: flex;
@@ -1033,14 +779,9 @@ footer p { max-width: var(--measure-2); }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: var(--s1); vertical-align: -1px; }
 .legend i.dash { border: 1px dashed var(--ink); background: none; }
 
-/* Bilesen rozetleri. Zeminler, cizimlerdeki gen renklerinin KOYULASTIRILMIS
-   karsiliklari: uzerlerinde beyaz metin var ve 11 pikselde okunmalari gerek.
-   Uc tanesi esigin altindaydi (olculdu: varsayilan gri 3,6:1, reduktaz 3,6:1,
-   alpha_other 4,4:1); ayni tonun bir basamak koyusu ile 4,8-5,6:1 oldular.
-   Renk degil, sadece aydinlik degisti, dolayisiyla cizimle esleme bozulmadi. */
-.comp { padding: 0 6px; border-radius: 4px; font-size: .8em; color: #fff; background: #5f6a6c; }
-.comp--alpha { background: #a8352a; } .comp--alpha_other { background: #a55c19; } .comp--beta { background: #23628f; }
-.comp--ferredoxin { background: #1f7a4d; } .comp--reductase { background: #96690e; } .comp--rieske_other { background: #13796f; }
+.comp { padding: 0 6px; border-radius: 4px; font-size: .8em; color: #fff; background: #7f8a8c; }
+.comp--alpha { background: #a8352a; } .comp--alpha_other { background: #b4651c; } .comp--beta { background: #23628f; }
+.comp--ferredoxin { background: #1f7a4d; } .comp--reductase { background: #b07d11; } .comp--rieske_other { background: #13796f; }
 .comp--none { background: transparent; color: var(--dim); }
 
 /* statistics blocks: each test is one panel, numbered by its own heading */
@@ -1053,7 +794,7 @@ section.stat {
 }
 section.stat h2 {
   border-bottom: 1px solid var(--rule);
-  font-size: var(--t6);
+  font-size: 1.04rem;
   margin: var(--s4) 0 var(--s3);
   max-width: none;
 }
@@ -1073,11 +814,10 @@ section.chemfam h3 { margin-bottom: var(--s1); }
   overflow: hidden;
   color: var(--ink);
 }
-/* .card ile ayni sebep: golge yerine zemin, karanlik modda da gorunur. */
 .structcard:hover {
   border-color: var(--accent-ink);
   text-decoration: none;
-  background: color-mix(in srgb, var(--accent-ink) 4%, var(--panel));
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .07);
 }
 .structcard__img {
   display: flex;
@@ -1085,7 +825,7 @@ section.chemfam h3 { margin-bottom: var(--s1); }
   justify-content: center;
   height: 150px;
   border-bottom: 1px solid var(--rule);
-  background: var(--struct-bg);
+  background: var(--paper-2);
 }
 /* Cizim kutusunu DOLDURUR. Eskiden height:auto idi ve SVG'nin piksel
    nitelikleriyle birlikte orani bozuyordu; artik viewBox var, dolayisiyla
@@ -1094,21 +834,14 @@ section.chemfam h3 { margin-bottom: var(--s1); }
 svg.struct { width: 100%; height: auto; max-height: 260px; }
 .struct--none { font-size: .76rem; color: var(--dim); text-align: center; line-height: 1.3; padding: var(--s2); }
 .structcard__body { padding: var(--s2) var(--s3) var(--s3); }
-.structcard__gene { font-weight: 700; font-family: var(--serif); font-size: var(--t5); }
-.structcard__sub { font-size: var(--t3); margin-top: 1px; color: var(--ink-2); }
+.structcard__gene { font-weight: 700; font-family: var(--serif); font-size: 1rem; }
+.structcard__sub { font-size: .83rem; margin-top: 1px; }
 .structcard__rx { font-size: .76rem; color: var(--dim); margin-top: var(--s1); }
 .structcard__rx i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
 .structcard__n { font-size: .74rem; color: var(--dim); margin-top: 2px; }
-/* Uyesi olmayan tip. Iki sey degisti:
-   1. Kart ARTIK baglaniyor (sayfa referans enzimin kuratorlu bilgisini
-      gosteriyor), ama stil hala `cursor: default` diyordu ve hover geri
-      bildirimini bastiriyordu: tiklanabilir bir sey tiklanamaz gorunuyordu.
-   2. Solgunluk `opacity: .72` ile yapiliyordu, yani kartin METNI de soluyordu:
-      olculen kontrast 3,1:1 (isik) ve 4,2:1 (karanlik), ikisi de 4,5 esiginin
-      altinda. Ayni "bu kart farkli" isareti artik kesik cerceve ve bir ton
-      koyu zemin ile veriliyor; metin tam kontrastini koruyor. */
-.structcard--empty { border-style: dashed; background: var(--paper-2); }
-.structcard--empty:hover { border-color: var(--rule-2); background: var(--paper-2); }
+/* a type with no confirmed entries cannot have a page, so its card is inert */
+.structcard--empty { opacity: .72; border-style: dashed; cursor: default; }
+.structcard--empty:hover { border-color: var(--rule); box-shadow: none; }
 
 figure.reaction .rxn {
   display: flex;
@@ -1123,7 +856,7 @@ figure.reaction .rxn {
 .rxn__side { text-align: center; min-width: 168px; }
 .rxn__label { font-size: .8rem; color: var(--dim); margin-top: var(--s1); }
 .rxn__product {
-  font-size: var(--t5);
+  font-size: .95rem;
   font-weight: 600;
   max-width: 230px;
   margin: 0 auto;
@@ -1184,7 +917,7 @@ figure.reaction .rxn {
 }
 .pdbbar__styles { display: flex; gap: var(--s1); margin-left: auto; }
 .pdbbar__styles button { font-size: .78rem; padding: 2px 9px; }
-.pdbbar__styles button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+.pdbbar__styles button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: #fff; }
 
 /* -------- 11  hand-written and generated SVGs, including dark mode     */
 svg.arch, svg.flowfig {
@@ -1221,34 +954,23 @@ svg.schematic {
 svg.schematic text { fill: currentColor; }
 
 /* The generated SVGs (operon layouts, reaction schemes, trees) are built in
-   Python with literal colours. They cannot be changed from here, so the sheet
-   overrides them by attribute: black outlines and dark reds are unreadable on
-   a dark panel.
-   Bu kurallar artik bir medya blogunun ICINDE DEGIL. Her biri --svg-* tokenine
-   bakiyor ve o tokenin isik modundaki degeri SVG'nin kendi degerinin aynisi,
-   yani isik modunda kural gorsel olarak etkisiz. Kazanci: karanlik mod tek bir
-   token listesinden geliyor, dolayisiyla data-theme ile elle secilen karanlik
-   mod da bu duzeltmeleri aliyor -- eskiden almiyordu ve cizimler okunmaz
-   kaliyordu. */
-svg.oplayout polygon[stroke="#111"] { stroke: var(--svg-ink); }
-svg.oplayout polygon[stroke="#5a5a5a"] { stroke: var(--svg-mid); }
-svg [stroke="#111"]:not(polygon) { stroke: var(--svg-ink); }
-svg.genes [stroke="#2d3436"] { stroke: var(--svg-gene); }
-svg.genes [fill="#2d3436"] { fill: var(--svg-gene); }
-svg.genes [stroke="#999"] { stroke: var(--svg-line-a); }
-svg.genes [stroke="#333"] { stroke: var(--svg-line-b); }
-svg.genes [stroke="#777"] { stroke: var(--svg-line-c); }
-/* app.py'nin arrow() fonksiyonu kalin olmayan komsu genleri #555 ile ciziyor
-   ve bunun KARANLIK MOD KARSILIGI HIC YOKTU: koyu panelde komsu genlerin
-   anahatti kayboluyordu (her /ro/<slug> sayfasindaki gen komsulugu cizimi). */
-svg.genes [stroke="#555"] { stroke: var(--svg-line-d); }
-/* Olcek cubugunun yanindaki "2 kb" yazisinin fill niteligi YOK, yani tarayici
-   varsayilani siyahi aliyordu ve koyu panelde gorunmuyordu. Nitelikli gen
-   etiketleri yukaridaki daha ozgul kuraldan gelmeye devam eder. */
-svg.genes text { fill: currentColor; }
-svg.tree path[stroke="#777"] { stroke: var(--svg-line-c); }
-svg.rxnscheme circle[fill="#8c2f22"] { fill: var(--fig-iron); }
-svg.rxnscheme [stroke="#8c2f22"] { stroke: var(--accent-ink); }
+   Python with literal colours. They cannot be changed from here, so dark mode
+   corrects them by attribute: black outlines and dark reds are unreadable on a
+   dark panel. */
+@media (prefers-color-scheme: dark) {
+  /* near-black outlines and label text, invisible on a dark panel */
+  svg.oplayout polygon[stroke="#111"] { stroke: #e8e6e1; }
+  svg.oplayout polygon[stroke="#5a5a5a"] { stroke: #9aa4ae; }
+  svg.genes [stroke="#2d3436"] { stroke: var(--ink); }
+  svg.genes [fill="#2d3436"] { fill: var(--ink); }
+  svg.genes [stroke="#999"], svg.genes [stroke="#333"] { stroke: var(--rule-2); }
+  svg.genes [stroke="#777"] { stroke: var(--rule-2); }
+  svg [stroke="#111"]:not(polygon) { stroke: var(--ink); }
+  svg.rxnscheme circle[fill="#8c2f22"] { fill: var(--fig-iron); }
+  svg.rxnscheme [stroke="#8c2f22"] { stroke: var(--accent-ink); }
+  svg.tree line, svg.tree path { stroke: var(--rule-2); }
+  .structcard__img { background: #14181d; }
+}
 svg.oplayout { vertical-align: middle; }
 
 pre.seq {
@@ -1263,10 +985,7 @@ pre.seq {
 }
 
 /* ------------------------ 12  search, taxonomy tree, miscellany        */
-/* minmax(0, ...): duz bir 1fr'in alt siniri auto'dur ve icerigin en kucuk
-   genisligi kolonu zorla buyutuyordu; arama sayfasi telefonda bu yuzden yana
-   kayiyordu (375 piksellik ekranda olculen 736 piksel). */
-.searchlayout { display: grid; grid-template-columns: minmax(0, 236px) minmax(0, 1fr); gap: var(--s5); align-items: start; }
+.searchlayout { display: grid; grid-template-columns: 236px 1fr; gap: var(--s5); align-items: start; }
 .facets { position: sticky; top: var(--s3); }
 .facet {
   background: var(--panel);
@@ -1335,17 +1054,14 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 }
 
 @media (max-width: 900px) {
-  .searchlayout { grid-template-columns: minmax(0, 1fr); }
+  .searchlayout { grid-template-columns: 1fr; }
   .facets { position: static; }
   .facet { margin-bottom: var(--s2); }
 }
 
 @media (max-width: 860px) {
-  /* one column is better than two cramped ones.
-     minmax(0, 1fr) yaziliyor, duz 1fr degil: 1fr'in alt siniri auto'dur ve
-     icindeki tablonun en kucuk genisligi kolonu zorla genisletir; sayfa da
-     onunla birlikte yana kayar. */
-  .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+  /* one column is better than two cramped ones */
+  .cols { grid-template-columns: 1fr; gap: var(--s4); }
   figure.reaction .rxn { gap: var(--s4); padding: var(--s3); }
   .rxn__scheme { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: var(--s3); }
   .rxn__side, .rxn__arrow { min-width: 140px; }
@@ -1353,23 +1069,8 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 
 @media (max-width: 700px) {
   main { padding: var(--s3) var(--s3) var(--s6); }
-  /* Kendi kaydirma kutusu olmayan tablolar telefon genisliginde SAYFAYI yana
-     kaydiriyordu (tip sayfasinda olculdu: 375 piksellik ekranda 597 piksel).
-     display:block tabloyu blok kutusuna cevirir, ic tablo kendi en kucuk
-     genisliginde kalir ve kutu kendi icinde kaydirilir. Yalnizca dar ekranda:
-     masaustunde kolon genislikleri aynen korunur. */
-  :not(.tablewrap) > table.data {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-  }
-  /* Olcek daraldikca sikisir ama basamaklar korunur. */
-  h1 { font-size: 1.62rem; }
-  h2 { font-size: 1.26rem; margin-top: var(--s6); }
-  h3 { font-size: 1.08rem; }
-  .lede { font-size: 1.06rem; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.18rem; margin-top: var(--s6); }
   .top { gap: var(--s2) var(--s4); padding: var(--s2) var(--s3); }
   .qs { margin-left: 0; width: 100%; }
   .qs input { width: 100%; }
@@ -1385,15 +1086,12 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 @media (max-width: 440px) {
   body { font-size: 14.5px; }
   main { padding: var(--s2) var(--s2) var(--s6); }
-  h1 { font-size: 1.4rem; }
-  h2 { font-size: 1.16rem; }
-  .lede { font-size: 1.02rem; max-width: none; }
-  /* Serit iki kolona duser; aralik 1 pikselde KALIR, yoksa sac cizgisi
-     yerine bosluk gorunur ve serit yine alti kutuya ayrilir. */
-  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; }
-  .tiles > .tile { padding: var(--s2); }
-  .tile__n { font-size: 1.22rem; }
-  .tile__l { font-size: var(--t1); }
+  h1 { font-size: 1.35rem; }
+  .lede { font-size: 1rem; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s1); }
+  .tile { padding: var(--s2); }
+  .tile__n { font-size: 1.2rem; }
+  .tile__l { font-size: .74rem; }
   .structgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s1); }
   .structcard__img { height: 112px; }
   .structcard__body { padding: 6px 7px 8px; }
@@ -1407,24 +1105,12 @@ details.taxnode[open] > summary::before { content: "\25be"; }
   .tbar__q { width: 100%; }
   .tbar__field { width: 100%; flex-wrap: wrap; }
   .caveat, .callout, .panel { padding: var(--s2) var(--s3); }
-  table.data, table.data.compact { font-size: .82rem; }
+  table.data, table.data.compact { font-size: .8rem; }
   table.data th, table.data td { padding: 5px 6px; }
-  /* Altyazi telefonda da argumani tasiyor; kucultulmez, yalnizca olcusu
-     kutuya birakilir. */
-  figure.fig figcaption { max-width: none; }
-  .caveat, .note, footer p { max-width: none; }
   figure.reaction .rxn { flex-direction: column; align-items: stretch; }
   .rxn__side, .rxn__arrow, .rxn__scheme { min-width: 0; }
   .pdbwrap { height: 280px; }
   .pdbbar__styles { margin-left: 0; }
-  /* Operon dizilimi cizimleri sabit genislikli SVG'ler ve kendi kaydirma
-     kutulari yok; telefonda SAYFAYI yana kaydiriyorlardi (olculdu: 375
-     piksellik ekranda tip sayfasinda 412, giris sayfasinda 559 piksel).
-     viewBox'lari oldugu icin orantili olarak kuculebilirler. Bir TD
-     icindekiler disarida birakilir: onlar zaten tablonun kendi kaydirma
-     kutusunda tam boyutta duruyor. */
-  :not(td) > svg.oplayout { max-width: 100%; height: auto; }
-
   /* an 8-position schematic cannot stay legible at 390px; it scrolls instead
      of shrinking its text to four pixels */
   .archscroll { overflow-x: auto; overscroll-behavior-x: contain; }
@@ -1440,22 +1126,7 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 
 /* ------------------------------------------------------- 14  print      */
 @media print {
-  /* data-theme="dark" secicisi (0,2,0) ozgullukte oldugu icin dusuk ozgullukte
-     bir :root blogu onu YENMIYORDU: elle karanlik moda alinmis bir sayfa siyah
-     zeminle yazdirilmaya calisiyordu. Secici listesi ikisini de kapsiyor ve
-     tam token setini isiga geri ceviriyor. */
-  :root, :root[data-theme="dark"] {
-    --paper: #fff; --paper-2: #fff; --panel: #fff;
-    --ink: #000; --ink-2: #1a1a1a; --dim: #444;
-    --rule: #bbb; --rule-2: #888;
-    --th-bg: #f0f0f0; --struct-bg: #fff; --on-accent: #fff;
-    --accent-ink: #8c2f22; --link: #1f4e79;
-    --ok: #1f7a4d; --bad: #a2362a; --warn: #9a6b14;
-    --svg-ink: #111; --svg-mid: #5a5a5a; --svg-gene: #2d3436;
-    --svg-line-a: #999; --svg-line-b: #333; --svg-line-c: #777; --svg-line-d: #555;
-  }
-  /* Zebra kagitta gereksiz murekkep; satir cizgileri zaten var. */
-  :where(.tablewrap--tall) table.data tbody tr:nth-child(even) > td { background: none; }
+  :root { --paper: #fff; --panel: #fff; --ink: #000; --dim: #444; --rule: #bbb; }
   .top, .subnav, .tbar, .qs, .bigsearch, .pdbbar__styles, .skip { display: none !important; }
   main { max-width: none; padding: 0; }
   .tablewrap, .tablewrap--tall { max-height: none; overflow: visible; border: none; }
