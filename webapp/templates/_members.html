@@ -8,7 +8,7 @@
 <table class="data">
   <thead><tr>
     <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
-    <th>Class</th>
+    <th>How close to the reference</th><th>Class</th>
     <th class="num">Score<span class="unit">bits</span></th>
     <th>Operon</th>
   </tr></thead>
@@ -20,6 +20,11 @@
     <td><i>{{ m.organism }}</i></td>
     <td class="small">{{ m.product }}</td>
     <td><a href="{{ u('/cluster/' ~ m.ro_cluster) }}">{{ gene(m.ro_cluster) }}</a></td>
+    {#  Yakinlik sutunu: substrat etiketinin bu uye icin anlamli olup olmadigini
+        soyleyen tek sey bu.                                                  #}
+    <td>{% if m.tier %}<span class="chip" style="background:{{ TIER_COLORS[m.tier] }};color:{{ chip_text(TIER_COLORS[m.tier]) }};border:0">{{ TIER_LABEL.get(m.tier, m.tier.replace('_',' ')) }}</span>
+        {% if m.ref_identity %}<div class="note">{{ '%.0f %%' % m.ref_identity }} to {{ gene(m.nearest_ref) if m.nearest_ref else 'its reference' }}</div>{% endif %}
+        {% else %}<span class="note">–</span>{% endif %}</td>
     <td>{% if m.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(m.leaf_id)) }}">{{ m.leaf_id.split('#')[-1] }}</a>{% else %}–{% endif %}</td>
     <td><span class="chip chip--{{ m.assignment_class or 'unknown' }}">{{ m.assignment_class or 'unassigned' }}</span></td>
     <td class="num" data-v="{{ m.hmm_score or '' }}">{{ '%.0f' % m.hmm_score if m.hmm_score else '–' }}</td>

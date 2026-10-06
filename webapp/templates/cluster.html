@@ -440,6 +440,30 @@ target. A variant is the finest unit at which a distinct function can reasonably
   <button>Filter</button>
 </form>
 {% endif %}
+{% set close_n = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}
+{% set far_n = (tiers['family_member'] + tiers['distant'] + tiers['novel']) if tiers else 0 %}
+{% if tiers %}
+<div class="caveat{{ ' caveat--warn' if close_n == 0 }}">
+  {% if close_n == 0 %}
+  <b>No member of this type is a close homologue of the reference enzyme.</b>
+  All {{ far_n|fmt }} members are below 60 % identical to it{% if members and members[0].ref_identity %},
+  the closest at {{ '%.0f %%' % members[0].ref_identity }}{% endif %}.
+  Nothing here should be read as doing the reaction the reference does. What the profile has
+  collected is the surrounding region of sequence space, and the function of everything in it is
+  unknown. If you came here for the characterised enzyme, it is described above; the table below
+  is a list of relatives, not of examples.
+  {% else %}
+  <b>{{ close_n|fmt }} of {{ (close_n + far_n)|fmt }} members are close enough for the substrate
+  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
+  {{ far_n|fmt }} are more distant relatives whose reaction has not been measured and cannot be
+  inferred from membership alone. The table is ordered with the closest first, so the informative
+  members are on this page and the distant ones follow.
+  {% endif %}
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="{{ u('/atlas/evidence') }}">evidence levels</a> ·
+  <a href="{{ u('/atlas/closeness') }}">how results change when only close members are counted</a></span>
+</div>
+{% endif %}
 {% include "_members.html" %}
 </div>
 {% endblock %}

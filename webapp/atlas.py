@@ -234,7 +234,7 @@ def assignment_agreement(con):
 
     NEDEN. Atama HMM bit skoruna gore yapiliyor, "en yakin referans" ise dizi
     kimligine gore olculuyor. Ikisi ayri sorulardir ve AYRILABILIRLER. Kullanici
-    bunu OxyA'da fark etti: tipe atanan 95 uyenin kuratorlu referansa kimligi
+    bunu qxyA'da fark etti: tipe atanan 95 uyenin kuratorlu referansa kimligi
     ortanca %33, ve referansa en yakin 127 girisin yalnizca 81'i o tipe
     atanmis; kalani ayni grubun baska tiplerine dagilmis.
 

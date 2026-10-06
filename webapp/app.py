@@ -388,6 +388,7 @@ def members_query(con, cluster=None, leaf=None, q=None, page=1, size=PAGE_SIZE):
         FROM ro r JOIN replicon p USING(nucleotide_id)
         LEFT JOIN ro_leaf rl ON rl.candidate_id = r.candidate_id
         LEFT JOIN ro_subfamily rs ON rs.candidate_id = r.candidate_id
+        LEFT JOIN ro_evidence ev ON ev.candidate_id = r.candidate_id
         LEFT JOIN operon o ON o.candidate_id = r.candidate_id
         WHERE {' AND '.join(where)}"""
     total = con.execute("SELECT COUNT(*) " + sql, params).fetchone()[0]
@@ -395,8 +396,17 @@ def members_query(con, cluster=None, leaf=None, q=None, page=1, size=PAGE_SIZE):
         SELECT r.candidate_id, r.protein_id, r.locus_tag, r.product, r.ro_cluster, r.hmm_score,
                r.model_coverage, p.organism, p.is_plasmid, p.nucleotide_id,
                rl.leaf_id, rs.assignment_class, rs.core_identity,
-               o.completeness, o.layout
-        {sql} ORDER BY p.organism, r.candidate_id LIMIT ? OFFSET ?""",
+               o.completeness, o.layout, ev.tier, ev.ref_identity, ev.nearest_ref
+        {sql}
+        -- EN YAKIN uyeler once. Kullanici hakli olarak "enzim sayfalarinda
+        -- once cok yakin homologlara bakalim, uzak akrabalari ayri
+        -- degerlendirelim" dedi; organizma adina gore siralamak en bilgilendirici
+        -- uyeleri sayfalar arasina dagitiyordu.
+        ORDER BY CASE ev.tier WHEN 'characterized' THEN 0 WHEN 'close_homolog' THEN 1
+                              WHEN 'family_member' THEN 2 WHEN 'distant' THEN 3
+                              WHEN 'novel' THEN 4 ELSE 5 END,
+                 ev.ref_identity DESC, p.organism, r.candidate_id
+        LIMIT ? OFFSET ?""",
         params + [size, (page - 1) * size]).fetchall()
     return total, rows
 
