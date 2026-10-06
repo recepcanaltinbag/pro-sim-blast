@@ -1311,7 +1311,8 @@ def atlas_novel(request: Request):
         live |= {c for c in CHEMISTRY} | {c for c in ECOLOGY}   # artik hepsinin sayfasi var
         return render(request, "atlas_novel.html", rows=rows, variants=variants,
                       matrix=matrix, tiers=tiers, classes=classes, domains=domains,
-                      n_total=len(rows), live_clusters=live)
+                      n_total=len(rows), live_clusters=live,
+                      budget=atlas.novelty_budget(con))
     finally:
         con.close()
 

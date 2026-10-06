@@ -9,7 +9,55 @@
 Each has both metal centres complete, yet is less than 25 % identical to every one of the 71
 characterised references. They are the places where this family still has unknown chemistry.</p>
 
-<h2>1 · How the set is defined</h2>
+{% if budget %}
+<h2>1 · How much of this family might be doing something new</h2>
+<p>It is a fair question and it has no single answer, so here are three, from the most cautious to
+the most generous. They differ in what counts as "new", not in the data.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Reading</th><th>What it counts</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td>Most cautious</td>
+  <td class="small">No characterised relative at all, under 25 % identity to any of the 71</td>
+  <td class="num" data-v="{{ budget.strict_novel }}">{{ budget.strict_novel|fmt }}</td>
+  <td class="num" data-v="{{ budget.strict_novel_share }}">{{ '%.1f %%' % (100 * budget.strict_novel_share) }}</td></tr>
+{% for b in budget.bands %}
+<tr{{ ' class="hl"'|safe if b.min_members == 3 }}>
+  <td>{% if b.min_members == 1 %}Everything too distant to label
+      {% elif b.min_members == 3 %}The defensible middle
+      {% else %}Most conservative reproducible{% endif %}</td>
+  <td class="small">Variants where <em>every</em> member is below 40 % identity to any characterised
+    enzyme, counting only variants of {{ b.min_members }} or more members
+    ({{ b.variants|fmt }} variants)</td>
+  <td class="num" data-v="{{ b.entries }}">{{ b.entries|fmt }}</td>
+  <td class="num" data-v="{{ b.share }}">{{ '%.1f %%' % (100 * b.share) }}</td></tr>
+{% endfor %}
+<tr><td>The upper bound</td>
+  <td class="small">Every entry whose substrate label cannot be transferred, that is everything
+    below 60 % identity to a characterised enzyme</td>
+  <td class="num" data-v="{{ budget.reaction_unknown }}">{{ budget.reaction_unknown|fmt }}</td>
+  <td class="num" data-v="{{ budget.reaction_unknown_share }}">{{ '%.1f %%' % (100 * budget.reaction_unknown_share) }}</td></tr>
+</tbody></table></div>
+<figcaption><b>The honest answer is the highlighted row: about
+{{ '%.0f %%' % (100 * budget.bands[1].share) }}.</b> It counts the entries that sit in a variant of
+at least three members where no member is within 40 % of any characterised enzyme. The three-member
+condition matters: a single divergent sequence can be a sequencing artefact, while the same sequence
+found in three genomes is reproducible. The 40 % condition matters because below it no substrate
+label can be carried across, as the <a href="{{ u('/atlas/evidence') }}">evidence page</a> measures
+directly.
+<b>Why the distant level is included and not only the novel one.</b> A protein 25 to 40 % identical
+to a characterised enzyme may well perform a different reaction; nothing about that distance implies
+the same chemistry. Counting only the strictest level would report
+{{ '%.1f %%' % (100 * budget.strict_novel_share) }}, which understates the unexplored part of the
+family by more than tenfold.
+<b>And the real figure is larger than any row here.</b> Seventeen per cent of the genomes in this
+build were downloaded as empty records and their proteins were never read, and those genomes are
+concentrated in the genera richest in these enzymes. Every number on this page is therefore a lower
+bound on what the sampled genomes already contain.</figcaption>
+</figure>
+{% endif %}
+
+<h2>2 · How the strict set is defined</h2>
 <div class="caveat">
 A protein enters this list only if all of the following hold, so that annotation noise and one-off
 sequencing artefacts are excluded:
@@ -23,7 +71,7 @@ sequencing artefacts are excluded:
 That leaves <b>{{ n_total|fmt }}</b> proteins in <b>{{ variants|length }}</b> variants.
 </div>
 
-<h2>2 · Two definitions of novelty, and where they disagree</h2>
+<h2>3 · Two definitions of novelty, and where they disagree</h2>
 <p>This database measures novelty twice, by different means. The <em>evidence level</em> compares
 each protein with the reference proteins directly. The <em>assignment class</em> asks whether the
 protein is typical of the cluster it was placed in, by comparing it with the consensus of its own
@@ -43,13 +91,13 @@ a well-populated subfamily and are nonetheless unlike any characterised enzyme. 
 subfamily outliers, as the earlier version of this pipeline did, would have missed them entirely.</figcaption>
 </figure>
 
-<h2>3 · Who carries them</h2>
+<h2>4 · Who carries them</h2>
 <p>{% for d, n in domains.most_common() %}<b>{{ d }}</b> {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}.
 A third of the most divergent proteins are eukaryotic. Rieske oxygenases of plants, algae and fungi
 are under-represented among characterised enzymes, so divergence from the reference set partly
 measures what has been studied rather than what exists.</p>
 
-<h2>4 · Candidates by variant</h2>
+<h2>5 · Candidates by variant</h2>
 <p class="note">Grouped by variant, largest first. Identity is to the nearest curated reference,
 which names the closest relative without implying the same function. Operon columns show
 sequence-verified partners.</p>
@@ -83,7 +131,7 @@ sequence-verified partners.</p>
 {% endfor %}
 </tbody></table></div>
 
-<h2>5 · What would settle it</h2>
+<h2>6 · What would settle it</h2>
 <p>Nothing here is a functional claim. A candidate becomes an enzyme with a known reaction only
 through experiment, and the most informative next steps are the ones this database can point at:
 the variants with the most members and the most complete operons, because a conserved gene

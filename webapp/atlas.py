@@ -230,6 +230,55 @@ def active_site_view(path):
     }
 
 
+def novelty_budget(con):
+    """Bu veritabaninin NE KADARI yeni kimya tasiyor olabilir?
+
+    Soru mesru ve tek bir sayiyla cevaplanamaz, cunku "yeni" uc ayri sey
+    demek olabilir. Uc tanimi da olcup yan yana koymak, birini secip otekileri
+    gizlemekten durust.
+
+    Onemli olan nokta: "uzak" kademesi de yeni aktivite ADAYIDIR. Kuratorlu
+    bir enzime %25-40 benzeyen bir protein, o enzimin reaksiyonunu yapiyor
+    olabilir de yapmiyor olabilir; bilinmiyor. Bu yuzden hesap yalnizca en
+    katiyi (<%25) degil, substrat etiketinin aktarilamadigi her seyi sayar.
+
+    Tekrarlanabilirlik sarti: yalnizca EN AZ UC uyeli varyantlar. Tek bir
+    dizide goruneni saymak, dizileme hatasini kesif saymak olurdu.
+    """
+    if not table_exists(con, "ro_evidence"):
+        return None
+    total = con.execute("SELECT COUNT(*) FROM ro WHERE is_confirmed=1").fetchone()[0]
+    tiers = dict(con.execute("""
+        SELECT e.tier, COUNT(*) FROM ro_evidence e JOIN ro r USING(candidate_id)
+        WHERE r.is_confirmed=1 GROUP BY 1"""))
+    close = tiers.get("characterized", 0) + tiers.get("close_homolog", 0)
+
+    variants = con.execute("""
+        SELECT l.leaf_id, l.size, MAX(e.ref_identity) best,
+               SUM(CASE WHEN e.tier IN ('distant', 'novel') THEN 1 ELSE 0 END) far
+        FROM leaf l JOIN ro_leaf rl ON rl.leaf_id = l.leaf_id
+        JOIN ro_evidence e ON e.candidate_id = rl.candidate_id
+        GROUP BY l.leaf_id""").fetchall()
+
+    def band(min_size):
+        chosen = [v for v in variants if v[1] >= min_size and v[3] == v[1]]
+        entries = sum(v[1] for v in chosen)
+        return {"min_members": min_size, "variants": len(chosen), "entries": entries,
+                "share": round(entries / total, 4) if total else 0}
+
+    return {
+        "total": total,
+        "tiers": tiers,
+        "label_transfers": close,
+        "label_transfers_share": round(close / total, 4) if total else 0,
+        "reaction_unknown": total - close,
+        "reaction_unknown_share": round((total - close) / total, 4) if total else 0,
+        "strict_novel": tiers.get("novel", 0),
+        "strict_novel_share": round(tiers.get("novel", 0) / total, 4) if total else 0,
+        "bands": [band(1), band(3), band(5)],
+    }
+
+
 def assignment_agreement(con):
     """Her tip icin: uyelerin kaci GERCEKTEN bu tipin referansina en yakin?
 
