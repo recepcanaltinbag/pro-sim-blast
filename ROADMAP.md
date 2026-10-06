@@ -5,23 +5,41 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
-27. ~~Arayuzde kalan Turkce metin.~~ **BITTI.** Okaryot alt-grup etiketleri
-    (`bitki/alg`, `mantar`, `hayvan`, `kirmizi alg`, `diger-ok`)
-    `classify_domains.py` icindeki bir sozlukten DOGRUDAN veritabanina ve
-    oradan sayfaya gidiyordu. Ilk tarama bunu kacirdi cunku sadece islev
-    sozcuklerine bakiyordu; kacan sey bir icerik sozcuguydu. Etiketler
-    ingilizceye cevrildi, `ro_domain` tablosu yeniden kuruldu, ve eski rapor
-    scriptlerindeki (`make_report.py`) anahtar aramalari da guncellendi --
-    aksi halde sessizce sifir okuyacaklardi.
+Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
-28. ~~Deploy oncesi otomatik site denetimi.~~ **BITTI.** `check_site.py`:
-    78 sayfayi acar, 6.217 dahili baglantiyi dener, gorunur metinde ve
-    YAYINLANAN veri dosyalarinda Turkce arar, FAIL varsa sifirdan farkli
-    cikar. Negatif testi yapildi: duzeltilen etiket hatasini yakaliyor,
-    `Vigna radiata var. radiata` ve `protein`/`test`/`once` gibi
-    esyazimlilarda yanlis alarm vermiyor.
+5. **Hugging Face Space** (tam uygulama + dizi siniflandirici). `webapp/Dockerfile`
+   hazir ve test edildi; kullanicinin HF hesabi gerekiyor.
 
-## Sirada (devam) (oncelik sirasina gore)
+14. **Promotor dizisi analizi — VERI YOK, kullanici karari gerekiyor.**
+    Olculdu: indirilen 17.073 GenBank kaydinin %88,9'u `CON` tipinde, yani
+    dizi dosyada BULUNMUYOR (BioPython `UndefinedSequenceError` veriyor).
+    Dizi tasiyan 1.897 kayit ookaryot mRNA'si. Yani -35/-10, operator
+    tekrarlari ve transkripsiyon baslangici bu veriyle analiz edilemez;
+    `extract_genomic_context.py`'yi degistirmek yetmez.
+    Cozum icin iki yol var, ikisi de disa donuk ve kullanici onayi ister:
+      (a) NCBI E-utilities ile yalnizca gereken intergenik bolgeleri cekmek
+          (`efetch` + `seq_start`/`seq_stop`): ~10.200 kucuk istek, API
+          anahtari olmadan ~1 saat, NCBI kullanim politikasi geregi e-posta
+          ve anahtar belirtmek gerekir.
+      (b) 15.173 kaydin dizili surumunu yeniden indirmek: cok daha buyuk
+          trafik ve disk, ama tek seferlik.
+    Onerim (a); hangi bolgelerin cekilecegi zaten `ro_regulation` tablosunda
+    hazir (10.186 giriste intergenik bolge koordinatli olarak duruyor).
+
+24. **Referans setindeki tekrarlar (KULLANICI KARARI).** 71 kayit, 68 tekil dizi.
+    OxoO=OMO, NahAc=NDO(3_315), NDO(3_314)=NarAa birebir ayni; NdmC, NdmB'nin
+    alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
+    keyfi bolunuyor. Hangi ikiz tutulacak?
+
+26. **Habitat sozlugunun kalan bilinen sinirlari.** `sediment` deniz/tatli
+    sudan once geliyor, yani "marine sediment" sediment sayiliyor ve deniz
+    sayilari kompartman acisindan eksik kaliyor (konvansiyon, belgeli).
+    Insan ve hayvan dokusu ACIK isaret olmadan hala ayrilmiyor: isaretsiz
+    anatomi `other`'a dusuyor, ki bu yanlis etiketlemekten iyi ama bilgi kaybi.
+    `food_fermented` endustriyel/laboratuvar fermentasyonlarini da yakaliyor
+    (21 kayit).
+
+## Bitti
 
 1. ~~Varyant kumelemesini ham dizide tekrarla.~~ **BITTI.** CD-HIT artik ham
    protein dizisinde bolme yapiyor, kimlik olcumu hizalamada kaliyor
@@ -43,14 +61,10 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
    divergent duzenleyici. Cok kelimeli sorgu, tirnakli ifade ve onek (`naphth*`)
    destekleniyor; sonuclar bm25 ile siraliniyor.
 
-5. **Hugging Face Space** (tam uygulama + dizi siniflandirici). `webapp/Dockerfile`
-   hazir ve test edildi; kullanicinin HF hesabi gerekiyor.
-
-## Sirada
-
 6. ~~Operon kuralinin sinanmasi.~~ **BITTI.** `operon_validation.py`; Atlas
    operon sayfasinda yon/konum testleri, negatif kontrol (baska alfa: p=0,10)
    ve esik duyarliligi tablosu.
+
 7. ~~Tip sayfalarina reaksiyon semasi.~~ **BITTI.** Substrat SMILES'ten ciziliyor,
    ok uzerinde O2 + NAD(P)H, altinda reaksiyon; urun ad olarak veriliyor (urun
    yapisi cizmek hangi halka pozisyonunun saldiriya ugradigini varsaymayi
@@ -60,49 +74,34 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
    reaksiyon sinifi icin genel mekanizma semasi cizildi (ana sayfa reaksiyon
    tablosu + tip sayfalari). Substrattan bagimsiz oldugu icin regiokimya
    varsayimi gerektirmiyor.
+
 9. ~~Taksonomi agaci.~~ **BITTI.** `/atlas/taxonomy` icinde katlanabilir NCBI
    soy agaci; cins dugumleri aramaya baglaniyor, kirpilan taksonlar sayisiyla
    belirtiliyor.
 
-## Sirada
+10. ~~Per-tip substrat kuratorlugu.~~ **BITTI.** 18. maddede yedi tipin hepsi
+    literaturden kaynakli olarak baglandi; bu madde o is bitince kapatilmayi
+    atlamis. Tek kalan belirsizlik cadA'nin substratinin 2,4-D mi 2,4,5-T mi
+    oldugu ve o soru kullaniciya acik sorular listesinde duruyor.
 
-10. **Per-tip substrat kuratorlugu.** 7 tip hala `bilinmiyor` (OxoO, CndA, cadA,
-    OMO, PsbAb, ROCH34, OxyA) — orijinal makaleler gerekiyor, kullanicidan
-    bekleniyor.
-11. **Hugging Face Space.** Docker imaji hazir ve test edildi; kullanicinin
-    hesabi gerekiyor.
+11. ~~Hugging Face Space (tekrar kayit).~~ 5. madde ile ayni isi tarif
+    ediyordu; takip 5'te.
+
 12. ~~Veri kalitesi sayfasi.~~ **BITTI.** `/atlas/quality`: dizi fazlaligi
     (%12,3) ve her sayima etkisi, uc duzeyli test tablosu, olculemeyen
     sinirlarin listesi, ve her indirilebilir dosyanin hangi scriptten geldigi.
     `redundancy.py` + `stats_overview.py`'ye "sequence" duzeyi eklendi.
 
-13. **GitHub Pages derleme gecikmesi (COZULUYOR).** Site 26.683 dosya / 371 MB'a
-    cikinca Pages derlemesi push'un bir saat gerisinde kaldi. Iki duzeltme
-    yapildi: (a) `deploy_pages.sh` artik artimli (kalici klon + rsync + normal
-    push), eskiden her yayinda sifirdan repo kurup tum agaci force-push
-    ediyordu; (b) giris ve varyant basina FASTA dosyalari statik siteden
-    cikarildi (-13.200 dosya, ~-52 MB) cunku dizi sayfada zaten var ve toplu
-    dosyalar hepsini kapsiyor. Hala geride kalirsa sonraki adim: giris
-    sayfalarini 11.422 HTML yerine tip basina JSON + tarayicida render etmek
-    (dosya sayisi ~2.000'e duser).
-
-14. **Promotor dizisi analizi — VERI YOK, kullanici karari gerekiyor.**
-    Olculdu: indirilen 17.073 GenBank kaydinin %88,9'u `CON` tipinde, yani
-    dizi dosyada BULUNMUYOR (BioPython `UndefinedSequenceError` veriyor).
-    Dizi tasiyan 1.897 kayit ookaryot mRNA'si. Yani -35/-10, operator
-    tekrarlari ve transkripsiyon baslangici bu veriyle analiz edilemez;
-    `extract_genomic_context.py`'yi degistirmek yetmez.
-    Cozum icin iki yol var, ikisi de disa donuk ve kullanici onayi ister:
-      (a) NCBI E-utilities ile yalnizca gereken intergenik bolgeleri cekmek
-          (`efetch` + `seq_start`/`seq_stop`): ~10.200 kucuk istek, API
-          anahtari olmadan ~1 saat, NCBI kullanim politikasi geregi e-posta
-          ve anahtar belirtmek gerekir.
-      (b) 15.173 kaydin dizili surumunu yeniden indirmek: cok daha buyuk
-          trafik ve disk, ama tek seferlik.
-    Onerim (a); hangi bolgelerin cekilecegi zaten `ro_regulation` tablosunda
-    hazir (10.186 giriste intergenik bolge koordinatli olarak duruyor).
-
-## Sirada
+13. ~~GitHub Pages derleme gecikmesi.~~ **BITTI.** Kok neden deploy
+    scriptiydi: her yayinda sifirdan repo kurup 371 MB'lik agaci force-push
+    ediyordu, Pages de her seferinde her seyi yeniden derliyordu. Iki duzeltme:
+    (a) `deploy_pages.sh` artimli hale getirildi (kalici klon + rsync + normal
+    push); (b) giris ve varyant basina FASTA dosyalari statik siteden cikarildi,
+    cunku dizi sayfada zaten var ve toplu dosyalar hepsini kapsiyor.
+    Site 26.683 dosya / 371 MB'dan **13.457 dosya / 321 MB**'a indi ve yayin
+    push ile ayni dakikada tamamlanmaya dondu. Daha fazla kuculme gerekirse
+    sonraki adim giris sayfalarini tip basina JSON + tarayicida render etmek
+    olur (~2.000 dosya), ama su an gerek yok.
 
 15. ~~RO tiplerinin birlikte bulunmasi.~~ **BITTI.** `cooccurrence.py` +
     `/atlas/cooccurrence`. 854 ciftin 640'i farkli tip; permutasyon null'inda
@@ -112,16 +111,20 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 16. ~~Kimlik → substrat ongorusunun olcumu.~~ **BITTI.**
     `substrate_predictability.py` + kanit sayfasi bolum 3. AUC 0,859 ama hicbir
     esik %90 kesinlige ulasmiyor; sinif duzeyinde lift <=1,2.
+
 17. ~~Surum ve atif bilgisi.~~ **BITTI.** Sayfa altinda derleme tarihi, pipeline
     commit'i ve atif notu (tip atamalari pipeline yeniden kosunca degisebilir).
 
 18. ~~Bilinmeyen substratlar.~~ **BITTI** (2026-10-06). Yedisi de literaturden
     cozuldu, kaynaklariyla `chemistry.csv`'de. cadA "tentative" isaretli.
+
 19. ~~PDB yapilari.~~ **BITTI.** 17 tipe RCSB'den tek tek dogrulanmis yapi
     baglandi (1NDO, 1Z03, 1WW9, 2BMO, 1WQL, 3EN1, 2GBW, 2XR8, 2ZYL, 6Y9C,
     7FHR, 3GKE, 3VCA). Arayuzde 3D gosterim ajan tarafindan ekleniyor.
+
 20. ~~Yeni referans ekleme + modulerlik.~~ **BITTI.** `add_reference.py` ve
     `build_reference_models.py`; motif kolonlari artik veriden cikariliyor.
+
 21. ~~Varyant etiketleri Turkce.~~ **BITTI.** `characterize_leaves.py` ingilizce
     uretiyor, tablo yeniden kuruldu.
 
@@ -135,18 +138,13 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     cikarildi (asit maden drenaji organik kirlilik degil, sinyali suluyordu) ve
     hipersalin kurali tatli su kuralinin onune alindi ("hypersaline lake"
     icinde "lake" gectigi icin tatli suya dusuyordu). Kapsam %52,2 → %55,6.
+
 23. ~~Veri koken takibi ve hata onlemleri.~~ **BITTI.** `provenance.py`
     (30 tablo, 77 dosya, uretici + girdi + satir sayisi + kaynak veri koku) ve
     `validate_curation.py` (55 kontrol, hata varsa sifirdan farkli cikis, run_all
     icinde HTML uretiminden ONCE kapi olarak). Bulunan ve duzeltilen dort hata
     icin bkz. README "Safeguards".
 
-## Sirada
-
-24. **Referans setindeki tekrarlar (KULLANICI KARARI).** 71 kayit, 68 tekil dizi.
-    OxoO=OMO, NahAc=NDO(3_315), NDO(3_314)=NarAa birebir ayni; NdmC, NdmB'nin
-    alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
-    keyfi bolunuyor. Hangi ikiz tutulacak?
 25. ~~Habitat sozlugunun zayif noktalari.~~ **BITTI.** Uc duzeltme, her biri
     once olculup sonra yapildi:
     (a) `built_environment` eklendi -- hastane lavabosu, temiz oda, uzay araci
@@ -164,15 +162,21 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     bedeli. Capraz kontrol olarak PAH zenginlesmesi 5,64x → 5,76x, yani
     degisiklikler kirlilik sinyaline dokunmadi.
 
-## Sirada
+27. ~~Arayuzde kalan Turkce metin.~~ **BITTI.** Okaryot alt-grup etiketleri
+    (`bitki/alg`, `mantar`, `hayvan`, `kirmizi alg`, `diger-ok`)
+    `classify_domains.py` icindeki bir sozlukten DOGRUDAN veritabanina ve
+    oradan sayfaya gidiyordu. Ilk tarama bunu kacirdi cunku sadece islev
+    sozcuklerine bakiyordu; kacan sey bir icerik sozcuguydu. Etiketler
+    ingilizceye cevrildi, `ro_domain` tablosu yeniden kuruldu, ve eski rapor
+    scriptlerindeki (`make_report.py`) anahtar aramalari da guncellendi --
+    aksi halde sessizce sifir okuyacaklardi.
 
-26. **Habitat sozlugunun kalan bilinen sinirlari.** `sediment` deniz/tatli
-    sudan once geliyor, yani "marine sediment" sediment sayiliyor ve deniz
-    sayilari kompartman acisindan eksik kaliyor (konvansiyon, belgeli).
-    Insan ve hayvan dokusu ACIK isaret olmadan hala ayrilmiyor: isaretsiz
-    anatomi `other`'a dusuyor, ki bu yanlis etiketlemekten iyi ama bilgi kaybi.
-    `food_fermented` endustriyel/laboratuvar fermentasyonlarini da yakaliyor
-    (21 kayit).
+28. ~~Deploy oncesi otomatik site denetimi.~~ **BITTI.** `check_site.py`:
+    78 sayfayi acar, 6.217 dahili baglantiyi dener, gorunur metinde ve
+    YAYINLANAN veri dosyalarinda Turkce arar, FAIL varsa sifirdan farkli
+    cikar. Negatif testi yapildi: duzeltilen etiket hatasini yakaliyor,
+    `Vigna radiata var. radiata` ve `protein`/`test`/`once` gibi
+    esyazimlilarda yanlis alarm vermiyor.
 
 ## Acik sorular (kullaniciya)
 
