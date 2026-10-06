@@ -9,6 +9,26 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ### Bu oturumda istenen ve HENUZ YAPILMAYAN isler
 
+61. **EN ONEMLI BULGU: genomlarin %17'si BOS indirilmis.** Kullanicinin
+    "model tanimlayan proteini disarida birakiyor gibi" sezgisi dogru cikti,
+    ama sebep HMM degil: ilgili genom hic OKUNMADI.
+    * `NZ_CP049045.1` (Pseudomonas sp. BIOMIG1BAC, kullanicinin kendi makalesi,
+      doi:10.1128/MRA.00309-20) `replicon` tablosunda VAR ama `ro` tablosunda
+      o genomdan TEK bir aday yok. Indirilen dosya 4.427 baytlik bir CON
+      iskeleti: ozellik yok, dizi yok.
+    * Yeniden indirildi (`efetch rettype=gbwithparts`): 19,5 MB, 7.119 CDS. Ve
+      qxyA referans dizisi orada BIREBIR bulundu, makalenin verdigi
+      6.844.288..6.845.439 koordinatlarinda, protein WP_068587002.1.
+    * Olcek: **2.975 replikon (%17,4) `no_annotation` durumunda**, hepsi ayni
+      sekilde ~5 KB'lik iskelet. Ve bunlar rastgele degil: en cok Streptomyces
+      (248), Pseudomonas (191), Burkholderia (114) -- yani Rieske oksijenaz
+      bakimindan EN ZENGIN cinsler.
+    * Maliyet: kayit basina ~19,5 MB, toplam ~57 GB; NCBI'nin saniyede uc
+      istek sinirinda en az 17 dakikalik istek, arti transfer.
+    Sonuc: uye sayilari sistematik olarak EKSIK ve eksiklik enzim bakimindan
+    zengin cinslerde yogunlasiyor. Kullanici onayi gerekiyor (disk, bant
+    genisligi, ve sonrasinda pipeline'in bastan kosturulmasi).
+
 45. **Ekolojik koken sayfasi.** `ecological_origin.py` bitti ve calisiyor, sayfa
     YOK. Icerik hazir: her tipin yakin ve uzak uyelerinin habitati, cins
     kontrolu, atiksu blogu, ve en buyuk varyantin nerede gorundugu.
