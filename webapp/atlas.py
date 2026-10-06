@@ -26,6 +26,48 @@ def _relative_luminance(colour):
     return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
 
+def assignment_agreement(con):
+    """Her tip icin: uyelerin kaci GERCEKTEN bu tipin referansina en yakin?
+
+    NEDEN. Atama HMM bit skoruna gore yapiliyor, "en yakin referans" ise dizi
+    kimligine gore olculuyor. Ikisi ayri sorulardir ve AYRILABILIRLER. Kullanici
+    bunu OxyA'da fark etti: tipe atanan 95 uyenin kuratorlu referansa kimligi
+    ortanca %33, ve referansa en yakin 127 girisin yalnizca 81'i o tipe
+    atanmis; kalani ayni grubun baska tiplerine dagilmis.
+
+    Olculdu, genel resim: 43 tipin 16'sinda uyelerin COGU baska bir referansa
+    daha yakin. Ama bu, profilin "tanimlayan proteini disarida biraktigi"
+    anlamina gelmiyor: kimligin YUKSEK oldugu yerde (>=%60) uyusmazlik 2.868
+    girisin yalnizca 121'inde (%4,2) ve bunlarin cogu zaten belgelenmis ikiz
+    referans ciftleri. Uyusmazlik dusuk kimlikte yogunlasiyor, yani profiller
+    uzak akrabalari ayirt edemedigi icin.
+
+    Bu sayi tip sayfasinda gosteriliyor, cunku "bu tipin 610 uyesi var"
+    cumlesi, uyelerin %70'i baska bir referansa daha yakinken yaniltici olur.
+    """
+    if not table_exists(con, "ro_evidence"):
+        return {}
+    rows = con.execute("""
+        SELECT r.ro_cluster,
+               COUNT(*),
+               SUM(CASE WHEN e.nearest_ref = r.ro_cluster THEN 1 ELSE 0 END),
+               AVG(e.ref_identity)
+        FROM ro r JOIN ro_evidence e USING(candidate_id)
+        WHERE r.is_confirmed = 1 AND r.ro_cluster IS NOT NULL
+        GROUP BY 1""").fetchall()
+    out = {}
+    for cluster, total, agree, mean_identity in rows:
+        if not total:
+            continue
+        out[cluster] = {
+            "members": total,
+            "nearest_is_own": agree,
+            "agreement": round(agree / total, 4),
+            "mean_identity_to_nearest": round(mean_identity or 0, 1),
+        }
+    return out
+
+
 def chip_text(background):
     """Arka plana gore OKUNUR metin rengi dondurur.
 

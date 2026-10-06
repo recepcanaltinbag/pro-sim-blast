@@ -39,6 +39,27 @@
 </div>
 {% endif %}
 
+{% if x.agreement and x.agreement.members >= 5 and x.agreement.agreement < 0.75 %}
+<div class="caveat caveat--warn">
+  <b>Most members of this type are closer to a different reference enzyme.</b>
+  Membership is decided by profile score, while "nearest reference" is measured by sequence
+  identity, and the two are different questions. Here they disagree: of
+  {{ x.agreement.members|fmt }} members, only {{ x.agreement.nearest_is_own|fmt }}
+  ({{ '%.0f %%' % (100 * x.agreement.agreement) }}) are in fact most similar to this type's own
+  reference, and the average identity to the nearest reference is
+  {{ '%.1f %%' % x.agreement.mean_identity_to_nearest }}.
+  {% if x.agreement.mean_identity_to_nearest >= 60 %}
+  At that identity the cause is usually a duplicated or near-duplicated reference, so the split
+  between the two names is close to arbitrary.
+  {% else %}
+  At that identity no profile can separate the neighbouring types reliably, so read this as a
+  region of sequence space rather than as a set of proteins like the reference.
+  {% endif %}
+  <br><span class="note">Measured for every type on the
+  <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+</div>
+{% endif %}
+
 {% set tiers = x.tiers %}
 {% set tier_total = tiers.values()|sum if tiers else 0 %}
 {% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}

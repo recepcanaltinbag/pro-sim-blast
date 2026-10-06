@@ -1386,6 +1386,9 @@ def cluster_extras(con, cluster):
     # oyleyse uyelerin hangi profile dustugu kismen rastgele ve sayfadaki
     # sayinin bunu SOYLEMESI gerekiyor.
     x["redundancy"] = (reference_redundancy().get("affected") or {}).get(cluster)
+    # Atama ile dizi kimliginin UYUSUP uyusmadigi: tip sayfasindaki uye sayisi
+    # bu baglam olmadan yaniltici olabiliyor.
+    x["agreement"] = atlas.assignment_agreement(con).get(cluster)
     if atlas.table_exists(con, "ro_evidence"):
         counted = dict(con.execute(
             "SELECT e.tier, COUNT(*) FROM ro_evidence e JOIN ro r USING(candidate_id) "
