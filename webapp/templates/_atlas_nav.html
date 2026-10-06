@@ -36,6 +36,8 @@
      {% if page == 'novel' %}aria-current="page"{% endif %}>Novel candidates</a>
   <a href="{{ u('/atlas/statistics') }}" class="{{ 'on' if page == 'statistics' }}"
      {% if page == 'statistics' %}aria-current="page"{% endif %}>Statistics</a>
+  <a href="{{ u('/atlas/closeness') }}" class="{{ 'on' if page == 'closeness' }}"
+     {% if page == 'closeness' %}aria-current="page"{% endif %}>Closeness</a>
   <a href="{{ u('/atlas/quality') }}" class="{{ 'on' if page == 'quality' }}"
      {% if page == 'quality' %}aria-current="page"{% endif %}>Data quality</a>
 </nav>

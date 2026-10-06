@@ -17,8 +17,47 @@ subunits almost any difference reaches significance while only some are large en
   called robust only if all three levels agree in direction and the genus level stays significant.
 </div>
 
+{#  OZET TABLOSU: her satir BIR soru. Daha once sayfa dogrudan ayrintili
+    bolumlerle basliyordu ve ilk testler kendi icinde uc duzey (giris / dizi /
+    cins) tasidigi icin sorular ic ice gecmis gorunuyordu; okuyucu "bu sayfada
+    kac soru var ve cevaplari ne" sorusunu bir bakista cevaplayamiyordu.    #}
+<h2>Every question on this page, one per row</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Question</th><th>Unit of analysis</th><th class="num">Effect size</th>
+<th class="num">Expected by chance</th><th class="num">p</th><th>Verdict</th></tr></thead>
+<tbody>
 {% for t in stats.tests %}
-<section class="stat">
+{% set v = t.cramers_v if t.cramers_v is defined else none %}
+{% set lvl = t.levels.genus if t.levels is defined and t.levels.genus is defined else none %}
+{% set pv = t.p if t.p is defined else (lvl.p if lvl else none) %}
+<tr>
+  <td><a href="#q{{ loop.index }}">{{ t.question }}</a>
+      {% if t.restriction %}<div class="note">{{ t.restriction }}</div>{% endif %}</td>
+  <td class="small">{{ t.unit if t.unit is defined else ('three levels, entry to genus' if t.levels is defined else 'alpha subunit') }}</td>
+  <td class="num" data-v="{{ v if v is not none else (lvl.ratio if lvl else 0) }}">
+    {% if v is not none %}V = {{ '%.2f' % v }}
+    {% elif lvl %}{{ '%.2f×' % lvl.ratio }}
+    {% else %}–{% endif %}</td>
+  <td class="num" data-v="{{ t.null.mean if t.null else 0 }}">
+    {% if t.null %}V = {{ '%.2f' % t.null.mean }}{% else %}<span class="note">not simulated</span>{% endif %}</td>
+  <td class="num" data-v="{{ pv if pv is not none else 1 }}">{% if pv is not none %}{{ '%.0e' % pv }}{% else %}–{% endif %}</td>
+  <td>{% if pv is not none and pv >= 0.05 %}<span class="verdict verdict--none">not significant</span>
+      {% elif v is not none and v >= 0.5 %}<span class="verdict verdict--robust">strong</span>
+      {% elif v is not none and v >= 0.25 %}<span class="verdict verdict--weak">moderate</span>
+      {% elif v is not none and v >= 0.1 %}<span class="verdict verdict--weak">weak</span>
+      {% elif v is not none %}<span class="verdict verdict--none">negligible</span>
+      {% elif lvl and lvl.p < 0.05 %}<span class="verdict verdict--robust">holds at genus level</span>
+      {% else %}<span class="verdict verdict--weak">weakens at genus level</span>{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Effect size is Cramér's V for a contingency test and a rate ratio for a two-by-two
+comparison. The fourth column matters: for the tests computed over enzyme types, Cramér's V rises on
+its own as the table gains rows, so the value is given next to what label-shuffling produces for a
+table of the same shape. An effect is only interpretable when it stands well clear of that column.</p>
+
+{% for t in stats.tests %}
+<section class="stat" id="q{{ loop.index }}">
 <h2>{{ loop.index }} · {{ t.question }}</h2>
 
 {% if t.levels is defined %}
@@ -53,6 +92,11 @@ Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types exc
 {% endfor %}
 </tbody></table></div>
 <p class="note">
+{% if t.restriction %}<b>Restricted to:</b> {{ t.restriction }}.<br>{% endif %}
+{% if t.null %}Label shuffling on a table of this shape gives
+V = {{ '%.3f' % t.null.mean }} ± {{ '%.3f' % t.null.sd }} over {{ t.null.repeats }} permutations,
+with a maximum of {{ '%.3f' % t.null.max }}, so the measured value is not an artefact of the number
+of rows.<br>{% endif %}
 {% set v = t.cramers_v %}
 {#  Karar once ANLAMLILIGA bakar. Onceki surum yalnizca etki buyuklugune
     bakiyordu ve p=0,38 olan bir testi "weak association" diye etiketliyordu;
@@ -79,6 +123,14 @@ the entry-level table measured was how often each kind of organism gets sequence
 enzymes live. This pair is the clearest demonstration on the site of why every ecological claim here
 is made at genus level.
 {% elif t.id == 'host_kingdom_by_class_entry' %}No association even before normalisation.
+{% elif t.id in ('reductase_type_by_type', 'ferredoxin_type_by_type') %}<b>Asked at the level of
+the enzyme type, the association is about twice as strong as it is at the level of the broad RO
+group.</b> The group-level test was diluting a real signal by collapsing 43 types into five groups.
+The electron-transport partner is therefore closer to a property of the individual enzyme than of
+its group, which is what one would expect if partner and oxygenase are inherited together.
+{% elif t.id == 'beta_by_type' %}At type level the beta subunit is almost perfectly predictable,
+which makes the α₃β₃ against α₃ architecture a property of the individual enzyme rather than of the
+group it was historically placed in.
 {% elif t.id == 'host_kingdom_by_class_genus' %}<b>A clean negative result.</b> Whether an enzyme
 acts on a man-made or a natural substrate is unrelated to whether its carrier was isolated from a
 plant, an animal or a human. Xenobiotic-degrading capability is not concentrated in one kind of

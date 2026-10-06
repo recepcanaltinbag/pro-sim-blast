@@ -64,7 +64,7 @@ SONUC (olculen, yorum degil).
     uyeleri ayri bir haplotip olusturmuyor, varyantlarin icine dagilmis.
   * Ana varyantlar (her tipin en buyuk yapragi, 61 tane) agirlikla toprak
     (19 tip), insan klinigi (8) ve kirli saha (8) kokenli; 8 tipte en buyuk
-    varyagin siniflanmis uyesi "baskin habitat" demeye yetmiyor.
+    varyantin siniflanmis uyesi "baskin habitat" demeye yetmiyor.
   * Kapsama durust verilir: dogrulanmis 11.422 girisin 6.460'inda (%56,6) ve
     1.956 turun 1.094'unde siniflanmis bir habitat var. Kademeler arasinda
     kapsama farki da var (novel %41,0, close_homolog %60,8), yani en az bilinen
@@ -94,6 +94,7 @@ Kullanim:
 """
 
 import argparse
+import csv
 import json
 import os
 import random
@@ -795,12 +796,31 @@ def pooled_block(entries, seed):
 
 
 # ------------------------------------------------- 8. kapsama
-def coverage_block(entries):
+def curated_type_names(path):
+    """Kuratorlu referans setindeki tip adlari (`cluster_ecology.csv`).
+
+    Veritabanindaki tip sayisi (61) referans setindekinden (71) AZ: on
+    referans hicbir uye toplamiyor. Bu fark bir eksiklik gibi gorunmemeli,
+    bu yuzden sayi koda yazilmiyor, CSV'den okunuyor. Dosya yoksa sayi
+    None kalir ve bu da ciktida yazar -- tahmin edilmez.
+    """
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as handle:
+        return {row["cluster"] for row in csv.DictReader(handle) if row.get("cluster")}
+
+
+def coverage_block(entries, curated):
     total = len(entries)
     with_source = sum(1 for e in entries if e["source"])
     classified = sum(1 for e in entries if e["habitat"] in CLASSIFIED)
-    unknown = sum(1 for e in entries if e["habitat"] == "unknown")
+    # "Kaynak metni yok" ile "metin var ama bilgi tasimiyor" ayri seylerdir;
+    # habitat ikisinde de `unknown` olur, bu yuzden ikisi ayri sayiliyor.
+    no_source = sum(1 for e in entries if not e["source"])
+    uninformative = sum(1 for e in entries
+                        if e["source"] and e["habitat"] == "unknown")
     other = sum(1 for e in entries if e["habitat"] == "other")
+    present = {e["cluster"] for e in entries if e["cluster"]}
     per_tier = {}
     for tier in TIERS:
         subset = [e for e in entries if e["tier"] == tier]
@@ -816,12 +836,16 @@ def coverage_block(entries):
         "entries_with_classified_habitat": classified,
         "classified_fraction": round(classified / total, 4) if total else None,
         "entries_source_text_unclassifiable": other,
-        "entries_without_source": unknown,
+        "entries_source_text_uninformative": uninformative,
+        "entries_without_source_text": no_source,
         "species_total": len({e["species"] for e in entries if e["species"]}),
         "species_with_classified_habitat": len(
             {e["species"] for e in entries
              if e["species"] and e["habitat"] in CLASSIFIED}),
-        "types_with_members": len({e["cluster"] for e in entries if e["cluster"]}),
+        "curated_types_in_reference_set": len(curated) if curated else None,
+        "types_with_members": len(present),
+        "curated_types_without_members": (sorted(curated - present)
+                                          if curated else None),
         "types_with_classified_habitat": len(
             {e["cluster"] for e in entries
              if e["cluster"] and e["habitat"] in CLASSIFIED}),
@@ -932,6 +956,9 @@ def print_summary(result):
     print("=" * 78)
     print("EKOLOJIK KOKEN -- YAKIN VE UZAK AKRABALARIN HABITATI")
     print("=" * 78)
+    print(f"kuratorlu tip {coverage['curated_types_in_reference_set']}, "
+          f"uyesi olan tip {coverage['types_with_members']}, "
+          f"siniflanmis habitati olan tip {coverage['types_with_classified_habitat']}")
     print(f"dogrulanmis giris {coverage['confirmed_entries']}, "
           f"siniflanmis habitat {coverage['entries_with_classified_habitat']} "
           f"(%{100 * coverage['classified_fraction']:.1f}), "
@@ -1029,6 +1056,9 @@ def main():
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--db", default="roar.sqlite")
     parser.add_argument("--out-dir", default="analysis_out")
+    parser.add_argument("--ecology", default="cluster_ecology.csv",
+                        help="kuratorlu tip listesi; yalnizca referans setinin "
+                             "kac tipinin uye topladigini yazmak icin okunuyor")
     parser.add_argument("--seed", type=int, default=20261006,
                         help="permutation null'unun tohumu; sabit, cikti tekrarlanabilir")
     args = parser.parse_args()
@@ -1051,7 +1081,7 @@ def main():
 
     result = {
         "method": method_block(),
-        "coverage": coverage_block(entries),
+        "coverage": coverage_block(entries, curated_type_names(args.ecology)),
         "pooled": pooled_block(entries, args.seed),
         "per_type": type_blocks,
         "divergence_ranking": ranking,

@@ -13,6 +13,7 @@ Cikti: analysis_out/stats.json  (web sayfasi dogrudan okur)
 
 import argparse
 import csv
+import random
 import json
 import os
 import sqlite3
@@ -169,6 +170,65 @@ def main():
                          **test_binary_by_class(data, "mobile",
                                                 "Are xenobiotic RO types more often associated with mobile elements (plasmid or transposase within 10 kb)?", euk_heavy)})
 
+    # 2. taksonomik yayilim. ESKI metrik "uye basina cins sayisi" idi ve
+    #    OLCULDU: tip buyuklugu ile Spearman korelasyonu -0,766 (p=9e-11),
+    #    yani metrik yayilimi degil TIP BUYUKLUGUNU olcuyordu. Sebep mekanik:
+    #    yeni uye eklendikce yeni cins bulma olasiligi duser (doygunluk), bu
+    #    yuzden kalabalik tipler kendiliginden "dar" gorunur.
+    #
+    #    Dogrusu SEYRELTME (rarefaction): her tip AYNI sayida uyeye indirilir
+    #    ve cins sayisi o ortak buyuklukte sayilir. Seyreltme sonrasi buyukluk
+    #    korelasyonu +0,254'e (p=0,10) duser, yani yapisal etki kalkar. Sonuc
+    #    da degisir: eski metrik ksenobiyotik tipleri daha GENIS gosteriyordu
+    #    (0,316'ya 0,217), seyreltilmis olcumde yon TERSINE doner (12,2'ye
+    #    13,3) ve fark zaten anlamli degildir. Yani eski egilim bir artefakti.
+    RAREFY_TO = 20          # ortak buyukluk: 43 tip bu esigi gecıyor
+    RAREFY_DRAWS = 300      # ortalama bu kadar cekilisten alinir
+    rng = random.Random(7)
+
+    def rarefied_genera(genera, size, draws=RAREFY_DRAWS):
+        """Tipi `size` uyeye indirip kac cins kaldigini ortalar."""
+        if len(genera) < size:
+            return None
+        return sum(len(set(rng.sample(genera, size))) for _ in range(draws)) / draws
+
+    genus_lists = defaultdict(list)
+    sclass_of = {}
+    for d in data:
+        genus_lists[d["cluster"]].append(d["genus"])
+        sclass_of[d["cluster"]] = d["sclass"]
+    rare = {}
+    for cluster, genera in genus_lists.items():
+        value = rarefied_genera(genera, RAREFY_TO)
+        if value is not None:
+            rare[cluster] = value
+    rx = [v for c, v in rare.items() if sclass_of.get(c) == "xenobiotic"]
+    rn = [v for c, v in rare.items()
+          if sclass_of.get(c) in ("natural_aromatic", "natural_specialized")]
+    if rx and rn:
+        ru, rp = stats.mannwhitneyu(rx, rn, alternative="two-sided")
+        sizes = [len(genus_lists[c]) for c in rare]
+        rho, rho_p = stats.spearmanr(sizes, [rare[c] for c in rare])
+        out["tests"].append({
+            "id": "taxonomic_breadth_rarefied",
+            "question": ("Do types acting on man-made substrates occupy more bacterial "
+                         "genera than types acting on natural ones, once every type is "
+                         "compared at the same sample size?"),
+            "unit": f"enzyme type, rarefied to {RAREFY_TO} members",
+            "metric": f"distinct genera among {RAREFY_TO} members, mean of "
+                      f"{RAREFY_DRAWS} draws",
+            "xenobiotic": {"n": len(rx), "median": float(np.median(rx))},
+            "natural": {"n": len(rn), "median": float(np.median(rn))},
+            "mannwhitney_U": float(ru), "p": float(rp),
+            "size_correlation_after_rarefaction": {
+                "spearman_rho": float(rho), "p": float(rho_p),
+                "note": ("near zero is the point of rarefaction; the unrarefied metric "
+                         "correlated with type size at rho = -0.77, p = 9e-11, so it was "
+                         "measuring how many members a type has")},
+            "restriction": (f"types with at least {RAREFY_TO} members: "
+                            f"{len(rare)} of {len(genus_lists)}"),
+            "n": len(rare)})
+
     # 2. taksonomik yayilim: kume basina cins/filum sayisi, sinifa gore (Mann-Whitney)
     per_cluster = defaultdict(lambda: {"genera": set(), "phyla": set(), "n": 0})
     cls_of = {}
@@ -207,6 +267,98 @@ def main():
         "id": "ferredoxin_by_group", "question": "Is the ferredoxin type associated with the RO group?",
         "rows": groups_f, "cols": fd_types, "table": table,
         "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
+    # Cramer's V, satir sayisi artinca KENDILIGINDEN yukselir. Tip bazinda
+    # tablo 5 satir yerine ~43 satir oldugu icin "tipte daha guclu" demek,
+    # once bu yapisal etkiyi dislamayi gerektirir. Etiketler karistirilarak
+    # AYNI SEKILDEKI tablo icin bir null dagilimi kurulur; gercek V ancak bu
+    # null'in cok uzerindeyse iliski gercektir.
+    def permutation_null(keys, values, subset, key_field, value_field, repeats=200):
+        import random as _random
+        rng = _random.Random(7)
+        labels = [d[value_field] for d in subset]
+        nulls = []
+        for _ in range(repeats):
+            rng.shuffle(labels)
+            table = [[0] * len(values) for _ in keys]
+            index = {k: i for i, k in enumerate(keys)}
+            vindex = {v: j for j, v in enumerate(values)}
+            for d, label in zip(subset, labels):
+                i = index.get(d[key_field])
+                j = vindex.get(label)
+                if i is not None and j is not None:
+                    table[i][j] += 1
+            trimmed = trim_table(keys, values, table)[2]
+            v = cramers_v(trimmed)
+            if v is not None:
+                nulls.append(v)
+        if not nulls:
+            return None
+        mean = sum(nulls) / len(nulls)
+        var = sum((x - mean) ** 2 for x in nulls) / len(nulls)
+        return {"mean": round(mean, 4), "sd": round(var ** 0.5, 4),
+                "repeats": len(nulls),
+                "max": round(max(nulls), 4)}
+
+    # ETC bileseni x ENZIM TIPI. Grup bazinda sorulan ayni soru, ama tip
+    # bazinda: kullanici hakli olarak "belki enzim ozelinde olabilir, grup
+    # degil" dedi. Grup bes kategoriye indiriyor ve tip icindeki farki
+    # gizleyebilir. Seyreklik gercek bir risk: 71 tip x 4 ferredoksin tipi
+    # cogu hucreyi bos birakir, bu yuzden yalnizca MIN_TYPE_N uyesi olan
+    # tipler girer ve kac tipin girdigi raporlanir.
+    MIN_TYPE_N = 20
+    type_counts = Counter(d["cluster"] for d in data)
+    big_types = sorted(t for t, n in type_counts.items() if n >= MIN_TYPE_N)
+    for field, values, label in (
+            ("reductase_type", ["FNR", "GR", "FNR+GR", "none"], "reductase type"),
+            ("ferredoxin_type", ["rieske", "plant", "rieske+plant", "none"], "ferredoxin type"),
+    ):
+        subset = [d for d in data if d["cluster"] in big_types]
+        table = [[sum(1 for d in subset if d["cluster"] == t and d[field] == v)
+                  for v in values] for t in big_types]
+        rows_t, cols_t, table_t = trim_table(big_types, values, table)
+        if len(rows_t) < 2 or len(cols_t) < 2:
+            continue
+        chi2, p, dof, _ = stats.chi2_contingency(table_t)
+        out["tests"].append({
+            "id": f"{field}_by_type",
+            "question": (f"Is the {label} associated with the enzyme TYPE, rather than "
+                         f"only with the broad RO group?"),
+            "rows": rows_t, "cols": cols_t, "table": table_t,
+            "chi2": float(chi2), "dof": int(dof), "p": float(p),
+            "cramers_v": cramers_v(table_t),
+            "row_header": "Enzyme type", "row_prefix": "",
+            "unit": "alpha subunit",
+            "restriction": (f"types with at least {MIN_TYPE_N} members: "
+                            f"{len(rows_t)} of {len(type_counts)} types, "
+                            f"{sum(sum(r) for r in table_t)} entries"),
+            "null": permutation_null(big_types, values, subset, "cluster", field),
+            "n": sum(sum(r) for r in table_t)})
+
+    # Ayni soru beta alt birimi icin: mimari tip bazinda mi grup bazinda mi
+    # belirleniyor?
+    subset = [d for d in data if d["cluster"] in big_types]
+    table = [[sum(1 for d in subset if d["cluster"] == t and bool(d["has_beta"]) == b)
+              for b in (True, False)] for t in big_types]
+    rows_t, cols_t, table_t = trim_table(big_types, ["beta", "no beta"], table)
+    if len(rows_t) >= 2 and len(cols_t) >= 2:
+        chi2, p, dof, _ = stats.chi2_contingency(table_t)
+        out["tests"].append({
+            "id": "beta_by_type",
+            "question": ("Is the presence of a beta subunit in the operon decided at the "
+                         "level of the enzyme type rather than the RO group?"),
+            "rows": rows_t, "cols": cols_t, "table": table_t,
+            "chi2": float(chi2), "dof": int(dof), "p": float(p),
+            "cramers_v": cramers_v(table_t),
+            "row_header": "Enzyme type", "row_prefix": "",
+            "unit": "alpha subunit",
+            "restriction": (f"types with at least {MIN_TYPE_N} members: "
+                            f"{len(rows_t)} of {len(type_counts)} types"),
+            "null": permutation_null(
+                big_types, [True, False],
+                [dict(d, _beta=bool(d["has_beta"])) for d in subset],
+                "cluster", "_beta"),
+            "n": sum(sum(r) for r in table_t)})
+
     # Konak alemi x RO grubu. Yeni bir boyut: /host alani habitat'tan AYRI
     # tutuluyor ve bu, "hangi enzim hangi canliyla yasayan bakteride bulunuyor"
     # sorusunu sorulabilir kiliyor. Yalnizca alemi COZULMUS kayitlar girer;

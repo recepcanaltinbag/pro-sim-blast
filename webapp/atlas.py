@@ -898,6 +898,15 @@ PROVENANCE = [
     ("reference_redundancy.json", "file", "Where the curated reference set repeats itself, and "
      "how many members sit under a reference that is not uniquely defined.",
      "reference_redundancy.py"),
+    ("stratified_stats.json", "file", "The bridging-carboxylate association recomputed within "
+     "each evidence level and assignment class, so a reader can see how much of it rests on "
+     "members whose chemistry is actually known.", "stratified_stats.py"),
+    ("carboxylate_rows.json", "file", "One compact row per entry (group, type, residue, evidence "
+     "level, assignment class) so the association can be recomputed in the browser.",
+     "stratified_stats.py"),
+    ("ecological_origin.json", "file", "Habitat of each type's close and distant members, the "
+     "dominant habitat of its main variant, and the wastewater picture, with a genus control.",
+     "ecological_origin.py"),
     # Bu uc dosya indirme rotasindan SUNULUYORDU ama bu tabloda yoktu, yani
     # indirilebilir olup belgelenmemislerdi. Izin listesi artik bu tablodan
     # turetildigi icin eksiklik sessiz kalamaz.

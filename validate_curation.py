@@ -190,6 +190,8 @@ PUBLISHED_TEXT_FILES = [
     "habitat.json", "motif_stats.json", "stats.json", "redundancy.json",
     "cooccurrence.json", "operon_validation.json",
     "substrate_predictability.json",
+    "stratified_stats.json", "ecological_origin.json", "threshold_sensitivity.json",
+    "reference_redundancy.json",
 ]
 
 # --- Uyesiz referans tipleri -------------------------------------------------

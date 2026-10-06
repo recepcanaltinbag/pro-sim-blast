@@ -65,7 +65,7 @@ NE OLCULDU VE NE CIKTI.
          (hepsi okaryot mRNA kaydi). Bu girislerde transpozon yakinligi
          sifir OLMAK ZORUNDA, ama yayinlanan %14,9'un paydasinda duruyorlar.
          Cagrilabilir kayitlara daralinca oran %16,3.
-       * PENCERE DOLULUGU: ±10 kb'de anote gen sayisi ceyrekligine gore oran
+       * PENCERE DOLULUGU: +-10 kb'de anote gen sayisi ceyrekligine gore oran
          %11,3 ile %25,2 arasinda, yani 2,2x. Bu, kaydi gonderenin kac gen
          anote ettigine bagli.
        * REPLIKON BOYU: <=50 CDS'li kontiglerde %19,6, >500 CDS'li
@@ -74,7 +74,7 @@ NE OLCULDU VE NE CIKTI.
      Yanliligin biyolojik iddiaya ne kadar sizdigi dogrudan olculdu:
      substrat sinifi x regex transpozonu iliskisi pencere doluluguna gore
      tabakalanip Mantel-Haenszel ile birlestirildi; ortak OR 1,41'den 1,31'e
-     dusuyor. Yani apaçik fazlaligin yaklasik dortte biri anotasyon
+     dusuyor. Yani apacik fazlaligin yaklasik dortte biri anotasyon
      yogunlugundan, dortte ucu degil.
 
 NE OLCULMUYOR -- bunu da bastan yazmak gerekiyor:
@@ -104,10 +104,13 @@ import argparse
 import csv
 import json
 import os
+import random
 import sqlite3
 from collections import Counter, defaultdict
+from multiprocessing import Pool
 
 import numpy as np
+from Bio import Align
 from scipy import stats
 
 # --- Sabitler. Her biri adlandirilmis, ve her birinin gerekcesi yaninda.
@@ -164,6 +167,50 @@ TIERS = ["characterized", "close_homolog", "family_member", "distant", "novel"]
 # "Yakin" tanimi stratified_stats.py ile ayni: substrat etiketinin
 # bilgilendirici sayildigi iki kademe (referansa >=%60 kimlik).
 CLOSE_TIERS = ("characterized", "close_homolog")
+
+# --- 3. soru (duzenleyici x enzim ayrisma hizi) sabitleri
+
+# Enzim-enzim kimlik bantlari. Kuratorun "benzerlik esigine gore" istedigi
+# kirilim bu. Kenarlar pipeline'in baska yerlerinde de kullanilan degerlere
+# denk geliyor: %95 characterized kademesinin kapisi, %60 "ayni reaksiyon cok
+# olasi" kapisi (bkz. evidence_tiers.py), %80 ikisinin arasi.
+IDENTITY_BANDS = [(95.0, 100.01, "95-100"), (80.0, 95.0, "80-95"),
+                  (60.0, 80.0, "60-80"), (0.0, 60.0, "below 60")]
+
+# Tip icinde cift ornekleme ustu. 53 tipin TUM ic ciftleri 314.715 ediyor ve
+# cift basina iki global hizalama ~10 ms suruyor; tamami tek surecte ~1 saat.
+# Tip basina rastgele ornekleme yapiliyor cunku amac tip ICINDEKI cift
+# dagilimini kestirmek ve duzgun ornekleme bunu yanlilik katmadan yapar.
+MAX_PAIRS_PER_TYPE = 2000
+
+# Global hizalamanin kisa proteinin en az bu kadarini kapsamasi gerekir, yoksa
+# "kimlik" rakami kisa bir ortusme uzerinden hesaplanmis olur. Eski kodun
+# (evolution_rates_of_reg_and_enz.py) hatasi tam buydu: bosluklari uyumsuzluk
+# sayiyordu ve hicbir kapsama kontrolu yoktu.
+MIN_ALIGNED_COVERAGE = 0.50
+
+# Akraba OLMAYAN iki protein global hizalamada ~%20-25 kimlik verir. Bu yuzden
+# %25 civarindaki bir duzenleyici kimligi "hizli ayrismis" demek DEGIL,
+# "iliski olculemiyor" demektir; olcum burada tabana vuruyor ve bu bantta
+# ayrisma HIZI hakkinda bir sey soylenemez.
+RANDOM_IDENTITY_FLOOR = 25.0
+
+# Bir bandin ya da tipin rapor edilmesi icin gereken en az cift sayisi.
+MIN_PAIRS_FOR_BAND = 20
+
+# Bir bantta ayrisma HIZI hakkinda konusabilmek icin, ciftlerin en fazla bu
+# kadarinin olcum tabaninda olmasi gerekir. Yarisi tabandaysa bandin medyani
+# artik ayrismayi degil tabani olcuyor.
+MAX_FLOOR_SHARE_FOR_RATE_CLAIM = 0.5
+
+# Sacilim grafigi icin JSON'a yazilan nokta ustu. Tamami yazilsa dosya
+# gereksiz buyur; nokta secimi de sabit tohumla yapiliyor.
+MAX_SCATTER_POINTS = 3000
+
+# Aile degisimi analizinde bu etiket DISARIDA kalir: "siniflandirilamadi" iki
+# duzenleyicinin ayni aileden olup olmadigini soylemez, dolayisiyla bir
+# degisim kaniti da olamaz.
+UNCLASSIFIED_FAMILY = "regulator_unclassified"
 
 
 # ---------------------------------------------------------------- yardimcilar
@@ -918,16 +965,7 @@ def evidence_block(data, genus_rows, rng, permutations):
             + "Entry counts are dominated by a handful of type-by-genus cells, listed "
               "below, so the genus level is the one to read."),
         "largest_entry_cells": None,   # asagida doldurulur
-        "interpretation": (
-            ("read at the genus level, closeness to a curated enzyme predicts that a "
-             "transposon was ANNOTATED nearby. That is most parsimoniously an "
-             "annotation-quality effect: curated enzymes come from intensively studied "
-             "organisms whose records are richly annotated. It is not evidence that "
-             "well-characterised enzymes are more mobile."
-             if genus_down else
-             "read at the genus level, members far from a curated enzyme are the ones "
-             "more often next to an annotated transposon, which is the opposite of an "
-             "annotation-richness effect and would need a different explanation.")),
+        "interpretation": None,   # asagida, olculen duzeltmeden sonra doldurulur
     }
     cells = Counter((d["cluster"], d["genus"]) for d in data
                     if d["tier"] in CLOSE_TIERS)
@@ -970,7 +1008,10 @@ def evidence_block(data, genus_rows, rng, permutations):
         a1 = sum(d["transposon"] for d in close_all)
         b1 = sum(d["transposon"] for d in far_all)
         crude = (a1 * (len(far_all) - b1)) / max(1, (len(close_all) - a1) * b1)
-        shrink = (None if common_or is None or abs(crude - 1) < 1e-9
+        # "Fazla odds'un ne kadari yogunluktan" sorusu yalnizca ham OR 1'in
+        # USTUNDE iken anlamlidir; altinda zaten bir fazlalik yok ve bolum
+        # isaretsiz bir sayi uretir (olculdu: giris duzeyinde -0,07).
+        shrink = (None if common_or is None or crude <= 1
                   else round((crude - common_or) / (crude - 1), 3))
         out["density_adjusted_close_vs_far"][level] = {
             "unit": ("alpha subunit" if level == "entry" else "enzyme type and genus")
@@ -1000,6 +1041,43 @@ def evidence_block(data, genus_rows, rng, permutations):
                       f"leaves {common_or:.2f}; see the strata, the adjustment does "
                       "not account for the association."))),
         }
+
+    # Yorum, duzeltme OLCULDUKTEN sonra yazilir ve olculene baglidir. Ilk
+    # surumde burada "bu bir anotasyon kalitesi etkisidir" yaziyordu; duzeltme
+    # kosulunca bu iddianin DESTEKLENMEDIGI goruldu ve cumle degisti.
+    genus_adj = out["density_adjusted_close_vs_far"].get("genus", {})
+    genus_share = genus_adj.get("share_of_excess_odds_attributable_to_annotation_density")
+    if not genus_down:
+        interpretation = (
+            "read at the genus level, members far from a curated enzyme are the ones "
+            "more often next to an annotated transposon, which is the opposite of an "
+            "annotation-richness effect and would need a different explanation")
+    elif genus_share is not None and genus_share >= 0.5:
+        interpretation = (
+            "read at the genus level, closeness to a curated enzyme predicts that a "
+            "transposon was ANNOTATED nearby, and most of that "
+            f"({100 * genus_share:.0f} %) is accounted for by how many genes were "
+            "annotated in the window. That is an annotation-quality effect and not "
+            "evidence that well-characterised enzymes are more mobile.")
+    else:
+        interpretation = (
+            "read at the genus level, closeness to a curated enzyme predicts that a "
+            f"transposon was ANNOTATED nearby, by a factor of "
+            f"{genus_adj.get('crude_odds_ratio')} in odds. The obvious explanation is "
+            "annotation quality, since curated enzymes come from intensively studied "
+            "organisms, but that explanation is NOT supported by the one proxy that "
+            "can be measured here: adjusting for the number of annotated genes in the "
+            "window leaves the odds ratio at "
+            f"{genus_adj.get('mantel_haenszel_odds_ratio')}, removing only "
+            f"{100 * (genus_share or 0):.0f} % of the excess. So three readings remain "
+            "open and this data cannot choose between them: an annotation habit that "
+            "gene count does not capture, such as how specifically a submitter names a "
+            "mobile element; a real tendency for the better studied enzymes to sit in "
+            "mobile neighbourhoods, which is what the plasmid result independently "
+            "suggests; or residual confounding by genus, since the curated enzymes are "
+            "concentrated in a few well sampled genera. What can be said is the "
+            "negative: it is not simply that richer windows give more chances to match.")
+    out["level_disagreement"]["interpretation"] = interpretation
     return out
 
 
@@ -1305,6 +1383,585 @@ def annotation_bias_block(data, euk_heavy, rng):
     return out
 
 
+# ------------------------- 3. soru: duzenleyici ne kadar ayrisik evrildi
+
+# Global hizalayici surec basina BIR kez kurulur. blastp puanlamasi secildi
+# cunku karsilastirma protein duzeyinde ve BLOSUM62 + blastp bosluk cezalari
+# bu is icin kalibre edilmis standart; keyfi bir puan matrisi secmemek icin.
+_ALIGNER = None
+
+
+def _aligner():
+    global _ALIGNER
+    if _ALIGNER is None:
+        aligner = Align.PairwiseAligner(scoring="blastp")
+        aligner.mode = "global"
+        _ALIGNER = aligner
+    return _ALIGNER
+
+
+def pair_identity(seq_a, seq_b):
+    """Global hizalamada yuzde kimlik ve kisa proteine gore kapsama.
+
+    Kimlik YALNIZCA iki tarafi da kalinti olan kolonlar uzerinden hesaplanir;
+    bosluk kolonlari paydaya girmez. Eski kod (evolution_rates_of_reg_and_enz.py)
+    bosluk-kalinti kolonlarini uyumsuzluk sayiyordu ve ortak bir coklu
+    hizalama kullaniyordu: duzenleyiciler hem daha kisa hem uzunluk olarak
+    daha degisken oldugu icin o hizalamada daha fazla bosluk kolonu olusuyor
+    ve "duzenleyiciler daha cesitli" sonucu kismen bu bosluklardan geliyordu.
+    Ciftin KENDI hizalamasini kullanmak bu yanliligi ortadan kaldirir.
+    """
+    if not seq_a or not seq_b:
+        return None, None
+    alignment = _aligner().align(seq_a, seq_b)[0]
+    matches = aligned = 0
+    for residue_a, residue_b in zip(alignment[0], alignment[1]):
+        if residue_a != "-" and residue_b != "-":
+            aligned += 1
+            if residue_a == residue_b:
+                matches += 1
+    shorter = min(len(seq_a), len(seq_b))
+    if not aligned or not shorter:
+        return None, None
+    return 100.0 * matches / aligned, aligned / shorter
+
+
+def _score_pair(task):
+    """Pool isci fonksiyonu: bir cift icin enzim ve duzenleyici kimligi."""
+    (alpha_a, reg_a, alpha_b, reg_b) = task
+    enzyme_identity, enzyme_coverage = pair_identity(alpha_a, alpha_b)
+    regulator_identity, regulator_coverage = pair_identity(reg_a, reg_b)
+    return enzyme_identity, enzyme_coverage, regulator_identity, regulator_coverage
+
+
+def load_regulator_pairs_input(con):
+    """Alfa alt birimi ve YUKARI AKIS duzenleyicisinin dizisi birlikte olan girisler.
+
+    Duzenleyici, `ro_regulation`'in belirledigi gen: operonun 5' ucunun
+    yukarisindaki ILK gen ve kategorisi 'regulator'. Bu, eski kodun
+    "orta noktalari 1.000-1.500 bp icinde olan en yakin regulator" kuralindan
+    farkli ve daha savunulabilir, cunku iplik ve operon yapisini hesaba katar.
+    Komsu protein dizileri `neighbor_protein`'den protein_key uzerinden
+    baglanir (tabloda neighbor_id yok, anahtar koordinat tabanli).
+    """
+    return con.execute("""
+        SELECT r.candidate_id, r.ro_cluster, r.ro_group, p.organism,
+               g.upstream_family, g.architecture, r.sequence, np.translation
+        FROM ro r
+        JOIN replicon p USING(nucleotide_id)
+        JOIN ro_regulation g USING(candidate_id)
+        JOIN neighbor nb ON nb.neighbor_id = g.upstream_gene_id
+        JOIN neighbor_protein np
+          ON np.protein_key = nb.nucleotide_id || ':' || nb.start || '-'
+                              || nb.end || ':' || nb.strand
+        WHERE r.is_confirmed = 1
+          AND g.upstream_category = 'regulator'
+          AND r.sequence IS NOT NULL AND r.sequence <> ''
+          AND np.translation IS NOT NULL AND np.translation <> ''
+    """).fetchall()
+
+
+def band_of(identity):
+    for low, high, name in IDENTITY_BANDS:
+        if low <= identity < high:
+            return name
+    return None
+
+
+def paired_contrast(pairs, label):
+    """Cift ICINDE enzim ve duzenleyici kimligini karsilastir.
+
+    Olcut ORDINAL: hangisi daha korunmus. Iki yuzdeyi dogrudan cikarmak
+    cazip ama iki protein ayni kisitlar altinda degil; bu yuzden onculuk
+    isaret testine (ciftlerin kaci icin duzenleyici daha az korunmus) ve
+    Wilcoxon isaretli sira testine veriliyor, fark yalnizca tanimlayici
+    olarak yaziliyor.
+    """
+    if len(pairs) < MIN_PAIRS_FOR_BAND:
+        return None
+    enzyme = np.array([p["enzyme_identity"] for p in pairs])
+    regulator = np.array([p["regulator_identity"] for p in pairs])
+    delta = enzyme - regulator
+    try:
+        wilcoxon_p = float(stats.wilcoxon(enzyme, regulator).pvalue)
+    except ValueError:
+        wilcoxon_p = None
+    share_less = float(np.mean(regulator < enzyme))
+    at_floor = float(np.mean(regulator <= RANDOM_IDENTITY_FLOOR))
+    return {
+        "label": label,
+        "n_pairs": len(pairs),
+        "n_types": len({p["type"] for p in pairs}),
+        "n_genus_pairs": len({p["genus_pair"] for p in pairs}),
+        "n_genera": len({g for p in pairs for g in p["genus_pair"]}),
+        "enzyme_identity_median": round(float(np.median(enzyme)), 1),
+        "enzyme_identity_quartiles": [round(float(v), 1)
+                                      for v in np.percentile(enzyme, [25, 75])],
+        "regulator_identity_median": round(float(np.median(regulator)), 1),
+        "regulator_identity_quartiles": [round(float(v), 1)
+                                         for v in np.percentile(regulator, [25, 75])],
+        "median_difference_enzyme_minus_regulator": round(float(np.median(delta)), 1),
+        "share_of_pairs_regulator_less_conserved": round(share_less, 3),
+        "wilcoxon_p": wilcoxon_p,
+        "share_of_pairs_at_or_below_random_floor": round(at_floor, 3),
+        "informative": bool(at_floor < MAX_FLOOR_SHARE_FOR_RATE_CLAIM),
+    }
+
+
+def divergence_block(con, cpu, seed=RANDOM_SEED):
+    rows = load_regulator_pairs_input(con)
+    total_confirmed = con.execute(
+        "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
+    with_regulator = con.execute("""
+        SELECT COUNT(*) FROM ro r JOIN ro_regulation g USING(candidate_id)
+        WHERE r.is_confirmed = 1 AND g.upstream_category = 'regulator'"""
+    ).fetchone()[0]
+
+    out = {
+        "question": ("How divergently did the regulators evolve compared with the "
+                     "enzymes they control, by enzyme group and by the "
+                     "enzyme-to-enzyme identity band?"),
+        "prior_art": {
+            "scripts": ["evolution_rates_of_reg_and_enz.py",
+                        "evolution_rates_of_reg_and_enz_batch.py",
+                        "enzyme_regulator_graphs.py"],
+            "what_they_computed": (
+                "they ask the same question and reach the same direction. From the "
+                "old pipeline's proteins_output.fasta they paired each main gene with "
+                "the nearest regulator within 1000 to 1500 bp by midpoint distance, "
+                "aligned all main sequences of a type together with MUSCLE and all "
+                "regulator sequences together, took the mean pairwise p-distance of "
+                "each alignment, and compared the two numbers per type. Published "
+                "result: 45 types, 2382 pairs, mean main diversity 0.378 against mean "
+                "regulator diversity 0.446, concluding that regulators are the more "
+                "diverse."),
+            "why_it_is_not_reused_as_is": [
+                "the p-distance counts a gap against a residue as a mismatch and is "
+                "taken from a multiple alignment shared by all sequences of a type. "
+                "Regulators are shorter and more variable in length, so their shared "
+                "alignment carries more gap columns, and that alone inflates their "
+                "apparent divergence. The direction of the published conclusion is "
+                "therefore the direction of a known bias, which is why it needed "
+                "recomputing rather than citing.",
+                "the two diversity numbers are type-level aggregates, but "
+                "enzyme_regulator_graphs.py feeds them to a paired t-test and a "
+                "Wilcoxon signed-rank test as though they were paired observations. "
+                "The pairing that the question actually needs is per entry pair, not "
+                "per type.",
+                "it runs on the old pipeline's protein set, which the rebuild "
+                "replaced: that set accepted non-alpha Rieske proteins, and the "
+                "summary still contains rows for CdnD, an electron-transfer component "
+                "that was removed from the curated set as a contaminant.",
+                "the pairing rule is nearest-regulator-by-midpoint and ignores strand "
+                "and operon structure. ro_regulation now identifies the upstream gene "
+                "properly, from the operon 5' end.",
+                "enzyme_regulator_graphs.py imports sklearn, which is not installed "
+                "here, so it cannot be run to reproduce its own figures.",
+            ],
+            "what_is_reused": (
+                "the question itself, the choice of pairwise amino acid identity as "
+                "the measure, and the per-type framing. What changed is that identity "
+                "is computed on each pair's own global alignment with a coverage "
+                "check, that the comparison is paired within an entry pair, and that "
+                "the result is stratified by the enzyme-to-enzyme identity band, which "
+                "the earlier scripts do not do at all."),
+        },
+        "coverage": {
+            "confirmed_entries": total_confirmed,
+            "entries_whose_upstream_gene_is_a_regulator": with_regulator,
+            "of_those_with_both_sequences_available": len(rows),
+            "sequence_availability": round(len(rows) / with_regulator, 4)
+            if with_regulator else None,
+            "share_of_all_confirmed_entries": round(len(rows) / total_confirmed, 4),
+            "why_the_CON_problem_does_not_bite_here": (
+                "88.9 % of the source GenBank records are CON entries with no "
+                "nucleotide sequence, which is what blocks promoter analysis. Protein "
+                "translations are a different matter: they are carried in the CDS "
+                "/translation qualifier and are present even when the nucleotide "
+                "sequence is not, so build_operons.py was able to store them. "
+                "Measured availability for the regulators is "
+                + (f"{100 * len(rows) / with_regulator:.1f} %, so sequence coverage is "
+                   "not the limiting factor here."
+                   if with_regulator else "not computable.")),
+            "what_is_the_limiting_factor": (
+                "whether the upstream gene is a regulator at all. That holds for "
+                f"{with_regulator} of {total_confirmed} entries "
+                f"({100 * with_regulator / total_confirmed:.1f} %), so roughly seven "
+                "entries in ten cannot enter this analysis. Nothing about the "
+                "remaining seven tenths is claimed."),
+        },
+    }
+    if len(rows) < 2:
+        out["verdict"] = {"conclusion": "not computable: too few usable entries"}
+        return out
+
+    entries = [{"candidate_id": cid, "type": cluster, "group": group or "?",
+                "genus": (organism or "?").split()[0],
+                "family": family, "architecture": architecture,
+                "alpha": alpha, "regulator": regulator}
+               for (cid, cluster, group, organism, family, architecture,
+                    alpha, regulator) in rows]
+
+    by_type = defaultdict(list)
+    for entry in entries:
+        by_type[entry["type"]].append(entry)
+
+    # Ornekleme: tip icinde TUM ciftler listelenir, sabit tohumla karistirilir
+    # ve ilk MAX_PAIRS_PER_TYPE tanesi alinir. Boylece hangi ciftlerin
+    # alindigi tamamen yeniden uretilebilir.
+    rng = random.Random(seed)
+    selected, sampling = [], []
+    for cluster in sorted(by_type):
+        items = by_type[cluster]
+        all_pairs = [(i, j) for i in range(len(items)) for j in range(i + 1, len(items))]
+        if not all_pairs:
+            continue
+        rng.shuffle(all_pairs)
+        taken = all_pairs[:MAX_PAIRS_PER_TYPE]
+        sampling.append({"type": cluster, "entries": len(items),
+                         "all_within_type_pairs": len(all_pairs),
+                         "pairs_used": len(taken),
+                         "complete": len(taken) == len(all_pairs)})
+        for i, j in taken:
+            selected.append((items[i], items[j]))
+
+    tasks = [(a["alpha"], a["regulator"], b["alpha"], b["regulator"])
+             for a, b in selected]
+    if cpu > 1 and len(tasks) > 200:
+        with Pool(cpu) as pool:
+            scored = pool.map(_score_pair, tasks, chunksize=64)
+    else:
+        scored = [_score_pair(t) for t in tasks]
+
+    pairs, dropped = [], 0
+    for (a, b), (e_id, e_cov, r_id, r_cov) in zip(selected, scored):
+        if None in (e_id, e_cov, r_id, r_cov):
+            dropped += 1
+            continue
+        if e_cov < MIN_ALIGNED_COVERAGE or r_cov < MIN_ALIGNED_COVERAGE:
+            dropped += 1
+            continue
+        pairs.append({
+            "type": a["type"], "group": a["group"],
+            "genus_pair": tuple(sorted((a["genus"], b["genus"]))),
+            "families": (a["family"], b["family"]),
+            "same_family": (a["family"] == b["family"]),
+            "family_known": (a["family"] != UNCLASSIFIED_FAMILY
+                             and b["family"] != UNCLASSIFIED_FAMILY
+                             and a["family"] and b["family"]),
+            "enzyme_identity": e_id, "regulator_identity": r_id,
+            "band": band_of(e_id),
+        })
+
+    out["sampling"] = {
+        "rule": (f"within each enzyme type every within-type pair is enumerated, "
+                 f"shuffled with seed {seed} and the first {MAX_PAIRS_PER_TYPE} kept. "
+                 "Uniform sampling inside a type estimates that type's pair "
+                 "distribution without bias, and the fixed seed makes the exact set "
+                 "of pairs reproducible."),
+        "max_pairs_per_type": MAX_PAIRS_PER_TYPE,
+        "seed": seed,
+        "all_within_type_pairs_available": sum(s["all_within_type_pairs"]
+                                               for s in sampling),
+        "pairs_scored": len(tasks),
+        "pairs_dropped_for_low_alignment_coverage": dropped,
+        "min_aligned_coverage": MIN_ALIGNED_COVERAGE,
+        "pairs_used": len(pairs),
+        "types_completely_enumerated": sum(1 for s in sampling if s["complete"]),
+        "types_sampled": len(sampling),
+        "per_type": sampling,
+    }
+    if not pairs:
+        out["verdict"] = {"conclusion": "not computable: no pair survived the "
+                                        "alignment coverage check"}
+        return out
+
+    # (a) + (b) bant bant: butun ciftler, sonra YALNIZCA ayni aile
+    out["all_pairs"] = paired_contrast(pairs, "all pairs")
+    out["by_enzyme_identity_band"] = [
+        r for r in (paired_contrast([p for p in pairs if p["band"] == name], name)
+                    for _, _, name in IDENTITY_BANDS) if r]
+
+    same_family = [p for p in pairs if p["family_known"] and p["same_family"]]
+    out["same_regulator_family_only"] = {
+        "why": ("if the two regulators belong to different families they are "
+                "different proteins, and a low identity between them is not the same "
+                "observation as one regulator diverging. Restricting to pairs whose "
+                "regulators share a family is the comparison that actually measures "
+                "divergence rate."),
+        "n_pairs": len(same_family),
+        "all": paired_contrast(same_family, "same family, all bands"),
+        "by_enzyme_identity_band": [
+            r for r in (paired_contrast(
+                [p for p in same_family if p["band"] == name], name)
+                for _, _, name in IDENTITY_BANDS) if r],
+    }
+
+    # (b) enzim grubuna gore
+    out["by_enzyme_group"] = [
+        r for r in (paired_contrast([p for p in pairs if p["group"] == group],
+                                    f"group {group}")
+                    for group in sorted({p["group"] for p in pairs})) if r]
+    out["by_enzyme_group_same_family"] = [
+        r for r in (paired_contrast([p for p in same_family if p["group"] == group],
+                                    f"group {group}")
+                    for group in sorted({p["group"] for p in same_family})) if r]
+
+    # (c) aile korunuyor mu, degisiyor mu
+    known = [p for p in pairs if p["family_known"]]
+    switches = [p for p in known if not p["same_family"]]
+    switch_by_band = []
+    for _, _, name in IDENTITY_BANDS:
+        subset = [p for p in known if p["band"] == name]
+        if len(subset) < MIN_PAIRS_FOR_BAND:
+            continue
+        band_switch = [p for p in subset if not p["same_family"]]
+        switch_by_band.append({
+            "band": name, "n_pairs": len(subset),
+            "n_types": len({p["type"] for p in subset}),
+            "n_genus_pairs": len({p["genus_pair"] for p in subset}),
+            "family_switch_rate": round(len(band_switch) / len(subset), 3),
+            "regulator_identity_median_same_family": round(float(np.median(
+                [p["regulator_identity"] for p in subset if p["same_family"]])), 1)
+            if any(p["same_family"] for p in subset) else None,
+            "regulator_identity_median_switched": round(float(np.median(
+                [p["regulator_identity"] for p in band_switch])), 1)
+            if band_switch else None,
+        })
+    per_type_switch = []
+    for cluster in sorted({p["type"] for p in known}):
+        subset = [p for p in known if p["type"] == cluster]
+        if len(subset) < MIN_PAIRS_FOR_BAND:
+            continue
+        families = Counter(f for p in subset for f in p["families"])
+        per_type_switch.append({
+            "type": cluster, "n_pairs": len(subset),
+            "n_genera": len({g for p in subset for g in p["genus_pair"]}),
+            "family_switch_rate": round(
+                float(np.mean([not p["same_family"] for p in subset])), 3),
+            "families_seen": families.most_common(),
+        })
+    per_type_switch.sort(key=lambda r: -r["family_switch_rate"])
+    out["regulator_family_retention"] = {
+        "question": ("Is the regulator family retained across diverging members of "
+                     "one enzyme type, or does it switch? A switch means the same "
+                     "chemistry came under a different kind of transcriptional "
+                     "control."),
+        "pairs_with_both_families_classified": len(known),
+        "pairs_excluded_as_unclassified": len(pairs) - len(known),
+        "overall_switch_rate": round(len(switches) / len(known), 3) if known else None,
+        "by_enzyme_identity_band": switch_by_band,
+        "most_frequently_switched_family_pairs": [
+            {"families": list(k), "n_pairs": v}
+            for k, v in Counter(tuple(sorted(p["families"]))
+                                for p in switches).most_common(10)],
+        "by_type": per_type_switch,
+    }
+
+    # Bagimsizlik: ayni sayi hem cift hem de TIP x CINS-CIFTI duzeyinde
+    collapsed = {}
+    for pair in pairs:
+        collapsed.setdefault((pair["type"], pair["genus_pair"]), []).append(pair)
+    collapsed_pairs = []
+    for key, items in collapsed.items():
+        collapsed_pairs.append({
+            "enzyme_identity": float(np.median([p["enzyme_identity"] for p in items])),
+            "regulator_identity": float(np.median([p["regulator_identity"]
+                                                   for p in items])),
+        })
+    rho_pair = stats.spearmanr([p["enzyme_identity"] for p in pairs],
+                               [p["regulator_identity"] for p in pairs])
+    rho_coll = stats.spearmanr([p["enzyme_identity"] for p in collapsed_pairs],
+                               [p["regulator_identity"] for p in collapsed_pairs])
+    out["correlation"] = {
+        "question": "Does regulator identity track enzyme identity?",
+        "pair_level": {"unit": "entry pair within one enzyme type",
+                       "n": len(pairs),
+                       "n_types": len({p["type"] for p in pairs}),
+                       "n_genus_pairs": len({p["genus_pair"] for p in pairs}),
+                       "spearman_rho": round(float(rho_pair.statistic), 3),
+                       "p": float(rho_pair.pvalue)},
+        "collapsed_level": {"unit": "one observation per enzyme type and unordered "
+                                    "genus pair, medians within the cell",
+                            "n": len(collapsed_pairs),
+                            "spearman_rho": round(float(rho_coll.statistic), 3),
+                            "p": float(rho_coll.pvalue)},
+        "note": ("the pair level is reported for completeness only. Pairs inside one "
+                 "type share sequences with each other, so its n is not a count of "
+                 "independent observations; the collapsed level is the honest one."),
+    }
+
+    # Tabana vurma: olcumun nerede bilgi tasimadigini acikca say
+    at_floor = [p for p in pairs if p["regulator_identity"] <= RANDOM_IDENTITY_FLOOR]
+    out["measurement_floor"] = {
+        "random_identity_floor_percent": RANDOM_IDENTITY_FLOOR,
+        "why": ("two unrelated proteins align at roughly 20 to 25 % identity, so a "
+                "regulator identity near that value does not mean fast divergence, it "
+                "means no measurable relationship. In that region the measure is "
+                "saturated and says nothing about rate."),
+        "pairs_at_or_below_floor": len(at_floor),
+        "share_of_all_pairs": round(len(at_floor) / len(pairs), 3),
+        "share_by_band": {
+            name: round(float(np.mean([p["regulator_identity"] <= RANDOM_IDENTITY_FLOOR
+                                       for p in pairs if p["band"] == name])), 3)
+            for _, _, name in IDENTITY_BANDS
+            if sum(1 for p in pairs if p["band"] == name) >= MIN_PAIRS_FOR_BAND},
+    }
+
+    out["figure_data"] = figure_data(pairs, out, seed)
+    out["verdict"] = divergence_verdict(out)
+    return out
+
+
+def figure_data(pairs, block, seed):
+    """Web sayfasinin dogrudan cizebilecegi seriler.
+
+    Goruntu dosyasi URETILMIYOR: bu pipeline'in deseni, sayilari JSON'a yazip
+    sekli web katmaninda cizmek (bkz. stratified_stats.py -> carboxylate_rows.json).
+    Boylece sekil ile sayi ayrisamaz.
+    """
+    rng = random.Random(seed)
+    scatter_source = list(pairs)
+    if len(scatter_source) > MAX_SCATTER_POINTS:
+        rng.shuffle(scatter_source)
+        scatter_source = scatter_source[:MAX_SCATTER_POINTS]
+    return {
+        "plot_1": {
+            "kind": "grouped box or violin, one pair of boxes per band",
+            "title": "Enzyme and regulator identity by enzyme identity band",
+            "x_label": "Enzyme-to-enzyme identity band (%)",
+            "y_label": "Pairwise amino acid identity (%)",
+            "series": [
+                {"band": row["label"], "n_pairs": row["n_pairs"],
+                 "n_types": row["n_types"], "n_genus_pairs": row["n_genus_pairs"],
+                 "enzyme_median": row["enzyme_identity_median"],
+                 "enzyme_q1_q3": row["enzyme_identity_quartiles"],
+                 "regulator_median": row["regulator_identity_median"],
+                 "regulator_q1_q3": row["regulator_identity_quartiles"]}
+                for row in block["by_enzyme_identity_band"]],
+            "reference_line": {"y": RANDOM_IDENTITY_FLOOR,
+                               "label": "identity floor for unrelated proteins"},
+        },
+        "plot_2": {
+            "kind": "scatter with a diagonal",
+            "title": "Regulator identity against enzyme identity, one point per pair",
+            "x_label": "Enzyme identity (%)", "y_label": "Regulator identity (%)",
+            "diagonal": "y = x marks equal conservation; points below it are pairs "
+                        "whose regulator is the less conserved of the two",
+            "columns": ["enzyme_identity", "regulator_identity",
+                        "same_regulator_family", "enzyme_group"],
+            "sampled_points": len(scatter_source),
+            "total_points": len(pairs),
+            "sampling_note": (f"a fixed-seed sample of at most {MAX_SCATTER_POINTS} "
+                              "points, so the published file stays small"),
+            "rows": [[round(p["enzyme_identity"], 1), round(p["regulator_identity"], 1),
+                      int(bool(p["same_family"])), p["group"]]
+                     for p in scatter_source],
+        },
+        "plot_3": {
+            "kind": "line or bar",
+            "title": "Regulator family switch rate by enzyme identity band",
+            "x_label": "Enzyme-to-enzyme identity band (%)",
+            "y_label": "Share of pairs whose two regulators belong to different "
+                       "families",
+            "series": [{"band": row["band"], "n_pairs": row["n_pairs"],
+                        "switch_rate": row["family_switch_rate"]}
+                       for row in
+                       block["regulator_family_retention"]["by_enzyme_identity_band"]],
+        },
+    }
+
+
+def divergence_verdict(block):
+    """Karar VERIDEN kurulur; hicbir yon ya da sayi elle yazilmaz."""
+    same = block["same_regulator_family_only"]["by_enzyme_identity_band"]
+    bands = {row["label"]: row for row in same}
+    retention = block["regulator_family_retention"]
+    switch = {row["band"]: row["family_switch_rate"]
+              for row in retention["by_enzyme_identity_band"]}
+    informative = [row for row in same if row["informative"]]
+    faster = [row for row in informative
+              if row["share_of_pairs_regulator_less_conserved"] > 0.5]
+    parts = []
+    if informative:
+        parts.append(
+            "Among pairs whose two regulators share a family, which is the comparison "
+            "that measures divergence rather than replacement, the regulator is the "
+            "less conserved partner in "
+            + ", ".join(f"{100 * row['share_of_pairs_regulator_less_conserved']:.0f} % "
+                        f"of pairs at {row['label']} % enzyme identity "
+                        f"(n = {row['n_pairs']}, {row['n_types']} types, "
+                        f"{row['n_genus_pairs']} genus pairs)"
+                        for row in informative)
+            + ".")
+        parts.append(
+            "So regulators diverge faster than the enzymes they sit next to"
+            if len(faster) == len(informative) and informative else
+            "So the direction is not uniform across bands and should not be stated as "
+            "a single rule")
+        gap = [row for row in informative
+               if row["median_difference_enzyme_minus_regulator"] is not None]
+        if len(gap) >= 2:
+            widest = max(gap, key=lambda r: r["median_difference_enzyme_minus_regulator"])
+            # Fark MONOTON degil ve nedeni biliniyor: en dusuk bantta
+            # duzenleyici kimligi olcum tabanina vuruyor, dolayisiyla fark
+            # kapaniyormus gibi gorunuyor. Cumle bunu soylemek zorunda.
+            parts.append(
+                "and the gap widens as the enzymes diverge, from "
+                f"{gap[0]['median_difference_enzyme_minus_regulator']:+.0f} points at "
+                f"{gap[0]['label']} % enzyme identity to a maximum of "
+                f"{widest['median_difference_enzyme_minus_regulator']:+.0f} points at "
+                f"{widest['label']} %.")
+            if widest is not gap[-1]:
+                parts.append(
+                    "Below that the gap appears to close again, to "
+                    f"{gap[-1]['median_difference_enzyme_minus_regulator']:+.0f} points "
+                    f"at {gap[-1]['label']} %, but that is compression against the "
+                    "measurement floor rather than regulators becoming conserved "
+                    "again: "
+                    f"{100 * gap[-1]['share_of_pairs_at_or_below_random_floor']:.0f} % "
+                    "of the pairs in that band already sit at the identity level of "
+                    "unrelated proteins, so the regulator value cannot fall further "
+                    "while the enzyme value still can.")
+    conclusion = " ".join(parts) if parts else (
+        "no band carries enough informative pairs to support a statement about "
+        "divergence rate")
+    switch_sentence = None
+    if switch:
+        ordered = [row["band"] for row in retention["by_enzyme_identity_band"]]
+        switch_sentence = (
+            "the regulator family is retained among near-identical enzymes and lost as "
+            "they diverge: the switch rate runs "
+            + ", ".join(f"{100 * switch[b]:.0f} % at {b} %" for b in ordered)
+            + f", and overall {100 * retention['overall_switch_rate']:.0f} % of pairs "
+              "with two classified regulators carry two DIFFERENT families. That is "
+              "the same chemistry placed under a different kind of transcriptional "
+              "control, and it is the main reason the unrestricted comparison "
+              "overstates regulator divergence.")
+    floor = block["measurement_floor"]
+    return {
+        "divergence_rate": conclusion,
+        "family_retention": switch_sentence,
+        "where_the_data_cannot_answer": (
+            "the lowest enzyme identity band. "
+            f"{100 * floor['share_of_all_pairs']:.0f} % of all pairs have a regulator "
+            f"identity at or below {floor['random_identity_floor_percent']:.0f} %, "
+            "which is where unrelated proteins sit, and in that region the measure is "
+            "saturated: it cannot distinguish a fast-diverging regulator from an "
+            "unrelated one. Rate statements are therefore restricted to the bands "
+            "flagged as informative. Two further limits: the regulator is only ever "
+            "the FIRST upstream gene, so a regulator acting from elsewhere is invisible; "
+            "and no binding was measured, so 'the regulator of this enzyme' is an "
+            "inference from position, not from function."),
+        "relation_to_prior_art": (
+            "the earlier scripts concluded that regulators are the more diverse, and "
+            "that direction holds up. The contribution here is that it survives a "
+            "measure without the gap-counting bias, that it is decomposed into real "
+            "divergence against family replacement, and that it is resolved by "
+            "identity band, which is what makes it interpretable."),
+    }
+
+
 # --------------------------------------------------------------------- cikti
 
 def print_summary(result):
@@ -1371,7 +2028,7 @@ def print_summary(result):
     for level, adj in ev["density_adjusted_close_vs_far"].items():
         print(f"    yakin/uzak OR {level:6}: ham {adj['crude_odds_ratio']} -> "
               f"yogunluga gore {adj['mantel_haenszel_odds_ratio']}  "
-              f"(yogunluga yazilan pay: {adj['share_of_excess_odds_attributable_to_annotation_density']})")
+              f"(yogunluga yazilan pay: {adj['share_of_excess_odds_attributable_to_annotation_density'] if adj['share_of_excess_odds_attributable_to_annotation_density'] is not None else '-'})")
 
     print("\n-- 2c. SORU: anotasyon yanliligi --------------------------------")
     floor = bias["hard_floor"]
@@ -1398,6 +2055,57 @@ def print_summary(result):
           f"(fazlaligin %{100*(reach['share_of_excess_odds_attributable_to_annotation_density'] or 0):.0f}'i "
           f"anotasyon yogunlugundan)")
 
+    div = result.get("regulator_vs_enzyme_divergence")
+    if div:
+        print("\n-- 3. SORU: duzenleyici ne kadar ayrisik evrildi ----------------")
+        cov = div["coverage"]
+        print(f"  kapsama: yukari akista duzenleyici olan "
+              f"{cov['entries_whose_upstream_gene_is_a_regulator']} giristen "
+              f"{cov['of_those_with_both_sequences_available']}'inde iki dizi de var "
+              f"(%{100*cov['sequence_availability']:.1f}); tum dogrulanmis girisin "
+              f"%{100*cov['share_of_all_confirmed_entries']:.1f}'i")
+        if "sampling" not in div:
+            print("  hesaplanamadi"); return
+        smp = div["sampling"]
+        print(f"  ornekleme: {smp['all_within_type_pairs_available']} ic ciftten "
+              f"{smp['pairs_scored']} ornekledi (tip basina en fazla "
+              f"{smp['max_pairs_per_type']}, tohum {smp['seed']}), "
+              f"kapsama kontrolunden {smp['pairs_dropped_for_low_alignment_coverage']} "
+              f"dustu, {smp['pairs_used']} cift kullanildi")
+        header = (f"  {'bant':10} {'cift':>6} {'tip':>4} {'cins-cifti':>11} "
+                  f"{'enzim':>7} {'reg':>7} {'fark':>7} {'reg<enz':>8} {'tabanda':>8}")
+        for title, series in (("TUM CIFTLER", div["by_enzyme_identity_band"]),
+                              ("AYNI AILE", div["same_regulator_family_only"]
+                               ["by_enzyme_identity_band"])):
+            print(f"  [{title}]")
+            print(header)
+            for row in series:
+                print(f"  {row['label']:10} {row['n_pairs']:6} {row['n_types']:4} "
+                      f"{row['n_genus_pairs']:11} "
+                      f"{row['enzyme_identity_median']:7.1f} "
+                      f"{row['regulator_identity_median']:7.1f} "
+                      f"{row['median_difference_enzyme_minus_regulator']:+7.1f} "
+                      f"{100*row['share_of_pairs_regulator_less_conserved']:7.0f}% "
+                      f"{100*row['share_of_pairs_at_or_below_random_floor']:7.0f}%"
+                      f"{'' if row['informative'] else '  (tabanda, yorumlanamaz)'}")
+        ret = div["regulator_family_retention"]
+        print(f"  aile degisimi: genel %{100*ret['overall_switch_rate']:.0f}  "
+              + "  ".join(f"{r['band']}=%{100*r['family_switch_rate']:.0f}"
+                          for r in ret["by_enzyme_identity_band"]))
+        print("  en sik degisen aile ciftleri: "
+              + ", ".join(f"{'/'.join(r['families'])} ({r['n_pairs']})"
+                          for r in ret["most_frequently_switched_family_pairs"][:5]))
+        cor = div["correlation"]
+        print(f"  korelasyon: cift duzeyi rho={cor['pair_level']['spearman_rho']} "
+              f"(n={cor['pair_level']['n']}, bagimsiz degil)  |  "
+              f"tip x cins-cifti rho={cor['collapsed_level']['spearman_rho']} "
+              f"(n={cor['collapsed_level']['n']}, p={cor['collapsed_level']['p']:.1e})")
+        print(f"  grup bazinda (ayni aile): "
+              + "  ".join(f"g{r['label'].split()[-1]}: reg<enz "
+                          f"%{100*r['share_of_pairs_regulator_less_conserved']:.0f} "
+                          f"(n={r['n_pairs']})"
+                          for r in div["by_enzyme_group_same_family"]))
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -1408,6 +2116,12 @@ def main():
     parser.add_argument("--ecology", default="cluster_ecology.csv")
     parser.add_argument("--domain-csv", default="analysis_out/domain_by_cluster.csv")
     parser.add_argument("--permutations", type=int, default=PERMUTATIONS)
+    # 3. soru cift basina iki global hizalama kosuyor; isolation_source.py ile
+    # ayni desende coklu surec kullanilir.
+    parser.add_argument("--cpu", type=int, default=min(20, os.cpu_count() or 1))
+    parser.add_argument("--skip-divergence", action="store_true",
+                        help="3. soruyu (duzenleyici ayrisma hizi) atla; "
+                             "pairwise hizalamalar en pahali adim")
     args = parser.parse_args()
 
     con = sqlite3.connect(args.db)
@@ -1420,12 +2134,14 @@ def main():
     result = {
         "method": {
             "why_this_module_exists": (
-                "two questions that have to be answered together. First, which "
-                "regulator goes with which enzyme family and type, which had never "
-                "been crossed against the chemistry. Second, whether the published "
-                "mobility result depends on gene categories that are a regular "
-                "expression over GenBank /product text rather than a measurement of "
-                "sequence."),
+                "three questions about the operon. The first two belong together. "
+                "First, which regulator goes with which enzyme family and type, which "
+                "had never been crossed against the chemistry. Second, whether the "
+                "published mobility result depends on gene categories that are a "
+                "regular expression over GenBank /product text rather than a "
+                "measurement of sequence. Third, how divergently the regulators "
+                "evolved compared with the enzymes they sit next to, resolved by "
+                "enzyme group and by the enzyme-to-enzyme identity band."),
             "two_grades_of_neighbourhood_evidence": {
                 "sequence_verified": (
                     "operon components (beta subunit, ferredoxin, reductase) are "
@@ -1437,7 +2153,7 @@ def main():
                     "are a regular expression over the GenBank /product text, defined "
                     "in build_db.py. They measure annotation quality, not biology. The "
                     "transposon category is one of these, and so is the regulator "
-                    "family label used in the first question."),
+                    "family label used in the first and third questions."),
             },
             "independence": (
                 "RO entries are not independent observations: the same protein recurs "
@@ -1479,6 +2195,8 @@ def main():
     result["transposon_vs_curated_distance"] = evidence_block(
         data, genus_rows, rng, args.permutations)
     result["annotation_bias"] = annotation_bias_block(data, euk_heavy, rng)
+    if not args.skip_divergence:
+        result["regulator_vs_enzyme_divergence"] = divergence_block(con, args.cpu)
     result["limits"] = [
         "The transposon calls are never verified against sequence. The regular "
         "expression also matches integrase, recombinase and resolvase, which are not "
@@ -1503,6 +2221,18 @@ def main():
         "Chemical family is a property of the enzyme type, not of the entry, so the "
         "regulator-by-family tables are aggregations over at most 61 types. A family "
         "carried by two or three types can be moved by one type.",
+        "The third question identifies a regulator by POSITION, as the first gene "
+        "upstream of the operon 5' end. No binding was measured, so 'the regulator of "
+        "this enzyme' is an inference from gene order. A regulator acting from "
+        "elsewhere on the replicon, or a global regulator, is invisible to it.",
+        "Pairwise identity saturates. Unrelated proteins align at roughly 20 to 25 % "
+        "identity, so below that level the measure cannot separate a fast-diverging "
+        "regulator from an unrelated protein, and no divergence rate is claimed in "
+        "the bands where most pairs sit at that floor.",
+        "The third question covers only the entries whose upstream gene is a "
+        "regulator at all, under three in ten. Sequence availability is not the "
+        "limit, because protein translations survive in CON records even though the "
+        "nucleotide sequence does not; gene order is.",
     ]
 
     os.makedirs(args.out_dir, exist_ok=True)

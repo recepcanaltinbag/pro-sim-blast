@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Closeness{% endblock %}
+{% set page_id = 'closeness' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>What changes when you count only the members whose chemistry is known</h1>
+<p class="lede">Every association on this site is computed over entries, and most entries are distant
+relatives of a characterised enzyme whose reaction nobody has measured. This page asks how much of
+each result rests on them. The short answer for the strongest result is reassuring, and for one
+ecological result it is not.</p>
+
+{% if strat and strat.strata %}
+<h2>1 · The bridging carboxylate, by how close the member is</h2>
+<p>The database reports an association between the inter-subunit bridging carboxylate, aspartate or
+glutamate, and the enzyme group. Stated as one number over all entries it is
+V&nbsp;=&nbsp;{{ '%.2f' % strat.strata.all.cramers_v }}. Recomputed within each evidence level it
+behaves in the way one would hope: it is near-deterministic where the chemistry is known, and it
+decays with distance.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Members included</th><th class="num">Entries</th><th class="num">Glutamate</th>
+<th class="num">Cramér's V</th><th>Reading</th></tr></thead>
+<tbody>
+{% for key, label, note in rows_order %}
+{% set s = strat.strata.get(key) %}
+{% if s %}
+<tr{{ ' class="hl"'|safe if key == 'all' }}>
+  <td>{{ label }}{% if key == 'all' %} <span class="chip chip--ok">the published figure</span>{% endif %}</td>
+  <td class="num" data-v="{{ s.n }}">{{ s.n|fmt }}</td>
+  <td class="num" data-v="{{ s.glu_share }}">{{ '%.1f %%' % (100 * s.glu_share) }}</td>
+  <td class="num" data-v="{{ s.cramers_v }}">{{ '%.3f' % s.cramers_v }}</td>
+  <td class="small">{{ note }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The published number is a diluted version of a near-perfect rule.</b> Among members
+at least 60 % identical to a curated enzyme the association is
+V&nbsp;=&nbsp;{{ '%.3f' % strat.strata.close.cramers_v }}, and among close homologues specifically
+it reaches {{ '%.3f' % strat.strata['tier:close_homolog'].cramers_v }}. It falls to
+{{ '%.3f' % strat.strata['tier:novel'].cramers_v }} among the most divergent members. So the
+distant members do not create the pattern; they add noise to it. The same ordering appears in the
+assignment classes: core members give
+{{ '%.3f' % strat.strata['class:core'].cramers_v }} and novel candidates
+{{ '%.3f' % strat.strata['class:novel_candidate'].cramers_v }}.</figcaption>
+</figure>
+
+<h2>2 · Where the rule breaks, and what that points at</h2>
+<p>Within each group the glutamate share is flat across the close tiers and only moves among distant
+members. Reading along a row shows where the assignment is doing something questionable.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>RO group</th>{% for t in strat.method.tiers %}<th class="num">{{ t.replace('_', ' ') }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for g, tiers in strat.glu_share_within_group_by_tier.items() %}
+<tr><td>group {{ g }}</td>
+{% for t in strat.method.tiers %}
+  {% set cell = tiers.get(t) %}
+  <td class="num" data-v="{{ cell.glu_share if cell else -1 }}">
+    {% if cell %}{{ '%.0f %%' % (100 * cell.glu_share) }}<span class="unit"> n={{ cell.n }}</span>
+    {% else %}<span class="note">–</span>{% endif %}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Groups 1 to 4 carry aspartate in essentially every member whose chemistry is known,
+and glutamate appears only among their distant members. Group 5 is the mirror image: glutamate in
+almost every close member, decaying with distance. Both patterns say the same thing, that the
+residue tracks the characterised chemistry and the distant members are where assignment becomes
+unreliable.</p>
+
+{% if strat.misassignment_suspects %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Group</th><th class="num">Distant members carrying glutamate</th>
+<th class="num">Glutamate among its close members</th><th>Nearest reference belongs to group</th>
+<th class="num">Median identity to it</th></tr></thead>
+<tbody>
+{% for s in strat.misassignment_suspects %}
+<tr><td>group {{ s.group }}</td>
+  <td class="num" data-v="{{ s.entries }}">{{ s.entries }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * s.close_glu_share) }}</td>
+  <td class="small">{% for g, n in s.nearest_reference_group %}group {{ g }}: {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}</td>
+  <td class="num">{{ '%.1f %%' % s.median_identity_to_nearest }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>A curation lead rather than a finding.</b> These are entries assigned to a group
+whose close members never carry glutamate, which nonetheless carry it. Their nearest curated
+reference frequently belongs to a different group, at around 30 % identity. The simplest explanation
+is that the profile assignment placed them in the wrong group, and the residue is reporting their
+real affinity. They are listed so a curator can check them, not presented as mis-assigned.</figcaption>
+</figure>
+{% endif %}
+
+<h2>3 · Recompute it yourself</h2>
+<p>Pick which members to include and the table is recomputed in your browser from the per-entry data,
+with no server involved. This is the same arithmetic as the rows above, so you can confirm them or
+ask a question they do not answer.</p>
+<figure class="fig">
+<div class="controls" id="cbx">
+  <fieldset><legend>Evidence level</legend><div id="cbx-tiers"></div></fieldset>
+  <fieldset><legend>Assignment class</legend><div id="cbx-classes"></div></fieldset>
+  <p class="note"><button class="btn btn--small" type="button" id="cbx-all">select all</button>
+  <button class="btn btn--small" type="button" id="cbx-close">close members only</button></p>
+</div>
+<div id="cbx-out" class="tablewrap"><p class="note">loading the per-entry table…</p></div>
+<figcaption>Cramér's V here is computed exactly as in the published tests, on the group against
+residue contingency table of whatever subset you select. With a very small selection the figure
+becomes unstable, which is why the entry count is shown beside it.</figcaption>
+</figure>
+{% endif %}
+
+{% if origin and origin.levels %}
+<h2>4 · Who actually comes from contaminated sites</h2>
+<p>{{ origin.question|capitalize }}. The prediction is specific: if the family was already present in
+natural environments and the contaminated-site association came later, then members close to a
+characterised pollutant degrader should be found at contaminated sites more often than their distant
+relatives, which should sit in natural habitats.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level of analysis</th><th class="num">Close members from a contaminated site</th>
+<th class="num">Distant members</th><th class="num">Odds ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for l in origin.levels %}
+<tr><td>{{ l.level }}<div class="note">{{ l.close_n|fmt }} close, {{ l.distant_n|fmt }} distant</div></td>
+  <td class="num" data-v="{{ l.close_anthropogenic_share }}">{{ '%.1f %%' % (100 * l.close_anthropogenic_share) }}</td>
+  <td class="num" data-v="{{ l.distant_anthropogenic_share }}">{{ '%.1f %%' % (100 * l.distant_anthropogenic_share) }}</td>
+  <td class="num" data-v="{{ l.odds_ratio }}">{{ '%.2f' % l.odds_ratio }}</td>
+  <td class="num" data-v="{{ l.p }}">{{ '%.1e' % l.p }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The direction survives every control, including the one that matters most.</b>
+Habitat is a property of the organism rather than of the enzyme, so the third row keeps only the
+genera that appear on both sides; the effect weakens but holds. Host-associated habitats are left
+out entirely, because a human gut is neither a natural environment nor a contaminated site.</figcaption>
+</figure>
+
+<h2>5 · Is that specialisation, or is it where people looked?</h2>
+<p>There is a test that separates the two. If the enrichment reflects specialisation to man-made
+chemistry, it should be confined to enzymes whose substrate is man-made. If it reflects where samples
+were taken, it should appear for natural-substrate enzymes too.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Substrate of the reference enzyme</th>
+<th class="num">Close members from a contaminated site</th><th class="num">Distant members</th>
+<th class="num">Odds ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for key, v in origin.by_substrate_class.items() %}
+<tr><td>{{ key.replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ v.close_anthropogenic_share }}">{{ '%.1f %%' % (100 * v.close_anthropogenic_share) }}</td>
+  <td class="num" data-v="{{ v.distant_anthropogenic_share }}">{{ '%.1f %%' % (100 * v.distant_anthropogenic_share) }}</td>
+  <td class="num" data-v="{{ v.odds_ratio }}">{{ '%.2f' % v.odds_ratio }}</td>
+  <td class="num" data-v="{{ v.p }}">{{ '%.2g' % v.p }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The test does not support the stronger reading.</b> {{ origin.interpretation }}
+<a href="{{ u('/download/analysis/stratified_stats.json') }}">Download the full output</a></figcaption>
+</figure>
+{% endif %}
+
+<script>
+const CBX_URL = "{{ u('/download/analysis/carboxylate_rows.json') }}";
+</script>
+<script src="{{ u('/static/closeness.js') }}"></script>
+{% endblock %}

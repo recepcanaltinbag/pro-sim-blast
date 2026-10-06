@@ -7,6 +7,40 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
+43. **Kuratorluk hatalari -- LITERATUR AJANI BULDU, DOGRULANDI, KARAR SENDE.**
+    `literature_review.md` tam dokum. Dizi kimligi ile dogrulananlar:
+    * `1_115_NdmC` **NdmC DEGIL, NdmB'nin kendisi.** Fark yalnizca 18
+      kalintilik `MGSSHHHHHHENLYFQGS` saflastirma etiketi. Kendim dogruladim:
+      NdmC dizisi NdmB'nin TAM alt dizisi ve aradaki fark BIREBIR o etiket.
+      Yani 24. maddede "parca" diye yazdigim iliski bir kristalografi
+      etiketinin eseri. Gercek NdmC (UniProt M1EY73, 284 aa) sette YOK ve
+      kendi Rieske alani da yok, NdmD'den odunc aliyor.
+    * **Dort kayit saflastirma etiketi tasiyor:** NdmA (+18), NdmB (+18),
+      NagGH (+19), CARDO (+8, C-ucunda LEHHHHHH). Olctum: etiketler motif
+      modelinde ESLESME sutunlarina girmiyor (hizalamada bosluk olarak
+      kaliyor), yani profil onlari korunmus saymiyor -- ama NdmB/NdmC
+      iliskisini URETEN sey tam olarak bu etiketti.
+    * `3_307_NagGH` muhtemelen **salisilat 5-hidroksilaz** (UniProt O52379,
+      EC 1.14.13.172), naftalin-2-sulfonat dioksijenaz degil.
+    * `3_314_NDO`'nun PDB kimligi **1NDO yanlis**: 1NDO farkli bir proteinin
+      (449 aa Pseudomonas) yapisi; NarAa'nin yapilari 2B1X / 2B24.
+    * `1_102_CARDO` ve `1_103_CarAa` ikisine de 1WW9 verilmis; 1WW9 yalnizca
+      J3 susunun yapisi.
+    * `2_203_cumA1` ile `2_206_IpBAa` ayni substrati IKI ADLA tasiyor
+      (kumen / izopropilbenzen, ayni SMILES).
+    * `3_317_NidA` ile narAa %98,1-98,9 ayni; benim %99 esigim bunu kacirdi.
+    * EdoA1 / cumA1: tek kalinti farki (353 Leu/Trp) ve o kalinti demirden
+      15,4 A uzakta, yani substrat ayrimini aciklayamaz. EdoA1 icin
+      saflastirilmis enzim deneyi hic yapilmamis. Yani substrat etiketleri
+      IZOLASYON substrati etiketleri.
+
+44. **Yeni tip adaylari (literatur).** Dogrulanmis erisim numarasiyla dokuz
+    aday: Nvd/DAF-36, CAO, PAO, TIC55, PrnD, RedG/McpG, MsmA, TcsAB, BrhABC.
+    Bes yeni reaksiyon sinifi getiriyorlar (oksidatif karbosiklizasyon,
+    N-oksijenasyon, desaturasyon, makrosiklik acilma, alifatik C-S kirilmasi).
+    Ayrica SxtT ve GxtA'nin substratlari artik kesin (beta-saksitoksinol ve
+    saksitoksin), `chemistry.csv` bunlari belirsiz yaziyor.
+
 5. **Hugging Face Space** (tam uygulama + dizi siniflandirici). `webapp/Dockerfile`
    hazir ve test edildi; kullanicinin HF hesabi gerekiyor.
 

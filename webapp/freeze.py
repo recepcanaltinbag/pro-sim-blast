@@ -89,7 +89,8 @@ def main():
     print("[pages] atlas")
     for p in ("atlas", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
-              "atlas/cooccurrence", "atlas/statistics", "atlas/quality"):
+              "atlas/cooccurrence", "atlas/statistics", "atlas/quality",
+              "atlas/closeness"):
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")

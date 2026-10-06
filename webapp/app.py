@@ -1301,6 +1301,34 @@ def atlas_cooccurrence(request: Request):
         con.close()
 
 
+@app.get("/atlas/closeness", response_class=HTMLResponse)
+def atlas_closeness(request: Request):
+    """Yakinliga gore tabakalanmis sonuclar.
+
+    Siteyi okuyan birinin en mesru sorusu su: bu sayilarin ne kadari kimyasi
+    BILINEN uyelerden geliyor. Bu sayfa her iddiayi o eksende yeniden olcuyor.
+    """
+    strat = atlas.read_json(apath("stratified_stats.json")) or {}
+    rows_order = [
+        ("all", "every entry", "the single number the rest of the site reports"),
+        ("close", "at least 60 % identical to a curated enzyme",
+         "the members whose substrate label means something"),
+        ("distant", "below 60 % identical", "reaction unknown for all of these"),
+        ("tier:characterized", "characterised enzymes only",
+         "the reference enzymes and their near-identical relatives"),
+        ("tier:close_homolog", "close homologues", "where the rule is at its cleanest"),
+        ("tier:family_member", "family members", ""),
+        ("tier:distant", "distant relatives", ""),
+        ("tier:novel", "no close characterised relative", "the most divergent members"),
+        ("class:core", "core of its own subfamily", ""),
+        ("class:divergent", "divergent within its subfamily", ""),
+        ("class:novel_candidate", "novel candidates", ""),
+    ]
+    return render(request, "atlas_closeness.html", strat=strat,
+                  rows_order=rows_order,
+                  origin=strat.get("contaminated_origin"))
+
+
 @app.get("/atlas/quality", response_class=HTMLResponse)
 def atlas_quality(request: Request):
     con = connect()
