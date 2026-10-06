@@ -48,6 +48,9 @@
   {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
   <br>
   This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
   {% if tier_total %}Of the {{ c.n|fmt }} members assigned here,
   <b>{{ pct(near, tier_total) }}</b> are at least 60 % identical to that reference, so the label is
   informative for them; the rest are more distant relatives whose function is unknown.

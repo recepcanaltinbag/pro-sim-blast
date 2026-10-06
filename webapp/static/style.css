@@ -27,22 +27,28 @@
 /* ------------------------------------------------------------ 1  tokens  */
 :root {
   /* paper and ink */
-  --paper:      #fbfaf7;
-  --paper-2:    #f4f2ec;
+  /* Yuzeyler NOTR-SERIN. Onceki palet bej kagit (#fbfaf7) ve haki cizgiler
+     (#ddd9d0) kullaniyordu; sarimsi doku sayfayi tozlu ve eski gosteriyordu,
+     ve beyaz paneller o zeminde kirli duruyordu. Yeni zemin hafif serin bir
+     gri, paneller saf beyaz: panel artik zeminden AYRILIYOR, cizgiler net. */
+  --paper:      #f5f7fa;
+  --paper-2:    #eceff4;
   --panel:      #ffffff;
-  --ink:        #15202b;
-  --ink-2:      #3d4852;
-  --dim:        #5f6b76;
-  --rule:       #ddd9d0;
-  --rule-2:     #c9c3b6;
+  --ink:        #111821;
+  --ink-2:      #39434f;
+  --dim:        #68727e;
+  --rule:       #e2e7ed;
+  --rule-2:     #c4ccd6;
 
-  /* accents, kept muted */
-  --accent-ink: #8c2f22;
-  --link:       #1f4e79;
-  --ok:         #1f7a4d;
-  --bad:        #a2362a;
-  --warn:       #9a6b14;
-  --focus:      #1f4e79;
+  /* Vurgu rengi tek ve KOYU. Eski #8c2f22 pas rengiydi ve ayni sayfadaki
+     demir kirmizisi figur rengiyle yarisiyordu. Vurgu artik derin bir lacivert
+     -- arayuze ait; pas tonu yalnizca FIGURLERDE, demir icin kaliyor. */
+  --accent-ink: #1b3a6b;
+  --link:       #1b4f8a;
+  --ok:         #176b46;
+  --bad:        #9c2b22;
+  --warn:       #8a5d12;
+  --focus:      #1b4f8a;
 
   /* legacy aliases: older rules and templates still reference these */
   --bg: var(--paper);
@@ -69,7 +75,10 @@
 
   --radius: 8px;
   --radius-s: 5px;
-  --measure: 76ch;          /* comfortable reading width for prose */
+  /* Sayfa kenar boslugu EKRANLA birlikte buyur. Sabit 16 pikselik bir pay
+     telefonda sikisik, genis ekranda ise icerigi kenara yapistiriyordu. */
+  --gutter: clamp(14px, 3.2vw, 40px);
+  --measure: 72ch;          /* comfortable reading width for prose */
   --wide: 1180px;
 
   /* figure palette: hand-written SVGs reference these instead of hex, so dark
@@ -87,18 +96,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper:      #12151a;
-    --paper-2:    #171b21;
-    --panel:      #181c22;
-    --ink:        #e8e6e1;
-    --ink-2:      #c9c7c1;
-    --dim:        #9aa4ae;
-    --rule:       #2a2f37;
-    --rule-2:     #3a414a;
+    /* Acik paletle AYNI mantik: zemin en koyu, panel ondan bir basamak acik,
+       boylece panel karanlikta da ayri bir yuzey olarak okunuyor. Eski
+       degerlerde zemin (#12151a) ile panel (#181c22) arasindaki fark goz icin
+       neredeyse yoktu ve tablolar zeminde yuzuyor gibi duruyordu. */
+    --paper:      #0e1319;
+    --paper-2:    #151b23;
+    --panel:      #1a222c;
+    --ink:        #e9edf2;
+    --ink-2:      #c2cad3;
+    --dim:        #8e9aa7;
+    --rule:       #26303b;
+    --rule-2:     #3a4654;
 
-    --accent-ink: #e08a7a;
+    --accent-ink: #9dc1ea;
     --link:       #8fbce0;
-    --ok:         #66c295;
+    --ok:         #5fbf90;
     --bad:        #e8897c;
     --warn:       #d9b263;
     --focus:      #8fbce0;
@@ -133,7 +146,7 @@ body {
 main {
   max-width: var(--wide);
   margin: 0 auto;
-  padding: var(--s4) var(--s4) var(--s7);
+  padding: var(--s5) var(--gutter) var(--s7);
   counter-reset: fig;            /* figure numbering, see section 5 */
 }
 
@@ -458,6 +471,11 @@ figure.fig.nonum figcaption::before { content: none; }
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   background: var(--panel);
+  /* Tablo artik sayfadan AYRI bir yuzey: serin gri zemin uzerinde beyaz panel
+     ve cok hafif bir golge. Eskiden hem zemin hem panel kremdi, aradaki fark
+     goz icin yoktu ve tablo sayfada yuzuyor gibi duruyordu. */
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 1px 3px rgb(16 24 40 / 6%);
+  margin-bottom: var(--s4);
   /* a hint that there is more table to the right */
   overscroll-behavior-x: contain;
 }
@@ -467,26 +485,17 @@ figure.fig.nonum figcaption::before { content: none; }
    header has nothing to stick to and simply sits at the top. table.js adds
    this class to long tables, which gives the wrapper a real viewport and makes
    the header behave as intended. */
-/* GENIS EKRANDA tablolar ve figurler metin olcusunden TASAR.
-   Olculdu (1280 px ekran, Types sayfasi): metin sutunu 76ch'de bitiyor ve
-   sagda genis bir bosluk kaliyor, ama 15 sutunlu tablo 1140 pikselik kutuya
-   sigmadigi icin KENDI ICINDE yana kayiyor. Yani ekranda yer varken tablo
-   kirpiliyordu. Duz cozum "main'i genislet" olurdu, ama o zaman paragraflar
-   da uzar ve okunurluk duser; metin olcusu korunup YALNIZCA veri bloklari
-   genisletiliyor. Tarayici destegi gerekmiyor: min() ve calc() zaten bu
-   sayfada kullaniliyor. */
-@media (min-width: 1240px) {
-  .fig,
-  main > .tablewrap,
-  .chart {
-    /* 100vw KAYDIRMA CUBUGUNU da sayar, bu yuzden pencere genisliginden
-       cikarilan pay cubuk genisligi kadar fazla tutuluyor; aksi halde blok
-       sag kenara yapisiyor ve sayfa yatay kayiyordu. */
-    --bleed: min(calc(100vw - 72px), 1560px);
-    width: var(--bleed);
-    margin-left: calc(50% - var(--bleed) / 2);
-  }
-}
+/* TEK BIR SOL KENAR. Onceki denemede tablolar ve figurler metin sutunundan
+   TASIYORDU (bleed) ve sonuc daha kotuydu: metin 1180 pikselik sutunun solunda
+   baslarken genis bloklar ondan da SOLDA basliyordu, yani sayfada iki ayri
+   hizalama vardi ve goz hangisinin dogru oldugunu bilemiyordu. Ayrica dar bir
+   tablo (6 sutun) 1400 piksele yayilinca degerler birbirinden kopuyordu, ve
+   sabit genislikli bir SVG tuvali kutusundan tasip kirpiliyordu.
+
+   Dogru cozum daha sade: metin sutununu GENISLET, ama paragrafi kendi olcusunde
+   tut. Boylece baslik, paragraf, tablo ve figur AYNI sol kenardan baslar;
+   tablolar gereken yeri alir, dar olanlar yayilmaz, ve hicbir sey tasmaz. */
+:root { --wide: 1380px; }
 
 .tablewrap--tall {
   max-height: min(72vh, 680px);
@@ -502,24 +511,36 @@ table.data {
   font-variant-numeric: tabular-nums;
 }
 table.data th, table.data td {
-  padding: 7px 10px;
+  /* Hucre payi 7/10 pikselken satirlar birbirine yapisiyordu ve goz bir satiri
+     takip edemiyordu; veri tablosunda dikey pay yatay paydan ONEMLIDIR. */
+  padding: 10px 14px;
   text-align: left;
   vertical-align: top;
   border-bottom: 1px solid var(--rule);
 }
+/* Son satirin alt cizgisi kutunun kendi kenarligiyla UST USTE biniyordu ve
+   cift cizgi olarak goruluyordu. */
+table.data tbody tr:last-child > * { border-bottom: 0; }
 table.data th {
   position: sticky;
   top: 0;
   z-index: 2;
   background: var(--paper-2);
-  color: var(--ink);
+  color: var(--ink-2);
   font-weight: 600;
-  font-size: .8rem;
-  line-height: 1.3;
+  /* Buyuk harf ve harf araligi: baslik satiri VERIDEN ayrilsin. Ayni punto ve
+     agirlikta yazilinca ilk veri satiriyla karisiyordu. */
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  line-height: 1.35;
   white-space: nowrap;
   vertical-align: bottom;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule-2);
 }
+/* Satir vurgusu: uzun tablolarda gozun satiri kaybetmemesi icin. Cok hafif,
+   cunku burada vurgulanmasi gereken sey veri, zemin degil. */
+table.data tbody tr:hover > * { background: color-mix(in srgb, var(--link) 5%, transparent); }
 /* second line of a header holding the unit, so individual cells need not */
 table.data th .unit {
   display: block;
@@ -1068,6 +1089,49 @@ details.taxnode[open] > summary::before { content: "\25be"; }
 /* Between 700 and 1000 px the old sheet left two-column grids at awkward
    widths: `.cols` kept two 330px tracks inside a 700px page, and the search
    facet rail stayed at 236px until 760px. Both now collapse earlier. */
+/* ---------------------------------------------------------- gezinme, dar ekran
+   Iki menu de SARARAK buyuyordu: atlas cubugunda 13 baglanti arti uc grup
+   basligi var ve telefonda bes satira yayilip ekranin yarisini yiyordu, ust
+   menu de ayni sekilde. Dar ekranda sarmak yerine TEK SATIRDA kaydirmak hem
+   daha az yer kaplar hem de tanidik bir kalip. Dokunma hedefleri de buyutuldu:
+   6 piksellik dikey pay parmakla isabet ettirilemiyordu. */
+@media (max-width: 860px) {
+  .subnav,
+  .top nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .subnav::-webkit-scrollbar,
+  .top nav::-webkit-scrollbar { height: 3px; }
+  .subnav::-webkit-scrollbar-thumb,
+  .top nav::-webkit-scrollbar-thumb { background: var(--rule-2); border-radius: 3px; }
+
+  /* Grup basliklari ve ayiraclar dar ekranda YER TUTUYOR ama yon vermiyor,
+     cunku zaten hepsi gorunmuyor; kaydirmali satirda baglantilar kalir. */
+  .subnav__group,
+  .subnav__sep { display: none; }
+
+  .subnav a,
+  .top nav a {
+    padding: 10px 13px;
+    font-size: .9rem;
+    scroll-snap-align: start;
+  }
+  .top { padding: var(--s2) var(--gutter); gap: var(--s2) var(--s4); }
+  .top nav { scroll-snap-type: x proximity; }
+}
+
+/* Genis ekranda grup basligi kendi satirinda durur: yan yana yazilinca
+   baglanti gibi okunuyor ve hangi basligin hangi baglantilara ait oldugu
+   belirsiz kaliyordu. */
+@media (min-width: 861px) {
+  .subnav { align-items: baseline; }
+  .subnav__group { letter-spacing: .06em; }
+}
+
 @media (max-width: 1000px) {
   :root { --wide: 100%; }
   .qs input { width: 190px; }

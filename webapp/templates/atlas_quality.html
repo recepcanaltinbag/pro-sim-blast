@@ -176,12 +176,17 @@ twin and two report none at all.</p>
 {{ refdup.totals.affected_references }} of {{ refdup.totals.references }} references are not uniquely
 defined, and {{ refdup.totals.entries_under_an_ambiguous_reference|fmt }} members sit under one of
 them. That is a small fraction of the database, and every other type is unaffected.
-<b>The worst case is not a duplicate.</b> It is the near-identical pair at 99.8 % whose two
-reference enzymes have <em>different</em> experimentally determined substrates, ethylbenzene against
-cumene. The members split 29 to 6 between them, and that split carries a substrate label, so here
-the redundancy does propagate into a functional claim. This is the same lesson the
-<a href="{{ u('/atlas/network') }}">sequence space page</a> draws from the reference set as a whole:
-identity does not determine substrate.
+<b>The near-identical pair at 99.8 % needs reading carefully.</b> Its two reference enzymes carry
+different substrate labels, ethylbenzene against cumene, and the members split 29 to 6 between them.
+That is not evidence of an error, because <b>one Rieske oxygenase commonly accepts many
+substrates</b>; two laboratories testing one compound each will report two different substrates for
+the same enzyme. The labels in this database are the compound each reference was characterised on,
+not the limit of what it accepts. The caution is therefore about reading a label too narrowly rather
+than about a contradiction in the data: a member assigned here may well act on both compounds, and
+on others nobody has tried. It is the same lesson the
+<a href="{{ u('/atlas/network') }}">sequence space page</a> draws from the reference set as a whole,
+that identity does not determine substrate, with its converse, that a single substrate name does not
+bound an enzyme.
 <b>Why it is not simply fixed.</b> Repairing it means removing records from the curated set and
 rebuilding the profile library, which re-derives every number on this site. For the byte-identical
 pairs nothing scientific is lost either way, because the sequences are the same; what has to be
