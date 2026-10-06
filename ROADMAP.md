@@ -7,6 +7,66 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
+### Bu oturumda istenen ve HENUZ YAPILMAYAN isler
+
+45. **Ekolojik koken sayfasi.** `ecological_origin.py` bitti ve calisiyor, sayfa
+    YOK. Icerik hazir: her tipin yakin ve uzak uyelerinin habitati, cins
+    kontrolu, atiksu blogu, ve en buyuk varyantin nerede gorundugu.
+
+46. **Ogrenme sayfasi.** `learn_from_data.py` ciktisi hazir (`learning.json`),
+    sayfa YOK. En carpici sonuc: 1-NN siniflandirici rastgele bolmede %93,
+    tipler egitimden cikarilinca %38 -- sizintinin en net gosterimi.
+
+47. **Dunya haritasi.** Her enzim icin "nerelerde goruldu" haritasi; varyantlarin
+    yayilimi; yakin ve uzak akrabalarin farkli cografyalarda olup olmadigi.
+    Veri var (`replicon_source.country`, `geo`).
+
+48. **Grup bazinda sayfalar.** Her RO grubunun genel ozellikleri: baskin operon
+    mimarisi, regulator ve promotor tipleri.
+
+49. **Reaksiyon bazinda sayfalar.** Ayni reaksiyonu yapan enzimlerin ortak
+    ozellikleri.
+
+50. **Regulator / operon / transpozon sayfalari.** Ornegin TetR'nin yonettigi
+    enzimler, ya da belirli bir transpozonun iliskili oldugu enzimler.
+
+51. **Promotor bolgesi analizi.** Kullanici artik ACIKCA istedi. Veri yok:
+    kayitlarin %88,9'u CON tipinde ve dizi dosyada degil. NCBI E-utilities ile
+    ~10.200 intergenik bolge cekmek gerekiyor (14. madde).
+
+52. **Gen sirasi (gene order) karisik.** Kanonik bir sira gosterilmiyor, bir
+    suru varyant yan yana duruyor ve uzak akraba icin anlamli degil. Yakin
+    akrabada sira boyle, uzaklasinca operon/regulator/promotor soyle degisiyor
+    seklinde gosterilmeli.
+
+53. **Transpozon: tur ozelinde mi enzim ozelinde mi?** Istatistik olarak
+    olculmeli.
+
+54. **Benzer enzimlerin operonlari da benzer mi?** Degilse eslesme rastgele
+    olabilir: ayni gen adi tasiyip anlamsiz olan durumlari ayirt etmek icin bir
+    olcu gerekiyor.
+
+55. **Methods sayfasi daha ayrintili.**
+
+56. **Elektron transferi cizimi.** Rieske merkezi ve katalitik demir arasindaki
+    elektron yolu icin bir sekil.
+
+57. **Menu sadelestirme ve daha zarif anasayfa.** Menu dar ekranda kaydirmali
+    hale getirildi ama hala cok ogeli; anasayfa daha zarif olabilir.
+
+58. **Tasarim: tamamlanmis ama yayinlanmamis oneriler.** Tip olcegi, istatistik
+    seridi, figur altyazilari ve chip paleti degisiklikleri gozden gecirilmeyi
+    bekliyor; olculen kusurlar (telefonda yatay kayma, karanlik modda gorunmeyen
+    cizim etiketleri) ayri olarak uygulanacak.
+
+59. **Literaturden yeni tip adaylari.** Dokuz aday erisim numarasiyla hazir
+    (`literature_review.md`): Nvd/DAF-36, CAO, PAO, TIC55, PrnD, RedG/McpG,
+    MsmA, TcsAB, BrhABC. Bes yeni reaksiyon sinifi getiriyorlar.
+
+60. **Kuratorluk duzeltmeleri (43. maddeden).** NdmC aslinda NdmB; iki yanlis
+    PDB kimligi; NagGH muhtemelen salisilat 5-hidroksilaz; kumen ve
+    izopropilbenzen ayni substratin iki adi. Hepsi dogrulandi, uygulanmadi.
+
 43. **Kuratorluk hatalari -- LITERATUR AJANI BULDU, DOGRULANDI, KARAR SENDE.**
     `literature_review.md` tam dokum. Dizi kimligi ile dogrulananlar:
     * `1_115_NdmC` **NdmC DEGIL, NdmB'nin kendisi.** Fark yalnizca 18
