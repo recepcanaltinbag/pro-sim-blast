@@ -287,6 +287,17 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
 .rxcell { min-width: 250px; }
 .rxnscheme { display: block; }
 
+/* Aktif bolge kalinti listesi: varsayilan olarak KAPALI, cunku sayfanin asil
+   konusu degil, ama goruntuleyici yuklenemezse bilgi yine de burada. */
+.sitelist { margin: var(--s3) 0; }
+.sitelist > summary {
+  cursor: pointer;
+  font-size: .88rem;
+  color: var(--link);
+  padding: 6px 0;
+}
+.sitelist[open] > summary { margin-bottom: var(--s2); }
+
 /* Bilgi tasimayan tablo satiri: silinmez, cunku eksikligi de bir bulgudur,
    ama goz once bilgi tasiyanlari okusun diye soluklastirilir. */
 tr.dim td { opacity: .62; }

@@ -147,8 +147,32 @@
       <button type="button" data-style="cartoon" class="on">Cartoon</button>
       <button type="button" data-style="chain">By chain</button>
       <button type="button" data-style="trace">Backbone</button>
+      {% if x.site %}<button type="button" data-style="site">Active site only</button>{% endif %}
     </span>
   </div>
+  {% if x.site %}
+  <details class="sitelist">
+    <summary>The {{ x.site.residues|length }} residues within {{ x.site.radius }} Å of the
+      catalytic iron, and what holds it</summary>
+    <p class="note">Distances are measured in {{ x.site.pdb }} from the iron to the nearest atom of
+    each residue. The alignment column is the position in the 426-column profile, so the same
+    column can be compared between types. The three residues that coordinate the iron are the
+    2-His-1-carboxylate facial triad that defines this family.</p>
+    <div class="tablewrap"><table class="data compact">
+    <thead><tr><th>Residue</th><th class="num">Distance to iron</th>
+    <th class="num">Profile column</th><th>Role</th></tr></thead>
+    <tbody>
+    {% set ligand_numbers = x.site.contacts | map(attribute='atom') | join(' ') %}
+    {% for r in x.site.residues %}
+    <tr><td class="mono">{{ r.name }}{{ r.number }}<span class="unit"> chain {{ r.chain }}</span></td>
+      <td class="num" data-v="{{ r.distance }}">{{ '%.2f Å' % r.distance }}</td>
+      <td class="num" data-v="{{ r.column or 0 }}">{{ r.column or '–' }}</td>
+      <td class="small">{% if (r.name ~ r.number) in ligand_numbers %}<b>coordinates the iron</b>
+        {% elif r.distance <= 5 %}first shell{% else %}lines the pocket{% endif %}</td></tr>
+    {% endfor %}
+    </tbody></table></div>
+  </details>
+  {% endif %}
   <div class="pdbwrap">
     <div class="pdbviewer" id="pdbviewer" data-pdb="{{ pdb }}"></div>
     <div class="pdbnote" id="pdbnote">
@@ -436,6 +460,10 @@ target. A variant is the finest unit at which a distinct function can reasonably
   var bar  = document.getElementById('pdbstyles');
   if (!host || !note) return;
   var id = host.dataset.pdb;
+  /*  Aktif bolge gorunumu icin gereken en kucuk veri: demirin zinciri ve
+      numarasi, ve cepheyi saran kalintilarin numaralari. Sunucuda
+      `active_site.py` ciktisindan secildi; tum yapi dosyasi gonderilmiyor. */
+  var SITE = {{ (x.site or none)|tojson }};
   var rcsb = 'https://www.rcsb.org/structure/' + id;
 
   function fail(why) {
@@ -473,10 +501,68 @@ target. A variant is the finest unit at which a distinct function can reasonably
     trace:   { cartoon: { style: 'trace', color: 'spectrum', thickness: 0.2 } }
   };
 
+  /*  Aktif bolge gorunumu. Butun proteini gostermek yerine yalnizca demiri,
+      onu tutan kalintilari ve cepheyi saran kalintilari cizer; geri kalan
+      zincir cok soluk bir iz olarak kalir ki bolgenin proteinin NERESINDE
+      oldugu kaybolmasin. Koordinasyon baglari kesikli cizgiyle, mesafeleriyle
+      birlikte gosterilir -- kullanicinin istedigi "etkilesimler" budur.      */
+  function showActiveSite() {
+    if (!SITE) return;
+    var faint = dark ? '#39434f' : '#c4ccd6';
+    viewer.setStyle({}, { cartoon: { color: faint, opacity: 0.35, thickness: 0.15 } });
+
+    var nums = SITE.residues.map(function (r) { return parseInt(r.number, 10); })
+                            .filter(function (n) { return !isNaN(n); });
+    var sel = { chain: SITE.iron_chain, resi: nums };
+    viewer.setStyle(sel, { stick: { radius: 0.17, colorscheme: 'default' } });
+
+    /* Demiri tutan uc kalinti vurgulanir: bu grubun tanimi odur. */
+    var ligNums = (SITE.contacts || []).map(function (c) {
+      var m = /\/([A-Z]{3})(\d+):/.exec(c.atom);
+      return m ? parseInt(m[2], 10) : null;
+    }).filter(Boolean);
+    if (ligNums.length) {
+      viewer.setStyle({ chain: SITE.iron_chain, resi: ligNums },
+                      { stick: { radius: 0.24, color: dark ? '#e0a96d' : '#9a5b18' } });
+    }
+
+    viewer.setStyle({ resn: ['FE', 'FE2'] }, { sphere: { scale: 0.5, color: '#b5503f' } });
+    viewer.setStyle({ resn: ['FES', 'SF4'] }, { sphere: { scale: 0.32 } });
+
+    /* Koordinasyon baglari: demirden her baglanan atoma kesikli cizgi. */
+    var ironAtoms = viewer.selectedAtoms({ resn: ['FE', 'FE2'], chain: SITE.iron_chain });
+    if (ironAtoms.length) {
+      var fe = ironAtoms[0];
+      (SITE.contacts || []).forEach(function (c) {
+        var m = /\/([A-Z]{3})(\d+):([A-Z0-9]+)/.exec(c.atom);
+        if (!m) return;
+        var target = viewer.selectedAtoms({ chain: SITE.iron_chain,
+                                            resi: parseInt(m[2], 10), atom: m[3] });
+        if (!target.length) return;
+        viewer.addLine({ start: { x: fe.x, y: fe.y, z: fe.z },
+                         end: { x: target[0].x, y: target[0].y, z: target[0].z },
+                         dashed: true, color: dark ? '#e8e6e1' : '#15202b', linewidth: 2 });
+        viewer.addLabel(c.distance.toFixed(2) + ' A',
+          { position: { x: (fe.x + target[0].x) / 2, y: (fe.y + target[0].y) / 2,
+                        z: (fe.z + target[0].z) / 2 },
+            fontSize: 10, backgroundOpacity: 0.65,
+            backgroundColor: dark ? '#0e1319' : '#ffffff',
+            fontColor: dark ? '#e9edf2' : '#111821' });
+      });
+    }
+    viewer.zoomTo(sel);
+    viewer.zoom(0.85);
+    viewer.render();
+  }
+
   function applyStyle(name) {
+    viewer.removeAllLabels();
+    viewer.removeAllShapes();
+    if (name === 'site') { showActiveSite(); return; }
     viewer.setStyle({}, styles[name] || styles.cartoon);
     /* keep the two metal centres visible: they are the point of this family */
     viewer.setStyle({ resn: ['FES', 'SF4', 'FE', 'FE2'] }, { sphere: { scale: 0.45 } });
+    viewer.zoomTo();
     viewer.render();
   }
 

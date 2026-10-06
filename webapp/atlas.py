@@ -26,6 +26,55 @@ def _relative_luminance(colour):
     return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
 
+@functools.lru_cache(maxsize=1)
+def _active_site_raw(path):
+    return read_json(path) or {}
+
+
+def active_site_for_type(path, cluster, radius="8.0"):
+    """Bir tipin aktif bolgesi: demir, cepheyi saran kalintilar, baglar.
+
+    Tip sayfasindaki uc boyutlu goruntuleyici butun proteini gosteriyordu;
+    kullanici asil ilgilenilen yerin YALNIZCA aktif bolge ve oradaki
+    etkilesimler oldugunu soyledi. Bu fonksiyon o goruntuyu kurmak icin gereken
+    en kucuk veriyi dondurur: demirin zinciri ve numarasi, cepheyi saran
+    kalintilarin numaralari, ve demire baglanan atomlarin mesafeleri.
+    """
+    raw = _active_site_raw(path)
+    for entry in raw.get("structures") or []:
+        if entry.get("type") != cluster or entry.get("status") != "ok":
+            continue
+        iron = entry.get("catalytic_iron") or {}
+        pocket = ((entry.get("pocket") or {}).get(radius) or {})
+        residues = []
+        for r in pocket.get("residues") or []:
+            residues.append({
+                "chain": r.get("chain"),
+                "number": r.get("author_number"),
+                "name": r.get("residue_3letter"),
+                "one": r.get("residue_1letter"),
+                "distance": r.get("min_distance_to_iron_A"),
+                "column": r.get("alignment_column"),
+            })
+        residues.sort(key=lambda r: (r["distance"] is None, r["distance"]))
+        contacts = []
+        for kind, pairs in (iron.get("coordinating_contacts") or {}).items():
+            for label, distance in pairs:
+                contacts.append({"kind": kind.replace("_", " "),
+                                 "atom": label, "distance": distance})
+        contacts.sort(key=lambda c: c["distance"])
+        return {
+            "pdb": entry.get("pdb_id"),
+            "iron_chain": iron.get("chain"),
+            "iron_residue": iron.get("residue"),
+            "radius": float(radius),
+            "residues": residues,
+            "contacts": contacts,
+            "ligands": iron.get("ligating_residues") or [],
+        }
+    return None
+
+
 def operon_relations_view(path):
     """Operon iliskileri raporunu sayfanin ihtiyaci kadarina indirir."""
     raw = read_json(path)
