@@ -296,6 +296,47 @@ def render_tree_svg(newick, tip_info, width=900, row_h=11, label_w=330):
     return "".join(parts), n
 
 
+def representative_coverage(con):
+    """Agacta ve agda KAC varyantin temsil edildigi, ve bedeli.
+
+    Temsilci secimi iki uclu bir kural: tekil varyant kendisi temsilcidir, 5
+    ve uzeri uye tasiyan varyant medoid verir, arada kalan 2-4 uyeli varyantlar
+    ATLANIR. Sayfalar bir donem "her varyant icin bir temsilci" diyordu, oysa
+    1.809 varyantin 1.205'i temsil ediliyor. Atlanan 604 varyant girislerin
+    %14'unu tasiyor, dolayisiyla bu susulacak bir ayrinti degil.
+    """
+    if not table_exists(con, "leaf"):
+        return None
+    bands = {}
+    for band, leaves, entries in con.execute("""
+            SELECT CASE WHEN size = 1 THEN 'singleton'
+                        WHEN size < 5 THEN 'small'
+                        ELSE 'large' END,
+                   COUNT(*), SUM(size)
+            FROM leaf GROUP BY 1"""):
+        bands[band] = {"variants": leaves, "entries": entries}
+    total_variants = sum(b["variants"] for b in bands.values())
+    total_entries = sum(b["entries"] for b in bands.values())
+    represented = (bands.get("singleton", {}).get("variants", 0)
+                   + bands.get("large", {}).get("variants", 0))
+    skipped = bands.get("small", {"variants": 0, "entries": 0})
+    missing_types = [row[0] for row in con.execute("""
+        SELECT DISTINCT cluster FROM leaf
+        WHERE cluster NOT IN (SELECT cluster FROM leaf WHERE size = 1 OR size >= 5)
+        ORDER BY 1""")]
+    return {
+        "variants_total": total_variants,
+        "variants_represented": represented,
+        "variants_skipped": skipped["variants"],
+        "entries_total": total_entries,
+        "entries_skipped": skipped["entries"],
+        "entries_skipped_share": (skipped["entries"] / total_entries) if total_entries else 0,
+        "min_members_for_medoid": 5,
+        "types_without_representative": missing_types,
+        "bands": bands,
+    }
+
+
 def tip_info_from_db(con, url, ecology=None, names=None):
     """Build the tip_info map for all representatives and references.
 

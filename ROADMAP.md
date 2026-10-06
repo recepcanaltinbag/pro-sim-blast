@@ -45,6 +45,27 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+42. ~~Agac ve ag "her varyant icin bir temsilci" diyordu; dogru degildi.~~
+    **BITTI.** Indirme dosyalarini denetlerken Newick'te 1.276 uc buldum oysa
+    1.809 varyant var. Sebep bulundu ve olculdu: temsilci kurali IKI UCLU --
+    tekil varyant kendisi temsilcidir (766), 5+ uyeli varyant medoid verir
+    (439), aradaki 2-4 uyeli 604 varyant ATLANIYOR cunku bu kadar az diziden
+    medoid kararli degil. 766+439 = 1.205 temsilci, +71 referans = 1.276 uc.
+    Aritmetik tutarli, ama sayfadaki cumle degildi.
+    Atlamanin bedeli kucuk degil: **1.631 giris, yani veritabaninin %14,3'u**
+    bu iki gorselde hicbir uca sahip degil. Dort tip ise bu kural altinda hic
+    temsilci uretmiyor (OxoO, TDO, DxnA1, NDO 3_314) ve yalnizca referans
+    karesi olarak gorunuyor; toplam 10 giris.
+    Iki sayfanin metni olculen sayilara baglandi (`atlas.representative_
+    coverage`), hicbir sayi elle yazilmadi. `validate_curation.py` artik uc
+    sayisinin kuralin ONGORDUGU sayiya TAM esit oldugunu sinar. Ilk surumde
+    "uyesi olan referans" sayisini (61) kullanmistim ve 10 fark icin tolerans
+    koymak gerekiyordu; agaca kuratorlu 71 referansin tamami girdigi anlasildi
+    ve tolerans kaldirildi -- tolerans bir hatayi gizleyebilirdi.
+    Yan denetim, hepsi temiz: `all_confirmed.fasta` 11.422 kayit ve DB ile
+    dizi dizi ayni, `all_confirmed.csv` 25 sutun ve bozuk satir yok,
+    `operons.csv` 49.274 satir (DB ile ayni), Newick parantezleri dengeli.
+
 41. ~~Yayinlanan arama bir KIMYASALI bulamiyordu.~~ **BITTI.** Statik arama
     indeksi yalnizca giris basina alanlari tasiyordu (organizma, urun, tip,
     varyant, aile) ve KIMYA yoktu. Sitenin butun duzeni "enzimleri

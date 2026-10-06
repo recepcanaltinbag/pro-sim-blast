@@ -1069,7 +1069,18 @@ def atlas_phylogeny(request: Request):
         svg, n = atlas.render_tree_svg(open(apath("tree_all.nwk")).read(),
                                        atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
                                        width=1040, row_h=11, label_w=380)
-        return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n)
+        return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n,
+                      cover=atlas.representative_coverage(con))
+    finally:
+        con.close()
+
+
+@functools.lru_cache(maxsize=1)
+def _rep_coverage():
+    """Temsilci kapsamasi; ag rotasi kendi baglantisini acmiyor."""
+    con = connect()
+    try:
+        return atlas.representative_coverage(con)
     finally:
         con.close()
 
@@ -1080,7 +1091,8 @@ def atlas_network(request: Request, min_identity: float = 35.0):
                   data=atlas.ssn(apath("ssn_nodes.csv"), apath("ssn_edges.csv"), min_identity),
                   matrix=atlas.identity_matrix(apath("cluster_identity_matrix.csv")),
                   refpairs=atlas.read_csv(apath("reference_pairs.csv"))[:40],
-                  names=short_names(), min_identity=min_identity)
+                  names=short_names(), min_identity=min_identity,
+                  cover=_rep_coverage())
 
 
 @app.get("/atlas/taxonomy", response_class=HTMLResponse)

@@ -43,7 +43,10 @@ percentage. <a href="{{ u('/download/analysis/reference_pairs.csv') }}">Download
 
 <h2>2 · Similarity network</h2>
 <p>Nodes are the references, outlined and enlarged and labelled with the type name, together with
-one representative per variant. Two nodes are joined when they are at least {{ min_identity }} %
+one representative per variant{% if cover %}, under the same rule as the tree: singletons and
+variants of {{ cover.min_members_for_medoid }} or more members are represented, the
+{{ cover.variants_skipped|fmt }} variants with two to four members are not, which leaves
+{{ '%.0f %%' % (100 * cover.entries_skipped_share) }} of entries without a node here{% endif %}. Two nodes are joined when they are at least {{ min_identity }} %
 identical over at least 70 % of their length. Drag the background to pan, scroll to zoom, drag a
 node to pull a component apart, and click a node to open it. Labels keep a constant size as you
 zoom, so a crowded region becomes readable by zooming into it.</p>

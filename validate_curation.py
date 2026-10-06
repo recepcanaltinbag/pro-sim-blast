@@ -709,6 +709,47 @@ def check_reference_redundancy_agrees(rep, out_dir, refs_path):
               f"{totals.get('entries_under_an_ambiguous_reference')} members affected")
 
 
+def check_tree_coverage(rep, con, out_dir, chem_clusters):
+    """Agactaki uc sayisi, temsilci kuralinin ONGORDUGU sayiya esit mi?
+
+    Sayfalar bir donem "her varyant icin bir temsilci" diyordu, oysa 2-4 uyeli
+    604 varyant atlaniyor ve bu girislerin %14'u. Metin olculen sayilara
+    baglandi; bu kontrol esigin degismesi halinde metnin agactan AYRILMASINI
+    engeller.
+    """
+    path = os.path.join(out_dir, "tree_all.nwk")
+    if not os.path.exists(path):
+        rep.check("tree_all.nwk exists", True, 0, "tree not built; check skipped",
+                  severity="WARN")
+        return
+    newick = open(path, encoding="utf-8").read()
+    tips = len(re.findall(r"[(,]\s*'?[^(),:']+'?\s*:", newick))
+
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "webapp"))
+    import atlas as _atlas
+    cover = _atlas.representative_coverage(con)
+    if not cover:
+        rep.check("representative coverage computable", False, 0, "no leaf table")
+        return
+    # Agaca KURATORLU referanslarin TAMAMI giriyor, uyesi olmayan 10 tane dahil;
+    # bu yuzden beklenen sayi 71 uzerinden kurulur ve kontrol TAM esitliktir.
+    # Ilk surum "uyesi olan referans" sayisini (61) kullanmis ve 10 fark icin
+    # bir tolerans koymak gerekmisti; tolerans bir hatayi gizleyebilirdi.
+    references = len(chem_clusters)
+    expected = cover["variants_represented"] + references
+    rep.check("tree tip count agrees with the representative rule",
+              tips == expected, abs(tips - expected),
+              f"{tips} tips, rule predicts {cover['variants_represented']} representatives "
+              f"+ {references} curated references = {expected}")
+    rep.check("skipped variants are a minority of entries",
+              cover["entries_skipped_share"] < 0.25,
+              round(100 * cover["entries_skipped_share"]),
+              f"{cover['variants_skipped']} variants with 2-4 members hold "
+              f"{cover['entries_skipped']} entries "
+              f"({100 * cover['entries_skipped_share']:.1f} %)")
+
+
 def check_published_files(rep, out_dir):
     """Belgelenen her analiz dosyasi diskte VAR mi?
 
@@ -1178,6 +1219,8 @@ def main():
         check_chemistry_csv(rep, chem)
         check_display_names(rep, chem)
         check_host_kingdom(rep, con)
+        check_tree_coverage(rep, con, args.out_dir,
+                            [r['cluster'] for r in chem])
         check_published_files(rep, args.out_dir)
         check_reference_redundancy_agrees(rep, args.out_dir, args.refs)
         check_cross_file_substrate(rep, eco, chem)

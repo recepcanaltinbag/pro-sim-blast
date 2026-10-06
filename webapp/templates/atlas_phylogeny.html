@@ -6,9 +6,26 @@
 
 <h1>Phylogeny of the catalytic core</h1>
 <p class="lede">Maximum-likelihood tree of the {{ n_tips|fmt }} tips: the 71 curated reference
-enzymes, drawn as squares in bold, and one representative sequence for each
-sequence-homogeneous variant. Branch lengths are substitutions per site in the aligned
-Rieske-plus-catalytic core.</p>
+enzymes, drawn as squares in bold, and one representative sequence per sequence-homogeneous variant.
+Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic core.</p>
+{% if cover %}
+<div class="caveat">
+  <b>Not every variant has a tip, and the rule is two-ended.</b> A variant with a single member is
+  its own representative. A variant with {{ cover.min_members_for_medoid }} or more members
+  contributes the medoid of its members. Variants in between, with two to four members, are skipped,
+  because a medoid of so few sequences is not a stable choice. The consequence is measurable:
+  {{ cover.variants_represented|fmt }} of {{ cover.variants_total|fmt }} variants appear here, and
+  the {{ cover.variants_skipped|fmt }} that do not hold
+  {{ cover.entries_skipped|fmt }} entries, or
+  {{ '%.0f %%' % (100 * cover.entries_skipped_share) }} of the database. Those entries are present
+  everywhere else on the site; they have no tip on this tree.
+  {% if cover.types_without_representative %}
+  Four types have no representative at all under this rule
+  ({% for t in cover.types_without_representative %}<a href="{{ u('/cluster/' ~ t) }}">{{ gene(t) }}</a>{% if not loop.last %}, {% endif %}{% endfor %}),
+  so they appear only as their reference square.
+  {% endif %}
+</div>
+{% endif %}
 
 <div class="legend">
   {% for g, col in GROUP_COLORS.items() if g != '?' %}<span><i style="background:{{ col }}"></i>group {{ g }}</span>{% endfor %}
