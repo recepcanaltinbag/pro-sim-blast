@@ -221,6 +221,22 @@ def write_fallback_pages(out, A):
                      '<title>Redirecting · ROAR-DB</title></head><body>'
                      f'<p>Redirecting to <a href="{target}">{target}</a>.</p>'
                      '</body></html>')
+    # Yeniden adlandirilmis tiplerin ESKI adresleri. Statik sitede sunucu
+    # yonlendirmesi yok, bu yuzden meta-refresh tasiyan kucuk bir sayfa konur.
+    renamed = getattr(A, "RENAMED_TYPES", {}) or {}
+    for old_name, new_name in renamed.items():
+        target = f"{A.BASE}/cluster/{new_name}.html"
+        folder = os.path.join(out, "cluster")
+        os.makedirs(folder, exist_ok=True)
+        with open(os.path.join(folder, old_name + ".html"), "w") as fh:
+            fh.write('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+                     f'<meta http-equiv="refresh" content="0; url={target}">'
+                     f'<link rel="canonical" href="{target}">'
+                     f'<title>Renamed to {new_name} · ROAR-DB</title></head><body>'
+                     f'<p>This type was renamed. Continuing to '
+                     f'<a href="{target}">{new_name}</a>.</p></body></html>')
+    if renamed:
+        print(f"[pages] {len(renamed)} redirect(s) for renamed types")
     print("[pages] 404, classify notice and directory redirects")
 
 def write_search_index(con, out, A):

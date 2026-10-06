@@ -30,7 +30,7 @@ from collections import Counter, OrderedDict
 from typing import Optional
 
 from fastapi import FastAPI, Form, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -313,7 +313,8 @@ def cluster_detail(con, cluster):
                 "operon": {"beta": 0, "ferredoxin": 0, "reductase": 0, "complete": 0,
                            "nb_beta": 0, "nb_ferredoxin": 0, "nb_reductase": 0, "total": 0},
                 "domains": [], "genera": [], "top_genera": [], "genera_n": 0,
-                "neighborhood": [], "regulators": [], "layouts": [], "leaves": [],
+                "neighborhood": [], "regulators": [], "layouts": [], "layouts_distant": [],
+                "leaves": [],
                 "classes": [], "empty": True}
     eco = ECOLOGY.get(cluster, {})
     info = {"cluster": cluster, "n": n, **cluster_parts(cluster),
@@ -359,10 +360,22 @@ def cluster_detail(con, cluster):
         JOIN gene_category c ON c.neighbor_id = nb.neighbor_id AND c.method='regulator_family_v1'
         WHERE ABS(nb.gene_offset) <= 4
         GROUP BY c.category ORDER BY n DESC""", (cluster,)).fetchall()
+    # Gen sirasi YAKINLIGA gore ayrilir. Kullanici hakli: uzak bir akrabanin
+    # operon sirasi bu tipin kanonik sirasi hakkinda bir sey soylemiyor, ama
+    # ayni listede durunca oyleymis gibi okunuyordu. Yakin uyeler (karakterize
+    # ve yakin homolog) once, gerisi ayri bir blokta.
     info["layouts"] = con.execute("""
-        SELECT layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id)
-        WHERE r.is_confirmed=1 AND r.ro_cluster=? GROUP BY layout ORDER BY n DESC LIMIT 10""",
-        (cluster,)).fetchall()
+        SELECT o.layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id)
+        LEFT JOIN ro_evidence e USING(candidate_id)
+        WHERE r.is_confirmed=1 AND r.ro_cluster=?
+          AND e.tier IN ('characterized', 'close_homolog')
+        GROUP BY o.layout ORDER BY n DESC LIMIT 8""", (cluster,)).fetchall()
+    info["layouts_distant"] = con.execute("""
+        SELECT o.layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id)
+        LEFT JOIN ro_evidence e USING(candidate_id)
+        WHERE r.is_confirmed=1 AND r.ro_cluster=?
+          AND (e.tier IS NULL OR e.tier NOT IN ('characterized', 'close_homolog'))
+        GROUP BY o.layout ORDER BY n DESC LIMIT 8""", (cluster,)).fetchall()
     info["leaves"] = con.execute("""
         SELECT l.leaf_id, l.size, l.median_identity, l.is_homogeneous, l.top_genera,
                l.representative, lp.label, lp.plasmid_rate, lp.neighbor_signature
@@ -411,10 +424,17 @@ def members_query(con, cluster=None, leaf=None, q=None, page=1, size=PAGE_SIZE):
     return total, rows
 
 
+RENAMED_TYPES = {"5_505_OxyA": "5_505_qxyA"}
+
+
 @app.get("/cluster/{cluster}", response_class=HTMLResponse)
 def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str] = None):
     con = connect()
     try:
+        # Yeniden adlandirilmis bir tipin ESKI adresi: 404 yerine yonlendir,
+        # cunku disarida verilmis baglantilar ve yer imleri var.
+        if cluster in RENAMED_TYPES:
+            return RedirectResponse(u("/cluster/" + RENAMED_TYPES[cluster]), status_code=301)
         info = cluster_detail(con, cluster)
         if not info:
             raise HTTPException(404, "cluster not found")

@@ -280,12 +280,34 @@
   </div>
   <div>
     <h3>Gene order</h3>
-    <p class="note">Most frequent same-strand gene runs around the alpha subunit, 5' to 3'.</p>
+    {#  Yakin ve uzak uyeler AYRI. Bir arada gosterilince uzak akrabalarin
+        rastgele komsuluklari bu tipin kanonik sirasi gibi okunuyordu.      #}
+    {% if c.layouts %}
+    <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
+    are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
+    describe this enzyme.</p>
     <table class="data compact"><tbody>
       {% for l in c.layouts[:6] %}
       <tr><td>{{ layout_svg(l.layout)|safe }}<div class="note mono">{{ l.layout }}</div></td><td class="num">{{ l.n }}</td></tr>
       {% endfor %}
     </tbody></table>
+    {% else %}
+    <p class="note">No member of this type is close enough to the curated enzyme for its gene
+    order to describe this enzyme. Only the distant arrangements below are available.</p>
+    {% endif %}
+    {% if c.layouts_distant %}
+    <details class="sitelist">
+      <summary>Gene order among the more distant members ({{ c.layouts_distant|sum(attribute='n')|fmt }} entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        {% for l in c.layouts_distant[:6] %}
+        <tr><td>{{ layout_svg(l.layout)|safe }}<div class="note mono">{{ l.layout }}</div></td><td class="num">{{ l.n }}</td></tr>
+        {% endfor %}
+      </tbody></table>
+    </details>
+    {% endif %}
   </div>
 </div>
 

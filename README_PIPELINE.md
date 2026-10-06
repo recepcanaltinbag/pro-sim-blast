@@ -489,7 +489,7 @@ karboksilati (kolon 355, %87,6) — hem Asp hem Glu kabul ediyor.
   enzim (2-oksokinolin 8-monooksijenaz, PDB 1Z03) — referans seti bu enzimi iki
   kez iceriyor, ki ikisinin %100 kimlikli olmasi bunu zaten gosteriyordu.
   CndA kloroasetanilid herbisit N-dealkilazi, PsbAb 4-sulfobenzoat
-  3,4-dioksijenazi, ROCH34 ftalat 4,5-dioksijenazi (PDB 7FHR), OxyA/qxyA
+  3,4-dioksijenazi, ROCH34 ftalat 4,5-dioksijenazi (PDB 7FHR), qxyA/qxyA
   benzalkonyum klorur (QAC) oksijenazi. cadA 2,4-D oksijenazi olarak
   **kesin degil** diye isaretlendi.
 - **Substrat ataması küme düzeyinde**: heterojen kümelerde tek substrat tüm üyeler
