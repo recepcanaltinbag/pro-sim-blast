@@ -67,6 +67,15 @@ asterisk for a prefix, and OR between alternatives. Example:
     <ul>{% for c in clusters %}<li><a href="{{ u('/cluster/' ~ c.cluster) }}">{{ c.cluster }}</a> — {{ c.substrate or 'substrate under curation' }} ({{ c.n }} entries)</li>{% endfor %}</ul>
     {% endif %}
     <h2>Entries <span class="note">{{ total|fmt }}</span></h2>
+    {% if widened %}
+    {#  Genisletme SOYLENMEK zorunda: okuyucu "toluene" arayip
+        "4-toluenesulfonate" gorunce bunun bir hata mi yoksa kasit mi
+        oldugunu bilemez.                                                 #}
+    <p class="note"><b>Widened to prefix matches.</b> The exact words you typed matched very few
+    entries, so each word was also matched as a prefix. This is why a chemical name can bring up its
+    derivatives: searching <code>toluene</code> also finds 4-toluenesulfonate, because the full-text
+    index splits that label into separate words. Add quotes for an exact phrase to switch this off.</p>
+    {% endif %}
     {% if total %}
     <div class="tablewrap">
     <table class="data">

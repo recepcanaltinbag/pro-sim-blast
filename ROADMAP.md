@@ -45,6 +45,35 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+41. ~~Yayinlanan arama bir KIMYASALI bulamiyordu.~~ **BITTI.** Statik arama
+    indeksi yalnizca giris basina alanlari tasiyordu (organizma, urun, tip,
+    varyant, aile) ve KIMYA yoktu. Sitenin butun duzeni "enzimleri
+    etkiledikleri kimyasallara gore grupla" oldugu icin bu kucuk bir eksik
+    degildi. Olculdu, uygulama / yayinlanan site:
+    benzalkonium 95 / **0**, terephthalate 273 / **0**, caffeine 447 / **0**,
+    carbazole 55 / **0**, biphenyl 107 / 3, naphthalene 226 / 20.
+    * Substrat giris basina degil TIP basina bir ozellik, bu yuzden 11.422
+      satira tekrarlanmadi: tip basina 71 kayitlik kucuk bir sozluk sayfaya
+      gomuldu ve aranan metin tarayicida oradan tamamlaniyor. Indeks boyutu
+      degismedi.
+    * Statik sayfa artik eslesen ENZIM TIPLERINI de ayri bir tabloda
+      gosteriyor; barindirilan surumde bu vardi, statikte yoktu. Uye sayisi
+      sifir olan 10 tipin substrati (xylene, isopropylbenzene,
+      2,4-dinitrotoluene, 3-phenoxybenzoate) yalnizca bu yolla bulunabiliyor.
+    * Statik sayfa kisa tip adini da cakisma ayrimi OLMADAN yaziyordu
+      (iki ayri "NDO"); 29. maddedeki sozluk oraya da baglandi.
+    Yan bulgu ve ikinci duzeltme: iki arama ayni veriden FARKLI cevap
+    veriyordu. FTS5 token esler, dolayisiyla "toluene" sorgusu
+    "4-toluenesulfonate" substratini bulmuyordu (o metin "4" ve
+    "toluenesulfonate" olarak tokenleniyor) ve uygulamada 4, statik sitede 660
+    sonuc cikiyordu. Uygulama artik tam eslesme 25'ten az sonuc verdiginde
+    onek eslesemesiyle genisletiyor (659) ve sayfa bunu ACIKCA soyluyor,
+    cunku okuyucu "toluene" arayip "toluenesulfonate" gorunce bunun kasit mi
+    hata mi oldugunu bilemez.
+    `check_site.py` artik 71 kuratorlu substratin hepsinin yayinlanan aramada
+    bulunabildigini sinar; sayfanin IKI arama yolunu da (giris indeksi ve tip
+    sozlugu) taklit eder, yoksa dogru calisan sayfayi hatali bildirirdi.
+
 39. ~~Referans fazlaligi okuyucuya gorunmuyordu.~~ **BITTI.**
     `reference_redundancy.py` + veri kalitesi sayfasinda 4. bolum + etkilenen
     her tip sayfasinda uyari kutusu. Sorun 24. maddede duruyordu ama SITEDE

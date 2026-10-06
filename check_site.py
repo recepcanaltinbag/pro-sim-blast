@@ -17,6 +17,7 @@ Kullanim:
 
 import argparse
 import glob
+import json
 import os
 import re
 import sqlite3
@@ -66,6 +67,64 @@ def visible_text(html):
     birlestiriliyor ("' + rcsb + '") ve tarayici onlari baglanti sanmaz.
     """
     return re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
+
+
+def check_search_parity(root, client):
+    """Yayinlanan aramanin bir KIMYASALI bulabildigini dogrular.
+
+    Statik arama indeksi bir donem yalnizca giris basina alanlari tasiyordu
+    (organizma, urun, tip, varyant, aile) ve kimya yoktu. Sonuc: uygulamada
+    "benzalkonium" 95 giris donuyordu, yayinlanan sitede 0. Sitenin butun
+    duzeni enzimleri kimyasallarina gore gruplamak oldugu icin bu kucuk bir
+    eksik degildi. Bu kontrol her kuratorlu substratin yayinlanan indekste
+    gercekten BULUNABILIR oldugunu sinar.
+    """
+    index_path = os.path.join(root, "search_index.json")
+    page_path = os.path.join(root, "search.html")
+    if not (os.path.exists(index_path) and os.path.exists(page_path)):
+        return ["static search index or page missing; run webapp/freeze.py"], 0
+
+    with open(index_path, encoding="utf-8") as fh:
+        index = json.load(fh)
+    page = open(page_path, encoding="utf-8").read()
+    match = re.search(r"const CHEM = (\{.*?\});", page, re.S)
+    if not match:
+        return ["search.html carries no chemistry map, so a chemical name cannot be found"], 0
+    chem = json.loads(match.group(1))
+    if "renderTypes" not in page:
+        return ["search.html does not show matching enzyme types, so a substrate with no "
+                "confirmed member is unreachable"], 0
+
+    # Sayfanin kendi arama metnini AYNI sekilde kurar.
+    haystack = []
+    for row in index:
+        extra = chem.get(row[4], ["", "", ""])
+        haystack.append(" ".join(str(x) for x in (
+            row[0], row[1], row[2], row[3], row[4], row[5], row[8],
+            extra[0], extra[1], extra[2])).lower())
+
+    problems, tested = [], 0
+    for cluster, values in chem.items():
+        substrate = (values[1] or "").strip()
+        if not substrate:
+            continue
+        # Substratin ilk anlamli kelimesi aranabilir olmali.
+        word = next((w for w in re.split(r"[^A-Za-z]+", substrate.lower())
+                     if len(w) > 4), None)
+        if not word:
+            continue
+        tested += 1
+        # Sayfa IKI yolda ariyor: giris indeksi ve tip sozlugu. Uye sayisi
+        # sifir olan tiplerin substrati hicbir giriste gecmez, ama tip sonuclari
+        # bolumunde bulunur; kontrol ikisini de saymak zorunda, yoksa dogru
+        # calisan bir sayfayi hatali bildirir.
+        in_entries = any(word in hay for hay in haystack)
+        in_types = any(word in (key + " " + " ".join(values)).lower()
+                       for key, values in chem.items())
+        if not (in_entries or in_types):
+            problems.append(f"'{word}' from substrate {substrate!r} ({cluster}) "
+                            f"matches neither an entry nor a type")
+    return problems, tested
 
 
 def check_static_site(root):
@@ -206,11 +265,13 @@ def main():
     print(f"  internal links checked   {len(link_status)}")
     print(f"  published data files     {len(published)}")
 
-    static_problems = []
+    static_problems, search_problems = [], []
     if not args.skip_static:
         static_problems, static_pages, static_links = check_static_site(args.static)
         print(f"  static pages on disk     {static_pages}")
         print(f"  static links resolved    {static_links}")
+        search_problems, searched = check_search_parity(args.static, client)
+        print(f"  substrates searchable    {searched - len(search_problems)}/{searched}")
 
     problems = 0
     if failures:
@@ -235,6 +296,13 @@ def main():
         print(f"\n[FAIL] Turkish text in {len(data_turkish)} published data file(s)")
         for name, words in data_turkish[:20]:
             print(f"        {name}: {', '.join(words[:6])}")
+
+    if search_problems:
+        problems += len(search_problems)
+        print(f"\n[FAIL] {len(search_problems)} substrate(s) cannot be found in the "
+              f"published search")
+        for item in search_problems[:12]:
+            print(f"        {item}")
 
     if static_problems:
         problems += len(static_problems)

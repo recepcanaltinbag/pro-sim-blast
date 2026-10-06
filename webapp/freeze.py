@@ -138,8 +138,18 @@ def write_search_index(con, out, A):
     """Client-side index plus the static search page.
 
     The static site has no server, so the facets of the hosted application are
-    reproduced in the browser. Every field the facets filter on is written into
-    the index, which keeps the two versions of the search consistent.
+    reproduced in the browser.
+
+    SERBEST METIN de eslesmek zorunda. Bir donem burada yalnizca giris basina
+    alanlar yaziliyordu (organizma, urun, tip, varyant, aile) ve KIMYA yoktu;
+    sonuc olarak yayinlanan arama bir kimyasali bulamiyordu. Olculdu:
+    "benzalkonium" uygulamada 95 giris donuyordu, sitede 0; terephthalate
+    273'e 0; caffeine 447'ye 0. Sitenin butun duzeni "enzimleri etkiledikleri
+    kimyasallara gore grupla" oldugu icin bu kucuk bir eksik degildi.
+
+    Substrat giris basina DEGIL tip basina bir ozellik, bu yuzden 11.422 satira
+    tekrar tekrar yazilmaz: tip basina kucuk bir sozluk (71 kayit) sayfaya
+    gomulur ve tarayici aranan metni oradan tamamlar.
     """
     has_search = con.execute(
         "SELECT name FROM sqlite_master WHERE name='ro_search'").fetchone()
@@ -157,11 +167,29 @@ def write_search_index(con, out, A):
                    '', '', '', '', p.is_plasmid, 0, 0
             FROM ro r JOIN replicon p USING(nucleotide_id) WHERE r.is_confirmed=1""").fetchall()
         data = [[A.slug(r[0])] + list(r[1:]) for r in rows]
+    # Tip basina kimya: gosterilecek kisa ad, substrat, reaksiyon sinifi.
+    # Kisa ad `A.gene` ile alinir, cunku uc kisa ad cakisiyor ve statik arama
+    # sayfasinin da tablolarla AYNI etiketi gostermesi gerekiyor.
+    chem = {}
+    chem_path = os.path.join(A.PARENT, "chemistry.csv")
+    if os.path.exists(chem_path):
+        with open(chem_path, newline="", encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                cluster = row.get("cluster")
+                if not cluster:
+                    continue
+                chem[cluster] = [A.gene(cluster),
+                                 row.get("substrate_en") or "",
+                                 (row.get("reaction_class") or "").replace("_", " ")]
+    for cluster in {r[4] for r in data if r[4]}:
+        chem.setdefault(cluster, [A.gene(cluster), "", ""])
+
     with open(os.path.join(out, "search_index.json"), "w") as fh:
         json.dump(data, fh, separators=(",", ":"))
     with open(os.path.join(out, "search.html"), "w") as fh:
-        fh.write(SEARCH_PAGE.replace("__BASE__", A.BASE))
-    print(f"   {len(data)} entries indexed")
+        fh.write(SEARCH_PAGE.replace("__BASE__", A.BASE)
+                            .replace("__CHEM__", json.dumps(chem, separators=(",", ":"))))
+    print(f"   {len(data)} entries indexed, {len(chem)} types with chemistry")
 
 
 SEARCH_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -173,7 +201,7 @@ SEARCH_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <main>
 <h1>Search</h1>
 <form class="bigsearch" onsubmit="return false">
-  <input id="q" type="search" placeholder="organism, product, protein identifier, locus tag, enzyme type or substrate" autofocus>
+  <input id="q" type="search" placeholder="organism, product, protein identifier, enzyme type, or a chemical such as benzalkonium" autofocus>
   <button onclick="run()">Search</button>
 </form>
 <p class="note">Several words are combined with AND. A trailing asterisk matches a prefix.
@@ -182,10 +210,11 @@ Filters on the left narrow the result without a new search.
 <div class="searchlayout">
   <aside class="facets" id="facets"></aside>
   <div class="results">
+    <div id="typeblock"></div>
     <h2>Entries <span class="note" id="count"></span></h2>
     <div class="tablewrap"><table class="data">
       <thead><tr><th>Entry</th><th>Organism</th><th>Product</th><th>Type</th>
-      <th>Evidence</th><th>Variant</th></tr></thead>
+      <th>Substrate of the reference</th><th>Evidence</th><th>Variant</th></tr></thead>
       <tbody id="rows"></tbody></table></div>
     <nav class="pager" id="pager"></nav>
   </div>
@@ -195,12 +224,20 @@ Filters on the left narrow the result without a new search.
 const BASE = "__BASE__";
 const TIER_COLORS = {characterized:'#1f7a4d', close_homolog:'#7fb069', family_member:'#f2c14e',
                      distant:'#f78154', novel:'#8e44ad'};
+/*  Tip basina kimya. Arama metni buradan tamamlanir, yoksa bir kimyasal adi
+    hicbir giriste yazili olmadigi icin bulunamaz.                           */
+const CHEM = __CHEM__;
+const gene = c => (CHEM[c] && CHEM[c][0]) || c.split('_').slice(2).join('_');
 const F = {q:'', tier:'', domain:'', family:'', cluster:'', plasmid:0, partner:0, regulator:0, page:1};
 const PAGE = 100;
 let IDX = [], VIEW = [];
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // index columns: 0 slug 1 protein 2 organism 3 product 4 cluster 5 leaf 6 tier 7 domain 8 family 9 plasmid 10 partner 11 regulator
-const TEXT = r => (r[0]+' '+r[1]+' '+r[2]+' '+r[3]+' '+r[4]+' '+r[5]+' '+r[8]).toLowerCase();
+const TEXT = r => {
+  const c = CHEM[r[4]] || ['', '', ''];
+  return (r[0]+' '+r[1]+' '+r[2]+' '+r[3]+' '+r[4]+' '+r[5]+' '+r[8]+' '+
+          c[0]+' '+c[1]+' '+c[2]).toLowerCase();
+};
 
 fetch(BASE + '/search_index.json').then(r => r.json()).then(d => {
   IDX = d.map(r => { r.push(TEXT(r)); return r; });
@@ -236,7 +273,38 @@ function setFilter(k, v) { F[k] = (F[k] === v) ? '' : v; F.page = 1; render(); }
 function toggle(k) { F[k] = F[k] ? 0 : 1; F.page = 1; render(); }
 function goPage(n) { F.page = n; render(); window.scrollTo(0, 0); }
 
+/*  Sorguya uyan ENZIM TIPLERI ayrica gosterilir. Uye sayisi sifir olan 10 tip
+    var ve bunlarin substratlari giris indeksinde hic gecmiyor; yalnizca
+    girisleri arayan bir sayfada "xylene" aramasi bos donuyordu, oysa o
+    kimyasalin kuratorlu bir tipi VAR. Barindirilan surumde bu bolum zaten
+    vardi; statik surumde eksikti.                                          */
+function renderTypes() {
+  const block = document.getElementById('typeblock');
+  const q = F.q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!q.length) { block.innerHTML = ''; return; }
+  const counts = {};
+  IDX.forEach(r => { counts[r[4]] = (counts[r[4]] || 0) + 1; });
+  const hits = Object.keys(CHEM).filter(c => {
+    const v = CHEM[c];
+    const hay = (c + ' ' + v[0] + ' ' + v[1] + ' ' + v[2]).toLowerCase();
+    return q.every(tok => tok.endsWith('*') ? hay.includes(tok.slice(0, -1)) : hay.includes(tok));
+  }).sort((a, b) => (counts[b] || 0) - (counts[a] || 0));
+  if (!hits.length) { block.innerHTML = ''; return; }
+  block.innerHTML = '<h2>Enzyme types matching the query <span class="note">' + hits.length +
+    '</span></h2><div class="tablewrap"><table class="data compact"><thead><tr>' +
+    '<th>Type</th><th>Substrate of the reference</th><th>Reaction</th>' +
+    '<th class="num">Members</th></tr></thead><tbody>' +
+    hits.map(c => {
+      const v = CHEM[c], n = counts[c] || 0;
+      const note = n ? '' : ' <span class="note">no confirmed member in this build</span>';
+      return `<tr><td><a href="${BASE}/cluster/${esc(c)}.html">${esc(v[0])}</a>${note}</td>` +
+             `<td>${esc(v[1])}</td><td class="small">${esc(v[2])}</td>` +
+             `<td class="num" data-v="${n}">${n.toLocaleString()}</td></tr>`;
+    }).join('') + '</tbody></table></div>';
+}
+
 function render() {
+  renderTypes();
   VIEW = IDX.filter(matches);
   document.getElementById('count').textContent = VIEW.length.toLocaleString();
   const start = (F.page - 1) * PAGE;
@@ -245,11 +313,13 @@ function render() {
     const leaf = r[5] ? `<a href="${BASE}/leaf/${esc(r[5].replace('#','-'))}.html">${esc(r[5].split('#').pop())}</a>` : '–';
     const dom = (r[7] && r[7] !== 'Bacteria') ? ` <span class="chip">${esc(r[7])}</span>` : '';
     const pl = r[9] ? ' <span class="chip chip--plasmid">plasmid</span>' : '';
+    const sub = (CHEM[r[4]] && CHEM[r[4]][1]) || '';
     return `<tr><td><a href="${BASE}/ro/${esc(r[0])}.html">${esc(r[1] || r[0])}</a>${pl}</td>` +
            `<td><i>${esc(r[2])}</i>${dom}</td><td class="small">${esc(r[3])}</td>` +
-           `<td><a href="${BASE}/cluster/${esc(r[4])}.html">${esc(r[4].split('_').slice(2).join('_'))}</a></td>` +
+           `<td><a href="${BASE}/cluster/${esc(r[4])}.html">${esc(gene(r[4]))}</a></td>` +
+           `<td class="small">${esc(sub)}</td>` +
            `<td>${tier}</td><td>${leaf}</td></tr>`;
-  }).join('') || '<tr><td colspan="6" class="empty">No entry matches. Try fewer words or remove a filter.</td></tr>';
+  }).join('') || '<tr><td colspan="7" class="empty">No entry matches. Try fewer words or remove a filter.</td></tr>';
 
   const pages = Math.ceil(VIEW.length / PAGE);
   document.getElementById('pager').innerHTML = pages > 1

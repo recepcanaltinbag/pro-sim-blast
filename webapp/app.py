@@ -563,6 +563,12 @@ FLAGS = [("plasmid", "is_plasmid", "on a plasmid"),
          ("regulator", "has_regulator", "divergent regulator upstream")]
 
 
+# Tam eslesme bu sayidan az sonuc verdiyse onek eslesemesi denenir. Dusuk
+# tutuluyor: amac bos ya da neredeyse bos bir sonucu kurtarmak, yuzlerce
+# dogru sonucu sulandirmak degil.
+WIDEN_BELOW = 25
+
+
 def fts_expression(text):
     """Turn user input into a safe FTS5 expression.
 
@@ -573,6 +579,24 @@ def fts_expression(text):
     tokens = [t for t in re.split(r"[^\w*]+", text) if t]
     fallback = " ".join('"%s"' % t.replace('"', "") for t in tokens)
     return text.strip(), fallback
+
+
+def fts_prefix_expression(text):
+    """Her tokene sonek yildizi ekler; zaten yildizli olan birakilir.
+
+    NEDEN. FTS5 TOKEN esler, bu yuzden "toluene" sorgusu
+    "4-toluenesulfonate" substratini BULMUYOR: o metin "4" ve
+    "toluenesulfonate" olarak tokenleniyor. Bir kimyasal adi arayan okuyucu
+    turevlerini de gormek ister ve statik sitedeki arama (alt dizgi esleseme
+    yapiyor) onlari zaten goruyordu. Olculdu: "toluene" uygulamada 4,
+    yayinlanan sitede 660 giris donuyordu -- iki arama ayni veriden farkli
+    cevaplar veriyordu. Onek sorgusu bu farki kapatiyor: 659.
+    """
+    tokens = [t for t in re.split(r"[^\w*]+", text) if t]
+    if not tokens:
+        return ""
+    return " ".join(t if t.endswith("*") else '"%s"*' % t.replace('"', "")
+                    for t in tokens)
 
 
 def search_query(con, q, filters, flags, page=1, size=PAGE_SIZE):
@@ -618,15 +642,31 @@ def search_query(con, q, filters, flags, page=1, size=PAGE_SIZE):
         return total, rows, facets
 
     raw, fallback = fts_expression(q)
+    result = None
     try:
-        return run(raw)
+        result = run(raw)
     except sqlite3.OperationalError:
-        if not fallback:
-            return 0, [], {}
-        try:
-            return run(fallback)
-        except sqlite3.OperationalError:
-            return 0, [], {}
+        if fallback:
+            try:
+                result = run(fallback)
+            except sqlite3.OperationalError:
+                result = None
+    if result is None:
+        return 0, [], {}, False
+
+    # Tam token eslesemesi AZ sonuc verdiyse onek eslesemesiyle genisletilir ve
+    # bu durum cagirana BILDIRILIR: sayfa "genisletildi" demek zorunda, yoksa
+    # okuyucu neden "toluene" aramasinda "toluenesulfonate" gordugunu bilemez.
+    if text_query and result[0] < WIDEN_BELOW and "*" not in q:
+        prefix = fts_prefix_expression(q)
+        if prefix:
+            try:
+                widened = run(prefix)
+            except sqlite3.OperationalError:
+                widened = None
+            if widened and widened[0] > result[0]:
+                return widened[0], widened[1], widened[2], True
+    return result[0], result[1], result[2], False
 
 
 @app.get("/search", response_class=HTMLResponse)
@@ -648,14 +688,15 @@ def search(request: Request, q: str = "", page: int = 1, tier: Optional[str] = N
             total, rows = members_query(con, q=q, page=page)
             return render(request, "search.html", q=q, members=rows, total=total, page=page,
                           pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, clusters=[], facets={},
-                          filters=filters, flags=flags, active=active)
-        total, rows, facets = search_query(con, q, filters, flags, page)
+                          filters=filters, flags=flags, active=active, widened=False)
+        total, rows, facets, widened = search_query(con, q, filters, flags, page)
         clusters = [c for c in cluster_table(con)
                     if q and (q.lower() in c["cluster"].lower()
                               or q.lower() in (c["substrate"] or "").lower())] if q else []
         return render(request, "search.html", q=q, members=rows, total=total, page=page,
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, clusters=clusters,
-                      facets=facets, filters=filters, flags=flags, active=active)
+                      facets=facets, filters=filters, flags=flags, active=active,
+                      widened=widened)
     finally:
         con.close()
 
