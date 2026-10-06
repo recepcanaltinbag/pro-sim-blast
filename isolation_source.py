@@ -17,9 +17,15 @@ NE OLCULMUYOR -- bunu bastan yazmak gerekiyor:
     ve denetlenebilir -- cikti JSON'unda hangi kelimenin kac kez karar verdigi
     de yaziyor (`habitat_keyword_hits`).
   * Guvenle siniflanamayan metin `other`, metin olmayan/bos olan `unknown`
-    kalir. Kapsama ISTEYEREK sismiyor: `host` alani habitat kararina
-    KARISTIRILMIYOR, cunku konak adi orneklenen canliyi soyler, ortami soylemez
-    (homo sapiens bir habitat degil; akciger de, dista bir yara da olabilir).
+    kalir. Kapsama ISTEYEREK sismiyor: `host` alani habitat atamasina
+    KARISMAZ, cunku konak adi orneklenen canliyi soyler, ortami soylemez
+    (homo sapiens bir habitat degil).
+  * TEK istisna, dar ve olculmus bir esitlik bozucu: metin yalnizca ANATOMIK
+    bir yer soyluyorsa ("lung", "blood", "tissue") ortam belirsizdir, cunku
+    ciger insanin da domuzun da balığın da olabilir. Boyle 201 kayit `other`a
+    dusuyordu ve 195'inde /host DOLU. Bu durumda -- ve yalnizca bu durumda --
+    konak alani alemi soyler: insan, hayvan ya da bitki. Konak tek basina
+    hicbir kayda habitat atamaz; metinde anatomik kelime yoksa dokunulmaz.
   * Orneklem yanliligi duzeltilmiyor, SADECE gorunur kiliniyor. Giris sayilari
     cok dizilenmis suslarin (Pseudomonas, Mycobacterium) tekrarindan olusur;
     bu yuzden her capraz tablo hem GIRIS hem de FARKLI TUR (organizma ikili
@@ -285,8 +291,13 @@ HABITAT_RULES = HABITAT_RULES + (
                            "mushroom")),
 )
 
-HABITAT_ORDER = tuple(name for name, _ in HABITAT_RULES) + ("other", "unknown")
-CLASSIFIED = set(name for name, _ in HABITAT_RULES)
+# Rafine edilmis sediment adlari HABITAT_RULES icinde yok (bir kuralin
+# ciktisini bolerek uretiliyorlar), bu yuzden sozluge ACIKCA eklenirler --
+# yoksa `CLASSIFIED` disinda kalip "siniflanamadi" sayilirlardi.
+REFINED_HABITATS = ("marine_sediment", "freshwater_sediment")
+HABITAT_ORDER = (tuple(name for name, _ in HABITAT_RULES) + REFINED_HABITATS
+                 + ("other", "unknown"))
+CLASSIFIED = set(name for name, _ in HABITAT_RULES) | set(REFINED_HABITATS)
 
 # Metin var ama bilgi tasimiyor -> unknown (other degil: "siniflanamadi" ile
 # "soylenmemis" ayri seylerdir ve kapsama blogunda ayri sayiliyorlar).
@@ -339,6 +350,41 @@ def _hit(regex, text):
     return False
 
 
+# Sediment kompartmani. `sediment` kurali deniz ve tatli su kurallarindan
+# ONCE geliyor, cunku "marine sediment" bir sediment ornegidir ve su kolonu
+# ornegi degildir. Ama bu, deniz tabani ile nehir tabanini ayni kovaya
+# koyuyordu. Olculdu: 182 sediment kaydinin 66'si deniz, 18'i tatli su
+# isareti tasiyor; 98'i hicbirini tasimiyor ve `sediment` olarak kalir.
+# Bu bir ON kural degil, eslesen kuralin RAFINESI: sira mantigi bozulmuyor
+# ve atama hala tek bir kelimeye indirgenebilir ("sediment + marine").
+# Eslesme TAM KELIME: "sea" oneki "seasonal" ile eslesiyordu ve "Mud of a
+# seasonal forest creek" deniz sedimenti sayiliyordu. Onek eslesemesi bu
+# listede tehlikeli, cunku kelimeler kisa; bu yuzden sonu da sinirli ve
+# cogul eki acikca yaziliyor. "estuarine" gibi turevler de acikca listelenir.
+SEDIMENT_MARINE = ("marine", "sea", "seawater", "seabed", "ocean", "oceanic",
+                   "coastal", "coast", "estuary", "estuarine", "mangrove",
+                   "tidal", "intertidal", "saline", "brackish", "abyssal",
+                   "hydrothermal", "deep-sea")
+SEDIMENT_FRESH = ("lake", "river", "riverine", "pond", "stream", "freshwater",
+                  "reservoir", "creek", "lagoon", "wetland", "marsh", "paddy",
+                  "brook", "canal")
+_SED_MARINE_RE = re.compile(r"\b(" + "|".join(SEDIMENT_MARINE) + r")(?:s|es)?\b", re.I)
+_SED_FRESH_RE = re.compile(r"\b(" + "|".join(SEDIMENT_FRESH) + r")(?:s|es)?\b", re.I)
+
+
+def refine_sediment(text):
+    """Sediment kaydini kompartmana ayirir, ayrilamiyorsa None dondurur.
+
+    Deniz isareti tatli sudan ONCE sinanir: "coastal lagoon sediment" ikisine
+    de uyar ve belirleyici olan tuzluluktur.
+    """
+    if _SED_MARINE_RE.search(text):
+        return "marine_sediment", "sediment + marine"
+    if _SED_FRESH_RE.search(text):
+        return "freshwater_sediment", "sediment + freshwater"
+    return None
+
+
 def classify_habitat(isolation_source):
     """isolation_source -> (habitat, karari veren anahtar kelime)."""
     text = normalise(isolation_source)
@@ -349,8 +395,87 @@ def classify_habitat(isolation_source):
     for habitat, keywords in _COMPILED_RULES:
         for keyword, regex in keywords:
             if _hit(regex, text):
+                if habitat == "sediment":
+                    refined = refine_sediment(text)
+                    if refined:
+                        return refined
                 return habitat, keyword
     return "other", None
+
+
+# Konak alani YALNIZCA bir esitlik bozucu olarak kullanilir. Asagidaki
+# kelimeler bir ANATOMIK yer soyluyor ama HANGI canlinin anatomisi oldugunu
+# soylemiyor: "lung" bir habitat degil, cunku insanin da, domuzun da, balikin
+# da ciğeri olabilir. Bu yuzden metin tek basina `other`a dusuyor. Olculdu:
+# 201 kayit bu durumda ve 195'inde /host alani DOLU, yani cevabi veri zaten
+# tasiyor (165 Homo sapiens, 26 hayvan, 2 bitki). Bu kayitlari atmak bilgi
+# kaybiydi, tahmin etmek ise hataydi; konak alani ikisinin arasindaki yol.
+HOST_TIEBREAK_ANATOMY = (
+    "lung", "lymph node", "brain", "spleen", "cerebral", "blood", "tissue",
+    "skin", "liver", "kidney", "muscle", "bone", "gill", "intestin",
+    "stomach", "heart", "sputum", "urine", "wound", "abscess", "trachea",
+    "bronch", "pleural", "peritoneal", "joint", "knee", "nasal", "throat",
+)
+_ANATOMY_RE = re.compile(r"\b(" + "|".join(HOST_TIEBREAK_ANATOMY) + r")", re.I)
+
+HUMAN_HOSTS = ("homo sapiens", "human", "patient", "man", "woman", "child",
+               "infant")
+PLANT_HOST_MARKERS = ("plant", "arabidopsis", "oryza", "zea mays", "solanum",
+                      "prunus", "triticum", "glycine max", "vitis", "musa",
+                      "nicotiana", "populus", "pinus", "quercus")
+# Konak adinin HAYVAN oldugunu soyleyen isaretler. Liste animal_host
+# kuralindaki kelimelerle ayni mantikta; burada ayri tutuluyor cunku bu alan
+# serbest metin degil, bir tur adi ya da yaygin ad.
+ANIMAL_HOST_MARKERS = (
+    "swine", "pig", "porcine", "sus scrofa", "bos taurus", "cattle", "cow",
+    "bovine", "sheep", "ovis", "goat", "capra", "mus musculus", "mouse",
+    "mice", "rat", "rattus", "canis", "dog", "felis", "cat", "horse",
+    "equus", "chicken", "gallus", "poultry", "bird", "fish", "salmo",
+    "oncorhynchus", "trachinotus", "danio", "shrimp", "penaeus", "oyster",
+    "mussel", "clam", "snail", "sponge", "coral", "klyxum", "termite",
+    "insect", "bee", "beetle", "mosquito", "nematode", "tick", "crab",
+    "squid", "monkey", "macaca", "rabbit", "oryctolagus", "animal",
+)
+
+
+def classify_by_host(host):
+    """/host -> konagin hangi aleme ait oldugu, ya da None.
+
+    Donen deger bir HABITAT degil, bir ipucudur; cagiran yer bunu yalnizca
+    metin tek basina karar veremediginde kullanir.
+    """
+    text = normalise(host)
+    if not text:
+        return None
+    if text in UNINFORMATIVE_EXACT or text.startswith(UNINFORMATIVE_PREFIX):
+        return None
+    if any(marker in text for marker in HUMAN_HOSTS):
+        return "human_clinical"
+    if any(marker in text for marker in PLANT_HOST_MARKERS):
+        return "plant_tissue"
+    if any(marker in text for marker in ANIMAL_HOST_MARKERS):
+        return "animal_host"
+    return None
+
+
+def classify_habitat_with_host(isolation_source, host):
+    """Metinle karar verilemeyen ANATOMIK kayitlarda konaga basvurur.
+
+    Sira onemli: once metin denenir, cunku metin ortami soyler. Konak alani
+    yalnizca metin `other` dondurdugunde VE metinde anatomik bir kelime
+    varken devreye girer. Boylece "homo sapiens bir habitat degil" ilkesi
+    korunur: konak tek basina hicbir kayda habitat atamaz.
+    """
+    habitat, keyword = classify_habitat(isolation_source)
+    if habitat != "other":
+        return habitat, keyword
+    text = normalise(isolation_source)
+    if not text or not _ANATOMY_RE.search(text):
+        return habitat, keyword
+    by_host = classify_by_host(host)
+    if by_host is None:
+        return habitat, keyword
+    return by_host, "<host tie-break>"
 
 
 def parse_year(collection_date):
@@ -470,11 +595,11 @@ def parse_sources(connection, gbk_dir, processes, force):
 def assign_habitats(connection):
     """Depolanan metinden habitat'i her kosuda yeniden hesapla."""
     rows = connection.execute(
-        "SELECT nucleotide_id, isolation_source FROM replicon_source").fetchall()
+        "SELECT nucleotide_id, isolation_source, host FROM replicon_source").fetchall()
     hits = defaultdict(Counter)
     updates = []
-    for nuc, iso in rows:
-        habitat, keyword = classify_habitat(iso)
+    for nuc, iso, host in rows:
+        habitat, keyword = classify_habitat_with_host(iso, host)
         hits[habitat][keyword or "<no rule matched>"] += 1
         updates.append((habitat, nuc))
     connection.executemany(
@@ -833,8 +958,20 @@ def main():
         "method": {
             "habitat_vocabulary": list(HABITAT_ORDER),
             "assignment": ("ordered keyword map on the GenBank /isolation_source "
-                           "qualifier only; first matching rule wins; /host is "
-                           "stored but never used to assign a habitat"),
+                           "qualifier; first matching rule wins. /host assigns "
+                           "no habitat on its own and is consulted only as a "
+                           "tie-break: when the source text names an anatomical "
+                           "site and nothing else, so that the environment is "
+                           "undetermined, the host field decides whether that "
+                           "anatomy is human, animal or plant"),
+            "host_tiebreak_anatomy": list(HOST_TIEBREAK_ANATOMY),
+            "sediment_refinement": ("a record matching the sediment rule is "
+                                    "split by compartment when the text also "
+                                    "names a marine or a freshwater body; "
+                                    "marine is tested first because salinity "
+                                    "decides a coastal lagoon"),
+            "sediment_marine_markers": list(SEDIMENT_MARINE),
+            "sediment_freshwater_markers": list(SEDIMENT_FRESH),
             "text_normalisation": ("lowercase, every non-alphanumeric character "
                                    "becomes a space, whole-word match with an "
                                    "optional trailing s/es"),

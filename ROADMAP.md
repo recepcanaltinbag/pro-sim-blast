@@ -31,15 +31,38 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     alt dizisi. HMM ayni profili iki kez icerdigi icin atama ikizler arasinda
     keyfi bolunuyor. Hangi ikiz tutulacak?
 
-26. **Habitat sozlugunun kalan bilinen sinirlari.** `sediment` deniz/tatli
-    sudan once geliyor, yani "marine sediment" sediment sayiliyor ve deniz
-    sayilari kompartman acisindan eksik kaliyor (konvansiyon, belgeli).
-    Insan ve hayvan dokusu ACIK isaret olmadan hala ayrilmiyor: isaretsiz
-    anatomi `other`'a dusuyor, ki bu yanlis etiketlemekten iyi ama bilgi kaybi.
-    `food_fermented` endustriyel/laboratuvar fermentasyonlarini da yakaliyor
-    (21 kayit).
-
 ## Bitti
+
+26. ~~Habitat sozlugunun kalan bilinen sinirlari.~~ **BITTI.** Uc parca, her
+    biri once olculdu:
+    (a) **Isaretsiz anatomi artik konakla cozuluyor.** "lung", "blood",
+        "tissue" gibi metinler ORTAMI soylemiyor, cunku ciger insanin da
+        domuzun da baligin da olabilir; bu yuzden 201 kayit `other`a
+        dusuyordu. Olculdu: bunlarin 195'inde `/host` alani DOLU (165 Homo
+        sapiens, 26 hayvan, 2 bitki), yani cevabi veri zaten tasiyor.
+        Eklenen kural DAR: konak tek basina hicbir kayda habitat atamaz,
+        yalnizca metin `other` dondurdugunde VE metinde anatomik bir kelime
+        varken alemi soyler. Boylece "homo sapiens bir habitat degil" ilkesi
+        korunuyor. 219 kayit cozuldu (189 insan, 28 hayvan, 2 bitki) ve
+        dogrulanmis RO kapsami %54,3 → **%56,6**, yani 25. maddedeki
+        duzeltmenin bedeli fazlasiyla geri alindi.
+    (b) **Sediment kompartmana ayrildi.** `sediment` kurali deniz ve tatli
+        sudan once geliyor (dogru: "marine sediment" bir sediment ornegidir),
+        ama deniz tabani ile nehir tabanini ayni kovada tutuyordu. Eslesen
+        kuralin RAFINESI olarak bolundu, yani sira mantigi bozulmadi ve atama
+        hala tek bir anahtara indirgenebilir ("sediment + marine"). 182
+        replikon: 72 `marine_sediment`, 18 `freshwater_sediment`, 92 isaretsiz
+        `sediment`. Ilk denemede "sea" oneki "seasonal" ile eslesti ve
+        "Mud of a seasonal forest creek" deniz sedimenti sayildi; esleme tam
+        kelimeye cevrildi ve 14 test vakasi gecti.
+    (c) **`food_fermented` iddiasi DOGRU DEGILDI.** Bu madde kategoride 21
+        endustriyel/laboratuvar fermentasyonu oldugunu soyluyordu. Olculdu:
+        120 kaydin yalnizca 4'u fermentor/reaktor kelimesi tasiyor ve hepsi
+        ayni metin, "Film in fermentor of rice vinegar" -- pirinc sirkesi bir
+        GIDA. Kategori dogru, degisiklik yapilmadi. Iddia olculmeden
+        yazilmis.
+    Capraz kontrol: PAH kirlilik zenginlesmesi 5,76x → 5,65x, yani
+    degisiklikler kirlilik sinyaline dokunmadi.
 
 31. ~~Statik sitede taban onegi eksikti -- YAYINDAKI GEZINME KIRIKTI.~~
     **BITTI.** `freeze.py --base /pro-sim-blast` verilmeden uretilen bir

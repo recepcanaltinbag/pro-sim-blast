@@ -324,7 +324,7 @@ calisilmis bir grup oldugu icin orneklem yanliligi da ayni yone iter.
 
 GenBank kayitlarinin `source` ozelliklerinde kullanilmayan ekolojik veri vardi:
 9.591 dosyada `/isolation_source`, 4.911'inde `/host`, 11.485'inde cografi konum.
-`isolation_source.py` bunlari cikarir, serbest metni 21 kategorili siralı ve
+`isolation_source.py` bunlari cikarir, serbest metni 26 kategorili siralı ve
 denetlenebilir bir kelime haritasiyla normalize eder (`replicon_source` tablosu +
 `analysis_out/habitat.json`).
 
@@ -340,11 +340,30 @@ ekin adi hangi bitki oldugunu soyler neresi oldugunu soylemez. Sonuc: kapsam
 birakmanin bedeli. Capraz kontrol: PAH zenginlesmesi 5,64x'ten 5,76x'e, yani
 degisiklikler kirlilik sinyaline dokunmadi.
 
-**Kapsam durust verilir:** girislerin %60,9'unda kaynak var, **%55,6'si** bir
-habitate yerlestirilebiliyor. 4.493 girişte kaynak hic yok, 578'inde metin
-siniflandirilamiyor (214 farkli dizgi: etiketsiz ontoloji numaralari, bitki ve
-hayvan orneklerinde de gecen ciplak anatomik kelimeler, "culture"/"tissue").
-Yanlis siniflamaktansa siniflamamak yegdir.
+**Konak alani: dar ve olculmus bir istisna.** `/host` habitat ATAMAZ, cunku
+konak adi orneklenen canliyi soyler, ortami soylemez. Tek istisna metnin
+yalnizca ANATOMIK bir yer soyledigi durumdur: "lung", "blood", "tissue" ortami
+belirlemez, cunku ciger insanin da domuzun da baligin da olabilir. Olculdu: 201
+kayit tam bu yuzden `other`a dusuyordu ve 195'inde `/host` DOLU (165 Homo
+sapiens, 26 hayvan, 2 bitki). Yani cevabi veri zaten tasiyordu; atmak bilgi
+kaybi, tahmin etmek hata olurdu. Kural yalnizca metin `other` dondurdugunde VE
+metinde anatomik kelime varken devreye girer; 219 kayit cozuldu ve dogrulanmis
+RO kapsami **%56,6** oldu.
+
+**Sediment kompartmani.** `sediment` kurali deniz ve tatli su kurallarindan
+once gelir, cunku "marine sediment" bir sediment ornegidir. Bu dogru ama deniz
+tabani ile nehir tabanini ayni kovaya koyuyordu. Eslesen kuralin RAFINESI
+olarak bolundu: metin ayrica bir deniz ya da tatli su kutlesi adlandiriyorsa
+kayit `marine_sediment` veya `freshwater_sediment` olur. Deniz once sinanir,
+cunku "coastal lagoon sediment" ikisine de uyar ve belirleyici olan tuzluluktur.
+182 replikon: 72 deniz, 18 tatli su, 92 isaretsiz. Ilk denemede esleme ONEK
+yapiyordu ve "sea" ile "seasonal" eslesti; tam kelimeye cevrildi.
+
+**Kapsam durust verilir:** girislerin %60,9'unda kaynak var, **%56,6'si** bir
+habitate yerlestirilebiliyor. 4.493 girişte kaynak hic yok, 395'inde metin
+siniflandirilamiyor (186 farkli dizgi: etiketsiz ontoloji numaralari, konak
+alani da bos olan ciplak anatomik kelimeler, "culture"). Yanlis siniflamaktansa
+siniflamamak yegdir.
 
 **Tur bazinda normalizasyon neden zorunlu:** giris sayisi dizilenmis suslari
 sayar. Insan klinigi ve bitki iliskili kaynaklarda tur basina 6,3 ve 6,0 giris

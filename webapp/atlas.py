@@ -873,6 +873,7 @@ HABITAT_LABEL = {
     "plant_associated": "plant associated, position unstated",
     "built_environment": "built environment",
     "freshwater": "freshwater", "marine": "marine", "sediment": "sediment",
+    "marine_sediment": "marine sediment", "freshwater_sediment": "freshwater sediment",
     "wastewater_sludge": "wastewater and sludge",
     "contaminated_industrial": "contaminated or industrial site",
     "mining_acid_drainage": "mine and acid drainage",
