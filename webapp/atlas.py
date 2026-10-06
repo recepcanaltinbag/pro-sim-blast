@@ -13,6 +13,45 @@ from collections import Counter, defaultdict
 
 GROUP_COLORS = {"1": "#c0392b", "2": "#8e44ad", "3": "#2980b9", "4": "#27ae60",
                 "5": "#f39c12", "?": "#95a5a6"}
+def _relative_luminance(colour):
+    """WCAG bagil parlaklik. Girdi "#rrggbb"."""
+    value = colour.lstrip("#")
+    if len(value) != 6:
+        return 0.0
+    channels = []
+    for index in (0, 2, 4):
+        c = int(value[index:index + 2], 16) / 255
+        channels.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    red, green, blue = channels
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+
+
+def chip_text(background):
+    """Arka plana gore OKUNUR metin rengi dondurur.
+
+    NEDEN. Etiketlerin arka plani VERIDEN geliyor (TIER_COLORS,
+    REACTION_COLORS) ama metin rengi sablonlarda "color:#fff" olarak SABIT
+    yaziliydi. Olctum: alti etiket WCAG oraninda basarisiz, en kotusu
+    "family member" 1,68:1 ve "close homolog" 2,53:1 -- yani okunmuyordu, ve
+    en cok Evidence sayfasinda, yani konusu tam o etiketler olan sayfada.
+
+    Renkleri DEGISTIRMEK yerine metni cevirmek secildi: renkler sayfalar
+    arasinda anlam tasiyor ve kullanici onlari taniyor. Secim parlaklıktan
+    HESAPLANIYOR, bir renk listesine bakilmiyor; boylece yarin bir ton
+    degistirilirse kural kendiliginden dogru kaliyor. Sabit bir hex listesine
+    bakan bir cozum sessizce bozulurdu.
+    """
+    dark_text, light_text = "#10161c", "#ffffff"
+    background_luminance = _relative_luminance(background)
+
+    def contrast(foreground):
+        a, b = _relative_luminance(foreground), background_luminance
+        high, low = max(a, b), min(a, b)
+        return (high + 0.05) / (low + 0.05)
+
+    return dark_text if contrast(dark_text) > contrast(light_text) else light_text
+
+
 TIERS = ["characterized", "close_homolog", "family_member", "distant", "novel"]
 TIER_COLORS = {"characterized": "#1f7a4d", "close_homolog": "#7fb069",
                "family_member": "#f2c14e", "distant": "#f78154", "novel": "#8e44ad"}

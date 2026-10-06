@@ -186,7 +186,7 @@
     <table class="data compact">
       <tbody>
       {% for t in TIERS %}{% if tiers[t] %}
-      <tr><td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:#fff;border:0">{{ t.replace('_',' ') }}</span></td>
+      <tr><td><span class="chip" style="background:{{ TIER_COLORS[t] }};color:{{ chip_text(TIER_COLORS[t]) }};border:0">{{ t.replace('_',' ') }}</span></td>
           <td class="small">{{ TIER_LABEL[t] }}</td>
           <td class="num">{{ tiers[t]|fmt }}</td><td class="num">{{ pct(tiers[t], tier_total) }}</td></tr>
       {% endif %}{% endfor %}

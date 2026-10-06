@@ -467,6 +467,27 @@ figure.fig.nonum figcaption::before { content: none; }
    header has nothing to stick to and simply sits at the top. table.js adds
    this class to long tables, which gives the wrapper a real viewport and makes
    the header behave as intended. */
+/* GENIS EKRANDA tablolar ve figurler metin olcusunden TASAR.
+   Olculdu (1280 px ekran, Types sayfasi): metin sutunu 76ch'de bitiyor ve
+   sagda genis bir bosluk kaliyor, ama 15 sutunlu tablo 1140 pikselik kutuya
+   sigmadigi icin KENDI ICINDE yana kayiyor. Yani ekranda yer varken tablo
+   kirpiliyordu. Duz cozum "main'i genislet" olurdu, ama o zaman paragraflar
+   da uzar ve okunurluk duser; metin olcusu korunup YALNIZCA veri bloklari
+   genisletiliyor. Tarayici destegi gerekmiyor: min() ve calc() zaten bu
+   sayfada kullaniliyor. */
+@media (min-width: 1240px) {
+  .fig,
+  main > .tablewrap,
+  .chart {
+    /* 100vw KAYDIRMA CUBUGUNU da sayar, bu yuzden pencere genisliginden
+       cikarilan pay cubuk genisligi kadar fazla tutuluyor; aksi halde blok
+       sag kenara yapisiyor ve sayfa yatay kayiyordu. */
+    --bleed: min(calc(100vw - 72px), 1560px);
+    width: var(--bleed);
+    margin-left: calc(50% - var(--bleed) / 2);
+  }
+}
+
 .tablewrap--tall {
   max-height: min(72vh, 680px);
   overflow: auto;

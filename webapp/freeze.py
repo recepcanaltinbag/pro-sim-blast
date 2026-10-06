@@ -321,6 +321,21 @@ const gene = c => (CHEM[c] && CHEM[c][0]) || c.split('_').slice(2).join('_');
 const F = {q:'', tier:'', domain:'', family:'', cluster:'', plasmid:0, partner:0, regulator:0, page:1};
 const PAGE = 100;
 let IDX = [], VIEW = [];
+/*  Etiket metni arka plandan HESAPLANIR, sabit beyaz degil. Olculdu: alti
+    etikette beyaz metin WCAG oranini gecmiyordu, en kotusu 1,68:1. Sunucu
+    tarafinda `atlas.chip_text` ayni kurali uyguluyor.                      */
+function chipText(bg) {
+  var v = String(bg).replace('#', '');
+  if (v.length !== 6) return '#ffffff';
+  var ch = [0, 2, 4].map(function (i) {
+    var c = parseInt(v.substr(i, 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  var L = 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  var withDark = (L + 0.05) / (0.0114 + 0.05);
+  var withLight = (1.05) / (L + 0.05);
+  return withDark > withLight ? '#10161c' : '#ffffff';
+}
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // index columns: 0 slug 1 protein 2 organism 3 product 4 cluster 5 leaf 6 tier 7 domain 8 family 9 plasmid 10 partner 11 regulator
 const TEXT = r => {
@@ -399,7 +414,7 @@ function render() {
   document.getElementById('count').textContent = VIEW.length.toLocaleString();
   const start = (F.page - 1) * PAGE;
   document.getElementById('rows').innerHTML = VIEW.slice(start, start + PAGE).map(r => {
-    const tier = r[6] ? `<span class="chip" style="background:${TIER_COLORS[r[6]]||'#888'};color:#fff;border:0">${esc(r[6].replace('_',' '))}</span>` : '';
+    const tier = r[6] ? `<span class="chip" style="background:${TIER_COLORS[r[6]]||'#888'};color:${chipText(TIER_COLORS[r[6]]||'#888')};border:0">${esc(r[6].replace('_',' '))}</span>` : '';
     const leaf = r[5] ? `<a href="${BASE}/leaf/${esc(r[5].replace('#','-'))}.html">${esc(r[5].split('#').pop())}</a>` : '–';
     const dom = (r[7] && r[7] !== 'Bacteria') ? ` <span class="chip">${esc(r[7])}</span>` : '';
     const pl = r[9] ? ' <span class="chip chip--plasmid">plasmid</span>' : '';
