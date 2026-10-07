@@ -190,6 +190,7 @@ def operon_relations_view(path):
                        "control_verdict": control.get("verdict") or {},
                        "gates": gates,
                        "gate_note": ladder.get("how_to_read_gate_4"),
+                       "gate_shift": ladder.get("what_the_gates_also_change") or {},
                        "floor": div.get("measured_identity_floor") or {},
                        "rbh": ladder.get("reciprocal_best_hit") or {}},
         "mobility": {"rows": rows,

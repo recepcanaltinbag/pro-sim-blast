@@ -212,6 +212,48 @@ MAX_SCATTER_POINTS = 3000
 # degisim kaniti da olamaz.
 UNCLASSIFIED_FAMILY = "regulator_unclassified"
 
+# --- Secim dairesinin denetimi: KONTROL GENLERI
+#
+# Enzim TIPI, alfa alt biriminin en iyi puan aldigi profil HMM'idir. Yani bir
+# tip ICINDE alfa-alfa kimliginin yuksek olmasi bir GOZLEM degil, secimin
+# kendisi: kurgu geregi oyle. Operondaki HERHANGI bir baska protein, yalnizca
+# bu nedenle alfadan daha ayrisik gorunur -- daha hizli evrilip evrilmedigine
+# bakmaksizin. Dolayisiyla "duzenleyici hizli ayrisiyor" iddiasi, ancak
+# duzenleyicinin farki tip tanimina GIRMEYEN operon proteinlerinin farkindan
+# BUYUKSE ayakta kalir. Bu kategoriler tam olarak o kontrol genleridir ve
+# duzenleyiciyle AYNI kanit sinifindan gelirler (gene_category, regex_v1), yani
+# karsilastirma elma-elmadir.
+CONTROL_CATEGORIES = ("ro_beta", "ferredoxin", "reductase")
+
+# Sayfada gorunecek adlar, bu yuzden ingilizce.
+PROTEIN_LABELS = {"regulator": "regulator", "ro_beta": "beta subunit",
+                  "ferredoxin": "ferredoxin", "reductase": "reductase"}
+
+# Duzenleyicinin farki kontrol geninin farkini bu kadar yuzde puandan daha az
+# asiyorsa, ikisi arasinda pratik bir fark yok sayilir. Esik, bandlar arasi
+# oynamanin ve kapsama kontrolunun kendi gurultusunun mertebesinde secildi;
+# karar sadece buna degil, esli teste ve Cliff's delta'ya da bakar.
+CONTROL_GAP_TOLERANCE = 5.0
+
+# Cliff's delta icin "ihmal edilebilir" siniri (Romano ve ark. donusumu).
+DELTA_NEGLIGIBLE = 0.147
+
+# --- Ortoloji kapi merdiveni
+#
+# Hizalama TABANI varsayilmaz, OLCULUR: farkli enzim tipinden VE farkli aileden
+# duzenleyici ciftleri ayni sekilde puanlanir. Bu null dagilimin 95.
+# yuzdeligi, "akraba olmadigi bilinen iki duzenleyici bu kadar benzesebiliyor"
+# degeridir; altindaki her olcum doygundur ve ayrisma hakkinda bilgi tasimaz.
+NULL_FLOOR_PAIRS = 4000
+NULL_FLOOR_PERCENTILE = 95
+
+# Karsilikli en iyi eslesme (RBH) tip icinde HEPSINE-KARSI-HEPSI tarama
+# gerektirir, yani tip basina n*(n-1)/2 hizalama. Bu giris sayisina kadar tip
+# tam taranir; ustunde sabit tohumla altornek alinir ve neyin kirpildigi
+# ciktiya yazilir. Puanlama icin align() yerine score() kullanilir (~4x hizli),
+# cunku RBH yalnizca siralamaya ihtiyac duyar.
+MAX_RBH_ENTRIES_PER_TYPE = 400
+
 
 # ---------------------------------------------------------------- yardimcilar
 
@@ -1461,6 +1503,80 @@ def load_regulator_pairs_input(con):
     """).fetchall()
 
 
+def load_operon_control_proteins(con):
+    """Tip tanimina GIRMEYEN operon proteinlerinin dizileri, giris basina.
+
+    NEDEN: enzim tipi alfa alt biriminin HMM'idir, yani tip icinde alfa-alfa
+    kimligi kurgu geregi yuksektir. O ciftlerde beta, ferredoksin ve reduktaz
+    da puanlanmazsa, "duzenleyici alfadan daha ayrisik" cumlesi secim etkisinden
+    ayirt edilemez. Kategoriler duzenleyiciyle AYNI kaynaktan gelir
+    (`gene_category`, method='regex_v1'), dizi `neighbor_protein`'den
+    `load_regulator_pairs_input()` ile ayni koordinat anahtariyla baglanir.
+    `operon_gene` kosulu, proteinin +-10 kb penceresinde degil ayni OPERONDA
+    olmasini zorunlu kilar -- 'reductase' regex'i pencerede cok genis vuruyor.
+    """
+    rows = con.execute(f"""
+        SELECT nb.candidate_id, gc.category, np.translation, og.position
+        FROM gene_category gc
+        JOIN neighbor nb ON nb.neighbor_id = gc.neighbor_id
+        JOIN neighbor_protein np
+          ON np.protein_key = nb.nucleotide_id || ':' || nb.start || '-'
+                              || nb.end || ':' || nb.strand
+        JOIN operon_gene og ON og.candidate_id = nb.candidate_id
+                           AND og.protein_key = np.protein_key
+        WHERE gc.method = ?
+          AND gc.category IN ({','.join('?' * len(CONTROL_CATEGORIES))})
+          AND np.translation IS NOT NULL AND np.translation <> ''
+    """, (REGEX_METHOD,) + CONTROL_CATEGORIES).fetchall()
+
+    # Bir operonda ayni kategoriden birden fazla gen olabilir (ornegin iki
+    # reduktaz). Alfa'ya EN YAKIN olani alinir; esitlikte dizinin kendisi
+    # siralar, boylece secim tohumdan bagimsiz olarak belirlenimcidir.
+    best = defaultdict(dict)
+    for candidate_id, category, translation, position in rows:
+        rank = (abs(position if position is not None else 99), translation)
+        current = best[candidate_id].get(category)
+        if current is None or rank < current:
+            best[candidate_id][category] = rank
+    return {cid: {cat: rank[1] for cat, rank in cats.items()}
+            for cid, cats in best.items()}
+
+
+def _score_one(task):
+    """Pool isci: tek protein cifti. Anahtar cagirana geri verilir."""
+    key, seq_a, seq_b = task
+    identity, coverage = pair_identity(seq_a, seq_b)
+    return key, identity, coverage
+
+
+def _reciprocal_best_hits(task):
+    """Pool isci: BIR enzim tipi icinde hepsine-karsi-hepsi RBH taramasi.
+
+    Gorev tip basina tektir, cunku diziler boylece surecler arasinda bir kez
+    tasinir; cift basina gorev uretmek 300 bin kucuk gorev ve yuzlerce MB
+    serilestirme demek olurdu. Siralama icin `aligner.score()` yeterli:
+    hizalamanin kendisi kurulmaz, yalnizca puani hesaplanir.
+    """
+    cluster, ids, seqs = task
+    aligner = _aligner()
+    n = len(seqs)
+    best_score = [float("-inf")] * n
+    best_index = [None] * n
+    ties = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            score = float(aligner.score(seqs[i], seqs[j]))
+            for this, other in ((i, j), (j, i)):
+                if score > best_score[this]:
+                    best_score[this], best_index[this] = score, other
+                elif score == best_score[this]:
+                    ties += 1
+    hits = {tuple(sorted((ids[i], ids[best_index[i]])))
+            for i in range(n)
+            if best_index[i] is not None and best_index[best_index[i]] == i}
+    return cluster, sorted(hits), ties
+
+
 def band_of(identity):
     for low, high, name in IDENTITY_BANDS:
         if low <= identity < high:
@@ -1505,6 +1621,363 @@ def paired_contrast(pairs, label):
         "wilcoxon_p": wilcoxon_p,
         "share_of_pairs_at_or_below_random_floor": round(at_floor, 3),
         "informative": bool(at_floor < MAX_FLOOR_SHARE_FOR_RATE_CLAIM),
+    }
+
+
+def protein_contrast(pairs, key, floor):
+    """Bir operon proteinini, AYNI genom ciftlerinde alfa alt birimiyle karsilastir.
+
+    Yontem `paired_contrast` ile ayni mantikta: gozlemler bir genom cifti
+    ICINDE eslesik oldugu icin onculuk esli Wilcoxon isaretli sira testine ve
+    isaret payina veriliyor. Yeni olan sey, farkin ORTALAMASININ da
+    yazilmasi: kontrol genleri ile duzenleyici ancak ayni ozet istatistikle
+    karsilastirilabilir, ve bu modulun asil sorusu artik "duzenleyicinin farki
+    kontrol genlerinin farkini asiyor mu".
+    """
+    if len(pairs) < MIN_PAIRS_FOR_BAND:
+        return None
+    enzyme = np.array([p["enzyme_identity"] for p in pairs], dtype=float)
+    protein = np.array([p["identities"][key] for p in pairs], dtype=float)
+    gap = enzyme - protein
+    try:
+        wilcoxon_p = float(stats.wilcoxon(enzyme, protein).pvalue)
+    except ValueError:
+        wilcoxon_p = None
+    delta, delta_p = cliffs_delta(enzyme.tolist(), protein.tolist())
+    return {
+        "protein": PROTEIN_LABELS.get(key, key),
+        "key": key,
+        "n_pairs": len(pairs),
+        "n_types": len({p["type"] for p in pairs}),
+        "n_genus_pairs": len({p["genus_pair"] for p in pairs}),
+        "alpha_identity_mean": round(float(np.mean(enzyme)), 1),
+        "alpha_identity_median": round(float(np.median(enzyme)), 1),
+        "identity_mean": round(float(np.mean(protein)), 1),
+        "identity_median": round(float(np.median(protein)), 1),
+        "identity_quartiles": [round(float(v), 1)
+                               for v in np.percentile(protein, [25, 75])],
+        "gap_mean": round(float(np.mean(gap)), 1),
+        "gap_median": round(float(np.median(gap)), 1),
+        "share_of_pairs_less_conserved_than_alpha": round(
+            float(np.mean(protein < enzyme)), 3),
+        "wilcoxon_p": wilcoxon_p,
+        "cliffs_delta_alpha_over_protein": round(delta, 3) if delta is not None else None,
+        "cliffs_delta_p": delta_p,
+        "share_at_or_below_measured_floor": round(float(np.mean(protein <= floor)), 3),
+    }
+
+
+def control_gene_block(pairs, floor):
+    """A: SECIM DAIRESININ denetimi. Kontrol genleri, ayni ciftlerde.
+
+    Iki tablo veriliyor, cunku ikisi ayri sorulara cevap veriyor:
+      * `on_their_own_pairs`: her protein, iki ucta da MEVCUT oldugu ciftlerde.
+        n'ler buyuk ama dort satir ayni cift kumesinde degil.
+      * `on_the_common_pair_set`: dordunun hepsinin birlikte bulundugu
+        ciftler. n kucuk, ama dort sayi KESINLIKLE karsilastirilabilir.
+    Ve `regulator_versus_each_control`: ayni ciftlerde duzenleyici kimligini
+    kontrol geninin kimligiyle DOGRUDAN esli olarak karsilastiran test. Karar
+    asil buna bakiyor; alfa'ya gore farklar birer ara buyukluk.
+    """
+    keys = ("regulator",) + CONTROL_CATEGORIES
+    own, availability = [], []
+    for key in keys:
+        subset = [p for p in pairs if p["identities"].get(key) is not None]
+        availability.append({"protein": PROTEIN_LABELS.get(key, key), "key": key,
+                             "pairs_with_the_protein_at_both_ends": len(subset),
+                             "share_of_all_pairs": round(len(subset) / len(pairs), 3)
+                             if pairs else None})
+        row = protein_contrast(subset, key, floor)
+        if row:
+            own.append(row)
+
+    common = [p for p in pairs
+              if all(p["identities"].get(k) is not None for k in keys)]
+    common_rows = [r for r in (protein_contrast(common, k, floor) for k in keys) if r]
+
+    head_to_head = []
+    for key in CONTROL_CATEGORIES:
+        subset = [p for p in pairs
+                  if p["identities"].get(key) is not None
+                  and p["identities"].get("regulator") is not None]
+        if len(subset) < MIN_PAIRS_FOR_BAND:
+            continue
+        regulator = np.array([p["identities"]["regulator"] for p in subset], dtype=float)
+        control = np.array([p["identities"][key] for p in subset], dtype=float)
+        try:
+            wilcoxon_p = float(stats.wilcoxon(control, regulator).pvalue)
+        except ValueError:
+            wilcoxon_p = None
+        delta, delta_p = cliffs_delta(control.tolist(), regulator.tolist())
+        head_to_head.append({
+            "control": PROTEIN_LABELS.get(key, key),
+            "key": key,
+            "n_pairs": len(subset),
+            "n_types": len({p["type"] for p in subset}),
+            "n_genus_pairs": len({p["genus_pair"] for p in subset}),
+            "control_identity_mean": round(float(np.mean(control)), 1),
+            "regulator_identity_mean": round(float(np.mean(regulator)), 1),
+            "mean_difference_control_minus_regulator": round(
+                float(np.mean(control - regulator)), 1),
+            "median_difference_control_minus_regulator": round(
+                float(np.median(control - regulator)), 1),
+            "share_of_pairs_regulator_less_conserved_than_control": round(
+                float(np.mean(regulator < control)), 3),
+            "wilcoxon_p": wilcoxon_p,
+            "cliffs_delta_control_over_regulator": round(delta, 3)
+            if delta is not None else None,
+            "cliffs_delta_p": delta_p,
+        })
+
+    return {
+        "question": ("Is the regulator more divergent than the alpha subunit because "
+                     "it evolves faster, or because the alpha subunit is the protein "
+                     "the pairs were selected on?"),
+        "why_a_control_is_required": (
+            "an enzyme type is defined as the profile HMM the alpha subunit scored "
+            "best against, and the pairs are drawn from within a type. High "
+            "alpha-to-alpha identity inside a type is therefore guaranteed by "
+            "construction, not observed. Any other protein in the operon will look "
+            "more divergent than the alpha subunit for that reason alone, whether or "
+            "not it evolves faster. The only question the data can answer is whether "
+            "the regulator is more divergent than OTHER operon genes are."),
+        "what_the_controls_are": (
+            "the beta subunit, the ferredoxin and the reductase, taken from the same "
+            "operon and from the same evidence class as the regulator itself "
+            f"(gene_category, method '{REGEX_METHOD}'), so the comparison is like for "
+            "like. None of them took part in defining the enzyme type."),
+        "availability": availability,
+        "on_their_own_pairs": own,
+        "on_the_common_pair_set": {
+            "note": ("every protein scored on the pairs where all four are present at "
+                     "both ends, so the four numbers are strictly comparable"),
+            "n_pairs": len(common),
+            "rows": common_rows,
+        },
+        "regulator_versus_each_control": head_to_head,
+    }
+
+
+def control_gene_verdict(block):
+    """Karar VERIDEN kurulur: hicbir yon ya da sayi elle yazilmaz."""
+    rows = {r["key"]: r for r in block["on_their_own_pairs"]}
+    regulator = rows.get("regulator")
+    controls = [r for k, r in rows.items() if k != "regulator"]
+    head = block["regulator_versus_each_control"]
+    if not regulator or not controls or not head:
+        return {"conclusion": "not computable: no control protein reached the "
+                              "minimum pair count"}
+
+    # Duzenleyicinin kontrol genine gore FAZLALIGI. Cebir: alfa-duzenleyici
+    # farki eksi alfa-kontrol farki = kontrol kimligi eksi duzenleyici kimligi,
+    # yani dogrudan esli olcumun kendisi. Pozitif deger "duzenleyicinin farki
+    # kontrolun farkini bu kadar asiyor" demek.
+    excess = [(h["control"], h["mean_difference_control_minus_regulator"], h)
+              for h in head]
+    # Bir kontrol genini "asmak" IKI kosula birden baglidir: fark tolerans
+    # esiginin ustunde olmali VE etki buyuklugu ihmal edilebilir siniri
+    # gecmeli. Tek basina p degeri bir kosul degil: bu n'lerde 5 puanlik bir
+    # fark da, yarim puanlik bir fark da p=0 verir.
+    beaten = [name for name, margin, h in excess
+              if margin > CONTROL_GAP_TOLERANCE
+              and (h["cliffs_delta_control_over_regulator"] or 0.0) >= DELTA_NEGLIGIBLE]
+    smallest = min(excess, key=lambda t: t[1])
+    largest = max(excess, key=lambda t: t[1])
+    survives = len(beaten) == len(excess)
+
+    measured = (
+        "On the pairs where each protein is present at both ends, the mean identity "
+        "is "
+        + ", ".join(f"{r['identity_mean']:.1f} % for the {r['protein']} "
+                    f"(n = {r['n_pairs']}, gap to the alpha subunit "
+                    f"{r['gap_mean']:+.1f} points)"
+                    for r in [regulator] + sorted(controls,
+                                                  key=lambda r: -r["gap_mean"]))
+        + ".")
+    direct = (
+        "Compared directly against each control on the same pairs, the regulator is "
+        + ", ".join(
+            f"{abs(h['mean_difference_control_minus_regulator']):.1f} points "
+            f"{'less' if h['mean_difference_control_minus_regulator'] > 0 else 'more'} "
+            f"conserved than the {h['control']} "
+            f"(n = {h['n_pairs']}, Cliff's delta "
+            f"{h['cliffs_delta_control_over_regulator']:+.2f}, "
+            f"p = {h['wilcoxon_p']:.1e})" if h["wilcoxon_p"] is not None else
+            f"{abs(h['mean_difference_control_minus_regulator']):.1f} points apart "
+            f"from the {h['control']}"
+            for h in head)
+        + ".")
+
+    if survives:
+        conclusion = (
+            "The regulator claim SURVIVES the control. The regulator's gap to the "
+            "alpha subunit exceeds every control protein's gap by more than "
+            f"{CONTROL_GAP_TOLERANCE:.0f} points, the smallest margin being "
+            f"{smallest[1]:+.1f} points against the {smallest[0]}. So the regulator is "
+            "not merely the second protein in a comparison selected on the first: it "
+            "is more divergent than the other operon genes are.")
+    elif beaten:
+        named = ([f"the {beaten[0]}"] if len(beaten) == 1 else
+                 [", ".join(f"the {b}" for b in beaten[:-1]) + f" and the {beaten[-1]}"])
+        conclusion = (
+            "The regulator claim survives only PARTLY. The regulator's gap exceeds "
+            "the gap of " + named[0] + " by more than "
+            f"{CONTROL_GAP_TOLERANCE:.0f} points, but against the {smallest[0]} the "
+            f"margin is only {smallest[1]:+.1f} points. A headline of the form "
+            "'regulators diverge faster than the enzymes they control' overstates it, "
+            "because part of the apparent gap is the selection effect: the pairs were "
+            "chosen on the alpha subunit, so every other operon protein is more "
+            "variable than it by construction.")
+    else:
+        conclusion = (
+            "The regulator claim DOES NOT SURVIVE the control and has to be restated. "
+            f"The regulator's gap exceeds no control protein's gap by more than "
+            f"{CONTROL_GAP_TOLERANCE:.0f} points; the largest margin over any control "
+            f"is {largest[1]:+.1f} points against the {largest[0]}. What was measured "
+            "is the selection effect: every operon component is more variable than the "
+            "alpha subunit, which is exactly what selecting pairs on the alpha subunit "
+            "produces.")
+    return {
+        "conclusion": conclusion,
+        "measured": measured,
+        "direct_comparison": direct,
+        "regulator_gap_exceeds_every_control": survives,
+        "controls_the_regulator_beats": beaten,
+        "excess_over_each_control": [{"control": name, "points": round(margin, 1)}
+                                     for name, margin, _ in excess],
+        "smallest_margin_over_a_control": {"control": smallest[0],
+                                           "points": round(smallest[1], 1)},
+        "largest_margin_over_a_control": {"control": largest[0],
+                                          "points": round(largest[1], 1)},
+        "tolerance_points": CONTROL_GAP_TOLERANCE,
+        "what_counts_as_clearing_a_control": (
+            f"a margin above {CONTROL_GAP_TOLERANCE:.0f} percentage points AND a "
+            f"Cliff's delta of at least {DELTA_NEGLIGIBLE}. The p value is not one of "
+            "the conditions: at these pair counts a half-point difference and a "
+            "fifteen-point difference both come out at p below 1e-200."),
+        "negligible_delta": DELTA_NEGLIGIBLE,
+        "restated_finding": (
+            "regulators are the most variable protein in the operon, but every operon "
+            "component is more variable than the alpha subunit, and the alpha "
+            "subunit's conservation is an artefact of selecting the pairs on it"
+            if not survives else
+            "regulators are more divergent than the other operon genes, not only than "
+            "the alpha subunit the pairs were selected on"),
+    }
+
+
+def measured_identity_floor(samples):
+    """Hizalama tabaninin AMPIRIK olcumu.
+
+    `RANDOM_IDENTITY_FLOOR` literaturden alinmis bir sayiydi (%25). Burada
+    tabanin kendisi bu veride olculuyor: FARKLI enzim tipinden ve FARKLI
+    aileden -- yani akraba olmadigi bilinen -- duzenleyici ciftleri, gercek
+    ciftlerle AYNI sekilde puanlaniyor. 95. yuzdelik, "akraba olmayan iki
+    duzenleyici bu kadar benzesebiliyor" demektir; altindaki her olcum doygun.
+    """
+    if not samples:
+        return None
+    values = np.array(samples, dtype=float)
+    return {
+        "what_was_sampled": ("regulator pairs drawn from DIFFERENT enzyme types and "
+                             "DIFFERENT regulator families, scored exactly like the "
+                             "real pairs, with the same alignment coverage check"),
+        "n_pairs": len(values),
+        "mean": round(float(np.mean(values)), 1),
+        "median": round(float(np.median(values)), 1),
+        "sd": round(float(np.std(values, ddof=1)), 1) if len(values) > 1 else None,
+        "percentiles": {str(q): round(float(np.percentile(values, q)), 1)
+                        for q in (50, 75, 90, 95, 99)},
+        "floor_percentile": NULL_FLOOR_PERCENTILE,
+        "measured_floor": round(float(np.percentile(values, NULL_FLOOR_PERCENTILE)), 1),
+        "assumed_floor_in_the_earlier_version": RANDOM_IDENTITY_FLOOR,
+    }
+
+
+def gate_ladder(sampled, rbh_pairs, floor, rbh_report):
+    """B: ORTOLOJI KAPI MERDIVENI. Her kapinin neye mal oldugu gorunsun.
+
+    Kapilar birikimli olarak sertlesiyor. Ayni kontrast her basamakta
+    yeniden hesaplaniyor, boylece okuyucu her kapinin kac cift elediğini VE
+    sonucu ne kadar degistirdigini birlikte gorebiliyor.
+    """
+    known = [p for p in sampled if p["family_known"]]
+    same = [p for p in known if p["same_family"]]
+    above = [p for p in same if p["identities"]["regulator"] > floor]
+    gates = [
+        ("1. all pairs", sampled,
+         "no orthology evidence at all; two regulators may be unrelated proteins"),
+        ("2. same regulator family", same,
+         "TetR and LysR are very large families, so this is weak evidence: two "
+         "TetR-family regulators in two genomes can still be different proteins"),
+        (f"3. same family, above the measured floor ({floor:.0f} %)", above,
+         "pairs at or below the floor carry no divergence information at all, because "
+         "regulators known to be unrelated already score that high"),
+        ("4. same family and reciprocal best hit", rbh_pairs,
+         "the strongest orthology evidence obtainable from sequence alone here: each "
+         "regulator's best-scoring match among all that type's regulators is the "
+         "other one"),
+    ]
+    rows = []
+    for name, subset, why in gates:
+        row = protein_contrast(subset, "regulator", floor)
+        if row is None:
+            rows.append({"gate": name, "why": why, "n_pairs": len(subset),
+                         "note": "below the minimum pair count; not reported"})
+            continue
+        row["gate"] = name
+        row["why"] = why
+        rows.append(row)
+
+    # Kapilar yalnizca cift ELEMIYOR, karsilastirmayi baska bir evrimsel
+    # UZAKLIGA tasiyor. Bu, kapinin kendi yanliligi ve ciktida yazmasi gerekir.
+    scored = [r for r in rows if r.get("gap_mean") is not None]
+    shift = None
+    if len(scored) >= 2:
+        first, last = scored[0], scored[-1]
+        shift = {
+            "first_gate": first["gate"], "last_gate": last["gate"],
+            "alpha_identity_at_the_first_gate": first["alpha_identity_mean"],
+            "alpha_identity_at_the_last_gate": last["alpha_identity_mean"],
+            "gap_at_the_first_gate": first["gap_mean"],
+            "gap_at_the_last_gate": last["gap_mean"],
+            "note": ("The gates do not only remove pairs, they move the comparison to "
+                     "a different evolutionary distance. A reciprocal best hit inside "
+                     "one type is easiest to establish between close relatives, so the "
+                     "pairs that survive the last gate have a mean alpha identity of "
+                     f"{last['alpha_identity_mean']:.1f} % against "
+                     f"{first['alpha_identity_mean']:.1f} % at the first. Part of the "
+                     "change in the gap is therefore a change in distance rather than "
+                     "a change in orthology evidence, and the two cannot be separated "
+                     "with this design."),
+        }
+    return {
+        "question": ("What does the regulator-to-alpha contrast look like at "
+                     "successively stricter evidence that the two regulators are the "
+                     "same protein rather than two members of one large family?"),
+        "gates": rows,
+        "pairs_removed_by_each_gate": {
+            "all_pairs": len(sampled),
+            "both_families_classified": len(known),
+            "same_family": len(same),
+            "same_family_above_the_measured_floor": len(above),
+            "same_family_and_reciprocal_best_hit": len(rbh_pairs),
+        },
+        "reciprocal_best_hit": rbh_report,
+        "what_the_gates_also_change": shift,
+        "how_to_read_gate_4": (
+            "Gate 4 biases toward conserved regulators. A fast-diverging regulator is "
+            "exactly the one whose best match inside its own type is somebody else, so "
+            "it fails the reciprocal test and leaves the sample. The gate is therefore "
+            "conservative in one direction only: a gap that survives it is real, while "
+            "a gap that disappears at it is ambiguous, because the pairs it removed are "
+            "the ones the claim is about."),
+        "gate_4_pair_universe": (
+            "the reciprocal best hit pairs are scored directly rather than taken from "
+            "the sampled set. Inside a large type the sampler keeps "
+            f"{MAX_PAIRS_PER_TYPE} of tens of thousands of pairs, so it would catch "
+            "almost none of the at most n/2 reciprocal pairs and the gate would rest "
+            "on a handful of observations."),
     }
 
 
@@ -1602,6 +2075,14 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
                for (cid, cluster, group, organism, family, architecture,
                     alpha, regulator) in rows]
 
+    by_candidate = {entry["candidate_id"]: entry for entry in entries}
+
+    # Kontrol genleri (A): tip tanimina GIRMEYEN operon proteinleri. Burada
+    # yalnizca dizileri girise bagliyoruz; puanlama asagida, ayni ciftlerde.
+    control_sequences = load_operon_control_proteins(con)
+    for entry in entries:
+        entry["controls"] = control_sequences.get(entry["candidate_id"], {})
+
     by_type = defaultdict(list)
     for entry in entries:
         by_type[entry["type"]].append(entry)
@@ -1625,23 +2106,65 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
         for i, j in taken:
             selected.append((items[i], items[j]))
 
+    # Karsilikli en iyi eslesme (B4): tip icinde HEPSINE-KARSI-HEPSI tarama.
+    # Gorev tip basina tek, cunku diziler boylece bir kez tasiniyor.
+    rbh_rng = random.Random(seed + 1)
+    rbh_tasks, rbh_capping = [], []
+    for cluster in sorted(by_type):
+        items = by_type[cluster]
+        if len(items) < 2:
+            continue
+        used = list(items)
+        capped = len(used) > MAX_RBH_ENTRIES_PER_TYPE
+        if capped:
+            rbh_rng.shuffle(used)
+            used = used[:MAX_RBH_ENTRIES_PER_TYPE]
+        rbh_capping.append({"type": cluster, "entries": len(items),
+                            "entries_scanned": len(used),
+                            "alignments": len(used) * (len(used) - 1) // 2,
+                            "capped": capped})
+        rbh_tasks.append((cluster, [e["candidate_id"] for e in used],
+                          [e["regulator"] for e in used]))
+
+    if cpu > 1 and len(rbh_tasks) > 1:
+        with Pool(cpu) as pool:
+            rbh_results = pool.map(_reciprocal_best_hits, rbh_tasks, chunksize=1)
+    else:
+        rbh_results = [_reciprocal_best_hits(t) for t in rbh_tasks]
+    rbh_hits, rbh_ties = set(), 0
+    for _cluster, hits, ties in rbh_results:
+        rbh_hits.update(tuple(h) for h in hits)
+        rbh_ties += ties
+
+    # RBH ciftleri AYRICA puanlanir. Buyuk bir tipte ornekleyici on binlerce
+    # ciftten MAX_PAIRS_PER_TYPE tanesini tuttugu icin, en fazla n/2 olan
+    # karsilikli ciftlerin neredeyse hicbirini yakalamaz; kapi bir tutam
+    # gozlemin uzerinde kalirdi.
+    sampled_keys = {tuple(sorted((a["candidate_id"], b["candidate_id"])))
+                    for a, b in selected}
+    extra = [(by_candidate[x], by_candidate[y]) for x, y in sorted(rbh_hits)
+             if (x, y) not in sampled_keys
+             and x in by_candidate and y in by_candidate]
+
+    to_score = selected + extra
     tasks = [(a["alpha"], a["regulator"], b["alpha"], b["regulator"])
-             for a, b in selected]
+             for a, b in to_score]
     if cpu > 1 and len(tasks) > 200:
         with Pool(cpu) as pool:
             scored = pool.map(_score_pair, tasks, chunksize=64)
     else:
         scored = [_score_pair(t) for t in tasks]
 
-    pairs, dropped = [], 0
-    for (a, b), (e_id, e_cov, r_id, r_cov) in zip(selected, scored):
+    pairs, extra_pairs, dropped = [], [], 0
+    for index, ((a, b), (e_id, e_cov, r_id, r_cov)) in enumerate(zip(to_score, scored)):
         if None in (e_id, e_cov, r_id, r_cov):
             dropped += 1
             continue
         if e_cov < MIN_ALIGNED_COVERAGE or r_cov < MIN_ALIGNED_COVERAGE:
             dropped += 1
             continue
-        pairs.append({
+        key = tuple(sorted((a["candidate_id"], b["candidate_id"])))
+        pair = {
             "type": a["type"], "group": a["group"],
             "genus_pair": tuple(sorted((a["genus"], b["genus"]))),
             "families": (a["family"], b["family"]),
@@ -1651,7 +2174,63 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
                              and a["family"] and b["family"]),
             "enzyme_identity": e_id, "regulator_identity": r_id,
             "band": band_of(e_id),
-        })
+            "reciprocal_best_hit": key in rbh_hits,
+            # Kimlikler tek bir sozlukte toplaniyor, boylece duzenleyici ve
+            # kontrol genleri AYNI fonksiyonla, ayni sekilde puanlanabiliyor.
+            "identities": {"regulator": r_id},
+            "_entries": (a, b),
+        }
+        (pairs if index < len(selected) else extra_pairs).append(pair)
+
+    # Kontrol genlerinin puanlanmasi: AYNI ornekli ciftlerde, ayni kapsama
+    # kontroluyle. Iki ucta da bulunmayan kontrol geni o cift icin yok sayilir.
+    control_tasks = []
+    for index, pair in enumerate(pairs):
+        a, b = pair["_entries"]
+        for category in CONTROL_CATEGORIES:
+            seq_a, seq_b = a["controls"].get(category), b["controls"].get(category)
+            if seq_a and seq_b:
+                control_tasks.append(((index, category), seq_a, seq_b))
+    if cpu > 1 and len(control_tasks) > 200:
+        with Pool(cpu) as pool:
+            control_scored = pool.map(_score_one, control_tasks, chunksize=64)
+    else:
+        control_scored = [_score_one(t) for t in control_tasks]
+    control_dropped = 0
+    for (index, category), identity, coverage in control_scored:
+        if identity is None or coverage is None or coverage < MIN_ALIGNED_COVERAGE:
+            control_dropped += 1
+            continue
+        pairs[index]["identities"][category] = identity
+
+    # Hizalama tabaninin AMPIRIK olcumu (B3): farkli tip VE farkli aileden,
+    # yani akraba olmadigi bilinen duzenleyici ciftleri.
+    classified = [e for e in entries
+                  if e["family"] and e["family"] != UNCLASSIFIED_FAMILY]
+    floor_rng = random.Random(seed + 2)
+    null_tasks, null_seen, attempts = [], set(), 0
+    while (len(classified) > 1 and len(null_tasks) < NULL_FLOOR_PAIRS
+           and attempts < 60 * NULL_FLOOR_PAIRS):
+        attempts += 1
+        a, b = floor_rng.choice(classified), floor_rng.choice(classified)
+        if a["type"] == b["type"] or a["family"] == b["family"]:
+            continue
+        key = tuple(sorted((a["candidate_id"], b["candidate_id"])))
+        if key in null_seen:
+            continue
+        null_seen.add(key)
+        null_tasks.append((key, a["regulator"], b["regulator"]))
+    if cpu > 1 and len(null_tasks) > 200:
+        with Pool(cpu) as pool:
+            null_scored = pool.map(_score_one, null_tasks, chunksize=64)
+    else:
+        null_scored = [_score_one(t) for t in null_tasks]
+    null_identities = [identity for _key, identity, coverage in null_scored
+                       if identity is not None and coverage is not None
+                       and coverage >= MIN_ALIGNED_COVERAGE]
+    floor_block = measured_identity_floor(null_identities)
+    measured_floor = (floor_block["measured_floor"] if floor_block
+                      else RANDOM_IDENTITY_FLOOR)
 
     out["sampling"] = {
         "rule": (f"within each enzyme type every within-type pair is enumerated, "
@@ -1670,6 +2249,11 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
         "types_completely_enumerated": sum(1 for s in sampling if s["complete"]),
         "types_sampled": len(sampling),
         "per_type": sampling,
+        "control_protein_alignments": len(control_tasks),
+        "control_alignments_dropped_for_low_coverage": control_dropped,
+        "reciprocal_best_hit_pairs_scored_in_addition": len(extra),
+        "null_floor_alignments": len(null_tasks),
+        "null_floor_alignments_used": len(null_identities),
     }
     if not pairs:
         out["verdict"] = {"conclusion": "not computable: no pair survived the "
@@ -1695,7 +2279,49 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
             r for r in (paired_contrast(
                 [p for p in same_family if p["band"] == name], name)
                 for _, _, name in IDENTITY_BANDS) if r],
+        "what_it_still_does_not_control_for": (
+            "a shared family is not a shared protein. TetR and LysR are very large "
+            "families, so two TetR-family regulators in two genomes can be entirely "
+            "different proteins. See the orthology gate ladder, which is this "
+            "restriction plus two stricter ones."),
     }
+
+    # (A) KONTROL GENLERI. Bu modulun en belirleyici eklemesi: ayni ciftlerde
+    # tip tanimina girmeyen operon proteinleri de puanlanir, cunku alfa'nin
+    # yuksek kimligi SECIMIN sonucu ve kontrol olmadan iddia ayirt edilemez.
+    out["control_genes"] = control_gene_block(pairs, measured_floor)
+    out["control_genes"]["verdict"] = control_gene_verdict(out["control_genes"])
+
+    # (B) ORTOLOJI KAPI MERDIVENI. Taban olculur, varsayilmaz; 4. kapi RBH.
+    out["measured_identity_floor"] = floor_block
+    rbh_same_family = [p for p in pairs + extra_pairs
+                       if p["reciprocal_best_hit"] and p["family_known"]
+                       and p["same_family"]]
+    capped_types = [c for c in rbh_capping if c["capped"]]
+    rbh_report = {
+        "rule": ("within an enzyme type, regulator A's best-scoring global alignment "
+                 "among all that type's regulators is regulator B, and B's best is A. "
+                 "Ranking uses the alignment score rather than percent identity, "
+                 "which is what a reciprocal best hit means; the score comes from the "
+                 "same blastp scoring used everywhere else in this module."),
+        "types_scanned": len(rbh_capping),
+        "alignments": sum(c["alignments"] for c in rbh_capping),
+        "entry_cap_per_type": MAX_RBH_ENTRIES_PER_TYPE,
+        "types_capped": len(capped_types),
+        "what_was_capped": capped_types if capped_types else
+        ("nothing. The largest type carries "
+         f"{max((c['entries'] for c in rbh_capping), default=0)} entries, below the "
+         f"cap of {MAX_RBH_ENTRIES_PER_TYPE}, so every type was scanned all against "
+         "all and no reciprocal best hit was missed through subsampling."),
+        "reciprocal_pairs_found": len(rbh_hits),
+        "ties_encountered_while_ranking": rbh_ties,
+        "reciprocal_pairs_usable": len(rbh_same_family),
+        "why_fewer_are_usable": ("a reciprocal pair still has to pass the alignment "
+                                 "coverage check and to carry two classified "
+                                 "regulators of the same family"),
+    }
+    out["orthology_gate_ladder"] = gate_ladder(pairs, rbh_same_family,
+                                               measured_floor, rbh_report)
 
     # (b) enzim grubuna gore
     out["by_enzyme_group"] = [
@@ -1858,6 +2484,21 @@ def figure_data(pairs, block, seed):
                       int(bool(p["same_family"])), p["group"]]
                      for p in scatter_source],
         },
+        "plot_4": {
+            "kind": "horizontal bar, one bar per operon protein",
+            "title": "Gap to the alpha subunit, regulator against the control proteins",
+            "x_label": "Mean identity gap to the alpha subunit (percentage points)",
+            "y_label": "Operon protein",
+            "why": ("the alpha subunit is the protein the pairs were selected on, so "
+                    "its conservation is not an observation. The bar that matters is "
+                    "the difference between the regulator's bar and the control bars."),
+            "series": [{"protein": row["protein"], "n_pairs": row["n_pairs"],
+                        "identity_mean": row["identity_mean"],
+                        "gap_mean": row["gap_mean"],
+                        "is_control": row["key"] != "regulator"}
+                       for row in (block.get("control_genes") or {})
+                       .get("on_their_own_pairs", [])],
+        },
         "plot_3": {
             "kind": "line or bar",
             "title": "Regulator family switch rate by enzyme identity band",
@@ -1939,8 +2580,35 @@ def divergence_verdict(block):
               "control, and it is the main reason the unrestricted comparison "
               "overstates regulator divergence.")
     floor = block["measurement_floor"]
+
+    # Kontrol genleri olmadan yukaridaki cumlelerin hicbiri yorumlanamaz, bu
+    # yuzden karar sozlugunde ONLARDAN sonra degil ONCE geliyorlar.
+    control = (block.get("control_genes") or {}).get("verdict") or {}
+    gates = (block.get("orthology_gate_ladder") or {}).get("gates") or []
+    gate_rows = [g for g in gates if g.get("gap_mean") is not None]
+    gate_sentence = None
+    if gate_rows:
+        gate_sentence = (
+            "the regulator-to-alpha gap at successively stricter orthology gates runs "
+            + ", ".join(f"{g['gap_mean']:+.1f} points at '{g['gate']}' "
+                        f"(n = {g['n_pairs']})" for g in gate_rows)
+            + ". Gate 4 biases toward conserved regulators, because a fast-diverging "
+              "regulator is exactly the one that fails a reciprocal best hit, so a gap "
+              "that survives it is real while a gap that disappears there is ambiguous.")
+
     return {
+        "does_the_regulator_claim_survive_a_control":
+            control.get("conclusion", "not computed"),
+        "control_genes": control.get("measured"),
+        "control_genes_head_to_head": control.get("direct_comparison"),
+        "orthology_gates": gate_sentence,
         "divergence_rate": conclusion,
+        "why_the_gap_to_the_alpha_subunit_is_not_the_finding": (
+            "the pairs are drawn from within an enzyme type and an enzyme type is "
+            "DEFINED by alpha subunit similarity, so high alpha-to-alpha identity is "
+            "guaranteed by construction. Every number above that compares a protein "
+            "with the alpha subunit therefore contains a selection effect of unknown "
+            "size, and only the comparison against the control proteins separates it."),
         "family_retention": switch_sentence,
         "where_the_data_cannot_answer": (
             "the lowest enzyme identity band. "
@@ -2106,6 +2774,63 @@ def print_summary(result):
                           f"(n={r['n_pairs']})"
                           for r in div["by_enzyme_group_same_family"]))
 
+        ctrl = div.get("control_genes")
+        if ctrl:
+            print("\n  [KONTROL GENLERI -- secim dairesinin denetimi]")
+            header = (f"  {'protein':14} {'cift':>6} {'tip':>4} {'alfa':>7} "
+                      f"{'protein':>8} {'fark':>7} {'p<alfa':>7} {'delta':>7}")
+            for title, series in (
+                    ("kendi ciftlerinde", ctrl["on_their_own_pairs"]),
+                    (f"ortak cift kumesi (n={ctrl['on_the_common_pair_set']['n_pairs']})",
+                     ctrl["on_the_common_pair_set"]["rows"])):
+                print(f"  - {title}")
+                print(header)
+                for row in series:
+                    print(f"  {row['protein']:14} {row['n_pairs']:6} "
+                          f"{row['n_types']:4} {row['alpha_identity_mean']:7.1f} "
+                          f"{row['identity_mean']:8.1f} {row['gap_mean']:+7.1f} "
+                          f"{100*row['share_of_pairs_less_conserved_than_alpha']:6.0f}% "
+                          f"{(row['cliffs_delta_alpha_over_protein'] or 0):+7.2f}")
+            print("  - duzenleyici x kontrol geni, DOGRUDAN esli")
+            for row in ctrl["regulator_versus_each_control"]:
+                p_text = ("-" if row["wilcoxon_p"] is None
+                          else f"{row['wilcoxon_p']:.1e}")
+                print(f"  {row['control']:14} {row['n_pairs']:6} "
+                      f"kontrol %{row['control_identity_mean']:.1f} vs duzenleyici "
+                      f"%{row['regulator_identity_mean']:.1f}  "
+                      f"fark {row['mean_difference_control_minus_regulator']:+.1f}  "
+                      f"delta {(row['cliffs_delta_control_over_regulator'] or 0):+.2f}  "
+                      f"p={p_text}")
+            print("  KARAR: " + ctrl["verdict"]["conclusion"])
+
+        fl = div.get("measured_identity_floor")
+        if fl:
+            print(f"\n  [OLCULEN TABAN] akraba olmayan {fl['n_pairs']} duzenleyici "
+                  f"cifti: ortalama %{fl['mean']:.1f}, "
+                  f"{fl['floor_percentile']}. yuzdelik %{fl['measured_floor']:.1f} "
+                  f"(eski varsayim %{fl['assumed_floor_in_the_earlier_version']:.0f})")
+
+        ladder = div.get("orthology_gate_ladder")
+        if ladder:
+            print("\n  [ORTOLOJI KAPI MERDIVENI]")
+            print(f"  {'kapi':52} {'cift':>6} {'enzim':>7} {'reg':>7} "
+                  f"{'fark':>7} {'p':>10}")
+            for row in ladder["gates"]:
+                if row.get("gap_mean") is None:
+                    print(f"  {row['gate'][:52]:52} {row['n_pairs']:6}   "
+                          f"{row.get('note', 'yok')}")
+                    continue
+                print(f"  {row['gate'][:52]:52} {row['n_pairs']:6} "
+                      f"{row['alpha_identity_mean']:7.1f} "
+                      f"{row['identity_mean']:7.1f} {row['gap_mean']:+7.1f} "
+                      + (f"{row['wilcoxon_p']:10.2e}"
+                         if row['wilcoxon_p'] is not None else f"{'-':>10}"))
+            rbh = ladder["reciprocal_best_hit"]
+            print(f"  RBH: {rbh['types_scanned']} tipte {rbh['alignments']} hizalama, "
+                  f"{rbh['reciprocal_pairs_found']} karsilikli cift, "
+                  f"{rbh['reciprocal_pairs_usable']} kullanilabilir, "
+                  f"kirpilan tip {rbh['types_capped']}")
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -2141,7 +2866,10 @@ def main():
                 "regular expression over GenBank /product text rather than a "
                 "measurement of sequence. Third, how divergently the regulators "
                 "evolved compared with the enzymes they sit next to, resolved by "
-                "enzyme group and by the enzyme-to-enzyme identity band."),
+                "enzyme group and by the enzyme-to-enzyme identity band, controlled "
+                "against the other proteins of the same operon, and reported at four "
+                "successively stricter gates on whether the two regulators are the "
+                "same protein at all."),
             "two_grades_of_neighbourhood_evidence": {
                 "sequence_verified": (
                     "operon components (beta subunit, ferredoxin, reductase) are "
@@ -2225,10 +2953,23 @@ def main():
         "upstream of the operon 5' end. No binding was measured, so 'the regulator of "
         "this enzyme' is an inference from gene order. A regulator acting from "
         "elsewhere on the replicon, or a global regulator, is invisible to it.",
-        "Pairwise identity saturates. Unrelated proteins align at roughly 20 to 25 % "
-        "identity, so below that level the measure cannot separate a fast-diverging "
-        "regulator from an unrelated protein, and no divergence rate is claimed in "
-        "the bands where most pairs sit at that floor.",
+        "The third question selects its pairs on the alpha subunit, because an enzyme "
+        "type IS the profile the alpha subunit scored best against. High alpha-to-alpha "
+        "identity inside a type is therefore a property of the selection, not an "
+        "observation, and any gap measured against it is uninterpretable on its own. "
+        "That is why the same contrast is computed for the beta subunit, the "
+        "ferredoxin and the reductase on the same pairs; the regulator claim rests "
+        "entirely on the margin over those controls and not on the gap itself.",
+        "Pairwise identity saturates. The floor was measured rather than assumed, from "
+        "regulator pairs taken from different enzyme types and different families, and "
+        "below it the measure cannot separate a fast-diverging regulator from an "
+        "unrelated protein. No divergence rate is claimed in the bands where most "
+        "pairs sit at that floor.",
+        "The strictest orthology gate, a reciprocal best hit inside the enzyme type, "
+        "is conservative in one direction only. A fast-diverging regulator is exactly "
+        "the one whose best match in its own type is somebody else, so the gate removes "
+        "the pairs the claim is about: a gap that survives it is real, a gap that "
+        "disappears there is ambiguous.",
         "The third question covers only the entries whose upstream gene is a "
         "regulator at all, under three in ten. Sequence availability is not the "
         "limit, because protein translations survive in CON records even though the "

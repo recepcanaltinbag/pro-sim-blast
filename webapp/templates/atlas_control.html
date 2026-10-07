@@ -6,8 +6,10 @@
 
 <h1>What controls these operons, and what moves them</h1>
 <p class="lede">Three questions about the genes around the oxygenase: which regulator sits with
-which chemistry, how far the regulator diverges when the enzyme does, and whether the enzymes that
-move between genomes are really the ones that degrade man-made compounds.</p>
+which chemistry, how far the regulator diverges when the enzyme does &mdash; measured against the
+other genes of the same operon, because the pairs are selected on the enzyme and that alone makes
+everything else look more divergent &mdash; and whether the enzymes that move between genomes are
+really the ones that degrade man-made compounds.</p>
 
 {% if rel %}
 {% set reg = rel.regulation %}
@@ -58,11 +60,180 @@ regulator is invisible to this.</figcaption>
 {% endif %}
 
 {% set div = rel.divergence %}
-<h2>2 · Regulators diverge faster than the enzymes they control</h2>
-<p>For pairs of entries within one enzyme type, the identity between the two alpha subunits can be
-compared with the identity between their two regulators. The comparison is restricted to pairs whose
-regulators belong to the <em>same</em> family, because two regulators of different families are
-different proteins and a low identity between them measures replacement rather than divergence.</p>
+{#  Esli testin p degeri icin tek bicim. 0.0 basildiginda "0e+00" yaniltici
+    olurdu; alt sinir yaziliyor.  #}
+{% macro pval(p) -%}
+{%- if p is none %}&mdash;{% elif p == 0 %}&lt;1e-300{% else %}{{ '%.0e' % p }}{% endif -%}
+{%- endmacro %}
+<h2>2 · Regulators are the most variable protein in the operon, but much of the gap was how the pairs were selected</h2>
+
+<div class="caveat caveat--warn">
+  <b>Why this section cannot be read without a control gene.</b> The pairs below are drawn from
+  within one enzyme type, and an enzyme type <em>is</em> the profile model its alpha subunit scored
+  best against. High alpha-to-alpha identity inside a type is therefore guaranteed by construction,
+  not observed: it is the selection, not a result. Any other protein in the operon will look more
+  divergent than the alpha subunit for that reason alone, whether or not it evolves faster, so a
+  gap against the alpha subunit is not by itself a finding about the regulator. The only question
+  the data can answer is whether the regulator is more divergent <em>than the other genes of the
+  same operon are</em>. The beta subunit, the ferredoxin and the reductase are therefore scored on
+  exactly the same genome pairs, from the same evidence class as the regulator itself, and none of
+  them took part in defining the enzyme type.
+</div>
+
+{% if div.controls %}
+<h3>2.1 · Every protein in the operon, measured on the same pairs</h3>
+<p>Each row is the identity between the two copies of one protein, set against the identity between
+the two alpha subunits of the same pairs. The gap is positive in every row, which is exactly what
+selecting the pairs on the alpha subunit produces. Only the <em>differences between the rows</em>
+carry information.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Operon protein</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Alpha identity</th><th class="num">This protein</th><th class="num">Gap to alpha</th>
+<th class="num">Less conserved than alpha</th><th class="num">Cliff&rsquo;s &delta;</th>
+<th class="num">p</th></tr></thead>
+<tbody>
+{% for c in div.controls %}
+<tr{{ ' class="hl"'|safe if c.key == 'regulator' }}>
+  <td>{{ c.protein }}
+      {%- if c.key == 'regulator' %} <span class="chip chip--data">the claim</span>
+      {%- else %} <span class="chip">control</span>{% endif %}</td>
+  <td class="num" data-v="{{ c.n_pairs }}">{{ c.n_pairs|fmt }}</td>
+  <td class="num" data-v="{{ c.n_types }}">{{ c.n_types }}</td>
+  <td class="num">{{ '%.1f %%' % c.alpha_identity_mean }}</td>
+  <td class="num" data-v="{{ c.identity_mean }}">{{ '%.1f %%' % c.identity_mean }}</td>
+  <td class="num" data-v="{{ c.gap_mean }}">{{ '%+.1f' % c.gap_mean }}</td>
+  <td class="num" data-v="{{ c.share_of_pairs_less_conserved_than_alpha }}">{{ '%.0f %%' % (100 * c.share_of_pairs_less_conserved_than_alpha) }}</td>
+  <td class="num" data-v="{{ c.cliffs_delta_alpha_over_protein }}">{% if c.cliffs_delta_alpha_over_protein is not none %}{{ '%+.2f' % c.cliffs_delta_alpha_over_protein }}{% else %}&mdash;{% endif %}</td>
+  <td class="num" data-v="{{ c.wilcoxon_p }}">{{ pval(c.wilcoxon_p) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption>Means over the pairs where that protein is present at <em>both</em> ends, with a paired
+Wilcoxon signed-rank test against the alpha subunit of the same pairs &mdash; the right test here,
+because the two measurements are paired inside one genome pair. Cliff&rsquo;s &delta; is the
+probability that a randomly drawn alpha identity beats a randomly drawn identity of that protein,
+minus the reverse. The four rows do not sit on the same pairs, so they are repeated below on the
+pairs where all four are present at once.</figcaption>
+</figure>
+{% if div.controls_common %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>On the {{ div.controls_common_n|fmt }} pairs carrying all four proteins</th>
+<th class="num">Alpha identity</th><th class="num">This protein</th><th class="num">Gap to alpha</th>
+<th class="num">Less conserved than alpha</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for c in div.controls_common %}
+<tr{{ ' class="hl"'|safe if c.key == 'regulator' }}>
+  <td>{{ c.protein }}</td>
+  <td class="num">{{ '%.1f %%' % c.alpha_identity_mean }}</td>
+  <td class="num" data-v="{{ c.identity_mean }}">{{ '%.1f %%' % c.identity_mean }}</td>
+  <td class="num" data-v="{{ c.gap_mean }}">{{ '%+.1f' % c.gap_mean }}</td>
+  <td class="num" data-v="{{ c.share_of_pairs_less_conserved_than_alpha }}">{{ '%.0f %%' % (100 * c.share_of_pairs_less_conserved_than_alpha) }}</td>
+  <td class="num" data-v="{{ c.wilcoxon_p }}">{{ pval(c.wilcoxon_p) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>One common pair set, four strictly comparable numbers.</b> An operon with a
+regulator, a beta subunit, a ferredoxin and a reductase all annotated at both ends of a pair is
+uncommon, so this table is small. It is here because it is the only version in which the four
+figures cannot be moved by which pairs each protein happened to be available on.</figcaption>
+</figure>
+{% endif %}
+{% endif %}
+
+{% if div.head_to_head %}
+<h3>2.2 · The regulator against each control, pair by pair</h3>
+<p>This is the comparison the claim stands or falls on. For every pair carrying both the regulator
+and one control protein at both ends, the two identities are compared directly. The alpha subunit
+does not enter at all: the question is only which of two operon genes is the more variable.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Comparison</th><th class="num">Pairs</th><th class="num">Control identity</th>
+<th class="num">Regulator identity</th><th class="num">Regulator&rsquo;s extra divergence</th>
+<th class="num">Regulator less conserved</th><th class="num">Cliff&rsquo;s &delta;</th>
+<th class="num">p</th><th>Verdict</th></tr></thead>
+<tbody>
+{% set tol = div.control_verdict.get('tolerance_points', 5) %}
+{% for h in div.head_to_head %}
+<tr><td>regulator vs the {{ h.control }}</td>
+  <td class="num" data-v="{{ h.n_pairs }}">{{ h.n_pairs|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % h.control_identity_mean }}</td>
+  <td class="num">{{ '%.1f %%' % h.regulator_identity_mean }}</td>
+  <td class="num" data-v="{{ h.mean_difference_control_minus_regulator }}">{{ '%+.1f' % h.mean_difference_control_minus_regulator }}</td>
+  <td class="num" data-v="{{ h.share_of_pairs_regulator_less_conserved_than_control }}">{{ '%.0f %%' % (100 * h.share_of_pairs_regulator_less_conserved_than_control) }}</td>
+  <td class="num" data-v="{{ h.cliffs_delta_control_over_regulator }}">{% if h.cliffs_delta_control_over_regulator is not none %}{{ '%+.2f' % h.cliffs_delta_control_over_regulator }}{% else %}&mdash;{% endif %}</td>
+  <td class="num" data-v="{{ h.wilcoxon_p }}">{{ pval(h.wilcoxon_p) }}</td>
+  <td>{% if h.mean_difference_control_minus_regulator >= tol %}<span class="verdict verdict--robust">clears the control</span>
+      {%- elif h.mean_difference_control_minus_regulator > 0 %}<span class="verdict verdict--weak">within noise of it</span>
+      {%- else %}<span class="verdict verdict--none">no excess</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>{{ div.control_verdict.conclusion }}</b> A margin counts as cleared only beyond
+{{ '%.0f' % tol }} percentage points, because a difference smaller than that is the order of the
+measurement&rsquo;s own noise: which pairs each protein was available on, and where the alignment
+coverage check cut.</figcaption>
+</figure>
+{% if div.control_verdict.restated_finding %}
+<p class="note"><b>Stated the way the controls allow:</b>
+{{ div.control_verdict.restated_finding }}.</p>
+{% endif %}
+{% endif %}
+
+{% if div.gates %}
+<h3>2.3 · What each orthology gate costs, and what it changes</h3>
+<p>A shared regulator family is not a shared protein. TetR and LysR are very large families, so two
+TetR-family regulators in two genomes may be entirely different proteins, and a low identity
+between them measures replacement rather than divergence. Compounding that, the regulator is
+identified purely by position &mdash; the first gene upstream of the operon 5&prime; end &mdash; so
+a gene that merely happens to sit there can enter the comparison. The ladder below applies
+successively stricter evidence that the two regulators really are the same protein.</p>
+{% if div.floor %}
+<p>The third gate needs a floor, and the floor was measured rather than assumed. Scoring
+{{ div.floor.n_pairs|fmt }} regulator pairs drawn from <em>different</em> enzyme types <em>and</em>
+different families &mdash; pairs known not to be the same protein &mdash; gives a mean identity of
+{{ '%.1f %%' % div.floor.mean }} and a {{ div.floor.floor_percentile }}th percentile of
+<b>{{ '%.1f %%' % div.floor.measured_floor }}</b>. That is how similar two unrelated regulators can
+look by alignment alone, so a pair at or below it carries no information about divergence. The
+earlier version of this analysis took {{ '%.0f %%' % div.floor.assumed_floor_in_the_earlier_version }}
+from the literature instead, which was too generous.</p>
+{% endif %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Gate</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Alpha identity</th><th class="num">Regulator identity</th><th class="num">Gap</th>
+<th class="num">Regulator less conserved</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for g in div.gates %}
+<tr{{ ' class="hl"'|safe if loop.last }}>
+  <td>{{ g.gate }}</td>
+  <td class="num" data-v="{{ g.n_pairs }}">{{ g.n_pairs|fmt }}</td>
+  <td class="num" data-v="{{ g.n_types }}">{{ g.n_types }}</td>
+  <td class="num">{{ '%.1f %%' % g.alpha_identity_mean }}</td>
+  <td class="num" data-v="{{ g.identity_mean }}">{{ '%.1f %%' % g.identity_mean }}</td>
+  <td class="num" data-v="{{ g.gap_mean }}">{{ '%+.1f' % g.gap_mean }}</td>
+  <td class="num" data-v="{{ g.share_of_pairs_less_conserved_than_alpha }}">{{ '%.0f %%' % (100 * g.share_of_pairs_less_conserved_than_alpha) }}</td>
+  <td class="num" data-v="{{ g.wilcoxon_p }}">{{ pval(g.wilcoxon_p) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The strictest gate is not the most informative one.</b> {{ div.gate_note }}
+{% if div.rbh %}The reciprocal test scanned {{ div.rbh.types_scanned }} enzyme types all against
+all, {{ div.rbh.alignments|fmt }} alignments, and found {{ div.rbh.reciprocal_pairs_found|fmt }}
+reciprocal pairs, of which {{ div.rbh.reciprocal_pairs_usable|fmt }} carry two classified
+regulators of one family and pass the coverage check.
+{% if div.rbh.types_capped %}{{ div.rbh.types_capped }} type{{ 's' if div.rbh.types_capped > 1 }}
+had too many entries to scan whole and were subsampled to {{ div.rbh.entry_cap_per_type }}; the
+full output names them and says how many alignments each one contributed.
+{% else %}No type had to be capped &mdash; the largest is below the
+{{ div.rbh.entry_cap_per_type }}-entry limit &mdash; so no reciprocal pair was missed through
+subsampling.{% endif %}{% endif %}
+{% if div.gate_shift %}{{ div.gate_shift.note }}{% endif %}</figcaption>
+</figure>
+{% endif %}
+
+<h3>2.4 · The gap against the alpha subunit, band by band</h3>
+<p>This is what the section used to report on its own. It is kept because the shape is real and
+section 3 refers to it, but it is a gap against the protein the pairs were selected on, so it
+measures the regulator and the selection together and cannot be read as a divergence rate by
+itself. Pairs are restricted to those whose regulators share a family, which is gate 2 above.</p>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Enzyme identity band</th><th class="num">Pairs</th><th class="num">Types</th>
@@ -80,10 +251,12 @@ different proteins and a low identity between them measures replacement rather t
 {% endfor %}
 </tbody></table></div>
 <figcaption><b>The gap widens as the enzymes diverge, then appears to close.</b> That last step is
-not regulators becoming conserved again; it is the measurement hitting its floor, since unrelated
-proteins already score around 25 % identity and a third of the pairs in the lowest band sit there.
-Pairs within a type are not independent observations, so the number of distinct types and genus
-pairs is given beside each band.</figcaption>
+not regulators becoming conserved again; it is the measurement hitting its floor, since two
+unrelated regulators already reach
+{% if div.floor %}{{ '%.1f %%' % div.floor.measured_floor }} at the
+{{ div.floor.floor_percentile }}th percentile{% else %}around 25 %{% endif %}, and a large share of
+the pairs in the lowest band sit there. Pairs within a type are not independent observations, so
+the number of distinct types is given beside each band.</figcaption>
 </figure>
 
 {% if div.retention %}
@@ -210,7 +383,7 @@ at when you meet one.</figcaption>
 {% endif %}
 
 <h2>8 · Limits</h2>
-<ul>{% for l in rel.limits[:7] %}<li>{{ l }}</li>{% endfor %}</ul>
+<ul>{% for l in rel.limits[:10] %}<li>{{ l }}</li>{% endfor %}</ul>
 <p class="dl"><a class="btn" href="{{ u('/download/analysis/operon_relations.json') }}">Full output (JSON)</a></p>
 {% else %}
 <p class="note">This analysis has not been run for this build.</p>
