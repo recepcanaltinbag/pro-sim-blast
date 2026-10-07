@@ -29,18 +29,6 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     zengin cinslerde yogunlasiyor. Kullanici onayi gerekiyor (disk, bant
     genisligi, ve sonrasinda pipeline'in bastan kosturulmasi).
 
-45. **Ekolojik koken sayfasi.** `ecological_origin.py` bitti ve calisiyor, sayfa
-    YOK. Icerik hazir: her tipin yakin ve uzak uyelerinin habitati, cins
-    kontrolu, atiksu blogu, ve en buyuk varyantin nerede gorundugu.
-
-46. **Ogrenme sayfasi.** `learn_from_data.py` ciktisi hazir (`learning.json`),
-    sayfa YOK. En carpici sonuc: 1-NN siniflandirici rastgele bolmede %93,
-    tipler egitimden cikarilinca %38 -- sizintinin en net gosterimi.
-
-47. **Dunya haritasi.** Her enzim icin "nerelerde goruldu" haritasi; varyantlarin
-    yayilimi; yakin ve uzak akrabalarin farkli cografyalarda olup olmadigi.
-    Veri var (`replicon_source.country`, `geo`).
-
 48. **Grup bazinda sayfalar.** Her RO grubunun genel ozellikleri: baskin operon
     mimarisi, regulator ve promotor tipleri.
 
@@ -158,6 +146,22 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     cumA1'i ayri tutup ikisine de "bu cift ayirt edilemiyor" notu koymak.
 
 ## Bitti
+
+45. ~~Ekolojik koken sayfasi.~~ **BITTI.** `/atlas/origin` yayinda.
+
+46. ~~Ogrenme sayfasi.~~ **BITTI.** `/atlas/learning` yayinda; istatistik
+    sayfasi da kisa bir ozetini tasiyor.
+
+47. ~~Dunya haritasi.~~ **BITTI.** `/atlas/geography`. Olculen sey bastan
+    belirtildi: 8.245 girisin (%72,2) ulkesi var, 121 ayri yer, bunlarin
+    112'si haritaya oturuyor; okyanuslar ve dagilmis iki devlet ayri listede.
+    Asil sonuc OLUMSUZ ve oyle de yazildi: tip x ulke sapma testinde 314
+    hucreden yalnizca 5'i maddi, 2'si cins duzeyini geciyor (PhnA1a Cin'de
+    +17 puan, KshA15 Kambocya'da +10). Yani dizileme cabasi bolununce neredeyse
+    hicbir tip cografi olarak ayirt edici degil. Harita yine de duruyor cunku
+    eksiksizligi gosteriyor, ama sayfanin basinda ne OLMADIGI yaziyor.
+    Enzim sayfalarindan `#type=` ile derin baglanti var.
+
 
 42. ~~Agac ve ag "her varyant icin bir temsilci" diyordu; dogru degildi.~~
     **BITTI.** Indirme dosyalarini denetlerken Newick'te 1.276 uc buldum oysa

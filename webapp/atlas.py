@@ -151,6 +151,15 @@ def operon_relations_view(path):
             "share": b.get("share_of_pairs_regulator_less_conserved"),
         })
 
+    # Kontrol genleri ve kapi merdiveni. Sayfanin 2. bolumu artik asil olarak
+    # bunlari basiyor: alfa alt birimine gore fark tek basina yorumlanamaz,
+    # cunku ciftler o protein uzerinden secildi.
+    control = div.get("control_genes") or {}
+    ladder = div.get("orthology_gate_ladder") or {}
+    controls = control.get("on_their_own_pairs") or []
+    common = control.get("on_the_common_pair_set") or {}
+    gates = [g for g in (ladder.get("gates") or []) if g.get("gap_mean") is not None]
+
     bias_block = raw.get("annotation_bias") or {}
     bias = []
     for key, label in (("hard_floor", "records with no annotated neighbour at all"),
@@ -173,7 +182,16 @@ def operon_relations_view(path):
         "assoc_rows": assoc,
         "divergence": {"bands": bands,
                        "retention": (div.get("regulator_family_retention") or {})
-                       .get("by_enzyme_identity_band") or []},
+                       .get("by_enzyme_identity_band") or [],
+                       "controls": controls,
+                       "controls_common": common.get("rows") or [],
+                       "controls_common_n": common.get("n_pairs"),
+                       "head_to_head": control.get("regulator_versus_each_control") or [],
+                       "control_verdict": control.get("verdict") or {},
+                       "gates": gates,
+                       "gate_note": ladder.get("how_to_read_gate_4"),
+                       "floor": div.get("measured_identity_floor") or {},
+                       "rbh": ladder.get("reciprocal_best_hit") or {}},
         "mobility": {"rows": rows,
                      "regex_only": (mobility.get("composition") or {})
                      .get("mobile_only_because_of_regex")},
@@ -1501,6 +1519,9 @@ PROVENANCE = [
     ("habitat.json", "file", "Isolation source, host kingdom and geography per replicon, "
      "with the habitat vocabulary and every keyword that decided an assignment.",
      "isolation_source.py"),
+    ("geography.json", "file", "Where every located entry was collected, by country and by "
+     "enzyme type, with the deviation of each type from the overall distribution.",
+     "geography.py"),
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
@@ -1664,3 +1685,54 @@ def habitat_enrichment(habitat, profile_key, habitat_key, min_pairs=10):
     return {"background": background, "background_species": bg_species,
             "background_pairs": bg_total,
             "rows": sorted(rows, key=lambda r: -(r["fold"] or 0))}
+
+
+def geography_view(path):
+    """Cografya sayfasinin verisi.
+
+    Ham sayim tek basina YANILTICI: ulke, genomun toplandigi yeri degil, hangi
+    ulkenin dizileme yaptigini olcer. Bu yuzden gorunum uc olcuyu birlikte
+    tasir (giris, ayri cins, ayri tip) ve asil cikarimi sapma testine birakir.
+    Harita icin yalnizca ISO-3 kodu olan yerler gonderilir; deniz ve dagilmis
+    devletler ayri listede kalir, cunku bir ulke yuzeyine oturmuyorlar.
+    """
+    raw = read_json(path)
+    if not raw:
+        return None
+    countries = raw.get("countries") or []
+    on_map = [c for c in countries if c.get("kind") == "country" and c.get("iso3")]
+    off_map = [c for c in countries if c.get("kind") != "country"]
+    total_located = raw.get("coverage", {}).get("entries_with_a_country") or 0
+    usa = next((c["entries"] for c in countries if c["name"] == "USA"), 0)
+
+    by_type = raw.get("by_type") or {}
+    # Secim kutusu: yalnizca ulke bilgisi TASIYAN girisi olan tipler, cok
+    # olandan aza. Tek girisli bir tipi haritada gostermek dagilim izlenimi
+    # verir ve verecek dagilim yoktur.
+    types = sorted(
+        ({"cluster": cluster, "entries": entry.get("entries_with_a_country", 0),
+          "n_countries": entry.get("n_countries", 0)}
+         for cluster, entry in by_type.items()
+         if (entry.get("entries_with_a_country") or 0) >= 5),
+        key=lambda r: -r["entries"])
+    by_type_rows = {
+        cluster: [c for c in (entry.get("countries") or []) if c.get("iso3")]
+        for cluster, entry in by_type.items()}
+
+    variants = raw.get("variants") or {}
+    variant_rows = sorted(
+        ({"cluster": cluster, **entry} for cluster, entry in variants.items()
+         if entry.get("n_variants", 0) > 1),
+        key=lambda r: -r["n_variants"])
+
+    return {
+        "coverage": raw.get("coverage") or {},
+        "caveats": raw.get("caveats") or [],
+        "usa_share": (usa / total_located) if total_located else 0.0,
+        "map_rows": on_map,
+        "off_map": off_map,
+        "types": types,
+        "by_type_rows": by_type_rows,
+        "deviation": raw.get("deviation") or {},
+        "variants": variant_rows,
+    }

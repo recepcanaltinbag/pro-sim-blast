@@ -1390,6 +1390,15 @@ def atlas_origin(request: Request):
                   eco=atlas.ecological_origin_view(apath("ecological_origin.json")))
 
 
+@app.get("/atlas/geography", response_class=HTMLResponse)
+def atlas_geography(request: Request):
+    """Enzimler nerelerde goruldu -- ve bu sorunun ne kadar sorulabilir oldugu."""
+    geo = atlas.geography_view(apath("geography.json"))
+    if not geo:
+        raise HTTPException(404, "geography.json not found (run geography.py)")
+    return render(request, "atlas_geography.html", geo=geo)
+
+
 @app.get("/atlas/structure", response_class=HTMLResponse)
 def atlas_structure(request: Request):
     """Aktif bolge: kristal yapilardan ve tahmin modellerinden."""

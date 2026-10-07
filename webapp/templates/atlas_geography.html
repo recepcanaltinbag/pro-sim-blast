@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% block title %}Geography{% endblock %}
+{% set page_id = 'geography' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Where these enzymes have been seen</h1>
+<p class="lede">{{ geo.coverage.entries_with_a_country|fmt }} of
+{{ geo.coverage.confirmed_entries|fmt }} confirmed alpha subunits
+({{ '%.0f %%' % (100 * geo.coverage.share) }}) come from a record that states where the sample was
+collected, across {{ geo.coverage.distinct_places }} distinct places. That is enough to draw a map.
+Whether the map means anything is a separate question, and it is the one this page is organised
+around.</p>
+
+<div class="caveat caveat--warn">
+  <b>This is in large part a map of sequencing capacity.</b> A country here is where a genome was
+  collected and deposited, not where the enzyme lives. The United States alone carries
+  {{ '%.0f %%' % (100 * geo.usa_share) }} of the entries that have a country at all, which says
+  more about who runs sequencing centres than about Rieske oxygenases. Three numbers are therefore
+  given for every place and they answer different questions: raw entries (most biased), distinct
+  genera (strain duplicates removed), and the deviation of each enzyme type from the overall
+  distribution — the last being the only one from which anything is inferred, because sampling
+  effort appears on both sides of that comparison and largely cancels.
+</div>
+
+<figure class="fig">
+<div class="tbar">
+  <label class="tbar__field"><span class="tbar__legend">show</span>
+    <select id="metric" class="tbar__select">
+      <option value="entries">alpha subunits</option>
+      <option value="genera" selected>distinct genera</option>
+      <option value="types">distinct enzyme types</option>
+    </select>
+  </label>
+  <label class="tbar__field"><span class="tbar__legend">for</span>
+    <select id="scope" class="tbar__select">
+      <option value="__all__" selected>all Rieske oxygenases</option>
+      {% for c in geo.types %}<option value="{{ c.cluster }}">{{ gene(c.cluster) }} ({{ c.entries|fmt }})</option>{% endfor %}
+    </select>
+  </label>
+</div>
+<div id="map" style="height: 400px"></div>
+<figcaption id="mapcap">Choose a measure and an enzyme type. Hover a country for its counts.
+Countries with no record are left unfilled, which means no sequenced genome carried a location,
+not that the enzyme is absent.</figcaption>
+</figure>
+
+<h2>What is not on the map</h2>
+<p>{{ geo.off_map|length }} places cannot be drawn as a national territory. They are kept exactly as
+the source record wrote them rather than being pushed onto the nearest coastline, because several of
+them are among the more interesting entries in the set.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Place</th><th>Kind</th><th class="num">Alpha subunits</th>
+<th class="num">Genera</th><th class="num">Types</th></tr></thead>
+<tbody>
+{% for c in geo.off_map %}
+<tr><td>{{ c.name }}</td><td class="note">{{ c.kind }}</td>
+  <td class="num">{{ c.entries|fmt }}</td><td class="num">{{ c.genera }}</td>
+  <td class="num">{{ c.types }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+<h2>Does any enzyme type come from a different set of places?</h2>
+<p>Comparing one type's country distribution against the country distribution of all confirmed
+entries removes most of the sampling bias, because the same bias is in both. The test is the one
+used throughout the <a href="{{ u('/atlas/statistics') }}">statistics page</a>: a standardised
+residual per cell, Benjamini–Hochberg corrected, reported only when the difference is also at least
+ten percentage points, and repeated after collapsing every type, genus and country to a single
+observation.</p>
+
+{% set sg = geo.deviation.signals %}
+{% if sg and sg.top %}
+<p class="plain">Of {{ sg.n_cells_tested }} type-by-country cells tested,
+<b>{{ sg.n_cells_material }}</b> differ materially from the overall distribution and
+<b>{{ sg.n_cells_material_genus }}</b> survive the genus-level check. That is a small number, and it
+is the honest answer: once sequencing effort is divided out, almost no Rieske oxygenase type is
+geographically distinctive.</p>
+<ul class="siglist">
+{% for c in sg.top %}
+<li>
+  {%- set w = [50, (50 * (c.lift|abs) / 0.40)]|min|round(2) -%}
+  <span class="dbar" role="img" aria-label="{{ (100 * c.lift)|round|int }} percentage points against the overall rate">
+    <span class="dbar__fill dbar__fill--{{ 'over' if c.lift >= 0 else 'under' }}"
+          style="left: {{ (50 if c.lift >= 0 else 50 - w)|round(2) }}%; width: {{ w }}%"></span>
+  </span>
+  <span><b>{{ gene(c.row) }}</b> is {{ 'over' if c.direction == 'over' else 'under' }}-represented in
+  <b>{{ c.col }}</b>: <span class="num">{{ '%.0f %%' % (100 * c.share) }}</span> of its located
+  entries against <span class="num">{{ '%.0f %%' % (100 * c.baseline) }}</span> overall
+  (<span class="num">{{ '%+.0f' % (100 * c.lift) }}</span> points){% if c.holds %}, and it holds
+  after collapsing type, genus and country to one observation{% else %}, but it does not hold once
+  repeated strains are collapsed, so it is most likely one deeply sequenced project{% endif %}.</span>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="note"><span class="verdict verdict--none">nothing survives</span>
+No type-by-country cell differs from the overall distribution by enough to report.</p>
+{% endif %}
+
+{% if geo.variants %}
+<h2>Where the main variant sits, and where the others do</h2>
+<p>Within a type, entries that share an identical sequence variant are one observation of one thing.
+Comparing where the most common variant was collected against where the remaining variants were
+collected asks whether a type's diversity sits in one place or is spread out. The same caveat
+applies throughout: a variant found only in one country may simply be a variant only one country
+has sequenced.</p>
+<div class="tablewrap tablewrap--tall"><table class="data compact">
+<thead><tr><th>Enzyme type</th><th class="num">Variants</th>
+<th class="num">Main variant</th><th>Where the main variant was collected</th>
+<th>Places only the other variants were collected</th></tr></thead>
+<tbody>
+{% for v in geo.variants %}
+<tr><td><a href="{{ u('/cluster/' ~ v.cluster) }}">{{ gene(v.cluster) }}</a></td>
+  <td class="num">{{ v.n_variants }}</td>
+  <td class="num">{{ v.main_variant_entries|fmt }}</td>
+  <td class="note">{% for c in v.main_variant_countries[:4] %}{{ c.name }} {{ c.entries }}{% if not loop.last %}, {% endif %}{% endfor %}{% if v.main_variant_countries|length > 4 %} and {{ v.main_variant_countries|length - 4 }} more{% endif %}</td>
+  <td class="note">{% if v.countries_unique_to_other_variants %}{{ v.countries_unique_to_other_variants[:6]|join(', ') }}{% if v.countries_unique_to_other_variants|length > 6 %} and {{ v.countries_unique_to_other_variants|length - 6 }} more{% endif %}{% else %}<span class="verdict verdict--none">none</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endif %}
+
+<h2>How this was built</h2>
+<p class="note">Locations come from the <code>/geo_loc_name</code> or <code>/country</code> qualifier
+of the source record, stored verbatim and split at the first colon. 121 distinct strings appear;
+{{ geo.coverage.places_on_the_map }} map onto a country code, and the rest are oceans, seas and two
+dissolved states, listed above rather than discarded. No coordinate was inferred and no record was
+reassigned. Computed by <code>geography.py</code>.
+<a href="{{ u('/download/analysis/geography.json') }}">Download geography.json</a></p>
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.35.2/dist/plotly-geo.min.js"></script>
+<script>
+/*  Harita TEK hue'nun dizisel rampasini kullanir: cizilen sey bir buyukluk,
+    kategori degil. Basamaklar OKLab'de olculdu, komsu basamaklar arasi
+    acikliik farki 0,089'un altina dusmuyor (esik 0,06). Koyu mod otomatik
+    cevirme degil, ayri olculmus basamaklar.                                */
+const COUNTRIES = {{ geo.map_rows|tojson }};
+const BY_TYPE = {{ geo.by_type_rows|tojson }};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const RAMP = dark
+  ? ['#042542', '#203f5e', '#3a5b7b', '#567899', '#7396b9', '#91b5d9']
+  : ['#e2f0ff', '#b1d5fb', '#94b8dd', '#799cbf', '#5c7ea0', '#3d5e7e'];
+const SCALE = RAMP.map((c, i) => [i / (RAMP.length - 1), c]);
+const ink = dark ? '#e9edf2' : '#111821';
+const rule = dark ? '#3a4654' : '#c9d2dc';
+const LABEL = {entries: 'alpha subunits', genera: 'distinct genera',
+               types: 'distinct enzyme types'};
+
+function rowsFor(scope) {
+  return scope === '__all__' ? COUNTRIES : (BY_TYPE[scope] || []);
+}
+
+function draw() {
+  const metric = document.getElementById('metric').value;
+  const scope = document.getElementById('scope').value;
+  const rows = rowsFor(scope).filter(r => r.iso3 && r[metric]);
+  const trace = {
+    type: 'choropleth', locationmode: 'ISO-3',
+    locations: rows.map(r => r.iso3),
+    z: rows.map(r => r[metric]),
+    text: rows.map(r => r.name),
+    colorscale: SCALE, zmin: 0,
+    marker: {line: {color: rule, width: 0.4}},
+    colorbar: {title: {text: LABEL[metric], font: {size: 11}}, thickness: 12,
+               len: 0.75, tickfont: {size: 10}, outlinewidth: 0},
+    hovertemplate: '%{text}<br>%{z} ' + LABEL[metric] + '<extra></extra>'
+  };
+  Plotly.react('map', [trace], {
+    margin: {l: 0, r: 0, t: 0, b: 0},
+    font: {color: ink},
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    geo: {projection: {type: 'natural earth'}, showframe: false,
+          showcoastlines: true, coastlinecolor: rule, coastlinewidth: 0.4,
+          showland: true, landcolor: dark ? '#141a22' : '#eef1f5',
+          showocean: false, bgcolor: 'rgba(0,0,0,0)',
+          /*  Antarktika kirpilir: kayit yok ve cizimin ucte birini yiyordu. */
+          lataxis: {range: [-56, 83]}, lonaxis: {range: [-170, 180]}}
+  }, {responsive: true, displaylogo: false,
+      /*  Arac cubugu haritanin ustune biniyordu ve bu sayfada yakinlastirma
+          disinda hicbirine ihtiyac yok.                                     */
+      modeBarButtonsToRemove: ['select2d', 'lasso2d', 'toImage', 'hoverClosestGeo'],
+      displayModeBar: 'hover'});
+
+  /*  Alt yazi secime gore degisir: kullanici bir tip sectiginde kac ulkenin
+      kaldigini bilmeli, cunku cogu tip icin sayi tek haneye duser ve harita
+      o noktada bir dagilimi degil birkac noktayi gosteriyor demektir.     */
+  const cap = document.getElementById('mapcap');
+  const named = scope === '__all__' ? 'all Rieske oxygenases'
+                                    : document.querySelector('#scope option:checked').textContent;
+  cap.textContent = rows.length
+    ? LABEL[metric] + ' per country, for ' + named + '. ' + rows.length +
+      ' countries carry at least one record' +
+      (rows.length < 8 ? ', which is too few to read as a distribution.'
+                       : '. Countries with no record are left unfilled, which means no sequenced ' +
+                         'genome carried a location, not that the enzyme is absent.')
+    : 'No located record for ' + named + '.';
+}
+
+/*  Enzim sayfasindan "bu tip nerede goruldu" baglantisi #type=... ile gelir.
+    Sorgu dizesi yerine karma kullanilir, cunku statik yayinda sunucu yok ve
+    karma istemcide okunur.                                                  */
+(function preselect() {
+  const want = decodeURIComponent((location.hash || '').replace(/^#type=/, ''));
+  if (!want || want === location.hash) return;
+  const sel = document.getElementById('scope');
+  if ([...sel.options].some(o => o.value === want)) sel.value = want;
+})();
+
+document.getElementById('metric').addEventListener('change', draw);
+document.getElementById('scope').addEventListener('change', draw);
+draw();
+</script>
+{% endblock %}
