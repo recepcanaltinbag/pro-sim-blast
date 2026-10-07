@@ -529,6 +529,18 @@
       main.querySelectorAll(':scope > h2, :scope > section > h2'));
     if (heads.length < 4) return;
 
+    /*  A contents strip helps when headings are short labels you can scan. When
+        they are whole sentences it becomes a copy of the page, which is exactly
+        what happened on the statistics page: each heading there is the question
+        being tested, so the strip repeated all twenty of them above the same
+        twenty below. Measured median heading length: 100 characters there
+        against 39 to 50 on every other page, so the two cases separate
+        cleanly and the strip is skipped above 65. */
+    var lengths = heads.map(function (h) { return (h.textContent || '').trim().length; })
+                       .sort(function (a, b) { return a - b; });
+    var medianLength = lengths[Math.floor(lengths.length / 2)];
+    if (medianLength > 65) return;
+
     var nav = document.createElement('nav');
     nav.className = 'toc';
     nav.setAttribute('aria-label', 'Contents of this page');

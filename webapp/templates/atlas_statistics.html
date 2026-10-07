@@ -17,48 +17,51 @@ subunits almost any difference reaches significance while only some are large en
   called robust only if all three levels agree in direction and the genus level stays significant.
 </div>
 
-{#  OZET TABLOSU: her satir BIR soru. Daha once sayfa dogrudan ayrintili
-    bolumlerle basliyordu ve ilk testler kendi icinde uc duzey (giris / dizi /
-    cins) tasidigi icin sorular ic ice gecmis gorunuyordu; okuyucu "bu sayfada
-    kac soru var ve cevaplari ne" sorusunu bir bakista cevaplayamiyordu.    #}
-<h2>Every question on this page, one per row</h2>
-<div class="tablewrap"><table class="data compact">
-<thead><tr><th>Question</th><th>Unit of analysis</th><th class="num">Effect size</th>
-<th class="num">Expected by chance</th><th class="num">p</th><th>Verdict</th></tr></thead>
-<tbody>
+{#  Her soru KENDI kartinda. Daha once sayfa once bir ozet tablosu, sonra ayni
+    testleri tekrar eden bolumler gosteriyordu; ayni sayi iki kez okunuyordu.
+    Simdi tek yer var ve her kart bir etki cubugu tasiyor: olculen deger ile
+    karistirmanin urettigi deger yan yana, boylece "bu buyuk mu" sorusu tabloya
+    bakmadan cevaplaniyor.                                                   #}
 {% for t in stats.tests %}
 {% set v = t.cramers_v if t.cramers_v is defined else none %}
 {% set lvl = t.levels.genus if t.levels is defined and t.levels.genus is defined else none %}
 {% set pv = t.p if t.p is defined else (lvl.p if lvl else none) %}
-<tr>
-  <td><a href="#q{{ loop.index }}">{{ t.question }}</a>
-      {% if t.restriction %}<div class="note">{{ t.restriction }}</div>{% endif %}</td>
-  <td class="small">{{ t.unit if t.unit is defined else ('three levels, entry to genus' if t.levels is defined else 'alpha subunit') }}</td>
-  <td class="num" data-v="{{ v if v is not none else (lvl.ratio if lvl else 0) }}">
-    {% if v is not none %}V = {{ '%.2f' % v }}
-    {% elif lvl %}{{ '%.2f×' % lvl.ratio }}
-    {% else %}–{% endif %}</td>
-  <td class="num" data-v="{{ t.null.mean if t.null else 0 }}">
-    {% if t.null %}V = {{ '%.2f' % t.null.mean }}{% else %}<span class="note">not simulated</span>{% endif %}</td>
-  <td class="num" data-v="{{ pv if pv is not none else 1 }}">{% if pv is not none %}{{ '%.0e' % pv }}{% else %}–{% endif %}</td>
-  <td>{% if pv is not none and pv >= 0.05 %}<span class="verdict verdict--none">not significant</span>
-      {% elif v is not none and v >= 0.5 %}<span class="verdict verdict--robust">strong</span>
-      {% elif v is not none and v >= 0.25 %}<span class="verdict verdict--weak">moderate</span>
-      {% elif v is not none and v >= 0.1 %}<span class="verdict verdict--weak">weak</span>
-      {% elif v is not none %}<span class="verdict verdict--none">negligible</span>
-      {% elif lvl and lvl.p < 0.05 %}<span class="verdict verdict--robust">holds at genus level</span>
-      {% else %}<span class="verdict verdict--weak">weakens at genus level</span>{% endif %}</td>
-</tr>
-{% endfor %}
-</tbody></table></div>
-<p class="note">Effect size is Cramér's V for a contingency test and a rate ratio for a two-by-two
-comparison. The fourth column matters: for the tests computed over enzyme types, Cramér's V rises on
-its own as the table gains rows, so the value is given next to what label-shuffling produces for a
-table of the same shape. An effect is only interpretable when it stands well clear of that column.</p>
-
-{% for t in stats.tests %}
-<section class="stat" id="q{{ loop.index }}">
+<section class="stat statcard" id="q{{ loop.index }}">
 <h2>{{ loop.index }} · {{ t.question }}</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    {% if pv is not none and pv >= 0.05 %}<span class="verdict verdict--none">not significant</span>
+    {% elif v is not none and v >= 0.5 %}<span class="verdict verdict--robust">strong</span>
+    {% elif v is not none and v >= 0.25 %}<span class="verdict verdict--weak">moderate</span>
+    {% elif v is not none and v >= 0.1 %}<span class="verdict verdict--weak">weak</span>
+    {% elif v is not none %}<span class="verdict verdict--none">negligible</span>
+    {% elif lvl and lvl.p < 0.05 %}<span class="verdict verdict--robust">holds at genus level</span>
+    {% else %}<span class="verdict verdict--weak">weakens at genus level</span>{% endif %}
+    {% if pv is not none %}<span class="note">p = {{ '%.0e' % pv }}</span>{% endif %}
+    {% if t.unit is defined %}<span class="note">per {{ t.unit }}</span>{% endif %}
+  </div>
+  {% if v is not none %}
+  <div class="effbar" role="img"
+       aria-label="effect size {{ '%.2f' % v }} out of 1, chance level {{ '%.2f' % (t.null.mean if t.null else 0) }}">
+    <div class="effbar__fill" style="width: {{ (100 * v)|round(1) }}%"></div>
+    {% if t.null %}<div class="effbar__null" style="left: {{ (100 * t.null.mean)|round(1) }}%"></div>{% endif %}
+    <span class="effbar__value">V = {{ '%.2f' % v }}</span>
+  </div>
+  <p class="note effbar__legend">The bar is Cramér&rsquo;s V from 0 to 1.
+    {% if t.null %}The mark shows {{ '%.2f' % t.null.mean }}, what label shuffling produces for a
+    table of this shape, so only the distance beyond it is real.{% else %}No shuffling baseline was
+    simulated for this test.{% endif %}</p>
+  {% elif lvl %}
+  <div class="effbar" role="img" aria-label="rate ratio {{ '%.2f' % lvl.ratio }}">
+    <div class="effbar__fill" style="width: {{ [100 * lvl.ratio / 5, 100]|min|round(1) }}%"></div>
+    <div class="effbar__null" style="left: 20%"></div>
+    <span class="effbar__value">{{ '%.2f×' % lvl.ratio }}</span>
+  </div>
+  <p class="note effbar__legend">The bar is the rate ratio at genus level, on a scale to five-fold.
+    The mark sits at one, where the two groups would be equal.</p>
+  {% endif %}
+  {% if t.restriction %}<p class="note">{{ t.restriction }}</p>{% endif %}
+</div>
 
 {% if t.levels is defined %}
 <div class="tablewrap"><table class="data compact">
