@@ -14,6 +14,7 @@ Cikti: analysis_out/stats.json  (web sayfasi dogrudan okur)
 import argparse
 import csv
 import random
+import re
 import json
 import os
 import sqlite3
@@ -226,7 +227,7 @@ def load(con, ecology_path):
                p.taxonomy, p.is_plasmid, p.cds_count,
                o.has_beta, o.has_ferredoxin, o.has_reductase, o.completeness,
                e.tier, e.ref_identity, t.reductase_type, t.ferredoxin_type, d.domain,
-               s.host_kingdom,
+               s.host_kingdom, s.habitat, s.geo,
                (SELECT COUNT(*) FROM neighbor nb JOIN gene_category c ON c.neighbor_id=nb.neighbor_id
                  AND c.method='regex_v1' WHERE nb.candidate_id=r.candidate_id AND c.category='transposon') transposons,
                (SELECT COUNT(*) FROM neighbor nb2 WHERE nb2.candidate_id=r.candidate_id) n_neighbors
@@ -240,8 +241,8 @@ def load(con, ecology_path):
     cols = ["candidate_id", "sequence", "cluster", "group", "organism", "taxonomy",
             "is_plasmid", "cds_count",
             "has_beta", "has_ferredoxin", "has_reductase", "completeness", "tier", "ref_identity",
-            "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "transposons",
-            "n_neighbors"]
+            "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "habitat",
+            "geo", "transposons", "n_neighbors"]
     data = []
     for r in rows:
         d = dict(zip(cols, r))
@@ -704,6 +705,125 @@ def main():
         "Is a beta subunit in the operon (α₃β₃ architecture) group-specific?",
         with_context, "group", "beta_label", groups, ["beta", "no beta"],
         "RO group", row_prefix="group ", restriction=context_restriction)
+
+    # 3c. KANIT DUZEYI x HABITAT. Kullanicinin sorusu: "okyanusta olanlar uzak
+    # akraba mi?" Olculebilir ve cevabi carpici. Ama ne olctugu konusunda
+    # dikkatli olmak gerekiyor ve bu ciktida yaziliyor:
+    #
+    # Kanit duzeyi, girisin KURATORLU bir referansa ne kadar benzedigidir.
+    # Kuratorlu referanslar ise kultur koleksiyonlarindan gelir ve o
+    # koleksiyonlar toprak, klinik ve endustriyel kokenlidir. Dolayisiyla
+    # "deniz = uzak" sonucu iki sekilde okunabilir ve test ikisini AYIRAMAZ:
+    #   (a) deniz Rieske oksijenazlari gercekten ayri bir dal,
+    #   (b) hicbir deniz enzimi karakterize edilmemis.
+    # Ikisi de ilginc, ikisi de ayni sayiyi uretir, ve sayfa bunu soyluyor.
+    HABITAT_MIN = 60
+    tiers_order = ["characterized", "close_homolog", "family_member",
+                   "distant", "novel"]
+    hab_rows = [d for d in data
+                if d.get("habitat") and d["habitat"] not in ("unknown", "other")
+                and d.get("tier")]
+    hab_counts = Counter(d["habitat"] for d in hab_rows)
+    big_habitats = sorted(h for h, n in hab_counts.items() if n >= HABITAT_MIN)
+    contingency(
+        "evidence_tier_by_habitat",
+        "Are the enzymes we cannot interpret -- the distant and novel members -- "
+        "concentrated in particular habitats?",
+        [d for d in hab_rows if d["habitat"] in big_habitats],
+        "habitat", "tier", big_habitats, tiers_order,
+        "Habitat", unit="alpha subunit",
+        restriction=(f"habitats with at least {HABITAT_MIN} entries carrying both a "
+                     f"habitat and an evidence level: {len(big_habitats)} of "
+                     f"{len(hab_counts)} habitats"))
+
+    # 3d. Ayni soru DOGRUDAN: "yorumlayamadiklarimiz" tek bir kategori olarak.
+    # Bes duzeyli tabloda deniz girislerinin "distant" hucresi 10 puanlik
+    # maddilik esiginin hemen altinda kaliyor (+9,5), ama uzak ve novel
+    # BIRLIKTE sorulunca fark aciliyor. Soru zaten birlesik olani soruyor:
+    # "bu habitatta bulduklarimizin ne kadarini yorumlayamiyoruz?"
+    #
+    # Her habitat icin iki-iki Fisher, hem giris hem CINS duzeyinde; cins
+    # duzeyi sart, cunku tek bir derin orneklenmis proje bir habitati tek
+    # basina tasiyabilir.
+    uninterpretable = {"distant", "novel"}
+    hab_level = {}
+    for level, rows_at_level in (("entry", hab_rows),
+                                 ("genus", collapse_genus(hab_rows))):
+        per_hab = {}
+        praw, keys = [], []
+        total_un = sum(1 for d in rows_at_level if d["tier"] in uninterpretable)
+        total_n = len(rows_at_level)
+        for habitat in big_habitats:
+            rows_h = [d for d in rows_at_level if d["habitat"] == habitat]
+            if len(rows_h) < 20:
+                continue
+            a_yes = sum(1 for d in rows_h if d["tier"] in uninterpretable)
+            a_no = len(rows_h) - a_yes
+            b_yes = total_un - a_yes
+            b_no = (total_n - len(rows_h)) - b_yes
+            res = two_by_two(a_yes, a_no, b_yes, b_no)
+            res["n"] = len(rows_h)
+            res["genera"] = len({d["genus"] for d in rows_h})
+            per_hab[habitat] = res
+            praw.append(res["p"])
+            keys.append(habitat)
+        for habitat, q in zip(keys, bh_adjust(praw)):
+            per_hab[habitat]["q"] = q
+            per_hab[habitat]["flagged"] = bool(
+                q < 0.05 and abs(per_hab[habitat]["rate_a"]
+                                 - per_hab[habitat]["rate_b"]) >= 0.08)
+        hab_level[level] = {
+            "overall_rate": total_un / total_n if total_n else None,
+            "n": total_n, "habitats": per_hab}
+
+    # Bagimsiz bir ikinci dilim: habitat sozlugu yerine kaydin KENDI yer adi.
+    # "Pacific Ocean", "Baltic Sea" gibi degerler country alaninda duruyor ve
+    # habitat siniflandiricisindan tamamen ayri uretiliyor. Iki alan ayni yone
+    # isaret ediyorsa giris duzeyindeki gozlem en azindan tek bir etiketleme
+    # kuralinin artefakti degildir.
+    # Kelime siniri SART. Basit alt dize eslesmesi "USA:Seattle"i ve
+    # "Research Centre"i (icinde "sea" geciyor) deniz sayiyordu. Kurum adlari
+    # da ayrica disarida: "Bigelow Laboratory for Ocean Sciences" bir laboratuvar.
+    OCEAN_RE = re.compile(r"\b(ocean|sea)\b", re.I)
+    NOT_A_PLACE_RE = re.compile(
+        r"laborator|institut|universit|centre|center|science|museum|collection", re.I)
+    ocean_rows = [d for d in data
+                  if d.get("geo") and d["tier"]
+                  and OCEAN_RE.search(d["geo"])
+                  and not NOT_A_PLACE_RE.search(d["geo"])]
+    all_tiered = [d for d in data if d["tier"]]
+    cross_check = None
+    if len(ocean_rows) >= 50 and all_tiered:
+        cross_check = {
+            "field": "the record's own place name (country), not the habitat vocabulary",
+            "matches": "values containing 'Ocean' or 'Sea'",
+            "n": len(ocean_rows),
+            "rate": sum(1 for d in ocean_rows
+                        if d["tier"] in uninterpretable) / len(ocean_rows),
+            "overall_rate": sum(1 for d in all_tiered
+                                if d["tier"] in uninterpretable) / len(all_tiered),
+            "genera": len({d["genus"] for d in ocean_rows}),
+        }
+
+    out["tests"].append({
+        "ocean_cross_check": cross_check,
+        "id": "uninterpretable_by_habitat",
+        "question": ("Which habitats return enzymes we cannot interpret? "
+                     "A member is counted as uninterpretable when its nearest "
+                     "curated reference is distant or absent, so no substrate "
+                     "can be transferred to it."),
+        "unit": "alpha subunit",
+        "levels_by_habitat": hab_level,
+        "what_this_cannot_separate": (
+            "An evidence level measures distance to a CURATED reference, and the "
+            "curated set comes from culture collections that are overwhelmingly "
+            "soil, clinical and industrial in origin. A habitat that scores high "
+            "here is therefore either genuinely full of divergent enzymes, or "
+            "simply a habitat nobody has characterised an enzyme from. This test "
+            "cannot tell those apart, and both are worth knowing."),
+        "restriction": (f"habitats with at least 20 entries at the level shown, "
+                        f"out of {len(hab_counts)} habitats"),
+    })
 
     # 4. kanit duzeyi: substrat etiketi kac uye icin savunulabilir
     tiers = ["characterized", "close_homolog", "family_member", "distant", "novel"]

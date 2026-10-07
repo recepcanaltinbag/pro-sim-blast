@@ -96,6 +96,13 @@
   'phylum_by_group':
     'The groups sit in visibly different parts of the bacterial tree, with two of them
      carrying most of the eukaryotic members.',
+  'evidence_tier_by_habitat':
+    'Where do the enzymes we cannot interpret come from? Marine, animal-associated and
+     sediment samples return the highest share of members too distant from any
+     characterised enzyme to carry a substrate label.',
+  'uninterpretable_by_habitat':
+    'The same question asked as one number per habitat, and then asked again after
+     collapsing repeated strains. The second answer is not the first.',
 } %}
 
 {% set COLLABEL = {
@@ -338,6 +345,68 @@ of its neighbour
 Across the whole family it is conserved in kind but not in identity: glutamate appears too often,
 and too unevenly, to be a scattering of exceptions.{% endif %}
 </p>
+
+{% elif t.levels_by_habitat is defined %}
+{% set ent = t.levels_by_habitat.entry %}
+{% set gen = t.levels_by_habitat.genus %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th>
+<th class="num">Entries</th><th class="num">Uninterpretable</th><th class="num">Odds ratio</th>
+<th class="num">q</th>
+<th class="num">Type–genus pairs</th><th class="num">Uninterpretable</th>
+<th class="num">Odds ratio</th><th class="num">q</th><th>Survives?</th></tr></thead>
+<tbody>
+{% for habitat, r in ent.habitats.items()|sort(attribute='1.rate_a', reverse=true) %}
+{% set g = gen.habitats.get(habitat) %}
+<tr><td>{{ habitat.replace('_', ' ') }}</td>
+  <td class="num">{{ r.n|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * r.rate_a) }}</td>
+  <td class="num">{{ '%.2f' % r.odds_ratio }}</td>
+  <td class="num">{{ '%.0e' % r.q }}</td>
+  {% if g %}<td class="num">{{ g.n|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * g.rate_a) }}</td>
+  <td class="num">{{ '%.2f' % g.odds_ratio }}</td>
+  <td class="num">{{ '%.2f' % g.q }}</td>
+  <td>{% if r.flagged and g.flagged %}<span class="verdict verdict--robust">holds</span>
+      {% elif r.flagged %}<span class="verdict verdict--weak">entry level only</span>
+      {% endif %}</td>
+  {% else %}<td class="num">—</td><td class="num">—</td><td class="num">—</td>
+  <td class="num">—</td><td></td>{% endif %}</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Baseline: {{ '%.1f %%' % (100 * ent.overall_rate) }} of
+{{ ent.n|fmt }} entries are uninterpretable, rising to
+{{ '%.1f %%' % (100 * gen.overall_rate) }} of {{ gen.n|fmt }} type-and-genus pairs.
+That rise is itself informative: collapsing strains <i>raises</i> the uninterpretable
+fraction, because the organisms sequenced over and over are the ones we already
+understand. Two-by-two Fisher per habitat, Benjamini–Hochberg corrected across habitats,
+flagged only when the difference also reaches eight percentage points.</p>
+<p class="note">
+{% set held = ent.habitats.values()|selectattr('flagged')|list|length %}
+{% set gheld = gen.habitats.values()|selectattr('flagged')|list|length %}
+{% if gheld %}<span class="verdict verdict--robust">survives</span>
+{{ gheld }} habitat(s) stay significant after collapsing strains.
+{% else %}<span class="verdict verdict--weak">entry level only</span>
+<b>{{ held }} habitats look significant per entry and none survives.</b>
+Marine is the clearest case: 69.7 % of marine entries are uninterpretable against
+55.7 % overall, an odds ratio of 1.90 at q = 1e-07 — and once every type and genus is
+counted once, it falls to 66.7 % against 63.4 %, an odds ratio of 1.18 at q = 0.45. The
+appearance came from repeated strains, not from the ocean. The direction survives in
+every water habitat, which is suggestive, but suggestive is all this is.
+{% endif %}</p>
+{% if t.ocean_cross_check %}
+{% set cc = t.ocean_cross_check %}
+<p class="note"><b>A second, independent slice says the same thing.</b> Reading
+{{ cc.field }} and keeping {{ cc.matches }} gives {{ cc.n|fmt }} entries across
+{{ cc.genera }} genera, of which {{ '%.1f %%' % (100 * cc.rate) }} are uninterpretable
+against {{ '%.1f %%' % (100 * cc.overall_rate) }} overall. That field is written by the
+submitter and the habitat vocabulary is derived separately, so the entry-level
+observation is at least not an artefact of one labelling rule. It still does not survive
+collapsing strains.</p>
+{% endif %}
+<div class="caveat caveat--warn">
+<b>What this test cannot separate.</b> {{ t.what_this_cannot_separate }}
+</div>
 
 {% elif t.id in ('taxonomic_breadth', 'taxonomic_breadth_rarefied') %}
 <p>Unit of analysis: {{ t.unit }}. Metric: {{ t.metric }}.
