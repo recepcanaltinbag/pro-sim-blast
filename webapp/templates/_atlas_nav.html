@@ -1,53 +1,70 @@
-{#  Twelve atlas pages in one undifferentiated row gave no sense of what the
-    atlas contains. They group into three questions - where the proteins sit in
-    sequence space, what surrounds them in the genome, and how far any of it can
-    be trusted - so the row is labelled accordingly. The groups collapse to a
-    plain wrap on narrow screens.                                             #}
+{#  Atlas navigasyonu IKI KADEMELI.
+
+    Once tek bir satirda on sekiz baglanti vardi. Gruplandirma eklenmisti ama
+    hepsi ayni anda duruyordu, yani okuyucu her sayfada on sekiz secenek
+    karsisinda kaliyordu; dar ekranda ise grup basliklari gizleniyor ve geriye
+    ayirt edilmemis on sekiz baglanti kaliyordu. Kullanici iki kez menunun
+    kalabalik ve kullanissiz oldugunu soyledi.
+
+    Simdi ust satir yalnizca DORT bolumu gosterir, alt satir yalnizca icinde
+    bulunulan bolumun sayfalarini. Ayni anda gorunen baglanti sayisi en fazla
+    on bire duser ve yapinin kendisi okunur hale gelir. JavaScript yok:
+    bulunulan sayfadan hangi bolumde oldugumuz belli oldugu icin alt satir
+    sunucu tarafinda secilir, bu da statik yayinda aynen calisir.
+
+    Yeni bir atlas sayfasi eklemek, asagidaki SECTIONS listesine tek satir
+    eklemek demektir; baska hicbir yeri degistirmek gerekmez.               #}
 {% set page = page_id|default('') %}
-<nav class="subnav" aria-label="Atlas sections">
+{% set SECTIONS = [
+  ('sequence', 'Sequence', [
+    ('phylogeny',    '/atlas/phylogeny',    'Phylogeny'),
+    ('network',      '/atlas/network',      'Sequence space'),
+    ('taxonomy',     '/atlas/taxonomy',     'Taxonomy'),
+    ('structure',    '/atlas/structure',    'Active site'),
+    ('closeness',    '/atlas/closeness',    'Closeness'),
+  ]),
+  ('context', 'Genomic context', [
+    ('operons',      '/atlas/operons',      'Operons'),
+    ('regulation',   '/atlas/regulation',   'Regulation'),
+    ('control',      '/atlas/control',      'Regulators and mobility'),
+    ('cooccurrence', '/atlas/cooccurrence', 'Co-occurrence'),
+  ]),
+  ('where', 'Where they live', [
+    ('ecology',      '/atlas/ecology',      'Ecology'),
+    ('origin',       '/atlas/origin',       'Origins'),
+    ('geography',    '/atlas/geography',    'Geography'),
+  ]),
+  ('trust', 'How far to trust it', [
+    ('evidence',     '/atlas/evidence',     'Evidence'),
+    ('novel',        '/atlas/novel',        'Novel candidates'),
+    ('statistics',   '/atlas/statistics',   'Statistics'),
+    ('learning',     '/atlas/learning',     'Predictability'),
+    ('quality',      '/atlas/quality',      'Data quality'),
+  ]),
+] %}
+{% set ns = namespace(current=none, label='') %}
+{% for key, label, pages in SECTIONS %}
+  {% for pid, _href, _text in pages %}
+    {% if pid == page %}{% set ns.current = key %}{% set ns.label = label %}{% endif %}
+  {% endfor %}
+{% endfor %}
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
   <a href="{{ u('/atlas') }}" class="{{ 'on' if page == 'home' }}"
      {% if page == 'home' %}aria-current="page"{% endif %}>Overview</a>
-
-  <span class="subnav__sep" aria-hidden="true"></span>
-  <span class="subnav__group">Sequence</span>
-  <a href="{{ u('/atlas/phylogeny') }}" class="{{ 'on' if page == 'phylogeny' }}"
-     {% if page == 'phylogeny' %}aria-current="page"{% endif %}>Phylogeny</a>
-  <a href="{{ u('/atlas/network') }}" class="{{ 'on' if page == 'network' }}"
-     {% if page == 'network' %}aria-current="page"{% endif %}>Sequence space</a>
-  <a href="{{ u('/atlas/taxonomy') }}" class="{{ 'on' if page == 'taxonomy' }}"
-     {% if page == 'taxonomy' %}aria-current="page"{% endif %}>Taxonomy</a>
-  <a href="{{ u('/atlas/structure') }}" class="{{ 'on' if page == 'structure' }}"
-     {% if page == 'structure' %}aria-current="page"{% endif %}>Active site</a>
-
-  <span class="subnav__sep" aria-hidden="true"></span>
-  <span class="subnav__group">Genomic context</span>
-  <a href="{{ u('/atlas/operons') }}" class="{{ 'on' if page == 'operons' }}"
-     {% if page == 'operons' %}aria-current="page"{% endif %}>Operons</a>
-  <a href="{{ u('/atlas/regulation') }}" class="{{ 'on' if page == 'regulation' }}"
-     {% if page == 'regulation' %}aria-current="page"{% endif %}>Regulation</a>
-  <a href="{{ u('/atlas/control') }}" class="{{ 'on' if page == 'control' }}"
-     {% if page == 'control' %}aria-current="page"{% endif %}>Regulators and mobility</a>
-  <a href="{{ u('/atlas/cooccurrence') }}" class="{{ 'on' if page == 'cooccurrence' }}"
-     {% if page == 'cooccurrence' %}aria-current="page"{% endif %}>Co-occurrence</a>
-  <a href="{{ u('/atlas/ecology') }}" class="{{ 'on' if page == 'ecology' }}"
-     {% if page == 'ecology' %}aria-current="page"{% endif %}>Ecology</a>
-  <a href="{{ u('/atlas/origin') }}" class="{{ 'on' if page == 'origin' }}"
-     {% if page == 'origin' %}aria-current="page"{% endif %}>Origins</a>
-  <a href="{{ u('/atlas/geography') }}" class="{{ 'on' if page == 'geography' }}"
-     {% if page == 'geography' %}aria-current="page"{% endif %}>Geography</a>
-
-  <span class="subnav__sep" aria-hidden="true"></span>
-  <span class="subnav__group">How far to trust it</span>
-  <a href="{{ u('/atlas/evidence') }}" class="{{ 'on' if page == 'evidence' }}"
-     {% if page == 'evidence' %}aria-current="page"{% endif %}>Evidence</a>
-  <a href="{{ u('/atlas/novel') }}" class="{{ 'on' if page == 'novel' }}"
-     {% if page == 'novel' %}aria-current="page"{% endif %}>Novel candidates</a>
-  <a href="{{ u('/atlas/statistics') }}" class="{{ 'on' if page == 'statistics' }}"
-     {% if page == 'statistics' %}aria-current="page"{% endif %}>Statistics</a>
-  <a href="{{ u('/atlas/learning') }}" class="{{ 'on' if page == 'learning' }}"
-     {% if page == 'learning' %}aria-current="page"{% endif %}>Predictability</a>
-  <a href="{{ u('/atlas/closeness') }}" class="{{ 'on' if page == 'closeness' }}"
-     {% if page == 'closeness' %}aria-current="page"{% endif %}>Closeness</a>
-  <a href="{{ u('/atlas/quality') }}" class="{{ 'on' if page == 'quality' }}"
-     {% if page == 'quality' %}aria-current="page"{% endif %}>Data quality</a>
+  {% for key, label, pages in SECTIONS %}
+  <a href="{{ u(pages[0][1]) }}" class="{{ 'on' if ns.current == key }}"
+     {% if ns.current == key %}aria-current="true"{% endif %}>{{ label }}</a>
+  {% endfor %}
 </nav>
+
+{% if ns.current %}
+<nav class="subnav subnav--pages" aria-label="{{ ns.label }} pages">
+  {% for key, label, pages in SECTIONS %}{% if key == ns.current %}
+  {% for pid, href, text in pages %}
+  <a href="{{ u(href) }}" class="{{ 'on' if pid == page }}"
+     {% if pid == page %}aria-current="page"{% endif %}>{{ text }}</a>
+  {% endfor %}
+  {% endif %}{% endfor %}
+</nav>
+{% endif %}

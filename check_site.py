@@ -70,9 +70,23 @@ RESIDUE_TOKEN_RE = re.compile(r'\b(?:ALA|ARG|ASN|ASP|CYS|GLN|GLU|GLY|HIS|ILE|LEU
                               r'MET|PHE|PRO|SER|THR|TRP|TYR|VAL)\b')
 
 
+# ISO-3166 alpha-3 ulke kodlari. "TUR" (Turkiye) Turkce "tur" kelimesiyle
+# cakisiyor ve cografya dosyasindaki her Turkiye kaydi yanlis alarm uretiyordu.
+# Kelimeyi listeden cikarmak yerine YALNIZCA kod alanlari siliniyor: boylece
+# dosyanin icinde gercekten Turkce bir cumle olsa hala yakalanir.
+ISO3_FIELD_RE = re.compile(r'"(?:iso3|iso_a3|country_code)"\s*:\s*"[A-Za-z]{3}"')
+
+
 def strip_residue_codes(text):
-    """Amino asit kodlarini siler; geri kalan metin olduğu gibi taranir."""
+    """Kod alanlarini siler; geri kalan metin oldugu gibi taranir.
+
+    Iki ayri yanlis alarm kaynagi var ve ikisi de ayni bicimde cozuluyor --
+    kelimeyi sozlukten atmak degil, kodun DURDUGU yeri silmek:
+      amino asit kodlari   ILE, PRO, ...  ("ile", "pro" Turkce)
+      ulke kodlari         TUR            ("tur" Turkce)
+    """
     text = RESIDUE_FIELD_RE.sub(" ", text)
+    text = ISO3_FIELD_RE.sub(" ", text)
     return RESIDUE_TOKEN_RE.sub(" ", text)
 
 

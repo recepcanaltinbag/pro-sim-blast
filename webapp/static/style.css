@@ -502,8 +502,12 @@ tr.dim td { opacity: .62; }
   font-size: .82rem;
 }
 
-/* atlas sub-navigation. Ten pages is too many for one undifferentiated row,
-   so related pages are grouped and the groups are separated by a rule. */
+/* Atlas gezintisi IKI KADEMELI. Once on sekiz baglanti tek satirdaydi;
+   gruplandirma eklenmisti ama hepsi ayni anda duruyordu ve dar ekranda grup
+   basliklari gizlenince geriye ayirt edilmemis on sekiz baglanti kaliyordu.
+   Ust satir (.subnav--sections) dort bolum, alt satir (.subnav--pages)
+   yalnizca icinde bulunulan bolumun sayfalari. Iki satir birlikte en fazla
+   on bir baglanti gosterir. */
 .subnav {
   display: flex;
   flex-wrap: wrap;
@@ -544,6 +548,37 @@ tr.dim td { opacity: .62; }
   align-self: center;
   padding: 0 var(--s1) 0 var(--s2);
 }
+
+/* Ust kademe: bolumler. Secili bolum sekmesi alt satira baglanir, bu yuzden
+   ikisi arasinda bosluk birakilmaz. */
+.subnav--sections { margin-bottom: 0; }
+.subnav--sections a { font-size: .92rem; }
+.subnav--sections a.on { border-bottom: 1px solid var(--panel); }
+
+/* Alt kademe: o bolumun sayfalari. Daha sakin, cercevesiz, ve seciliyi
+   altindaki ince cizgi isaretler -- ustteki sekme kutusuyla karismasin. */
+.subnav--pages {
+  margin: 0 0 var(--s5);
+  border-bottom: 1px solid var(--rule);
+  padding-top: var(--s2);
+  gap: var(--s1);
+}
+.subnav--pages a {
+  padding: 4px 9px 6px;
+  font-size: .84rem;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.subnav--pages a:hover { background: transparent; border-bottom-color: var(--rule-2); }
+.subnav--pages a.on {
+  background: transparent;
+  border-bottom-color: var(--accent-ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+.subnav--sections + h1, .subnav--pages + h1 { margin-top: var(--s2); }
 
 /* ------------------------------------ 4  typography, vertical rhythm    */
 h1, h2, h3, h4 {
