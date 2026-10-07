@@ -5,6 +5,30 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+63. **YENI TIP EKLEME: modulerlik (kullanici acikca istedi).** Yeni Rieske'ler
+    kesfedilecek; eklemek kolay ve modular olmali. Bugunku durum degil:
+    bir tip `ROs_71_Clean/refs71.fasta` + `chemistry.csv` + (dolayli olarak)
+    hizalama ve profil kutuphanesi arasina dagilmis, hicbir sey ikisinin
+    tutarli oldugunu DOGRULAMIYOR, ve kimin ne zaman hangi makaleden ekledigi
+    HICBIR yerde yazmiyor.
+
+    `build_reference_models.py` mekanik kismi (fasta -> clustalo -> hmmbuild ->
+    motif kolonlari) zaten cozuyor. Eksik olan dort sey:
+
+    a. **Tip basina TEK bildirim dosyasi** (`types/<id>.yaml`): dizi, substrat,
+       urun, reaksiyon, PDB, kaynak DOI, guven, ekleyen, tarih. Tek kaynak.
+    b. **Eklemeden ONCE etki yaricapi.** Atama YARISMALI: yeni bir referans
+       mevcut tiplerden uye CALAR. 10 bos tip tam olarak bu. Arac, yazmadan
+       once "bu tip X'ten 47, Y'den 12 uye alir" ve "bu tip kendisi BOS
+       kalir, cunku her yarismayi Z'ye kaybediyor" demeli.
+    c. **Tekrar kontrolu** (24. madde): yeni dizi mevcut bir referansla
+       >=%99 ayniysa reddet. Bu tek kontrol NdmC, CarAa, NahAc ve NDO 3_315
+       vakalarinin dordunu de bastan onlerdi.
+    d. **Ucuz yeniden atama.** Pahali adim 17 bin genomdan baglam cikarmak;
+       atama ise `ro_alpha.fasta`'daki 73.272 hazir aday proteine karsi
+       kosuyor. Bu ikisi AYRILIRSA tip eklemek saatler degil dakikalar surer.
+
+
 Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ### Bu oturumda istenen ve HENUZ YAPILMAYAN isler
@@ -141,6 +165,27 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     Onerim: birebir ayni ciftleri tek tipte birlestirip iki adi da es anlamli
     gostermek (hicbir sey atilmaz), NdmC'yi parca olarak isaretlemek, EdoA1 ile
     cumA1'i ayri tutup ikisine de "bu cift ayirt edilemiyor" notu koymak.
+
+    **2026-10-07 eklemeleri -- tam all-vs-all olculdu (diamond, kapsama >=0,8):**
+    * **OxoO / OMO ayni dizi ama FARKLI GRUPTA (grup 1 ve grup 3).** Yani
+      `ro_group` en az bu durumda dizinin fonksiyonu degil. Birlestirme karari
+      verilirken hangi grubun tutulacagi da secilmeli; bu, grup bazli her
+      istatistigi (phylum_by_group, beta_by_group, etc_system_by_group) bir
+      giris kadar etkiler.
+    * Tekrar, **bos tiplerin dogrudan sebebi**: 10 bos tipin 4'u
+      (CarAa, NahAc, NDO 3_315, NdmC) bir kopyanin kaybeden tarafi. Ayni
+      diziye sahip iki referans yarismayi beraberlikle bitirir ve biri
+      keyfi olarak her seyi alir. Yani bos tipler ayri bir sorun degil,
+      tekrarin SONUCU.
+    * NdmC ciftinde dikkat: diziler ayni ama `chemistry.csv` substratlari
+      FARKLI yaziyor (kafein / 7-metilksantin). NdmC satirinin tarif ettigi
+      enzim gercek ve ayri; yanlis olan ona eklenmis DIZI. Yani cozum
+      "NdmC'yi sil" degil, "NdmC'ye dogru diziyi koy".
+    * %85 ustu toplam **22 cift** var (6'si >=%99). Tam liste
+      `analysis_out/reference_redundancy.json`'da; esik altindakiler zararsiz
+      degil, yalnizca daha az acil.
+    * Bundan sonra yeni referans eklenirken bu kontrol OTOMATIK yapilmali --
+      63. madde.
 
 ## Bitti
 
