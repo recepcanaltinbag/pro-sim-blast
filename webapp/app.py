@@ -1392,6 +1392,16 @@ def atlas_origin(request: Request):
                   anc=atlas.ancestry_view(apath("ancestry.json")))
 
 
+@app.get("/atlas/disagreements", response_class=HTMLResponse)
+def atlas_disagreements(request: Request):
+    """Yayimlanmis iddialarla olculen arasindaki farklar."""
+    dis = atlas.read_json(apath("disagreements.json"))
+    if not dis:
+        raise HTTPException(404, "disagreements.json not found "
+                                 "(run disagreements.py)")
+    return render(request, "atlas_disagreements.html", dis=dis)
+
+
 @app.get("/atlas/elements", response_class=HTMLResponse)
 def atlas_elements(request: Request):
     """Duzenleyici aileleri ve IS aileleri: dizin, Sankey, ozgulluk testi."""

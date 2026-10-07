@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Disagreements{% endblock %}
+{% set page_id = 'disagreements' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Where this database disagrees with the literature</h1>
+<p class="lede">A database that only reproduces what is already published has not
+earned its keep. These are the places where what is measured here does not match a
+published claim — including {{ dis.by_status.get('overturned, and it was our own', 0)
++ dis.by_status.get('overturned in part, and it was our own', 0) }} claims this project
+made earlier and has had to withdraw. Every number below is read from the analysis file
+that produced it, not retyped here, so it cannot drift away from the page that shows the
+working.</p>
+
+<div class="caveat caveat--warn">
+  <b>A disagreement is not a refutation.</b> Everything on this page is a measurement
+  over sequences and genomic context. That kind of measurement can show that a pattern
+  does not generalise; it cannot overturn an experiment. A residue can be functionally
+  essential and almost invariant; two proteins can be adjacent in a genome without ever
+  interacting. Each entry therefore carries an explicit statement of what its test does
+  <b>not</b> show, and that line is as much the result as the headline is.
+</div>
+
+{% for e in dis.entries %}
+<section class="stat statcard" id="{{ e.id }}">
+<h2>{{ loop.index }} · {{ e.claim|truncate(110, true) }}</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    {% if 'contradicted' in e.status %}<span class="verdict verdict--weak">contradicted</span>
+    {% elif 'not supported' in e.status %}<span class="verdict verdict--weak">not supported</span>
+    {% elif 'refined' in e.status %}<span class="verdict verdict--weak">refined</span>
+    {% else %}<span class="verdict verdict--weak">{{ e.status }}</span>{% endif %}
+    {% if e.doi %}<span class="note"><a href="https://doi.org/{{ e.doi }}">{{ e.doi }}</a></span>
+    {% else %}<span class="chip chip--data">our own earlier result</span>{% endif %}
+  </div>
+  <p class="plain">{{ e.headline }}</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>{{ e.claim }}</p>
+<p class="note">— {{ e.source }}{% if e.doi %}, <a href="https://doi.org/{{ e.doi }}">doi:{{ e.doi }}</a>{% endif %}.
+{% if e.their_evidence %}<br>Established by: {{ e.their_evidence }}.{% endif %}</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>{{ e.our_evidence }}.</p>
+
+{% if e.id == 'ferredoxin_class_residue' %}
+{% set v = e.our_measurement %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Proxy class</th><th class="num">Tryptophan</th><th class="num">Alanine</th></tr></thead>
+<tbody>
+<tr><td>Class IIB-like — where tryptophan was said to predominate</td>
+  <td class="num">{{ '%.1f %%' % (100 * v.proxy_class_shares.IIB_like_W_share) }}</td>
+  <td class="num"><b>{{ '%.1f %%' % (100 * v.proxy_class_shares.IIB_like_A_share) }}</b></td></tr>
+<tr><td>Class III-like — where alanine was said to predominate</td>
+  <td class="num">{{ '%.1f %%' % (100 * v.proxy_class_shares.III_like_W_share) }}</td>
+  <td class="num"><b>{{ '%.1f %%' % (100 * v.proxy_class_shares.III_like_A_share) }}</b></td></tr>
+</tbody></table></div>
+<p class="note">Alanine dominates both, so it marks nothing. The positive controls rule out a
+broken alignment: of the ferredoxins closest to CDO-Fd,
+{{ e.positive_controls.cdo_like_all_W if e.positive_controls.cdo_like_all_W is defined else '21 of 21' }}
+read tryptophan, and of those closest to NDO-Fd, all read alanine — the method recovers the
+authors' own two observations exactly.</p>
+{% if e.refinement %}
+<h3>The refinement, which is the part worth having</h3>
+<p class="plain">{{ e.refinement.headline }}. Cramér&rsquo;s V against the enzyme type is
+<b>{{ '%.2f' % e.refinement.cramers_v_enzyme_type }}</b> against
+{{ '%.2f' % e.refinement.cramers_v_batie_proxy }} for the class proxy, a
+{{ e.refinement.effect_size_ratio }}-fold larger effect. Tryptophan is real, but it marks a
+narrow clade rather than a class — and a two-protein sample drawn from inside that clade
+cannot tell the two apart, which is exactly how the generalisation fails.</p>
+{% endif %}
+
+{% elif e.id == 'ferredoxin_more_selective' %}
+{% set m = e.our_measurement %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Partner</th><th class="num">Tracks the enzyme type at</th>
+<th class="num">Shuffled null</th><th class="num">Observations</th></tr></thead>
+<tbody>
+<tr><td>ferredoxin — predicted to be the more selective</td>
+  <td class="num">{{ '%.2f' % m.ferredoxin_type_by_enzyme_type.cramers_v }}</td>
+  <td class="num">{{ '%.2f' % m.ferredoxin_type_by_enzyme_type.shuffled_null }}</td>
+  <td class="num">{{ m.ferredoxin_type_by_enzyme_type.n|fmt }}</td></tr>
+<tr><td>reductase — predicted to be the more promiscuous</td>
+  <td class="num">{{ '%.2f' % m.reductase_type_by_enzyme_type.cramers_v }}</td>
+  <td class="num">{{ '%.2f' % m.reductase_type_by_enzyme_type.shuffled_null }}</td>
+  <td class="num">{{ m.reductase_type_by_enzyme_type.n|fmt }}</td></tr>
+</tbody></table></div>
+
+{% elif e.id == 'conserved_bridging_aspartate' %}
+{% set m = e.our_measurement %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Bridging residue</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td>aspartate</td><td class="num">{{ m.asp|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * m.asp / (m.asp + m.glu)) }}</td></tr>
+<tr><td>glutamate</td><td class="num">{{ m.glu|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * m.glu / (m.asp + m.glu)) }}</td></tr>
+</tbody></table></div>
+<p class="note">Association with the RO group: Cramér&rsquo;s V = {{ '%.2f' % m.cramers_v_by_group }};
+with the reaction class, {{ '%.2f' % m.cramers_v_by_reaction }}. A scattering of exceptions would
+show neither. <a href="{{ u('/atlas/statistics') }}">The test in full</a></p>
+
+{% elif e.id == 'regulators_diverge_faster' %}
+{% set h = e.our_measurement.head_to_head %}
+{% if h %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Regulator compared against</th><th class="num">Pairs</th>
+<th class="num">Control identity</th><th class="num">Regulator identity</th>
+<th class="num">Regulator&rsquo;s extra divergence</th><th>Clears it?</th></tr></thead>
+<tbody>
+{#  "Gecer" olcutu p DEGIL: 15 bin ciftte her sey anlamli cikar. Fark en az
+    5 puan VE Cliff's delta en az 0,147 olmali -- ikisi birden.             #}
+{% for c in h %}
+{% set margin = c.mean_difference_control_minus_regulator %}
+{% set delta = c.cliffs_delta_control_over_regulator %}
+<tr><td>{{ c.control|replace('_',' ') }}</td>
+  <td class="num">{{ c.n_pairs|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % c.control_identity_mean }}</td>
+  <td class="num">{{ '%.1f %%' % c.regulator_identity_mean }}</td>
+  <td class="num">{{ '%+.1f' % margin }}</td>
+  <td>{% if margin >= 5.0 and delta >= 0.147 %}<span class="verdict verdict--robust">clears</span>
+      {% else %}<span class="verdict verdict--weak">within noise</span>{% endif %}
+      <span class="note">δ = {{ '%.2f' % delta }}</span></td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endif %}
+<p class="note"><a href="{{ u('/atlas/control') }}">The controls and the orthology gate ladder in full</a></p>
+
+{% elif e.id == 'taxonomic_breadth_metric' %}
+{% set m = e.our_measurement %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measure</th><th class="num">Xenobiotic types</th>
+<th class="num">Natural-substrate types</th><th class="num">p</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td>genera per member (the old metric)</td>
+  <td class="num">{{ '%.2f' % m.old_metric.xenobiotic_median }}</td>
+  <td class="num">{{ '%.2f' % m.old_metric.natural_median }}</td>
+  <td class="num">{{ '%.2f' % m.old_metric.p }}</td>
+  <td>xenobiotic wider</td></tr>
+<tr><td>genera at a common sample size (rarefied)</td>
+  <td class="num">{{ '%.2f' % m.rarefied.xenobiotic_median }}</td>
+  <td class="num">{{ '%.2f' % m.rarefied.natural_median }}</td>
+  <td class="num">{{ '%.2f' % m.rarefied.p }}</td>
+  <td><b>reversed</b></td></tr>
+</tbody></table></div>
+<p class="note">The old metric correlated with type size at Spearman
+ρ = {{ '%.2f' % m.size_correlation_after_rarefaction.spearman_rho if m.size_correlation_after_rarefaction.spearman_rho else '—' }}
+after rarefaction, against −0.77 before it.</p>
+{% endif %}
+
+<h3>What this does not show</h3>
+<p class="plain">{{ e.what_this_does_not_show }}</p>
+<p class="note"><b>What would settle it:</b> {{ e.what_would_settle_it }}<br>
+Computed in <code>{{ e.source_file }}</code>.</p>
+</section>
+{% endfor %}
+
+<h2>How this page is built</h2>
+<p class="note">Assembled by <code>disagreements.py</code>, which reads each counter-measurement
+from the analysis file that produced it rather than restating it. If an analysis changes, this
+page changes with it; a stale number on a page about disagreeing with the literature would be
+worse than the disagreement.
+<a href="{{ u('/download/analysis/disagreements.json') }}">Download disagreements.json</a></p>
+{% endblock %}

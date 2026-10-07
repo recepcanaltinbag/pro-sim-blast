@@ -91,7 +91,7 @@ def main():
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
               "atlas/cooccurrence", "atlas/statistics", "atlas/quality",
               "atlas/closeness", "atlas/structure", "atlas/control", "atlas/origin", "atlas/learning",
-              "atlas/geography", "atlas/elements"):
+              "atlas/geography", "atlas/elements", "atlas/disagreements"):
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")

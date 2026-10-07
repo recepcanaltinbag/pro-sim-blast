@@ -1623,6 +1623,12 @@ PROVENANCE = [
     ("geography.json", "file", "Where every located entry was collected, by country and by "
      "enzyme type, with the deviation of each type from the overall distribution.",
      "geography.py"),
+    ("disagreements.json", "file", "Every place where a measurement here does not match a "
+     "published claim, including this project's own earlier results, with what each test "
+     "does not show.", "disagreements.py"),
+    ("ferredoxin_residue.json", "file", "The residue at the NDO-Fd A50 column read across "
+     "every readable ferredoxin, testing a published claim that it is class-dependent.",
+     "ferredoxin_residue.py"),
     ("control_elements.json", "file", "Regulator families and insertion-sequence families: "
      "which enzyme types each sits beside, and whether mobile elements track the enzyme "
      "or the host.", "control_elements.py"),
