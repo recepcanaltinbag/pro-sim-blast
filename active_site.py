@@ -506,6 +506,18 @@ def strip_purification_tag(cluster, sequence):
     return out, notes
 
 
+def bare_accession(accession):
+    """UniParc kimligindeki surum ekini at: "T1YXQ1.1" -> "T1YXQ1".
+
+    OLCULDU: UniParc'in uniProtKBAccessions alani kimlikleri SURUM EKIYLE
+    dondurur ve AlphaFold API'si ekli kimlige HTTP 400 verir. Script bunu
+    "model yok" diye kaydediyordu; oysa ek atildiginda model geliyor ve dizi
+    uzunlugu kuratorlu referansla birebir tutuyor (T1YXQ1 448 aa, A0A6G7A7G0
+    383 aa). Iki tip bu yuzden yapisiz gorunuyordu.
+    """
+    return (accession or "").split(".")[0].strip()
+
+
 def accession_priority(accession):
     """Kimlik deneme sirasi: 6 karakterli (Swiss-Prot bicimli) kimlikler once.
 
@@ -553,8 +565,14 @@ def resolve_prediction_source(cluster, curated_sequence, cache_dir, offline):
         return out, matched
     entry = results[0]
     out["uniparc_id"] = entry.get("uniParcId")
-    accessions = sorted(entry.get("uniProtKBAccessions") or [],
-                        key=accession_priority)
+    # Surum eki atilir ve tekrarlar ayiklanir; sira yine belirlenimli kalsin
+    # diye once ayiklanir, sonra siralanir.
+    seen = []
+    for raw in entry.get("uniProtKBAccessions") or []:
+        bare = bare_accession(raw)
+        if bare and bare not in seen:
+            seen.append(bare)
+    accessions = sorted(seen, key=accession_priority)
     out["n_uniprot_accessions_with_this_exact_sequence"] = len(accessions)
     if not accessions:
         out["problems"].append(

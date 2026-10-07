@@ -4,9 +4,138 @@
 {% block body %}
 {% include "_atlas_nav.html" %}
 
+{#  Her cikarim icin UC katman var ve siralari onemli:
+      1. tek cumlelik duz anlatim  -- sayiya bakmadan ne demek oldugu
+      2. tablo + bilesim cubugu     -- olculen dagilim
+      3. sinyal haritasi            -- iliskinin tabloda NEREDE oldugu
+    Ucuncu katman en yeni ve en gereklisi: toplu p degeri "iliski yok" dese
+    bile tek bir enzim tipinde ya da tek bir reaksiyon sinifinda gercek bir
+    iliski olabilir, ve tersi de olur.                                     #}
+
+{% set MEANING = {
+  'plasmid_by_class':
+    'Enzymes that attack man-made compounds sit on plasmids several times as often as
+     enzymes that attack natural ones. That is the signature of a trait a cell acquires
+     from a neighbour rather than inherits from its parent.',
+  'mobile_by_class':
+    'The same question asked more broadly: a plasmid, or a transposase within ten
+     kilobases. The effect is smaller because most chromosomal copies have no mobile
+     element nearby, but it points the same way.',
+  'taxonomic_breadth_rarefied':
+    'Once every enzyme type is compared at the same sample size, enzymes for man-made
+     substrates are not spread across more bacterial genera than enzymes for natural
+     ones. The apparent difference in the card below was an artefact of type size.',
+  'taxonomic_breadth':
+    'The same question with the uncorrected metric. It is kept on the page because it
+     shows how a measure that quietly tracks sample size can manufacture a result.',
+  'reductase_by_group':
+    'Which flavoprotein reductase sits beside the oxygenase is only loosely tied to the
+     five historical RO groups, so the groups cannot be recovered from the reductase.',
+  'ferredoxin_by_group':
+    'The same for the ferredoxin: knowing the group narrows the expectation but does not
+     fix it.',
+  'reductase_type_by_type':
+    'Asked of the individual enzyme type instead of the broad group, the reductase
+     becomes about twice as predictable. The partner travels with the enzyme, not with
+     the group it was historically filed under.',
+  'ferredoxin_type_by_type':
+    'The same holds for the ferredoxin, and to almost exactly the same degree, which is
+     worth noting because the literature expects ferredoxin coupling to be the more
+     selective of the two.',
+  'beta_by_type':
+    'Whether the operon carries a beta subunit is all but decided by which enzyme type
+     it is: the α₃β₃ against α₃ architecture is a property of the enzyme.',
+  'etc_system_by_group':
+    'Some Rieske oxygenases run on a three-part system, with a separate reductase and a
+     separate ferredoxin, and some on two parts. Which one it is turns out to be only
+     weakly tied to the RO group.',
+  'etc_system_by_type':
+    'Asked of the enzyme type, the same question has a much sharper answer: how many
+     electron-transport components the system has is a property of the individual
+     enzyme.',
+  'etc_system_by_reaction':
+    'And it tracks chemistry. Ring-dihydroxylating enzymes are the ones that come with a
+     full three-part chain; hydroxylases and C–N cleaving enzymes mostly have no partner
+     in the neighbourhood at all.',
+  'reductase_type_by_reaction':
+    'Broken down by reaction rather than by group, the reductase does carry signal. This
+     is the association the group-level table was diluting.',
+  'ferredoxin_type_by_reaction':
+    'The same for the ferredoxin, and again the signal sits in a few reaction classes
+     rather than spread evenly across all of them.',
+  'host_kingdom_by_group_entry':
+    'Counted one row per alpha subunit this looks decisive. It is not: read the next
+     card before believing it.',
+  'host_kingdom_by_group_genus':
+    'Collapsing repeated strains to one observation per type and genus erases the effect
+     completely. What the previous card measured was sequencing effort.',
+  'host_kingdom_by_class_entry':
+    'Here there is no association even before normalisation.',
+  'host_kingdom_by_class_genus':
+    'A clean negative result: enzymes for man-made chemistry are not concentrated in
+     bacteria isolated from any one kind of host.',
+  'beta_by_group':
+    'At group level the beta subunit is the one classical criterion the genomic data
+     reproduce strongly, which is why it still separates the groups.',
+  'operon_completeness_by_plasmid':
+    'Plasmid-borne oxygenases carry more of their electron-transport partners in the
+     same neighbourhood: a complete, transferable catabolic module rather than a lone
+     gene.',
+  'bridging_residue_by_group':
+    'The carboxylate that bridges the two metal centres is usually aspartate, but not
+     always, and the glutamate version is not scattered at random: it marks a specific
+     branch.',
+  'bridging_residue_by_reaction':
+    'The same split seen against chemistry rather than against the historical group,
+     where it lines up more cleanly.',
+  'catalytic_residue_by_group':
+    'The control. This position is nearly invariant, so a real association here would
+     mean the method is reading alignment artefacts. The p value is small — with eleven
+     thousand entries almost anything is — but no cell differs materially, which is the
+     answer that matters.',
+  'phylum_by_group':
+    'The groups sit in visibly different parts of the bacterial tree, with two of them
+     carrying most of the eukaryotic members.',
+} %}
+
+{% set COLLABEL = {
+  'three_component': 'three-component', 'two_component': 'two-component',
+  'ferredoxin_only': 'ferredoxin only', 'none_nearby': 'none nearby',
+  'rieske+plant': 'Rieske + plant', 'plant+rieske': 'plant + Rieske',
+  'FNR+GR': 'FNR + GR',
+} %}
+
+{% macro collabel(c) %}{{ COLLABEL.get(c, c.replace('_', ' ')) }}{% endmacro %}
+
+{#  Bilesim cubugu: bir satirin sutunlar arasinda nasil bolundugu. Tek hue'nun
+    acik-koyu dizisi; kategoriler her tabloda ayni sirada durdugu icin konum
+    kimlik tasiyor. Dort sutuna kadar cizilir, otesinde okunakli degil.      #}
+{% macro pbar(row, cols) %}
+{%- set total = row|sum -%}
+{%- if total -%}
+<span class="pbar" role="img" aria-label="{% for v in row %}{{ collabel(cols[loop.index0]) }} {{ (100 * v / total)|round|int }} per cent{{ ', ' if not loop.last }}{% endfor %}">
+{%- for v in row -%}
+<span class="pbar__seg" style="width: {{ (100 * v / total)|round(2) }}%; background: var(--sq{{ loop.index }})"
+      title="{{ collabel(cols[loop.index0]) }}: {{ v|fmt }} ({{ (100 * v / total)|round(1) }} %)"></span>
+{%- endfor -%}
+</span>
+{%- endif -%}
+{% endmacro %}
+
+{#  Sapma cubugu: tek hucrenin genel orandan sapmasi. Yarim genislik 40 puana
+    karsilik gelir; bu esikte kirpilir, metin gercek degeri zaten yaziyor.   #}
+{% macro dbar(lift) %}
+{%- set w = [50, (50 * (lift|abs) / 0.40)]|min|round(2) -%}
+<span class="dbar" role="img" aria-label="{{ (100 * lift)|round|int }} percentage points against the overall rate">
+  <span class="dbar__fill dbar__fill--{{ 'over' if lift >= 0 else 'under' }}"
+        style="left: {{ (50 if lift >= 0 else 50 - w)|round(2) }}%; width: {{ w }}%"></span>
+</span>
+{% endmacro %}
+
 <h1>Statistical inferences</h1>
-<p class="lede">Each association below is stated as a question, tested, and given an explicit verdict.
-Effect sizes are reported alongside every p value, because with {{ stats.n_entries|fmt }} alpha
+<p class="lede">Each association below is stated as a question, tested, given an explicit verdict,
+and then opened up, because a single p value for a whole table hides where the association actually
+lives. Effect sizes are reported alongside every p value: with {{ stats.n_entries|fmt }} alpha
 subunits almost any difference reaches significance while only some are large enough to matter.</p>
 
 <div class="caveat">
@@ -17,15 +146,24 @@ subunits almost any difference reaches significance while only some are large en
   called robust only if all three levels agree in direction and the genus level stays significant.
 </div>
 
-{#  Her soru KENDI kartinda. Daha once sayfa once bir ozet tablosu, sonra ayni
-    testleri tekrar eden bolumler gosteriyordu; ayni sayi iki kez okunuyordu.
-    Simdi tek yer var ve her kart bir etki cubugu tasiyor: olculen deger ile
-    karistirmanin urettigi deger yan yana, boylece "bu buyuk mu" sorusu tabloya
-    bakmadan cevaplaniyor.                                                   #}
+<div class="caveat caveat--warn">
+  <b>A verdict on a table is not a verdict on every row in it.</b> A chi-squared test answers one
+  question — is there any association anywhere in this table — and that question misleads in both
+  directions. An association can be absent overall and still be real and strong inside a single
+  enzyme type or a single reaction class; and it can be present overall while coming entirely from
+  one row, so that “the groups differ” is false for all the others. Every contingency test on this
+  page is therefore resolved twice more: each cell gets a standardised residual, and each row is
+  tested against the sum of the remaining rows. Both families are corrected with
+  Benjamini–Hochberg, and a cell is reported only if it is also <b>material</b> — at least ten
+  percentage points away from the overall rate — and, wherever a genus-level table could be built,
+  only if it survives there too.
+</div>
+
 {% for t in stats.tests %}
 {% set v = t.cramers_v if t.cramers_v is defined else none %}
 {% set lvl = t.levels.genus if t.levels is defined and t.levels.genus is defined else none %}
 {% set pv = t.p if t.p is defined else (lvl.p if lvl else none) %}
+{% set sg = t.signals if t.signals is defined else none %}
 <section class="stat statcard" id="q{{ loop.index }}">
 <h2>{{ loop.index }} · {{ t.question }}</h2>
 <div class="statcard__head">
@@ -39,6 +177,10 @@ subunits almost any difference reaches significance while only some are large en
     {% else %}<span class="verdict verdict--weak">weakens at genus level</span>{% endif %}
     {% if pv is not none %}<span class="note">p = {{ '%.0e' % pv }}</span>{% endif %}
     {% if t.unit is defined %}<span class="note">per {{ t.unit }}</span>{% endif %}
+    {% if sg and sg.n_cells_material %}
+    <span class="chip chip--data">{{ sg.n_cells_material }} of {{ sg.n_cells_tested }} cells carry
+      the signal</span>
+    {% elif sg %}<span class="chip chip--data">no cell differs materially</span>{% endif %}
   </div>
   {% if v is not none %}
   <div class="effbar" role="img"
@@ -60,7 +202,8 @@ subunits almost any difference reaches significance while only some are large en
   <p class="note effbar__legend">The bar is the rate ratio at genus level, on a scale to five-fold.
     The mark sits at one, where the two groups would be equal.</p>
   {% endif %}
-  {% if t.restriction %}<p class="note">{{ t.restriction }}</p>{% endif %}
+  {% if MEANING.get(t.id) %}<p class="plain">{{ MEANING[t.id] }}</p>{% endif %}
+  {% if t.restriction and t.table is not defined %}<p class="note">{{ t.restriction }}</p>{% endif %}
 </div>
 
 {% if t.levels is defined %}
@@ -82,18 +225,62 @@ subunits almost any difference reaches significance while only some are large en
 Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types excluded.</p>
 
 {% elif t.table is defined %}
+{% set drawbar = t.cols|length <= 4 %}
+{% if drawbar %}
+<p class="pbar__keys">{% for c in t.cols %}<span class="pbar__key"><i
+   style="background: var(--sq{{ loop.index }})"></i>{{ collabel(c) }}</span>{% endfor %}</p>
+{% endif %}
 <div class="tablewrap"><table class="data compact">
 {#  Satir basligi testten gelir: bu sablon bir donem "group X" yazisini
     sabit tutuyordu ve substrat sinifi satirlari "group xenobiotic" diye
     goruluyordu.                                                           #}
 <thead><tr><th>{{ t.row_header|default('RO group') }}</th>
-{% for c in t.cols %}<th class="num">{{ c.replace('_', ' ') }}</th>{% endfor %}</tr></thead>
+{% for c in t.cols %}<th class="num">{{ collabel(c) }}</th>{% endfor %}
+{% if drawbar %}<th>Composition</th>{% endif %}</tr></thead>
 <tbody>
 {% for row in t.table %}
 <tr><td>{{ t.row_prefix|default('group ') }}{{ t.rows[loop.index0].replace('_', ' ') }}</td>
-{% for v in row %}<td class="num">{{ v|fmt }}</td>{% endfor %}</tr>
+{% for value in row %}<td class="num">{{ value|fmt }}</td>{% endfor %}
+{% if drawbar %}<td>{{ pbar(row, t.cols) }}</td>{% endif %}</tr>
 {% endfor %}
 </tbody></table></div>
+
+{% if sg and sg.top %}
+<details class="signals" open>
+<summary>Where the association lives</summary>
+<ul class="siglist">
+{% for c in sg.top %}
+<li>{{ dbar(c.lift) }}
+  <span><b>{{ c.row.replace('_', ' ') }}</b> is
+  {{ 'over' if c.direction == 'over' else 'under' }}-represented in
+  <b>{{ collabel(c.col) }}</b>:
+  <span class="num">{{ '%.0f %%' % (100 * c.share) }}</span> of its entries against
+  <span class="num">{{ '%.0f %%' % (100 * c.baseline) }}</span> overall
+  (<span class="num">{{ '%+.0f' % (100 * c.lift) }}</span> points,
+  {% if c.q < 1e-99 %}q below the smallest number this arithmetic can represent{%
+  else %}q = {{ '%.0e' % c.q }}{% endif %}){%
+  if c.q_genus is defined %}{% if c.holds %}, and it is still there after collapsing strains to one
+  observation per type and genus{% else %}, but it does not survive collapsing strains to
+  genera{% endif %}{% endif %}.</span>
+</li>
+{% endfor %}
+</ul>
+<p class="note">Standardised Pearson residuals, Benjamini–Hochberg corrected across the
+{{ sg.n_cells_tested }} cells whose expected count reaches {{ sg.min_expected|int }}.
+{{ sg.n_cells_material }} of them are also at least
+{{ (100 * sg.min_lift)|round|int }} percentage points from the overall rate{% if sg.has_genus %},
+and {{ sg.n_cells_material_genus }} of those survive the genus-level table{% endif %}.
+{% if sg.n_rows_tested %}Tested one row against the sum of the others,
+{{ sg.n_rows_flagged }} of {{ sg.n_rows_tested }} rows differ from the rest.{% endif %}
+{% if not sg.has_genus %}No genus-level table could be built for this test, so these cells carry the
+entry-level caveat at the top of the page.{% endif %}</p>
+</details>
+{% elif sg %}
+<p class="note"><span class="verdict verdict--none">no cell carries the signal</span>
+Every cell is within {{ (100 * sg.min_lift)|round|int }} percentage points of the overall rate, so
+however small the p value, there is nothing here to report about any individual row.</p>
+{% endif %}
+
 <p class="note">
 {% if t.restriction %}<b>Restricted to:</b> {{ t.restriction }}.<br>{% endif %}
 {% if t.null %}Label shuffling on a table of this shape gives
@@ -119,7 +306,7 @@ class boundaries.
 {% elif t.id == 'phylum_by_group' %}Groups differ markedly in host range: some are concentrated in
 Actinomycetota, others in Pseudomonadota, and two carry most of the eukaryotic members.
 {% elif t.id == 'host_kingdom_by_group_entry' %}Counted per alpha subunit this looks decisive, and
-the p value is tiny. Read the genus-level row below before believing it.
+the p value is tiny. Read the genus-level card below before believing it.
 {% elif t.id == 'host_kingdom_by_group_genus' %}<b>The entry-level association does not survive.</b>
 Collapsing strains to one observation per type and genus leaves no significant difference, so what
 the entry-level table measured was how often each kind of organism gets sequenced, not where these
@@ -134,17 +321,35 @@ its group, which is what one would expect if partner and oxygenase are inherited
 {% elif t.id == 'beta_by_type' %}At type level the beta subunit is almost perfectly predictable,
 which makes the α₃β₃ against α₃ architecture a property of the individual enzyme rather than of the
 group it was historically placed in.
+{% elif t.id == 'etc_system_by_group' %}Reductase and ferredoxin are tested here as one variable
+rather than two, because asked separately each has a “none” column that confuses two different
+situations: no partner at all, and a partner of the other kind. Read together they describe the
+system — three-component, two-component, or neither — which is the axis the classical
+classification was built on
+(<a href="https://doi.org/10.1021/acs.biochem.5c00369">Miao &amp; Schmidt 2025</a>).
 {% elif t.id == 'host_kingdom_by_class_genus' %}<b>A clean negative result.</b> Whether an enzyme
 acts on a man-made or a natural substrate is unrelated to whether its carrier was isolated from a
 plant, an animal or a human. Xenobiotic-degrading capability is not concentrated in one kind of
-host association.{% endif %}
+host association.
+{% elif t.id == 'bridging_residue_by_group' %}Reviews describe this bridging carboxylate as a
+<i>highly conserved aspartate</i> linking the mononuclear iron of one subunit to the Rieske cluster
+of its neighbour
+(<a href="https://doi.org/10.1021/acs.biochem.5c00369">Miao &amp; Schmidt 2025</a>).
+Across the whole family it is conserved in kind but not in identity: glutamate appears too often,
+and too unevenly, to be a scattering of exceptions.{% endif %}
 </p>
 
-{% elif t.id == 'taxonomic_breadth' %}
+{% elif t.id in ('taxonomic_breadth', 'taxonomic_breadth_rarefied') %}
 <p>Unit of analysis: {{ t.unit }}. Metric: {{ t.metric }}.
 Xenobiotic types, {{ t.xenobiotic.n }} of them, have a median of {{ '%.2f' % t.xenobiotic.median }};
 natural-substrate types, {{ t.natural.n }} of them, a median of {{ '%.2f' % t.natural.median }}.
 Mann–Whitney U = {{ '%.0f' % t.mannwhitney_U }}, p = {{ '%.2f' % t.p }}.</p>
+{% if t.size_correlation_after_rarefaction %}
+<p class="note">After rarefaction the metric no longer tracks how many members a type has:
+Spearman ρ = {{ '%.2f' % t.size_correlation_after_rarefaction.spearman_rho }},
+p = {{ '%.2f' % t.size_correlation_after_rarefaction.p }}.
+{{ t.size_correlation_after_rarefaction.note }}</p>
+{% endif %}
 <p class="note">{% if t.p < 0.05 %}<span class="verdict verdict--robust">significant</span>
 {% else %}<span class="verdict verdict--none">not significant</span>
 With {{ t.xenobiotic.n + t.natural.n }} types the test has little power, so the apparent direction
@@ -181,8 +386,45 @@ members: {{ stats.evidence.clusters_mostly_distant|join(', ') }}.
 <a href="{{ u('/atlas/evidence') }}">Evidence page</a></p>
 </section>
 
+{% if learn and learn.rows %}
+<section class="stat">
+<h2>{{ stats.tests|length + 2 }} · What can be learned from the data</h2>
+<p class="plain">Every association above says that something is <b>related</b> to something else. A
+different and harder question is whether it is enough to <b>predict</b>. Each row below trains a
+model on one of those questions and reports two numbers: the accuracy when whole enzyme types are
+held out of training, and the accuracy when the same rows are split at random. The gap between them
+is not a result — it is the size of a mistake that is easy to make with this kind of data.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Predicted from the data</th><th class="num">Honest</th><th class="num">Random split</th>
+<th class="num">Inflation</th><th>Honest accuracy against chance</th></tr></thead>
+<tbody>
+{% for r in learn.rows %}
+<tr><td>{{ r.label }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * r.grouped) if r.grouped is not none else '—' }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * r.leaked) if r.leaked is not none else '—' }}</td>
+  <td class="num">{{ '%.2f×' % r.ratio if r.ratio else '—' }}</td>
+  <td>{% if r.grouped is not none %}
+    <div class="effbar" role="img"
+         aria-label="{{ (100 * r.grouped)|round|int }} per cent accurate, chance level {{ (100 * (r.majority or 0))|round|int }} per cent">
+      <div class="effbar__fill" style="width: {{ (100 * r.grouped)|round(1) }}%"></div>
+      {% if r.majority %}<div class="effbar__null" style="left: {{ (100 * r.majority)|round(1) }}%"></div>{% endif %}
+      <span class="effbar__value">{{ '%.0f %%' % (100 * r.grouped) }}</span>
+    </div>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">The mark on each bar is the rate you would reach by always answering with the most
+common label, so only the distance beyond the mark was learned. Honest accuracy uses grouped
+cross-validation, in which every member of an enzyme type is held out together; the random split
+leaves near-identical strains on both sides of the partition and so measures mostly its own leak.
+<a href="{{ u('/atlas/learning') }}">The predictability page</a> works through what each model was
+given, which features carried the information, and where the models fail.</p>
+</section>
+{% endif %}
+
 <h2>Reproducing these numbers</h2>
 <p class="note">All tests are computed by <code>stats_overview.py</code> from the database and
-written to a single JSON file, which this page renders without further arithmetic.
+written to a single JSON file, which this page renders without further arithmetic. The cell-level
+signal maps, the row-against-the-rest tests and the Benjamini–Hochberg correction live in that same
+file, so nothing on this page is arithmetic the template invented.
 <a href="{{ u('/download/analysis/stats.json') }}">Download stats.json</a></p>
 {% endblock %}

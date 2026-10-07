@@ -343,6 +343,109 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
 }
 .effbar__legend { margin-top: 4px; font-size: .8rem; }
 
+/* ---- sonuc tablolarinin icindeki kucuk figurler ------------------------
+   Iki figur, iki ayri is.
+
+   .pbar  BILESIM. Bir satirin sutunlar arasinda nasil bolundugu. Isi
+          buyukluk oldugu icin TEK hue'nun acik->koyu dizisi kullanilir;
+          kategoriler her tabloda ayni sirada durur, boylece konum kimlik
+          tasir. Segmentler arasina 2px zemin boslugu girer, bitisik iki
+          basamak birbirine karismasin diye. Basamaklar OKLab'de olculerek
+          secildi: komsu basamaklar arasi L farki >= 0,06 ve en acik basamak
+          zemine karsi kontrast >= 2.
+   .dbar  SAPMA. Bir hucrenin genel orandan ne kadar ve NE YONDE ayrildigi.
+          Isi kutupluluk oldugu icu iki hue ve notr bir orta nokta kullanilir:
+          fazla temsil ilik, eksik temsil serin, sifir noktasi gri. Cift
+          OKLab'de dogrulandi: protan/deutan benzetiminde ayrim 18,8 (hedef
+          8), normal gorusde 26,1 (taban 15), iki kutup da zemine karsi
+          kontrast 3'un uzerinde. Tek seri oldugu icin aciklama kutusu
+          gerekmiyor; satirin kendi metni figuru adlandiriyor.          */
+:root {
+  --sq1: #90b4d8;   /* dizisel rampa, en dusuk basamak */
+  --sq2: #7597ba;
+  --sq3: #58799b;
+  --sq4: #395a79;   /* en yuksek basamak */
+  --div-over:  #b5612f;   /* fazla temsil (ilik kutup) */
+  --div-under: #1f5c96;   /* eksik temsil (serin kutup) */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Karanlikta rampa TERS yonde kurulur: dusuk basamak koyu, yuksek acik.
+       Otomatik cevirme degil, ayri olculmus basamaklar. */
+    --sq1: #456687;
+    --sq2: #597b9c;
+    --sq3: #6d90b2;
+    --sq4: #82a5c9;
+    --div-over:  #c07a3e;
+    --div-under: #4a8ac9;
+  }
+}
+
+.pbar {
+  display: flex;
+  gap: 2px;
+  height: 11px;
+  min-width: 90px;
+  border-radius: 2px;
+}
+.pbar__seg { min-width: 2px; border-radius: 1px; }
+.pbar__seg:first-child { border-radius: 2px 1px 1px 2px; }
+.pbar__seg:last-child  { border-radius: 1px 2px 2px 1px; }
+.pbar__key {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-right: var(--s3); font-size: .78rem; color: var(--ink-2);
+  white-space: nowrap;
+}
+.pbar__key i { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+.pbar__keys { margin: 0 0 var(--s2); display: flex; flex-wrap: wrap; row-gap: 4px; }
+
+.dbar {
+  position: relative;
+  display: inline-block;
+  width: 108px; height: 11px;
+  vertical-align: -1px;
+  background: var(--paper-2);
+  border-radius: 2px;
+  flex: none;
+}
+/* Sifir cizgisi: notr, figurun ustunde. */
+.dbar::before {
+  content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px;
+  width: 1px; background: var(--rule-2);
+}
+.dbar__fill { position: absolute; top: 0; bottom: 0; border-radius: 1px; }
+.dbar__fill--over  { background: var(--div-over); }
+.dbar__fill--under { background: var(--div-under); }
+
+/* Sinyal listesi: "iliski tabloda NEREDE". Her satir bir cumle, yaninda o
+   hucrenin sapma cubugu. Metin ink renklerini giyer, rengi yalnizca figur
+   tasir. */
+.signals { margin: var(--s3) 0 0; }
+.signals > summary { cursor: pointer; font-weight: 600; color: var(--ink-2); }
+.signals > summary::marker { color: var(--dim); }
+.siglist { list-style: none; margin: var(--s2) 0 0; padding: 0; }
+.siglist li {
+  display: flex; align-items: baseline; gap: var(--s3);
+  padding: 5px 0; border-top: 1px solid var(--rule);
+  font-size: .86rem; line-height: 1.45;
+}
+.siglist li:first-child { border-top: 0; }
+.siglist b { font-weight: 600; }
+.siglist .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Her cikarimin tek cumlelik duz anlatimi: sayidan once ne demek oldugu. */
+.plain {
+  margin: var(--s2) 0 0;
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+.plain b { color: var(--ink); }
+
+@media (max-width: 700px) {
+  .dbar { width: 72px; }
+  .siglist li { flex-wrap: wrap; gap: var(--s2); }
+}
+
 /* Aktif bolge kalinti listesi: varsayilan olarak KAPALI, cunku sayfanin asil
    konusu degil, ama goruntuleyici yuklenemezse bilgi yine de burada. */
 .sitelist { margin: var(--s3) 0; }

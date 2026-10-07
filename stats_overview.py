@@ -50,6 +50,172 @@ def two_by_two(a_yes, a_no, b_yes, b_no):
             "ratio": (ra / rb) if rb else None, "odds_ratio": odds, "p": p}
 
 
+def bh_adjust(pvals):
+    """Benjamini-Hochberg: p listesi -> q listesi, ayni sirada.
+
+    Bir tabloda 43 satir varsa duzeltmesiz bakildiginda birkac satirin sans
+    eseri p<0,05 vermesi BEKLENIR. Asagidaki hucre ve satir testleri bir
+    AILE olarak dusunulur ve yanlis kesif orani bu aile icinde kontrol edilir.
+    """
+    n = len(pvals)
+    if not n:
+        return []
+    order = sorted(range(n), key=lambda i: pvals[i])
+    q = [0.0] * n
+    running = 1.0
+    for rank in range(n, 0, -1):
+        i = order[rank - 1]
+        running = min(running, pvals[i] * n / rank)
+        q[i] = running
+    return q
+
+
+def signal_map(rows, cols, table, genus_table=None, min_expected=5.0, alpha=0.05,
+               min_lift=0.10):
+    """Tablodaki sinyal NEREDE yasiyor?
+
+    Toplu ki-kare tek bir soru sorar: "bu tabloda herhangi bir iliski var mi?"
+    Bu soru iki yonde de yanlis yonlendirir. Topluca anlamsiz cikan bir tablo
+    tek bir satirda gercek ve guclu bir iliski barindirabilir -- ornegin
+    reduktaz tipi RO GRUBU ile iliskili olmayabilirken belli bir enzim tipinde,
+    ya da belli bir reaksiyon sinifinda, iliski belirgindir. Tersi de olur:
+    anlamli cikan bir tablonun butun sinyali tek bir satirdan gelebilir ve
+    "gruplar farklidir" ifadesi geri kalan satirlar icin yanlis olur.
+
+    Bu yuzden her kontenjans testi iki ek duzeyde cozulur:
+
+    hucre duzeyi  standartlastirilmis Pearson artigi
+                  z = (G - B) / sqrt(B (1 - satir payi)(1 - sutun payi))
+                  buyuk orneklemde yaklasik N(0,1); beklenen sayi
+                  min_expected altindaysa yaklasim gecerli olmadigi icin
+                  hucre atlanir.
+    satir duzeyi  o satir ile KALAN satirlarin toplami arasinda 2xC testi;
+                  "bu tip/grup digerlerinden farkli mi" sorusunun cevabi.
+
+    11 bin giriste p degeri neredeyse her hucrede kucuk cikar; bu yuzden
+    istatistiksel isaret tek basina yeterli sayilmaz. Bir hucre ancak hem
+    duzeltilmis q < alpha ise HEM DE o satirin sutun payi genel sutun payindan
+    en az min_lift kadar (varsayilan 10 puan) sapiyorsa "maddi" sayilir.
+
+    Iki aile ayri ayri Benjamini-Hochberg ile duzeltilir. genus_table verilirse
+    (ayni satir ve sutun etiketleriyle, suslar cins basina cokertilerek kurulmus
+    tablo) ayni hucre testi orada da yapilir ve q_genus olarak eklenir: ornekleme
+    yanliligindan dogan hucreler bu ikinci gecisi gecemez.
+    """
+    t = np.asarray(table, dtype=float)
+    if t.ndim != 2 or t.shape[0] < 2 or t.shape[1] < 2 or t.sum() <= 0:
+        return None
+    n = t.sum()
+    rsum = t.sum(axis=1)
+    csum = t.sum(axis=0)
+    exp = np.outer(rsum, csum) / n
+
+    def cell_z(arr):
+        m = arr.sum()
+        if m <= 0:
+            return None
+        rs, cs = arr.sum(axis=1), arr.sum(axis=0)
+        e = np.outer(rs, cs) / m
+        with np.errstate(divide="ignore", invalid="ignore"):
+            den = np.sqrt(e * (1 - rs[:, None] / m) * (1 - cs[None, :] / m))
+            z = np.where(den > 0, (arr - e) / den, 0.0)
+        return e, z
+
+    exp, z = cell_z(t)
+    idx, raw = [], []
+    for i in range(t.shape[0]):
+        for j in range(t.shape[1]):
+            if exp[i, j] < min_expected:
+                continue
+            idx.append((i, j))
+            raw.append(float(2 * stats.norm.sf(abs(z[i, j]))))
+    qs = bh_adjust(raw)
+
+    gq = {}
+    if genus_table is not None:
+        g = np.asarray(genus_table, dtype=float)
+        if g.shape == t.shape and g.sum() > 0:
+            ge, gz = cell_z(g)
+            gidx, graw = [], []
+            for i in range(g.shape[0]):
+                for j in range(g.shape[1]):
+                    if ge[i, j] < min_expected:
+                        continue
+                    gidx.append((i, j))
+                    graw.append(float(2 * stats.norm.sf(abs(gz[i, j]))))
+            for (i, j), q in zip(gidx, bh_adjust(graw)):
+                gq[(i, j)] = {"q": q, "z": float(gz[i, j])}
+
+    cells = []
+    for (i, j), p, q in zip(idx, raw, qs):
+        share = float(t[i, j] / rsum[i]) if rsum[i] else 0.0
+        base = float(csum[j] / n)
+        entry = {"row": rows[i], "col": cols[j], "obs": int(t[i, j]),
+                 "expected": round(float(exp[i, j]), 1), "z": round(float(z[i, j]), 2),
+                 "p": p, "q": q, "share": round(share, 4), "baseline": round(base, 4),
+                 "lift": round(share - base, 4),
+                 "direction": "over" if z[i, j] > 0 else "under",
+                 "flagged": bool(q < alpha),
+                 "material": bool(q < alpha and abs(share - base) >= min_lift)}
+        if (i, j) in gq:
+            entry["q_genus"] = gq[(i, j)]["q"]
+            entry["z_genus"] = round(gq[(i, j)]["z"], 2)
+            entry["genus_tested"] = True
+            entry["survives_genus"] = bool(gq[(i, j)]["q"] < alpha
+                                           and gq[(i, j)]["z"] * z[i, j] > 0)
+        elif gq:
+            # Cins tablosu var ama bu hucrenin beklenen sayisi orada esigin
+            # altinda: "gecemedi" degil, "sinanamadi".
+            entry["genus_tested"] = False
+        # "holds": maddi fark var ve cins duzeyinde sinanabildiyse orada da ayni
+        # yonde duruyor. Cins tablosu hic kurulmadiysa olcut yalnizca maddiliktir
+        # ve sayfa bunu ayrica belirtir.
+        entry["holds"] = bool(entry["material"]
+                              and entry.get("survives_genus", True))
+        cells.append(entry)
+
+    # satir duzeyi: bir satir vs kalan satirlarin toplami
+    rowp, rowinfo = [], []
+    for i in range(t.shape[0]):
+        rest = t.sum(axis=0) - t[i]
+        sub = np.vstack([t[i], rest])
+        sub = sub[:, sub.sum(axis=0) > 0]
+        info = {"row": rows[i], "n": int(rsum[i])}
+        if sub.shape[1] < 2 or sub[0].sum() < 10 or sub[1].sum() < 10:
+            info["p"] = None
+            rowinfo.append(info)
+            continue
+        if sub.shape == (2, 2):
+            p = float(stats.fisher_exact(sub)[1])
+        else:
+            p = float(stats.chi2_contingency(sub)[1])
+        info["p"] = p
+        info["cramers_v"] = round(cramers_v(sub), 3)
+        rowp.append((len(rowinfo), p))
+        rowinfo.append(info)
+    if rowp:
+        for (pos, _), q in zip(rowp, bh_adjust([p for _, p in rowp])):
+            rowinfo[pos]["q"] = q
+            rowinfo[pos]["flagged"] = bool(q < alpha)
+
+    flagged = [c for c in cells if c["flagged"]]
+    material = [c for c in cells if c["material"]]
+    # Siralama: cins duzeyini de geçenler once, sonra etki buyuklugune gore.
+    material.sort(key=lambda c: (0 if c["holds"] else 1, -abs(c["lift"])))
+    return {"cells": cells, "rows": rowinfo,
+            "top": material[:8],
+            "n_cells_tested": len(cells),
+            "n_cells_material": len(material),
+            "n_cells_material_genus": sum(1 for c in material if c.get("holds")),
+            "min_lift": min_lift,
+            "n_cells_flagged": len(flagged),
+            "n_rows_tested": sum(1 for r in rowinfo if r.get("p") is not None),
+            "n_rows_flagged": sum(1 for r in rowinfo if r.get("flagged")),
+            "has_genus": bool(gq),
+            "n_cells_survive_genus": sum(1 for c in cells if c.get("survives_genus")),
+            "alpha": alpha, "min_expected": min_expected}
+
+
 def load(con, ecology_path):
     eco = {}
     with open(ecology_path) as fh:
@@ -84,6 +250,17 @@ def load(con, ecology_path):
         d["phylum"] = tax[2] if len(tax) > 2 else (tax[-1] if tax else "?")
         d["genus"] = (d["organism"] or "?").split()[0]
         d["mobile"] = int(bool(d["is_plasmid"]) or (d["transposons"] or 0) > 0)
+        # Elektron tasima SISTEMI: klasik siniflandirmanin asil ekseni. Bazi
+        # RO'lar uc bilesenli (reduktaz + ferredoksin + oksijenaz), bazilari iki
+        # bilesenli (reduktaz-ferredoksin kaynasmis ya da ayri ferredoksin yok).
+        # Bu ayrim reduktaz ve ferredoksin tiplerine AYRI AYRI bakildiginda
+        # gorunmez; birlikte bakmak gerekir.
+        red = (d.get("reductase_type") or "none") != "none"
+        fdx = (d.get("ferredoxin_type") or "none") != "none"
+        d["beta_label"] = "beta" if d.get("has_beta") else "no beta"
+        d["etc_system"] = ("three_component" if red and fdx else
+                           "two_component" if red else
+                           "ferredoxin_only" if fdx else "none_nearby")
         data.append(d)
     return data
 
@@ -150,6 +327,15 @@ def main():
 
     con = sqlite3.connect(args.db)
     data = load(con, args.ecology)
+    # Reaksiyon sinifi her girise yazilir: "hangi reaksiyon tarzi" sorusu
+    # grup ve tip sorulariyla ayni araclarla sorulabilsin.
+    reaction_of = {}
+    if os.path.exists(args.chemistry):
+        with open(args.chemistry) as fh:
+            for row in csv.DictReader(fh):
+                reaction_of[row["cluster"]] = row.get("reaction_class") or "unknown"
+    for d in data:
+        d["reaction_class"] = reaction_of.get(d["cluster"], "unknown")
     # okaryot-agirlikli kumeler bakteriyel mobilite testinden disarida
     euk_heavy = set()
     if os.path.exists(args.domain_csv):
@@ -161,6 +347,40 @@ def main():
                 except ValueError:
                     pass
     out = {"n_entries": len(data), "excluded_euk_heavy_clusters": sorted(euk_heavy), "tests": []}
+
+    ETC_SYSTEMS = ["three_component", "two_component", "ferredoxin_only", "none_nearby"]
+
+    def contingency(test_id, question, subset, key_field, col_field, keys, cols,
+                    row_header, row_prefix="", unit="alpha subunit",
+                    restriction=None, with_null=False, with_genus=True, note_key=None):
+        """Bir kontenjans testi + sinyal haritasi + istege bagli null ve cins tablosu."""
+        table = [[sum(1 for d in subset if d[key_field] == k and d[col_field] == c)
+                  for c in cols] for k in keys]
+        keys_t, cols_t, table_t = trim_table(keys, cols, table)
+        if len(keys_t) < 2 or len(cols_t) < 2:
+            return None
+        chi2, p, dof, _ = stats.chi2_contingency(table_t)
+        gtab = None
+        if with_genus:
+            gsub = collapse_genus(subset)
+            gtab = [[sum(1 for d in gsub if d[key_field] == k and d[col_field] == c)
+                     for c in cols_t] for k in keys_t]
+        t = {"id": test_id, "question": question,
+             "rows": keys_t, "cols": cols_t, "table": table_t,
+             "chi2": float(chi2), "dof": int(dof), "p": float(p),
+             "cramers_v": cramers_v(table_t),
+             "row_header": row_header, "row_prefix": row_prefix, "unit": unit,
+             "n": sum(sum(r) for r in table_t)}
+        if restriction:
+            t["restriction"] = restriction
+        if with_null:
+            t["null"] = permutation_null(keys_t, cols_t, subset, key_field, col_field)
+        t["signals"] = signal_map(keys_t, cols_t, table_t, gtab)
+        if gtab is not None:
+            t["genus_table"] = gtab
+        out["tests"].append(t)
+        return t
+
 
     # 1. ksenobiyotik x plazmit / mobil element
     out["tests"].append({"id": "plasmid_by_class",
@@ -248,25 +468,19 @@ def main():
         "natural": {"n": len(nat), "median": float(np.median(nat)) if nat else None},
         "mannwhitney_U": float(u) if u is not None else None, "p": float(p) if p is not None else None})
 
-    # 3. ETC profili x RO grubu (ki-kare + Cramér's V); beta x grup
+    # 3. ETC profili x RO grubu; beta x grup. Hepsi ayni yardimci uzerinden
+    # kurulur, boylece her biri hem cins duzeyinde ikinci bir tabloya hem de
+    # hucre bazinda sinyal haritasina sahip olur.
     groups = sorted({d["group"] for d in data})
-    red_types = ["FNR", "GR", "FNR+GR", "none"]
-    table = [[sum(1 for d in data if d["group"] == g and d["reductase_type"] == t) for t in red_types] for g in groups]
-    groups_r, red_types, table = trim_table(groups, red_types, table)
-    chi2, p, dof, _ = stats.chi2_contingency(table)
-    out["tests"].append({
-        "id": "reductase_by_group",
-        "question": "Is the reductase type found near the alpha subunit associated with the RO group?",
-        "rows": groups_r, "cols": red_types, "table": table,
-        "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
-    fd_types = ["rieske", "plant", "rieske+plant", "none"]
-    table = [[sum(1 for d in data if d["group"] == g and d["ferredoxin_type"] == t) for t in fd_types] for g in groups]
-    groups_f, fd_types, table = trim_table(groups, fd_types, table)
-    chi2, p, dof, _ = stats.chi2_contingency(table)
-    out["tests"].append({
-        "id": "ferredoxin_by_group", "question": "Is the ferredoxin type associated with the RO group?",
-        "rows": groups_f, "cols": fd_types, "table": table,
-        "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
+    contingency(
+        "reductase_by_group",
+        "Is the reductase type found near the alpha subunit associated with the RO group?",
+        data, "group", "reductase_type", groups, ["FNR", "GR", "FNR+GR", "none"],
+        "RO group", row_prefix="group ")
+    contingency(
+        "ferredoxin_by_group", "Is the ferredoxin type associated with the RO group?",
+        data, "group", "ferredoxin_type", groups,
+        ["rieske", "plant", "rieske+plant", "none"], "RO group", row_prefix="group ")
     # Cramer's V, satir sayisi artinca KENDILIGINDEN yukselir. Tip bazinda
     # tablo 5 satir yerine ~43 satir oldugu icin "tipte daha guclu" demek,
     # once bu yapisal etkiyi dislamayi gerektirir. Etiketler karistirilarak
@@ -308,56 +522,83 @@ def main():
     MIN_TYPE_N = 20
     type_counts = Counter(d["cluster"] for d in data)
     big_types = sorted(t for t, n in type_counts.items() if n >= MIN_TYPE_N)
+    big_subset = [d for d in data if d["cluster"] in big_types]
+    type_restriction = (f"types with at least {MIN_TYPE_N} members: "
+                        f"{len(big_types)} of {len(type_counts)} types, "
+                        f"{len(big_subset)} entries")
     for field, values, label in (
             ("reductase_type", ["FNR", "GR", "FNR+GR", "none"], "reductase type"),
             ("ferredoxin_type", ["rieske", "plant", "rieske+plant", "none"], "ferredoxin type"),
     ):
-        subset = [d for d in data if d["cluster"] in big_types]
-        table = [[sum(1 for d in subset if d["cluster"] == t and d[field] == v)
-                  for v in values] for t in big_types]
-        rows_t, cols_t, table_t = trim_table(big_types, values, table)
-        if len(rows_t) < 2 or len(cols_t) < 2:
-            continue
-        chi2, p, dof, _ = stats.chi2_contingency(table_t)
-        out["tests"].append({
-            "id": f"{field}_by_type",
-            "question": (f"Is the {label} associated with the enzyme TYPE, rather than "
-                         f"only with the broad RO group?"),
-            "rows": rows_t, "cols": cols_t, "table": table_t,
-            "chi2": float(chi2), "dof": int(dof), "p": float(p),
-            "cramers_v": cramers_v(table_t),
-            "row_header": "Enzyme type", "row_prefix": "",
-            "unit": "alpha subunit",
-            "restriction": (f"types with at least {MIN_TYPE_N} members: "
-                            f"{len(rows_t)} of {len(type_counts)} types, "
-                            f"{sum(sum(r) for r in table_t)} entries"),
-            "null": permutation_null(big_types, values, subset, "cluster", field),
-            "n": sum(sum(r) for r in table_t)})
+        contingency(
+            f"{field}_by_type",
+            f"Is the {label} associated with the enzyme TYPE, rather than only with "
+            f"the broad RO group?",
+            big_subset, "cluster", field, big_types, values, "Enzyme type",
+            restriction=type_restriction, with_null=True)
 
     # Ayni soru beta alt birimi icin: mimari tip bazinda mi grup bazinda mi
     # belirleniyor?
-    subset = [d for d in data if d["cluster"] in big_types]
-    table = [[sum(1 for d in subset if d["cluster"] == t and bool(d["has_beta"]) == b)
-              for b in (True, False)] for t in big_types]
-    rows_t, cols_t, table_t = trim_table(big_types, ["beta", "no beta"], table)
-    if len(rows_t) >= 2 and len(cols_t) >= 2:
-        chi2, p, dof, _ = stats.chi2_contingency(table_t)
-        out["tests"].append({
-            "id": "beta_by_type",
-            "question": ("Is the presence of a beta subunit in the operon decided at the "
-                         "level of the enzyme type rather than the RO group?"),
-            "rows": rows_t, "cols": cols_t, "table": table_t,
-            "chi2": float(chi2), "dof": int(dof), "p": float(p),
-            "cramers_v": cramers_v(table_t),
-            "row_header": "Enzyme type", "row_prefix": "",
-            "unit": "alpha subunit",
-            "restriction": (f"types with at least {MIN_TYPE_N} members: "
-                            f"{len(rows_t)} of {len(type_counts)} types"),
-            "null": permutation_null(
-                big_types, [True, False],
-                [dict(d, _beta=bool(d["has_beta"])) for d in subset],
-                "cluster", "_beta"),
-            "n": sum(sum(r) for r in table_t)})
+    contingency(
+        "beta_by_type",
+        "Is the presence of a beta subunit in the operon decided at the level of the "
+        "enzyme type rather than the RO group?",
+        big_subset, "cluster", "beta_label", big_types, ["beta", "no beta"],
+        "Enzyme type", restriction=type_restriction, with_null=True)
+
+    # Elektron tasima SISTEMI. Kullanicinin isaret ettigi ayrim: bazi RO'lar
+    # uc bilesenli sistemdir (ayri reduktaz VE ayri ferredoksin), bazilari iki
+    # bilesenli. Reduktaz tipi ve ferredoksin tipi AYRI AYRI test edildiginde bu
+    # ayrim gorunmez, cunku her iki testte de "none" hucresi iki farkli biyolojik
+    # duruma karsilik gelir: ortak gercekten yok, ya da ortak var ama obur
+    # bilesen eksik. Birlesik degisken bu karisikligi kaldirir.
+    #
+    # Ayni soru UC duzeyde sorulur -- grup, enzim tipi, reaksiyon sinifi --
+    # cunku bir duzeyde kaybolan iliski bir digerinde gercek olabilir.
+    contingency(
+        "etc_system_by_group",
+        "Is the electron-transport SYSTEM near the alpha subunit -- three-component "
+        "(separate reductase and ferredoxin), two-component (reductase only), or "
+        "neither -- associated with the RO group?",
+        data, "group", "etc_system", sorted({d["group"] for d in data}), ETC_SYSTEMS,
+        "RO group", row_prefix="group ")
+
+    contingency(
+        "etc_system_by_type",
+        "Is the electron-transport system a property of the individual enzyme type "
+        "rather than of the broad RO group?",
+        [d for d in data if d["cluster"] in big_types], "cluster", "etc_system",
+        big_types, ETC_SYSTEMS, "Enzyme type",
+        restriction=(f"types with at least {MIN_TYPE_N} members: "
+                     f"{len(big_types)} of {len(type_counts)} types"),
+        with_null=True)
+
+    reaction_keys = sorted({d["reaction_class"] for d in data
+                            if d["reaction_class"] != "unknown"})
+    reaction_subset = [d for d in data if d["reaction_class"] != "unknown"]
+    contingency(
+        "etc_system_by_reaction",
+        "Is the electron-transport system associated with the kind of reaction the "
+        "enzyme performs?",
+        reaction_subset, "reaction_class", "etc_system", reaction_keys, ETC_SYSTEMS,
+        "Reaction class",
+        restriction=("entries whose type carries a curated reaction class: "
+                     f"{len(reaction_subset)} of {len(data)}"))
+
+    # Ortaklar reaksiyon sinifiyla da sorulur: "bazi reaksiyon tarzlarinda
+    # iliski olabilir" sorusu grup duzeyinde sorulan testin cevabini
+    # degistirebilir.
+    for field, values, label in (
+            ("reductase_type", ["FNR", "GR", "FNR+GR", "none"], "reductase type"),
+            ("ferredoxin_type", ["rieske", "plant", "rieske+plant", "none"],
+             "ferredoxin type")):
+        contingency(
+            f"{field}_by_reaction",
+            f"Is the {label} associated with the kind of reaction the enzyme performs?",
+            reaction_subset, "reaction_class", field, reaction_keys, values,
+            "Reaction class",
+            restriction=("entries whose type carries a curated reaction class: "
+                         f"{len(reaction_subset)} of {len(data)}"))
 
     # Konak alemi x RO grubu. Yeni bir boyut: /host alani habitat'tan AYRI
     # tutuluyor ve bu, "hangi enzim hangi canliyla yasayan bakteride bulunuyor"
@@ -417,13 +658,11 @@ def main():
             "row_header": "Substrate class", "row_prefix": "",
             "n": sum(sum(r) for r in table_t)})
 
-    table = [[sum(1 for d in data if d["group"] == g and d["has_beta"] == b) for b in (1, 0)] for g in groups]
-    groups_b, beta_cols, table = trim_table(groups, ["beta", "no beta"], table)
-    chi2, p, dof, _ = stats.chi2_contingency(table)
-    out["tests"].append({
-        "id": "beta_by_group", "question": "Is a beta subunit in the operon (α3β3 architecture) group-specific?",
-        "rows": groups_b, "cols": beta_cols, "table": table,
-        "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
+    contingency(
+        "beta_by_group",
+        "Is a beta subunit in the operon (α₃β₃ architecture) group-specific?",
+        data, "group", "beta_label", groups, ["beta", "no beta"],
+        "RO group", row_prefix="group ")
 
     # 4. kanit duzeyi: substrat etiketi kac uye icin savunulabilir
     tiers = ["characterized", "close_homolog", "family_member", "distant", "novel"]
@@ -451,6 +690,30 @@ def main():
         "mannwhitney_p": float(stats.mannwhitneyu([d["completeness"] or 0 for d in pl],
                                                   [d["completeness"] or 0 for d in ch]).pvalue) if pl and ch else None})
 
+    def carbox_genus_table(rows, residue_index, key_fn, keys, cols):
+        """Karboksilat satirlarini kume x cins basina tek gozleme cokert.
+
+        Ayni cinsin yuzlerce susu ayni kalintiyi tasir; onlari bagimsiz gozlem
+        saymak hucre testlerini otomatik olarak anlamli yapar. Cins icinde
+        cogunluk kalintisi alinir.
+        """
+        buckets = defaultdict(Counter)
+        key_of = {}
+        for r in rows:
+            genus = (r[4] or "?").split()[0]
+            bucket = (r[3], genus)
+            buckets[bucket]["Asp" if r[residue_index] == "D" else "Glu"] += 1
+            key_of[bucket] = key_fn(r)
+        index = {k: i for i, k in enumerate(keys)}
+        cindex = {c: j for j, c in enumerate(cols)}
+        table = [[0] * len(cols) for _ in keys]
+        for bucket, counts in buckets.items():
+            i = index.get(key_of[bucket])
+            j = cindex.get(counts.most_common(1)[0][0])
+            if i is not None and j is not None:
+                table[i][j] += 1
+        return table
+
     # 5b. Kopru karboksilati Asp mi Glu mu -- grup ve reaksiyon sinifiyla iliskisi
     #
     # Olculen sey: iki karboksilatin DAVRANISI farkli. Katalitik demir
@@ -459,8 +722,10 @@ def main():
     # rastgele degil: kuaterner amin dalini isaretliyor. Test bu izlenimi
     # olcuye donusturur.
     carbox = con.execute("""
-        SELECT c.bridging_residue, c.catalytic_residue, r.ro_group, r.ro_cluster
+        SELECT c.bridging_residue, c.catalytic_residue, r.ro_group, r.ro_cluster,
+               p.organism
         FROM ro_carboxylate c JOIN ro r USING(candidate_id)
+                              JOIN replicon p USING(nucleotide_id)
         WHERE r.is_confirmed = 1""").fetchall() \
         if con.execute("SELECT name FROM sqlite_master WHERE name='ro_carboxylate'").fetchone() \
         else []
@@ -487,13 +752,16 @@ def main():
                       for c in cols] for k in keys]
             keys_t, cols_t, table = trim_table(keys, cols, table)
             chi2, p, dof, _ = stats.chi2_contingency(table)
+            gtab = carbox_genus_table(carbox_only, 0, key_fn, keys_t, cols_t)
             out["tests"].append({
                 "id": test_id,
                 "question": f"Among entries that have a bridging carboxylate, is its identity "
                             f"(Asp or Glu) associated with the {label}?",
                 "rows": keys_t, "cols": cols_t, "table": table,
                 "chi2": float(chi2), "dof": int(dof), "p": float(p),
-                "cramers_v": cramers_v(table)})
+                "cramers_v": cramers_v(table),
+                "genus_table": gtab,
+                "signals": signal_map(keys_t, cols_t, table, gtab)})
         # Katalitik karboksilat: KONTROL testi. Yine yalnizca karboksilat tasiyan
         # girisler; bu pozisyon degismezse burada sinyal cikmamali.
         cat_only = [r for r in carbox if r[1] in ("D", "E")]
@@ -504,7 +772,10 @@ def main():
                   for c in cols] for k in keys]
         keys_t, cols_t, table = trim_table(keys, cols, table)
         chi2, p, dof, _ = stats.chi2_contingency(table)
+        cat_gtab = carbox_genus_table(cat_only, 1, lambda r: r[2], keys_t, cols_t)
         out["tests"].append({
+            "genus_table": cat_gtab,
+            "signals": signal_map(keys_t, cols_t, table, cat_gtab),
             "id": "catalytic_residue_by_group",
             "question": "Among entries that have a catalytic carboxylate at all, is its "
                         "identity (Asp or Glu) associated with the RO group? This is the "
@@ -517,13 +788,24 @@ def main():
 
     # 6. grup x filum (dagilim tablosu + Cramér's V)
     phyla = [p for p, _ in Counter(d["phylum"] for d in data).most_common(8)]
-    table = [[sum(1 for d in data if d["group"] == g and d["phylum"] == ph) for ph in phyla] for g in groups]
-    groups_p, phyla, table = trim_table(groups, phyla, table)
-    chi2, p, dof, _ = stats.chi2_contingency(table)
-    out["tests"].append({
-        "id": "phylum_by_group", "question": "How are RO groups distributed across phyla? (top 8 phyla)",
-        "rows": groups_p, "cols": phyla, "table": table,
-        "chi2": float(chi2), "dof": int(dof), "p": float(p), "cramers_v": cramers_v(table)})
+    contingency(
+        "phylum_by_group",
+        "How are RO groups distributed across phyla? (top 8 phyla)",
+        [d for d in data if d["phylum"] in phyla], "group", "phylum", groups, phyla,
+        "RO group", row_prefix="group ",
+        restriction=f"the eight most frequent phyla: {', '.join(phyla)}")
+
+    # Sinyal haritasi HER kontenjans testine eklenir. Yukarida contingency()
+    # ile kurulan testler kendi haritasini zaten tasiyor; burada elle kurulmus
+    # olanlar tamamlanir. Boylece sayfadaki her tablo icin "iliski tabloda
+    # NEREDE" sorusu ayni araclarla cevaplanir ve toplu p degerinin anlamsiz
+    # cikmasi tek basina "iliski yok" demeye yetmez.
+    for t in out["tests"]:
+        if t.get("signals") or "table" not in t or not isinstance(t.get("rows"), list):
+            continue
+        if not t["rows"] or not isinstance(t["table"][0], list):
+            continue
+        t["signals"] = signal_map(t["rows"], t["cols"], t["table"])
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w") as fh:
@@ -536,7 +818,15 @@ def main():
                 print(f"      {level:9s} {r['rate_a']:.3f} vs {r['rate_b']:.3f} "
                       f"({r['ratio']:.2f}x, p={r['p']:.1e}, n={r['n']})")
         elif "cramers_v" in t:
-            print(f"  {t['id']:32s} chi2={t['chi2']:.0f} dof={t['dof']} p={t['p']:.1e} V={t['cramers_v']:.2f}")
+            sg = t.get("signals") or {}
+            extra = ""
+            if sg:
+                extra = (f"  cells {sg['n_cells_material']}/{sg['n_cells_tested']}"
+                         f" material, {sg['n_cells_material_genus']} hold"
+                         f"{'' if sg.get('has_genus') else ' (no genus check)'}"
+                         f", rows {sg['n_rows_flagged']}/{sg['n_rows_tested']}")
+            print(f"  {t['id']:32s} chi2={t['chi2']:.0f} dof={t['dof']} "
+                  f"p={t['p']:.1e} V={t['cramers_v']:.2f}{extra}")
         else:
             print(f"  {t['id']:32s} {json.dumps({k: v for k, v in t.items() if k not in ('question', 'id')}, default=float)[:160]}")
     print("  evidence:", dict(zip(tiers, out["evidence"]["counts"])),
