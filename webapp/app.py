@@ -1459,8 +1459,12 @@ def atlas_statistics(request: Request):
     # Ogrenme sonuclari da buraya gelir: istatistik sayfasi "bu iliskilerden ne
     # ongorulebilir" sorusunu KISA bir bolumde cevaplar ve ayrintiyi kendi
     # sayfasina birakir.
+    # Disaridan dogrulama: yayimlanmis kristal yapilardan gelen DENEYSEL alt
+    # birim mimarisi, sitenin genomik baglamdan CIKARDIGI mimariyle yan yana
+    # konur. Dosya yoksa bolum sessizce dusur.
     return render(request, "atlas_statistics.html", stats=data,
-                  learn=atlas.learning_view(apath("learning.json")))
+                  learn=atlas.learning_view(apath("learning.json")),
+                  refstruct=atlas.read_json(apath("reference_structures.json")))
 
 
 @app.get("/download/tree_all.nwk")

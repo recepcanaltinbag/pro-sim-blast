@@ -228,7 +228,8 @@ def load(con, ecology_path):
                e.tier, e.ref_identity, t.reductase_type, t.ferredoxin_type, d.domain,
                s.host_kingdom,
                (SELECT COUNT(*) FROM neighbor nb JOIN gene_category c ON c.neighbor_id=nb.neighbor_id
-                 AND c.method='regex_v1' WHERE nb.candidate_id=r.candidate_id AND c.category='transposon') transposons
+                 AND c.method='regex_v1' WHERE nb.candidate_id=r.candidate_id AND c.category='transposon') transposons,
+               (SELECT COUNT(*) FROM neighbor nb2 WHERE nb2.candidate_id=r.candidate_id) n_neighbors
         FROM ro r JOIN replicon p USING(nucleotide_id)
         LEFT JOIN operon o ON o.candidate_id=r.candidate_id
         LEFT JOIN ro_evidence e ON e.candidate_id=r.candidate_id
@@ -239,7 +240,8 @@ def load(con, ecology_path):
     cols = ["candidate_id", "sequence", "cluster", "group", "organism", "taxonomy",
             "is_plasmid", "cds_count",
             "has_beta", "has_ferredoxin", "has_reductase", "completeness", "tier", "ref_identity",
-            "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "transposons"]
+            "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "transposons",
+            "n_neighbors"]
     data = []
     for r in rows:
         d = dict(zip(cols, r))
@@ -257,10 +259,27 @@ def load(con, ecology_path):
         # gorunmez; birlikte bakmak gerekir.
         red = (d.get("reductase_type") or "none") != "none"
         fdx = (d.get("ferredoxin_type") or "none") != "none"
-        d["beta_label"] = "beta" if d.get("has_beta") else "no beta"
-        d["etc_system"] = ("three_component" if red and fdx else
-                           "two_component" if red else
-                           "ferredoxin_only" if fdx else "none_nearby")
+        # BAGLAM YOKLUGU, YOKLUK DEGILDIR. 945 dogrulanmis giris (%8,3) icin
+        # pencere icinde HIC komsu yok -- kisa kontig, parcali derleme ya da
+        # cekilmemis kayit. Bu girisler simdiye kadar "beta yok" ve "yakinda
+        # ortak yok" olarak sayiliyordu, yani kanit yoklugu yokluk kaniti
+        # gibi islem goruyordu.
+        #
+        # Olculdu ve disaridan yakalandi: Miao & Schmidt 2025'in Tablo 1'i 21
+        # tip icin DENEYSEL alt birim mimarisi veriyor ve cikarim 20'sinde
+        # tutuyor. Tek uyusmazlik (2_201_BphA1) tam olarak bu durum: tipin tek
+        # uyesinin hicbir komsusu yok, bu yuzden "beta yok" diye sayiliyor,
+        # oysa kristal yapida beta alt birimi var. Yani uyusmazlik cikarimi
+        # degil, bu kodlamayi curutuyor.
+        d["has_context"] = (d.get("n_neighbors") or 0) > 0
+        if not d["has_context"]:
+            d["beta_label"] = "no context"
+            d["etc_system"] = "no_context"
+        else:
+            d["beta_label"] = "beta" if d.get("has_beta") else "no beta"
+            d["etc_system"] = ("three_component" if red and fdx else
+                               "two_component" if red else
+                               "ferredoxin_only" if fdx else "none_nearby")
         data.append(d)
     return data
 
@@ -472,15 +491,36 @@ def main():
     # kurulur, boylece her biri hem cins duzeyinde ikinci bir tabloya hem de
     # hucre bazinda sinyal haritasina sahip olur.
     groups = sorted({d["group"] for d in data})
+    with_context = [d for d in data if d["has_context"]]
+    no_context_n = len(data) - len(with_context)
+    context_restriction = (
+        f"entries whose genomic neighbourhood was retrieved: {len(with_context)} of "
+        f"{len(data)}. The {no_context_n} entries with no neighbours at all are "
+        "excluded rather than counted as having no partner, because for them the "
+        "question was never asked")
+    out["context_coverage"] = {
+        "entries": len(data), "with_neighbours": len(with_context),
+        "without_neighbours": no_context_n,
+        "why_it_matters": (
+            "an entry with no retrieved neighbourhood scores as having no beta "
+            "subunit, no ferredoxin and no reductase. Counted that way it is "
+            "indistinguishable from an enzyme that genuinely works alone, and it "
+            "measures how fragmented the assembly was rather than how the enzyme is "
+            "organised. The external architecture check against Miao & Schmidt 2025 "
+            "turned on exactly this: the single type where the inference disagreed "
+            "with a crystal structure was a type whose only member has no neighbours"),
+    }
     contingency(
         "reductase_by_group",
         "Is the reductase type found near the alpha subunit associated with the RO group?",
-        data, "group", "reductase_type", groups, ["FNR", "GR", "FNR+GR", "none"],
-        "RO group", row_prefix="group ")
+        with_context, "group", "reductase_type", groups,
+        ["FNR", "GR", "FNR+GR", "none"], "RO group", row_prefix="group ",
+        restriction=context_restriction)
     contingency(
         "ferredoxin_by_group", "Is the ferredoxin type associated with the RO group?",
-        data, "group", "ferredoxin_type", groups,
-        ["rieske", "plant", "rieske+plant", "none"], "RO group", row_prefix="group ")
+        with_context, "group", "ferredoxin_type", groups,
+        ["rieske", "plant", "rieske+plant", "none"], "RO group", row_prefix="group ",
+        restriction=context_restriction)
     # Cramer's V, satir sayisi artinca KENDILIGINDEN yukselir. Tip bazinda
     # tablo 5 satir yerine ~43 satir oldugu icin "tipte daha guclu" demek,
     # once bu yapisal etkiyi dislamayi gerektirir. Etiketler karistirilarak
@@ -522,7 +562,7 @@ def main():
     MIN_TYPE_N = 20
     type_counts = Counter(d["cluster"] for d in data)
     big_types = sorted(t for t, n in type_counts.items() if n >= MIN_TYPE_N)
-    big_subset = [d for d in data if d["cluster"] in big_types]
+    big_subset = [d for d in with_context if d["cluster"] in big_types]
     type_restriction = (f"types with at least {MIN_TYPE_N} members: "
                         f"{len(big_types)} of {len(type_counts)} types, "
                         f"{len(big_subset)} entries")
@@ -560,22 +600,23 @@ def main():
         "Is the electron-transport SYSTEM near the alpha subunit -- three-component "
         "(separate reductase and ferredoxin), two-component (reductase only), or "
         "neither -- associated with the RO group?",
-        data, "group", "etc_system", sorted({d["group"] for d in data}), ETC_SYSTEMS,
-        "RO group", row_prefix="group ")
+        with_context, "group", "etc_system", groups, ETC_SYSTEMS,
+        "RO group", row_prefix="group ", restriction=context_restriction)
 
     contingency(
         "etc_system_by_type",
         "Is the electron-transport system a property of the individual enzyme type "
         "rather than of the broad RO group?",
-        [d for d in data if d["cluster"] in big_types], "cluster", "etc_system",
-        big_types, ETC_SYSTEMS, "Enzyme type",
-        restriction=(f"types with at least {MIN_TYPE_N} members: "
-                     f"{len(big_types)} of {len(type_counts)} types"),
+        [d for d in with_context if d["cluster"] in big_types], "cluster",
+        "etc_system", big_types, ETC_SYSTEMS, "Enzyme type",
+        restriction=(f"types with at least {MIN_TYPE_N} members, and only entries whose "
+                     f"neighbourhood was retrieved: {len(big_types)} of "
+                     f"{len(type_counts)} types"),
         with_null=True)
 
     reaction_keys = sorted({d["reaction_class"] for d in data
                             if d["reaction_class"] != "unknown"})
-    reaction_subset = [d for d in data if d["reaction_class"] != "unknown"]
+    reaction_subset = [d for d in with_context if d["reaction_class"] != "unknown"]
     contingency(
         "etc_system_by_reaction",
         "Is the electron-transport system associated with the kind of reaction the "
@@ -661,8 +702,8 @@ def main():
     contingency(
         "beta_by_group",
         "Is a beta subunit in the operon (α₃β₃ architecture) group-specific?",
-        data, "group", "beta_label", groups, ["beta", "no beta"],
-        "RO group", row_prefix="group ")
+        with_context, "group", "beta_label", groups, ["beta", "no beta"],
+        "RO group", row_prefix="group ", restriction=context_restriction)
 
     # 4. kanit duzeyi: substrat etiketi kac uye icin savunulabilir
     tiers = ["characterized", "close_homolog", "family_member", "distant", "novel"]

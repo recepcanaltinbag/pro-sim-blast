@@ -386,9 +386,87 @@ members: {{ stats.evidence.clusters_mostly_distant|join(', ') }}.
 <a href="{{ u('/atlas/evidence') }}">Evidence page</a></p>
 </section>
 
+{% set av = refstruct.architecture_validation if refstruct and refstruct.architecture_validation else none %}
+{% if av and av.by_type %}
+<section class="stat statcard">
+<h2>{{ stats.tests|length + 2 }} · Checking the beta-subunit inference against crystal structures</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    {% if av.agreement_rate >= 0.9 %}<span class="verdict verdict--robust">holds</span>
+    {% elif av.agreement_rate >= 0.7 %}<span class="verdict verdict--weak">mostly holds</span>
+    {% else %}<span class="verdict verdict--none">does not hold</span>{% endif %}
+    <span class="note">{{ '%.0f %%' % (100 * av.agreement_rate) }} agreement</span>
+    <span class="note">{{ av.types_tested }} types with a published structure</span>
+  </div>
+  <div class="effbar" role="img"
+       aria-label="{{ (100 * av.agreement_rate)|round|int }} per cent agreement with experimentally determined architecture">
+    <div class="effbar__fill" style="width: {{ (100 * av.agreement_rate)|round(1) }}%"></div>
+    <div class="effbar__null" style="left: 50%"></div>
+    <span class="effbar__value">{{ av.types_agree }} of {{ av.types_tested }}</span>
+  </div>
+  <p class="note effbar__legend">The mark sits at 50 %, which is what guessing would give for a
+    two-way call.</p>
+  <p class="plain">Every architecture claim on this site is <b>inferred</b>: a beta subunit is
+  called present when one is found in the genomic neighbourhood. The test above reports that
+  inference as nearly perfect at type level, but a Cramér&rsquo;s V of 0.94 only says the inference
+  is <i>consistent</i>, not that it is <i>right</i>. These {{ av.types_tested }} types have a
+  published crystal structure, which settles the architecture experimentally and independently of
+  anything in this database.</p>
+</div>
+
+<div class="tablewrap tablewrap--tall"><table class="data compact">
+<thead><tr><th>Enzyme type</th><th>PDB</th><th>Architecture in the structure</th>
+<th class="num">Members</th><th class="num">Inferred to carry beta</th><th>Agreement</th></tr></thead>
+<tbody>
+{% for r in av.by_type %}
+<tr><td><a href="{{ u('/cluster/' ~ r.mapped_cluster) }}">{{ gene(r.mapped_cluster) }}</a></td>
+  <td><a href="https://www.rcsb.org/structure/{{ r.pdb }}">{{ r.pdb }}</a></td>
+  <td>{{ 'α₃β₃' if r.review_composition == 'a3b3' else ('α₃α′₃' if r.review_composition == "a3a'3"
+        else ('α₃α₃' if r.review_composition == 'a3a3' else 'α₃')) }}</td>
+  <td class="num">{{ r.confirmed_members|fmt }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * r.beta_fraction) }}</td>
+  <td>{% if r.agreement == 'agree' %}<span class="verdict verdict--robust">agrees</span>
+      {% else %}<span class="verdict verdict--weak">disagrees</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+{% if av.disagreements %}
+<div class="caveat caveat--warn">
+<b>The one disagreement is more useful than the twenty agreements.</b>
+{% for d in av.disagreements %}
+For <a href="{{ u('/cluster/' ~ d.mapped_cluster) }}">{{ gene(d.mapped_cluster) }}</a> the crystal
+structure {{ d.pdb }} plainly contains a beta subunit, and the database infers none. That type has
+exactly {{ d.confirmed_members }} confirmed member, and that member has no retrieved genomic
+neighbourhood at all — so &ldquo;no beta subunit&rdquo; there was never a measurement, it was an
+empty window being read as a negative answer.
+{% endfor %}
+{% if stats.context_coverage %}
+That failure mode was not rare: <b>{{ stats.context_coverage.without_neighbours|fmt }} of
+{{ stats.context_coverage.entries|fmt }} confirmed entries</b> have no neighbours retrieved, and
+every one of them used to count as having no beta subunit, no ferredoxin and no reductase. They are
+now a separate state and are excluded from the architecture and electron-transport tests rather
+than counted as negatives. The effect sizes barely moved, which is the reassuring part; the method
+is now defensible, which is the point.
+{% endif %}
+</div>
+{% endif %}
+
+<p class="note">Architectures and PDB identifiers are Table 1 of
+<a href="https://doi.org/{{ refstruct.summary.review.doi }}">{{ refstruct.summary.review.citation }}</a>
+({{ refstruct.summary.review.licence }}). Each identifier was re-checked against RCSB — entity
+counts, source organism and primary citation — and mapped onto this database by PDB identifier
+where one was already curated, otherwise by aligning the deposited sequence against the curated
+reference ({{ refstruct.summary.mapping_basis_counts.pdb_match }} by identifier,
+{{ refstruct.summary.mapping_basis_counts.sequence_identity }} by sequence,
+{{ refstruct.summary.mapping_basis_counts.unmapped }} with no counterpart among the
+{{ 71 }} types). {{ av.not_testable|length }} rows could not be tested.
+Computed by <code>verify_reference_structures.py</code>.</p>
+</section>
+{% endif %}
+
 {% if learn and learn.rows %}
 <section class="stat">
-<h2>{{ stats.tests|length + 2 }} · What can be learned from the data</h2>
+<h2>{{ stats.tests|length + (3 if av else 2) }} · What can be learned from the data</h2>
 <p class="plain">Every association above says that something is <b>related</b> to something else. A
 different and harder question is whether it is enough to <b>predict</b>. Each row below trains a
 model on one of those questions and reports two numbers: the accuracy when whole enzyme types are
