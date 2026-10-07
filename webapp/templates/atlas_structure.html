@@ -105,20 +105,102 @@ including them measures the admission rule rather than biology.</p>
   <td class="num" data-v="{{ b.median }}">{{ '%.2f' % b.median }}</td>
   <td class="num">{{ sb.n_above_reference }} of {{ sb.n_types }}</td>
   <td class="num">{{ '%.3f' % sb.p_sign_test }}</td>
-  <td><span class="verdict verdict--none">not significant</span></td></tr>
+  <td><span class="verdict verdict--none">pooled: not significant</span></td></tr>
 </tbody></table></div>
-<figcaption><b>Once the admission residues are removed the effect goes.</b> A ratio below one would
-mean the pocket changes more slowly than the protein average. With the ligands counted it is 0.73
-and every single type agrees, which looks decisive and is not: it is the membership test showing up
-in its own measurement. Without them the ratio is 0.91, only 23 of 35 types agree, and the sign test
-gives p = 0.09. The same conclusion comes from a null built by drawing random column sets of the
-same size: with the ligands the pocket sits in the first percentile, without them near the
-twenty-third.
-<b>So the non-ligand pocket of these enzymes is not measurably more conserved than the rest of the
-protein.</b> Comparing variants at the active site is still a more targeted question than comparing
-them across the whole chain, but it is not a sharper signal, and anyone reporting the first row has
-measured their own inclusion criterion.</figcaption>
+<figcaption><b>Once the admission residues are removed, the pooled effect goes.</b> A ratio below one
+would mean the pocket changes more slowly than the protein average. With the ligands counted it is
+{{ '%.2f' % a.median }} and every single type agrees, which looks decisive and is not: it is the
+membership test showing up in its own measurement. Without them the ratio is {{ '%.2f' % b.median }},
+only {{ sb.n_above_reference }} of {{ sb.n_types }} types agree, and the sign test gives
+p = {{ '%.2f' % sb.p_sign_test }}. The same happens to a null built by drawing random column sets of
+the same size: with the ligands the pocket sits in the first percentile, without them near the
+twenty-third. <b>But one ratio over every variant pair is the wrong statistic</b>, and the next table
+is why.</figcaption>
 </figure>
+
+{% if vo.band_rows %}
+{% set sat = vo.bands.measured_saturation %}
+{% set pair = vo.bands.within_type_paired_check %}
+{% set surv = vo.band_rows | selectattr('survives') | list %}
+{% set blind = vo.band_rows | selectattr('limit', 'equalto', 'ceiling') | list %}
+{% set pooled_row = vo.band_rows | selectattr('pooled') | list %}
+<h3>The same ratio, split by how similar the two variants are</h3>
+<p>A conservation contrast can only be seen in a window. Compare two almost identical sequences and
+nothing varies anywhere, so pocket and background divergence are both near zero and their ratio is
+an unstable quotient of two small numbers. Compare two distant sequences and both measures have
+already saturated at the background mismatch rate, so the ratio is pushed to one no matter what the
+pocket does. Only in between is there enough variation to see a difference and not so much that it
+is swamped. The row above averages over all three regimes at once. The table below is the identical
+measurement — same pocket columns, same metal ligands removed, same per-type ratio, same sign
+test — recomputed inside bands of overall identity.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Global identity of the pair</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Pocket divergence</th><th class="num">Background divergence</th>
+<th class="num">Divergence ratio</th><th class="num">Types where the pocket is slower</th>
+<th class="num">p</th><th class="num">q (BH)</th><th>Verdict</th></tr></thead>
+<tbody>
+{% for r in vo.band_rows %}
+<tr{% if r.survives %} class="hl"{% endif %}>
+  <td>{% if r.pooled %}<span class="note">All pairs, unstratified — the row above</span>{% else %}{{ r.band }}{% endif %}</td>
+  <td class="num" data-v="{{ r.pairs }}">{{ r.pairs|fmt }}</td>
+  <td class="num" data-v="{{ r.types }}">{{ r.types }}<span class="unit"> {{ r.types5 }} with &ge;5 pairs</span></td>
+  <td class="num" data-v="{{ r.pocket_div }}">{{ '%.3f' % r.pocket_div if r.pocket_div is not none else '—' }}</td>
+  <td class="num" data-v="{{ r.global_div }}">{{ '%.3f' % r.global_div }}</td>
+  <td class="num" data-v="{{ r.ratio }}">{{ '%.2f' % r.ratio if r.ratio is not none else '—' }}</td>
+  <td class="num">{{ r.agree }} of {{ r.types }}</td>
+  <td class="num">{% if r.p is none %}—{% elif r.p < 0.001 %}{{ '%.1e' % r.p }}{% else %}{{ '%.3f' % r.p }}{% endif %}</td>
+  <td class="num">{% if r.q is none %}—{% elif r.q < 0.001 %}{{ '%.1e' % r.q }}{% else %}{{ '%.3f' % r.q }}{% endif %}</td>
+  <td>{% if not r.usable %}<span class="verdict verdict--none">{% if r.limit == 'ceiling' %}blind: too similar{% else %}saturated{% endif %}</span>{% elif r.survives %}<span class="verdict verdict--robust">pocket slower</span>{% else %}<span class="verdict verdict--weak">too thin to tell</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The pooled null result was not a power problem, it was a composition problem.</b> The
+two divergence columns show the floor and the ceiling rather than asserting them. At the top of the
+table both are near zero — in the highest band the background rate predicts only
+{{ '%.2f' % blind[0].expected if blind else '%.2f' % vo.band_rows[0].expected }} mismatched pocket
+columns per pair, so an unchanged pocket is the likeliest outcome by chance and the ratio measures
+nothing. At the bottom both approach
+saturation, and saturation was measured, not assumed, exactly as the regulator identity floor is
+measured elsewhere in this database: variant consensuses taken from <em>different</em> enzyme types
+and scored in the same way align at {{ '%.0f %%' % (100 * sat.global_identity.mean) }} overall and
+{{ '%.0f %%' % (100 * sat.pocket_identity_excluding_metal_ligands.mean) }} in the pocket, a
+divergence ratio of {{ '%.2f' % sat.divergence_ratio_at_saturation }}. Unrelated enzymes already
+produce the ratio of one that the test is supposed to detect a departure from. The
+{{ sat.floor_percentile }}th percentile of that distribution is
+{{ '%.0f %%' % (100 * sat.measured_global_identity_floor) }} identity, and
+{{ '%.0f %%' % (100 * pooled_row[0].saturated) }} of all the variant pairs here lie at or below
+it — which is why the pooled row and the bottom band give the same number.
+<b>In the window where the measurement can work, the effect is real and large.</b>
+{{ vo.bands.n_bands_surviving_bh }} of the {{ vo.bands.n_bands_tested }} bands survive
+Benjamini–Hochberg correction across all six, and in them the non-ligand pocket diverges at
+{{ '%.2f' % (surv | map(attribute='ratio') | min) }} to
+{{ '%.2f' % (surv | map(attribute='ratio') | max) }} of the background rate across
+{{ surv | sum(attribute='pairs') }} pairs, and in each of those bands every single type agrees. So the honest answer is the opposite of the pooled one: the active-site
+pocket of these enzymes <em>is</em> measurably more conserved than the rest of the protein, and the
+pooled ratio of {{ '%.2f' % b.median }} is what you get by averaging that signal together with
+thirteen thousand pairs too distant to carry it.</figcaption>
+</figure>
+<p class="caveat caveat--warn"><b>Two controls, because a band picked out of six is a weaker claim
+than a planned one.</b> First, the bands are selected on overall identity and the pocket columns are
+part of that measure, so the gradient could in principle be a selection artefact. Random column sets
+of the same size, drawn inside the same bands, give ratios of
+{% for r in surv %}{{ '%.2f' % r.random_ratio }}{{ ', ' if not loop.last }}{% endfor %}
+while the pocket gives
+{% for r in surv %}{{ '%.2f' % r.ratio }}{{ ', ' if not loop.last }}{% endfor %}
+and sits at percentile
+{% for r in surv %}{{ '%.3f' % r.percentile }}{{ ', ' if not loop.last }}{% endfor %}
+of its own null — so the gradient belongs to the pocket, not to the banding.{% if pair and pair.sign_test %}
+Second, different bands hold different types, so a band difference could be a difference between
+enzymes. For the {{ pair.n_types_with_pairs_in_both }} types that have pairs on both sides, the ratio
+is lower among a type's own measurable pairs than among its own saturated pairs in
+{{ pair.sign_test.n_above_reference }} of {{ pair.sign_test.n_types }} cases
+({{ '%.2f' % pair.median_ratio_in_the_window }} against
+{{ '%.2f' % pair.median_ratio_in_the_saturated_region }}, sign test
+p = {{ '%.1e' % pair.sign_test.p_sign_test }}), with the type held fixed.{% endif %}
+What does <em>not</em> change is the first row of the first table: the metal ligands still have to
+stay out, because carrying them is the admission test, and anyone quoting
+{{ '%.2f' % a.median }} has still measured their own inclusion criterion.</p>
+{% endif %}
 
 <h2>5 · What was wrong with the variant comparison</h2>
 <p>{{ vo.q1.what_was_wrong_with_the_old_comparison }}</p>

@@ -384,9 +384,49 @@ def variant_operon_view(path):
         })
     measures.sort(key=lambda r: -(r["rho"] or 0))
 
+    # Global kimlik bantlari. Sira JSON'daki gibi korunur (yuksek kimlikten
+    # dusuge), havuzlanmis referans satiri EN SONA eklenir: "havuzlanmis mi
+    # tabakalanmis mi" karsilastirmasi ayni tabloda, ayni cift kumesinde
+    # okunsun. Sablona yalnizca gosterilen alanlar inilir.
+    bands = cons.get("by_global_identity_band") or {}
+    band_rows = []
+    pooled = bands.get("reference_row_unstratified")
+    for row in list(bands.get("bands") or []) + ([pooled] if pooled else []):
+        test = row.get("sign_test_against_one") or {}
+        ratio = row.get("per_type_divergence_ratio") or {}
+        null = row.get("same_size_random_column_set_null") or {}
+        reasons = row.get("why_not_usable") or []
+        band_rows.append({
+            "band": row.get("band"),
+            "pairs": row.get("n_pairs"),
+            "types": row.get("n_types_with_a_ratio"),
+            "types5": row.get("n_types_with_at_least_5_pairs_in_the_band"),
+            "ratio": ratio.get("median"),
+            "agree": test.get("n_above_reference"),
+            "p": test.get("p_sign_test"),
+            "q": row.get("benjamini_hochberg_q"),
+            "survives": row.get("survives_bh_at_0.05"),
+            "pocket_div": row.get(
+                "mean_pocket_divergence_excluding_metal_ligands"),
+            "global_div": row.get("mean_global_divergence"),
+            "expected": row.get("expected_pocket_mismatches_per_pair_at_the_"
+                                "background_rate"),
+            "saturated": row.get(
+                "share_of_pairs_at_or_below_the_measured_identity_floor"),
+            "random_ratio": null.get("median_random_set_ratio"),
+            "percentile": null.get("median_pocket_percentile_in_null"),
+            "usable": row.get("usable"),
+            # Neden olcmedigi tek kelimeye indirilir: 'ceiling' cok benzer
+            # ciftler, 'floor' doygunluk.
+            "limit": (reasons[0].split(":")[0] if reasons else None),
+            "pooled": pooled is not None and row is pooled,
+        })
+
     return {
         "q1": q1,
         "conservation": cons,
+        "bands": bands,
+        "band_rows": band_rows,
         "discordant": q1.get("discordant_pairs") or {},
         "q2": q2,
         "factors": factors,

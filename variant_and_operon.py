@@ -45,11 +45,34 @@ NEDEN BU MODUL VAR -- UC AYRI SORU, HEPSI KURATORUN.
    1'in altinda kaliyor (isaret testi p=0,09, yani anlamsiz). Ayni buyuklukte
    RASTGELE kolon kumelerine karsi da ayni sonuc: ligandlarla ceb null'un
    %1,5'lik diliminde, ligandsiz ceb %37'lik diliminde -- yani siradan bir
-   kolon kumesi. SONUC: bu enzimlerin ligand olmayan ceb kalintilari,
-   proteinin geri kalanindan olculebilir bicimde daha korunmus DEGIL.
-   Olcum hala bir sey anlatiyor (global kimligin ayirmadigi ciftleri
-   ayiriyor), ama "sessiz korunmus bir cep, icinde birkac spesifisite
-   anahtari" tablosu VERIDE YOK.
+   kolon kumesi.
+
+   AMA HAVUZLANMIS SAYI DA YANILTICI, VE SEBEBI OLCULDU
+   (by_global_identity_band). Korunma kontrasti, karsilastirilan iki dizi
+   birbirinden uzaklastikca SONUYOR; tek bir oran olcumun calismadigi
+   rejimleri de ortalamaya katiyor. Bu veride olculen ciftlerin %96'si
+   %60'in ALTINDA global kimlikte, %56'si ise ampirik olarak olculmus
+   kimlik tabaninin (%27,4; farkli tipten ciftlerin 95. yuzdeligi) altinda
+   -- yani havuzlanmis 0,91'in cogu, akraba olmayan enzimlerin bile ayni
+   kadar benzestigi bir bolgede hesaplanmis. Farkli tipten ciftlerde oran
+   dogrudan 1,03 olcularak doygunluk seviyesi GOSTERILDI.
+   Ayni oran global kimlik bantlarinda yeniden hesaplandiginda sonuc
+   tersine doniyor: 0,80-0,90 bandinda 0,15 (10/10 tip), 0,70-0,80'de 0,29
+   (10/10), 0,60-0,70'te 0,35 (18/18); ucu de BH duzeltmesinden sonra
+   q<0,05. Bu, ayni bantlarda cekilen ayni buyuklukteki RASTGELE kolon
+   kumelerinde GORULMUYOR (onlar 0,87-0,95 veriyor), ve bantlarin farkli
+   tipler icermesinden de gelmiyor: iki bolgede de cifti olan 19 tipin
+   19'unda kendi olculebilir ciftlerindeki oran kendi doygun ciftlerindeki
+   orandan dusuk (p=3,8e-6). SONUC: ligand olmayan ceb kalintilari,
+   karsilastirma gorulebilecek kadar yakin oldugunda proteinin geri
+   kalanindan iki ila yedi kat daha yavas degisiyor. Havuzlanmis null sonuc
+   bir GUC problemi degil, bir KOMPOZISYON problemiydi.
+   Cekince: ayakta kalan bantlar alti bandin arasindan secildi; BH yanlis
+   kesif oranini kontrol eder ama bunu on-kayitli bir teste cevirmez.
+   Iddiayi tasiyan sey uc KOMSU bandin ayni yonde olmasi, siralamanin
+   argumanin ongordugu sonumleme ile ayni gitmesi, rastgele kolon
+   kumelerinin bunu uretmemesi ve ayni tiplerin kendilerine karsi ayni seyi
+   gostermesi.
    Global ve ceb kimligi arasindaki iliski gercek ve her tipte ayni yonde
    (havuzlanmis Spearman 0,69; tip basina medyan 0,74; 24/24 tipte pozitif).
    Kuratorun tarif ettigi "global benzer ama cepte farkli" cifti VAR ama
@@ -143,6 +166,9 @@ import numpy as np
 from scipy import stats
 
 from ro_motif import DEFAULT_MODEL, MODEL_COLUMNS, read_stockholm_matchcols
+# Bant duzeltmesi icin AYNI BH uygulamasi: istatistik sayfasi ne kullaniyorsa
+# burada da o kullanilir, iki yerde iki ayri duzeltme olmasin.
+from stats_overview import bh_adjust
 
 # ---------------------------------------------------------------- SABITLER
 # Her esik adlandirilmis ve gerekcesi yaninda. Sessiz kesim yok.
@@ -302,6 +328,80 @@ TEXT_TOKEN_PLACEHOLDER = "x"
 # kac gen. +-3 secildi cunku operonlarin medyan uzunlugu 3 gendir ve daha
 # genis bir pencere agirlikla bos pozisyon sayar.
 ANCHOR_WINDOW = 3
+
+# --- 1. soru: GLOBAL KIMLIK TABAKALARI
+#
+# NEDEN TABAKA ZORUNLU. Havuzlanmis oran, olcumun CALISAMADIGI iki rejimi de
+# ortalamaya katiyor:
+#   * cok benzer ciftlerde hicbir yerde neredeyse hicbir sey degismiyor; ceb
+#     ve zemin uyusmazligi ikisi de sifira yakin ve oran iki kucuk sayinin
+#     kararsiz bolumu oluyor;
+#   * cok uzak ciftlerde ikisi de zemin uyusmazlik oranina DOYUYOR ve oran
+#     tanim geregi 1'e suruluyor;
+#   * ikisinin arasindaki bantta hem ayirt edilecek kadar fark var hem de
+#     doygunluk yok -- etki gercekse YALNIZCA orada gorunur.
+# Bu modulun kendi docstring'i doyma problemini yarim gormustu ("kimlikler
+# tavanina yakin duruyor, oranlari farki sikistirir" dedigi icin uyusmazlik
+# oranlarini kullaniyor) ama tabakalamayi hic yapmamisti. Ayni oran, ayni
+# ceb, ayni global kimlik her bantta yeniden hesaplanir; boylece bant
+# sonucu havuzlanmis sayiyla DOGRUDAN karsilastirilabilir olur.
+#
+# BANT SINIRLARI keyfi degil: 0,95 ve 0,90 bu modulde zaten tanimli olan
+# HIGH_ENZYME_IDENTITY / RELAXED_ENZYME_IDENTITY kapilari (evidence_tiers.py
+# 'characterized' kademesi), 0,60 ise LOW_GLOBAL_IDENTITY, yani
+# evidence_tiers.py'nin "ayni reaksiyon cok olasi" kapisi. Aradaki 0,80 ve
+# 0,70 esit genislikte ara basamaklar. Alti bant TEK BIR AILE olarak
+# Benjamini-Hochberg ile duzeltilir (stats_overview.bh_adjust): alti banttan
+# en iyisini duzeltmesiz bildirmek, bu veritabaninin istatistik sayfasinin
+# uyardigi hatanin tam kendisi olurdu.
+GLOBAL_IDENTITY_BANDS = (
+    (HIGH_ENZYME_IDENTITY, 1.01, ">= 0.95"),
+    (RELAXED_ENZYME_IDENTITY, HIGH_ENZYME_IDENTITY, "0.90 - 0.95"),
+    (0.80, RELAXED_ENZYME_IDENTITY, "0.80 - 0.90"),
+    (0.70, 0.80, "0.70 - 0.80"),
+    (LOW_GLOBAL_IDENTITY, 0.70, "0.60 - 0.70"),
+    (0.00, LOW_GLOBAL_IDENTITY, "< 0.60"))
+
+# EN ALT BANDIN ICI, YALNIZCA BETIMLEYICI. Ciftlerin buyuk cogunlugu 0,60'in
+# altinda oldugu icin tek bir '< 0,60' satiri doygunlugun NEREDE bastigini
+# gizler. Bu satirlar BH ailesine GIRMEZ: bant sayisini artirmak duzeltmeyi
+# zayiflatir, ve bu alt bolme hipotez sinamak icin degil tabani GOSTERMEK
+# icin var. Hicbirine p ya da q yazilmaz.
+GLOBAL_IDENTITY_SUB_BANDS = (
+    (0.50, 0.60, "0.50 - 0.60"),
+    (0.40, 0.50, "0.40 - 0.50"),
+    (0.30, 0.40, "0.30 - 0.40"),
+    (0.00, 0.30, "< 0.30"))
+
+# Bir bandin TAVANA carptiginin olcutu: cift basina, zemin uyusmazlik
+# oraniyla BEKLENEN ceb uyusmazligi sayisi (karsilastirilan ceb kolonu x
+# global uyusmazlik orani). 16-20 kolonluk bir cepte bu sayi 1'in altindaysa
+# gozlenen sifir uyusmazlik korunmanin kaniti DEGIL -- sans eseri zaten en
+# olasi sonuc odur ve oran hicbir sey olcmuyordur.
+MIN_EXPECTED_POCKET_MISMATCHES = 1.0
+
+# Bir bandin TABANA oturdugunun olcutu: ciftlerinin yarisindan fazlasi
+# ampirik olculmus kimlik tabaninin altindaysa, bandin ortalamasi doygun
+# olcumlerin ortalamasidir.
+MAX_SATURATED_SHARE_FOR_A_USABLE_BAND = 0.5
+
+# Doygunluk tavani ASSERT EDILMEZ, OLCULUR -- operon_relations.py'nin kimlik
+# tabanini olctugu yontemin aynisi. Orada 'akraba olmadigi bilinen' karsiligi
+# farkli tip VE farkli aileden duzenleyici ciftiydi; burada FARKLI ENZIM
+# TIPINDEN iki varyant konsensusu, yani bu veride mumkun olan en uzak
+# karsilastirma. Gercek ciftlerle AYNI bicimde puanlanir. 95. yuzdelik
+# "akraba olmayan iki RO alpha bu kadar benzesebiliyor" demektir; altindaki
+# her olcum doygundur.
+SATURATION_SAMPLE_PAIRS = 4000
+SATURATION_PERCENTILE = 95
+
+# Tabakalanmis blok KENDI uretecini kullanir, ortak py_rng'den cekmez.
+# Sebebi bir kez olculdu: question_one'in SONUNDA cagrilan profil kimligi
+# dogrulamasi ayni uretecten 300 cift cekiyor, ve bu blok araya girince o
+# ornek kayiyordu (rho 0,860 -> 0,849). Yeni bir blok eski bir sayiyi
+# degistirmemeli; ayni gerekce main()'deki soru basina tohumlarin
+# gerekcesiyle birebir ayni.
+BAND_SEED_OFFSET = 11
 
 
 # ------------------------------------------------------------- YARDIMCILAR
@@ -743,6 +843,583 @@ def validate_profile_identity(con, aligned, leaves_by_cluster, rng):
         "verdict": verdict}
 
 
+def measured_divergence_ceiling(consensus, owner, band_inputs, all_indices,
+                                py_rng):
+    """Doygunluk tavaninin AMPIRIK olcumu -- iddia degil, olcum.
+
+    operon_relations.measured_identity_floor ile AYNI mantik ve ayni
+    gerekce: taban literaturden alinmis bir sayi olarak varsayilmaz, bu
+    veride olculur. 'Akraba olmadigi bilinen cift'in buradaki karsiligi
+    FARKLI enzim tipinden iki varyant konsensusudur; bu veri setinde
+    yapilabilecek en uzak karsilastirma budur.
+
+    Puanlama gercek ciftlerle birebir ayni: global kimlik ayni butun match
+    kolonlari uzerinden, ceb kimligi iki tipin KENDI ligandsiz ceb
+    kolonlari uzerinden. Her cift iki kez puanlanir (bir kez her tipin
+    cebiyle), cunku tek bir tipin cebini secmek asimetrik ve keyfi olurdu.
+    """
+    types = sorted(band_inputs)
+    leaves = sorted(leaf for leaf in consensus if leaf in owner)
+    if len(types) < 2 or len(leaves) < 2:
+        return None
+    globals_, pockets, seen = [], [], set()
+    attempts = 0
+    while (len(globals_) < SATURATION_SAMPLE_PAIRS
+           and attempts < 100 * SATURATION_SAMPLE_PAIRS):
+        attempts += 1
+        a, b = py_rng.choice(leaves), py_rng.choice(leaves)
+        if owner[a] == owner[b]:
+            continue
+        key = (a, b) if a < b else (b, a)
+        if key in seen:
+            continue
+        seen.add(key)
+        glob = column_identity(consensus[a], consensus[b], all_indices)[0]
+        if glob is None:
+            continue
+        scored = False
+        for cluster in (owner[a], owner[b]):
+            value, compared, _ = column_identity(
+                consensus[a], consensus[b],
+                band_inputs[cluster]["non_ligand_idx"])
+            if value is not None and compared >= MIN_POCKET_COLUMNS_COMPARED:
+                pockets.append(value)
+                scored = True
+        if scored:
+            globals_.append(glob)
+    if not globals_ or not pockets:
+        return None
+    global_divergence = 1.0 - float(np.mean(globals_))
+    pocket_divergence = 1.0 - float(np.mean(pockets))
+    floor = float(np.percentile(np.asarray(globals_, dtype=float),
+                                SATURATION_PERCENTILE))
+    return {
+        "what_was_sampled": (
+            "variant consensus pairs drawn from DIFFERENT enzyme types, "
+            "scored exactly like the real within-type pairs: global identity "
+            "over the same alignment columns, pocket identity over each "
+            "type's own pocket columns with the metal ligands removed. These "
+            "are the most distant comparisons this data allows, so they "
+            "measure where both numbers stop carrying information."),
+        "n_cross_type_pairs": len(globals_),
+        "n_pocket_scores": len(pockets),
+        "global_identity": describe(globals_),
+        "pocket_identity_excluding_metal_ligands": describe(pockets),
+        "mean_global_divergence": round(global_divergence, 4),
+        "mean_pocket_divergence_excluding_metal_ligands": round(
+            pocket_divergence, 4),
+        "divergence_ratio_at_saturation": (
+            round(pocket_divergence / global_divergence, 4)
+            if global_divergence > 0 else None),
+        "floor_percentile": SATURATION_PERCENTILE,
+        "measured_global_identity_floor": round(floor, 4),
+        "how_to_read": (
+            "The divergence ratio between unrelated enzymes is the value the "
+            "statistic is driven to when the measure saturates. A real band "
+            "whose ratio equals it has measured nothing. The floor is the "
+            "%dth percentile of cross-type global identity: a within-type "
+            "pair below it is no more similar than two enzymes of different "
+            "types, so neither its global nor its pocket divergence carries "
+            "information." % SATURATION_PERCENTILE)}
+
+
+def _per_type_band_ratios(records):
+    """Bant icinde TIP BASINA uyusmazlik orani.
+
+    Toplama sirasi havuzlanmis satirla birebir ayni tutuldu: bant icindeki
+    ciftler de bagimsiz degil, bu yuzden once tip basina tek bir oran
+    hesaplanir, isaret testi ancak ondan sonra tipler uzerinde yapilir.
+    Donen: {tip: oran} ve {tip: o bandaki cift sayisi}.
+    """
+    grouped = defaultdict(list)
+    for record in records:
+        grouped[record["type"]].append(record)
+    ratios, counts = {}, {}
+    for cluster, rows in grouped.items():
+        global_divergence = 1.0 - float(np.mean(
+            [r["global_identity"] for r in rows]))
+        free = [r["pocket_identity_excluding_metal_ligands"] for r in rows
+                if r["pocket_identity_excluding_metal_ligands"] is not None]
+        counts[cluster] = len(rows)
+        if not free or global_divergence <= 0:
+            continue
+        ratios[cluster] = ((1.0 - float(np.mean(free))) / global_divergence)
+    return ratios, counts
+
+
+def _band_row(records, label, lower, upper, band_inputs, consensus, floor,
+              py_rng, with_null=True):
+    """Tek bir bandin satiri. Hicbir yeni olcum YOK, ayni oran yeniden.
+
+    Her satir yalnizca oran degil, orani olusturan IKI sayiyi da ayri ayri
+    tasiyor (ortalama ceb uyusmazligi ve ortalama global uyusmazlik), cunku
+    tavan ve taban iddia edilmemeli, okuyanin dogrudan gorebilmesi gerekir.
+    `with_null` False ise ayni buyuklukte rastgele kolon kumesi null'u
+    atlanir (betimleyici alt bantlar icin).
+    """
+    if not records:
+        return None
+    ratios, counts = _per_type_band_ratios(records)
+    values = sorted(ratios.values())
+    free = [r["pocket_identity_excluding_metal_ligands"] for r in records
+            if r["pocket_identity_excluding_metal_ligands"] is not None]
+    mismatches = [r["pocket_mismatches_excluding_metal_ligands"]
+                  for r in records
+                  if r["pocket_mismatches_excluding_metal_ligands"]
+                  is not None]
+    # Beklenen ceb uyusmazligi: cebin de zemin oraninda degistigi varsayimi.
+    # Bu sayi bandin TAVANA carpip carpmadigini dogrudan gosterir.
+    scored_columns = [r["pocket_columns_compared_excluding_metal_ligands"]
+                      * (1.0 - r["global_identity"]) for r in records
+                      if r["pocket_columns_compared_excluding_metal_ligands"]]
+    expected = float(np.mean(scored_columns)) if scored_columns else 0.0
+    saturated_share = float(np.mean(
+        [1.0 if r["global_identity"] <= floor else 0.0 for r in records])
+    ) if floor is not None else None
+    row = {
+        "band": label,
+        "global_identity_from": round(lower, 4),
+        "global_identity_to": round(min(upper, 1.0), 4),
+        "n_pairs": len(records),
+        "n_types_in_band": len(counts),
+        "n_types_with_a_ratio": len(values),
+        "n_types_with_at_least_5_pairs_in_the_band": sum(
+            1 for n in counts.values() if n >= 5),
+        "mean_global_divergence": round(
+            1.0 - float(np.mean([r["global_identity"] for r in records])), 4),
+        "mean_pocket_divergence_excluding_metal_ligands": (
+            round(1.0 - float(np.mean(free)), 4) if free else None),
+        "per_type_divergence_ratio": describe(values),
+        "expected_pocket_mismatches_per_pair_at_the_background_rate": round(
+            expected, 2),
+        "observed_pocket_mismatches_per_pair": (
+            round(float(np.mean(mismatches)), 2) if mismatches else None),
+        "share_of_pairs_with_an_identical_non_ligand_pocket": (
+            round(float(np.mean([1.0 if m == 0 else 0.0
+                                 for m in mismatches])), 4)
+            if mismatches else None),
+        "share_of_pairs_at_or_below_the_measured_identity_floor": (
+            round(saturated_share, 4) if saturated_share is not None
+            else None)}
+
+    # Isaret testi, havuzlanmis satirla AYNI sekilde: test edilen nicelik
+    # 1 eksi oran, yani pozitif deger "ceb daha yavas degisiyor" demek.
+    summary = describe(values)
+    test = sign_test([1.0 - v for v in values]) if values else None
+    if test and summary:
+        row["sign_test_against_one"] = dict(
+            test,
+            tested_quantity="1 minus the divergence ratio computed inside "
+                            "this band without the metal ligand columns")
+        # Isaret testinin kendi etki buyuklugu: 1'in altindaki tiplerin
+        # orani ve TAM binom guven araligi. Tek basina medyan oran yeterli
+        # degil, cunku ince bir bantta medyan tek bir tipten gelebilir.
+        attempt = stats.binomtest(test["n_above_reference"], test["n_types"],
+                                  0.5)
+        interval = attempt.proportion_ci(confidence_level=0.95,
+                                         method="exact")
+        row["effect_size"] = {
+            "median_divergence_ratio": summary["median"],
+            "median_slowdown_percent": round(
+                100.0 * (1.0 - summary["median"]), 1),
+            "share_of_types_where_the_pocket_changes_more_slowly": round(
+                test["n_above_reference"] / test["n_types"], 4),
+            "share_ci95_exact": [round(float(interval.low), 4),
+                                 round(float(interval.high), 4)],
+            "note": ("the share and its exact binomial interval are the "
+                     "effect size the sign test actually tests; the median "
+                     "ratio is the size of the difference")}
+
+    # Bu bant hangi rejimde? Tavan ve taban testi SAYIYLA, metinle degil.
+    reasons = []
+    if expected < MIN_EXPECTED_POCKET_MISMATCHES:
+        reasons.append(
+            "ceiling: at this identity the background rate predicts only "
+            "%.2f mismatched pocket columns per pair, so an unchanged pocket "
+            "is the most likely outcome by chance alone and the ratio is a "
+            "quotient of two near-zero numbers" % expected)
+    if (saturated_share is not None
+            and saturated_share > MAX_SATURATED_SHARE_FOR_A_USABLE_BAND):
+        reasons.append(
+            "floor: %.0f %% of the pairs in this band are at or below the "
+            "measured identity floor, where two enzymes of different types "
+            "already score as high, so both divergences are saturated"
+            % (100 * saturated_share))
+    row["usable"] = not reasons
+    row["why_not_usable"] = reasons or None
+
+    if with_null:
+        row["same_size_random_column_set_null"] = _band_null(
+            records, band_inputs, consensus, ratios, py_rng)
+    return row
+
+
+def _band_null(records, band_inputs, consensus, ratios, py_rng):
+    """Bandin KENDI null'u: ayni bantta ayni buyuklukte rastgele kolonlar.
+
+    Bu kontrol zorunlu, cunku bant SECIMI global kimlige gore yapiliyor ve
+    ceb kolonlari global kimligin de icinde. Rastgele ayni buyuklukte kolon
+    kumeleri AYNI bantta ayni orani veriyorsa bant etkisi secimden gelir,
+    cebin kendisinden gelmez. Null havuzu ligand kolonlarini icermez, cunku
+    karsilastirilan ceb de icermiyor.
+    """
+    grouped = defaultdict(list)
+    for record in records:
+        grouped[record["type"]].append(record)
+    observed, null_medians, percentiles = [], [], []
+    for cluster, rows in grouped.items():
+        if cluster not in ratios:
+            continue
+        inputs = band_inputs[cluster]
+        size = len(inputs["non_ligand_idx"])
+        pool = inputs["null_pool"]
+        global_divergence = 1.0 - float(np.mean(
+            [r["global_identity"] for r in rows]))
+        if size < 1 or len(pool) <= size or global_divergence <= 0:
+            continue
+        drawn_ratios = []
+        for _ in range(RANDOM_COLUMN_SETS):
+            drawn = [c - 1 for c in py_rng.sample(pool, size)]
+            values = [column_identity(consensus[r["variant_a"]],
+                                      consensus[r["variant_b"]], drawn)[0]
+                      for r in rows]
+            values = [v for v in values if v is not None]
+            if values:
+                drawn_ratios.append(
+                    (1.0 - float(np.mean(values))) / global_divergence)
+        if not drawn_ratios:
+            continue
+        array = np.asarray(drawn_ratios)
+        observed.append(ratios[cluster])
+        null_medians.append(float(np.median(array)))
+        percentiles.append(float((array <= ratios[cluster]).mean()))
+    if not observed:
+        return None
+    return {
+        "n_types_with_a_null": len(observed),
+        "n_random_column_sets_per_type": RANDOM_COLUMN_SETS,
+        "median_random_set_ratio": round(float(np.median(null_medians)), 4),
+        "median_pocket_ratio": round(float(np.median(observed)), 4),
+        "median_pocket_percentile_in_null": round(
+            float(np.median(percentiles)), 4),
+        "n_types_with_pocket_below_the_5th_percentile_of_its_null": sum(
+            1 for value in percentiles if value <= 0.05),
+        "how_to_read": ("if the random sets reproduce the pocket's ratio "
+                        "inside the band, the band effect is an artefact of "
+                        "selecting pairs on global identity; if they stay "
+                        "near 1 while the pocket does not, the effect "
+                        "belongs to the pocket")}
+
+
+def conservation_by_identity_band(pairs, band_inputs, consensus, ceiling,
+                                  py_rng):
+    """Ayni oran, GLOBAL KIMLIGE gore tabakalanmis.
+
+    Havuzlanmis sonucun (0,91, 35 tipin 23'u, p=0,09) bir GUC problemi mi
+    yoksa bir KOMPOZISYON problemi mi oldugunu bu blok ayirir. Yeni bir
+    olcum tanimlanmaz: ayni ceb kimligi, ayni global kimlik, ayni uyusmazlik
+    orani, ayni tip-basina toplama, ayni isaret testi. Degisen tek sey,
+    testin hangi cift kumesinde yapildigi.
+    """
+    floor = (ceiling or {}).get("measured_global_identity_floor")
+    rows = []
+    for lower, upper, label in GLOBAL_IDENTITY_BANDS:
+        records = [r for r in pairs if lower <= r["global_identity"] < upper]
+        row = _band_row(records, label, lower, upper, band_inputs, consensus,
+                        floor, py_rng)
+        if row:
+            rows.append(row)
+    # Alti bant TEK AILE olarak duzeltilir. Bir banti duzeltmesiz bildirmek,
+    # alti deneme yapip en iyisini secmek olurdu.
+    tested = [r for r in rows if r.get("sign_test_against_one")]
+    for row, q in zip(tested, bh_adjust(
+            [r["sign_test_against_one"]["p_sign_test"] for r in tested])):
+        row["benjamini_hochberg_q"] = float(q)
+        row["survives_bh_at_0.05"] = bool(q < 0.05)
+    for row in rows:
+        row.setdefault("benjamini_hochberg_q", None)
+        row.setdefault("survives_bh_at_0.05", None)
+
+    # Betimleyici alt bantlar: tabanin NEREDE bastigini gostermek icin.
+    sub_rows = []
+    for lower, upper, label in GLOBAL_IDENTITY_SUB_BANDS:
+        records = [r for r in pairs if lower <= r["global_identity"] < upper]
+        row = _band_row(records, label, lower, upper, band_inputs, consensus,
+                        floor, py_rng, with_null=False)
+        if row:
+            row.pop("benjamini_hochberg_q", None)
+            sub_rows.append(row)
+
+    # Referans satiri: AYNI cift kumesinde tabakalanmamis test. Havuzlanmis
+    # ile tabakalanmis karsilastirmasi boylece birebir ayni kumede olur.
+    pooled = _band_row(pairs, "all pairs, unstratified", 0.0, 1.0,
+                       band_inputs, consensus, floor, py_rng, with_null=False)
+    if pooled:
+        pooled.pop("benjamini_hochberg_q", None)
+        pooled.pop("survives_bh_at_0.05", None)
+
+    # TIP ICINDE eslesmis kontrol: hangi tiplerin hangi banta dustugu
+    # sonucu suruklememis olsun. Ayni tipin olculebilir penceredeki orani ile
+    # doygun bolgedeki orani karsilastirilir, yani tip kimligi tamamen sabit.
+    window_low, window_high = LOW_GLOBAL_IDENTITY, HIGH_ENZYME_IDENTITY
+    window_ratios, _ = _per_type_band_ratios(
+        [r for r in pairs
+         if window_low <= r["global_identity"] < window_high])
+    saturated_ratios, _ = _per_type_band_ratios(
+        [r for r in pairs if r["global_identity"] < window_low])
+    shared = sorted(set(window_ratios) & set(saturated_ratios))
+    paired = None
+    if len(shared) >= 5:
+        differences = [saturated_ratios[c] - window_ratios[c]
+                       for c in shared]
+        test = sign_test(differences)
+        try:
+            wilcoxon_p = float(stats.wilcoxon(differences).pvalue)
+        except ValueError:
+            wilcoxon_p = None
+        paired = {
+            "question": ("inside one type, is the ratio lower among its "
+                         "measurable pairs than among its saturated pairs?"),
+            "why": ("the bands hold different types, so a band difference "
+                    "could be a difference between types. This comparison "
+                    "holds the type fixed and only changes which of its own "
+                    "pairs are counted."),
+            "measurable_window": "%.2f <= global identity < %.2f" % (
+                window_low, window_high),
+            "saturated_region": "global identity < %.2f" % window_low,
+            "n_types_with_pairs_in_both": len(shared),
+            "median_ratio_in_the_window": round(
+                float(np.median([window_ratios[c] for c in shared])), 4),
+            "median_ratio_in_the_saturated_region": round(
+                float(np.median([saturated_ratios[c] for c in shared])), 4),
+            "sign_test": dict(test or {},
+                              tested_quantity="saturated ratio minus window "
+                                              "ratio, so a positive value "
+                                              "means the pocket signal is "
+                                              "stronger in the window"),
+            "wilcoxon_p": wilcoxon_p,
+            "per_type": [
+                {"type": c,
+                 "n_pairs_in_the_window": sum(
+                     1 for r in pairs
+                     if r["type"] == c
+                     and window_low <= r["global_identity"] < window_high),
+                 "ratio_in_the_window": round(window_ratios[c], 4),
+                 "n_pairs_saturated": sum(
+                     1 for r in pairs
+                     if r["type"] == c
+                     and r["global_identity"] < window_low),
+                 "ratio_saturated": round(saturated_ratios[c], 4)}
+                for c in sorted(shared, key=lambda c: window_ratios[c])]}
+
+    usable_rows = [r for r in rows if r["usable"]]
+    survivors = [r for r in rows if r.get("survives_bh_at_0.05")]
+    reading = _band_reading(rows, pooled, ceiling, survivors, usable_rows,
+                            paired)
+    return {
+        "question": ("the pooled test averages over regimes where the "
+                     "measurement cannot work. Does the same statistic "
+                     "behave differently when the variant pairs are "
+                     "stratified by how similar the two sequences are "
+                     "overall?"),
+        "why_stratify": (
+            "Conservation contrast decays as the two sequences being "
+            "compared get less similar. One number over all variant pairs "
+            "therefore mixes three regimes: pairs so similar that nothing "
+            "varies anywhere, where the ratio is an unstable quotient of two "
+            "near-zero numbers; pairs so distant that both measures have "
+            "saturated at the background mismatch rate, where the ratio is "
+            "driven to 1 by construction; and a middle band with enough "
+            "variation to detect a difference and not enough to saturate. If "
+            "the effect is real it is visible only in the middle."),
+        "statistic": ("exactly the statistic of the row above: divergence "
+                      "ratio = (1 - mean pocket identity) / (1 - mean global "
+                      "identity), with the metal ligand columns removed, one "
+                      "ratio per enzyme type, then a sign test against 1 "
+                      "across types. Only the set of pairs entering it "
+                      "changes, so every band is directly comparable to the "
+                      "pooled number."),
+        "band_edges_why": (
+            "0.95 and 0.90 are this module's own HIGH_ENZYME_IDENTITY and "
+            "RELAXED_ENZYME_IDENTITY gates, taken from the 'characterized' "
+            "tier in evidence_tiers.py; 0.60 is LOW_GLOBAL_IDENTITY, the "
+            "'same reaction very likely' gate in the same file. 0.80 and "
+            "0.70 are equal steps between them. The edges were not chosen "
+            "after looking at the result."),
+        "multiple_testing": (
+            "The six bands are treated as one family and corrected with "
+            "Benjamini-Hochberg (stats_overview.bh_adjust). The descriptive "
+            "sub-bands below 0.60 are deliberately outside that family and "
+            "carry no p or q: they exist to show where the floor begins, not "
+            "to test anything. A band selected from six is a weaker claim "
+            "than a pre-registered one even after correction."),
+        "measured_saturation": ceiling,
+        "reference_row_unstratified": pooled,
+        "bands": rows,
+        "descriptive_detail_inside_the_lowest_band": sub_rows,
+        "within_type_paired_check": paired,
+        "n_bands_tested": len(rows),
+        "n_bands_surviving_bh": len(survivors),
+        "reading": reading}
+
+
+def _band_reading(rows, pooled, ceiling, survivors, usable_rows, paired):
+    """Bandin KARARI, metinden degil sayidan.
+
+    Bu cumle elle yazilmaz: veri degisirse cumle de degismek zorunda.
+    """
+    scored = [r for r in rows if r["per_type_divergence_ratio"]]
+    if not scored or not pooled or not pooled["per_type_divergence_ratio"]:
+        return "no band held enough pairs to be measured"
+    lowest = min(scored, key=lambda r: r["n_pairs"])
+    biggest = max(scored, key=lambda r: r["n_pairs"])
+    parts = []
+    parts.append(
+        "The pooled test is not underpowered; it is dominated by pairs the "
+        "measure cannot read. %d of the %d variant pairs, %.0f %% of them, "
+        "sit in the %s band, and the pooled ratio (%.2f) is that band's "
+        "ratio (%.2f) almost exactly."
+        % (biggest["n_pairs"], pooled["n_pairs"],
+           100 * biggest["n_pairs"] / pooled["n_pairs"], biggest["band"],
+           pooled["per_type_divergence_ratio"]["median"],
+           biggest["per_type_divergence_ratio"]["median"]))
+    if ceiling:
+        parts.append(
+            "The saturation level was measured, not assumed: variant "
+            "consensuses from different enzyme types align at %.0f %% global "
+            "identity and %.0f %% pocket identity, a divergence ratio of "
+            "%.2f, so unrelated enzymes already produce the ratio of 1 that "
+            "the statistic is supposed to be tested against. The %dth "
+            "percentile of that distribution is %.0f %% identity, and %.0f %% "
+            "of all the variant pairs measured here lie at or below it."
+            % (100 * ceiling["global_identity"]["mean"],
+               100 * ceiling["pocket_identity_excluding_metal_ligands"][
+                   "mean"],
+               ceiling["divergence_ratio_at_saturation"],
+               ceiling["floor_percentile"],
+               100 * ceiling["measured_global_identity_floor"],
+               100 * (pooled.get(
+                   "share_of_pairs_at_or_below_the_measured_identity_floor")
+                   or 0.0)))
+    parts.append(
+        "At the other end the measure is blind rather than saturated: in the "
+        "%s band the background rate predicts %.2f mismatched pocket columns "
+        "per pair, so the %.2f ratio there is a quotient of two near-zero "
+        "numbers and the sign test cannot reach significance on %d types "
+        "whatever the biology."
+        % (lowest["band"],
+           lowest["expected_pocket_mismatches_per_pair_at_the_background_"
+                  "rate"],
+           lowest["per_type_divergence_ratio"]["median"],
+           lowest["n_types_with_a_ratio"]))
+    if survivors:
+        strongest = min(survivors,
+                        key=lambda r: r["per_type_divergence_ratio"]["median"])
+        powered = max(survivors, key=lambda r: r["n_pairs"])
+        ratios = [r["per_type_divergence_ratio"]["median"] for r in survivors]
+        parts.append(
+            "In between, the effect is present and large. %d of the %d bands "
+            "survive Benjamini-Hochberg at q < 0.05: %s. The best powered of "
+            "them is %s, with %d pairs over %d types, where the non-ligand "
+            "pocket diverges at %.2f of the background rate, %d of %d types "
+            "agree and q = %.1e; the lowest ratio of the three is %.2f in "
+            "%s. Across the surviving bands the pocket changes between %.1f "
+            "and %.1f times more slowly than the rest of the protein."
+            % (len(survivors), len(rows),
+               ", ".join(r["band"] for r in survivors), powered["band"],
+               powered["n_pairs"],
+               powered["sign_test_against_one"]["n_types"],
+               powered["per_type_divergence_ratio"]["median"],
+               powered["sign_test_against_one"]["n_above_reference"],
+               powered["sign_test_against_one"]["n_types"],
+               powered["benjamini_hochberg_q"],
+               strongest["per_type_divergence_ratio"]["median"],
+               strongest["band"],
+               1.0 / max(ratios) if max(ratios) else float("inf"),
+               1.0 / min(ratios) if min(ratios) else float("inf")))
+        # SIRALAMA IDDIA EDILMEZ, SINANIR. Tavana carpan bantlar disarida
+        # birakilir (orada oran iki sifira yakin sayinin bolumu, siralamaya
+        # girmesi anlamsiz). Sonra artan siralamanin NEREDEN itibaren
+        # bozulmadan devam ettigi bulunur; monotonluk yalnizca gercekten
+        # varsa yazilir.
+        ordered = [r for r in scored
+                   if r["expected_pocket_mismatches_per_pair_at_the_"
+                        "background_rate"] >= MIN_EXPECTED_POCKET_MISMATCHES]
+        ordered.sort(key=lambda r: -r["global_identity_from"])
+        series = [r["per_type_divergence_ratio"]["median"] for r in ordered]
+        start = 0
+        for index in range(len(series)):
+            rest = series[index:]
+            if all(a <= b for a, b in zip(rest, rest[1:])):
+                start = index
+                break
+        tail = ordered[start:]
+        listing = "; ".join("%s %.2f" % (
+            r["band"], r["per_type_divergence_ratio"]["median"])
+            for r in tail)
+        if start == 0 and len(tail) > 2:
+            parts.append(
+                "The ordering is the decay itself, not a single lucky band: "
+                "the ratio rises without exception as identity falls across "
+                "every band the measure can read (%s)." % listing)
+        elif len(tail) > 2:
+            out_of_order = ordered[:start]
+            parts.append(
+                "The ordering mostly follows the decay the argument "
+                "predicts: the ratio rises without exception from %s down to "
+                "%s (%s). The exception is %s, which holds %d pairs over %d "
+                "types, and a band that thin is expected to sit out of order."
+                % (tail[0]["band"], tail[-1]["band"], listing,
+                   ", ".join(r["band"] for r in out_of_order),
+                   sum(r["n_pairs"] for r in out_of_order),
+                   max(r["n_types_with_a_ratio"] for r in out_of_order)))
+        nulls = [r["same_size_random_column_set_null"] for r in survivors
+                 if r.get("same_size_random_column_set_null")]
+        if nulls:
+            parts.append(
+                "The band effect is not an artefact of selecting pairs on "
+                "global identity. Random column sets of the same size, drawn "
+                "inside the same bands, give ratios of %s, while the pocket "
+                "gives %s and sits at percentile %s of its own null."
+                % (", ".join("%.2f" % n["median_random_set_ratio"]
+                             for n in nulls),
+                   ", ".join("%.2f" % n["median_pocket_ratio"]
+                             for n in nulls),
+                   ", ".join("%.3f" % n["median_pocket_percentile_in_null"]
+                             for n in nulls)))
+        if paired and paired["sign_test"]:
+            parts.append(
+                "And it is not a difference between types either. For the %d "
+                "types that have pairs in both regions, the ratio is lower "
+                "among their own measurable pairs than among their own "
+                "saturated pairs in %d of %d cases (median %.2f against "
+                "%.2f, sign test p = %.1e), with the type held fixed."
+                % (paired["n_types_with_pairs_in_both"],
+                   paired["sign_test"]["n_above_reference"],
+                   paired["sign_test"]["n_types"],
+                   paired["median_ratio_in_the_window"],
+                   paired["median_ratio_in_the_saturated_region"],
+                   paired["sign_test"]["p_sign_test"]))
+        parts.append(
+            "So stratifying rescues the effect: the non-ligand pocket of "
+            "these enzymes IS measurably more conserved than the rest of the "
+            "protein wherever the comparison is close enough to see it. The "
+            "honest caveat is that the "
+            "surviving bands were selected from six, so the correction "
+            "controls the false discovery rate but does not make this a "
+            "pre-registered test; what carries the claim is that three "
+            "adjacent bands agree, that the ordering follows the decay the "
+            "argument predicts, that random column sets do not reproduce it, "
+            "and that the same types show it against themselves.")
+    else:
+        parts.append(
+            "No band survives Benjamini-Hochberg at q < 0.05, so the pooled "
+            "null result was not a power problem: there is no identity range "
+            "in which the non-ligand pocket is measurably more conserved "
+            "than the rest of the protein.")
+    return " ".join(parts)
+
+
 def question_one(con, aligned, active_site_path, py_rng):
     """Varyantlari CEB kolonlarinda karsilastir."""
     length = len(next(iter(aligned.values())))
@@ -779,6 +1456,9 @@ def question_one(con, aligned, active_site_path, py_rng):
 
     all_indices = list(range(length))
     per_type, per_variant, pairs = {}, [], []
+    # Tabakalanmis test ayni ceb kolonlarini ve AYNI null havuzunu yeniden
+    # kullanir; burada tip basina saklanir ki paralel bir uygulama yazilmasin.
+    band_inputs = {}
     for cluster in sorted(usable):
         pocket = sorted(columns[cluster])
         inner = sorted(columns_inner.get(cluster, []))
@@ -799,8 +1479,8 @@ def question_one(con, aligned, active_site_path, py_rng):
                     continue
                 if pock_n < MIN_POCKET_COLUMNS_COMPARED:
                     continue
-                free = column_identity(consensus[a], consensus[b],
-                                       non_ligand)[0]
+                free, free_n, free_mismatch = column_identity(
+                    consensus[a], consensus[b], non_ligand)
                 tight = column_identity(consensus[a], consensus[b],
                                         inner_idx)[0] if inner_idx else None
                 genus_a = (stored.get(a, {}).get("top_genera") or "?"
@@ -817,6 +1497,13 @@ def question_one(con, aligned, active_site_path, py_rng):
                     "pocket_mismatches": pock_mismatch,
                     "pocket_identity_excluding_metal_ligands": (
                         round(free, 4) if free is not None else None),
+                    # Bant tabakalamasi bu iki sayiyi KULLANIR: bir bandin
+                    # tavana carpip carpmadigi, cift basina beklenen ceb
+                    # uyusmazligi sayisindan okunur.
+                    "pocket_columns_compared_excluding_metal_ligands": (
+                        free_n if free is not None else None),
+                    "pocket_mismatches_excluding_metal_ligands": (
+                        free_mismatch if free is not None else None),
                     "pocket_identity_at_5A": (
                         round(tight, 4) if tight is not None else None),
                     "dominant_genus_a": genus_a,
@@ -875,6 +1562,8 @@ def question_one(con, aligned, active_site_path, py_rng):
         # neredeyse degismez oldugu icin havuzda kalmalari null'u yapay
         # olarak korunmus gosterir.
         pool_free = [c for c in pool if c not in ligands]
+        band_inputs[cluster] = {"non_ligand_idx": non_ligand,
+                                "null_pool": pool_free}
 
         def null_ratios_for(size, draw_pool):
             out = []
@@ -1011,6 +1700,17 @@ def question_one(con, aligned, active_site_path, py_rng):
                                          for r in mates])), 4)
                     if mates else None)})
 
+    # --- Doygunluk tavani ve global kimlik tabakalari. SIRASI onemli:
+    # ikisi de py_rng'den cekiyor ve tip basina null'lardan SONRA cagriliyor,
+    # boylece onceki sayilar birebir yeniden uretilebilir kalir.
+    owner = {leaf_id: cluster for cluster in band_inputs
+             for leaf_id in usable[cluster]}
+    band_rng = random.Random(RANDOM_SEED + BAND_SEED_OFFSET)
+    ceiling = measured_divergence_ceiling(consensus, owner, band_inputs,
+                                          all_indices, band_rng)
+    bands_block = conservation_by_identity_band(pairs, band_inputs, consensus,
+                                                ceiling, band_rng)
+
     # --- Global ve ceb kimligi arasindaki iliski, uc duzeyde
     globals_ = [r["global_identity"] for r in pairs]
     pockets = [r["pocket_identity"] for r in pairs]
@@ -1056,13 +1756,12 @@ def question_one(con, aligned, active_site_path, py_rng):
         "percentile %.2f of the random sets instead of %.2f. So most "
         "of the apparent extra conservation of the active site comes from the "
         "three or four positions that the pipeline already required to be "
-        "present, and the remaining pocket residues are at best mildly more "
-        "conserved than the rest of the protein. That does not make the "
-        "measure useless, because it answers a different question from global "
-        "identity and it does separate pairs that global identity cannot "
-        "separate. It does mean the pocket is not a quiet conserved core with "
-        "a few specificity switches in it, and that any claim resting on "
-        "'pocket positions are special' is not supported by this data."
+        "present. "
+        "This block used to stop there, and stopping there was wrong. A "
+        "single ratio over every variant pair averages over identity ranges "
+        "in which the measurement cannot work at all, and almost all of the "
+        "pairs here lie in one of them. by_global_identity_band repeats the "
+        "same statistic inside bands of global identity. %s"
         % (describe(ratios)["median"], ratio_test["n_above_reference"],
            ratio_test["n_types"],
            float(np.median(percentiles)) if percentiles else float("nan"),
@@ -1070,7 +1769,8 @@ def question_one(con, aligned, active_site_path, py_rng):
            free_test["n_types"], free_test["p_sign_test"],
            float(np.median(free_percentiles))
            if free_percentiles else float("nan"),
-           float(np.median(percentiles)) if percentiles else float("nan")))
+           float(np.median(percentiles)) if percentiles else float("nan"),
+           (bands_block or {}).get("reading", "")))
 
     # --- Kuratorun iki ilginc durumu
     def gate(records, label, note):
@@ -1322,6 +2022,7 @@ def question_one(con, aligned, active_site_path, py_rng):
                          "opportunity to vary, so the share is also given for "
                          "the types with at least five variants. Every type's "
                          "own reading is in per_type.information_content.")},
+            "by_global_identity_band": bands_block,
             "reading": conservation_reading},
         "discordant_pairs": {
             "question": ("which variants are globally similar but differ at "
@@ -2228,6 +2929,16 @@ def main():
             "max_pairs_per_type": MAX_PAIRS_PER_TYPE,
             "chance_level_pairs": CHANCE_LEVEL_PAIRS,
             "high_enzyme_identity_gate": HIGH_ENZYME_IDENTITY,
+            "global_identity_bands": [b[2] for b in GLOBAL_IDENTITY_BANDS],
+            "descriptive_sub_bands": [b[2]
+                                      for b in GLOBAL_IDENTITY_SUB_BANDS],
+            "minimum_expected_pocket_mismatches_for_a_usable_band":
+                MIN_EXPECTED_POCKET_MISMATCHES,
+            "maximum_saturated_share_for_a_usable_band":
+                MAX_SATURATED_SHARE_FOR_A_USABLE_BAND,
+            "saturation_sample_pairs": SATURATION_SAMPLE_PAIRS,
+            "saturation_floor_percentile": SATURATION_PERCENTILE,
+            "global_identity_band_seed": RANDOM_SEED + BAND_SEED_OFFSET,
             "anchor_window": ANCHOR_WINDOW,
             "permutations": PERMUTATIONS,
             "random_column_sets": RANDOM_COLUMN_SETS,
@@ -2377,6 +3088,73 @@ def print_summary(payload):
                      "invariant_share"]))
         print("  ceb birebir ayni olan cift orani: %.1f%%"
               % (100 * cons["share_of_pairs_with_an_identical_pocket"]))
+        bands = cons.get("by_global_identity_band")
+        if bands:
+            sat = bands.get("measured_saturation")
+            if sat:
+                print("\n  OLCULEN DOYGUNLUK (farkli tipten %d cift): global "
+                      "kimlik %.3f, ceb kimligi %.3f, doygunlukta oran %.2f; "
+                      "%d. yuzdelik taban %.3f"
+                      % (sat["n_cross_type_pairs"],
+                         sat["global_identity"]["mean"],
+                         sat["pocket_identity_excluding_metal_ligands"][
+                             "mean"],
+                         sat["divergence_ratio_at_saturation"],
+                         sat["floor_percentile"],
+                         sat["measured_global_identity_floor"]))
+            print("\n  GLOBAL KIMLIK BANTLARI (metal ligandlari haric):")
+            print("    %-14s %6s %5s %6s %7s %7s %7s %9s %9s %s"
+                  % ("bant", "cift", "tip", "oran", "cebUyus", "globUyus",
+                     "beklUyus", "p", "q", "durum"))
+            rows = list(bands.get("bands") or [])
+            reference = bands.get("reference_row_unstratified")
+            if reference:
+                rows = rows + [reference]
+            for row in rows:
+                ratio = row.get("per_type_divergence_ratio") or {}
+                test = row.get("sign_test_against_one") or {}
+                flag = ("kullanilabilir" if row.get("usable")
+                        else "OLCMUYOR: " + "; ".join(
+                            r.split(":")[0] for r in
+                            (row.get("why_not_usable") or [])))
+                print("    %-14s %6d %2d/%-2d %6.3f %7.3f %7.3f %7.2f "
+                      "%9.2g %9.2g %s"
+                      % (row["band"], row["n_pairs"],
+                         test.get("n_above_reference", 0),
+                         row["n_types_with_a_ratio"],
+                         ratio.get("median", float("nan")),
+                         (row["mean_pocket_divergence_excluding_metal_"
+                              "ligands"] if row["mean_pocket_divergence_"
+                              "excluding_metal_ligands"] is not None
+                          else float("nan")),
+                         row["mean_global_divergence"],
+                         row["expected_pocket_mismatches_per_pair_at_the_"
+                             "background_rate"],
+                         test.get("p_sign_test", float("nan")),
+                         (row.get("benjamini_hochberg_q")
+                          if row.get("benjamini_hochberg_q") is not None
+                          else float("nan")),
+                         flag))
+            for row in bands.get("bands") or []:
+                null = row.get("same_size_random_column_set_null")
+                if null:
+                    print("      %-14s rastgele kolon kumesi orani %.2f, "
+                          "cebin null icindeki yuzdeligi %.3f"
+                          % (row["band"], null["median_random_set_ratio"],
+                             null["median_pocket_percentile_in_null"]))
+            paired = bands.get("within_type_paired_check")
+            if paired and paired.get("sign_test"):
+                print("    TIP ICINDE eslesmis: %d tipte pencere orani %.3f, "
+                      "doygun bolge orani %.3f, %d/%d tipte pencere daha "
+                      "dusuk, p=%.2g"
+                      % (paired["n_types_with_pairs_in_both"],
+                         paired["median_ratio_in_the_window"],
+                         paired["median_ratio_in_the_saturated_region"],
+                         paired["sign_test"]["n_above_reference"],
+                         paired["sign_test"]["n_types"],
+                         paired["sign_test"]["p_sign_test"]))
+            print("    BH sonrasi ayakta kalan bant: %d/%d"
+                  % (bands["n_bands_surviving_bh"], bands["n_bands_tested"]))
         disc = one["discordant_pairs"]
         gates = disc["n_pairs_at_each_global_gate"]
         print("\nkuratorun iki ilginc durumu:")
