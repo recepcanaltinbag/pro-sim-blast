@@ -344,6 +344,7 @@ def main():
             print(f"  {name:24s} [AGIR -- atlanir; --include-heavy ile calisir]")
         return 0
 
+    db_before = db_fingerprint(DB) if os.path.exists(DB) else None
     failed = []
     for i, (name, outputs, cmd, inputs, heavy, why) in enumerate(runnable, 1):
         print(f"\n==> [{i}/{len(runnable)}] {name}  ({why})")
@@ -370,6 +371,15 @@ def main():
                        "seconds": round(time.time() - t0, 1)}
         save_state(state)
         print(f"    tamam, {time.time() - t0:.1f} s")
+
+    # Veritabani gercekten degistiyse bir SURUM kaydet. Her --run'da degil:
+    # yalnizca mantiksal parmak izi oynadiginda, yani sayilar degistiginde.
+    # Boylece "bu tip neden 94'ten 310'a cikti" sorusunun cevabi sonradan
+    # aranabilir hale gelir.
+    if db_before and db_fingerprint(DB) != db_before:
+        ran = ", ".join(n for n, *_ in runnable if n not in failed) or "-"
+        subprocess.run(["python3", "db_revision.py", "--db", DB, "--note",
+                        f"rebuild.py --run: {ran}"])
 
     print()
     if failed:
