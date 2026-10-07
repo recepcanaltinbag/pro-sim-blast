@@ -144,6 +144,32 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Bitti
 
+62. ~~"Uzak akrabalar okyanus kaynakli mi? Ve bu, enzimlerin kimyasallardan
+    ONCE ayrildigi anlamina gelir mi?"~~ **BITTI, ikisi de olculdu.**
+    * Giris duzeyinde deniz en yorumlanamaz habitat: %69,7'ye karsi %55,7, OR
+      1,90, q=1e-07. Bagimsiz ikinci dilim (kaydin kendi yer adi) ayni yone
+      isaret ediyor: %64,3'e karsi %58,2. **Cins duzeyinde HICBIRI ayakta
+      kalmiyor** (%66,7'ye karsi %63,4, OR 1,18, q=0,45). Taban da %55,7'den
+      %63,4'e cikiyor -- suslari cokertmek yorumlanamaz orani YUKSELTIYOR,
+      cunku tekrar tekrar dizilenler zaten bildiklerimiz.
+    * Atasal hipotez REFERANSSIZ test edildi (`ancestry.py`): her tipin
+      kirli-alan uyeleri, kimyasalin hic uygulanmadigi habitatlardaki
+      uyelerine dogrudan hizalandi; EN YUKSEK kimlik, ayrilmanin ne kadar
+      yakin olabilecegini sinirliyor. Deniz tanimiyla 16 ksenobiyotik tipin
+      **10'unda** hicbir kirli-alan uyesi hicbir deniz uyesine %95'ten yakin
+      degil, 2'sinde %60'in altinda (DdmC %32,5). Bu ayrilmalar 80 yillik
+      olamaz.
+    * Asil destek KONTROLDEN geliyor: ksenobiyotik ve dogal substratli tipler
+      habitatlar arasi ayrilma derinliginde (p=0,43 / p=0,32) ve varyant
+      yayiliminda (p=0,78) ayirt edilemiyor; kirli-alan uyeleri kendi tipinden
+      rastgele cekim kadar varyanta yayiliyor (oran 0,975). Yani kirleten
+      bolgeler var olani SECTI, yeni bir soy uretmedi.
+    * Iki yontem notu: medyan capraz kimlik kullanilmiyor (tipler klad degil,
+      profil kovasi oldugu icin medyanlar %25 ilgisiz-protein tabanina
+      oturuyor); ve hicbir yerde molekuler saat yok -- her sayi bir SINIR,
+      tarih degil.
+
+
 50. ~~Regulator / transpozon sayfalari.~~ **BITTI.** `/atlas/elements` dizin,
     `/element/<aile>` tek tek. 8 duzenleyici ailesi + 13 adlandirilmis IS
     ailesi. Her sayfada aile hangi enzim tiplerinin yanindaysa, o tipin GENEL
