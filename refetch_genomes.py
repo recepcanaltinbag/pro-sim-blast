@@ -60,20 +60,57 @@ CONTIG_ONLY_RE = re.compile(rb"^CONTIG\s", re.M)
 LOCUS_RE = re.compile(rb"^LOCUS\s+(\S+)", re.M)
 
 
-def targets(con, limit=None):
-    """Anotasyonsuz replikonlar, en cok etkilenen cinsler once.
+def has_sequence(nid, gbk_dir):
+    """Yerel kayitta ORIGIN blogu -- yani nukleotid dizisi -- var mi?
 
-    Sira onemli: is yarida kesilirse en degerli kayitlar cekilmis olur.
+    CON kayitlarinda ozellikler bulunabilir ama dizi bulunmaz: dizi baska
+    kayitlara dagilmistir ve yerine `CONTIG` satiri konur. Promotor analizi
+    icin gereken sey tam olarak bu eksik dizidir.
+    """
+    path = os.path.join(gbk_dir, nid + ".gbk")
+    if not os.path.exists(path):
+        return False
+    try:
+        with open(path, "rb") as fh:
+            return b"\nORIGIN" in fh.read()
+    except OSError:
+        return False
+
+
+def targets(con, which="no-annotation", limit=None, gbk_dir="gbk_files"):
+    """Yeniden cekilecek replikonlar. Iki ayri eksiklik var, ayni cozum.
+
+    no-annotation  Dosya var ama ozellik YOK: ~5 KB'lik CON iskeleti. Bu
+                   replikonlardan hic aday cikmadi, yani uye sayilari eksik.
+    no-sequence    Ozellikler var ama ORIGIN blogu YOK. Uyeler sayildi, ama
+                   intergenik bolge okunamadigi icin PROMOTOR analizi
+                   yapilamiyor. Veritabanindaki 11.422 dogrulanmis RO'nun
+                   10.475'i bu durumda.
+
+    Sira her iki durumda da en cok RO tasiyan replikondan baslar: is yarida
+    kesilirse en degerli kayitlar cekilmis olur.
     """
     rows = con.execute("""
         SELECT nucleotide_id, organism,
-               (SELECT COUNT(*) FROM ro r WHERE r.nucleotide_id = p.nucleotide_id) ro_count
+               (SELECT COUNT(*) FROM ro r WHERE r.nucleotide_id = p.nucleotide_id
+                 AND r.is_confirmed = 1) ro_count,
+               cds_count
         FROM replicon p
-        WHERE (cds_count IS NULL OR cds_count = 0)
-          AND nucleotide_id IS NOT NULL AND trim(nucleotide_id) <> ''
+        WHERE nucleotide_id IS NOT NULL AND trim(nucleotide_id) <> ''
         ORDER BY ro_count DESC, organism, nucleotide_id
     """).fetchall()
-    return rows[:limit] if limit else rows
+    out = []
+    for nid, organism, ro_count, cds in rows:
+        if which == "no-annotation":
+            if cds is None or cds == 0:
+                out.append((nid, organism, ro_count))
+        elif which == "no-sequence":
+            # Ozelligi OLAN ama dizisi olmayanlar; iskeletler obur ise ait.
+            if cds and ro_count and not has_sequence(nid, gbk_dir):
+                out.append((nid, organism, ro_count))
+        else:
+            raise SystemExit(f"bilinmeyen hedef kumesi: {which}")
+    return out[:limit] if limit else out
 
 
 # OLCULDU: `gbwithparts` ile buyuk bir kayit istendiginde NCBI akisi zaman
@@ -159,6 +196,13 @@ def main():
                          "anonim toplu indirme IP engeline yol acabilir)")
     ap.add_argument("--api-key", default=os.environ.get("NCBI_API_KEY"),
                     help="varsa saniyede 10 istege cikar")
+    ap.add_argument("--targets", default="no-annotation",
+                    choices=["no-annotation", "no-sequence"],
+                    help="no-annotation: ozelligi olmayan CON iskeletleri. "
+                         "no-sequence: ozelligi olan ama ORIGIN blogu olmayan "
+                         "kayitlar -- promotor analizi icin gereken kume")
+    ap.add_argument("--gbk-dir", default="gbk_files",
+                    help="mevcut kayitlar; no-sequence hedefi burayi tarar")
     ap.add_argument("--limit", type=int, help="yalnizca ilk N kayit (pilot icin)")
     ap.add_argument("--gzip", action="store_true", default=True,
                     help="diskte sikistirilmis sakla (varsayilan)")
@@ -172,10 +216,13 @@ def main():
 
     os.makedirs(args.out_dir, exist_ok=True)
     con = sqlite3.connect(args.db)
-    todo = targets(con, args.limit)
+    todo = targets(con, args.targets, args.limit, args.gbk_dir)
     delay = 1.0 / (RATE_WITH_KEY if args.api_key else RATE_NO_KEY)
 
-    print(f"[hedef] {len(todo)} anotasyonsuz replikon")
+    label = {"no-annotation": "anotasyonsuz (CON iskeleti)",
+             "no-sequence": "dizisi olmayan (promotor icin)"}[args.targets]
+    print(f"[hedef] {len(todo)} {label} replikon, "
+          f"{sum(t[2] or 0 for t in todo):,} dogrulanmis RO tasiyor")
     print(f"[dizin] {args.out_dir}")
     print(f"[hiz]   saniyede {'~9 (api anahtari var)' if args.api_key else '~3 (anahtar yok)'}")
     print()
