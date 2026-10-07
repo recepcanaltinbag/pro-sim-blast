@@ -1097,6 +1097,7 @@ import atlas  # noqa: E402
 
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
+    element_slug=atlas.element_slug,
     hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
     reaction_scheme_svg=atlas.reaction_scheme_svg,
@@ -1388,6 +1389,25 @@ def atlas_origin(request: Request):
     """Yakin ve uzak akrabalarin nerelerden geldigi."""
     return render(request, "atlas_origin.html",
                   eco=atlas.ecological_origin_view(apath("ecological_origin.json")))
+
+
+@app.get("/atlas/elements", response_class=HTMLResponse)
+def atlas_elements(request: Request):
+    """Duzenleyici aileleri ve IS aileleri: dizin, Sankey, ozgulluk testi."""
+    el = atlas.control_elements_view(apath("control_elements.json"))
+    if not el:
+        raise HTTPException(404, "control_elements.json not found "
+                                 "(run control_elements.py)")
+    return render(request, "atlas_elements.html", el=el)
+
+
+@app.get("/element/{family}", response_class=HTMLResponse)
+def control_element_page(request: Request, family: str):
+    """Tek bir duzenleyici ya da IS ailesi."""
+    view = atlas.control_element_view(apath("control_elements.json"), family)
+    if not view:
+        raise HTTPException(404, f"no regulator or IS family named {family}")
+    return render(request, "control_element.html", **view)
 
 
 @app.get("/atlas/geography", response_class=HTMLResponse)

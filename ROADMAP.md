@@ -541,6 +541,33 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 
 ## Acik sorular (kullaniciya)
 
+- **IKI KURASYON HATASI, duzeltilmedi -- karar kullanicinin.** Yayimlanmis
+  yapilarla capraz kontrol (Miao & Schmidt 2025 Tablo 1, 26 yapi, hepsi RCSB'de
+  dogrulandi) iki tanesini ortaya cikardi:
+  * `3_314_NDO` PDB 1NDO tasiyor ama KENDI referans dizisi o yapiya yalnizca
+    %27,5 benziyor. Ayni referans `3_316_NarAa`'nin referansiyla %100 ayni:
+    yani bu bir nid/nar ailesi alfa alt birimi, naftalin 1,2-dioksijenaz degil.
+    `3_309_NahAc` ve `3_315_NDO` gercekten 1NDO (%100). Hangisi yanlis, isim mi
+    dizi mi?
+  * `1_115_NdmC`'nin referansi, `1_114_NdmB`'nin 373 aa referansinin 355 aa'lik
+    TAM alt dizisi -- ayni PDB yapisinin His6-TEV etiketi (MGSSHHHHHHENLYFQGS)
+    kirpilmis hali. NdmC gercek ve ayri bir N7-demetilaz, yani bu girdi yanlis
+    protein. NdmC'nin neden hic uyesi olmadiginin da aciklamasi bu.
+- **Referans setinin kendini tekrar etmesi olculdu.** Neredeyse ayni cift
+  referanslar: OxoO/OMO %100, NahAc/NDO(3_315) %100, EdoA1/cumA1 %99,8,
+  CARDO/CarAa %99,2. Birlestirilsinler mi, yoksa iki ad da korunsun mu?
+- `5_504_CntA` 6Y9C tasiyor; o yapi **C229A nokta varyanti**. Yabani tip 6Y8J.
+  Aktif bolge referansi olarak hangisi kullanilsin? (6Y9C'de mononukleer demir
+  var, 6Y8J'de yok -- ikisini birden listelemek en dogrusu gorunuyor.)
+- Yapisi HIC olmayan bes tip kaldi: `1_109_LigX`, `3_312_NinA`, `5_507_BmoA`
+  (AlphaFold kaydi yok ya da UniProt kimligi yok), `2_215_cadA` ve
+  `5_505_qxyA` (bunlarin AlphaFold modeli VAR, surum eki hatasi duzeltildi,
+  `active_site.py` yeniden kosturulunca gelecekler).
+- `chemistry.csv`'de **product_smiles sutunu hic yok**: 71 tipin hicbirinde
+  urun yalnizca Ingilizce metin, yani hicbir reaksiyon mekanik olarak
+  denklestirilemiyor ya da cizdirilemiyor. Eklensin mi?
+- `curation_confidence` 71 tipin 70'inde "high"; alan hicbir ayrim tasimiyor.
+  Yeniden derecelendirilsin mi?
 - cadA'nin substrati 2,4-D olarak isaretlendi ama KESIN DEGIL; Bradyrhizobium
   HW13 cadABC makalesi hem 2,4-D hem 2,4,5-T aktivitesinden soz ediyor.
   Elindeki orijinal referans hangisiyse soyler misin?

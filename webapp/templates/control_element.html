@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}{{ item.family.replace('_', ' ') }}{% endblock %}
+{% block body %}
+<nav class="crumbs"><a href="{{ u('/') }}">Home</a> ›
+<a href="{{ u('/atlas/elements') }}">Regulators and mobile elements</a> ›
+{{ item.family.replace('_', ' ') }}</nav>
+
+<h1>{{ item.family.replace('_', ' ') }}
+  <span class="note">· {{ item.kind }}</span></h1>
+
+<p class="lede">{% if item.kind == 'regulator' %}Found immediately upstream of
+{{ item.entries|fmt }} Rieske oxygenase operons, across {{ item.types }} enzyme types and
+{{ item.genera }} bacterial genera.{% else %}Found within ten kilobases of
+{{ item.entries|fmt }} alpha subunits, across {{ item.types }} enzyme types and
+{{ item.genera }} genera.{% endif %}</p>
+
+<div class="tiles">
+  <div class="tile"><span class="tile__n">{{ item.entries|fmt }}</span>
+    <span class="tile__l">alpha subunits</span></div>
+  <div class="tile"><span class="tile__n">{{ item.types }}</span>
+    <span class="tile__l">enzyme types</span></div>
+  <div class="tile"><span class="tile__n">{{ item.genera }}</span>
+    <span class="tile__l">genera</span></div>
+  <div class="tile"><span class="tile__n">{{ '%.0f %%' % (100 * item.plasmid_rate) }}</span>
+    <span class="tile__l">on a plasmid</span></div>
+</div>
+
+<h2>Which enzyme types it sits beside</h2>
+<p>Raw counts follow how common each enzyme type is, so they are given against the share that type
+holds among all entries of this kind. A type is marked only when it is both significantly and
+materially over- or under-represented — Benjamini–Hochberg corrected, and at least five percentage
+points away from its baseline share.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Enzyme type</th><th class="num">Alpha subunits</th><th class="num">Genera</th>
+<th class="num">Share here</th><th class="num">Share overall</th><th class="num">Difference</th>
+<th class="num">Fold</th><th></th></tr></thead>
+<tbody>
+{% for t in item.enriched_types %}
+<tr><td><a href="{{ u('/cluster/' ~ t.cluster) }}">{{ gene(t.cluster) }}</a></td>
+  <td class="num">{{ t.entries|fmt }}</td><td class="num">{{ t.genera }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * t.share) }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * t.baseline) }}</td>
+  <td class="num">{{ '%+.1f' % (100 * t.lift) }}</td>
+  <td class="num">{{ '%.1f×' % t.fold if t.fold else '—' }}</td>
+  {#  Yon ONEMLI: eksik temsil de esikleri geciyor ve ilk surumde o da
+      "enriched" diye etiketleniyordu -- XylX %0,4'e karsi %6,3 ile
+      "enriched" goruluyordu.                                              #}
+  <td>{% if t.flagged %}{% if t.lift > 0 %}<span class="verdict verdict--robust">enriched</span>
+      {% else %}<span class="verdict verdict--weak">depleted</span>{% endif %}{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">{% if item.n_enriched %}{{ item.n_enriched }} of {{ item.types }} types reach both
+thresholds, in either direction.{% else %}<span class="verdict verdict--none">no type reaches both thresholds</span>
+This family is distributed across enzyme types about as evenly as the types themselves are
+distributed, so it is not specific to any of them.{% endif %}</p>
+
+<h2>What chemistry it is found with</h2>
+<div class="cols">
+<div>
+<h3>Reaction class</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Class</th><th class="num">Entries</th></tr></thead>
+<tbody>{% for k, v in item.reaction_classes.items() %}
+<tr><td>{{ k.replace('_', ' ') }}</td><td class="num">{{ v|fmt }}</td></tr>{% endfor %}</tbody>
+</table></div>
+</div>
+<div>
+<h3>Chemical family</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Entries</th></tr></thead>
+<tbody>{% for k, v in item.chem_families.items() %}
+<tr><td>{{ k.replace('_', ' ') }}</td><td class="num">{{ v|fmt }}</td></tr>{% endfor %}</tbody>
+</table></div>
+</div>
+</div>
+
+{% if item.kind == 'regulator' %}
+<h2>How it is arranged relative to the operon</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Arrangement</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
+<tbody>{% for k, v in item.architecture.items() %}
+<tr><td>{{ k.replace('_', ' ') }}</td><td class="num">{{ v|fmt }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * v / item.entries) }}</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="note">A divergent regulator is transcribed away from the operon, so the two share an
+intergenic region and probably a promoter.
+{% if item.intergenic_median %}Across {{ item.intergenic_n|fmt }} entries whose intergenic region is
+between 0 and 2000 bp, the median gap is {{ item.intergenic_median|round|int }} bp.{% endif %}</p>
+{% endif %}
+
+<h2>Where it is found</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Genus</th><th class="num">Alpha subunits</th></tr></thead>
+<tbody>{% for g, n in item.top_genera %}
+<tr><td><i>{{ g }}</i></td><td class="num">{{ n|fmt }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<div class="caveat">
+{% for c in caveats %}<p{{ ' class="note"' if not loop.first }}>{{ c }}</p>{% endfor %}
+</div>
+{% endblock %}

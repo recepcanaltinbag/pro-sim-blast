@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Regulators and mobile elements{% endblock %}
+{% set page_id = 'elements' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Who sits next to these enzymes</h1>
+<p class="lede">Two kinds of neighbour get their own page here: the transcriptional regulator
+immediately upstream of the operon, and the insertion sequences found within ten kilobases. The
+first is about control, the second about movement, and they are asked the same two questions —
+which enzymes does this family sit beside, and is that association real.</p>
+
+<div class="caveat caveat--warn">
+{% for c in el.caveats %}<p{{ ' class="note"' if not loop.first }}>{{ c }}</p>{% endfor %}
+</div>
+
+{% if el.sankey_reaction %}
+<h2>Which chemistry each regulator family controls</h2>
+{% set sk = el.sankey_reaction %}
+<figure class="fig">
+<svg class="sankey" viewBox="0 0 {{ sk.width }} {{ sk.height }}" width="100%"
+     height="{{ sk.height }}" role="img"
+     aria-label="Flow from regulator family to reaction class">
+  {% for r in sk.ribbons %}
+  <path class="sankey__flow" d="{{ r.d }}"><title>{{ r.label }}</title></path>
+  {% endfor %}
+  {% for n in sk.nodes %}
+  <rect class="sankey__node" x="{{ n.x }}" y="{{ '%.1f' % n.y }}" width="{{ n.w }}"
+        height="{{ '%.1f' % n.h }}" rx="2"><title>{{ n.label }}: {{ n.total }} entries</title></rect>
+  <text class="sankey__label" x="{{ n.tx }}" y="{{ '%.1f' % (n.y + n.h / 2) }}"
+        text-anchor="{{ n.anchor }}" dominant-baseline="middle">{{ n.label }}</text>
+  {% endfor %}
+</svg>
+<figcaption>Regulator family on the left, reaction class on the right; ribbon thickness is the
+number of alpha subunits. Flows below {{ sk.min_flow }} entries are not drawn, which leaves
+{{ sk.entries_shown|fmt }} of the {{ (sk.entries_shown + sk.entries_dropped)|fmt }} entries that
+have both a regulator and a curated reaction class. The regulator is the first gene upstream of the
+operon, identified by its product name; no binding was measured, so this is adjacency, not
+regulation.</figcaption>
+</figure>
+{% endif %}
+
+<h2>Regulator families</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Alpha subunits</th><th class="num">Enzyme types</th>
+<th class="num">Genera</th><th class="num">Types it stands out in</th>
+<th class="num">Divergent</th><th class="num">Median promoter gap</th></tr></thead>
+<tbody>
+{% for r in el.regulators %}
+<tr><td><a href="{{ u('/element/' ~ element_slug(r.family)) }}">{{ r.family.replace('_', ' ') }}</a></td>
+  <td class="num">{{ r.entries|fmt }}</td><td class="num">{{ r.types }}</td>
+  <td class="num">{{ r.genera }}</td>
+  <td class="num">{% if r.n_enriched %}{{ r.n_enriched }}{% else %}<span class="verdict verdict--none">0</span>{% endif %}</td>
+  <td class="num">{{ '%.0f %%' % (100 * (r.architecture.get('divergent_regulator', 0) / r.entries)) }}</td>
+  <td class="num">{% if r.intergenic_median %}{{ r.intergenic_median|round|int }} bp{% else %}—{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">“Divergent” means the regulator is on the opposite strand, so it and the operon share
+an intergenic region and probably a promoter. The promoter gap is the median length of that
+intergenic region, among entries where it is between 0 and 2000 bp.</p>
+
+<h2>Insertion sequence families</h2>
+<p>The transposon label comes from a product-name pattern, and a named insertion-sequence family is
+a stronger piece of evidence than an unnamed “transposase”. Of
+{{ el.coverage.confirmed_entries|fmt }} confirmed entries,
+{{ el.coverage.with_a_named_IS_family|fmt }} carry a named family,
+{{ el.coverage.entries_with_unnamed_transposase_only|fmt }} carry only an unnamed transposase, and
+{{ el.coverage.entries_whose_only_hit_is_recombination_machinery|fmt }} matched nothing but
+recombination machinery, which is not a mobile element at all.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Alpha subunits</th><th class="num">Enzyme types</th>
+<th class="num">Genera</th><th class="num">Types it stands out in</th>
+<th class="num">On a plasmid</th></tr></thead>
+<tbody>
+{% for r in el.is_families %}
+<tr><td><a href="{{ u('/element/' ~ element_slug(r.family)) }}">{{ r.family }}</a></td>
+  <td class="num">{{ r.entries|fmt }}</td><td class="num">{{ r.types }}</td>
+  <td class="num">{{ r.genera }}</td>
+  <td class="num">{% if r.n_enriched %}{{ r.n_enriched }}{% else %}<span class="verdict verdict--none">0</span>{% endif %}</td>
+  <td class="num">{{ '%.0f %%' % (100 * r.plasmid_rate) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+{% set sp = el.specificity %}
+{% if sp and sp.by_enzyme_type and sp.by_host_genus %}
+<h2>Are mobile elements tied to the enzyme, or to the host?</h2>
+<p class="plain">{{ sp.question }} The near-empty “enriched in” column above already hints at the
+answer, and it can be measured directly. {{ sp.how }}</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Cross-tabulated against</th><th class="num">Rows</th><th class="num">Entries</th>
+<th class="num">Measured V</th><th class="num">Shuffled V</th><th class="num">Excess over chance</th>
+<th class="num">Standard deviations above</th></tr></thead>
+<tbody>
+{% for label, b in [('the enzyme type', sp.by_enzyme_type), ('the host genus', sp.by_host_genus)] %}
+<tr><td>{{ label }}</td><td class="num">{{ b.rows }}</td><td class="num">{{ b.n|fmt }}</td>
+  <td class="num">{{ '%.3f' % b.observed }}</td><td class="num">{{ '%.3f' % b.null_mean }}</td>
+  <td class="num"><b>{{ '%+.3f' % b.excess }}</b></td>
+  <td class="num">{{ '%.0f' % b.z if b.z else '—' }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">
+{% if sp.verdict == 'host genus' %}<span class="verdict verdict--robust">the host</span>
+Insertion sequences track the organism they live in, not the enzyme they happen to land beside. The
+excess over chance is {{ '%.3f' % sp.by_host_genus.excess }} against
+{{ '%.3f' % sp.by_enzyme_type.excess }}, about twice as strong. That is what one expects of an
+element that copies itself around a genome without regard to what it lands next to, and it is a
+reason to be careful with any argument that a particular transposon mobilised a particular enzyme.
+{% elif sp.verdict == 'enzyme type' %}<span class="verdict verdict--robust">the enzyme</span>
+The association with the enzyme type exceeds the association with the host genus, which would be
+the signature of elements that travel with the catabolic gene.
+{% else %}<span class="verdict verdict--weak">neither clearly</span>
+The two excesses are within 20 % of each other, so the data do not separate the two explanations.
+{% endif %}
+Both tables are measured against their own shuffled null because Cramér&rsquo;s V rises on its own
+with the number of rows, and these two tables have very different shapes.</p>
+{% endif %}
+
+<h2>How this was built</h2>
+<p class="note">Computed by <code>control_elements.py</code>.
+<a href="{{ u('/download/analysis/control_elements.json') }}">Download control_elements.json</a></p>
+{% endblock %}

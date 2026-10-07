@@ -91,7 +91,7 @@ def main():
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
               "atlas/cooccurrence", "atlas/statistics", "atlas/quality",
               "atlas/closeness", "atlas/structure", "atlas/control", "atlas/origin", "atlas/learning",
-              "atlas/geography"):
+              "atlas/geography", "atlas/elements"):
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")
@@ -108,6 +108,16 @@ def main():
         save(f"/cluster/{c}", f"cluster/{c}.html")
         save(f"/download/cluster/{c}.fasta", f"download/cluster/{c}.fasta")
         save(f"/download/cluster/{c}.csv", f"download/cluster/{c}.csv")
+    # Duzenleyici ve IS ailelerinin sayfalari. Adlar JSON'dan geliyor, yani
+    # yeni bir aile esigi gectiginde sayfasi kendiliginden ihrac ediliyor.
+    families = A.control_element_names(
+        os.path.join(A._DEFAULT_ANALYSIS_DIR, "control_elements.json"))
+    if families:
+        print(f"[pages] {len(families)} regulator and IS family pages")
+        for fam in families:
+            slug = A.element_slug(fam)
+            save(f"/element/{slug}", f"element/{slug}.html")
+
     print(f"[pages] {len(leaves)} leaves")
     for l in leaves:
         save(f"/leaf/{A.leaf_slug(l)}", f"leaf/{A.leaf_slug(l)}.html")
@@ -137,7 +147,7 @@ def main():
 
 
 
-def write_fallback_pages(out, A):
+def write_fallback_pages(out, A, con):
     """Adresi elle yazan ya da eski bir baglantiyi takip eden okuyucu icin.
 
     NEDEN. Yayindaki site olculdu: `/classify` ve `/classify.html` 404
@@ -228,6 +238,7 @@ def write_fallback_pages(out, A):
     # dosyalarinin yolunda da geciyordu, ve onlar da disaridan baglanmis
     # olabilir. Hepsi icin yonlendirme yazilir.
     renamed = getattr(A, "RENAMED_TYPES", {}) or {}
+    leaf_ids = [r[0] for r in con.execute("SELECT leaf_id FROM leaf")]
     redirects = 0
 
     def write_redirect(path, target, label):
@@ -247,7 +258,11 @@ def write_fallback_pages(out, A):
         write_redirect(os.path.join("cluster", old_name + ".html"),
                        f"{A.BASE}/cluster/{new_name}.html", "This type")
         # Varyant sayfalari: yaprak kimligi tip adini tasiyor.
-        for leaf_id in leaves:
+        # OLCULDU: bu dongu `leaves` adini kullaniyordu ama o degisken baska bir
+        # fonksiyonun yerelindeydi; derleme son adimda NameError ile duruyor ve
+        # 404 sayfasi, classify uyarisi ve BUTUN yeniden adlandirma
+        # yonlendirmeleri hic yazilmiyordu. Liste artik burada sorgulanir.
+        for leaf_id in leaf_ids:
             if leaf_id.startswith(new_name + "#"):
                 suffix = leaf_id.split("#", 1)[1]
                 write_redirect(os.path.join("leaf", f"{old_name}-{suffix}.html"),
@@ -315,7 +330,7 @@ def write_search_index(con, out, A):
         fh.write(SEARCH_PAGE.replace("__BASE__", A.BASE)
                             .replace("__CHEM__", json.dumps(chem, separators=(",", ":"))))
     print(f"   {len(data)} entries indexed, {len(chem)} types with chemistry")
-    write_fallback_pages(out, A)
+    write_fallback_pages(out, A, con)
 
 
 SEARCH_PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">

@@ -1523,6 +1523,9 @@ PROVENANCE = [
     ("geography.json", "file", "Where every located entry was collected, by country and by "
      "enzyme type, with the deviation of each type from the overall distribution.",
      "geography.py"),
+    ("control_elements.json", "file", "Regulator families and insertion-sequence families: "
+     "which enzyme types each sits beside, and whether mobile elements track the enzyme "
+     "or the host.", "control_elements.py"),
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
@@ -1737,3 +1740,145 @@ def geography_view(path):
         "deviation": raw.get("deviation") or {},
         "variants": variant_rows,
     }
+
+
+def sankey_layout(flow, width=1080, height=360, pad=14, node_w=11, label_w=172):
+    """Sankey geometrisini SUNUCUDA hesaplar ve duz SVG olarak cizdirir.
+
+    Neden kutuphane degil: Plotly'nin sankey izi yalnizca TAM pakette var
+    (4,5 MB) ve sayfanin geri kalani 1,2 MB'lik parcali paketlerle calisiyor.
+    Sekiz sol dugum ve yedi sag dugum icin geometri birkac satir; kutuphane
+    getirmek sayfayi dort katina cikarirdi.
+
+    Renk tasimaz. Tek bir akis turu cizildigi icin kategorik palet gerekmiyor
+    ve seritler ayni mureckeple, dusuk opaklikla ciziliyor; kimligi ucundaki
+    etiket tasiyor. Bu ayni zamanda renk korlugu ve baski sorununu da bastan
+    ortadan kaldiriyor.
+    """
+    if not flow or not flow.get("links"):
+        return None
+    nodes = flow["nodes"]
+    n_left = flow["n_left"]
+    links = flow["links"]
+
+    totals = [0.0] * len(nodes)
+    for l in links:
+        totals[l["source"]] += l["value"]
+        totals[l["target"]] += l["value"]
+
+    def column(indices):
+        live = [i for i in indices if totals[i] > 0]
+        if not live:
+            return {}
+        total = sum(totals[i] for i in live)
+        gaps = pad * (len(live) - 1)
+        usable = max(40.0, height - gaps)
+        out, y = {}, 0.0
+        for i in live:
+            h = max(3.0, usable * totals[i] / total)
+            out[i] = {"y": y, "h": h}
+            y += h + pad
+        # dikeyde ortala
+        extra = height - (y - pad)
+        if extra > 0:
+            for v in out.values():
+                v["y"] += extra / 2
+        return out
+
+    left = column(range(n_left))
+    right = column(range(n_left, len(nodes)))
+    place = {**left, **right}
+
+    cursor = {i: place[i]["y"] for i in place}
+    ribbons = []
+    for l in sorted(links, key=lambda x: (x["source"], -x["value"])):
+        s, t = l["source"], l["target"]
+        if s not in place or t not in place:
+            continue
+        hs = place[s]["h"] * l["value"] / totals[s]
+        ht = place[t]["h"] * l["value"] / totals[t]
+        y0, y1 = cursor[s], cursor[t]
+        cursor[s] += hs
+        cursor[t] += ht
+        x0, x1 = label_w + node_w, width - label_w - node_w
+        mid = (x0 + x1) / 2
+        ribbons.append({
+            "d": (f"M{x0},{y0} C{mid},{y0} {mid},{y1} {x1},{y1} "
+                  f"L{x1},{y1 + ht} C{mid},{y1 + ht} {mid},{y0 + hs} {x0},{y0 + hs} Z"),
+            "value": l["value"],
+            "label": f"{nodes[s].replace('_', ' ')} → {nodes[t].replace('_', ' ')}: "
+                     f"{l['value']} entries",
+        })
+
+    def boxes(col, x, anchor):
+        return [{"x": x, "y": p["y"], "h": p["h"], "w": node_w,
+                 "label": nodes[i].replace("_", " "),
+                 "total": int(totals[i]), "anchor": anchor,
+                 "tx": x - 7 if anchor == "end" else x + node_w + 7}
+                for i, p in sorted(col.items(), key=lambda kv: kv[1]["y"])]
+
+    # Etiketler cizim alaninin DISINDA durur, bu yuzden viewBox'in iki yaninda
+    # label_w kadar pay birakilir. Ilk surumde pay yoktu ve butun etiketler
+    # kirpilmisti: Sankey yalnizca isimsiz seritler olarak goruluyordu.
+    return {
+        "width": width, "height": height,
+        "ribbons": ribbons,
+        "nodes": (boxes(left, label_w, "end")
+                  + boxes(right, width - label_w - node_w, "start")),
+        "entries_shown": flow.get("entries_shown"),
+        "entries_dropped": flow.get("entries_dropped_as_small"),
+        "min_flow": flow.get("min_flow"),
+    }
+
+
+def control_elements_view(path):
+    """Duzenleyici aileleri ve IS aileleri: dizin sayfasinin verisi."""
+    raw = read_json(path)
+    if not raw:
+        return None
+    return {
+        "coverage": raw.get("coverage") or {},
+        "caveats": raw.get("caveats") or [],
+        "regulators": raw.get("regulators") or [],
+        "is_families": raw.get("is_families") or [],
+        "specificity": raw.get("mobile_specificity") or {},
+        "sankey_reaction": sankey_layout(raw.get("sankey_regulator_to_reaction")),
+        "sankey_chem": sankey_layout(raw.get("sankey_regulator_to_chem_family")),
+    }
+
+
+def element_slug(family):
+    """Aile adini adres parcasina cevirir.
+
+    "IS5/IS1182" gibi adlar BOLU tasiyor; boyle bir ad adrese oldugu gibi
+    konursa hem yol parametresi eslesmez hem de statik ihracatta ic ice bir
+    dizin acilir. Bolu tire olur ve okuma yonu tek: adi sluga cevirmek kolay,
+    tersi ad listesinde aranarak yapilir.
+    """
+    return (family or "").replace("/", "-")
+
+
+def control_element_view(path, family):
+    """Tek bir duzenleyici ya da IS ailesinin sayfasi.
+
+    Hem gercek ad hem slug kabul edilir, boylece eski bir baglanti de calisir.
+    """
+    raw = read_json(path)
+    if not raw:
+        return None
+    for key in ("regulators", "is_families"):
+        for item in raw.get(key) or []:
+            name = item.get("family")
+            if name == family or element_slug(name) == family:
+                return {"item": item, "caveats": raw.get("caveats") or [],
+                        "specificity": raw.get("mobile_specificity") or {}}
+    return None
+
+
+def control_element_names(path):
+    """Butun aile adlari -- statik ihracat bu listeyi gezer."""
+    raw = read_json(path)
+    if not raw:
+        return []
+    return [item["family"] for key in ("regulators", "is_families")
+            for item in (raw.get(key) or []) if item.get("family")]
