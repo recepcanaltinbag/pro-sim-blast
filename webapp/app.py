@@ -452,7 +452,21 @@ def members_query(con, cluster=None, leaf=None, q=None, page=1, size=PAGE_SIZE):
     return total, rows
 
 
-RENAMED_TYPES = {"5_505_OxyA": "5_505_qxyA"}
+# Emekliye ayrilmis tip kimlikleri -> yerine gececek tip. Disaridan verilmis
+# bir baglanti kirilmasin diye 301 ile yonlendirilir; statik yayinda
+# freeze.py ayni tablodan meta-refresh sayfalari yazar.
+#
+# OMO, NDO(3_315) ve NDO(3_314) kaldirildi cunku dizileri sirasiyla OxoO,
+# NahAc ve NarAa ile BIREBIR ayniydi: iki referans ayni diziye sahipse
+# yarisma beraberlikle biter ve biri keyfi olarak butun uyeleri alir.
+# NdmC'nin yonlendirilecegi bir yer YOK -- o bir kopya degil, Rieske motifi
+# tasimayan bir protein; types/retired/ icinde gerekcesiyle duruyor.
+RENAMED_TYPES = {
+    "5_505_OxyA": "5_505_qxyA",
+    "3_304_OMO": "1_101_OxoO",
+    "3_315_NDO": "3_309_NahAc",
+    "3_314_NDO": "3_316_NarAa",
+}
 
 
 @app.get("/cluster/{cluster}", response_class=HTMLResponse)
@@ -463,6 +477,10 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
         # cunku disarida verilmis baglantilar ve yer imleri var.
         if cluster in RENAMED_TYPES:
             return RedirectResponse(u("/cluster/" + RENAMED_TYPES[cluster]), status_code=301)
+        # Yonlendirilecek yeri OLMAYAN emekli tip: bos sayfa yerine gerekce.
+        gone = atlas.retired_type_view(cluster)
+        if gone:
+            return render(request, "retired_type.html", gone=gone)
         info = cluster_detail(con, cluster)
         if not info:
             raise HTTPException(404, "cluster not found")

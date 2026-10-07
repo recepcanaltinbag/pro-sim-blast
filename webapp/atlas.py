@@ -2028,3 +2028,41 @@ def control_element_names(path):
         return []
     return [item["family"] for key in ("regulators", "is_families")
             for item in (raw.get(key) or []) if item.get("family")]
+
+
+@functools.lru_cache(maxsize=1)
+def retired_types(types_dir=None):
+    """Emekliye ayrilmis tipler ve GEREKCELERI.
+
+    Bir tip setten cikarildiginda kaydi silinmez: `types/retired/` altina
+    tasinir ve neden cikarildigi orada durur. Boylece hem disaridan gelen
+    eski bir baglanti bos bir sayfaya dusmez, hem de ayni tip bir daha
+    eklenmeye calisildiginda sebebi okunabilir.
+    """
+    base = types_dir or os.path.join(
+        os.path.dirname(_DEFAULT_ANALYSIS_DIR), "types", "retired")
+    out = {}
+    if not os.path.isdir(base):
+        return out
+    for name in sorted(os.listdir(base)):
+        if not name.endswith((".yaml", ".yml")):
+            continue
+        record, key = {}, None
+        for line in open(os.path.join(base, name)):
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            if line[0] not in " \t" and ":" in line:
+                key, _, value = line.partition(":")
+                key = key.strip()
+                record[key] = value.strip().strip('"').strip("'")
+            elif key:
+                record[key] = (record[key] + " " + line.strip()).strip()
+        cluster = record.get("cluster")
+        if cluster:
+            out[cluster] = record
+    return out
+
+
+def retired_type_view(cluster):
+    """Tek bir emekli tipin kaydi, ya da None."""
+    return retired_types().get(cluster)

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ gone.cluster }} · retired{% endblock %}
+{% block body %}
+<nav class="crumbs"><a href="{{ u('/') }}">Home</a> ›
+<a href="{{ u('/clusters') }}">Types</a> › {{ gone.cluster }}</nav>
+
+<h1>{{ gone.gene or gone.cluster }}
+  <span class="note">· retired from the reference set</span></h1>
+
+<div class="caveat caveat--warn">
+<p><b>This type is no longer part of the curated set.</b>
+{% if gone.retired_into %}Its sequence was identical to
+<a href="{{ u('/cluster/' ~ gone.retired_into) }}">{{ gene(gone.retired_into) }}</a>,
+which now carries it.{% endif %}
+Retired {{ gone.retired_on }}.</p>
+<p class="note">{{ gone.retired_because }}</p>
+</div>
+
+<h2>What the record said</h2>
+<div class="tablewrap"><table class="data compact">
+<tbody>
+{% for k in ['cluster', 'gene', 'group', 'substrate_en', 'product_en',
+             'reaction', 'reaction_class', 'family', 'pdb', 'source'] %}
+{% if gone.get(k) %}
+<tr><td>{{ k.replace('_', ' ') }}</td><td>{{ gone[k] }}</td></tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+
+<p class="note">Nothing is deleted when a type is retired: the record stays in
+<code>types/retired/</code> with the reason, so an old link does not lead to an empty
+page and so the same entry is not added back without the argument being read again.
+{% if gone.retired_into %}
+<a href="{{ u('/cluster/' ~ gone.retired_into) }}">Continue to {{ gene(gone.retired_into) }}</a>
+{% else %}<a href="{{ u('/clusters') }}">All types</a>{% endif %}</p>
+{% endblock %}

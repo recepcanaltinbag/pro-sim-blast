@@ -1,0 +1,20 @@
+cluster: 1_115_NdmC
+gene: NdmC
+group: 1
+substrate_en: 7-methylxanthine
+substrate_smiles: Cn1cnc2c1[nH]c(=O)[nH]c2=O
+product_en: xanthine and formaldehyde
+reaction: N-demethylation at position N7
+reaction_class: N_demethylation
+family: alkaloids
+pdb: 
+source: established literature on the reference enzyme, no individual citation recorded
+source_kind: general
+curation_confidence: high
+notes: 
+added_by: (migrated from chemistry.csv)
+added_on: 2026-10-07
+sequence: MKEQLKPLLEDKTYLRHFWHPVCTLNEFERANASGHGPMGVTLLGEKLVLARLNSKIIAAADRCAHRSAQLSIGRVCSNAGKDYLECPYHGWRYDEAGACQLIPACPDKSISPRAKISSFDCEVKYDIVWVRLDNSFDCTQIPYLSDFDNPDMQVIVADSYIWETVAERRWENFTDFSHFAFVHPGTLYDPFFASHPTVYVNRVDGELQFKLAPPREMKGIPPEAPMGDFTYRCTMPYSVNLEIKLWKDDSRFVLWTTASPVDNKSCRNFMIIVREKDNQPDHMHLAFQKRVLDEDQPVIESQWPLEIQTSEVSVATDKISVQFRKWHKELSLSAVEGREAFRDSVLTNVIEEEQ
+retired_on: "2026-10-07"
+retired_into:
+retired_because: "NdmC is a real and distinct enzyme -- the N7-demethylase of caffeine degradation in Pseudomonas putida CBB5 -- but it is not an alpha subunit by this database's definition, and the entry here never held its sequence anyway. Two separate problems were found. First, the curated accession AFD03117.1 is titled 'methylxanthine N3-demethylase' at NCBI, which is NdmB, not NdmC; the sequence stored here was an exact 355 aa subsequence of this set's own 373 aa NdmB reference, the same protein with the His6-TEV tag of the crystal construct removed. Second, and decisive: the genuine NdmC (UniProt F0E1K6, 282 aa) carries NO Rieske motif. Tested against the published consensus Cys-X-His-X(15-47)-Cys-X(2)-His (Miao & Schmidt 2025), NdmA and NdmB both match and NdmC does not, though it does keep the mononuclear iron triad. That is consistent with the biochemistry: NdmC is a truncated oxygenase whose Rieske centre is supplied in trans by NdmD, and it is active only as the NdmCDE complex. Admitting it would mean admitting a protein with no Rieske cluster into a set defined by carrying one. It is retired rather than repaired, and recorded here so that it is not re-added."
