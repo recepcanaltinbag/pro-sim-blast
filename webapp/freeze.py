@@ -110,12 +110,12 @@ def main():
         save(f"/download/cluster/{c}.csv", f"download/cluster/{c}.csv")
     # Duzenleyici ve IS ailelerinin sayfalari. Adlar JSON'dan geliyor, yani
     # yeni bir aile esigi gectiginde sayfasi kendiliginden ihrac ediliyor.
-    families = A.control_element_names(
-        os.path.join(A._DEFAULT_ANALYSIS_DIR, "control_elements.json"))
+    families = _atlas.control_element_names(
+        os.path.join(_atlas._DEFAULT_ANALYSIS_DIR, "control_elements.json"))
     if families:
         print(f"[pages] {len(families)} regulator and IS family pages")
         for fam in families:
-            slug = A.element_slug(fam)
+            slug = _atlas.element_slug(fam)
             save(f"/element/{slug}", f"element/{slug}.html")
 
     print(f"[pages] {len(leaves)} leaves")

@@ -35,9 +35,6 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
 49. **Reaksiyon bazinda sayfalar.** Ayni reaksiyonu yapan enzimlerin ortak
     ozellikleri.
 
-50. **Regulator / operon / transpozon sayfalari.** Ornegin TetR'nin yonettigi
-    enzimler, ya da belirli bir transpozonun iliskili oldugu enzimler.
-
 51. **Promotor bolgesi analizi.** Kullanici artik ACIKCA istedi. Veri yok:
     kayitlarin %88,9'u CON tipinde ve dizi dosyada degil. NCBI E-utilities ile
     ~10.200 intergenik bolge cekmek gerekiyor (14. madde).
@@ -146,6 +143,24 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
     cumA1'i ayri tutup ikisine de "bu cift ayirt edilemiyor" notu koymak.
 
 ## Bitti
+
+50. ~~Regulator / transpozon sayfalari.~~ **BITTI.** `/atlas/elements` dizin,
+    `/element/<aile>` tek tek. 8 duzenleyici ailesi + 13 adlandirilmis IS
+    ailesi. Her sayfada aile hangi enzim tiplerinin yanindaysa, o tipin GENEL
+    payina karsi, BH duzeltmesi ve 5 puan maddilik esigiyle. Ornek: TetR
+    gercekten KshA15'te yogunlasiyor (%32,4'e karsi %6,8, 4,8 kat).
+    Kullanicinin kendi sorusu da olculdu: transpozonlar TURE mi ENZIME mi
+    bagli? Ayni IS aileleri bir kez enzim tipine bir kez cinse gore
+    caprazlandi; iki tablo farkli sekilde oldugu icin her biri KENDI null'una
+    gore olculdu ve yalnizca fazla karsilastirildi. **Cins kazaniyor: +0,127'ye
+    karsi +0,066, yaklasik iki kat.** Yani IS elementleri yanlarina dustukleri
+    enzimi degil, icinde yasadiklari organizmayi izliyor.
+    Sankey duz SVG; geometri sunucuda hesaplaniyor cunku Plotly'nin sankey izi
+    yalnizca 4,5 MB'lik tam pakette var. Seritler renk tasimiyor: tek tur akis
+    icin kategorik palete gerek yok.
+    Yan bulgu: transpozon regex'i rekombinasyon makinesini de yakaliyordu
+    (RuvX 117 kez); adlandirilmis IS aileleri artik ayri cikariliyor.
+
 
 45. ~~Ekolojik koken sayfasi.~~ **BITTI.** `/atlas/origin` yayinda.
 
