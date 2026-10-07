@@ -1386,9 +1386,10 @@ def atlas_learning(request: Request):
 
 @app.get("/atlas/origin", response_class=HTMLResponse)
 def atlas_origin(request: Request):
-    """Yakin ve uzak akrabalarin nerelerden geldigi."""
+    """Yakin ve uzak akrabalarin nerelerden geldigi, ve kirletici-oncesi ayrilma."""
     return render(request, "atlas_origin.html",
-                  eco=atlas.ecological_origin_view(apath("ecological_origin.json")))
+                  eco=atlas.ecological_origin_view(apath("ecological_origin.json")),
+                  anc=atlas.ancestry_view(apath("ancestry.json")))
 
 
 @app.get("/atlas/elements", response_class=HTMLResponse)

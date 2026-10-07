@@ -441,6 +441,102 @@ def ecological_origin_view(path):
     }
 
 
+def ancestry_view(path):
+    """Capraz habitat ayrisma raporu (ancestry.py) -> sayfanin ihtiyaci kadari.
+
+    Sayfada iki tanim YAN YANA durmak zorunda: dar (yalnizca deniz) olani
+    kullanicinin sordugu soru, genis olani ise gucu olan surum. Birini secip
+    otekini gizlemek, esigin sonucu ne kadar belirledigini okuyucudan
+    saklamak olurdu. Satirlar maksimuma gore siralanir, cunku bu modulde
+    yorumlanan tek istatistik maksimumdur.
+    """
+    raw = read_json(path)
+    if not raw:
+        return None
+
+    def block(key):
+        b = raw.get("cross_habitat", {}).get(key) or {}
+        rows = []
+        for r in b.get("types") or []:
+            closest = r.get("closest_pair") or {}
+            rows.append({
+                "cluster": r.get("cluster"),
+                "substrate": r.get("substrate"),
+                "substrate_class": r.get("substrate_class"),
+                "xenobiotic": r.get("substrate_class") == "xenobiotic",
+                "n_contaminated": r.get("n_contaminated"),
+                "n_free": r.get("n_free"),
+                "genera_contaminated": r.get("genera_contaminated"),
+                "genera_free": r.get("genera_free"),
+                "n_pairs": r.get("n_pairs"),
+                "max_identity": r.get("max_identity"),
+                "max_cross_genus": r.get("max_identity_cross_genus"),
+                "median_cells": r.get("median_identity_genus_cells"),
+                "above_floor": r.get("median_points_above_random_floor"),
+                "band": r.get("bound_band"),
+                "closest_organism": closest.get("free_organism"),
+                "closest_habitat": (closest.get("free_habitat") or "").replace("_", " "),
+                "closest_same_genus": closest.get("same_genus"),
+            })
+        rows.sort(key=lambda r: (r["max_identity"] is None, r["max_identity"]))
+        return {
+            "definition": b.get("definition"),
+            "habitats": [h.replace("_", " ") for h in b.get("chemical_free_habitats") or []],
+            "n_types": b.get("n_types_tested"),
+            "n_types_not_tested": b.get("n_types_not_tested"),
+            "n_pairs": b.get("n_pairs"),
+            "rows": rows,
+            "xeno": (b.get("by_substrate_class") or {}).get("xenobiotic"),
+            "natural": (b.get("by_substrate_class") or {}).get("natural_combined"),
+            "contrast": b.get("class_contrast") or {},
+        }
+
+    spread_raw = raw.get("variant_spread") or {}
+    spread_rows = []
+    for r in spread_raw.get("types") or []:
+        cont = r.get("contaminated")
+        if not cont:
+            continue
+        spread_rows.append({
+            "cluster": r.get("cluster"),
+            "substrate_class": r.get("substrate_class"),
+            "xenobiotic": r.get("substrate_class") == "xenobiotic",
+            "type_members": r.get("type_members"),
+            "type_variants": r.get("type_variants"),
+            "members": cont.get("members"),
+            "variants": cont.get("variants_occupied"),
+            "expected": cont.get("variants_expected_at_random"),
+            "ratio": cont.get("spread_ratio"),
+            "top_share": cont.get("top_variant_share"),
+            "top_expected": cont.get("top_variant_share_expected"),
+            "p": cont.get("p_fewer_variants_than_chance"),
+            "q": cont.get("q_fewer_variants_than_chance"),
+        })
+    spread_rows.sort(key=lambda r: (r["ratio"] is None, r["ratio"]))
+
+    narrow, wide = block("narrow"), block("wide")
+    # Dar tanimda deniz akrabasi OLAN tip sayisi, bantlara gore. Kullanicinin
+    # sorusunun sayisal cevabi tam olarak bu dagilim.
+    bands = [name for _l, _h, name in
+             [(b.get("from"), b.get("to"), b.get("name"))
+              for b in (raw.get("method", {}).get("interpretation_bands") or [])]]
+    return {
+        "question": raw.get("question"),
+        "coverage": raw.get("coverage") or {},
+        "method": raw.get("method") or {},
+        "bands": bands,
+        "narrow": narrow,
+        "wide": wide,
+        "spread": spread_raw,
+        "spread_rows": spread_rows,
+        "spread_by_class": spread_raw.get("by_substrate_class") or {},
+        "spread_contrast": spread_raw.get("class_contrast") or {},
+        "spread_habitat_contrast": spread_raw.get("contaminated_vs_chemical_free") or {},
+        "verdict": raw.get("verdict") or {},
+        "limitations": raw.get("limitations") or [],
+    }
+
+
 def novelty_budget(con):
     """Bu veritabaninin NE KADARI yeni kimya tasiyor olabilir?
 
@@ -1510,6 +1606,10 @@ PROVENANCE = [
     ("ecological_origin.json", "file", "Habitat of each type's close and distant members, the "
      "dominant habitat of its main variant, and the wastewater picture, with a genus control.",
      "ecological_origin.py"),
+    ("ancestry.json", "file", "Pairwise identity between each type's contaminated-site "
+     "members and its members from habitats where the chemical is never applied, with "
+     "the natural-substrate control and the variant-spread resampling test. The curated "
+     "reference set is deliberately not used.", "ancestry.py"),
     # Bu uc dosya indirme rotasindan SUNULUYORDU ama bu tabloda yoktu, yani
     # indirilebilir olup belgelenmemislerdi. Izin listesi artik bu tablodan
     # turetildigi icin eksiklik sessiz kalamaz.

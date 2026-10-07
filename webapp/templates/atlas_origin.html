@@ -7,7 +7,9 @@
 <h1>Where the close and the distant relatives were found</h1>
 <p class="lede">If an enzyme type spread from one setting into others, its close and its distant
 members should have been isolated from different places. This page tests that, type by type, and
-reaches a mostly negative answer worth understanding.</p>
+reaches a mostly negative answer worth understanding. It then asks a sharper version of the same
+question that does not use the curated reference set at all: if a pollutant-degrading enzyme has a
+relative in the sea, how far apart are the two, and therefore how recently could they have split?</p>
 
 {% if eco %}
 <h2>1 · The pooled picture</h2>
@@ -110,7 +112,8 @@ tied to one setting.</p>
 </tbody></table></div>
 {% endif %}
 
-<h2>5 · What this cannot answer</h2>
+
+<h2>5 · What the reference-based test cannot answer</h2>
 <p>Evidence levels are a ladder of identity to a curated enzyme, not a phylogeny. A distant relative
 is not demonstrably older, so "where did this enzyme evolve" is not derivable from these data. What
 is derivable is whether a type's ecological signature changes with distance from its reference, and
@@ -118,5 +121,180 @@ for all but the pooled case the answer is that it cannot be separated from taxon
 <p class="dl"><a class="btn" href="{{ u('/download/analysis/ecological_origin.json') }}">Full output (JSON)</a></p>
 {% else %}
 <p class="note">This analysis has not been run for this build.</p>
+{% endif %}
+{% if anc %}
+<h2>6 · Did the lineage pre-date the pollutant? A test that uses no reference at all</h2>
+<p class="lede">{{ anc.question }}</p>
+<p>{{ anc.method.why_no_curated_reference }}</p>
+<p>{{ anc.method.what_is_measured }} Two definitions of "where the chemical is not applied" are
+reported side by side, because the choice changes how many types can be tested and the reader should
+see that cost: <b>marine and marine sediment only</b>, which is the question as it was asked, and a
+<b>wider set</b> adding sediment, freshwater, cave, thermal, deep subsurface and hypersaline
+sources. Habitats outside both groups — soil, clinical, plant, gut and the rest — are places where
+exposure is <em>unknown</em> rather than absent, so they take no part in the test: of
+{{ anc.coverage.confirmed_entries_with_a_sequence|fmt }} confirmed entries,
+{{ anc.coverage.entries_by_group.contaminated|fmt }} are from contaminated settings,
+{{ anc.coverage.entries_by_group.chemical_free_narrow|fmt }} are marine, and
+{{ anc.coverage.entries_by_group.neither|fmt }} are in neither group.</p>
+<p class="caveat caveat--warn"><b>Read every number below as a bound, never as a date.</b>
+{{ anc.method.no_clock }} Two proteins at 40 % identity did not separate in eighty years; two at
+99.9 % might have. So a high maximum does not refute the hypothesis — it simply fails to bound it,
+and that is stated for each type rather than averaged away.</p>
+
+{% set nx = anc.narrow.xeno %}{% set nn = anc.narrow.natural %}
+{% set wx = anc.wide.xeno %}{% set wn = anc.wide.natural %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Chemical-free side</th><th>Substrate class</th><th class="num">Types</th>
+<th class="num">Median of type maxima</th><th class="num">Range</th>
+<th class="num">Closest relative below 95 %</th><th class="num">Indistinguishable</th>
+<th class="num">Pairs</th></tr></thead>
+<tbody>
+{% for label, c, cls in [('marine only', nx, 'xenobiotic'), ('marine only', nn, 'natural substrate'),
+                         ('the wider set', wx, 'xenobiotic'), ('the wider set', wn, 'natural substrate')] %}
+{% if c %}
+<tr><td>{{ label }}</td><td>{{ cls }}</td>
+  <td class="num" data-v="{{ c.n_types }}">{{ c.n_types }}</td>
+  <td class="num" data-v="{{ c.median_of_type_maxima }}">{{ '%.1f %%' % c.median_of_type_maxima }}</td>
+  <td class="num small">{{ '%.1f – %.1f' % (c.min_of_type_maxima, c.max_of_type_maxima) }}</td>
+  <td class="num" data-v="{{ c.bands.deep + c.bands.distant + c.bands.close }}">{{ c.bands.deep + c.bands.distant + c.bands.close }} of {{ c.n_types }}</td>
+  <td class="num" data-v="{{ c.types_with_an_identical_cross_habitat_pair }}">{{ c.types_with_an_identical_cross_habitat_pair }} of {{ c.n_types }}</td>
+  <td class="num" data-v="{{ c.n_pairs }}">{{ c.n_pairs|fmt }}</td></tr>
+{% endif %}
+{% endfor %}
+</tbody></table></div>
+<p class="note">"Closest relative below 95 %" counts the types where <em>no</em> contaminated-site
+member comes within 95 % identity of <em>any</em> chemical-free member — the types for which the
+bound actually bites. "Indistinguishable" counts the opposite case, a cross-habitat pair at 99.95 %
+or above, where the measurement places no bound at all.</p>
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type or substrate class…">
+<thead><tr><th>Type</th><th>Substrate class</th><th class="num">Contaminated</th>
+<th class="num">Marine</th><th class="num">Pairs</th><th class="num">Max identity</th>
+<th class="num">Max across genera</th><th class="num">Median</th><th>Bound on the split</th>
+<th>Closest marine relative</th></tr></thead>
+<tbody>
+{% for r in anc.narrow.rows %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="small">{{ (r.substrate_class or '?').replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ r.n_contaminated }}">{{ r.n_contaminated }}
+    <span class="unit">{{ r.genera_contaminated }} genera</span></td>
+  <td class="num" data-v="{{ r.n_free }}">{{ r.n_free }}
+    <span class="unit">{{ r.genera_free }} genera</span></td>
+  <td class="num" data-v="{{ r.n_pairs }}">{{ r.n_pairs|fmt }}</td>
+  <td class="num" data-v="{{ r.max_identity }}">{{ '%.1f %%' % r.max_identity }}</td>
+  <td class="num" data-v="{{ r.max_cross_genus or 0 }}">
+    {% if r.max_cross_genus %}{{ '%.1f %%' % r.max_cross_genus }}{% else %}–{% endif %}</td>
+  <td class="num" data-v="{{ r.median_cells }}">{{ '%.1f %%' % r.median_cells }}
+    <span class="unit">+{{ '%.0f' % r.above_floor }}</span></td>
+  <td>{% if r.max_identity < 60 %}<span class="verdict verdict--robust">deep</span>
+      {% elif r.max_identity < 95 %}<span class="verdict verdict--weak">{{ r.band }}</span>
+      {% else %}<span class="verdict verdict--none">{{ r.band }}</span>{% endif %}</td>
+  <td class="small"><i>{{ r.closest_organism or 'unnamed' }}</i>{% if r.closest_same_genus %}
+    <span class="note">(same genus)</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Every one of these {{ anc.narrow.n_types }} types does have a relative in the sea,
+and for {{ nx.bands.deep + nx.bands.distant + nx.bands.close }} of the
+{{ nx.n_types }} pollutant-degrading ones the closest marine relative is below 95 % identity.</b>
+Below 95 % across a ~400-residue protein means tens of substitutions; below 60 %, hundreds. Those
+splits are not eighty years old, whatever the rate. The green rows are where the bound is deepest
+and the grey rows are where it vanishes: a cross-habitat pair at 99.5 % or above is equally
+consistent with an ancient unchanged lineage and with a transfer last decade, so for those types
+this measurement simply has nothing to say. The "max across genera" column matters because a maximum
+drawn from the same genus on both sides (<i>Pseudomonas</i> in a refinery and <i>Pseudomonas</i> in
+the sea) is a different claim from one drawn across genera; for several types the two numbers are far
+apart. The median column has bottomed out —
+{{ anc.method.random_identity_floor|round|int }} % is what two <em>unrelated</em> proteins score in
+this alignment, and most medians sit within a few points of it, because a type here is a best-hit
+bin against a reference profile, not a clade. Only the maximum is read as a bound.
+{{ anc.narrow.n_types_not_tested }} further types carry members on one side or the other but fewer
+than three genera on both, and are not tested.</figcaption>
+</figure>
+
+<details class="signals">
+<summary>The same table under the wider definition ({{ anc.wide.n_types }} types,
+{{ anc.wide.n_pairs|fmt }} pairs)</summary>
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type or substrate class…">
+<thead><tr><th>Type</th><th>Substrate class</th><th class="num">Contaminated</th>
+<th class="num">Chemical-free</th><th class="num">Pairs</th><th class="num">Max identity</th>
+<th class="num">Max across genera</th><th class="num">Median</th><th>Bound on the split</th>
+<th>Closest relative, and where</th></tr></thead>
+<tbody>
+{% for r in anc.wide.rows %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="small">{{ (r.substrate_class or '?').replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ r.n_contaminated }}">{{ r.n_contaminated }}
+    <span class="unit">{{ r.genera_contaminated }} genera</span></td>
+  <td class="num" data-v="{{ r.n_free }}">{{ r.n_free }}
+    <span class="unit">{{ r.genera_free }} genera</span></td>
+  <td class="num" data-v="{{ r.n_pairs }}">{{ r.n_pairs|fmt }}</td>
+  <td class="num" data-v="{{ r.max_identity }}">{{ '%.1f %%' % r.max_identity }}</td>
+  <td class="num" data-v="{{ r.max_cross_genus or 0 }}">
+    {% if r.max_cross_genus %}{{ '%.1f %%' % r.max_cross_genus }}{% else %}–{% endif %}</td>
+  <td class="num" data-v="{{ r.median_cells }}">{{ '%.1f %%' % r.median_cells }}</td>
+  <td>{% if r.max_identity < 60 %}<span class="verdict verdict--robust">deep</span>
+      {% elif r.max_identity < 95 %}<span class="verdict verdict--weak">{{ r.band }}</span>
+      {% else %}<span class="verdict verdict--none">{{ r.band }}</span>{% endif %}</td>
+  <td class="small"><i>{{ r.closest_organism or 'unnamed' }}</i>
+    <span class="note">{{ r.closest_habitat }}</span></td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">The wider definition buys {{ anc.wide.n_types - anc.narrow.n_types }} more types and
+loses most of the bound: with freshwater and sediment included, the closest chemical-free relative
+rises to 95 % or above for {{ wx.n_types - (wx.bands.deep + wx.bands.distant + wx.bands.close) }} of
+the {{ wx.n_types }} pollutant-degrading types. That is the honest cost of the trade, and it is why
+the marine-only table above is the primary one rather than this.</p>
+</details>
+
+<p class="plain"><b>The control.</b> {{ anc.verdict.the_control }}</p>
+
+<h2>7 · One clade or many? The variant-spread test</h2>
+<p>{{ anc.spread.question }} If a contaminated site recruited a lineage that was already there, its
+members should sit scattered through the type's existing diversity. If something new were selected on
+site, they should pile into one tight group. Both readings depend heavily on how many members there
+are — five members can occupy at most five variants — so each one is read against a null:
+{{ anc.spread.null_model }}</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type or substrate class…">
+<thead><tr><th>Type</th><th>Substrate class</th><th class="num">Contaminated members</th>
+<th class="num">Variants they occupy</th><th class="num">Expected at random</th>
+<th class="num">Ratio</th><th class="num">Largest variant's share</th>
+<th class="num">q, tighter than chance</th></tr></thead>
+<tbody>
+{% for r in anc.spread_rows %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ gene(r.cluster) }}</a></td>
+  <td class="small">{{ (r.substrate_class or '?').replace('_', ' ') }}</td>
+  <td class="num" data-v="{{ r.members }}">{{ r.members }}
+    <span class="unit">of {{ r.type_members|fmt }}</span></td>
+  <td class="num" data-v="{{ r.variants }}">{{ r.variants }}
+    <span class="unit">of {{ r.type_variants }}</span></td>
+  <td class="num" data-v="{{ r.expected }}">{{ '%.1f' % r.expected }}</td>
+  <td class="num" data-v="{{ r.ratio }}">{{ '%.2f' % r.ratio }}</td>
+  <td class="num" data-v="{{ r.top_share }}">{{ '%.0f %%' % (100 * r.top_share) }}
+    <span class="unit">{{ '%.0f %%' % (100 * r.top_expected) }} expected</span></td>
+  <td class="num" data-v="{{ r.q if r.q is not none else 1 }}">
+    {% if r.q is not none and r.q < 0.05 %}{{ '%.3f' % r.q }}
+    {% else %}<span class="note">{{ '%.2f' % (r.q if r.q is not none else 1) }}</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Contaminated-site members are spread through their type at the rate chance predicts,
+and not one type is tighter than chance after correction.</b>
+{{ anc.verdict.the_second_angle }} The paired comparison says the same thing from the other side:
+across {{ anc.spread_habitat_contrast.n_types }} types the contaminated side and the chemical-free
+side spread equally (median difference
+{{ '%+.3f' % anc.spread_habitat_contrast.median_difference }}, Wilcoxon p =
+{{ '%.2f' % anc.spread_habitat_contrast.p }}), so there is nothing distinctive about the way a
+contaminated site samples a type. What this cannot do is date anything: sequence variants are a
+clustering of this database's own sequences, not a dated phylogeny.</figcaption>
+</figure>
+
+<p class="plain"><span class="verdict verdict--{{ 'robust' if anc.verdict.label == 'supported' else 'weak' }}">{{ anc.verdict.label }}</span>
+<b>{{ anc.verdict.headline }}</b></p>
+<p class="plain">{{ anc.verdict.what_the_bound_says }}</p>
+<p class="plain">{{ anc.verdict.where_the_bound_is_loose }} {{ anc.verdict.how_far_this_goes }}</p>
+<h3>What this second test cannot settle</h3>
+<ul>{% for item in anc.limitations %}<li>{{ item }}</li>{% endfor %}</ul>
+<p class="dl"><a class="btn" href="{{ u('/download/analysis/ancestry.json') }}">Cross-habitat divergence (JSON)</a></p>
 {% endif %}
 {% endblock %}
