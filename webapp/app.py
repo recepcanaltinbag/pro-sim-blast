@@ -262,20 +262,38 @@ def cluster_table(con):
         genera.setdefault(cl, set()).add(genus(org))
     out = []
     for r in rows:
-        eco = ECOLOGY.get(r["cluster"], {})
-        chem = CHEMISTRY.get(r["cluster"], {})
-        d = dict(r)
-        d.update(cluster_parts(r["cluster"]))
-        d.update({"family": chem.get("family", ""),
-                  "reaction_class": chem.get("reaction_class", ""),
-                  "reaction": chem.get("reaction", ""),
-                  "pdb": chem.get("pdb", ""),
-                  "substrate": chem.get("substrate_en") or eco.get("substrate", ""),
-                  "sclass": eco.get("substrate_class", ""),
-                  "confidence": eco.get("confidence", ""), "leaves": leaves.get(r["cluster"], 0),
-                  "euk": euk.get(r["cluster"], 0) or 0, "genera": len(genera.get(r["cluster"], ()))})
-        out.append(d)
+        out.append(_cluster_row(dict(r), leaves, euk, genera))
+    # Uyesi olmayan tipler ro tablosunda hic satir ACMIYOR, dolayisiyla bu
+    # listede gorunmuyorlardi: 71 kuratorlu tipten 61'i listelenip geri kalan
+    # 10'u sessizce kayboluyordu. Simdi sifir uyeyle listeleniyor ve sebebi
+    # empty_types.json'dan okunup satira isaretleniyor.
+    listed = {d["cluster"] for d in out}
+    for cluster in sorted(set(CHEMISTRY) | set(ECOLOGY)):
+        if cluster in listed:
+            continue
+        out.append(_cluster_row(
+            {"cluster": cluster, "n": 0, "replicons": 0, "plasmid": 0, "beta": 0,
+             "ferredoxin": 0, "reductase": 0, "complete": 0},
+            leaves, euk, genera))
     return out
+
+
+def _cluster_row(d, leaves, euk, genera):
+    """cluster_table satirini kimya/ekoloji kuratorlu alanlariyla tamamlar."""
+    cluster = d["cluster"]
+    eco = ECOLOGY.get(cluster, {})
+    chem = CHEMISTRY.get(cluster, {})
+    d.update(cluster_parts(cluster))
+    d.update({"family": chem.get("family", ""),
+              "reaction_class": chem.get("reaction_class", ""),
+              "reaction": chem.get("reaction", ""),
+              "pdb": chem.get("pdb", ""),
+              "substrate": chem.get("substrate_en") or eco.get("substrate", ""),
+              "sclass": eco.get("substrate_class", ""),
+              "confidence": eco.get("confidence", ""), "leaves": leaves.get(cluster, 0),
+              "euk": euk.get(cluster, 0) or 0, "genera": len(genera.get(cluster, ())),
+              "empty_type": atlas.empty_type_view(cluster, apath("empty_types.json"))})
+    return d
 
 
 # ------------------------------------------------------------------ pages
@@ -1429,7 +1447,11 @@ def atlas_statistics(request: Request):
     data = atlas.read_json(apath("stats.json"))
     if not data:
         raise HTTPException(404, "stats.json not found (run stats_overview.py)")
-    return render(request, "atlas_statistics.html", stats=data)
+    # Ogrenme sonuclari da buraya gelir: istatistik sayfasi "bu iliskilerden ne
+    # ongorulebilir" sorusunu KISA bir bolumde cevaplar ve ayrintiyi kendi
+    # sayfasina birakir.
+    return render(request, "atlas_statistics.html", stats=data,
+                  learn=atlas.learning_view(apath("learning.json")))
 
 
 @app.get("/download/tree_all.nwk")
@@ -1464,6 +1486,11 @@ def cluster_extras(con, cluster):
     # oyleyse uyelerin hangi profile dustugu kismen rastgele ve sayfadaki
     # sayinin bunu SOYLEMESI gerekiyor.
     x["redundancy"] = (reference_redundancy().get("affected") or {}).get(cluster)
+    # Bu tipin kendine ait uyesi yoksa SEBEBI yazilmali. Sayfa onceki halinde
+    # sessizce bos kaliyordu ve kullanici bunu "sayfa eksik" diye okudu; eksik
+    # olan sayfa degil, uye. empty_types.py bu kaydi uretiyor, dosya yoksa
+    # None gelir ve sayfa eskisi gibi calisir.
+    x["empty_type"] = atlas.empty_type_view(cluster, apath("empty_types.json"))
     # Atama ile dizi kimliginin UYUSUP uyusmadigi: tip sayfasindaki uye sayisi
     # bu baglam olmadan yaniltici olabiliyor.
     x["agreement"] = atlas.assignment_agreement(con).get(cluster)

@@ -76,6 +76,38 @@ def active_site_for_type(path, cluster, radius="8.0"):
     return None
 
 
+# analysis_out/ dizini normalde webapp'in bir ust dizininde; ROAR_ANALYSIS ile
+# tasinabiliyor (app.py ayni degiskeni okuyor).
+_DEFAULT_ANALYSIS_DIR = os.environ.get(
+    "ROAR_ANALYSIS",
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                 "analysis_out"))
+
+
+@functools.lru_cache(maxsize=1)
+def _empty_types_raw(path):
+    """empty_types.json'i bir kez oku; dosya yoksa bos sozluk."""
+    data = read_json(path)
+    if isinstance(data, list):          # yalin liste bicimi de kabul edilir
+        data = {"types": data}
+    records = (data or {}).get("types") or []
+    return {r.get("cluster"): r for r in records if r.get("cluster")}
+
+
+def empty_type_view(cluster, path=None):
+    """Uyesi olmayan bir tipin SEBEBI -- yoksa None.
+
+    empty_types.py bu dosyayi uretiyor. Dosya YOKSA ya da tip icinde gecmiyorsa
+    None doner: sayfa, aciklama kutusu olmadan eskisi gibi calisir. Veri
+    dosyasinin varligi sayfanin on kosulu olmamali.
+    """
+    if not cluster:
+        return None
+    if path is None:
+        path = os.path.join(_DEFAULT_ANALYSIS_DIR, "empty_types.json")
+    return _empty_types_raw(path).get(cluster)
+
+
 def operon_relations_view(path):
     """Operon iliskileri raporunu sayfanin ihtiyaci kadarina indirir."""
     raw = read_json(path)

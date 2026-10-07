@@ -26,14 +26,18 @@
   {% for c in clusters %}
   <tr>
     <td><a href="{{ u('/cluster/' ~ c.cluster) }}"><b>{{ c.gene }}</b></a>
-        <span class="note small">{{ c.cluster }}</span></td>
+        <span class="note small">{{ c.cluster }}</span>
+        {#  Uyesiz tip: onceden bu listede HIC gorunmuyordu, simdi gorunuyor ve
+            sifirin sebebi satirin uzerinde yaziyor.                          #}
+        {% if not c.n %}<span class="chip chip--warn"
+          title="{% if c.empty_type %}{{ c.empty_type.note }}{% else %}No confirmed member is assigned to this reference profile.{% endif %}">no members{% if c.empty_type and c.empty_type.absorbed_by %} · counted under {{ gene(c.empty_type.absorbed_by) }}{% endif %}</span>{% endif %}</td>
     <td class="num">{{ c.group }}</td>
     <td>{{ c.substrate or '–' }}</td>
     <td><span class="chip chip--{{ c.sclass or 'unknown' }}">{{ c.sclass or 'unknown' }}</span></td>
     <td class="small">{{ (c.family or 'unknown').replace('_', ' ') }}</td>
     <td class="small">{{ (c.reaction_class or 'unknown').replace('_', ' ') }}</td>
     <td>{{ c.confidence or '–' }}</td>
-    <td class="num" data-v="{{ c.n }}">{{ c.n|fmt }}</td>
+    <td class="num" data-v="{{ c.n }}">{% if c.n %}{{ c.n|fmt }}{% else %}<span class="verdict verdict--none">0</span>{% endif %}</td>
     <td class="num" data-v="{{ c.genera }}">{{ c.genera|fmt }}</td>
     <td class="num" data-v="{{ c.leaves }}">{{ c.leaves|fmt }}</td>
     <td class="num" data-v="{{ 100 * (c.plasmid or 0) / c.n if c.n else -1 }}">{{ '%.1f' % (100 * (c.plasmid or 0) / c.n) if c.n else '–' }}</td>

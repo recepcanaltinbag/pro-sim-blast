@@ -6,6 +6,75 @@
 <h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · RO group {{ c.group }}</span></h1>
 <div class="numbered">
 
+{#  Uyesi olmayan tip: sayfa onceden SESSIZCE bos kaliyordu. Aciklama en uste
+    gelmeli, cunku altindaki her kutu "0" gosteriyor ve bunun sebebi
+    okunmadan sayfa yanlis anlasiliyor. Kayit empty_types.py'den geliyor;
+    yoksa blok hic basilmaz ve sayfa eskisi gibi davranir.                   #}
+{% if c.n == 0 and x.empty_type %}
+{% set e = x.empty_type %}
+{% set ev = e.evidence or {} %}
+<div class="caveat caveat--warn">
+  <b>This type has no members of its own, and that is a property of the reference set
+  rather than missing data.</b>
+  Every confirmed Rieske oxygenase is filed under the one reference profile it scores
+  highest on, by bit score. The {{ c.gene }} profile never won that comparison for any
+  protein in the scanned genomes, so the counts, variants, operons and taxonomy below are
+  all zero.
+  <br>
+  {% if e.case == 'reference_absorbed' %}
+  The curated reference protein of {{ c.gene }}
+  {% if e.reference_accession %}(<b>{{ e.reference_accession }}</b>){% endif %}
+  <b>is</b> in the database — as
+  {{ ev.reference_entries|fmt }} genomic cop{{ 'y' if ev.reference_entries == 1 else 'ies' }}
+  of {{ ev.reference_protein_id or 'one record' }} — but filed under
+  {% if e.absorbed_by %}<a href="{{ u('/cluster/' ~ e.absorbed_by) }}">{{ gene(e.absorbed_by) }}</a>
+  ({{ e.absorbed_by }}){% else %}another type{% endif %}.
+  Two curated names have collapsed onto one profile: read them as one enzyme type.
+  {% elif e.case == 'gate_rejected' %}
+  No candidate protein covered at least
+  {{ '%.0f %%' % (100 * (ev.coverage_gate or 0.45)) }} of this profile's length, so nothing
+  reached the assignment step at all. The highest coverage any candidate reached was
+  {{ '%.0f %%' % (100 * (ev.max_model_coverage_reached or 0)) }}.
+  {% else %}
+  The exact reference sequence of {{ c.gene }} was never retrieved from the scanned genomes.
+  Its profile still competes — on {{ (ev.candidates_passing_coverage_gate or 0)|fmt }}
+  candidates that clear the coverage gate — but loses every time, so the proteins this type
+  would describe are counted under
+  {% if e.absorbed_by %}<a href="{{ u('/cluster/' ~ e.absorbed_by) }}">{{ gene(e.absorbed_by) }}</a>
+  ({{ e.absorbed_by }}){% else %}neighbouring types{% endif %}.
+  {% endif %}
+  {% if ev.nearest_reference_sibling and ev.nearest_reference_sibling.identity >= 95 %}
+  This type's reference is <b>{{ '%.1f %%' % ev.nearest_reference_sibling.identity }}</b>
+  identical to that of
+  <a href="{{ u('/cluster/' ~ ev.nearest_reference_sibling.type) }}">{{ gene(ev.nearest_reference_sibling.type) }}</a>
+  ({{ ev.nearest_reference_sibling.type }}), so the split between the two names is a
+  nomenclature decision, not a biological one.
+  {% endif %}
+  {% if ev.entries_nearest_to_this_reference %}
+  <br>
+  Measured the other way round — by sequence identity rather than by profile score —
+  {{ ev.entries_nearest_to_this_reference_total|fmt }} confirmed
+  entr{{ 'y' if ev.entries_nearest_to_this_reference_total == 1 else 'ies' }}
+  in the database are closer to this type's reference than to any other, and they sit here:
+  {% for r in ev.entries_nearest_to_this_reference %}<a href="{{ u('/cluster/' ~ r.type) }}">{{ gene(r.type) }}</a>
+  ({{ r.entries|fmt }}{% if r.max_identity %}, up to {{ '%.1f %%' % r.max_identity }}{% endif %}){% if not loop.last %} · {% endif %}{% endfor %}.
+  {% endif %}
+  {% if ev.best_contest %}
+  <br><span class="note">Closest contest: on
+  <code>{{ ev.best_contest.candidate_id }}</code> this profile scored
+  {{ ev.best_contest.own_score }} bits and
+  <a href="{{ u('/cluster/' ~ ev.best_contest.winning_type) }}">{{ gene(ev.best_contest.winning_type) }}</a>
+  scored {{ ev.best_contest.winning_score }} — a gap of
+  {{ ev.best_contest.score_gap }} bits.</span>
+  {% endif %}
+  <br><span class="note">The substrate and chemistry below describe the curated reference
+  enzyme of this type and remain valid; only the member statistics are empty. Measured by
+  <code>empty_types.py</code> for every type without members, alongside the
+  other reference-set defects on the
+  <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+</div>
+{% endif %}
+
 {% if x.redundancy %}
 {% set rr = x.redundancy %}
 <div class="caveat caveat--warn">

@@ -8,7 +8,13 @@ by bit score rather than E-value. One row is one characterised enzyme type.</p>
 anything in a row, and the chips narrow the table to one RO group, substrate class or literature
 confidence. Percentages are shares of that type's own members, so they are comparable down a column
 but not additive. A type with a low β, ferredoxin or reductase share is one whose partners are
-usually encoded elsewhere in the genome, not one that works without them.</p>
+usually encoded elsewhere in the genome, not one that works without them.
+{%- set empties = clusters|rejectattr('n')|list %}{% if empties %}
+{{ empties|length }} of the {{ clusters|length }} curated types have
+<b>no members of their own</b>; they are listed here with a
+<span class="chip chip--warn">no members</span> mark and the type their reference is counted
+under, because assignment is competitive and a profile with a near-identical sibling can win
+nothing at all.{% endif %}</p>
 {% include "_cluster_table.html" %}
 <p class="note">Substrate and substrate class come from <code>cluster_ecology.csv</code>, curated
 from the literature on each type's reference enzyme; they describe that enzyme, not every member.
