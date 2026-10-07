@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}What is predictable{% endblock %}
+{% set page_id = 'learning' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>What can be predicted, and what only looks predictable</h1>
+<p class="lede">A model trained on this database can reach high accuracy without having learned
+anything, because the answer is often sitting in the training set as a near-identical copy. This
+page measures that effect rather than hiding it, and the measurement turns out to be the most
+useful result on the page.</p>
+
+{% if learn %}
+<h2>1 · The same model, split two ways</h2>
+<p>Each row is one prediction task. The honest column holds out whole enzyme types, so a model must
+generalise to a type it has never seen. The leaked column splits entries at random, which lets
+near-identical sequences of the same type sit on both sides of the split.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>What is predicted</th><th>The label is</th>
+<th class="num">Honest accuracy</th><th class="num">Leaked accuracy</th>
+<th class="num">Inflation</th><th class="num">Always answering the commonest class</th></tr></thead>
+<tbody>
+{% for r in learn.rows %}
+<tr{{ ' class="hl"'|safe if r.ratio and r.ratio < 1.05 }}>
+  <td>{{ r.label }}</td><td class="small">{{ r.kind }}</td>
+  <td class="num" data-v="{{ r.grouped }}">{{ '%.0f %%' % (100 * r.grouped) }}</td>
+  <td class="num" data-v="{{ r.leaked }}">{{ '%.0f %%' % (100 * r.leaked) }}</td>
+  <td class="num" data-v="{{ r.ratio }}">{{ '%.2f×' % r.ratio }}</td>
+  <td class="num" data-v="{{ r.majority }}">{{ '%.0f %%' % (100 * r.majority) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The highlighted row is the control, and it is what makes the rest interpretable.</b>
+Three of these labels are properties of the enzyme type, so holding a type out removes every clue
+and the random split inflates accuracy by about a third. The fourth, whether a beta subunit sits in
+the operon, varies <em>within</em> a type, so the random split has nothing extra to leak and the two
+numbers agree to within two per cent. The inflation is therefore not a quirk of one model; it is the
+leakage mechanism caught in the act.</figcaption>
+</figure>
+
+{% if learn.knn %}
+<h2>2 · The clearest demonstration</h2>
+<p>A nearest-neighbour classifier learns nothing at all. It copies the label of the most similar
+sequence it was shown. On a random split that is almost perfect, because nearly every test sequence
+has a near-twin of the same type in training.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Split</th><th class="num">Accuracy of a classifier that only copies its neighbour</th></tr></thead>
+<tbody>
+<tr><td>Random split over entries</td>
+    <td class="num" data-v="{{ learn.knn.leaked_random_accuracy }}">{{ '%.0f %%' % (100 * learn.knn.leaked_random_accuracy) }}</td></tr>
+<tr class="hl"><td>Whole types held out</td>
+    <td class="num" data-v="{{ learn.knn.grouped_accuracy }}">{{ '%.0f %%' % (100 * learn.knn.grouped_accuracy) }}</td></tr>
+</tbody></table></div>
+<figcaption>Ninety-three per cent against thirty-eight. Any published accuracy on a database like
+this one should be read with that gap in mind, and it is why every number here holds out types.</figcaption>
+</figure>
+{% endif %}
+
+{% if learn.features %}
+<h2>3 · Which positions carry the signal</h2>
+<p>The model works from residue identities at alignment columns. These are the columns it leans on
+most, with their distance to the nearest catalytic-centre column.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Column</th><th>Residue</th><th>Region</th>
+<th>Nearest catalytic centre position</th><th class="num">Offset</th></tr></thead>
+<tbody>
+{% for f in learn.features %}
+<tr><td class="num" data-v="{{ f.column }}">{{ f.column }}</td>
+  <td class="mono">{{ f.residue }}</td>
+  <td class="small">{{ f.zone }}</td>
+  <td class="small">{{ f.near_label }}</td>
+  <td class="num" data-v="{{ f.offset|abs if f.offset is not none else 999 }}">
+    {% if f.offset is not none %}{{ f.offset }}{% if f.within10 %} <span class="chip chip--ok">close</span>{% endif %}
+    {% else %}–{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">{{ learn.near_centre }} of the top 25 columns lie within ten positions of a
+catalytic-centre column, and {{ '%.0f %%' % (100 * learn.catalytic_share) }} sit in the catalytic
+domain against {{ '%.0f %%' % (100 * learn.pool_share) }} of the columns available, so the catalytic
+domain is not over-represented beyond its size. <b>None of this makes them binding residues.</b>
+Being near the metal in the alignment is not the same as lining the pocket, and the
+<a href="{{ u('/atlas/structure') }}">structural page</a> is where pocket membership is actually
+measured.</p>
+{% endif %}
+
+<h2>4 · What this cannot support</h2>
+<ul>{% for item in learn.cannot[:6] %}<li>{{ item }}</li>{% endfor %}</ul>
+<p class="dl"><a class="btn" href="{{ u('/download/analysis/learning.json') }}">Full output (JSON)</a></p>
+{% else %}
+<p class="note">This analysis has not been run for this build.</p>
+{% endif %}
+{% endblock %}

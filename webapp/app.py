@@ -1358,6 +1358,13 @@ def atlas_control(request: Request):
                   vo=atlas.variant_operon_view(apath("variant_and_operon.json")))
 
 
+@app.get("/atlas/learning", response_class=HTMLResponse)
+def atlas_learning(request: Request):
+    """Diziden ve baglamdan ne ongorulebiliyor, ne ongorulemiyor."""
+    return render(request, "atlas_learning.html",
+                  learn=atlas.learning_view(apath("learning.json")))
+
+
 @app.get("/atlas/origin", response_class=HTMLResponse)
 def atlas_origin(request: Request):
     """Yakin ve uzak akrabalarin nerelerden geldigi."""

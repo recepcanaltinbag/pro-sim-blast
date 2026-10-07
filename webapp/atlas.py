@@ -230,6 +230,72 @@ def active_site_view(path):
     }
 
 
+LEARNING_LABELS = {
+    "q1_reaction_class_from_sequence":
+        ("Reaction class, from the sequence", "a property of the enzyme type"),
+    "q3_substrate_class_from_context":
+        ("Substrate class, from the genomic neighbourhood", "a property of the enzyme type"),
+    "q4a_positive_control_ro_group_from_sequence":
+        ("RO group, from the sequence", "a property of the enzyme type"),
+    "q4c_beta_subunit_from_sequence":
+        ("Beta subunit present, from the sequence", "varies WITHIN a type"),
+}
+
+
+def learning_view(path):
+    """Ogrenme sonuclarini sayfaya hazirlar.
+
+    Dosyanin asil degeri tek bir dogruluk sayisi degil, SIZINTI ORANI: tipler
+    egitimden cikarildiginda dogruluk ne kadar dusuyor. Bu oran, etiket tipin
+    bir ozelligi oldugunda 1,3'un uzerinde, tip ICINDE degisen tek etikette
+    (beta alt birimi) 1,0. Yani sizintinin kendisi olculmus oluyor.
+    """
+    raw = read_json(path)
+    if not raw:
+        return None
+    rows = []
+    for key, block in (raw.get("summary") or {}).items():
+        if not isinstance(block, dict):
+            continue
+        label, kind = LEARNING_LABELS.get(key, (key.replace("_", " "), ""))
+        rows.append({
+            "key": key, "label": label, "kind": kind,
+            "grouped": block.get("grouped_accuracy"),
+            "leaked": block.get("leaked_random_accuracy"),
+            "ratio": block.get("leaked_over_grouped"),
+            "majority": block.get("majority_rate"),
+            "balanced": block.get("grouped_balanced_accuracy"),
+        })
+    rows.sort(key=lambda r: -(r["ratio"] or 0))
+
+    q1 = raw.get("q1_reaction_class_from_sequence") or {}
+    q2 = raw.get("q2_informative_columns") or {}
+    features = []
+    for item in (q2.get("top_features") or [])[:12]:
+        if not isinstance(item, dict):
+            continue
+        features.append({
+            "column": item.get("column"),
+            "residue": item.get("residue"),
+            "zone": (item.get("zone") or "").replace("_", " "),
+            "near_label": item.get("nearest_catalytic_centre_label"),
+            "offset": item.get("offset_from_nearest"),
+            "within10": item.get("within_10_columns_of_centre"),
+            "is_motif": item.get("is_motif_column"),
+        })
+
+    return {
+        "rows": rows,
+        "note": (raw.get("summary") or {}).get("note", ""),
+        "knn": q1.get("nearest_neighbour_leakage_demo") or {},
+        "features": features,
+        "near_centre": q2.get("top_features_within_10_columns_of_a_centre_column"),
+        "catalytic_share": q2.get("catalytic_domain_share_in_top_features"),
+        "pool_share": q2.get("catalytic_domain_share_in_whole_pool"),
+        "cannot": raw.get("cannot_be_supported") or [],
+    }
+
+
 def variant_operon_view(path):
     """Varyant-cep karsilastirmasi, transpozon atfi ve operon benzerligi."""
     raw = read_json(path)
