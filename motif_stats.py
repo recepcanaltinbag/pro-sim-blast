@@ -33,6 +33,32 @@ LABELS_EN = {
 }
 
 
+def _model_metadata(path=None):
+    """Motif modelinin adi, uzunlugu ve kac referanstan kuruldugu.
+
+    HMMER baslik satirlarindan okunur: NAME, LENG, NSEQ. Sabit yazmak bir
+    kere yanlis sonuc uretti -- referans seti 71'den 67'ye dustugunde dosya
+    hala 71 diyordu.
+    """
+    path = path or os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "ROs_71_Clean", "ROmotif71.hmm")
+    meta = {"name": None, "length": None, "references": None}
+    try:
+        with open(path) as fh:
+            for line in fh:
+                if line.startswith("NAME"):
+                    meta["name"] = line.split(None, 1)[1].strip()
+                elif line.startswith("LENG"):
+                    meta["length"] = int(line.split()[1])
+                elif line.startswith("NSEQ"):
+                    meta["references"] = int(line.split()[1])
+                elif line.startswith("HMM "):
+                    break
+    except (OSError, ValueError, IndexError):
+        pass
+    return meta
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -160,7 +186,10 @@ def main():
         "catalytic_triad": {str(k): v for k, v in sorted(triad_counts.items(), reverse=True)},
         "bridging_present": bridging,
         "carboxylate_identity": carbox,
-        "model": {"name": "ROmotif71", "length": 426, "references": 71},
+        # OLCULDU, YAZILMADI: bu uc deger sabit yaziliydi (426, 71) ve referans
+        # seti 67'ye dusunce sessizce yanlis oldu. Artik modelin kendisinden
+        # okunuyor, boylece referans seti her degistiginde kendiliginden dogru.
+        "model": _model_metadata(),
     }
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w") as fh:
