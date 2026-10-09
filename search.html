@@ -1,0 +1,178 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Search · ROAR-DB</title>
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css"></head><body>
+<header class="top"><a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+<nav><a href="/pro-sim-blast/atlas.html">Atlas</a><a href="/pro-sim-blast/clusters.html">Types</a>
+<a href="/pro-sim-blast/search.html">Search</a><a href="/pro-sim-blast/about.html">Methods</a></nav></header>
+<main>
+<h1>Search</h1>
+<form class="bigsearch" onsubmit="return false">
+  <input id="q" type="search" placeholder="organism, product, protein identifier, enzyme type, or a chemical such as benzalkonium" autofocus>
+  <button onclick="run()">Search</button>
+</form>
+<p class="note">Several words are combined with AND. A trailing asterisk matches a prefix.
+Filters on the left narrow the result without a new search.
+<span id="status">loading index…</span></p>
+<div class="searchlayout">
+  <aside class="facets" id="facets"></aside>
+  <div class="results">
+    <div id="typeblock"></div>
+    <h2>Entries <span class="note" id="count"></span></h2>
+    <div class="tablewrap"><table class="data">
+      <thead><tr><th>Entry</th><th>Organism</th><th>Product</th><th>Type</th>
+      <th>Substrate of the reference</th><th>Evidence</th><th>Variant</th></tr></thead>
+      <tbody id="rows"></tbody></table></div>
+    <nav class="pager" id="pager"></nav>
+  </div>
+</div>
+</main>
+<script>
+const BASE = "/pro-sim-blast";
+const TIER_COLORS = {characterized:'#1f7a4d', close_homolog:'#7fb069', family_member:'#f2c14e',
+                     distant:'#f78154', novel:'#8e44ad'};
+/*  Tip basina kimya. Arama metni buradan tamamlanir, yoksa bir kimyasal adi
+    hicbir giriste yazili olmadigi icin bulunamaz.                           */
+const CHEM = {"1_101_OxoO":["OxoO","2-oxo-1,2-dihydroquinoline","hydroxylation"],"1_102_CARDO":["CARDO","carbazole","angular dioxygenation"],"1_103_CarAa":["CarAa","carbazole","angular dioxygenation"],"1_104_VanA":["VanA","vanillate","O demethylation"],"1_105_DdmC":["DdmC","dicamba","O demethylation"],"1_106_TsaM":["TsaM","4-toluenesulfonate","hydroxylation"],"1_107_CndA":["CndA","chloroacetanilide herbicides (alachlor, acetochlor, butachlor)","N demethylation"],"1_108_PobA":["PobA","4-hydroxybenzoate","hydroxylation"],"1_109_LigX":["LigX","5,5'-dehydrodivanillate","O demethylation"],"1_110_SxtT":["SxtT","saxitoxin pathway intermediate","hydroxylation"],"1_111_GxtA":["GxtA","gonyautoxin pathway intermediate","hydroxylation"],"1_112_NdmA":["NdmA","caffeine","N demethylation"],"1_113_CdnA":["CdnA","caffeine and methylxanthines","N demethylation"],"1_114_NdmB":["NdmB","caffeine","N demethylation"],"1_115_NdmC":["NdmC","7-methylxanthine","N demethylation"],"2_201_BphA1":["BphA1 (201)","biphenyl","cis dihydroxylation"],"2_202_EdoA1":["EdoA1","ethylbenzene","cis dihydroxylation"],"2_203_cumA1":["cumA1","cumene","cis dihydroxylation"],"2_204_Dpe":["Dpe","diphenyl ether","angular dioxygenation"],"2_206_IpBAa":["IpBAa","isopropylbenzene","cis dihydroxylation"],"2_207_BpdC1":["BpdC1","biphenyl","cis dihydroxylation"],"2_208_TecA1":["TecA1","1,2,4,5-tetrachlorobenzene","cis dihydroxylation"],"2_209_TDO":["TDO","toluene","cis dihydroxylation"],"2_210_XylC1":["XylC1","xylene","cis dihydroxylation"],"2_211_bfzA":["bfzA","benzene and fluorene","cis dihydroxylation"],"2_212_BedC1":["BedC1","benzene","cis dihydroxylation"],"2_213_BphA1A2":["BphA1A2","biphenyl","cis dihydroxylation"],"2_214_TftA":["TftA","2,4,5-trichlorophenoxyacetate","dioxygenation with release"],"2_215_cadA":["cadA","2,4-dichlorophenoxyacetate (2,4-D)","dioxygenation with release"],"2_216_BPDO":["BPDO","biphenyl","cis dihydroxylation"],"2_217_HcaE":["HcaE","3-phenylpropionate","cis dihydroxylation"],"2_218_BphA1":["BphA1 (218)","biphenyl","cis dihydroxylation"],"3_301_PhnA1a":["PhnA1a","phenanthrene","cis dihydroxylation"],"3_302_DitA":["DitA","dehydroabietate","cis dihydroxylation"],"3_303_NBDO":["NBDO","nitrobenzene","dioxygenation with release"],"3_304_OMO":["OMO","2-oxo-1,2-dihydroquinoline","hydroxylation"],"3_305_ArhA1":["ArhA1","polycyclic aromatic hydrocarbons","cis dihydroxylation"],"3_306_3NTDO":["3NTDO","3-nitrotoluene","dioxygenation with release"],"3_307_NagGH":["NagGH","naphthalene-2-sulfonate","dioxygenation with release"],"3_308_DxnA1":["DxnA1","dibenzo-p-dioxin","angular dioxygenation"],"3_309_NahAc":["NahAc","naphthalene","cis dihydroxylation"],"3_310_DntAc":["DntAc","2,4-dinitrotoluene","dioxygenation with release"],"3_311_PhtAa":["PhtAa","phthalate","cis dihydroxylation"],"3_312_NinA":["NinA","nitroaromatic compounds","dioxygenation with release"],"3_313_KshA15":["KshA15","3-ketosteroid","hydroxylation"],"3_314_NDO":["NDO (314)","naphthalene","cis dihydroxylation"],"3_315_NDO":["NDO (315)","naphthalene","cis dihydroxylation"],"3_316_NarAa":["NarAa","naphthalene","cis dihydroxylation"],"3_317_NidA":["NidA (317)","pyrene","cis dihydroxylation"],"3_318_NidA":["NidA (318)","pyrene","cis dihydroxylation"],"3_319_PhdA":["PhdA","phenanthrene","cis dihydroxylation"],"3_320_NidA3":["NidA3","polycyclic aromatic hydrocarbons","cis dihydroxylation"],"4_401_CmtAb":["CmtAb","p-cumate","cis dihydroxylation"],"4_402_PsbAb":["PsbAb","4-sulfobenzoate","dioxygenation with release"],"4_403_AtdA":["AtdA","aniline","dioxygenation with release"],"4_404_TdnA1":["TdnA1","aniline","dioxygenation with release"],"4_405_ROCH34":["ROCH34","phthalate","cis dihydroxylation"],"4_406_PDO":["PDO","phthalate","cis dihydroxylation"],"4_407_PbaA1":["PbaA1","3-phenoxybenzoate","angular dioxygenation"],"4_408_AntA":["AntA","anthranilate","dioxygenation with release"],"4_409_TPDO":["TPDO","terephthalate","cis dihydroxylation"],"4_410_CbdC":["CbdC","2-halobenzoate","dioxygenation with release"],"4_411_XylX":["XylX","toluate and benzoate","cis dihydroxylation"],"5_501_CmoS":["CmoS","choline","hydroxylation"],"5_502_CmoB":["CmoB","choline","hydroxylation"],"5_503_CmoA":["CmoA","choline","hydroxylation"],"5_504_CntA":["CntA","L-carnitine","C N cleavage"],"5_505_qxyA":["qxyA","benzalkonium chloride and other quaternary ammonium compounds","C N cleavage"],"5_506_Stc2":["Stc2","stachydrine","N demethylation"],"5_507_BmoA":["BmoA","glycine betaine","N demethylation"],"5_508_GbcA":["GbcA","glycine betaine","N demethylation"]};
+const gene = c => (CHEM[c] && CHEM[c][0]) || c.split('_').slice(2).join('_');
+const F = {q:'', tier:'', domain:'', family:'', cluster:'', plasmid:0, partner:0, regulator:0, page:1};
+const PAGE = 100;
+let IDX = [], VIEW = [];
+/*  Etiket metni arka plandan HESAPLANIR, sabit beyaz degil. Olculdu: alti
+    etikette beyaz metin WCAG oranini gecmiyordu, en kotusu 1,68:1. Sunucu
+    tarafinda `atlas.chip_text` ayni kurali uyguluyor.                      */
+function chipText(bg) {
+  var v = String(bg).replace('#', '');
+  if (v.length !== 6) return '#ffffff';
+  var ch = [0, 2, 4].map(function (i) {
+    var c = parseInt(v.substr(i, 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  var L = 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  var withDark = (L + 0.05) / (0.0114 + 0.05);
+  var withLight = (1.05) / (L + 0.05);
+  return withDark > withLight ? '#10161c' : '#ffffff';
+}
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// index columns: 0 slug 1 protein 2 organism 3 product 4 cluster 5 leaf 6 tier 7 domain 8 family 9 plasmid 10 partner 11 regulator
+const TEXT = r => {
+  const c = CHEM[r[4]] || ['', '', ''];
+  return (r[0]+' '+r[1]+' '+r[2]+' '+r[3]+' '+r[4]+' '+r[5]+' '+r[8]+' '+
+          c[0]+' '+c[1]+' '+c[2]).toLowerCase();
+};
+
+fetch(BASE + '/search_index.json').then(r => r.json()).then(d => {
+  IDX = d.map(r => { r.push(TEXT(r)); return r; });
+  document.getElementById('status').textContent = d.length.toLocaleString() + ' entries indexed.';
+  const p = new URLSearchParams(location.search);
+  ['q','tier','domain','family','cluster'].forEach(k => { if (p.get(k)) F[k] = p.get(k); });
+  ['plasmid','partner','regulator'].forEach(k => { if (p.get(k)) F[k] = 1; });
+  document.getElementById('q').value = F.q;
+  run();
+});
+
+function matches(r) {
+  if (F.tier && r[6] !== F.tier) return false;
+  if (F.domain && r[7] !== F.domain) return false;
+  if (F.family && r[8] !== F.family) return false;
+  if (F.cluster && r[4] !== F.cluster) return false;
+  if (F.plasmid && !r[9]) return false;
+  if (F.partner && !r[10]) return false;
+  if (F.regulator && !r[11]) return false;
+  if (!F.q) return true;
+  const hay = r[12];
+  return F.q.toLowerCase().split(/\s+/).filter(Boolean).every(tok =>
+    tok.endsWith('*') ? hay.includes(tok.slice(0, -1)) : hay.includes(tok));
+}
+
+function run() {
+  F.q = document.getElementById('q').value.trim();
+  F.page = 1;
+  render();
+}
+
+function setFilter(k, v) { F[k] = (F[k] === v) ? '' : v; F.page = 1; render(); }
+function toggle(k) { F[k] = F[k] ? 0 : 1; F.page = 1; render(); }
+function goPage(n) { F.page = n; render(); window.scrollTo(0, 0); }
+
+/*  Sorguya uyan ENZIM TIPLERI ayrica gosterilir. Uye sayisi sifir olan 10 tip
+    var ve bunlarin substratlari giris indeksinde hic gecmiyor; yalnizca
+    girisleri arayan bir sayfada "xylene" aramasi bos donuyordu, oysa o
+    kimyasalin kuratorlu bir tipi VAR. Barindirilan surumde bu bolum zaten
+    vardi; statik surumde eksikti.                                          */
+function renderTypes() {
+  const block = document.getElementById('typeblock');
+  const q = F.q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!q.length) { block.innerHTML = ''; return; }
+  const counts = {};
+  IDX.forEach(r => { counts[r[4]] = (counts[r[4]] || 0) + 1; });
+  const hits = Object.keys(CHEM).filter(c => {
+    const v = CHEM[c];
+    const hay = (c + ' ' + v[0] + ' ' + v[1] + ' ' + v[2]).toLowerCase();
+    return q.every(tok => tok.endsWith('*') ? hay.includes(tok.slice(0, -1)) : hay.includes(tok));
+  }).sort((a, b) => (counts[b] || 0) - (counts[a] || 0));
+  if (!hits.length) { block.innerHTML = ''; return; }
+  block.innerHTML = '<h2>Enzyme types matching the query <span class="note">' + hits.length +
+    '</span></h2><div class="tablewrap"><table class="data compact"><thead><tr>' +
+    '<th>Type</th><th>Substrate of the reference</th><th>Reaction</th>' +
+    '<th class="num">Members</th></tr></thead><tbody>' +
+    hits.map(c => {
+      const v = CHEM[c], n = counts[c] || 0;
+      const note = n ? '' : ' <span class="note">no confirmed member in this build</span>';
+      return `<tr><td><a href="${BASE}/cluster/${esc(c)}.html">${esc(v[0])}</a>${note}</td>` +
+             `<td>${esc(v[1])}</td><td class="small">${esc(v[2])}</td>` +
+             `<td class="num" data-v="${n}">${n.toLocaleString()}</td></tr>`;
+    }).join('') + '</tbody></table></div>';
+}
+
+function render() {
+  renderTypes();
+  VIEW = IDX.filter(matches);
+  document.getElementById('count').textContent = VIEW.length.toLocaleString();
+  const start = (F.page - 1) * PAGE;
+  document.getElementById('rows').innerHTML = VIEW.slice(start, start + PAGE).map(r => {
+    const tier = r[6] ? `<span class="chip" style="background:${TIER_COLORS[r[6]]||'#888'};color:${chipText(TIER_COLORS[r[6]]||'#888')};border:0">${esc(r[6].replace('_',' '))}</span>` : '';
+    const leaf = r[5] ? `<a href="${BASE}/leaf/${esc(r[5].replace('#','-'))}.html">${esc(r[5].split('#').pop())}</a>` : '–';
+    const dom = (r[7] && r[7] !== 'Bacteria') ? ` <span class="chip">${esc(r[7])}</span>` : '';
+    const pl = r[9] ? ' <span class="chip chip--plasmid">plasmid</span>' : '';
+    const sub = (CHEM[r[4]] && CHEM[r[4]][1]) || '';
+    return `<tr><td><a href="${BASE}/ro/${esc(r[0])}.html">${esc(r[1] || r[0])}</a>${pl}</td>` +
+           `<td><i>${esc(r[2])}</i>${dom}</td><td class="small">${esc(r[3])}</td>` +
+           `<td><a href="${BASE}/cluster/${esc(r[4])}.html">${esc(gene(r[4]))}</a></td>` +
+           `<td class="small">${esc(sub)}</td>` +
+           `<td>${tier}</td><td>${leaf}</td></tr>`;
+  }).join('') || '<tr><td colspan="7" class="empty">No entry matches. Try fewer words or remove a filter.</td></tr>';
+
+  const pages = Math.ceil(VIEW.length / PAGE);
+  document.getElementById('pager').innerHTML = pages > 1
+    ? (F.page > 1 ? `<a href="#" onclick="goPage(${F.page-1});return false">previous</a>` : '') +
+      `<span>page ${F.page} of ${pages}</span>` +
+      (F.page < pages ? `<a href="#" onclick="goPage(${F.page+1});return false">next</a>` : '')
+    : '';
+  renderFacets();
+}
+
+function renderFacets() {
+  const defs = [['tier', 'Evidence level', 6], ['domain', 'Domain of life', 7],
+                ['family', 'Chemical family', 8], ['cluster', 'Enzyme type', 4]];
+  let html = '';
+  for (const [key, label, col] of defs) {
+    const counts = new Map();
+    for (const r of IDX) {
+      const saved = F[key]; F[key] = '';
+      if (matches(r) && r[col]) counts.set(r[col], (counts.get(r[col]) || 0) + 1);
+      F[key] = saved;
+    }
+    const items = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
+    if (!items.length) continue;
+    html += `<div class="facet"><h3>${label}</h3><ul>` + items.map(([v, n]) =>
+      `<li><a href="#" onclick="setFilter('${key}', ${JSON.stringify(v)});return false">` +
+      (F[key] === v ? `<b>${esc(v)}</b>` : esc(v)) + `</a><span class="note">${n.toLocaleString()}</span></li>`).join('') + '</ul></div>';
+  }
+  html += '<div class="facet"><h3>Genomic context</h3><ul>' +
+    [['plasmid', 'on a plasmid'], ['partner', 'verified operon partner'], ['regulator', 'divergent regulator']]
+      .map(([k, l]) => `<li><a href="#" onclick="toggle('${k}');return false">${F[k] ? '<b>' + l + '</b>' : l}</a></li>`).join('') +
+    '</ul></div>';
+  document.getElementById('facets').innerHTML = html;
+}
+document.getElementById('q').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+</script></body></html>

@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CarAa · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 1_103_CarAa</nav>
+
+<h1>CarAa <span class="note">· type 1_103_CarAa · RO group 1</span></h1>
+<div class="numbered">
+
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>This type has no members of its own, and that is a property of the reference set
+  rather than missing data.</b>
+  Every confirmed Rieske oxygenase is filed under the one reference profile it scores
+  highest on, by bit score. The CarAa profile never won that comparison for any
+  protein in the scanned genomes, so the counts, variants, operons and taxonomy below are
+  all zero.
+  <br>
+  
+  The exact reference sequence of CarAa was never retrieved from the scanned genomes.
+  Its profile still competes — on 1,089
+  candidates that clear the coverage gate — but loses every time, so the proteins this type
+  would describe are counted under
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (1_102_CARDO).
+  
+  
+  This type's reference is <b>99.2 %</b>
+  identical to that of
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (1_102_CARDO), so the split between the two names is a
+  nomenclature decision, not a biological one.
+  
+  
+  <br>
+  Measured the other way round — by sequence identity rather than by profile score —
+  25 confirmed
+  entries
+  in the database are closer to this type's reference than to any other, and they sit here:
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (20, up to 99.7 %) · <a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a>
+  (3, up to 32.9 %) · <a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a>
+  (2, up to 27.5 %).
+  
+  
+  <br><span class="note">Closest contest: on
+  <code>NC_004444.1:28468-29641:1</code> this profile scored
+  837.7 bits and
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  scored 837.7 — a gap of
+  0.0 bits.</span>
+  
+  <br><span class="note">The substrate and chemistry below describe the curated reference
+  enzyme of this type and remain valid; only the member statistics are empty. Measured by
+  <code>empty_types.py</code> for every type without members, alongside the
+  other reference-set defects on the
+  <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</span>
+</div>
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>The member count on this page is not fully determined by biology.</b>
+  
+  This type's reference is 99.2 % identical to
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>,
+  which is close enough that the split of members between the two profiles is partly arbitrary.
+  55 members fall across the pair and 0 here.
+  
+  <br><span class="note">This is a known defect of the curated reference set, not of the
+  assignment method. It is measured and listed on the
+  <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</span>
+</div>
+
+
+
+
+
+
+
+<div class="caveat">
+  <b>carbazole</b>
+  <span class="chip chip--xenobiotic">xenobiotic</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  
+  <br><span class="note">Alpha subunit of the same carbazole system as CARDO</span>
+  
+  <br><span class="note"><b>Curated from:</b> <a href="https://www.rcsb.org/structure/1WW9" rel="noopener noreferrer" target="_blank">PDB 1WW9</a>, carbazole 1,9a-dioxygenase terminal oxygenase ·
+      from a deposited structure
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="c1ccc2c(c1)[nH]c1ccccc12" aria-label="carbazole"></svg>
+      
+      <div class="rxn__label">carbazole</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">angular dioxygenation</div>
+    </div>
+    <div class="rxn__scheme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-angular-dioxygenation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="30.0,27.0 13.5,36.5 13.5,55.5 30.0,65.0 46.5,55.5 46.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="30" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><polygon points="62.9,27.0 46.4,36.5 46.4,55.5 62.9,65.0 79.3,55.5 79.3,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="62.87" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="46.5" cy="46" r="3" fill="#8c2f22"/><line x1="96" y1="46" x2="148" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-angular-dioxygenation)"/><text x="122.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="176.0,27.0 159.5,36.5 159.5,55.5 176.0,65.0 192.5,55.5 192.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="176" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="150.5" y="34.8" font-size="10" text-anchor="end" fill="currentColor">OH</text><polygon points="212.1,27.0 195.6,36.5 195.6,55.5 212.1,65.0 228.6,55.5 228.6,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="212.1" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="237.6" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">The attack is at the ring junction, so the fused ring system comes apart rather than simply gaining hydroxyls.</div>
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">2&#39;-aminobiphenyl-2,3-diol</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  <br><b>Note.</b> alpha subunit of the same carbazole system as CARDO</figcaption>
+</figure>
+
+
+
+
+
+<h2>Three-dimensional structure of the reference enzyme</h2>
+<figure class="fig pdbfig">
+  <div class="pdbbar">
+    <span class="pdbbar__id">1WW9</span>
+    <a href="https://www.rcsb.org/structure/1WW9" rel="noopener noreferrer" target="_blank">View 1WW9 at RCSB PDB</a>
+    <span class="pdbbar__styles" id="pdbstyles" hidden>
+      <button type="button" data-style="cartoon" class="on">Cartoon</button>
+      <button type="button" data-style="chain">By chain</button>
+      <button type="button" data-style="trace">Backbone</button>
+      <button type="button" data-style="site">Active site only</button>
+    </span>
+    
+    
+    <span class="pdbbar__layers" id="pdblayers" hidden>
+      <label><input type="checkbox" id="lay-pocket" checked> pocket residues</label>
+      <label><input type="checkbox" id="lay-bonds" checked> metal bonds</label>
+      <label><input type="checkbox" id="lay-ligand" checked> bound molecules</label>
+      <label><input type="checkbox" id="lay-labels"> distances</label>
+      <label><input type="checkbox" id="lay-chain" checked> protein outline</label>
+    </span>
+    
+  </div>
+  
+  <details class="sitelist">
+    <summary>The 24 residues within 8.0 Å of the
+      catalytic iron, and what holds it</summary>
+    <p class="note">Distances are measured in 1WW9 from the iron to the nearest atom of
+    each residue. The alignment column is the position in the 426-column profile, so the same
+    column can be compared between types. The three residues that coordinate the iron are the
+    2-His-1-carboxylate facial triad that defines this family.</p>
+    <div class="tablewrap"><table class="data compact">
+    <thead><tr><th>Residue</th><th class="num">Distance to iron</th>
+    <th class="num">Profile column</th><th>Role</th></tr></thead>
+    <tbody>
+    
+    
+    <tr><td class="mono">ASP333<span class="unit"> chain A</span></td>
+      <td class="num" data-v="1.96">1.96 Å</td>
+      <td class="num" data-v="355">355</td>
+      <td class="small"><b>coordinates the iron</b>
+        </td></tr>
+    
+    <tr><td class="mono">HIS187<span class="unit"> chain A</span></td>
+      <td class="num" data-v="2.0">2.00 Å</td>
+      <td class="num" data-v="216">216</td>
+      <td class="small"><b>coordinates the iron</b>
+        </td></tr>
+    
+    <tr><td class="mono">HIS183<span class="unit"> chain A</span></td>
+      <td class="num" data-v="2.09">2.09 Å</td>
+      <td class="num" data-v="212">212</td>
+      <td class="small"><b>coordinates the iron</b>
+        </td></tr>
+    
+    <tr><td class="mono">ASN177<span class="unit"> chain A</span></td>
+      <td class="num" data-v="4.16">4.16 Å</td>
+      <td class="num" data-v="206">206</td>
+      <td class="small">first shell</td></tr>
+    
+    <tr><td class="mono">PHE329<span class="unit"> chain A</span></td>
+      <td class="num" data-v="4.52">4.52 Å</td>
+      <td class="num" data-v="351">351</td>
+      <td class="small">first shell</td></tr>
+    
+    <tr><td class="mono">ILE186<span class="unit"> chain A</span></td>
+      <td class="num" data-v="4.52">4.52 Å</td>
+      <td class="num" data-v="215">215</td>
+      <td class="small">first shell</td></tr>
+    
+    <tr><td class="mono">ASN330<span class="unit"> chain A</span></td>
+      <td class="num" data-v="4.54">4.54 Å</td>
+      <td class="num" data-v="352">352</td>
+      <td class="small">first shell</td></tr>
+    
+    <tr><td class="mono">GLY178<span class="unit"> chain A</span></td>
+      <td class="num" data-v="5.47">5.47 Å</td>
+      <td class="num" data-v="207">207</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ILE184<span class="unit"> chain A</span></td>
+      <td class="num" data-v="5.93">5.93 Å</td>
+      <td class="num" data-v="213">213</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ASP332<span class="unit"> chain A</span></td>
+      <td class="num" data-v="6.11">6.11 Å</td>
+      <td class="num" data-v="354">354</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">GLU284<span class="unit"> chain A</span></td>
+      <td class="num" data-v="6.37">6.37 Å</td>
+      <td class="num" data-v="307">307</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ASP180<span class="unit"> chain A</span></td>
+      <td class="num" data-v="6.63">6.63 Å</td>
+      <td class="num" data-v="209">209</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">TYR296<span class="unit"> chain A</span></td>
+      <td class="num" data-v="6.73">6.73 Å</td>
+      <td class="num" data-v="319">319</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ARG337<span class="unit"> chain A</span></td>
+      <td class="num" data-v="6.85">6.85 Å</td>
+      <td class="num" data-v="359">359</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">LEU270<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.06">7.06 Å</td>
+      <td class="num" data-v="0">–</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ILE334<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.11">7.11 Å</td>
+      <td class="num" data-v="356">356</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ALA336<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.19">7.19 Å</td>
+      <td class="num" data-v="358">358</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">PHE179<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.22">7.22 Å</td>
+      <td class="num" data-v="208">208</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">TYR286<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.35">7.35 Å</td>
+      <td class="num" data-v="309">309</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ASN331<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.46">7.46 Å</td>
+      <td class="num" data-v="353">353</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">PHE275<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.61">7.61 Å</td>
+      <td class="num" data-v="0">–</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">TYR185<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.62">7.62 Å</td>
+      <td class="num" data-v="214">214</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">GLN282<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.84">7.84 Å</td>
+      <td class="num" data-v="305">305</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    <tr><td class="mono">ALA174<span class="unit"> chain A</span></td>
+      <td class="num" data-v="7.94">7.94 Å</td>
+      <td class="num" data-v="203">203</td>
+      <td class="small">lines the pocket</td></tr>
+    
+    </tbody></table></div>
+  </details>
+  
+  <div class="pdbwrap">
+    <div class="pdbviewer" id="pdbviewer" data-pdb="1WW9"></div>
+    <div class="pdbnote" id="pdbnote">
+      Loading structure 1WW9 from RCSB PDB…
+    </div>
+  </div>
+  <figcaption><b>This is the structure of the characterised reference enzyme, not of the database
+  entry you are viewing.</b> PDB 1WW9 was solved for the enzyme from which this type's
+  substrate assignment comes. None of the 0 members listed on this page has a structure
+  of its own, and no structural information is used anywhere in ROAR-DB: types, variants and
+  catalytic-centre calls are made from sequence alignment only. Treat the fold as context for the
+  reference, and read the evidence table above for how close any given member is to it.
+  Coordinates are fetched from RCSB PDB when the figure loads and are not redistributed here.</figcaption>
+</figure>
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>0 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>0 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>0 replicons, 0 genera</dd>
+      <dt>On plasmids</dt><dd>– (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>–</dd>
+      <dt>Profile match</dt><dd>mean score 0 bits, mean coverage 0.00</dd>
+      
+      
+      <dt>Domains of life</dt><dd></dd>
+      <dt>Phyla</dt><dd class="small"></dd>
+      <dt>Top genera</dt><dd></dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_103_CarAa.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_103_CarAa.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">–</td><td></td></tr>
+      </tbody>
+    </table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">No member of this type is close enough to the curated enzyme for its gene
+    order to describe this enzyme. Only the distant arrangements below are available.</p>
+    
+    
+  </div>
+</div>
+
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
+
+
+
+
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">0</span></h2>
+
+
+
+
+<div class="caveat caveat--warn">
+  
+  <b>No member of this type is a close homologue of the reference enzyme.</b>
+  All 0 members are below 60 % identical to it.
+  Nothing here should be read as doing the reaction the reference does. What the profile has
+  collected is the surrounding region of sequence space, and the function of everything in it is
+  unknown. If you came here for the characterised enzyme, it is described above; the table below
+  is a list of relatives, not of examples.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr><td colspan="8" class="empty">No entries.</td></tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"
+        onerror="window.__pdbFailed = true;"></script>
+<script>
+(function () {
+  var host = document.getElementById('pdbviewer');
+  var note = document.getElementById('pdbnote');
+  var bar  = document.getElementById('pdbstyles');
+  if (!host || !note) return;
+  var id = host.dataset.pdb;
+  /*  Aktif bolge gorunumu icin gereken en kucuk veri: demirin zinciri ve
+      numarasi, ve cepheyi saran kalintilarin numaralari. Sunucuda
+      `active_site.py` ciktisindan secildi; tum yapi dosyasi gonderilmiyor. */
+  var SITE = {"contacts": [{"atom": "A/ASP333:OD1", "distance": 1.96, "kind": "carboxylate oxygen"}, {"atom": "A/HIS187:NE2", "distance": 2.0, "kind": "histidine nitrogen"}, {"atom": "A/HIS183:NE2", "distance": 2.09, "kind": "histidine nitrogen"}, {"atom": "A/ASP333:OD2", "distance": 2.59, "kind": "carboxylate oxygen"}], "iron_chain": "A", "iron_residue": "FE2501", "ligands": ["ASP333", "HIS183", "HIS187"], "pdb": "1WW9", "radius": 8.0, "residues": [{"chain": "A", "column": 355, "distance": 1.96, "name": "ASP", "number": "333", "one": "D"}, {"chain": "A", "column": 216, "distance": 2.0, "name": "HIS", "number": "187", "one": "H"}, {"chain": "A", "column": 212, "distance": 2.09, "name": "HIS", "number": "183", "one": "H"}, {"chain": "A", "column": 206, "distance": 4.16, "name": "ASN", "number": "177", "one": "N"}, {"chain": "A", "column": 351, "distance": 4.52, "name": "PHE", "number": "329", "one": "F"}, {"chain": "A", "column": 215, "distance": 4.52, "name": "ILE", "number": "186", "one": "I"}, {"chain": "A", "column": 352, "distance": 4.54, "name": "ASN", "number": "330", "one": "N"}, {"chain": "A", "column": 207, "distance": 5.47, "name": "GLY", "number": "178", "one": "G"}, {"chain": "A", "column": 213, "distance": 5.93, "name": "ILE", "number": "184", "one": "I"}, {"chain": "A", "column": 354, "distance": 6.11, "name": "ASP", "number": "332", "one": "D"}, {"chain": "A", "column": 307, "distance": 6.37, "name": "GLU", "number": "284", "one": "E"}, {"chain": "A", "column": 209, "distance": 6.63, "name": "ASP", "number": "180", "one": "D"}, {"chain": "A", "column": 319, "distance": 6.73, "name": "TYR", "number": "296", "one": "Y"}, {"chain": "A", "column": 359, "distance": 6.85, "name": "ARG", "number": "337", "one": "R"}, {"chain": "A", "column": null, "distance": 7.06, "name": "LEU", "number": "270", "one": "L"}, {"chain": "A", "column": 356, "distance": 7.11, "name": "ILE", "number": "334", "one": "I"}, {"chain": "A", "column": 358, "distance": 7.19, "name": "ALA", "number": "336", "one": "A"}, {"chain": "A", "column": 208, "distance": 7.22, "name": "PHE", "number": "179", "one": "F"}, {"chain": "A", "column": 309, "distance": 7.35, "name": "TYR", "number": "286", "one": "Y"}, {"chain": "A", "column": 353, "distance": 7.46, "name": "ASN", "number": "331", "one": "N"}, {"chain": "A", "column": null, "distance": 7.61, "name": "PHE", "number": "275", "one": "F"}, {"chain": "A", "column": 214, "distance": 7.62, "name": "TYR", "number": "185", "one": "Y"}, {"chain": "A", "column": 305, "distance": 7.84, "name": "GLN", "number": "282", "one": "Q"}, {"chain": "A", "column": 203, "distance": 7.94, "name": "ALA", "number": "174", "one": "A"}]};
+  var rcsb = 'https://www.rcsb.org/structure/' + id;
+
+  function fail(why) {
+    note.innerHTML = why + ' <a href="' + rcsb + '" rel="noopener noreferrer" target="_blank">' +
+                     'Open ' + id + ' at RCSB PDB</a> to view it there.';
+    if (bar) bar.hidden = true;
+  }
+
+  if (window.__pdbFailed || typeof $3Dmol === 'undefined') {
+    fail('The interactive viewer could not be loaded.');
+    return;
+  }
+
+  var dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  var viewer;
+  try {
+    viewer = $3Dmol.createViewer(host, {
+      backgroundColor: dark ? '#181c22' : '#f4f2ec',
+      antialias: true
+    });
+  } catch (e) {
+    fail('The interactive viewer could not start in this browser.');
+    return;
+  }
+
+  /* If RCSB does not answer, say so rather than leaving "Loading…" forever. */
+  var settled = false;
+  var timer = setTimeout(function () {
+    if (!settled) fail('The structure could not be fetched from RCSB PDB.');
+  }, 15000);
+
+  var styles = {
+    cartoon: { cartoon: { color: 'spectrum' } },
+    chain:   { cartoon: { colorscheme: 'chain' } },
+    trace:   { cartoon: { style: 'trace', color: 'spectrum', thickness: 0.2 } }
+  };
+
+  /*  Aktif bolge gorunumu. Butun proteini gostermek yerine yalnizca demiri,
+      onu tutan kalintilari ve cepheyi saran kalintilari cizer; geri kalan
+      zincir cok soluk bir iz olarak kalir ki bolgenin proteinin NERESINDE
+      oldugu kaybolmasin. Koordinasyon baglari kesikli cizgiyle, mesafeleriyle
+      birlikte gosterilir -- kullanicinin istedigi "etkilesimler" budur.      */
+  function layerOn(id) {
+    var el = document.getElementById(id);
+    return el ? el.checked : true;
+  }
+
+  function showActiveSite() {
+    if (!SITE) return;
+    var faint = dark ? '#39434f' : '#c4ccd6';
+    viewer.setStyle({}, {});                       /* once her seyi temizle */
+    if (layerOn('lay-chain')) {
+      viewer.setStyle({}, { cartoon: { color: faint, opacity: 0.35, thickness: 0.15 } });
+    }
+
+    var nums = SITE.residues.map(function (r) { return parseInt(r.number, 10); })
+                            .filter(function (n) { return !isNaN(n); });
+    var sel = { chain: SITE.iron_chain, resi: nums };
+    if (layerOn('lay-pocket')) {
+      viewer.setStyle(sel, { stick: { radius: 0.17, colorscheme: 'default' } });
+    }
+
+    /* Demiri tutan uc kalinti vurgulanir: bu grubun tanimi odur. */
+    var ligNums = (SITE.contacts || []).map(function (c) {
+      var m = /\/([A-Z]{3})(\d+):/.exec(c.atom);
+      return m ? parseInt(m[2], 10) : null;
+    }).filter(Boolean);
+    if (ligNums.length && layerOn('lay-pocket')) {
+      viewer.setStyle({ chain: SITE.iron_chain, resi: ligNums },
+                      { stick: { radius: 0.24, color: dark ? '#e0a96d' : '#9a5b18' } });
+    }
+
+    /*  BAGLI MOLEKULLER. Kristalde demirin yakininda duran her protein-disi
+        grup gosterilir: bazilarinda substrat analogu, bazilarinda dogrudan
+        molekuler oksijen var. Secim 3Dmol'un `within` secicisiyle yapiliyor,
+        yani kristalizasyon katkilari uzakta kaldigi icin kendiliginden
+        eleniyor; sunucuda ayrica geometri hesaplamak gerekmedi. Su ve basit
+        iyonlar acikca disarida. */
+    if (layerOn('lay-ligand')) {
+      var skip = ['HOH', 'WAT', 'NA', 'CL', 'MG', 'CA', 'ZN', 'K', 'SO4', 'PO4',
+                  'GOL', 'EDO', 'ACT', 'MPD', 'PEG', 'DMS', 'NO3', 'FE', 'FE2',
+                  'FES', 'SF4'];
+      var near = { within: { distance: 9.0, sel: { resn: ['FE', 'FE2'] } },
+                   hetflag: true, not: { resn: skip } };
+      viewer.setStyle(near, { stick: { radius: 0.22, colorscheme: 'greenCarbon' } });
+      viewer.addStyle(near, { sphere: { scale: 0.22 } });
+    }
+
+    viewer.setStyle({ resn: ['FE', 'FE2'] }, { sphere: { scale: 0.5, color: '#b5503f' } });
+    viewer.setStyle({ resn: ['FES', 'SF4'] }, { sphere: { scale: 0.32 } });
+
+    /* Koordinasyon baglari: demirden her baglanan atoma kesikli cizgi. */
+    var ironAtoms = layerOn('lay-bonds')
+      ? viewer.selectedAtoms({ resn: ['FE', 'FE2'], chain: SITE.iron_chain }) : [];
+    if (ironAtoms.length) {
+      var fe = ironAtoms[0];
+      (SITE.contacts || []).forEach(function (c) {
+        var m = /\/([A-Z]{3})(\d+):([A-Z0-9]+)/.exec(c.atom);
+        if (!m) return;
+        var target = viewer.selectedAtoms({ chain: SITE.iron_chain,
+                                            resi: parseInt(m[2], 10), atom: m[3] });
+        if (!target.length) return;
+        viewer.addLine({ start: { x: fe.x, y: fe.y, z: fe.z },
+                         end: { x: target[0].x, y: target[0].y, z: target[0].z },
+                         dashed: true, color: dark ? '#e8e6e1' : '#15202b', linewidth: 2 });
+        if (!layerOn('lay-labels')) return;
+        viewer.addLabel(c.distance.toFixed(2) + ' A',
+          { position: { x: (fe.x + target[0].x) / 2, y: (fe.y + target[0].y) / 2,
+                        z: (fe.z + target[0].z) / 2 },
+            fontSize: 10, backgroundOpacity: 0.65,
+            backgroundColor: dark ? '#0e1319' : '#ffffff',
+            fontColor: dark ? '#e9edf2' : '#111821' });
+      });
+    }
+    viewer.zoomTo(sel);
+    viewer.zoom(0.85);
+    viewer.render();
+  }
+
+  function applyStyle(name) {
+    viewer.removeAllLabels();
+    viewer.removeAllShapes();
+    host.dataset.mode = name;
+    var layers = document.getElementById('pdblayers');
+    if (layers) layers.hidden = (name !== 'site');
+    if (name === 'site') { showActiveSite(); return; }
+    viewer.setStyle({}, styles[name] || styles.cartoon);
+    /* keep the two metal centres visible: they are the point of this family */
+    viewer.setStyle({ resn: ['FES', 'SF4', 'FE', 'FE2'] }, { sphere: { scale: 0.45 } });
+    viewer.zoomTo();
+    viewer.render();
+  }
+
+  try {
+    $3Dmol.download('pdb:' + id, viewer, {}, function () {
+      settled = true;
+      clearTimeout(timer);
+      try {
+        applyStyle('cartoon');
+        viewer.zoomTo();
+        viewer.render();
+        note.hidden = true;
+        var layers = document.getElementById('pdblayers');
+        if (layers) {
+          layers.addEventListener('change', function () {
+            if (host.dataset.mode === 'site') {
+              viewer.removeAllLabels();
+              viewer.removeAllShapes();
+              showActiveSite();
+            }
+          });
+        }
+        if (bar) {
+          bar.hidden = false;
+          bar.addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-style]');
+            if (!b) return;
+            Array.prototype.forEach.call(bar.querySelectorAll('button'), function (o) {
+              o.classList.toggle('on', o === b);
+            });
+            applyStyle(b.dataset.style);
+          });
+        }
+      } catch (e) {
+        fail('The structure was fetched but could not be drawn.');
+      }
+    });
+  } catch (e) {
+    settled = true;
+    clearTimeout(timer);
+    fail('The structure could not be fetched from RCSB PDB.');
+  }
+})();
+</script>
+
+
+</body>
+</html>

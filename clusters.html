@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enzyme types · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<h1>Reference RO types</h1>
+<p class="lede">Each confirmed entry is assigned to the reference type whose profile scores highest,
+by bit score rather than E-value. One row is one characterised enzyme type.</p>
+<p class="note">Click any column header to sort it; click again to reverse. The filter box matches
+anything in a row, and the chips narrow the table to one RO group, substrate class or literature
+confidence. Percentages are shares of that type's own members, so they are comparable down a column
+but not additive. A type with a low β, ferredoxin or reductase share is one whose partners are
+usually encoded elsewhere in the genome, not one that works without them.
+10 of the 71 curated types have
+<b>no members of their own</b>; they are listed here with a
+<span class="chip chip--warn">no members</span> mark and the type their reference is counted
+under, because assignment is competitive and a profile with a near-identical sibling can win
+nothing at all.</p>
+
+<div class="tablewrap">
+<table class="data" id="clusters" data-filter="Filter types by name, substrate or genus…">
+  <thead><tr>
+    <th>Type</th>
+    <th class="num" data-facet="RO group">Group</th>
+    <th>Substrate</th>
+    <th data-facet="Substrate class">Class</th>
+    <th data-facet="Chemical family">Family</th>
+    <th data-facet="Reaction">Reaction</th>
+    <th data-facet="Confidence">Confidence</th>
+    <th class="num">Members</th>
+    <th class="num">Genera</th>
+    <th class="num">Variants</th>
+    <th class="num">Plasmid<span class="unit">%</span></th>
+    <th class="num">β in operon<span class="unit">%</span></th>
+    <th class="num">Ferredoxin<span class="unit">%</span></th>
+    <th class="num">Reductase<span class="unit">%</span></th>
+    <th class="num">Eukaryotic<span class="unit">%</span></th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html"><b>KshA15</b></a>
+        <span class="note small">3_313_KshA15</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>3-ketosteroid</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">hydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="1345">1,345</td>
+    <td class="num" data-v="161">161</td>
+    <td class="num" data-v="162">162</td>
+    <td class="num" data-v="0.14869888475836432">0.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.29739776951672864">0.3</td>
+    <td class="num" data-v="4.684014869888476">4.7</td>
+    <td class="num" data-v="14.423791821561338">14.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_504_CntA.html"><b>CntA</b></a>
+        <span class="note small">5_504_CntA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>L-carnitine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">C N cleavage</td>
+    <td>high</td>
+    <td class="num" data-v="1210">1,210</td>
+    <td class="num" data-v="202">202</td>
+    <td class="num" data-v="235">235</td>
+    <td class="num" data-v="2.0661157024793386">2.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.9090909090909091">0.9</td>
+    <td class="num" data-v="17.355371900826448">17.4</td>
+    <td class="num" data-v="16.198347107438018">16.2</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_104_VanA.html"><b>VanA</b></a>
+        <span class="note small">1_104_VanA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>vanillate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">O demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="1169">1,169</td>
+    <td class="num" data-v="191">191</td>
+    <td class="num" data-v="87">87</td>
+    <td class="num" data-v="0.7698887938408896">0.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="25.320786997433704">25.3</td>
+    <td class="num" data-v="36.0136869118905">36.0</td>
+    <td class="num" data-v="9.409751924721984">9.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html"><b>Stc2</b></a>
+        <span class="note small">5_506_Stc2</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>stachydrine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="903">903</td>
+    <td class="num" data-v="166">166</td>
+    <td class="num" data-v="145">145</td>
+    <td class="num" data-v="2.768549280177187">2.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.104097452934662">2.1</td>
+    <td class="num" data-v="54.04208194905869">54.0</td>
+    <td class="num" data-v="2.6578073089700998">2.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html"><b>TsaM</b></a>
+        <span class="note small">1_106_TsaM</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>4-toluenesulfonate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">sulfoaromatics</td>
+    <td class="small">hydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="655">655</td>
+    <td class="num" data-v="144">144</td>
+    <td class="num" data-v="168">168</td>
+    <td class="num" data-v="2.4427480916030535">2.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.2213740458015268">1.2</td>
+    <td class="num" data-v="21.984732824427482">22.0</td>
+    <td class="num" data-v="2.2900763358778624">2.3</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html"><b>BmoA</b></a>
+        <span class="note small">5_507_BmoA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>glycine betaine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td>medium</td>
+    <td class="num" data-v="610">610</td>
+    <td class="num" data-v="138">138</td>
+    <td class="num" data-v="140">140</td>
+    <td class="num" data-v="2.1311475409836067">2.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="12.62295081967213">12.6</td>
+    <td class="num" data-v="26.39344262295082">26.4</td>
+    <td class="num" data-v="1.8032786885245902">1.8</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html"><b>TdnA1</b></a>
+        <span class="note small">4_404_TdnA1</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>aniline</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">anilines</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="425">425</td>
+    <td class="num" data-v="71">71</td>
+    <td class="num" data-v="41">41</td>
+    <td class="num" data-v="4.0">4.0</td>
+    <td class="num" data-v="98.82352941176471">98.8</td>
+    <td class="num" data-v="2.1176470588235294">2.1</td>
+    <td class="num" data-v="15.764705882352942">15.8</td>
+    <td class="num" data-v="0.23529411764705882">0.2</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_411_XylX.html"><b>XylX</b></a>
+        <span class="note small">4_411_XylX</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>toluate and benzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="422">422</td>
+    <td class="num" data-v="59">59</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="3.3175355450236967">3.3</td>
+    <td class="num" data-v="89.0995260663507">89.1</td>
+    <td class="num" data-v="3.080568720379147">3.1</td>
+    <td class="num" data-v="91.94312796208531">91.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html"><b>DdmC</b></a>
+        <span class="note small">1_105_DdmC</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>dicamba</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">O demethylation</td>
+    <td>low</td>
+    <td class="num" data-v="401">401</td>
+    <td class="num" data-v="127">127</td>
+    <td class="num" data-v="115">115</td>
+    <td class="num" data-v="0.9975062344139651">1.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.49875311720698257">0.5</td>
+    <td class="num" data-v="2.2443890274314215">2.2</td>
+    <td class="num" data-v="38.90274314214464">38.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html"><b>CdnA</b></a>
+        <span class="note small">1_113_CdnA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>caffeine and methylxanthines</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td>medium</td>
+    <td class="num" data-v="401">401</td>
+    <td class="num" data-v="78">78</td>
+    <td class="num" data-v="65">65</td>
+    <td class="num" data-v="2.493765586034913">2.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.745635910224439">1.7</td>
+    <td class="num" data-v="5.486284289276808">5.5</td>
+    <td class="num" data-v="1.4962593516209477">1.5</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html"><b>GbcA</b></a>
+        <span class="note small">5_508_GbcA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>glycine betaine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="336">336</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html"><b>CmoS</b></a>
+        <span class="note small">5_501_CmoS</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="288">288</td>
+    <td class="num" data-v="89">89</td>
+    <td class="num" data-v="48">48</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.3472222222222222">0.3</td>
+    <td class="num" data-v="2.0833333333333335">2.1</td>
+    <td class="num" data-v="37.15277777777778">37.2</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html"><b>TPDO</b></a>
+        <span class="note small">4_409_TPDO</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>terephthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="273">273</td>
+    <td class="num" data-v="42">42</td>
+    <td class="num" data-v="28">28</td>
+    <td class="num" data-v="11.355311355311356">11.4</td>
+    <td class="num" data-v="97.06959706959707">97.1</td>
+    <td class="num" data-v="49.08424908424909">49.1</td>
+    <td class="num" data-v="47.61904761904762">47.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_410_CbdC.html"><b>CbdC</b></a>
+        <span class="note small">4_410_CbdC</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>2-halobenzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="243">243</td>
+    <td class="num" data-v="50">50</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="2.05761316872428">2.1</td>
+    <td class="num" data-v="99.17695473251028">99.2</td>
+    <td class="num" data-v="2.05761316872428">2.1</td>
+    <td class="num" data-v="87.24279835390946">87.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html"><b>GxtA</b></a>
+        <span class="note small">1_111_GxtA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>gonyautoxin pathway intermediate</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="234">234</td>
+    <td class="num" data-v="104">104</td>
+    <td class="num" data-v="65">65</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.1367521367521367">2.1</td>
+    <td class="num" data-v="0.8547008547008547">0.9</td>
+    <td class="num" data-v="38.888888888888886">38.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html"><b>SxtT</b></a>
+        <span class="note small">1_110_SxtT</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>saxitoxin pathway intermediate</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="188">188</td>
+    <td class="num" data-v="81">81</td>
+    <td class="num" data-v="68">68</td>
+    <td class="num" data-v="2.127659574468085">2.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.5957446808510638">1.6</td>
+    <td class="num" data-v="10.638297872340425">10.6</td>
+    <td class="num" data-v="5.851063829787234">5.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_406_PDO.html"><b>PDO</b></a>
+        <span class="note small">4_406_PDO</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="184">184</td>
+    <td class="num" data-v="58">58</td>
+    <td class="num" data-v="31">31</td>
+    <td class="num" data-v="5.978260869565218">6.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="6.521739130434782">6.5</td>
+    <td class="num" data-v="23.91304347826087">23.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_408_AntA.html"><b>AntA</b></a>
+        <span class="note small">4_408_AntA</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>anthranilate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="184">184</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.6304347826086956">1.6</td>
+    <td class="num" data-v="99.45652173913044">99.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="89.1304347826087">89.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html"><b>ROCH34</b></a>
+        <span class="note small">4_405_ROCH34</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="182">182</td>
+    <td class="num" data-v="55">55</td>
+    <td class="num" data-v="34">34</td>
+    <td class="num" data-v="1.6483516483516483">1.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="19.23076923076923">19.2</td>
+    <td class="num" data-v="23.076923076923077">23.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_217_HcaE.html"><b>HcaE</b></a>
+        <span class="note small">2_217_HcaE</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>3-phenylpropionate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="178">178</td>
+    <td class="num" data-v="16">16</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="98.31460674157303">98.3</td>
+    <td class="num" data-v="87.64044943820225">87.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_307_NagGH.html"><b>NagGH</b></a>
+        <span class="note small">3_307_NagGH</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>naphthalene-2-sulfonate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">sulfoaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="174">174</td>
+    <td class="num" data-v="36">36</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="3.4482758620689653">3.4</td>
+    <td class="num" data-v="95.97701149425288">96.0</td>
+    <td class="num" data-v="88.50574712643679">88.5</td>
+    <td class="num" data-v="59.195402298850574">59.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html"><b>PhtAa</b></a>
+        <span class="note small">3_311_PhtAa</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="126">126</td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="8.73015873015873">8.7</td>
+    <td class="num" data-v="89.68253968253968">89.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="32.53968253968254">32.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html"><b>AtdA</b></a>
+        <span class="note small">4_403_AtdA</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>aniline</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">anilines</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="115">115</td>
+    <td class="num" data-v="31">31</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="0.8695652173913043">0.9</td>
+    <td class="num" data-v="54.78260869565217">54.8</td>
+    <td class="num" data-v="1.7391304347826086">1.7</td>
+    <td class="num" data-v="29.565217391304348">29.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html"><b>CmtAb</b></a>
+        <span class="note small">4_401_CmtAb</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>p-cumate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="107">107</td>
+    <td class="num" data-v="43">43</td>
+    <td class="num" data-v="41">41</td>
+    <td class="num" data-v="6.542056074766355">6.5</td>
+    <td class="num" data-v="49.532710280373834">49.5</td>
+    <td class="num" data-v="20.560747663551403">20.6</td>
+    <td class="num" data-v="18.69158878504673">18.7</td>
+    <td class="num" data-v="0.9345794392523364">0.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html"><b>qxyA</b></a>
+        <span class="note small">5_505_qxyA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>benzalkonium chloride and other quaternary ammonium compounds</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">C N cleavage</td>
+    <td>high</td>
+    <td class="num" data-v="95">95</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="1.0526315789473684">1.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.1052631578947367">2.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html"><b>PhnA1a</b></a>
+        <span class="note small">3_301_PhnA1a</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phenanthrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="94">94</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="20.21276595744681">20.2</td>
+    <td class="num" data-v="91.48936170212765">91.5</td>
+    <td class="num" data-v="30.851063829787233">30.9</td>
+    <td class="num" data-v="43.61702127659574">43.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_108_PobA.html"><b>PobA</b></a>
+        <span class="note small">1_108_PobA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>4-hydroxybenzoate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">hydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="90">90</td>
+    <td class="num" data-v="33">33</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="15.555555555555555">15.6</td>
+    <td class="num" data-v="4.444444444444445">4.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_302_DitA.html"><b>DitA</b></a>
+        <span class="note small">3_302_DitA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>dehydroabietate</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="69">69</td>
+    <td class="num" data-v="15">15</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="4.3478260869565215">4.3</td>
+    <td class="num" data-v="98.55072463768116">98.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="27.536231884057973">27.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_218_BphA1.html"><b>BphA1</b></a>
+        <span class="note small">2_218_BphA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="64">64</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="6.25">6.2</td>
+    <td class="num" data-v="65.625">65.6</td>
+    <td class="num" data-v="62.5">62.5</td>
+    <td class="num" data-v="56.25">56.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html"><b>PhdA</b></a>
+        <span class="note small">3_319_PhdA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phenanthrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="61">61</td>
+    <td class="num" data-v="24">24</td>
+    <td class="num" data-v="27">27</td>
+    <td class="num" data-v="4.918032786885246">4.9</td>
+    <td class="num" data-v="49.18032786885246">49.2</td>
+    <td class="num" data-v="8.19672131147541">8.2</td>
+    <td class="num" data-v="9.836065573770492">9.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html"><b>CndA</b></a>
+        <span class="note small">1_107_CndA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="60">60</td>
+    <td class="num" data-v="24">24</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.6666666666666667">1.7</td>
+    <td class="num" data-v="18.333333333333332">18.3</td>
+    <td class="num" data-v="16.666666666666668">16.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html"><b>CARDO</b></a>
+        <span class="note small">1_102_CARDO</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>carbazole</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td>high</td>
+    <td class="num" data-v="55">55</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="18.181818181818183">18.2</td>
+    <td class="num" data-v="3.6363636363636362">3.6</td>
+    <td class="num" data-v="29.09090909090909">29.1</td>
+    <td class="num" data-v="25.454545454545453">25.5</td>
+    <td class="num" data-v="1.8181818181818181">1.8</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html"><b>bfzA</b></a>
+        <span class="note small">2_211_bfzA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>benzene and fluorene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>low</td>
+    <td class="num" data-v="49">49</td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="19">19</td>
+    <td class="num" data-v="2.0408163265306123">2.0</td>
+    <td class="num" data-v="12.244897959183673">12.2</td>
+    <td class="num" data-v="12.244897959183673">12.2</td>
+    <td class="num" data-v="20.408163265306122">20.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_109_LigX.html"><b>LigX</b></a>
+        <span class="note small">1_109_LigX</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>5,5&#39;-dehydrodivanillate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">O demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="48">48</td>
+    <td class="num" data-v="24">24</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="12.5">12.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_317_NidA.html"><b>NidA</b></a>
+        <span class="note small">3_317_NidA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>pyrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="37">37</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="24.324324324324323">24.3</td>
+    <td class="num" data-v="72.97297297297297">73.0</td>
+    <td class="num" data-v="2.7027027027027026">2.7</td>
+    <td class="num" data-v="5.405405405405405">5.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_112_NdmA.html"><b>NdmA</b></a>
+        <span class="note small">1_112_NdmA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>caffeine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="31">31</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="10">10</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="16.129032258064516">16.1</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html"><b>NarAa</b></a>
+        <span class="note small">3_316_NarAa</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="16">16</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="16.666666666666668">16.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html"><b>EdoA1</b></a>
+        <span class="note small">2_202_EdoA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>ethylbenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="29">29</td>
+    <td class="num" data-v="12">12</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="27.586206896551722">27.6</td>
+    <td class="num" data-v="68.96551724137932">69.0</td>
+    <td class="num" data-v="72.41379310344827">72.4</td>
+    <td class="num" data-v="55.172413793103445">55.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_216_BPDO.html"><b>BPDO</b></a>
+        <span class="note small">2_216_BPDO</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="25">25</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="24.0">24.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_214_TftA.html"><b>TftA</b></a>
+        <span class="note small">2_214_TftA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>2,4,5-trichlorophenoxyacetate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="73.91304347826087">73.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="21.73913043478261">21.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_502_CmoB.html"><b>CmoB</b></a>
+        <span class="note small">5_502_CmoB</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="12">12</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html"><b>Dpe</b></a>
+        <span class="note small">2_204_Dpe</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>diphenyl ether</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td>high</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="10.0">10.0</td>
+    <td class="num" data-v="95.0">95.0</td>
+    <td class="num" data-v="30.0">30.0</td>
+    <td class="num" data-v="65.0">65.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html"><b>BedC1</b></a>
+        <span class="note small">2_212_BedC1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>benzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="10.0">10.0</td>
+    <td class="num" data-v="40.0">40.0</td>
+    <td class="num" data-v="70.0">70.0</td>
+    <td class="num" data-v="5.0">5.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html"><b>PsbAb</b></a>
+        <span class="note small">4_402_PsbAb</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>4-sulfobenzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">sulfoaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="19">19</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="10.526315789473685">10.5</td>
+    <td class="num" data-v="68.42105263157895">68.4</td>
+    <td class="num" data-v="68.42105263157895">68.4</td>
+    <td class="num" data-v="63.1578947368421">63.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_303_NBDO.html"><b>NBDO</b></a>
+        <span class="note small">3_303_NBDO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>nitrobenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="94.44444444444444">94.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_114_NdmB.html"><b>NdmB</b></a>
+        <span class="note small">1_114_NdmB</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>caffeine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="15">15</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="13.333333333333334">13.3</td>
+    <td class="num" data-v="6.666666666666667">6.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html"><b>BphA1A2</b></a>
+        <span class="note small">2_213_BphA1A2</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="7.142857142857143">7.1</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="92.85714285714286">92.9</td>
+    <td class="num" data-v="92.85714285714286">92.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_304_OMO.html"><b>OMO</b></a>
+        <span class="note small">3_304_OMO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>2-oxo-1,2-dihydroquinoline</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="54.54545454545455">54.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html"><b>ArhA1</b></a>
+        <span class="note small">3_305_ArhA1</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>polycyclic aromatic hydrocarbons</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="9.090909090909092">9.1</td>
+    <td class="num" data-v="54.54545454545455">54.5</td>
+    <td class="num" data-v="9.090909090909092">9.1</td>
+    <td class="num" data-v="9.090909090909092">9.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_318_NidA.html"><b>NidA</b></a>
+        <span class="note small">3_318_NidA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>pyrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="10">10</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html"><b>TecA1</b></a>
+        <span class="note small">2_208_TecA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>1,2,4,5-tetrachlorobenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="55.55555555555556">55.6</td>
+    <td class="num" data-v="11.11111111111111">11.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_215_cadA.html"><b>cadA</b></a>
+        <span class="note small">2_215_cadA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>2,4-dichlorophenoxyacetate (2,4-D)</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>low</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="25.0">25.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="87.5">87.5</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html"><b>NidA3</b></a>
+        <span class="note small">3_320_NidA3</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>polycyclic aromatic hydrocarbons</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="75.0">75.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_503_CmoA.html"><b>CmoA</b></a>
+        <span class="note small">5_503_CmoA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="14.285714285714286">14.3</td>
+    <td class="num" data-v="14.285714285714286">14.3</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_203_cumA1.html"><b>cumA1</b></a>
+        <span class="note small">2_203_cumA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>cumene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="83.33333333333333">83.3</td>
+    <td class="num" data-v="83.33333333333333">83.3</td>
+    <td class="num" data-v="66.66666666666667">66.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_209_TDO.html"><b>TDO</b></a>
+        <span class="note small">2_209_TDO</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>toluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="25.0">25.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_101_OxoO.html"><b>OxoO</b></a>
+        <span class="note small">1_101_OxoO</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>2-oxo-1,2-dihydroquinoline</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td>medium</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_308_DxnA1.html"><b>DxnA1</b></a>
+        <span class="note small">3_308_DxnA1</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>dibenzo-p-dioxin</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td>high</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_314_NDO.html"><b>NDO</b></a>
+        <span class="note small">3_314_NDO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_201_BphA1.html"><b>BphA1</b></a>
+        <span class="note small">2_201_BphA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_306_3NTDO.html"><b>3NTDO</b></a>
+        <span class="note small">3_306_3NTDO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>3-nitrotoluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_103_CarAa.html"><b>CarAa</b></a>
+        <span class="note small">1_103_CarAa</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of CarAa never came out of the scanned genome set. Its profile still competes on 1,089 candidates that clear the coverage gate, but it is outscored every time, most often by CARDO. The proteins this type would describe are therefore counted under 1_102_CARDO. The two references are 99.2 % identical, so the split between the names is a naming decision rather than a biological one.">no members · counted under CARDO</span></td>
+    <td class="num">1</td>
+    <td>carbazole</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_115_NdmC.html"><b>NdmC</b></a>
+        <span class="note small">1_115_NdmC</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of NdmC is present in the database (WP_046819639.1, 1 genomic copy), but every copy scores higher on the NdmB profile, so the assignment step filed it under 1_114_NdmB. Two curated names have collapsed onto one model: this is a merge, not missing data. The two references are 100.0 % identical, so the split between the names is a naming decision rather than a biological one.">no members · counted under NdmB</span></td>
+    <td class="num">1</td>
+    <td>7-methylxanthine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_206_IpBAa.html"><b>IpBAa</b></a>
+        <span class="note small">2_206_IpBAa</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of IpBAa never came out of the scanned genome set. Its profile still competes on 3,201 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1.">no members · counted under EdoA1</span></td>
+    <td class="num">2</td>
+    <td>isopropylbenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_207_BpdC1.html"><b>BpdC1</b></a>
+        <span class="note small">2_207_BpdC1</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of BpdC1 never came out of the scanned genome set. Its profile still competes on 3,258 candidates that clear the coverage gate, but it is outscored every time, most often by BedC1. The proteins this type would describe are therefore counted under 2_212_BedC1.">no members · counted under BedC1</span></td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_210_XylC1.html"><b>XylC1</b></a>
+        <span class="note small">2_210_XylC1</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of XylC1 never came out of the scanned genome set. Its profile still competes on 3,257 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1.">no members · counted under EdoA1</span></td>
+    <td class="num">2</td>
+    <td>xylene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_309_NahAc.html"><b>NahAc</b></a>
+        <span class="note small">3_309_NahAc</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of NahAc is present in the database (WP_011117400.1, 5 genomic copies), but every copy scores higher on the NBDO profile, so the assignment step filed it under 3_303_NBDO. Two curated names have collapsed onto one model: this is a merge, not missing data. The two references are 100.0 % identical, so the split between the names is a naming decision rather than a biological one.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_310_DntAc.html"><b>DntAc</b></a>
+        <span class="note small">3_310_DntAc</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of DntAc never came out of the scanned genome set. Its profile still competes on 2,758 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>2,4-dinitrotoluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_312_NinA.html"><b>NinA</b></a>
+        <span class="note small">3_312_NinA</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of NinA never came out of the scanned genome set. Its profile still competes on 2,256 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>nitroaromatic compounds</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td>medium</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_315_NDO.html"><b>NDO</b></a>
+        <span class="note small">3_315_NDO</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of NDO is present in the database (WP_011117400.1, 5 genomic copies), but every copy scores higher on the NBDO profile, so the assignment step filed it under 3_303_NBDO. Two curated names have collapsed onto one model: this is a merge, not missing data. The two references are 100.0 % identical, so the split between the names is a naming decision rather than a biological one.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_407_PbaA1.html"><b>PbaA1</b></a>
+        <span class="note small">4_407_PbaA1</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of PbaA1 is present in the database (WP_032073055.1, 1 genomic copy), but every copy scores higher on the DxnA1 profile, so the assignment step filed it under 3_308_DxnA1. Two curated names have collapsed onto one model: this is a merge, not missing data.">no members · counted under DxnA1</span></td>
+    <td class="num">4</td>
+    <td>3-phenoxybenzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+<p class="note">Substrate and substrate class come from <code>cluster_ecology.csv</code>, curated
+from the literature on each type's reference enzyme; they describe that enzyme, not every member.
+<a href="/pro-sim-blast/atlas/evidence.html">How far the label carries</a> ·
+<a href="/pro-sim-blast/download/all_confirmed.csv">Download every entry (CSV)</a></p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

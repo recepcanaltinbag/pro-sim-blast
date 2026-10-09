@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closeness · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class="on"
+     aria-current="true">Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Sequence pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Phylogeny</a>
+  
+  <a href="/pro-sim-blast/atlas/network.html" class=""
+     >Sequence space</a>
+  
+  <a href="/pro-sim-blast/atlas/taxonomy.html" class=""
+     >Taxonomy</a>
+  
+  <a href="/pro-sim-blast/atlas/structure.html" class=""
+     >Active site</a>
+  
+  <a href="/pro-sim-blast/atlas/closeness.html" class="on"
+     aria-current="page">Closeness</a>
+  
+  
+</nav>
+
+
+<h1>What changes when you count only the members whose chemistry is known</h1>
+<p class="lede">Every association on this site is computed over entries, and most entries are distant
+relatives of a characterised enzyme whose reaction nobody has measured. This page asks how much of
+each result rests on them. The short answer for the strongest result is reassuring, and for one
+ecological result it is not.</p>
+
+
+<h2>1 · The bridging carboxylate, by how close the member is</h2>
+<p>The database reports an association between the inter-subunit bridging carboxylate, aspartate or
+glutamate, and the enzyme group. Stated as one number over all entries it is
+V&nbsp;=&nbsp;0.84. Recomputed within each evidence level it
+behaves in the way one would hope: it is near-deterministic where the chemistry is known, and it
+decays with distance.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Members included</th><th class="num">Entries</th><th class="num">Glutamate</th>
+<th class="num">Cramér's V</th><th>Reading</th></tr></thead>
+<tbody>
+
+
+
+<tr class="hl">
+  <td>every entry <span class="chip chip--ok">the published figure</span></td>
+  <td class="num" data-v="11417">11,417</td>
+  <td class="num" data-v="0.283">28.3 %</td>
+  <td class="num" data-v="0.843">0.843</td>
+  <td class="small">the single number the rest of the site reports</td>
+</tr>
+
+
+
+
+<tr>
+  <td>at least 60 % identical to a curated enzyme</td>
+  <td class="num" data-v="2868">2,868</td>
+  <td class="num" data-v="0.2109">21.1 %</td>
+  <td class="num" data-v="0.999">0.999</td>
+  <td class="small">the members whose substrate label means something</td>
+</tr>
+
+
+
+
+<tr>
+  <td>below 60 % identical</td>
+  <td class="num" data-v="8549">8,549</td>
+  <td class="num" data-v="0.3072">30.7 %</td>
+  <td class="num" data-v="0.805">0.805</td>
+  <td class="small">reaction unknown for all of these</td>
+</tr>
+
+
+
+
+<tr>
+  <td>characterised enzymes only</td>
+  <td class="num" data-v="215">215</td>
+  <td class="num" data-v="0.214">21.4 %</td>
+  <td class="num" data-v="0.986">0.986</td>
+  <td class="small">the reference enzymes and their near-identical relatives</td>
+</tr>
+
+
+
+
+<tr>
+  <td>close homologues</td>
+  <td class="num" data-v="2653">2,653</td>
+  <td class="num" data-v="0.2107">21.1 %</td>
+  <td class="num" data-v="1.0">1.000</td>
+  <td class="small">where the rule is at its cleanest</td>
+</tr>
+
+
+
+
+<tr>
+  <td>family members</td>
+  <td class="num" data-v="1906">1,906</td>
+  <td class="num" data-v="0.2959">29.6 %</td>
+  <td class="num" data-v="0.891">0.891</td>
+  <td class="small"></td>
+</tr>
+
+
+
+
+<tr>
+  <td>distant relatives</td>
+  <td class="num" data-v="6273">6,273</td>
+  <td class="num" data-v="0.3136">31.4 %</td>
+  <td class="num" data-v="0.801">0.801</td>
+  <td class="small"></td>
+</tr>
+
+
+
+
+<tr>
+  <td>no close characterised relative</td>
+  <td class="num" data-v="370">370</td>
+  <td class="num" data-v="0.2568">25.7 %</td>
+  <td class="num" data-v="0.738">0.738</td>
+  <td class="small">the most divergent members</td>
+</tr>
+
+
+
+
+<tr>
+  <td>core of its own subfamily</td>
+  <td class="num" data-v="8124">8,124</td>
+  <td class="num" data-v="0.2685">26.9 %</td>
+  <td class="num" data-v="0.896">0.896</td>
+  <td class="small"></td>
+</tr>
+
+
+
+
+<tr>
+  <td>divergent within its subfamily</td>
+  <td class="num" data-v="858">858</td>
+  <td class="num" data-v="0.2261">22.6 %</td>
+  <td class="num" data-v="0.838">0.838</td>
+  <td class="small"></td>
+</tr>
+
+
+
+
+<tr>
+  <td>novel candidates</td>
+  <td class="num" data-v="2435">2,435</td>
+  <td class="num" data-v="0.3515">35.1 %</td>
+  <td class="num" data-v="0.737">0.737</td>
+  <td class="small"></td>
+</tr>
+
+
+</tbody></table></div>
+<figcaption><b>The published number is a diluted version of a near-perfect rule.</b> Among members
+at least 60 % identical to a curated enzyme the association is
+V&nbsp;=&nbsp;0.999, and among close homologues specifically
+it reaches 1.000. It falls to
+0.738 among the most divergent members. So the
+distant members do not create the pattern; they add noise to it. The same ordering appears in the
+assignment classes: core members give
+0.896 and novel candidates
+0.737.</figcaption>
+</figure>
+
+<h2>2 · Where the rule breaks, and what that points at</h2>
+<p>Within each group the glutamate share is flat across the close tiers and only moves among distant
+members. Reading along a row shows where the assignment is doing something questionable.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>RO group</th><th class="num">characterized</th><th class="num">close homolog</th><th class="num">family member</th><th class="num">distant</th><th class="num">novel</th></tr></thead>
+<tbody>
+
+<tr><td>group 1</td>
+
+  
+  <td class="num" data-v="-1">
+    <span class="note">–</span></td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=425</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=308</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0057">
+    1 %<span class="unit"> n=2471</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=138</span>
+    </td>
+
+</tr>
+
+<tr><td>group 2</td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=99</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=154</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=80</span>
+    </td>
+
+  
+  <td class="num" data-v="0.5299">
+    53 %<span class="unit"> n=117</span>
+    </td>
+
+  
+  <td class="num" data-v="-1">
+    <span class="note">–</span></td>
+
+</tr>
+
+<tr><td>group 3</td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=39</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=676</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=433</span>
+    </td>
+
+  
+  <td class="num" data-v="0.1186">
+    12 %<span class="unit"> n=759</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0326">
+    3 %<span class="unit"> n=92</span>
+    </td>
+
+</tr>
+
+<tr><td>group 4</td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=23</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=839</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0">
+    0 %<span class="unit"> n=425</span>
+    </td>
+
+  
+  <td class="num" data-v="0.0906">
+    9 %<span class="unit"> n=850</span>
+    </td>
+
+  
+  <td class="num" data-v="1.0">
+    100 %<span class="unit"> n=17</span>
+    </td>
+
+</tr>
+
+<tr><td>group 5</td>
+
+  
+  <td class="num" data-v="0.9787">
+    98 %<span class="unit"> n=47</span>
+    </td>
+
+  
+  <td class="num" data-v="1.0">
+    100 %<span class="unit"> n=559</span>
+    </td>
+
+  
+  <td class="num" data-v="0.8545">
+    85 %<span class="unit"> n=660</span>
+    </td>
+
+  
+  <td class="num" data-v="0.8304">
+    83 %<span class="unit"> n=2076</span>
+    </td>
+
+  
+  <td class="num" data-v="0.6098">
+    61 %<span class="unit"> n=123</span>
+    </td>
+
+</tr>
+
+</tbody></table></div>
+<p class="note">Groups 1 to 4 carry aspartate in essentially every member whose chemistry is known,
+and glutamate appears only among their distant members. Group 5 is the mirror image: glutamate in
+almost every close member, decaying with distance. Both patterns say the same thing, that the
+residue tracks the characterised chemistry and the distant members are where assignment becomes
+unreliable.</p>
+
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Group</th><th class="num">Distant members carrying glutamate</th>
+<th class="num">Glutamate among its close members</th><th>Nearest reference belongs to group</th>
+<th class="num">Median identity to it</th></tr></thead>
+<tbody>
+
+<tr><td>group 4</td>
+  <td class="num" data-v="94">94</td>
+  <td class="num">0 %</td>
+  <td class="small">group 4: 44 · group 3: 25 · group 5: 15 · group 2: 10</td>
+  <td class="num">29.7 %</td></tr>
+
+<tr><td>group 3</td>
+  <td class="num" data-v="93">93</td>
+  <td class="num">0 %</td>
+  <td class="small">group 3: 61 · group 2: 14 · group 4: 10 · group 5: 8</td>
+  <td class="num">32.5 %</td></tr>
+
+<tr><td>group 2</td>
+  <td class="num" data-v="62">62</td>
+  <td class="num">0 %</td>
+  <td class="small">group 3: 21 · group 2: 21 · group 5: 18 · group 4: 2</td>
+  <td class="num">31.9 %</td></tr>
+
+</tbody></table></div>
+<figcaption><b>A curation lead rather than a finding.</b> These are entries assigned to a group
+whose close members never carry glutamate, which nonetheless carry it. Their nearest curated
+reference frequently belongs to a different group, at around 30 % identity. The simplest explanation
+is that the profile assignment placed them in the wrong group, and the residue is reporting their
+real affinity. They are listed so a curator can check them, not presented as mis-assigned.</figcaption>
+</figure>
+
+
+<h2>3 · Recompute it yourself</h2>
+<p>Pick which members to include and the table is recomputed in your browser from the per-entry data,
+with no server involved. This is the same arithmetic as the rows above, so you can confirm them or
+ask a question they do not answer.</p>
+<figure class="fig">
+<div class="controls" id="cbx">
+  <fieldset><legend>Evidence level</legend><div id="cbx-tiers"></div></fieldset>
+  <fieldset><legend>Assignment class</legend><div id="cbx-classes"></div></fieldset>
+  <p class="note"><button class="btn btn--small" type="button" id="cbx-all">select all</button>
+  <button class="btn btn--small" type="button" id="cbx-close">close members only</button></p>
+</div>
+<div id="cbx-out" class="tablewrap"><p class="note">loading the per-entry table…</p></div>
+<figcaption>Cramér's V here is computed exactly as in the published tests, on the group against
+residue contingency table of whatever subset you select. With a very small selection the figure
+becomes unstable, which is why the entry count is shown beside it.</figcaption>
+</figure>
+
+
+
+<h2>4 · Who actually comes from contaminated sites</h2>
+<p>Do members close to a characterised pollutant-degrading enzyme come from contaminated sites more often than their distant relatives, which would be consistent with the family pre-existing in natural environments and specialising later. The prediction is specific: if the family was already present in
+natural environments and the contaminated-site association came later, then members close to a
+characterised pollutant degrader should be found at contaminated sites more often than their distant
+relatives, which should sit in natural habitats.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level of analysis</th><th class="num">Close members from a contaminated site</th>
+<th class="num">Distant members</th><th class="num">Odds ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+
+<tr><td>every entry<div class="note">1,181 close, 3,702 distant</div></td>
+  <td class="num" data-v="0.1973">19.7 %</td>
+  <td class="num" data-v="0.1305">13.1 %</td>
+  <td class="num" data-v="1.638">1.64</td>
+  <td class="num" data-v="3.8440252657746084e-08">3.8e-08</td></tr>
+
+<tr><td>one observation per species<div class="note">406 close, 816 distant</div></td>
+  <td class="num" data-v="0.2266">22.7 %</td>
+  <td class="num" data-v="0.1581">15.8 %</td>
+  <td class="num" data-v="1.56">1.56</td>
+  <td class="num" data-v="0.004421802049787343">4.4e-03</td></tr>
+
+<tr><td>only the 114 genera present on both sides<div class="note">1,130 close, 2,932 distant</div></td>
+  <td class="num" data-v="0.1956">19.6 %</td>
+  <td class="num" data-v="0.1473">14.7 %</td>
+  <td class="num" data-v="1.407">1.41</td>
+  <td class="num" data-v="0.00023741535995385951">2.4e-04</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The direction survives every control, including the one that matters most.</b>
+Habitat is a property of the organism rather than of the enzyme, so the third row keeps only the
+genera that appear on both sides; the effect weakens but holds. Host-associated habitats are left
+out entirely, because a human gut is neither a natural environment nor a contaminated site.</figcaption>
+</figure>
+
+<h2>5 · Is that specialisation, or is it where people looked?</h2>
+<p>There is a test that separates the two. If the enrichment reflects specialisation to man-made
+chemistry, it should be confined to enzymes whose substrate is man-made. If it reflects where samples
+were taken, it should appear for natural-substrate enzymes too.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Substrate of the reference enzyme</th>
+<th class="num">Close members from a contaminated site</th><th class="num">Distant members</th>
+<th class="num">Odds ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+
+<tr><td>xenobiotic</td>
+  <td class="num" data-v="0.23">23.0 %</td>
+  <td class="num" data-v="0.1507">15.1 %</td>
+  <td class="num" data-v="1.684">1.68</td>
+  <td class="num" data-v="5.242439477831733e-05">5.2e-05</td></tr>
+
+<tr><td>natural aromatic</td>
+  <td class="num" data-v="0.1867">18.7 %</td>
+  <td class="num" data-v="0.0907">9.1 %</td>
+  <td class="num" data-v="2.301">2.30</td>
+  <td class="num" data-v="0.00027979701259370655">0.00028</td></tr>
+
+<tr><td>natural specialized</td>
+  <td class="num" data-v="0.1577">15.8 %</td>
+  <td class="num" data-v="0.1223">12.2 %</td>
+  <td class="num" data-v="1.344">1.34</td>
+  <td class="num" data-v="0.08152536498596183">0.082</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The test does not support the stronger reading.</b> The direction holds at every level, including the genus control: members close to a characterised enzyme are about one and a half times more likely to come from a contaminated or engineered site than distant relatives, which sit in natural habitats. But the discriminating test does not support the stronger reading. If this were specialisation to man-made chemistry the enrichment should be confined to types with a man-made substrate, and it is not: types acting on natural aromatics show it at least as strongly. The pattern is therefore consistent with the family being widespread in natural environments while aromatic-degrading lineages accumulate where aromatics accumulate, and it cannot be separated from the fact that the characterised references were themselves discovered at such sites.
+<a href="/pro-sim-blast/download/analysis/stratified_stats.json">Download the full output</a></figcaption>
+</figure>
+
+
+<script>
+const CBX_URL = "/pro-sim-blast/download/analysis/carboxylate_rows.json";
+</script>
+<script src="/pro-sim-blast/static/closeness.js"></script>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

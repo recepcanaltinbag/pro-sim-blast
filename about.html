@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methods · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html" aria-current="page">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<h1>Methods</h1>
+<p class="lede">This database is built from GenBank genome records and a set of 71 Rieske oxygenase
+alpha subunits characterised in the literature. Every step below is a script in the repository, and
+every table it produces is downloadable from the page that displays it.</p>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" width="100%" class="flow">
+  <style>
+    .bx { fill: var(--panel); stroke: var(--rule); }
+    .bxa { fill: var(--panel); stroke: #8c2f22; stroke-width: 1.6; }
+    .ti { font-size: 12px; font-weight: 700; fill: currentColor; }
+    .sub { font-size: 10.5px; fill: currentColor; opacity: .75; }
+    .nm { font-size: 13px; font-weight: 700; fill: #8c2f22; }
+    .ar { stroke: currentColor; stroke-width: 1.2; fill: none; marker-end: url(#ah); }
+  </style>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+    orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+
+  <rect class="bx" x="4" y="16" width="168" height="64" rx="6"/>
+  <text class="ti" x="16" y="38">Genome records</text>
+  <text class="nm" x="16" y="58">14,099</text>
+  <text class="sub" x="16" y="72">annotated replicons from GenBank</text>
+
+  <rect class="bx" x="4" y="104" width="168" height="64" rx="6"/>
+  <text class="ti" x="16" y="126">Curated references</text>
+  <text class="nm" x="16" y="146">71</text>
+  <text class="sub" x="16" y="160">enzymes characterised in the literature</text>
+
+  <path class="ar" d="M172,48 H208"/>
+  <path class="ar" d="M172,136 H190 V60 H208"/>
+
+  <rect class="bx" x="210" y="16" width="178" height="152" rx="6"/>
+  <text class="ti" x="222" y="38">Two independent tests</text>
+  <text class="sub" x="222" y="56">1. profile coverage &#8805; 0.45 of a</text>
+  <text class="sub" x="222" y="70">full-length alpha model</text>
+  <text class="sub" x="222" y="88">2. Rieske ligands 4 of 4 and</text>
+  <text class="sub" x="222" y="102">catalytic triad 2 of 3 at the</text>
+  <text class="sub" x="222" y="116">aligned columns</text>
+  <text class="sub" x="222" y="138">calibrated on 2,788 alpha and</text>
+  <text class="sub" x="222" y="152">1,570 non-alpha proteins</text>
+
+  <path class="ar" d="M388,92 H424"/>
+
+  <rect class="bxa" x="426" y="16" width="168" height="152" rx="6"/>
+  <text class="ti" x="438" y="38">Confirmed entries</text>
+  <text class="nm" x="438" y="60">11,422</text>
+  <text class="sub" x="438" y="76">of 14,229 candidates</text>
+  <text class="sub" x="438" y="96">assigned to 61 types</text>
+  <text class="sub" x="438" y="110">by highest profile bit score</text>
+  <text class="sub" x="438" y="130">split into 1,809 variants</text>
+  <text class="sub" x="438" y="144">by recursive clustering</text>
+
+  <path class="ar" d="M594,60 H630"/>
+  <path class="ar" d="M594,124 H612 V200 H630"/>
+
+  <rect class="bx" x="632" y="16" width="168" height="88" rx="6"/>
+  <text class="ti" x="644" y="38">Genomic context</text>
+  <text class="nm" x="644" y="58">192,541</text>
+  <text class="sub" x="644" y="72">neighbouring genes within 10 kb,</text>
+  <text class="sub" x="644" y="86">with strand and signed distance</text>
+
+  <rect class="bx" x="632" y="168" width="168" height="112" rx="6"/>
+  <text class="ti" x="644" y="190">Evidence level</text>
+  <text class="sub" x="644" y="208">identity of each entry to the</text>
+  <text class="sub" x="644" y="222">nearest curated reference,</text>
+  <text class="sub" x="644" y="236">so a substrate label is never</text>
+  <text class="sub" x="644" y="250">implied by type membership</text>
+  <text class="sub" x="644" y="270">five levels, see section 2</text>
+
+  <path class="ar" d="M800,60 H836"/>
+  <path class="ar" d="M800,224 H818 V100 H836"/>
+
+  <rect class="bx" x="838" y="16" width="138" height="152" rx="6"/>
+  <text class="ti" x="850" y="38">Derived layers</text>
+  <text class="sub" x="850" y="56">operons and partners</text>
+  <text class="sub" x="850" y="70">promoter region and</text>
+  <text class="sub" x="850" y="84">regulator family</text>
+  <text class="sub" x="850" y="102">phylogeny and network</text>
+  <text class="sub" x="850" y="116">taxonomy and ecology</text>
+  <text class="sub" x="850" y="134">statistics at entry and</text>
+  <text class="sub" x="850" y="148">genus level</text>
+</svg>
+<figcaption>Flow of the pipeline, with the current content of each stage. Numbers are read from the
+database when this page is generated, so they always match the rest of the site.</figcaption>
+</figure>
+
+<h2>1 · What qualifies as a Rieske oxygenase alpha subunit</h2>
+<p>Proteins carrying a Rieske [2Fe-2S] domain, Pfam PF00355, include many that are not oxygenases:
+ferredoxins, the iron–sulfur proteins of the cytochrome <i>bc</i><sub>1</sub> and
+<i>b</i><sub>6</sub><i>f</i> complexes, nitrite reductase subunits and others. An expectation-value
+threshold cannot separate them, because their Rieske domains are genuinely homologous and score
+just as well. We measured this: in a test set of several hundred proteins of each kind, every
+member of both groups passed a 10<sup>−10</sup> cut-off. What distinguishes an oxygenase is not the
+Rieske domain but the mononuclear Fe(II) catalytic site that accompanies it.</p>
+<p>Two independent criteria are therefore required.</p>
+<ol>
+  <li><b>Profile coverage.</b> Each of the 71 curated references seeds a profile hidden Markov model
+    built from its close homologues; these models span the Rieske domain and the catalytic domain
+    together. A protein must cover at least 45 % of the best-scoring model. The threshold was
+    calibrated on 2,788 full-length alpha subunits and 1,570 proteins known not to be alpha
+    subunits, retaining 99.8 % of the former while rejecting 95.8 % of the latter. Raising it to
+    80 % improves rejection by less than two points but loses a fifth of true positives.</li>
+  <li><b>Catalytic-centre residues.</b> The protein is aligned to a motif model built from the same
+    references, and specific match-state columns are checked directly: the four Rieske ligands
+    Cys-X-His and Cys-X-X-His, all four required, and the 2-His-1-carboxylate triad of the
+    mononuclear iron site, at least two of three within a two-column window. The window tolerates
+    sub-family alignment shifts, which otherwise reject five of the curated references themselves.</li>
+</ol>
+<p>Two sequences originally in the reference set were removed during this work: one lacks a Rieske
+centre altogether and belongs to the soluble di-iron monooxygenase family, the other has the Rieske
+centre but no catalytic site and is an electron-transfer component. Both had been propagating into
+the classification as if they were oxygenases.</p>
+
+<h2>2 · Type assignment, and what it does not mean</h2>
+<p>Each confirmed protein is assigned to the reference type whose profile it scores highest against,
+by bit score rather than expectation value, since the latter depends on sequence length and database
+size. The assignment names the closest characterised relative. It is not a functional annotation,
+and the database never presents it as one.</p>
+<p>The reason is measurable within the reference set itself. Among the curated enzymes, pairs with
+<em>different</em> experimentally determined substrates reach nearly 100 % identity to one another,
+while pairs sharing a substrate fall to roughly 32 %. Substrate selection in this family is
+determined by a few active-site positions, so no global identity threshold can certify it. Every
+member therefore carries an <a href="/pro-sim-blast/atlas/evidence.html">evidence level</a> stating how
+close it actually is to a characterised enzyme, and substrate labels are shown together with that
+level.</p>
+
+<h3>Thresholds in one place</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Threshold</th><th>Value</th><th>Where it comes from</th><th>What changes if it moves</th></tr></thead>
+<tbody>
+<tr><td>Profile coverage</td><td class="num">0.45</td>
+    <td>calibrated on 2,788 full-length alpha subunits and 1,570 known non-alpha proteins</td>
+    <td>at 0.80, rejection improves by under two points while a fifth of true alpha subunits are lost</td></tr>
+<tr><td>Rieske ligands required</td><td class="num">4 of 4</td>
+    <td>conserved in every curated reference</td><td>relaxing it admits ferredoxins and bc<sub>1</sub> iron-sulfur proteins</td></tr>
+<tr><td>Catalytic triad required</td><td class="num">2 of 3</td>
+    <td>five curated references fail a strict 3 of 3 through alignment shift alone</td>
+    <td>3 of 3 would discard genuine enzymes, including CARDO and PobA</td></tr>
+<tr><td>Column search window</td><td class="num">&#177;2</td><td>sub-family alignment shifts</td>
+    <td>a window of zero rejects references that are known to be active</td></tr>
+<tr><td>Minimum length</td><td class="num">300 aa</td><td>shortest curated alpha subunit</td>
+    <td>shorter records are kept but flagged as fragments rather than rejected</td></tr>
+<tr><td>Operon gap</td><td class="num">150 bp</td><td>conventional prokaryotic operon spacing</td>
+    <td>larger gaps merge adjacent transcription units; the raw gaps are stored so this can be re-derived</td></tr>
+<tr><td>Ferredoxin length ceiling</td><td class="num">250 aa</td>
+    <td>separates small electron carriers from oxygenase alpha subunits, which exceed 300 aa</td>
+    <td>raising it mislabels second alpha subunits as ferredoxins</td></tr>
+<tr><td>Evidence levels</td><td class="num">95 / 60 / 40 / 25 %</td>
+    <td>general limits of enzyme function transfer by identity</td>
+    <td>every level boundary is configurable, and the sensitivity of the counts is tabulated on the
+        <a href="/pro-sim-blast/atlas/evidence.html">evidence page</a></td></tr>
+</tbody></table></div>
+<p class="note">No threshold here is a natural constant. Each was chosen against a measurable
+trade-off, and the measurement is given so that a reader can disagree with the choice and re-derive
+the consequence. The column above says what each threshold protects against; it does not say how
+much the database's own figures depend on it. That is measured separately, by moving the coverage
+gate from 0.35 to 0.80 and recomputing every headline number, on the
+<a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</p>
+
+<h2>3 · Genomic context</h2>
+<p>Rather than locating proteins by translated search and recording coordinates alone, each genome
+record is scanned directly for coding sequences whose translation carries the Rieske ligand
+signature. Candidates are then tested as in section 1. For every confirmed protein, all coding
+sequences within 10 kb on either side are stored with their strand, signed distance and gene offset.
+Genes spanning the origin of a circular replicon are handled explicitly, since treating their
+coordinates naively makes a short gene appear to span the whole replicon and become a neighbour of
+everything on it. No keyword filter is applied at extraction: neighbours annotated as "hypothetical
+protein" are exactly the ones a context database should be able to characterise, so they are kept
+and classified at query time.</p>
+
+<h2>4 · Operons and electron-transport partners</h2>
+<p>Annotation text is unreliable for the partners that matter here, so the <em>protein sequences</em>
+of all stored neighbours are searched with Pfam profiles: Ring_hydroxyl_B for the beta subunit,
+Rieske or Fer2 domains in proteins under 250 residues for Rieske-type and plant-type ferredoxins,
+and FAD/NAD-binding or pyridine-nucleotide-disulfide domains for FNR-type and
+glutathione-reductase-type reductases. An operon is defined as the run of same-strand genes around
+the alpha subunit with intergenic gaps of at most 150 base pairs. Partner presence is reported both
+inside that run and anywhere within the 10 kb window, and both are lower bounds: contig ends and
+distant loci hide partners that exist.</p>
+
+<h2>5 · Regulation</h2>
+<p>For every confirmed protein the 5' end of its predicted operon is determined from the strand, and
+the intergenic distance to the nearest upstream gene is measured. That interval is where the
+promoter must lie. The upstream gene's orientation separates a shared, divergent promoter region
+from a possible read-through arrangement, and its product name assigns a regulator family where one
+can be recognised. The promoter <em>sequence</em> is not analysed, and the reason lies in the source
+data rather than in the design of this database: 88.9 % of the GenBank records used here are <code>CON</code>
+records, which state a sequence length but contain no sequence at all. No boxes, operator repeats or
+transcription start sites can be inferred from this material. <a href="/pro-sim-blast/atlas/regulation.html">Results</a></p>
+<h2>6 · Variants and novelty</h2>
+<p>Within each type, members are split recursively at decreasing identity until each subgroup reaches
+a median pairwise identity target. The resulting leaves are reported as variants, each with its
+genus composition, plasmid rate and distinguishing neighbours. A variant is the finest unit at which
+a distinct function can reasonably be proposed; several types that look homogeneous at the type
+level separate into variants with clearly different genomic contexts.</p>
+<p class="note">Known limitation: the clustering step operates on match-state columns of the
+alignment, so insertions and fused extra domains are excised before sequences are compared. A
+protein with a large additional domain can therefore group with a plain enzyme. Pairwise identities
+quoted on variant pages share this definition.</p>
+
+<h2>7 · Phylogeny and sequence space</h2>
+<p>The 71 references and one representative per variant are aligned to the catalytic-centre model;
+columns with gaps in more than half the sequences are discarded, leaving the conserved core, and the
+tree is inferred with FastTree. Separately, an all-against-all search provides a similarity network
+and a type-against-type identity matrix. Together these show which types are coherent lineages and
+which are arbitrary cuts through a continuum.
+<a href="/pro-sim-blast/atlas/phylogeny.html">Tree</a> · <a href="/pro-sim-blast/atlas/network.html">Network</a></p>
+
+<h2>8 · Statistics</h2>
+<p>Alpha subunits are not independent observations: sequence databases contain many near-identical
+strains of the same species. Every association test is therefore run twice, once per entry and once
+after collapsing the data to one observation per type and genus, and a result is reported as robust
+only when both agree. Effect sizes accompany every p value.
+<a href="/pro-sim-blast/atlas/statistics.html">Results</a></p>
+
+<h2>9 · Current content</h2>
+<ul>
+  <li>14,229 candidates tested, 11,422 confirmed alpha subunits</li>
+  <li>61 characterised types, 1,809 variants</li>
+  <li>14,099 annotated replicons scanned, 9,308 carrying at least one</li>
+  <li>192,541 neighbouring genes recorded, 4,393 operons with a sequence-verified partner</li>
+</ul>
+
+<h2>10 · Remaining limitations</h2>
+<ul>
+  <li>Substrate labels belong to the reference enzyme of each type, not to its members.</li>
+  <li>Operon boundaries come from a distance rule, without promoter or terminator models.</li>
+  <li>Contig ends truncate neighbourhoods, so missing partners are not evidence of absence.</li>
+  <li>Sequenced genomes are heavily biased towards cultured organisms, which shapes every
+    taxonomic and ecological figure in this database.</li>
+  <li>Several types have no substrate recorded because the original publications were not
+    available; they are shown as unknown rather than guessed.</li>
+</ul>
+
+<h2>11 · Programmatic access</h2>
+<pre class="seq">GET  /api/stats
+GET  /api/clusters
+GET  /api/cluster/{type}
+GET  /api/ro/{entry}             entry identifier with ':' replaced by '_'
+GET  /api/search?q=...&amp;page=1
+POST /api/classify               body: FASTA text, or JSON {"sequences": "..."}</pre>
+<p class="note">Bulk downloads: <a href="/pro-sim-blast/download/all_confirmed.fasta">all sequences</a>,
+<a href="/pro-sim-blast/download/all_confirmed.csv">all annotation</a>,
+<a href="/pro-sim-blast/download/operons.csv">operon gene tables</a>,
+<a href="/pro-sim-blast/download/tree_all.nwk">tree in Newick format</a>.</p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

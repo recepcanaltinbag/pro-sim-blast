@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulators and mobile elements · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class="on"
+     aria-current="true">Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Genomic context pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Operons</a>
+  
+  <a href="/pro-sim-blast/atlas/regulation.html" class=""
+     >Regulation</a>
+  
+  <a href="/pro-sim-blast/atlas/control.html" class=""
+     >Regulators and mobility</a>
+  
+  <a href="/pro-sim-blast/atlas/elements.html" class="on"
+     aria-current="page">Who sits next to them</a>
+  
+  <a href="/pro-sim-blast/atlas/cooccurrence.html" class=""
+     >Co-occurrence</a>
+  
+  
+</nav>
+
+
+<h1>Who sits next to these enzymes</h1>
+<p class="lede">Two kinds of neighbour get their own page here: the transcriptional regulator
+immediately upstream of the operon, and the insertion sequences found within ten kilobases. The
+first is about control, the second about movement, and they are asked the same two questions —
+which enzymes does this family sit beside, and is that association real.</p>
+
+<div class="caveat caveat--warn">
+<p>The regulator is identified by position: the first gene upstream of the operon 5&#39; end whose product reads as a regulator. No binding was measured. A distal or global regulator is invisible to this, and a gene that merely sits upstream can be counted.</p><p class=&#34;note&#34;>The transposon label comes from a product-name regular expression, and it catches recombination machinery that is not a mobile element at all -- Holliday junction resolvase RuvX appears 117 times. Named insertion-sequence families are therefore extracted separately from the product string and kept apart from unnamed transposases.</p><p class=&#34;note&#34;>An entry can carry more than one insertion-sequence family, so the per-family sets overlap and their sizes do not sum to the total.</p>
+</div>
+
+
+<h2>Which chemistry each regulator family controls</h2>
+
+<figure class="fig">
+<svg class="sankey" viewBox="0 0 1080 360" width="100%"
+     height="360" role="img"
+     aria-label="Flow from regulator family to reaction class">
+  
+  <path class="sankey__flow" d="M183,0.0 C540.0,0.0 540.0,153.5520389531345 897,153.5520389531345 L897,160.25928180158246 C540.0,160.25928180158246 540.0,6.059646987218502 183,6.059646987218502 Z"><title>AraC → cis dihydroxylation: 76 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,6.059646987218502 C540.0,6.059646987218502 540.0,240.53743152769323 897,240.53743152769323 L897,245.21485088253195 C540.0,245.21485088253195 540.0,10.285453438831405 183,10.285453438831405 Z"><title>AraC → dioxygenation with release: 53 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,10.285453438831405 C540.0,10.285453438831405 540.0,311.90200852099815 897,311.90200852099815 L897,312.87279367011564 C540.0,312.87279367011564 540.0,11.162507608034083 183,11.162507608034083 Z"><title>AraC → hydroxylation: 11 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,25.162507608034083 C540.0,25.162507608034083 540.0,110.07547169811322 897,110.07547169811322 L897,115.54716981132077 C540.0,115.54716981132077 540.0,30.105903834449176 183,30.105903834449176 Z"><title>GntR → O demethylation: 62 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,30.105903834449176 C540.0,30.105903834449176 540.0,160.25928180158246 897,160.25928180158246 L897,163.61290322580643 C540.0,163.61290322580643 540.0,33.13572732805843 183,33.13572732805843 Z"><title>GntR → cis dihydroxylation: 38 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,33.13572732805843 C540.0,33.13572732805843 540.0,312.87279367011564 897,312.87279367011564 L897,315.34388314059646 C540.0,315.34388314059646 540.0,35.36822884966524 183,35.36822884966524 Z"><title>GntR → hydroxylation: 28 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,35.36822884966524 C540.0,35.36822884966524 540.0,36.76932440657335 897,36.76932440657335 L897,38.71089470480828 C540.0,38.71089470480828 540.0,37.1223371880706 183,37.1223371880706 Z"><title>GntR → N demethylation: 22 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,37.1223371880706 C540.0,37.1223371880706 540.0,245.21485088253195 897,245.21485088253195 L897,246.8034083992696 C540.0,246.8034083992696 540.0,38.55751673767499 183,38.55751673767499 Z"><title>GntR → dioxygenation with release: 18 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,52.55751673767499 C540.0,52.55751673767499 540.0,163.61290322580643 897,163.61290322580643 L897,173.49726110772974 C540.0,173.49726110772974 540.0,61.48752282410226 183,61.48752282410226 Z"><title>IclR → cis dihydroxylation: 112 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,61.48752282410226 C540.0,61.48752282410226 540.0,115.54716981132077 897,115.54716981132077 L897,123.66646378575777 C540.0,123.66646378575777 540.0,68.82288496652465 183,68.82288496652465 Z"><title>IclR → O demethylation: 92 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,68.82288496652465 C540.0,68.82288496652465 540.0,38.71089470480828 897,38.71089470480828 L897,45.418137553256244 C540.0,45.418137553256244 540.0,74.88253195374315 183,74.88253195374315 Z"><title>IclR → N demethylation: 76 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,74.88253195374315 C540.0,74.88253195374315 540.0,246.8034083992696 897,246.8034083992696 L897,250.59829580036518 C540.0,250.59829580036518 540.0,78.31101643335363 183,78.31101643335363 Z"><title>IclR → dioxygenation with release: 43 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,78.31101643335363 C540.0,78.31101643335363 540.0,315.34388314059646 897,315.34388314059646 L897,317.9914790018259 C540.0,317.9914790018259 540.0,80.70298234936094 183,80.70298234936094 Z"><title>IclR → hydroxylation: 30 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,94.70298234936092 C540.0,94.70298234936092 540.0,45.418137553256244 897,45.418137553256244 L897,75.33597078514913 C540.0,75.33597078514913 540.0,121.73219720024346 183,121.73219720024346 Z"><title>LysR → N demethylation: 339 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,121.73219720024346 C540.0,121.73219720024346 540.0,250.59829580036518 897,250.59829580036518 L897,272.8381010346926 C540.0,272.8381010346926 540.0,141.82471089470482 183,141.82471089470482 Z"><title>LysR → dioxygenation with release: 252 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,141.82471089470482 C540.0,141.82471089470482 540.0,173.49726110772974 897,173.49726110772974 L897,188.32379793061472 C540.0,188.32379793061472 540.0,155.21972002434572 183,155.21972002434572 Z"><title>LysR → cis dihydroxylation: 168 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,155.21972002434572 C540.0,155.21972002434572 540.0,317.9914790018259 897,317.9914790018259 L897,326.99330493000605 C540.0,326.99330493000605 540.0,163.35240413877057 183,163.35240413877057 Z"><title>LysR → hydroxylation: 102 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,163.35240413877057 C540.0,163.35240413877057 540.0,0.0 897,0.0 L897,8.119293974437007 C540.0,8.119293974437007 540.0,170.68776628119298 183,170.68776628119298 Z"><title>LysR → C N cleavage: 92 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,170.68776628119298 C540.0,170.68776628119298 540.0,123.66646378575777 897,123.66646378575777 L897,125.43152769324408 C540.0,125.43152769324408 540.0,172.28241022519785 183,172.28241022519785 Z"><title>LysR → O demethylation: 20 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,186.2824102251978 C540.0,186.2824102251978 540.0,272.8381010346926 897,272.8381010346926 L897,284.2227632379793 C540.0,284.2227632379793 540.0,196.5678636640292 183,196.5678636640292 Z"><title>MarR → dioxygenation with release: 129 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,196.5678636640292 C540.0,196.5678636640292 540.0,326.99330493000605 897,326.99330493000605 L897,335.2891052951917 C540.0,335.2891052951917 540.0,204.0626902008521 183,204.0626902008521 Z"><title>MarR → hydroxylation: 94 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,204.0626902008521 C540.0,204.0626902008521 540.0,125.43152769324408 897,125.43152769324408 L897,131.4327449786975 C540.0,131.4327449786975 540.0,209.48447961046867 183,209.48447961046867 Z"><title>MarR → O demethylation: 68 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,209.48447961046867 C540.0,209.48447961046867 540.0,188.32379793061472 897,188.32379793061472 L897,191.05964698721849 C540.0,191.05964698721849 540.0,211.9561777236762 183,211.9561777236762 Z"><title>MarR → cis dihydroxylation: 31 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,225.9561777236762 C540.0,225.9561777236762 540.0,335.2891052951917 897,335.2891052951917 L897,354.3517954960438 C540.0,354.3517954960438 540.0,243.1783323189288 183,243.1783323189288 Z"><title>TetR → hydroxylation: 216 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,243.1783323189288 C540.0,243.1783323189288 540.0,75.33597078514913 897,75.33597078514913 L897,84.33779671332928 C540.0,84.33779671332928 540.0,251.31101643335361 183,251.31101643335361 Z"><title>TetR → N demethylation: 102 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,251.31101643335361 C540.0,251.31101643335361 540.0,191.05964698721849 897,191.05964698721849 L897,197.14911746804623 C540.0,197.14911746804623 540.0,256.8125380401704 183,256.8125380401704 Z"><title>TetR → cis dihydroxylation: 69 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,256.8125380401704 C540.0,256.8125380401704 540.0,8.119293974437007 897,8.119293974437007 L897,13.590992087644555 C540.0,13.590992087644555 540.0,261.7559342665855 183,261.7559342665855 Z"><title>TetR → C N cleavage: 62 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,261.7559342665855 C540.0,261.7559342665855 540.0,284.2227632379793 897,284.2227632379793 L897,288.0176506390748 C540.0,288.0176506390748 540.0,265.18441874619595 183,265.18441874619595 Z"><title>TetR → dioxygenation with release: 43 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,265.18441874619595 C540.0,265.18441874619595 540.0,131.4327449786975 897,131.4327449786975 L897,134.43335362142423 C540.0,134.43335362142423 540.0,267.8953134510042 183,267.8953134510042 Z"><title>TetR → O demethylation: 34 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,281.89531345100426 C540.0,281.89531345100426 540.0,197.14911746804623 897,197.14911746804623 L897,222.21302495435177 C540.0,222.21302495435177 540.0,304.5392574558734 183,304.5392574558734 Z"><title>regulator unclassified → cis dihydroxylation: 284 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,304.5392574558734 C540.0,304.5392574558734 540.0,84.33779671332928 897,84.33779671332928 L897,95.01643335362144 C540.0,95.01643335362144 540.0,314.1868533171028 183,314.1868533171028 Z"><title>regulator unclassified → N demethylation: 121 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,314.1868533171028 C540.0,314.1868533171028 540.0,288.0176506390748 897,288.0176506390748 L897,297.90200852099815 C540.0,297.90200852099815 540.0,323.1168594035301 183,323.1168594035301 Z"><title>regulator unclassified → dioxygenation with release: 112 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,323.1168594035301 C540.0,323.1168594035301 540.0,13.590992087644555 897,13.590992087644555 L897,21.53377967133293 C540.0,21.53377967133293 540.0,330.292757151552 183,330.292757151552 Z"><title>regulator unclassified → C N cleavage: 90 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,330.292757151552 C540.0,330.292757151552 540.0,354.3517954960438 897,354.3517954960438 L897,359.99999999999994 C540.0,359.99999999999994 540.0,335.3956177723676 183,335.3956177723676 Z"><title>regulator unclassified → hydroxylation: 64 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,335.3956177723676 C540.0,335.3956177723676 540.0,134.43335362142423 897,134.43335362142423 L897,139.5520389531345 C540.0,139.5520389531345 540.0,340.0200852099817 183,340.0200852099817 Z"><title>regulator unclassified → O demethylation: 58 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,354.02008520998174 C540.0,354.02008520998174 540.0,222.21302495435177 897,222.21302495435177 L897,226.5374315276932 C540.0,226.5374315276932 540.0,357.9269628727937 183,357.9269628727937 Z"><title>sigma54 → cis dihydroxylation: 49 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,357.9269628727937 C540.0,357.9269628727937 540.0,21.53377967133293 897,21.53377967133293 L897,22.769324406573343 C540.0,22.769324406573343 540.0,359.0432136335971 183,359.0432136335971 Z"><title>sigma54 → C N cleavage: 14 entries</title></path>
+  
+  <path class="sankey__flow" d="M183,359.0432136335971 C540.0,359.0432136335971 540.0,95.01643335362144 897,95.01643335362144 L897,96.07547169811322 C540.0,96.07547169811322 540.0,360.0 183,360.0 Z"><title>sigma54 → N demethylation: 12 entries</title></path>
+  
+  
+  <rect class="sankey__node" x="172" y="0.0" width="11"
+        height="11.2" rx="2"><title>AraC: 140 entries</title></rect>
+  <text class="sankey__label" x="165" y="5.6"
+        text-anchor="end" dominant-baseline="middle">AraC</text>
+  
+  <rect class="sankey__node" x="172" y="25.2" width="11"
+        height="13.4" rx="2"><title>GntR: 168 entries</title></rect>
+  <text class="sankey__label" x="165" y="31.9"
+        text-anchor="end" dominant-baseline="middle">GntR</text>
+  
+  <rect class="sankey__node" x="172" y="52.6" width="11"
+        height="28.1" rx="2"><title>IclR: 353 entries</title></rect>
+  <text class="sankey__label" x="165" y="66.6"
+        text-anchor="end" dominant-baseline="middle">IclR</text>
+  
+  <rect class="sankey__node" x="172" y="94.7" width="11"
+        height="77.6" rx="2"><title>LysR: 973 entries</title></rect>
+  <text class="sankey__label" x="165" y="133.5"
+        text-anchor="end" dominant-baseline="middle">LysR</text>
+  
+  <rect class="sankey__node" x="172" y="186.3" width="11"
+        height="25.7" rx="2"><title>MarR: 322 entries</title></rect>
+  <text class="sankey__label" x="165" y="199.1"
+        text-anchor="end" dominant-baseline="middle">MarR</text>
+  
+  <rect class="sankey__node" x="172" y="226.0" width="11"
+        height="41.9" rx="2"><title>TetR: 526 entries</title></rect>
+  <text class="sankey__label" x="165" y="246.9"
+        text-anchor="end" dominant-baseline="middle">TetR</text>
+  
+  <rect class="sankey__node" x="172" y="281.9" width="11"
+        height="58.1" rx="2"><title>regulator unclassified: 729 entries</title></rect>
+  <text class="sankey__label" x="165" y="311.0"
+        text-anchor="end" dominant-baseline="middle">regulator unclassified</text>
+  
+  <rect class="sankey__node" x="172" y="354.0" width="11"
+        height="6.0" rx="2"><title>sigma54: 75 entries</title></rect>
+  <text class="sankey__label" x="165" y="357.0"
+        text-anchor="end" dominant-baseline="middle">sigma54</text>
+  
+  <rect class="sankey__node" x="897" y="0.0" width="11"
+        height="22.8" rx="2"><title>C N cleavage: 258 entries</title></rect>
+  <text class="sankey__label" x="915" y="11.4"
+        text-anchor="start" dominant-baseline="middle">C N cleavage</text>
+  
+  <rect class="sankey__node" x="897" y="36.8" width="11"
+        height="59.3" rx="2"><title>N demethylation: 672 entries</title></rect>
+  <text class="sankey__label" x="915" y="66.4"
+        text-anchor="start" dominant-baseline="middle">N demethylation</text>
+  
+  <rect class="sankey__node" x="897" y="110.1" width="11"
+        height="29.5" rx="2"><title>O demethylation: 334 entries</title></rect>
+  <text class="sankey__label" x="915" y="124.8"
+        text-anchor="start" dominant-baseline="middle">O demethylation</text>
+  
+  <rect class="sankey__node" x="897" y="153.6" width="11"
+        height="73.0" rx="2"><title>cis dihydroxylation: 827 entries</title></rect>
+  <text class="sankey__label" x="915" y="190.0"
+        text-anchor="start" dominant-baseline="middle">cis dihydroxylation</text>
+  
+  <rect class="sankey__node" x="897" y="240.5" width="11"
+        height="57.4" rx="2"><title>dioxygenation with release: 650 entries</title></rect>
+  <text class="sankey__label" x="915" y="269.2"
+        text-anchor="start" dominant-baseline="middle">dioxygenation with release</text>
+  
+  <rect class="sankey__node" x="897" y="311.9" width="11"
+        height="48.1" rx="2"><title>hydroxylation: 545 entries</title></rect>
+  <text class="sankey__label" x="915" y="336.0"
+        text-anchor="start" dominant-baseline="middle">hydroxylation</text>
+  
+</svg>
+<figcaption>Regulator family on the left, reaction class on the right; ribbon thickness is the
+number of alpha subunits. Flows below 10 entries are not drawn, which leaves
+3,286 of the 3,361 entries that
+have both a regulator and a curated reaction class. The regulator is the first gene upstream of the
+operon, identified by its product name; no binding was measured, so this is adjacency, not
+regulation.</figcaption>
+</figure>
+
+
+<h2>Regulator families</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Alpha subunits</th><th class="num">Enzyme types</th>
+<th class="num">Genera</th><th class="num">Types it stands out in</th>
+<th class="num">Divergent</th><th class="num">Median promoter gap</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/element/LysR.html">LysR</a></td>
+  <td class="num">973</td><td class="num">32</td>
+  <td class="num">148</td>
+  <td class="num">7</td>
+  <td class="num">90 %</td>
+  <td class="num">140 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/regulator_unclassified.html">regulator unclassified</a></td>
+  <td class="num">732</td><td class="num">34</td>
+  <td class="num">98</td>
+  <td class="num">3</td>
+  <td class="num">87 %</td>
+  <td class="num">213 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/TetR.html">TetR</a></td>
+  <td class="num">531</td><td class="num">34</td>
+  <td class="num">89</td>
+  <td class="num">3</td>
+  <td class="num">92 %</td>
+  <td class="num">138 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IclR.html">IclR</a></td>
+  <td class="num">358</td><td class="num">22</td>
+  <td class="num">62</td>
+  <td class="num">6</td>
+  <td class="num">77 %</td>
+  <td class="num">233 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/MarR.html">MarR</a></td>
+  <td class="num">323</td><td class="num">17</td>
+  <td class="num">56</td>
+  <td class="num">4</td>
+  <td class="num">87 %</td>
+  <td class="num">198 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/GntR.html">GntR</a></td>
+  <td class="num">181</td><td class="num">24</td>
+  <td class="num">62</td>
+  <td class="num">4</td>
+  <td class="num">92 %</td>
+  <td class="num">221 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/AraC.html">AraC</a></td>
+  <td class="num">152</td><td class="num">20</td>
+  <td class="num">25</td>
+  <td class="num">4</td>
+  <td class="num">47 %</td>
+  <td class="num">262 bp</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/sigma54.html">sigma54</a></td>
+  <td class="num">87</td><td class="num">12</td>
+  <td class="num">19</td>
+  <td class="num">3</td>
+  <td class="num">79 %</td>
+  <td class="num">217 bp</td></tr>
+
+</tbody></table></div>
+<p class="note">“Divergent” means the regulator is on the opposite strand, so it and the operon share
+an intergenic region and probably a promoter. The promoter gap is the median length of that
+intergenic region, among entries where it is between 0 and 2000 bp.</p>
+
+<h2>Insertion sequence families</h2>
+<p>The transposon label comes from a product-name pattern, and a named insertion-sequence family is
+a stronger piece of evidence than an unnamed “transposase”. Of
+11,422 confirmed entries,
+727 carry a named family,
+958 carry only an unnamed transposase, and
+19 matched nothing but
+recombination machinery, which is not a mobile element at all.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Family</th><th class="num">Alpha subunits</th><th class="num">Enzyme types</th>
+<th class="num">Genera</th><th class="num">Types it stands out in</th>
+<th class="num">On a plasmid</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/element/IS3.html">IS3</a></td>
+  <td class="num">203</td><td class="num">41</td>
+  <td class="num">70</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">19 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS5.html">IS5</a></td>
+  <td class="num">126</td><td class="num">34</td>
+  <td class="num">36</td>
+  <td class="num">1</td>
+  <td class="num">21 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS110.html">IS110</a></td>
+  <td class="num">93</td><td class="num">28</td>
+  <td class="num">34</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">17 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS5-IS1182.html">IS5/IS1182</a></td>
+  <td class="num">76</td><td class="num">25</td>
+  <td class="num">30</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">4 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS630.html">IS630</a></td>
+  <td class="num">65</td><td class="num">28</td>
+  <td class="num">27</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">29 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS66.html">IS66</a></td>
+  <td class="num">62</td><td class="num">27</td>
+  <td class="num">26</td>
+  <td class="num">2</td>
+  <td class="num">29 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS21.html">IS21</a></td>
+  <td class="num">50</td><td class="num">24</td>
+  <td class="num">23</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">34 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS6.html">IS6</a></td>
+  <td class="num">49</td><td class="num">20</td>
+  <td class="num">29</td>
+  <td class="num">1</td>
+  <td class="num">24 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS30.html">IS30</a></td>
+  <td class="num">49</td><td class="num">17</td>
+  <td class="num">20</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS256.html">IS256</a></td>
+  <td class="num">43</td><td class="num">19</td>
+  <td class="num">21</td>
+  <td class="num">1</td>
+  <td class="num">21 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS481.html">IS481</a></td>
+  <td class="num">36</td><td class="num">18</td>
+  <td class="num">13</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">3 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS4.html">IS4</a></td>
+  <td class="num">27</td><td class="num">17</td>
+  <td class="num">15</td>
+  <td class="num"><span class="verdict verdict--none">0</span></td>
+  <td class="num">7 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/element/IS1380.html">IS1380</a></td>
+  <td class="num">21</td><td class="num">7</td>
+  <td class="num">10</td>
+  <td class="num">3</td>
+  <td class="num">48 %</td></tr>
+
+</tbody></table></div>
+
+
+
+<h2>Are mobile elements tied to the enzyme, or to the host?</h2>
+<p class="plain">Is a mobile element family tied to the ENZYME it sits next to, or to the HOST it lives in? The near-empty “enriched in” column above already hints at the
+answer, and it can be measured directly. the same insertion-sequence families are cross-tabulated twice, once against the enzyme type and once against the bacterial genus. The two tables have different shapes and Cramer&#39;s V rises on its own with the number of rows, so neither value is interpretable alone. Each is therefore measured against a null built by shuffling its own labels, and only the excess over that null is compared.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Cross-tabulated against</th><th class="num">Rows</th><th class="num">Entries</th>
+<th class="num">Measured V</th><th class="num">Shuffled V</th><th class="num">Excess over chance</th>
+<th class="num">Standard deviations above</th></tr></thead>
+<tbody>
+
+<tr><td>the enzyme type</td><td class="num">13</td><td class="num">780</td>
+  <td class="num">0.234</td><td class="num">0.168</td>
+  <td class="num"><b>+0.066</b></td>
+  <td class="num">9</td></tr>
+
+<tr><td>the host genus</td><td class="num">13</td><td class="num">631</td>
+  <td class="num">0.305</td><td class="num">0.178</td>
+  <td class="num"><b>+0.127</b></td>
+  <td class="num">16</td></tr>
+
+</tbody></table></div>
+<p class="note">
+<span class="verdict verdict--robust">the host</span>
+Insertion sequences track the organism they live in, not the enzyme they happen to land beside. The
+excess over chance is 0.127 against
+0.066, about twice as strong. That is what one expects of an
+element that copies itself around a genome without regard to what it lands next to, and it is a
+reason to be careful with any argument that a particular transposon mobilised a particular enzyme.
+
+Both tables are measured against their own shuffled null because Cramér&rsquo;s V rises on its own
+with the number of rows, and these two tables have very different shapes.</p>
+
+
+<h2>How this was built</h2>
+<p class="note">Computed by <code>control_elements.py</code>.
+<a href="/pro-sim-blast/download/analysis/control_elements.json">Download control_elements.json</a></p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

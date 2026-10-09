@@ -1,0 +1,6792 @@
+{
+ "coverage": {
+  "confirmed_entries": 11422,
+  "with_an_upstream_regulator": 3361,
+  "with_a_named_IS_family": 727,
+  "entries_with_unnamed_transposase_only": 958,
+  "entries_whose_only_hit_is_recombination_machinery": 19
+ },
+ "caveats": [
+  "The regulator is identified by position: the first gene upstream of the operon 5' end whose product reads as a regulator. No binding was measured. A distal or global regulator is invisible to this, and a gene that merely sits upstream can be counted.",
+  "The transposon label comes from a product-name regular expression, and it catches recombination machinery that is not a mobile element at all -- Holliday junction resolvase RuvX appears 117 times. Named insertion-sequence families are therefore extracted separately from the product string and kept apart from unnamed transposases.",
+  "An entry can carry more than one insertion-sequence family, so the per-family sets overlap and their sizes do not sum to the total."
+ ],
+ "regulators": [
+  {
+   "family": "LysR",
+   "kind": "regulator",
+   "entries": 973,
+   "types": 32,
+   "genera": 148,
+   "species": 416,
+   "plasmid_rate": 0.036,
+   "architecture": {
+    "divergent_regulator": 878,
+    "codirectional_regulator": 95
+   },
+   "reaction_classes": {
+    "N_demethylation": 339,
+    "dioxygenation_with_release": 252,
+    "cis_dihydroxylation": 168,
+    "hydroxylation": 102,
+    "C_N_cleavage": 92,
+    "O_demethylation": 20
+   },
+   "chem_families": {
+    "quaternary_amines": 282,
+    "aromatic_acids": 188,
+    "sulfoaromatics": 166,
+    "alkaloids": 148,
+    "haloaromatics": 114,
+    "anilines": 62,
+    "terpenoids_steroids": 7,
+    "nitroaromatics": 2,
+    "biaryls_ethers": 2,
+    "pah": 1,
+    "alkylbenzenes": 1
+   },
+   "groups": {
+    "4": 314,
+    "5": 282,
+    "1": 264,
+    "3": 93,
+    "2": 20
+   },
+   "top_genera": [
+    [
+     "Acinetobacter",
+     137
+    ],
+    [
+     "Burkholderia",
+     65
+    ],
+    [
+     "Pseudomonas",
+     63
+    ],
+    [
+     "Rhizobium",
+     60
+    ],
+    [
+     "Caballeronia",
+     58
+    ],
+    [
+     "Paraburkholderia",
+     39
+    ],
+    [
+     "Xanthomonas",
+     27
+    ],
+    [
+     "Klebsiella",
+     26
+    ]
+   ],
+   "intergenic_median": 140.0,
+   "intergenic_n": 973,
+   "enriched_types": [
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 144,
+     "genera": 21,
+     "share": 0.148,
+     "baseline": 0.047,
+     "lift": 0.101,
+     "fold": 3.15,
+     "p": 5.870748788384862e-64,
+     "q": 1.8786396122831558e-62,
+     "flagged": true
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 134,
+     "genera": 34,
+     "share": 0.1377,
+     "baseline": 0.0628,
+     "lift": 0.0749,
+     "fold": 2.19,
+     "p": 4.687060742599547e-27,
+     "q": 3.7496485940796376e-26,
+     "flagged": true
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 16,
+     "genera": 6,
+     "share": 0.0164,
+     "baseline": 0.0904,
+     "lift": -0.074,
+     "fold": 0.18,
+     "p": 2.1108014435926324e-27,
+     "q": 2.2515215398321412e-26,
+     "flagged": true
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 7,
+     "genera": 3,
+     "share": 0.0072,
+     "baseline": 0.0675,
+     "lift": -0.0603,
+     "fold": 0.11,
+     "p": 2.5685096269820335e-25,
+     "q": 1.6438461612685014e-24,
+     "flagged": true
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 82,
+     "genera": 24,
+     "share": 0.0843,
+     "baseline": 0.0286,
+     "lift": 0.0557,
+     "fold": 2.95,
+     "p": 1.7246288849069358e-31,
+     "q": 2.7594062158510973e-30,
+     "flagged": true
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 99,
+     "genera": 26,
+     "share": 0.1017,
+     "baseline": 0.0464,
+     "lift": 0.0553,
+     "fold": 2.19,
+     "p": 5.294258539125101e-20,
+     "q": 2.823604554200054e-19,
+     "flagged": true
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 150,
+     "genera": 43,
+     "share": 0.1542,
+     "baseline": 0.1035,
+     "lift": 0.0506,
+     "fold": 1.49,
+     "p": 3.275692827235228e-09,
+     "q": 1.048221704715273e-08,
+     "flagged": true
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 12,
+     "genera": 7,
+     "share": 0.0123,
+     "baseline": 0.0521,
+     "lift": -0.0397,
+     "fold": 0.24,
+     "p": 1.4845876066141206e-13,
+     "q": 5.278533712405762e-13,
+     "flagged": false
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0021,
+     "baseline": 0.0411,
+     "lift": -0.039,
+     "fold": 0.05,
+     "p": 2.763530167244772e-18,
+     "q": 1.2633280764547529e-17,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.0051,
+     "baseline": 0.0405,
+     "lift": -0.0353,
+     "fold": 0.13,
+     "p": 1.9939246384451982e-14,
+     "q": 7.975698553780793e-14,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 5,
+     "genera": 5,
+     "share": 0.0051,
+     "baseline": 0.0274,
+     "lift": -0.0222,
+     "fold": 0.19,
+     "p": 1.5721426380646008e-08,
+     "q": 4.5735058561879297e-08,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 84,
+     "genera": 31,
+     "share": 0.0863,
+     "baseline": 0.0711,
+     "lift": 0.0152,
+     "fold": 1.21,
+     "p": 0.03177415796722609,
+     "q": 0.06354831593445218,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0031,
+     "baseline": 0.0173,
+     "lift": -0.0142,
+     "fold": 0.18,
+     "p": 7.049158859570772e-06,
+     "q": 1.8797756958855392e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 90,
+     "genera": 18,
+     "share": 0.0925,
+     "baseline": 0.08,
+     "lift": 0.0125,
+     "fold": 1.16,
+     "p": 0.09273553508852489,
+     "q": 0.1483768561416398,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0062,
+     "baseline": 0.017,
+     "lift": -0.0108,
+     "fold": 0.36,
+     "p": 0.0010831967681392623,
+     "q": 0.0026663305061889533,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0021,
+     "baseline": 0.008,
+     "lift": -0.006,
+     "fold": 0.26,
+     "p": 0.010026249139784147,
+     "q": 0.022917140890935193,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 38,
+     "genera": 17,
+     "share": 0.0391,
+     "baseline": 0.044,
+     "lift": -0.005,
+     "fold": 0.89,
+     "p": 0.4047813021303961,
+     "q": 0.518120066726907,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.001,
+     "baseline": 0.006,
+     "lift": -0.0049,
+     "fold": 0.17,
+     "p": 0.013298673412757906,
+     "q": 0.0283705032805502,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 59,
+     "genera": 11,
+     "share": 0.0606,
+     "baseline": 0.0565,
+     "lift": 0.0041,
+     "fold": 1.07,
+     "p": 0.5106979847927565,
+     "q": 0.6285513658987772,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.001,
+     "baseline": 0.0048,
+     "lift": -0.0037,
+     "fold": 0.22,
+     "p": 0.051494822869983914,
+     "q": 0.09154635176886029,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 7
+  },
+  {
+   "family": "regulator_unclassified",
+   "kind": "regulator",
+   "entries": 732,
+   "types": 34,
+   "genera": 98,
+   "species": 290,
+   "plasmid_rate": 0.0082,
+   "architecture": {
+    "divergent_regulator": 639,
+    "codirectional_regulator": 93
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 284,
+    "N_demethylation": 121,
+    "dioxygenation_with_release": 112,
+    "C_N_cleavage": 90,
+    "hydroxylation": 64,
+    "O_demethylation": 58,
+    "angular_dioxygenation": 3
+   },
+   "chem_families": {
+    "aromatic_acids": 423,
+    "quaternary_amines": 204,
+    "terpenoids_steroids": 29,
+    "sulfoaromatics": 22,
+    "alkaloids": 18,
+    "biaryls_ethers": 13,
+    "haloaromatics": 8,
+    "anilines": 7,
+    "pah": 6,
+    "nitroaromatics": 2
+   },
+   "groups": {
+    "4": 215,
+    "5": 204,
+    "2": 172,
+    "1": 100,
+    "3": 41
+   },
+   "top_genera": [
+    [
+     "Burkholderia",
+     131
+    ],
+    [
+     "Acinetobacter",
+     109
+    ],
+    [
+     "Pseudomonas",
+     84
+    ],
+    [
+     "Mycobacterium",
+     74
+    ],
+    [
+     "Escherichia",
+     39
+    ],
+    [
+     "Citrobacter",
+     21
+    ],
+    [
+     "Caballeronia",
+     16
+    ],
+    [
+     "Paraburkholderia",
+     16
+    ]
+   ],
+   "intergenic_median": 213.0,
+   "intergenic_n": 732,
+   "enriched_types": [
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 163,
+     "genera": 10,
+     "share": 0.2227,
+     "baseline": 0.0521,
+     "lift": 0.1706,
+     "fold": 4.28,
+     "p": 2.513829876468213e-98,
+     "q": 8.547021579991924e-97,
+     "flagged": true
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 100,
+     "genera": 2,
+     "share": 0.1366,
+     "baseline": 0.0411,
+     "lift": 0.0956,
+     "fold": 3.33,
+     "p": 9.674058813819319e-39,
+     "q": 1.6445899983492841e-37,
+     "flagged": true
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 85,
+     "genera": 9,
+     "share": 0.1161,
+     "baseline": 0.0405,
+     "lift": 0.0757,
+     "fold": 2.87,
+     "p": 1.1785421156069575e-25,
+     "q": 1.3356810643545519e-24,
+     "flagged": true
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 10,
+     "genera": 2,
+     "share": 0.0137,
+     "baseline": 0.0628,
+     "lift": -0.0491,
+     "fold": 0.22,
+     "p": 2.789739585035234e-12,
+     "q": 1.580852431519966e-11,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0082,
+     "baseline": 0.0565,
+     "lift": -0.0483,
+     "fold": 0.14,
+     "p": 8.049339917688884e-14,
+     "q": 5.473551144028441e-13,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0014,
+     "baseline": 0.0464,
+     "lift": -0.045,
+     "fold": 0.03,
+     "p": 7.561566405973025e-16,
+     "q": 6.427331445077071e-15,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 20,
+     "genera": 12,
+     "share": 0.0273,
+     "baseline": 0.0711,
+     "lift": -0.0438,
+     "fold": 0.38,
+     "p": 2.0385371047369576e-08,
+     "q": 8.663782695132069e-08,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 89,
+     "genera": 15,
+     "share": 0.1216,
+     "baseline": 0.08,
+     "lift": 0.0415,
+     "fold": 1.52,
+     "p": 7.095830275388303e-06,
+     "q": 2.1932566305745664e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 6,
+     "genera": 6,
+     "share": 0.0082,
+     "baseline": 0.047,
+     "lift": -0.0388,
+     "fold": 0.17,
+     "p": 1.4567007440052404e-10,
+     "q": 7.075403613739738e-10,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 29,
+     "genera": 11,
+     "share": 0.0396,
+     "baseline": 0.0675,
+     "lift": -0.0279,
+     "fold": 0.59,
+     "p": 0.0004418492172708395,
+     "q": 0.0010200719128031558,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0027,
+     "baseline": 0.0286,
+     "lift": -0.0258,
+     "fold": 0.1,
+     "p": 2.3784832718765524e-08,
+     "q": 8.985381249311419e-08,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 49,
+     "genera": 22,
+     "share": 0.0669,
+     "baseline": 0.0904,
+     "lift": -0.0235,
+     "fold": 0.74,
+     "p": 0.013052527940707048,
+     "q": 0.026105055881414096,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0055,
+     "baseline": 0.0274,
+     "lift": -0.0219,
+     "fold": 0.2,
+     "p": 4.331447634925847e-06,
+     "q": 1.4726921958747879e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 90,
+     "genera": 21,
+     "share": 0.123,
+     "baseline": 0.1035,
+     "lift": 0.0194,
+     "fold": 1.19,
+     "p": 0.054797088105996115,
+     "q": 0.08871909502875562,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0014,
+     "baseline": 0.0173,
+     "lift": -0.0159,
+     "fold": 0.08,
+     "p": 1.596016415883218e-05,
+     "q": 4.522046511669118e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0027,
+     "baseline": 0.017,
+     "lift": -0.0142,
+     "fold": 0.16,
+     "p": 0.00015201726929096838,
+     "q": 0.00039758362737637884,
+     "flagged": false
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0041,
+     "baseline": 0.0181,
+     "lift": -0.0141,
+     "fold": 0.23,
+     "p": 0.0004500317262366864,
+     "q": 0.0010200719128031558,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 22,
+     "genera": 10,
+     "share": 0.0301,
+     "baseline": 0.044,
+     "lift": -0.014,
+     "fold": 0.68,
+     "p": 0.041094559732800545,
+     "q": 0.06986075154576092,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 8,
+     "genera": 3,
+     "share": 0.0109,
+     "baseline": 0.0048,
+     "lift": 0.0062,
+     "fold": 2.3,
+     "p": 0.01172021299564777,
+     "q": 0.02490545261575151,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 5,
+     "genera": 1,
+     "share": 0.0068,
+     "baseline": 0.0027,
+     "lift": 0.0042,
+     "fold": 2.55,
+     "p": 0.027774722478275355,
+     "q": 0.05246336468118678,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 3
+  },
+  {
+   "family": "TetR",
+   "kind": "regulator",
+   "entries": 531,
+   "types": 34,
+   "genera": 89,
+   "species": 228,
+   "plasmid_rate": 0.0207,
+   "architecture": {
+    "divergent_regulator": 487,
+    "codirectional_regulator": 44
+   },
+   "reaction_classes": {
+    "hydroxylation": 216,
+    "N_demethylation": 102,
+    "cis_dihydroxylation": 69,
+    "C_N_cleavage": 62,
+    "dioxygenation_with_release": 43,
+    "O_demethylation": 34,
+    "angular_dioxygenation": 5
+   },
+   "chem_families": {
+    "terpenoids_steroids": 172,
+    "quaternary_amines": 157,
+    "aromatic_acids": 48,
+    "pah": 47,
+    "anilines": 41,
+    "sulfoaromatics": 29,
+    "biaryls_ethers": 12,
+    "haloaromatics": 11,
+    "alkaloids": 10,
+    "alkylbenzenes": 4
+   },
+   "groups": {
+    "3": 213,
+    "5": 157,
+    "1": 90,
+    "4": 56,
+    "2": 15
+   },
+   "top_genera": [
+    [
+     "Mycobacterium",
+     123
+    ],
+    [
+     "Mycolicibacterium",
+     61
+    ],
+    [
+     "Novosphingobium",
+     48
+    ],
+    [
+     "Rhodococcus",
+     22
+    ],
+    [
+     "Pseudomonas",
+     19
+    ],
+    [
+     "Mycobacteroides",
+     19
+    ],
+    [
+     "Streptomyces",
+     19
+    ],
+    [
+     "Nocardia",
+     18
+    ]
+   ],
+   "intergenic_median": 138.0,
+   "intergenic_n": 531,
+   "enriched_types": [
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 172,
+     "genera": 14,
+     "share": 0.3239,
+     "baseline": 0.0675,
+     "lift": 0.2564,
+     "fold": 4.8,
+     "p": 1.0720886867839962e-99,
+     "q": 3.645101535065587e-98,
+     "flagged": true
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 57,
+     "genera": 19,
+     "share": 0.1073,
+     "baseline": 0.044,
+     "lift": 0.0633,
+     "fold": 2.44,
+     "p": 5.853677109680748e-12,
+     "q": 4.9756255432286353e-11,
+     "flagged": true
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0038,
+     "baseline": 0.0628,
+     "lift": -0.059,
+     "fold": 0.06,
+     "p": 6.727224484670623e-14,
+     "q": 7.634364615988549e-13,
+     "flagged": true
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 34,
+     "genera": 4,
+     "share": 0.064,
+     "baseline": 0.0173,
+     "lift": 0.0468,
+     "fold": 3.71,
+     "p": 6.736204072931073e-14,
+     "q": 7.634364615988549e-13,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 24,
+     "genera": 11,
+     "share": 0.0452,
+     "baseline": 0.0904,
+     "lift": -0.0453,
+     "fold": 0.5,
+     "p": 3.2548165349343295e-05,
+     "q": 0.00013804014965907956,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 7,
+     "genera": 6,
+     "share": 0.0132,
+     "baseline": 0.0565,
+     "lift": -0.0433,
+     "fold": 0.23,
+     "p": 9.967474289835053e-08,
+     "q": 5.64823543090653e-07,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 35,
+     "genera": 22,
+     "share": 0.0659,
+     "baseline": 0.1035,
+     "lift": -0.0376,
+     "fold": 0.64,
+     "p": 0.0014203746239704975,
+     "q": 0.0037148259396151476,
+     "flagged": false
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0038,
+     "baseline": 0.0411,
+     "lift": -0.0373,
+     "fold": 0.09,
+     "p": 1.6610635417307314e-08,
+     "q": 1.1295232083768974e-07,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 6,
+     "genera": 5,
+     "share": 0.0113,
+     "baseline": 0.047,
+     "lift": -0.0357,
+     "fold": 0.24,
+     "p": 1.815734002925559e-06,
+     "q": 8.819279442781287e-06,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 60,
+     "genera": 14,
+     "share": 0.113,
+     "baseline": 0.08,
+     "lift": 0.033,
+     "fold": 1.41,
+     "p": 0.003862706788051319,
+     "q": 0.00875546871958299,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0113,
+     "baseline": 0.0405,
+     "lift": -0.0292,
+     "fold": 0.28,
+     "p": 3.6540039615638704e-05,
+     "q": 0.00013804014965907956,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 29,
+     "genera": 13,
+     "share": 0.0546,
+     "baseline": 0.0711,
+     "lift": -0.0165,
+     "fold": 0.77,
+     "p": 0.11762513076095812,
+     "q": 0.19044068789869412,
+     "flagged": false
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 18,
+     "genera": 7,
+     "share": 0.0339,
+     "baseline": 0.0181,
+     "lift": 0.0157,
+     "fold": 1.87,
+     "p": 0.006728612755775288,
+     "q": 0.014298302106022487,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 10,
+     "genera": 7,
+     "share": 0.0188,
+     "baseline": 0.006,
+     "lift": 0.0129,
+     "fold": 3.16,
+     "p": 0.000366180839083899,
+     "q": 0.0011318316844411425,
+     "flagged": false
+    },
+    {
+     "cluster": "3_317_NidA",
+     "entries": 7,
+     "genera": 3,
+     "share": 0.0132,
+     "baseline": 0.0039,
+     "lift": 0.0093,
+     "fold": 3.41,
+     "p": 0.0016972811871717767,
+     "q": 0.004121968597417172,
+     "flagged": false
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 6,
+     "genera": 6,
+     "share": 0.0113,
+     "baseline": 0.0021,
+     "lift": 0.0092,
+     "fold": 5.43,
+     "p": 9.203144011341324e-05,
+     "q": 0.000312906896385605,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 8,
+     "genera": 7,
+     "share": 0.0151,
+     "baseline": 0.0068,
+     "lift": 0.0082,
+     "fold": 2.2,
+     "p": 0.020065757986327516,
+     "q": 0.035907145870270295,
+     "flagged": false
+    },
+    {
+     "cluster": "3_318_NidA",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0075,
+     "baseline": 0.0012,
+     "lift": 0.0063,
+     "fold": 6.33,
+     "p": 0.0006171084593004397,
+     "q": 0.0017484739680179125,
+     "flagged": false
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "entries": 5,
+     "genera": 3,
+     "share": 0.0094,
+     "baseline": 0.0033,
+     "lift": 0.0061,
+     "fold": 2.88,
+     "p": 0.019510587490372957,
+     "q": 0.035907145870270295,
+     "flagged": false
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0056,
+     "baseline": 0.0012,
+     "lift": 0.0045,
+     "fold": 4.75,
+     "p": 0.013847539821575015,
+     "q": 0.02769507964315003,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 3
+  },
+  {
+   "family": "IclR",
+   "kind": "regulator",
+   "entries": 358,
+   "types": 22,
+   "genera": 62,
+   "species": 181,
+   "plasmid_rate": 0.0223,
+   "architecture": {
+    "divergent_regulator": 275,
+    "codirectional_regulator": 83
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 112,
+    "O_demethylation": 92,
+    "N_demethylation": 76,
+    "dioxygenation_with_release": 43,
+    "hydroxylation": 30,
+    "angular_dioxygenation": 3,
+    "C_N_cleavage": 2
+   },
+   "chem_families": {
+    "aromatic_acids": 187,
+    "quaternary_amines": 77,
+    "haloaromatics": 43,
+    "biaryls_ethers": 15,
+    "terpenoids_steroids": 15,
+    "sulfoaromatics": 14,
+    "pah": 5,
+    "alkaloids": 1,
+    "anilines": 1
+   },
+   "groups": {
+    "4": 132,
+    "1": 108,
+    "5": 77,
+    "3": 31,
+    "2": 10
+   },
+   "top_genera": [
+    [
+     "Acinetobacter",
+     84
+    ],
+    [
+     "Streptomyces",
+     52
+    ],
+    [
+     "Klebsiella",
+     31
+    ],
+    [
+     "Rhodococcus",
+     30
+    ],
+    [
+     "Bradyrhizobium",
+     27
+    ],
+    [
+     "Amycolatopsis",
+     9
+    ],
+    [
+     "Nocardia",
+     9
+    ],
+    [
+     "Comamonas",
+     7
+    ]
+   ],
+   "intergenic_median": 233.0,
+   "intergenic_n": 358,
+   "enriched_types": [
+    {
+     "cluster": "1_104_VanA",
+     "entries": 85,
+     "genera": 4,
+     "share": 0.2374,
+     "baseline": 0.0904,
+     "lift": 0.147,
+     "fold": 2.63,
+     "p": 3.6799650678063505e-19,
+     "q": 8.095923149173971e-18,
+     "flagged": true
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 42,
+     "genera": 16,
+     "share": 0.1173,
+     "baseline": 0.0274,
+     "lift": 0.0899,
+     "fold": 4.29,
+     "p": 3.2168182455663082e-18,
+     "q": 3.538500070122939e-17,
+     "flagged": true
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0056,
+     "baseline": 0.08,
+     "lift": -0.0744,
+     "fold": 0.07,
+     "p": 1.896453277339977e-11,
+     "q": 1.3907324033826497e-10,
+     "flagged": true
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 40,
+     "genera": 7,
+     "share": 0.1117,
+     "baseline": 0.0464,
+     "lift": 0.0653,
+     "fold": 2.41,
+     "p": 5.8633883760466226e-08,
+     "q": 2.149909071217095e-07,
+     "flagged": true
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0028,
+     "baseline": 0.0565,
+     "lift": -0.0537,
+     "fold": 0.05,
+     "p": 1.5486396682596265e-08,
+     "q": 8.517518175427945e-08,
+     "flagged": true
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 56,
+     "genera": 10,
+     "share": 0.1564,
+     "baseline": 0.1035,
+     "lift": 0.0529,
+     "fold": 1.51,
+     "p": 0.0009117920722686398,
+     "q": 0.0018235841445372796,
+     "flagged": true
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 31,
+     "genera": 13,
+     "share": 0.0866,
+     "baseline": 0.0405,
+     "lift": 0.0461,
+     "fold": 2.14,
+     "p": 2.504470145209812e-05,
+     "q": 7.871191884945124e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0056,
+     "baseline": 0.0411,
+     "lift": -0.0355,
+     "fold": 0.14,
+     "p": 3.1933118404881624e-05,
+     "q": 8.781607561342446e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 14,
+     "genera": 7,
+     "share": 0.0391,
+     "baseline": 0.0711,
+     "lift": -0.032,
+     "fold": 0.55,
+     "p": 0.011866639402035997,
+     "q": 0.020082005141907073,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 11,
+     "genera": 3,
+     "share": 0.0307,
+     "baseline": 0.0048,
+     "lift": 0.026,
+     "fold": 6.45,
+     "p": 4.625412749422142e-08,
+     "q": 2.0351816097457423e-07,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 15,
+     "genera": 5,
+     "share": 0.0419,
+     "baseline": 0.0675,
+     "lift": -0.0256,
+     "fold": 0.62,
+     "p": 0.044142885301927746,
+     "q": 0.06069646729015065,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 10,
+     "genera": 5,
+     "share": 0.0279,
+     "baseline": 0.008,
+     "lift": 0.0199,
+     "fold": 3.48,
+     "p": 0.0002648579879951042,
+     "q": 0.0006474306373213658,
+     "flagged": false
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "entries": 7,
+     "genera": 1,
+     "share": 0.0196,
+     "baseline": 0.0045,
+     "lift": 0.0151,
+     "fold": 4.38,
+     "p": 0.00044216181478009105,
+     "q": 0.0009727559925162003,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 19,
+     "genera": 10,
+     "share": 0.0531,
+     "baseline": 0.044,
+     "lift": 0.009,
+     "fold": 1.21,
+     "p": 0.41206227549596597,
+     "q": 0.47712474004796057,
+     "flagged": false
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 6,
+     "genera": 5,
+     "share": 0.0168,
+     "baseline": 0.0077,
+     "lift": 0.009,
+     "fold": 2.17,
+     "p": 0.051116080184176904,
+     "q": 0.06615022141481718,
+     "flagged": false
+    },
+    {
+     "cluster": "1_109_LigX",
+     "entries": 5,
+     "genera": 3,
+     "share": 0.014,
+     "baseline": 0.0054,
+     "lift": 0.0086,
+     "fold": 2.61,
+     "p": 0.03547543453666125,
+     "q": 0.052030637320436494,
+     "flagged": false
+    },
+    {
+     "cluster": "3_316_NarAa",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0084,
+     "baseline": 0.0015,
+     "lift": 0.0069,
+     "fold": 5.63,
+     "p": 0.010172713472606575,
+     "q": 0.01864997469977872,
+     "flagged": false
+    },
+    {
+     "cluster": "2_204_Dpe",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0084,
+     "baseline": 0.0018,
+     "lift": 0.0066,
+     "fold": 4.69,
+     "p": 0.01875022829776387,
+     "q": 0.029464644467914653,
+     "flagged": false
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0028,
+     "baseline": 0.006,
+     "lift": -0.0032,
+     "fold": 0.47,
+     "p": 0.7153185260795818,
+     "q": 0.7493813130357524,
+     "flagged": false
+    },
+    {
+     "cluster": "1_101_OxoO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0028,
+     "baseline": 0.0006,
+     "lift": 0.0022,
+     "fold": 4.69,
+     "p": 0.2017145194882476,
+     "q": 0.24653996826341373,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 6
+  },
+  {
+   "family": "MarR",
+   "kind": "regulator",
+   "entries": 323,
+   "types": 17,
+   "genera": 56,
+   "species": 148,
+   "plasmid_rate": 0.0093,
+   "architecture": {
+    "divergent_regulator": 281,
+    "codirectional_regulator": 42
+   },
+   "reaction_classes": {
+    "dioxygenation_with_release": 129,
+    "hydroxylation": 94,
+    "O_demethylation": 68,
+    "cis_dihydroxylation": 31,
+    "N_demethylation": 1
+   },
+   "chem_families": {
+    "anilines": 116,
+    "aromatic_acids": 105,
+    "sulfoaromatics": 73,
+    "haloaromatics": 18,
+    "pah": 5,
+    "terpenoids_steroids": 3,
+    "biaryls_ethers": 3
+   },
+   "groups": {
+    "1": 160,
+    "4": 149,
+    "3": 7,
+    "2": 7
+   },
+   "top_genera": [
+    [
+     "Acinetobacter",
+     72
+    ],
+    [
+     "Burkholderia",
+     64
+    ],
+    [
+     "Pseudomonas",
+     27
+    ],
+    [
+     "Bradyrhizobium",
+     25
+    ],
+    [
+     "Achromobacter",
+     20
+    ],
+    [
+     "Comamonas",
+     11
+    ],
+    [
+     "Variovorax",
+     9
+    ],
+    [
+     "Mycolicibacterium",
+     7
+    ]
+   ],
+   "intergenic_median": 198.0,
+   "intergenic_n": 323,
+   "enriched_types": [
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 103,
+     "genera": 18,
+     "share": 0.3189,
+     "baseline": 0.0565,
+     "lift": 0.2624,
+     "fold": 5.64,
+     "p": 9.242075714648364e-60,
+     "q": 1.571152871490222e-58,
+     "flagged": true
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 73,
+     "genera": 19,
+     "share": 0.226,
+     "baseline": 0.0711,
+     "lift": 0.1549,
+     "fold": 3.18,
+     "p": 1.2945560206608927e-21,
+     "q": 1.1003726175617588e-20,
+     "flagged": true
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 65,
+     "genera": 15,
+     "share": 0.2012,
+     "baseline": 0.0904,
+     "lift": 0.1108,
+     "fold": 2.22,
+     "p": 6.757194971572643e-11,
+     "q": 3.829077150557831e-10,
+     "flagged": true
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0093,
+     "baseline": 0.0675,
+     "lift": -0.0583,
+     "fold": 0.14,
+     "p": 2.7443822175554547e-07,
+     "q": 1.1663624424610683e-06,
+     "flagged": true
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 18,
+     "genera": 3,
+     "share": 0.0557,
+     "baseline": 0.017,
+     "lift": 0.0388,
+     "fold": 3.29,
+     "p": 2.8881706622861915e-06,
+     "q": 9.819780251773051e-06,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0031,
+     "baseline": 0.0405,
+     "lift": -0.0374,
+     "fold": 0.08,
+     "p": 2.0504636514563905e-05,
+     "q": 4.979697439251234e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 11,
+     "genera": 2,
+     "share": 0.0341,
+     "baseline": 0.008,
+     "lift": 0.026,
+     "fold": 4.24,
+     "p": 1.736153390529819e-05,
+     "q": 4.91910127316782e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 13,
+     "genera": 8,
+     "share": 0.0402,
+     "baseline": 0.0173,
+     "lift": 0.023,
+     "fold": 2.33,
+     "p": 0.002715130203212247,
+     "q": 0.00461572134546082,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 11,
+     "genera": 2,
+     "share": 0.0341,
+     "baseline": 0.0464,
+     "lift": -0.0124,
+     "fold": 0.73,
+     "p": 0.32959532138510395,
+     "q": 0.43100926642667436,
+     "flagged": false
+    },
+    {
+     "cluster": "2_208_TecA1",
+     "entries": 4,
+     "genera": 1,
+     "share": 0.0124,
+     "baseline": 0.0012,
+     "lift": 0.0112,
+     "fold": 10.41,
+     "p": 8.387159830289518e-05,
+     "q": 0.00017822714639365226,
+     "flagged": false
+    },
+    {
+     "cluster": "3_320_NidA3",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0093,
+     "baseline": 0.0009,
+     "lift": 0.0084,
+     "fold": 10.41,
+     "p": 0.0008801275846910064,
+     "q": 0.0016624632155274567,
+     "flagged": false
+    },
+    {
+     "cluster": "1_109_LigX",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0093,
+     "baseline": 0.0054,
+     "lift": 0.0039,
+     "fold": 1.73,
+     "p": 0.24642474114244461,
+     "q": 0.3491017166184632,
+     "flagged": false
+    },
+    {
+     "cluster": "2_214_TftA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0062,
+     "baseline": 0.0024,
+     "lift": 0.0038,
+     "fold": 2.6,
+     "p": 0.17523047271756786,
+     "q": 0.27081073056351396,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 10,
+     "genera": 2,
+     "share": 0.031,
+     "baseline": 0.0274,
+     "lift": 0.0036,
+     "fold": 1.13,
+     "p": 0.5941986133414642,
+     "q": 0.673425095120326,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0031,
+     "baseline": 0.006,
+     "lift": -0.0029,
+     "fold": 0.52,
+     "p": 0.7144342382812865,
+     "q": 0.7144342382812865,
+     "flagged": false
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0031,
+     "baseline": 0.006,
+     "lift": -0.0029,
+     "fold": 0.52,
+     "p": 0.7144342382812865,
+     "q": 0.7144342382812865,
+     "flagged": false
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0031,
+     "baseline": 0.0021,
+     "lift": 0.001,
+     "fold": 1.49,
+     "p": 0.5073415860186506,
+     "q": 0.6160576401655043,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 4
+  },
+  {
+   "family": "GntR",
+   "kind": "regulator",
+   "entries": 181,
+   "types": 24,
+   "genera": 62,
+   "species": 122,
+   "plasmid_rate": 0.0497,
+   "architecture": {
+    "divergent_regulator": 167,
+    "codirectional_regulator": 14
+   },
+   "reaction_classes": {
+    "O_demethylation": 62,
+    "cis_dihydroxylation": 38,
+    "hydroxylation": 28,
+    "N_demethylation": 22,
+    "dioxygenation_with_release": 18,
+    "C_N_cleavage": 7,
+    "angular_dioxygenation": 6
+   },
+   "chem_families": {
+    "aromatic_acids": 115,
+    "quaternary_amines": 26,
+    "sulfoaromatics": 16,
+    "biaryls_ethers": 10,
+    "anilines": 4,
+    "alkaloids": 4,
+    "haloaromatics": 3,
+    "pah": 2,
+    "terpenoids_steroids": 1
+   },
+   "groups": {
+    "1": 98,
+    "4": 39,
+    "5": 26,
+    "3": 16,
+    "2": 2
+   },
+   "top_genera": [
+    [
+     "Pseudomonas",
+     25
+    ],
+    [
+     "Caballeronia",
+     13
+    ],
+    [
+     "Achromobacter",
+     13
+    ],
+    [
+     "Paraburkholderia",
+     10
+    ],
+    [
+     "Acidovorax",
+     7
+    ],
+    [
+     "Marinomonas",
+     7
+    ],
+    [
+     "Variovorax",
+     5
+    ],
+    [
+     "Thalassospira",
+     5
+    ]
+   ],
+   "intergenic_median": 221.0,
+   "intergenic_n": 181,
+   "enriched_types": [
+    {
+     "cluster": "1_104_VanA",
+     "entries": 58,
+     "genera": 22,
+     "share": 0.3204,
+     "baseline": 0.0904,
+     "lift": 0.23,
+     "fold": 3.54,
+     "p": 1.3552729656220327e-19,
+     "q": 3.2526551174928786e-18,
+     "flagged": true
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 31,
+     "genera": 14,
+     "share": 0.1713,
+     "baseline": 0.0274,
+     "lift": 0.1439,
+     "fold": 6.26,
+     "p": 6.7113741280423e-18,
+     "q": 8.05364895365076e-17,
+     "flagged": true
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 22,
+     "genera": 11,
+     "share": 0.1215,
+     "baseline": 0.017,
+     "lift": 0.1046,
+     "fold": 7.17,
+     "p": 2.3478718383500604e-14,
+     "q": 1.878297470680048e-13,
+     "flagged": true
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0675,
+     "lift": -0.062,
+     "fold": 0.08,
+     "p": 5.2459778963243484e-05,
+     "q": 0.0002518069390235687,
+     "flagged": true
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0221,
+     "baseline": 0.0711,
+     "lift": -0.049,
+     "fold": 0.31,
+     "p": 0.0044867120021168045,
+     "q": 0.012846261242300682,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 7,
+     "genera": 4,
+     "share": 0.0387,
+     "baseline": 0.08,
+     "lift": -0.0414,
+     "fold": 0.48,
+     "p": 0.033817662539742034,
+     "q": 0.07378399099580081,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0464,
+     "lift": -0.0409,
+     "fold": 0.12,
+     "p": 0.0029753764021620928,
+     "q": 0.010201290521698603,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0166,
+     "baseline": 0.0565,
+     "lift": -0.04,
+     "fold": 0.29,
+     "p": 0.012118422034292135,
+     "q": 0.029084212882301126,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 12,
+     "genera": 2,
+     "share": 0.0663,
+     "baseline": 0.0286,
+     "lift": 0.0377,
+     "fold": 2.32,
+     "p": 0.004817347965862756,
+     "q": 0.012846261242300682,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 13,
+     "genera": 6,
+     "share": 0.0718,
+     "baseline": 0.1035,
+     "lift": -0.0317,
+     "fold": 0.69,
+     "p": 0.16808538146087632,
+     "q": 0.28814636821864514,
+     "flagged": false
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0331,
+     "baseline": 0.0033,
+     "lift": 0.0299,
+     "fold": 10.13,
+     "p": 8.285244316314844e-06,
+     "q": 4.971146589788906e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0166,
+     "baseline": 0.0018,
+     "lift": 0.0148,
+     "fold": 9.28,
+     "p": 0.002723316270935611,
+     "q": 0.010201290521698603,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0173,
+     "lift": -0.0117,
+     "fold": 0.32,
+     "p": 0.371087500899412,
+     "q": 0.5238882365638758,
+     "flagged": false
+    },
+    {
+     "cluster": "1_109_LigX",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0166,
+     "baseline": 0.0054,
+     "lift": 0.0112,
+     "fold": 3.09,
+     "p": 0.06905518154093868,
+     "q": 0.13811036308187735,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 6,
+     "genera": 5,
+     "share": 0.0331,
+     "baseline": 0.044,
+     "lift": -0.0109,
+     "fold": 0.75,
+     "p": 0.5778209084205027,
+     "q": 0.6724820707107094,
+     "flagged": false
+    },
+    {
+     "cluster": "1_101_OxoO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0006,
+     "lift": 0.0049,
+     "fold": 9.28,
+     "p": 0.10482105665830747,
+     "q": 0.19351579690764456,
+     "flagged": false
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0012,
+     "lift": 0.0043,
+     "fold": 4.64,
+     "p": 0.19870899028140915,
+     "q": 0.3179343844502546,
+     "flagged": false
+    },
+    {
+     "cluster": "2_214_TftA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0024,
+     "lift": 0.0031,
+     "fold": 2.32,
+     "p": 0.3581070410967851,
+     "q": 0.5238882365638758,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.011,
+     "baseline": 0.008,
+     "lift": 0.003,
+     "fold": 1.38,
+     "p": 0.6544845287879123,
+     "q": 0.7139831223140862,
+     "flagged": false
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0055,
+     "baseline": 0.0077,
+     "lift": -0.0022,
+     "fold": 0.71,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 4
+  },
+  {
+   "family": "AraC",
+   "kind": "regulator",
+   "entries": 152,
+   "types": 20,
+   "genera": 25,
+   "species": 61,
+   "plasmid_rate": 0.0329,
+   "architecture": {
+    "codirectional_regulator": 81,
+    "divergent_regulator": 71
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 76,
+    "dioxygenation_with_release": 53,
+    "hydroxylation": 11,
+    "O_demethylation": 5,
+    "C_N_cleavage": 4,
+    "N_demethylation": 3
+   },
+   "chem_families": {
+    "aromatic_acids": 107,
+    "anilines": 17,
+    "haloaromatics": 8,
+    "alkaloids": 7,
+    "sulfoaromatics": 5,
+    "quaternary_amines": 5,
+    "biaryls_ethers": 2,
+    "pah": 1
+   },
+   "groups": {
+    "4": 124,
+    "1": 14,
+    "3": 6,
+    "5": 5,
+    "2": 3
+   },
+   "top_genera": [
+    [
+     "Pseudomonas",
+     97
+    ],
+    [
+     "Achromobacter",
+     16
+    ],
+    [
+     "Sphingobium",
+     6
+    ],
+    [
+     "Sphingomonas",
+     5
+    ],
+    [
+     "Novosphingobium",
+     3
+    ],
+    [
+     "Mycolicibacterium",
+     2
+    ],
+    [
+     "Stutzerimonas",
+     2
+    ],
+    [
+     "Marinobacterium",
+     2
+    ]
+   ],
+   "intergenic_median": 262.0,
+   "intergenic_n": 152,
+   "enriched_types": [
+    {
+     "cluster": "4_411_XylX",
+     "entries": 65,
+     "genera": 3,
+     "share": 0.4276,
+     "baseline": 0.0628,
+     "lift": 0.3649,
+     "fold": 6.81,
+     "p": 3.1580490459569166e-41,
+     "q": 6.3160980919138334e-40,
+     "flagged": true
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 32,
+     "genera": 3,
+     "share": 0.2105,
+     "baseline": 0.0411,
+     "lift": 0.1695,
+     "fold": 5.13,
+     "p": 1.6199060459828135e-15,
+     "q": 1.6199060459828134e-14,
+     "flagged": true
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.0904,
+     "lift": -0.0839,
+     "fold": 0.07,
+     "p": 1.482790453444889e-05,
+     "q": 7.413952267224445e-05,
+     "flagged": true
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 4,
+     "genera": 1,
+     "share": 0.0263,
+     "baseline": 0.08,
+     "lift": -0.0537,
+     "fold": 0.33,
+     "p": 0.00864940536531959,
+     "q": 0.028831351217731966,
+     "flagged": true
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 5,
+     "genera": 5,
+     "share": 0.0329,
+     "baseline": 0.0711,
+     "lift": -0.0382,
+     "fold": 0.46,
+     "p": 0.07314390172436575,
+     "q": 0.1462878034487315,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.044,
+     "lift": -0.0375,
+     "fold": 0.15,
+     "p": 0.013800227943453125,
+     "q": 0.03942922269558036,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0132,
+     "baseline": 0.0464,
+     "lift": -0.0333,
+     "fold": 0.28,
+     "p": 0.04613508558060636,
+     "q": 0.10252241240134746,
+     "flagged": false
+    },
+    {
+     "cluster": "3_304_OMO",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0263,
+     "baseline": 0.0012,
+     "lift": 0.0251,
+     "fold": 22.11,
+     "p": 4.027166422700084e-06,
+     "q": 2.6847776151333896e-05,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 6,
+     "genera": 1,
+     "share": 0.0395,
+     "baseline": 0.0173,
+     "lift": 0.0222,
+     "fold": 2.29,
+     "p": 0.04513423076276865,
+     "q": 0.10252241240134746,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 11,
+     "genera": 3,
+     "share": 0.0724,
+     "baseline": 0.0565,
+     "lift": 0.0158,
+     "fold": 1.28,
+     "p": 0.3677690770044223,
+     "q": 0.4903587693392298,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0197,
+     "baseline": 0.0068,
+     "lift": 0.0129,
+     "fold": 2.88,
+     "p": 0.0828561813322174,
+     "q": 0.15064760242221345,
+     "flagged": false
+    },
+    {
+     "cluster": "2_215_cadA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0132,
+     "baseline": 0.0006,
+     "lift": 0.0126,
+     "fold": 22.11,
+     "p": 0.0020324166560405773,
+     "q": 0.00812966662416231,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 8,
+     "genera": 6,
+     "share": 0.0526,
+     "baseline": 0.0405,
+     "lift": 0.0122,
+     "fold": 1.3,
+     "p": 0.39853663006882845,
+     "q": 0.49817078758603556,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0132,
+     "baseline": 0.0048,
+     "lift": 0.0084,
+     "fold": 2.76,
+     "p": 0.16141458333912884,
+     "q": 0.2690243055652147,
+     "flagged": false
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.0018,
+     "lift": 0.0048,
+     "fold": 3.69,
+     "p": 0.24261741127680925,
+     "q": 0.3732575558104757,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.0027,
+     "lift": 0.0039,
+     "fold": 2.46,
+     "p": 0.3409928581392053,
+     "q": 0.48713265448457904,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.0048,
+     "lift": 0.0018,
+     "fold": 1.38,
+     "p": 0.5239172021303194,
+     "q": 0.6047639366175956,
+     "flagged": false
+    },
+    {
+     "cluster": "1_109_LigX",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.0054,
+     "lift": 0.0012,
+     "fold": 1.23,
+     "p": 0.5662076390059017,
+     "q": 0.6047639366175956,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.006,
+     "lift": 0.0006,
+     "fold": 1.11,
+     "p": 0.6047639366175956,
+     "q": 0.6047639366175956,
+     "flagged": false
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0066,
+     "baseline": 0.006,
+     "lift": 0.0006,
+     "fold": 1.11,
+     "p": 0.6047639366175956,
+     "q": 0.6047639366175956,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 4
+  },
+  {
+   "family": "sigma54",
+   "kind": "regulator",
+   "entries": 87,
+   "types": 12,
+   "genera": 19,
+   "species": 38,
+   "plasmid_rate": 0.1264,
+   "architecture": {
+    "divergent_regulator": 69,
+    "codirectional_regulator": 18
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 49,
+    "C_N_cleavage": 14,
+    "N_demethylation": 12,
+    "hydroxylation": 7,
+    "O_demethylation": 5
+   },
+   "chem_families": {
+    "pah": 43,
+    "quaternary_amines": 20,
+    "aromatic_acids": 7,
+    "sulfoaromatics": 6,
+    "haloaromatics": 6,
+    "biaryls_ethers": 3,
+    "alkylbenzenes": 1,
+    "alkaloids": 1
+   },
+   "groups": {
+    "3": 43,
+    "5": 20,
+    "1": 18,
+    "2": 4,
+    "4": 2
+   },
+   "top_genera": [
+    [
+     "Novosphingobium",
+     22
+    ],
+    [
+     "Sphingobium",
+     21
+    ],
+    [
+     "Xanthomonas",
+     8
+    ],
+    [
+     "Pseudomonas",
+     4
+    ],
+    [
+     "Hyphomonas",
+     4
+    ],
+    [
+     "Peribacillus",
+     3
+    ],
+    [
+     "Aneurinibacillus",
+     3
+    ],
+    [
+     "Sphingomonas",
+     3
+    ]
+   ],
+   "intergenic_median": 217.0,
+   "intergenic_n": 87,
+   "enriched_types": [
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 40,
+     "genera": 5,
+     "share": 0.4598,
+     "baseline": 0.0181,
+     "lift": 0.4416,
+     "fold": 25.33,
+     "p": 8.164815918670513e-53,
+     "q": 9.797779102404615e-52,
+     "flagged": true
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 14,
+     "genera": 6,
+     "share": 0.1609,
+     "baseline": 0.08,
+     "lift": 0.0809,
+     "fold": 2.01,
+     "p": 0.013867575771651486,
+     "q": 0.03328218185196356,
+     "flagged": true
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 6,
+     "genera": 4,
+     "share": 0.069,
+     "baseline": 0.006,
+     "lift": 0.063,
+     "fold": 11.59,
+     "p": 7.330528524824059e-06,
+     "q": 4.398317114894436e-05,
+     "flagged": true
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0345,
+     "baseline": 0.1035,
+     "lift": -0.0691,
+     "fold": 0.33,
+     "p": 0.030679778648556446,
+     "q": 0.06135955729711289,
+     "flagged": false
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0345,
+     "baseline": 0.0012,
+     "lift": 0.0333,
+     "fold": 28.97,
+     "p": 6.580419101151372e-05,
+     "q": 0.00026321676404605487,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 5,
+     "genera": 2,
+     "share": 0.0575,
+     "baseline": 0.0904,
+     "lift": -0.033,
+     "fold": 0.64,
+     "p": 0.3456283246501386,
+     "q": 0.4147539895801663,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0345,
+     "baseline": 0.0027,
+     "lift": 0.0318,
+     "fold": 12.88,
+     "p": 0.0012574099062242,
+     "q": 0.0037722297186726,
+     "flagged": false
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.023,
+     "baseline": 0.0077,
+     "lift": 0.0153,
+     "fold": 2.97,
+     "p": 0.14449364949643076,
+     "q": 0.21855292857879896,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0115,
+     "baseline": 0.0018,
+     "lift": 0.0097,
+     "fold": 6.44,
+     "p": 0.14570195238586597,
+     "q": 0.21855292857879896,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0345,
+     "baseline": 0.044,
+     "lift": -0.0096,
+     "fold": 0.78,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0115,
+     "baseline": 0.0048,
+     "lift": 0.0067,
+     "fold": 2.41,
+     "p": 0.3433268258524074,
+     "q": 0.4147539895801663,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.069,
+     "baseline": 0.0711,
+     "lift": -0.0021,
+     "fold": 0.97,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 3
+  }
+ ],
+ "is_families": [
+  {
+   "family": "IS3",
+   "kind": "IS family",
+   "entries": 203,
+   "types": 41,
+   "genera": 70,
+   "species": 125,
+   "plasmid_rate": 0.1872,
+   "architecture": {
+    "divergent_other": 78,
+    "codirectional_other": 56,
+    "divergent_regulator": 53,
+    "codirectional_regulator": 10,
+    "unknown": 6
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 84,
+    "N_demethylation": 33,
+    "hydroxylation": 23,
+    "dioxygenation_with_release": 21,
+    "O_demethylation": 17,
+    "C_N_cleavage": 17,
+    "angular_dioxygenation": 8
+   },
+   "chem_families": {
+    "aromatic_acids": 62,
+    "quaternary_amines": 34,
+    "alkaloids": 21,
+    "haloaromatics": 19,
+    "biaryls_ethers": 18,
+    "sulfoaromatics": 15,
+    "pah": 14,
+    "anilines": 9,
+    "terpenoids_steroids": 5,
+    "alkylbenzenes": 4,
+    "nitroaromatics": 2
+   },
+   "groups": {
+    "4": 60,
+    "1": 57,
+    "5": 34,
+    "3": 34,
+    "2": 18
+   },
+   "top_genera": [
+    [
+     "Novosphingobium",
+     20
+    ],
+    [
+     "Sphingobium",
+     17
+    ],
+    [
+     "Burkholderia",
+     15
+    ],
+    [
+     "Pseudomonas",
+     14
+    ],
+    [
+     "Acinetobacter",
+     12
+    ],
+    [
+     "Mycolicibacterium",
+     11
+    ],
+    [
+     "Comamonas",
+     9
+    ],
+    [
+     "Mycobacterium",
+     6
+    ]
+   ],
+   "intergenic_median": 241.0,
+   "intergenic_n": 197,
+   "enriched_types": [
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 17,
+     "genera": 9,
+     "share": 0.0837,
+     "baseline": 0.0509,
+     "lift": 0.0328,
+     "fold": 1.65,
+     "p": 0.022221635573445683,
+     "q": 0.30369568617042436,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 11,
+     "genera": 8,
+     "share": 0.0542,
+     "baseline": 0.0839,
+     "lift": -0.0297,
+     "fold": 0.65,
+     "p": 0.07503886735202128,
+     "q": 0.514780497985711,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 18,
+     "genera": 13,
+     "share": 0.0887,
+     "baseline": 0.0619,
+     "lift": 0.0268,
+     "fold": 1.43,
+     "p": 0.08455603902478487,
+     "q": 0.514780497985711,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 7,
+     "genera": 5,
+     "share": 0.0345,
+     "baseline": 0.0578,
+     "lift": -0.0233,
+     "fold": 0.6,
+     "p": 0.11105638880802621,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0296,
+     "baseline": 0.0083,
+     "lift": 0.0213,
+     "fold": 3.58,
+     "p": 0.00044912644544351193,
+     "q": 0.01841418426318399,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 14,
+     "genera": 8,
+     "share": 0.069,
+     "baseline": 0.0495,
+     "lift": 0.0194,
+     "fold": 1.39,
+     "p": 0.18048422364143105,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 10,
+     "genera": 7,
+     "share": 0.0493,
+     "baseline": 0.0303,
+     "lift": 0.019,
+     "fold": 1.63,
+     "p": 0.08788935331463359,
+     "q": 0.514780497985711,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 8,
+     "genera": 4,
+     "share": 0.0394,
+     "baseline": 0.022,
+     "lift": 0.0174,
+     "fold": 1.79,
+     "p": 0.08538876961273127,
+     "q": 0.514780497985711,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0148,
+     "baseline": 0.0316,
+     "lift": -0.0169,
+     "fold": 0.47,
+     "p": 0.15430008612314539,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 9,
+     "genera": 5,
+     "share": 0.0443,
+     "baseline": 0.0289,
+     "lift": 0.0154,
+     "fold": 1.53,
+     "p": 0.13935003842356322,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 6,
+     "genera": 6,
+     "share": 0.0296,
+     "baseline": 0.0426,
+     "lift": -0.0131,
+     "fold": 0.69,
+     "p": 0.3143195190009524,
+     "q": 0.7159500155021693,
+     "flagged": false
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0049,
+     "baseline": 0.0179,
+     "lift": -0.013,
+     "fold": 0.28,
+     "p": 0.12557898962284164,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 5,
+     "genera": 3,
+     "share": 0.0246,
+     "baseline": 0.0358,
+     "lift": -0.0111,
+     "fold": 0.69,
+     "p": 0.3795243125731712,
+     "q": 0.7581332218696228,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 7,
+     "genera": 7,
+     "share": 0.0345,
+     "baseline": 0.0454,
+     "lift": -0.0109,
+     "fold": 0.76,
+     "p": 0.43363356125245495,
+     "q": 0.7581332218696228,
+     "flagged": false
+    },
+    {
+     "cluster": "3_320_NidA3",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0148,
+     "baseline": 0.0041,
+     "lift": 0.0107,
+     "fold": 3.58,
+     "p": 0.021539440926711156,
+     "q": 0.30369568617042436,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 17,
+     "genera": 15,
+     "share": 0.0837,
+     "baseline": 0.0922,
+     "lift": -0.0084,
+     "fold": 0.91,
+     "p": 0.6708364133926481,
+     "q": 0.9484238947965026,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0099,
+     "baseline": 0.0179,
+     "lift": -0.008,
+     "fold": 0.55,
+     "p": 0.5325070848643466,
+     "q": 0.8086218696088227,
+     "flagged": false
+    },
+    {
+     "cluster": "3_318_NidA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0099,
+     "baseline": 0.0041,
+     "lift": 0.0057,
+     "fold": 2.39,
+     "p": 0.18999715802516853,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0099,
+     "baseline": 0.0041,
+     "lift": 0.0057,
+     "fold": 2.39,
+     "p": 0.18999715802516853,
+     "q": 0.5564202485022792,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0148,
+     "baseline": 0.0096,
+     "lift": 0.0051,
+     "fold": 1.53,
+     "p": 0.405799815589141,
+     "q": 0.7581332218696228,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS5",
+   "kind": "IS family",
+   "entries": 126,
+   "types": 34,
+   "genera": 36,
+   "species": 74,
+   "plasmid_rate": 0.2143,
+   "architecture": {
+    "divergent_other": 58,
+    "divergent_regulator": 29,
+    "codirectional_other": 27,
+    "codirectional_regulator": 8,
+    "unknown": 4
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 61,
+    "N_demethylation": 17,
+    "hydroxylation": 16,
+    "O_demethylation": 13,
+    "dioxygenation_with_release": 10,
+    "C_N_cleavage": 7,
+    "angular_dioxygenation": 2
+   },
+   "chem_families": {
+    "aromatic_acids": 46,
+    "quaternary_amines": 20,
+    "biaryls_ethers": 12,
+    "sulfoaromatics": 10,
+    "alkaloids": 9,
+    "alkylbenzenes": 8,
+    "haloaromatics": 8,
+    "pah": 7,
+    "anilines": 3,
+    "terpenoids_steroids": 3
+   },
+   "groups": {
+    "4": 41,
+    "1": 30,
+    "5": 20,
+    "2": 19,
+    "3": 16
+   },
+   "top_genera": [
+    [
+     "Sphingobium",
+     20
+    ],
+    [
+     "Pseudomonas",
+     16
+    ],
+    [
+     "Rhodococcus",
+     11
+    ],
+    [
+     "Comamonas",
+     10
+    ],
+    [
+     "Croceicoccus",
+     6
+    ],
+    [
+     "Acinetobacter",
+     6
+    ],
+    [
+     "Achromobacter",
+     5
+    ],
+    [
+     "Burkholderia",
+     5
+    ]
+   ],
+   "intergenic_median": 251.5,
+   "intergenic_n": 122,
+   "enriched_types": [
+    {
+     "cluster": "4_406_PDO",
+     "entries": 19,
+     "genera": 10,
+     "share": 0.1508,
+     "baseline": 0.0619,
+     "lift": 0.0889,
+     "fold": 2.44,
+     "p": 4.336580824374117e-05,
+     "q": 0.0014744374802871999,
+     "flagged": true
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 9,
+     "genera": 1,
+     "share": 0.0714,
+     "baseline": 0.022,
+     "lift": 0.0494,
+     "fold": 3.25,
+     "p": 0.0004181664873509038,
+     "q": 0.00473922018997691,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 8,
+     "genera": 4,
+     "share": 0.0635,
+     "baseline": 0.0179,
+     "lift": 0.0456,
+     "fold": 3.55,
+     "p": 0.00039526176971474176,
+     "q": 0.00473922018997691,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 6,
+     "genera": 5,
+     "share": 0.0476,
+     "baseline": 0.0922,
+     "lift": -0.0445,
+     "fold": 0.52,
+     "p": 0.06221917621088742,
+     "q": 0.5288629977925431,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0476,
+     "baseline": 0.0839,
+     "lift": -0.0363,
+     "fold": 0.57,
+     "p": 0.1144426426779423,
+     "q": 0.6713473243828985,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0238,
+     "baseline": 0.0495,
+     "lift": -0.0257,
+     "fold": 0.48,
+     "p": 0.17770958586606134,
+     "q": 0.6713473243828985,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0079,
+     "baseline": 0.0289,
+     "lift": -0.0209,
+     "fold": 0.27,
+     "p": 0.15075639283692488,
+     "q": 0.6713473243828985,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0238,
+     "baseline": 0.0426,
+     "lift": -0.0188,
+     "fold": 0.56,
+     "p": 0.3349684890337164,
+     "q": 0.6861139048683197,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 8,
+     "genera": 7,
+     "share": 0.0635,
+     "baseline": 0.0454,
+     "lift": 0.0181,
+     "fold": 1.4,
+     "p": 0.34305695243415985,
+     "q": 0.6861139048683197,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0317,
+     "baseline": 0.0179,
+     "lift": 0.0139,
+     "fold": 1.78,
+     "p": 0.256137742928919,
+     "q": 0.6861139048683197,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0238,
+     "baseline": 0.0358,
+     "lift": -0.012,
+     "fold": 0.67,
+     "p": 0.5994595528818598,
+     "q": 0.8152649919193294,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 6,
+     "genera": 2,
+     "share": 0.0476,
+     "baseline": 0.0358,
+     "lift": 0.0119,
+     "fold": 1.33,
+     "p": 0.4291635030773714,
+     "q": 0.7051382512956467,
+     "flagged": false
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0079,
+     "baseline": 0.0179,
+     "lift": -0.0099,
+     "fold": 0.44,
+     "p": 0.7089722796911075,
+     "q": 0.9271175965191406,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.0397,
+     "baseline": 0.0303,
+     "lift": 0.0094,
+     "fold": 1.31,
+     "p": 0.5643920333090904,
+     "q": 0.7995553805212113,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 4,
+     "genera": 1,
+     "share": 0.0317,
+     "baseline": 0.0234,
+     "lift": 0.0084,
+     "fold": 1.36,
+     "p": 0.5143837290643968,
+     "q": 0.7890419264815476,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0238,
+     "baseline": 0.0316,
+     "lift": -0.0078,
+     "fold": 0.75,
+     "p": 0.7817348867453554,
+     "q": 0.9492495053336458,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0159,
+     "baseline": 0.0083,
+     "lift": 0.0076,
+     "fold": 1.92,
+     "p": 0.27908899989455327,
+     "q": 0.6861139048683197,
+     "flagged": false
+    },
+    {
+     "cluster": "1_109_LigX",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0079,
+     "baseline": 0.0014,
+     "lift": 0.0066,
+     "fold": 5.77,
+     "p": 0.1733149931224209,
+     "q": 0.6713473243828985,
+     "flagged": false
+    },
+    {
+     "cluster": "3_314_NDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0079,
+     "baseline": 0.0014,
+     "lift": 0.0066,
+     "fold": 5.77,
+     "p": 0.1733149931224209,
+     "q": 0.6713473243828985,
+     "flagged": false
+    },
+    {
+     "cluster": "3_308_DxnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0079,
+     "baseline": 0.0028,
+     "lift": 0.0052,
+     "fold": 2.88,
+     "p": 0.31678925051439744,
+     "q": 0.6861139048683197,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 1
+  },
+  {
+   "family": "IS110",
+   "kind": "IS family",
+   "entries": 93,
+   "types": 28,
+   "genera": 34,
+   "species": 57,
+   "plasmid_rate": 0.172,
+   "architecture": {
+    "divergent_other": 56,
+    "divergent_regulator": 18,
+    "codirectional_other": 16,
+    "codirectional_regulator": 2,
+    "unknown": 1
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 44,
+    "N_demethylation": 17,
+    "dioxygenation_with_release": 12,
+    "hydroxylation": 9,
+    "C_N_cleavage": 7,
+    "O_demethylation": 4
+   },
+   "chem_families": {
+    "aromatic_acids": 30,
+    "quaternary_amines": 19,
+    "pah": 9,
+    "sulfoaromatics": 9,
+    "biaryls_ethers": 6,
+    "alkaloids": 5,
+    "haloaromatics": 5,
+    "anilines": 5,
+    "terpenoids_steroids": 3,
+    "alkylbenzenes": 2
+   },
+   "groups": {
+    "4": 31,
+    "3": 20,
+    "5": 19,
+    "1": 15,
+    "2": 8
+   },
+   "top_genera": [
+    [
+     "Sphingobium",
+     17
+    ],
+    [
+     "Novosphingobium",
+     11
+    ],
+    [
+     "Burkholderia",
+     6
+    ],
+    [
+     "Mycolicibacterium",
+     6
+    ],
+    [
+     "Croceicoccus",
+     5
+    ],
+    [
+     "Pseudomonas",
+     4
+    ],
+    [
+     "Rhodococcus",
+     4
+    ],
+    [
+     "Caballeronia",
+     4
+    ]
+   ],
+   "intergenic_median": 223.5,
+   "intergenic_n": 92,
+   "enriched_types": [
+    {
+     "cluster": "1_104_VanA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0108,
+     "baseline": 0.0578,
+     "lift": -0.047,
+     "fold": 0.19,
+     "p": 0.03203120444775514,
+     "q": 0.29062218192203226,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 9,
+     "genera": 6,
+     "share": 0.0968,
+     "baseline": 0.0509,
+     "lift": 0.0459,
+     "fold": 1.9,
+     "p": 0.04151745456029032,
+     "q": 0.29062218192203226,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 6,
+     "genera": 3,
+     "share": 0.0645,
+     "baseline": 0.022,
+     "lift": 0.0425,
+     "fold": 2.93,
+     "p": 0.01027333874759004,
+     "q": 0.14382674246626057,
+     "flagged": false
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 6,
+     "genera": 4,
+     "share": 0.0645,
+     "baseline": 0.022,
+     "lift": 0.0425,
+     "fold": 2.93,
+     "p": 0.01027333874759004,
+     "q": 0.14382674246626057,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 8,
+     "genera": 8,
+     "share": 0.086,
+     "baseline": 0.0454,
+     "lift": 0.0406,
+     "fold": 1.9,
+     "p": 0.058013704187372755,
+     "q": 0.32487674344928746,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 5,
+     "genera": 5,
+     "share": 0.0538,
+     "baseline": 0.0839,
+     "lift": -0.0301,
+     "fold": 0.64,
+     "p": 0.32032163674521175,
+     "q": 0.7867340900695651,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0215,
+     "baseline": 0.0495,
+     "lift": -0.028,
+     "fold": 0.43,
+     "p": 0.3012800631695477,
+     "q": 0.7867340900695651,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 5,
+     "genera": 2,
+     "share": 0.0538,
+     "baseline": 0.0289,
+     "lift": 0.0249,
+     "fold": 1.86,
+     "p": 0.17218752843045804,
+     "q": 0.688750113721832,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 7,
+     "genera": 4,
+     "share": 0.0753,
+     "baseline": 0.0922,
+     "lift": -0.0169,
+     "fold": 0.82,
+     "p": 0.7012054903512244,
+     "q": 0.9570482466027205,
+     "flagged": false
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0215,
+     "baseline": 0.0055,
+     "lift": 0.016,
+     "fold": 3.91,
+     "p": 0.08174484550499628,
+     "q": 0.3814759456899826,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0323,
+     "baseline": 0.0179,
+     "lift": 0.0144,
+     "fold": 1.8,
+     "p": 0.22512403026705335,
+     "q": 0.7003858719419438,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0215,
+     "baseline": 0.0096,
+     "lift": 0.0119,
+     "fold": 2.23,
+     "p": 0.22206594997399423,
+     "q": 0.7003858719419438,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.043,
+     "baseline": 0.0316,
+     "lift": 0.0114,
+     "fold": 1.36,
+     "p": 0.5209770236793172,
+     "q": 0.8580798037071107,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0323,
+     "baseline": 0.0426,
+     "lift": -0.0104,
+     "fold": 0.76,
+     "p": 0.7861467739950918,
+     "q": 0.9570482466027205,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.0538,
+     "baseline": 0.0619,
+     "lift": -0.0081,
+     "fold": 0.87,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0215,
+     "baseline": 0.0138,
+     "lift": 0.0078,
+     "fold": 1.56,
+     "p": 0.3727822842340707,
+     "q": 0.8029156891195369,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.043,
+     "baseline": 0.0358,
+     "lift": 0.0072,
+     "fold": 1.2,
+     "p": 0.7625848516673375,
+     "q": 0.9570482466027205,
+     "flagged": false
+    },
+    {
+     "cluster": "3_317_NidA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0108,
+     "baseline": 0.0041,
+     "lift": 0.0066,
+     "fold": 2.61,
+     "p": 0.33717175288695644,
+     "q": 0.7867340900695651,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0215,
+     "baseline": 0.0275,
+     "lift": -0.006,
+     "fold": 0.78,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "1_112_NdmA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0108,
+     "baseline": 0.0069,
+     "lift": 0.0039,
+     "fold": 1.56,
+     "p": 0.49662220590455614,
+     "q": 0.8580798037071107,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS5/IS1182",
+   "kind": "IS family",
+   "entries": 76,
+   "types": 25,
+   "genera": 30,
+   "species": 57,
+   "plasmid_rate": 0.0395,
+   "architecture": {
+    "divergent_other": 34,
+    "divergent_regulator": 25,
+    "codirectional_other": 14,
+    "codirectional_regulator": 3
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 19,
+    "N_demethylation": 17,
+    "dioxygenation_with_release": 15,
+    "hydroxylation": 11,
+    "O_demethylation": 10,
+    "C_N_cleavage": 4
+   },
+   "chem_families": {
+    "aromatic_acids": 20,
+    "quaternary_amines": 14,
+    "alkaloids": 10,
+    "haloaromatics": 9,
+    "sulfoaromatics": 6,
+    "anilines": 6,
+    "nitroaromatics": 4,
+    "pah": 4,
+    "alkylbenzenes": 3
+   },
+   "groups": {
+    "1": 28,
+    "4": 17,
+    "5": 14,
+    "2": 9,
+    "3": 8
+   },
+   "top_genera": [
+    [
+     "Burkholderia",
+     10
+    ],
+    [
+     "Acinetobacter",
+     9
+    ],
+    [
+     "Pseudomonas",
+     8
+    ],
+    [
+     "Streptomyces",
+     4
+    ],
+    [
+     "Paracoccus",
+     4
+    ],
+    [
+     "Stutzerimonas",
+     3
+    ],
+    [
+     "Ruegeria",
+     3
+    ],
+    [
+     "Marinomonas",
+     3
+    ]
+   ],
+   "intergenic_median": 240.5,
+   "intergenic_n": 76,
+   "enriched_types": [
+    {
+     "cluster": "4_406_PDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0132,
+     "baseline": 0.0619,
+     "lift": -0.0487,
+     "fold": 0.21,
+     "p": 0.07492375283615436,
+     "q": 0.38170293720035703,
+     "flagged": false
+    },
+    {
+     "cluster": "3_303_NBDO",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0526,
+     "baseline": 0.011,
+     "lift": 0.0416,
+     "fold": 4.78,
+     "p": 0.005588938626579748,
+     "q": 0.1397234656644937,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.0526,
+     "baseline": 0.0922,
+     "lift": -0.0395,
+     "fold": 0.57,
+     "p": 0.2930362341827013,
+     "q": 0.5635312195821179,
+     "flagged": false
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0526,
+     "baseline": 0.0179,
+     "lift": 0.0347,
+     "fold": 2.94,
+     "p": 0.03795876827865255,
+     "q": 0.38170293720035703,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.0526,
+     "baseline": 0.0839,
+     "lift": -0.0313,
+     "fold": 0.63,
+     "p": 0.3848651420181278,
+     "q": 0.599014180059725,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 5,
+     "genera": 5,
+     "share": 0.0658,
+     "baseline": 0.0358,
+     "lift": 0.03,
+     "fold": 1.84,
+     "p": 0.17869688016031796,
+     "q": 0.49638022266754983,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 6,
+     "genera": 2,
+     "share": 0.0789,
+     "baseline": 0.0495,
+     "lift": 0.0294,
+     "fold": 1.59,
+     "p": 0.25564185617071333,
+     "q": 0.5635312195821179,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0526,
+     "baseline": 0.0234,
+     "lift": 0.0292,
+     "fold": 2.25,
+     "p": 0.09160870492808569,
+     "q": 0.38170293720035703,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0263,
+     "baseline": 0.0509,
+     "lift": -0.0246,
+     "fold": 0.52,
+     "p": 0.41441868174165186,
+     "q": 0.599014180059725,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.0658,
+     "baseline": 0.0426,
+     "lift": 0.0231,
+     "fold": 1.54,
+     "p": 0.3599510541454315,
+     "q": 0.599014180059725,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0526,
+     "baseline": 0.0303,
+     "lift": 0.0224,
+     "fold": 1.74,
+     "p": 0.27452875899463847,
+     "q": 0.5635312195821179,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0395,
+     "baseline": 0.0179,
+     "lift": 0.0216,
+     "fold": 2.21,
+     "p": 0.14611028722650807,
+     "q": 0.4565946475828377,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 6,
+     "genera": 6,
+     "share": 0.0789,
+     "baseline": 0.0578,
+     "lift": 0.0212,
+     "fold": 1.37,
+     "p": 0.43129020964300196,
+     "q": 0.599014180059725,
+     "flagged": false
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0263,
+     "baseline": 0.0055,
+     "lift": 0.0208,
+     "fold": 4.78,
+     "p": 0.05631210103483985,
+     "q": 0.38170293720035703,
+     "flagged": false
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0263,
+     "baseline": 0.0069,
+     "lift": 0.0194,
+     "fold": 3.83,
+     "p": 0.08757203004271677,
+     "q": 0.38170293720035703,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0263,
+     "baseline": 0.0083,
+     "lift": 0.0181,
+     "fold": 3.19,
+     "p": 0.12264203350030722,
+     "q": 0.4380072625010972,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0395,
+     "baseline": 0.0275,
+     "lift": 0.012,
+     "fold": 1.43,
+     "p": 0.45545822984542694,
+     "q": 0.5992871445334566,
+     "flagged": false
+    },
+    {
+     "cluster": "3_316_NarAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0132,
+     "baseline": 0.0041,
+     "lift": 0.009,
+     "fold": 3.19,
+     "p": 0.28232138776179,
+     "q": 0.5635312195821179,
+     "flagged": false
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0132,
+     "baseline": 0.022,
+     "lift": -0.0089,
+     "fold": 0.6,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0263,
+     "baseline": 0.0179,
+     "lift": 0.0084,
+     "fold": 1.47,
+     "p": 0.6366250685244201,
+     "q": 0.7578869863385954,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS630",
+   "kind": "IS family",
+   "entries": 65,
+   "types": 28,
+   "genera": 27,
+   "species": 41,
+   "plasmid_rate": 0.2923,
+   "architecture": {
+    "divergent_other": 29,
+    "codirectional_other": 17,
+    "divergent_regulator": 12,
+    "codirectional_regulator": 6,
+    "unknown": 1
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 32,
+    "dioxygenation_with_release": 13,
+    "hydroxylation": 9,
+    "O_demethylation": 5,
+    "N_demethylation": 4,
+    "C_N_cleavage": 2
+   },
+   "chem_families": {
+    "aromatic_acids": 20,
+    "sulfoaromatics": 11,
+    "pah": 8,
+    "haloaromatics": 6,
+    "biaryls_ethers": 5,
+    "quaternary_amines": 5,
+    "nitroaromatics": 3,
+    "alkylbenzenes": 2,
+    "terpenoids_steroids": 2,
+    "anilines": 2,
+    "alkaloids": 1
+   },
+   "groups": {
+    "4": 22,
+    "3": 16,
+    "1": 13,
+    "2": 9,
+    "5": 5
+   },
+   "top_genera": [
+    [
+     "Sphingobium",
+     10
+    ],
+    [
+     "Novosphingobium",
+     9
+    ],
+    [
+     "Pseudomonas",
+     6
+    ],
+    [
+     "Rhodococcus",
+     6
+    ],
+    [
+     "Paraburkholderia",
+     4
+    ],
+    [
+     "Bradyrhizobium",
+     4
+    ],
+    [
+     "Burkholderia",
+     3
+    ],
+    [
+     "Variovorax",
+     2
+    ]
+   ],
+   "intergenic_median": 219.5,
+   "intergenic_n": 64,
+   "enriched_types": [
+    {
+     "cluster": "5_504_CntA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0308,
+     "baseline": 0.0922,
+     "lift": -0.0614,
+     "fold": 0.33,
+     "p": 0.07458084434168279,
+     "q": 0.49332313135765826,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.0615,
+     "baseline": 0.0138,
+     "lift": 0.0478,
+     "fold": 4.47,
+     "p": 0.00811570918295103,
+     "q": 0.11361992856131442,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0462,
+     "baseline": 0.0041,
+     "lift": 0.042,
+     "fold": 11.18,
+     "p": 0.0006848963345580612,
+     "q": 0.019177097367625715,
+     "flagged": false
+    },
+    {
+     "cluster": "3_303_NBDO",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0462,
+     "baseline": 0.011,
+     "lift": 0.0351,
+     "fold": 4.19,
+     "p": 0.027588930140208696,
+     "q": 0.25749668130861453,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0495,
+     "lift": -0.0341,
+     "fold": 0.31,
+     "p": 0.2411891086313916,
+     "q": 0.6243115462969461,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0454,
+     "lift": -0.03,
+     "fold": 0.34,
+     "p": 0.34963212893709816,
+     "q": 0.6558752563047947,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0615,
+     "baseline": 0.0316,
+     "lift": 0.0299,
+     "fold": 1.95,
+     "p": 0.1415497345779291,
+     "q": 0.4954240710227519,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0462,
+     "baseline": 0.0179,
+     "lift": 0.0283,
+     "fold": 2.58,
+     "p": 0.10202554282894612,
+     "q": 0.49332313135765826,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0308,
+     "baseline": 0.0578,
+     "lift": -0.027,
+     "fold": 0.53,
+     "p": 0.573250338919266,
+     "q": 0.8025504744869725,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 7,
+     "genera": 5,
+     "share": 0.1077,
+     "baseline": 0.0839,
+     "lift": 0.0238,
+     "fold": 1.28,
+     "p": 0.4795591120856855,
+     "q": 0.7358494379974161,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0308,
+     "baseline": 0.0096,
+     "lift": 0.0211,
+     "fold": 3.2,
+     "p": 0.12333078283941457,
+     "q": 0.49332313135765826,
+     "flagged": false
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0308,
+     "baseline": 0.0096,
+     "lift": 0.0211,
+     "fold": 3.2,
+     "p": 0.12333078283941457,
+     "q": 0.49332313135765826,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0462,
+     "baseline": 0.0303,
+     "lift": 0.0159,
+     "fold": 1.53,
+     "p": 0.4365948351834805,
+     "q": 0.7190973755963208,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0289,
+     "lift": -0.0135,
+     "fold": 0.53,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0308,
+     "baseline": 0.0179,
+     "lift": 0.0129,
+     "fold": 1.72,
+     "p": 0.32655289019673467,
+     "q": 0.6558752563047947,
+     "flagged": false
+    },
+    {
+     "cluster": "2_215_cadA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0028,
+     "lift": 0.0126,
+     "fold": 5.59,
+     "p": 0.17093531286353594,
+     "q": 0.5317987511310007,
+     "flagged": false
+    },
+    {
+     "cluster": "3_317_NidA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0041,
+     "lift": 0.0113,
+     "fold": 3.73,
+     "p": 0.24526525033094312,
+     "q": 0.6243115462969461,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0462,
+     "baseline": 0.0358,
+     "lift": 0.0104,
+     "fold": 1.29,
+     "p": 0.4993264043553895,
+     "q": 0.7358494379974161,
+     "flagged": false
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0154,
+     "baseline": 0.0055,
+     "lift": 0.0099,
+     "fold": 2.8,
+     "p": 0.31302458559128665,
+     "q": 0.6558752563047947,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0308,
+     "baseline": 0.022,
+     "lift": 0.0088,
+     "fold": 1.4,
+     "p": 0.646685904414839,
+     "q": 0.8230547874370678,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS66",
+   "kind": "IS family",
+   "entries": 62,
+   "types": 27,
+   "genera": 26,
+   "species": 41,
+   "plasmid_rate": 0.2903,
+   "architecture": {
+    "divergent_other": 34,
+    "codirectional_other": 13,
+    "divergent_regulator": 11,
+    "unknown": 4
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 21,
+    "dioxygenation_with_release": 20,
+    "N_demethylation": 8,
+    "C_N_cleavage": 5,
+    "hydroxylation": 4,
+    "angular_dioxygenation": 3,
+    "O_demethylation": 1
+   },
+   "chem_families": {
+    "aromatic_acids": 14,
+    "anilines": 11,
+    "quaternary_amines": 9,
+    "biaryls_ethers": 5,
+    "haloaromatics": 5,
+    "nitroaromatics": 5,
+    "alkaloids": 5,
+    "pah": 4,
+    "sulfoaromatics": 2,
+    "alkylbenzenes": 1,
+    "terpenoids_steroids": 1
+   },
+   "groups": {
+    "4": 28,
+    "1": 11,
+    "3": 10,
+    "5": 9,
+    "2": 4
+   },
+   "top_genera": [
+    [
+     "Sphingobium",
+     10
+    ],
+    [
+     "Novosphingobium",
+     7
+    ],
+    [
+     "Pseudomonas",
+     7
+    ],
+    [
+     "Delftia",
+     4
+    ],
+    [
+     "Hyphomonas",
+     3
+    ],
+    [
+     "Marinomonas",
+     3
+    ],
+    [
+     "Stutzerimonas",
+     3
+    ],
+    [
+     "Comamonas",
+     2
+    ]
+   ],
+   "intergenic_median": 289.0,
+   "intergenic_n": 58,
+   "enriched_types": [
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 11,
+     "genera": 6,
+     "share": 0.1774,
+     "baseline": 0.0426,
+     "lift": 0.1348,
+     "fold": 4.16,
+     "p": 1.5857732118964043e-05,
+     "q": 0.00042815876721202914,
+     "flagged": true
+    },
+    {
+     "cluster": "3_303_NBDO",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.0645,
+     "baseline": 0.011,
+     "lift": 0.0535,
+     "fold": 5.86,
+     "p": 0.002596357775614169,
+     "q": 0.03505082997079128,
+     "flagged": true
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0323,
+     "baseline": 0.0839,
+     "lift": -0.0516,
+     "fold": 0.38,
+     "p": 0.1528543592130896,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 5,
+     "genera": 3,
+     "share": 0.0806,
+     "baseline": 0.0509,
+     "lift": 0.0298,
+     "fold": 1.58,
+     "p": 0.23396039779599082,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0645,
+     "baseline": 0.0922,
+     "lift": -0.0276,
+     "fold": 0.7,
+     "p": 0.6444570079339206,
+     "q": 0.9228656797977067,
+     "flagged": false
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0323,
+     "baseline": 0.0083,
+     "lift": 0.024,
+     "fold": 3.91,
+     "p": 0.08584613432053043,
+     "q": 0.5794614066635804,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0484,
+     "baseline": 0.0275,
+     "lift": 0.0209,
+     "fold": 1.76,
+     "p": 0.23904079545493956,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0358,
+     "lift": -0.0196,
+     "fold": 0.45,
+     "p": 0.7172006710674101,
+     "q": 0.9682209059410036,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.0806,
+     "baseline": 0.0619,
+     "lift": 0.0187,
+     "fold": 1.3,
+     "p": 0.577079154225977,
+     "q": 0.9228656797977067,
+     "flagged": false
+    },
+    {
+     "cluster": "3_306_3NTDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0014,
+     "lift": 0.0148,
+     "fold": 11.73,
+     "p": 0.08528198074277854,
+     "q": 0.5794614066635804,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0303,
+     "lift": -0.0141,
+     "fold": 0.53,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "5_505_qxyA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0028,
+     "lift": 0.0134,
+     "fold": 5.86,
+     "p": 0.16339839561047514,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "3_308_DxnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0028,
+     "lift": 0.0134,
+     "fold": 5.86,
+     "p": 0.16339839561047514,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0323,
+     "baseline": 0.0454,
+     "lift": -0.0131,
+     "fold": 0.71,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0041,
+     "lift": 0.012,
+     "fold": 3.91,
+     "p": 0.23494225695137247,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "3_302_DitA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0041,
+     "lift": 0.012,
+     "fold": 3.91,
+     "p": 0.23494225695137247,
+     "q": 0.5867364979348516,
+     "flagged": false
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0055,
+     "lift": 0.0106,
+     "fold": 2.93,
+     "p": 0.30045825152183503,
+     "q": 0.6760310659241289,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0323,
+     "baseline": 0.022,
+     "lift": 0.0102,
+     "fold": 1.47,
+     "p": 0.6390812116446976,
+     "q": 0.9228656797977067,
+     "flagged": false
+    },
+    {
+     "cluster": "4_408_AntA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0069,
+     "lift": 0.0093,
+     "fold": 2.35,
+     "p": 0.36044661722812293,
+     "q": 0.69514704751138,
+     "flagged": false
+    },
+    {
+     "cluster": "1_107_CndA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0161,
+     "baseline": 0.0069,
+     "lift": 0.0093,
+     "fold": 2.35,
+     "p": 0.36044661722812293,
+     "q": 0.69514704751138,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 2
+  },
+  {
+   "family": "IS21",
+   "kind": "IS family",
+   "entries": 50,
+   "types": 24,
+   "genera": 23,
+   "species": 35,
+   "plasmid_rate": 0.34,
+   "architecture": {
+    "divergent_other": 24,
+    "divergent_regulator": 12,
+    "codirectional_other": 11,
+    "codirectional_regulator": 2,
+    "unknown": 1
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 29,
+    "dioxygenation_with_release": 11,
+    "hydroxylation": 5,
+    "N_demethylation": 3,
+    "C_N_cleavage": 1,
+    "O_demethylation": 1
+   },
+   "chem_families": {
+    "aromatic_acids": 16,
+    "sulfoaromatics": 9,
+    "biaryls_ethers": 8,
+    "haloaromatics": 4,
+    "alkylbenzenes": 3,
+    "anilines": 3,
+    "quaternary_amines": 3,
+    "pah": 3,
+    "alkaloids": 1
+   },
+   "groups": {
+    "4": 21,
+    "2": 12,
+    "3": 7,
+    "1": 7,
+    "5": 3
+   },
+   "top_genera": [
+    [
+     "Sphingobium",
+     12
+    ],
+    [
+     "Roseomonas",
+     6
+    ],
+    [
+     "Rhodococcus",
+     4
+    ],
+    [
+     "Achromobacter",
+     4
+    ],
+    [
+     "Pseudomonas",
+     4
+    ],
+    [
+     "Delftia",
+     2
+    ],
+    [
+     "Mycolicibacterium",
+     2
+    ],
+    [
+     "Alicyclobacillus",
+     1
+    ]
+   ],
+   "intergenic_median": 218.0,
+   "intergenic_n": 49,
+   "enriched_types": [
+    {
+     "cluster": "4_406_PDO",
+     "entries": 7,
+     "genera": 3,
+     "share": 0.14,
+     "baseline": 0.0619,
+     "lift": 0.0781,
+     "fold": 2.26,
+     "p": 0.028289953306006775,
+     "q": 0.16973971983604064,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 5,
+     "genera": 1,
+     "share": 0.1,
+     "baseline": 0.022,
+     "lift": 0.078,
+     "fold": 4.54,
+     "p": 0.003087920133344565,
+     "q": 0.07411008320026956,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0922,
+     "lift": -0.0722,
+     "fold": 0.22,
+     "p": 0.07512039715088378,
+     "q": 0.23387371106403843,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.06,
+     "baseline": 0.0179,
+     "lift": 0.0421,
+     "fold": 3.36,
+     "p": 0.05366187230322059,
+     "q": 0.21464748921288235,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0578,
+     "lift": -0.0378,
+     "fold": 0.35,
+     "p": 0.35096727289520835,
+     "q": 0.6016581821060714,
+     "flagged": false
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.04,
+     "baseline": 0.0041,
+     "lift": 0.0359,
+     "fold": 9.69,
+     "p": 0.013311026117552704,
+     "q": 0.10648820894042162,
+     "flagged": false
+    },
+    {
+     "cluster": "3_318_NidA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.04,
+     "baseline": 0.0041,
+     "lift": 0.0359,
+     "fold": 9.69,
+     "p": 0.013311026117552704,
+     "q": 0.10648820894042162,
+     "flagged": false
+    },
+    {
+     "cluster": "4_402_PsbAb",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.04,
+     "baseline": 0.0069,
+     "lift": 0.0331,
+     "fold": 5.82,
+     "p": 0.04056659944300458,
+     "q": 0.19471967732642198,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.06,
+     "baseline": 0.0275,
+     "lift": 0.0325,
+     "fold": 2.18,
+     "p": 0.1527065631956434,
+     "q": 0.3664957516695442,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.04,
+     "baseline": 0.0096,
+     "lift": 0.0304,
+     "fold": 4.15,
+     "p": 0.07795790368801281,
+     "q": 0.23387371106403843,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0454,
+     "lift": -0.0254,
+     "fold": 0.44,
+     "p": 0.7202582716303783,
+     "q": 0.823152310434718,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0426,
+     "lift": -0.0226,
+     "fold": 0.47,
+     "p": 0.7157561729577112,
+     "q": 0.823152310434718,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.04,
+     "baseline": 0.0179,
+     "lift": 0.0221,
+     "fold": 2.24,
+     "p": 0.22316877198627552,
+     "q": 0.44633754397255104,
+     "flagged": false
+    },
+    {
+     "cluster": "2_215_cadA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0028,
+     "lift": 0.0172,
+     "fold": 7.27,
+     "p": 0.1329096896184554,
+     "q": 0.3544258389825477,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 5,
+     "genera": 2,
+     "share": 0.1,
+     "baseline": 0.0839,
+     "lift": 0.0161,
+     "fold": 1.19,
+     "p": 0.5997968930829809,
+     "q": 0.823152310434718,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0041,
+     "lift": 0.0159,
+     "fold": 4.85,
+     "p": 0.19270902136890677,
+     "q": 0.42045604662306935,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0358,
+     "lift": -0.0158,
+     "fold": 0.56,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0055,
+     "lift": 0.0145,
+     "fold": 3.64,
+     "p": 0.2484611607771314,
+     "q": 0.45869752758855026,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.02,
+     "baseline": 0.0316,
+     "lift": -0.0116,
+     "fold": 0.63,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.04,
+     "baseline": 0.0289,
+     "lift": 0.0111,
+     "fold": 1.38,
+     "p": 0.6498020687909832,
+     "q": 0.823152310434718,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS6",
+   "kind": "IS family",
+   "entries": 49,
+   "types": 20,
+   "genera": 29,
+   "species": 39,
+   "plasmid_rate": 0.2449,
+   "architecture": {
+    "divergent_other": 21,
+    "divergent_regulator": 12,
+    "codirectional_other": 8,
+    "unknown": 4,
+    "codirectional_regulator": 4
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 21,
+    "C_N_cleavage": 12,
+    "dioxygenation_with_release": 5,
+    "hydroxylation": 5,
+    "N_demethylation": 3,
+    "O_demethylation": 2,
+    "angular_dioxygenation": 1
+   },
+   "chem_families": {
+    "aromatic_acids": 17,
+    "quaternary_amines": 15,
+    "sulfoaromatics": 6,
+    "pah": 3,
+    "haloaromatics": 3,
+    "biaryls_ethers": 2,
+    "alkylbenzenes": 2,
+    "anilines": 1
+   },
+   "groups": {
+    "4": 17,
+    "5": 15,
+    "3": 7,
+    "1": 7,
+    "2": 3
+   },
+   "top_genera": [
+    [
+     "Paraburkholderia",
+     4
+    ],
+    [
+     "Rhizobium",
+     4
+    ],
+    [
+     "Croceicoccus",
+     4
+    ],
+    [
+     "Rhodococcus",
+     3
+    ],
+    [
+     "Sphingobium",
+     3
+    ],
+    [
+     "Caballeronia",
+     3
+    ],
+    [
+     "Xenorhabdus",
+     3
+    ],
+    [
+     "Novosphingobium",
+     2
+    ]
+   ],
+   "intergenic_median": 221.0,
+   "intergenic_n": 45,
+   "enriched_types": [
+    {
+     "cluster": "5_504_CntA",
+     "entries": 12,
+     "genera": 9,
+     "share": 0.2449,
+     "baseline": 0.0922,
+     "lift": 0.1527,
+     "fold": 2.66,
+     "p": 0.0008392887077326368,
+     "q": 0.016785774154652735,
+     "flagged": true
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0612,
+     "baseline": 0.0096,
+     "lift": 0.0516,
+     "fold": 6.36,
+     "p": 0.008322898276185252,
+     "q": 0.08322898276185252,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.0816,
+     "baseline": 0.0316,
+     "lift": 0.05,
+     "fold": 2.58,
+     "p": 0.062280381764814784,
+     "q": 0.41520254509876525,
+     "flagged": false
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "entries": 3,
+     "genera": 2,
+     "share": 0.0612,
+     "baseline": 0.0275,
+     "lift": 0.0337,
+     "fold": 2.23,
+     "p": 0.14607903062690544,
+     "q": 0.41736865893401554,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0509,
+     "lift": -0.0305,
+     "fold": 0.4,
+     "p": 0.5038516418572913,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0408,
+     "baseline": 0.0138,
+     "lift": 0.0271,
+     "fold": 2.97,
+     "p": 0.14167921593820784,
+     "q": 0.41736865893401554,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0454,
+     "lift": -0.025,
+     "fold": 0.45,
+     "p": 0.718580685995024,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0426,
+     "lift": -0.0222,
+     "fold": 0.48,
+     "p": 0.7149327856004856,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 4,
+     "genera": 3,
+     "share": 0.0816,
+     "baseline": 0.0619,
+     "lift": 0.0197,
+     "fold": 1.32,
+     "p": 0.5348837926217558,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 5,
+     "genera": 5,
+     "share": 0.102,
+     "baseline": 0.0839,
+     "lift": 0.0181,
+     "fold": 1.22,
+     "p": 0.5935397370663515,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "3_308_DxnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0028,
+     "lift": 0.0177,
+     "fold": 7.42,
+     "p": 0.130344333670581,
+     "q": 0.41736865893401554,
+     "flagged": false
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0028,
+     "lift": 0.0177,
+     "fold": 7.42,
+     "p": 0.130344333670581,
+     "q": 0.41736865893401554,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0408,
+     "baseline": 0.0578,
+     "lift": -0.017,
+     "fold": 0.71,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0041,
+     "lift": 0.0163,
+     "fold": 4.95,
+     "p": 0.1891210614638797,
+     "q": 0.42026902547528816,
+     "flagged": false
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0041,
+     "lift": 0.0163,
+     "fold": 4.95,
+     "p": 0.1891210614638797,
+     "q": 0.42026902547528816,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0358,
+     "lift": -0.0154,
+     "fold": 0.57,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0408,
+     "baseline": 0.0289,
+     "lift": 0.0119,
+     "fold": 1.41,
+     "p": 0.6463745996770226,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0408,
+     "baseline": 0.0358,
+     "lift": 0.0051,
+     "fold": 1.14,
+     "p": 0.6924237895133115,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0179,
+     "lift": 0.0025,
+     "fold": 1.14,
+     "p": 0.5994740892826577,
+     "q": 0.7984229844389156,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0179,
+     "lift": 0.0025,
+     "fold": 1.14,
+     "p": 0.5994740892826577,
+     "q": 0.7984229844389156,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 1
+  },
+  {
+   "family": "IS30",
+   "kind": "IS family",
+   "entries": 49,
+   "types": 17,
+   "genera": 20,
+   "species": 38,
+   "plasmid_rate": 0.1837,
+   "architecture": {
+    "codirectional_other": 18,
+    "divergent_regulator": 18,
+    "divergent_other": 13
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 20,
+    "hydroxylation": 14,
+    "O_demethylation": 8,
+    "dioxygenation_with_release": 3,
+    "N_demethylation": 2,
+    "C_N_cleavage": 2
+   },
+   "chem_families": {
+    "aromatic_acids": 26,
+    "sulfoaromatics": 9,
+    "terpenoids_steroids": 6,
+    "quaternary_amines": 3,
+    "anilines": 2,
+    "haloaromatics": 1,
+    "alkylbenzenes": 1,
+    "alkaloids": 1
+   },
+   "groups": {
+    "1": 17,
+    "4": 15,
+    "3": 11,
+    "5": 3,
+    "2": 3
+   },
+   "top_genera": [
+    [
+     "Acinetobacter",
+     10
+    ],
+    [
+     "Mycolicibacterium",
+     7
+    ],
+    [
+     "Pseudomonas",
+     6
+    ],
+    [
+     "Rhodococcus",
+     5
+    ],
+    [
+     "Amycolatopsis",
+     2
+    ],
+    [
+     "Sulfitobacter",
+     2
+    ],
+    [
+     "Cupriavidus",
+     2
+    ],
+    [
+     "Massilia",
+     2
+    ]
+   ],
+   "intergenic_median": 223.0,
+   "intergenic_n": 49,
+   "enriched_types": [
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 6,
+     "genera": 4,
+     "share": 0.1224,
+     "baseline": 0.0358,
+     "lift": 0.0867,
+     "fold": 3.42,
+     "p": 0.005613225290904615,
+     "q": 0.09542482994537846,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 7,
+     "genera": 1,
+     "share": 0.1429,
+     "baseline": 0.0578,
+     "lift": 0.0851,
+     "fold": 2.47,
+     "p": 0.017768183058581317,
+     "q": 0.15102955599794118,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 8,
+     "genera": 7,
+     "share": 0.1633,
+     "baseline": 0.0839,
+     "lift": 0.0794,
+     "fold": 1.95,
+     "p": 0.05559051788342484,
+     "q": 0.2117532980003703,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 4,
+     "genera": 1,
+     "share": 0.0816,
+     "baseline": 0.0289,
+     "lift": 0.0527,
+     "fold": 2.83,
+     "p": 0.046506681341000014,
+     "q": 0.2117532980003703,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0408,
+     "baseline": 0.0922,
+     "lift": -0.0513,
+     "fold": 0.44,
+     "p": 0.3033526661432081,
+     "q": 0.7367136177763626,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.0816,
+     "baseline": 0.0316,
+     "lift": 0.05,
+     "fold": 2.58,
+     "p": 0.062280381764814784,
+     "q": 0.2117532980003703,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0495,
+     "lift": -0.0291,
+     "fold": 0.41,
+     "p": 0.5033837698523251,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0612,
+     "baseline": 0.0358,
+     "lift": 0.0255,
+     "fold": 1.71,
+     "p": 0.41024377989249655,
+     "q": 0.7749049175747157,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0454,
+     "lift": -0.025,
+     "fold": 0.45,
+     "p": 0.718580685995024,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0408,
+     "baseline": 0.0179,
+     "lift": 0.0229,
+     "fold": 2.28,
+     "p": 0.21638849599895338,
+     "q": 0.6131007386637012,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0426,
+     "lift": -0.0222,
+     "fold": 0.48,
+     "p": 0.7149327856004856,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0096,
+     "lift": 0.0108,
+     "fold": 2.12,
+     "p": 0.38771347571055115,
+     "q": 0.7749049175747157,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0612,
+     "baseline": 0.0509,
+     "lift": 0.0103,
+     "fold": 1.2,
+     "p": 0.7320216304356403,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0303,
+     "lift": -0.0099,
+     "fold": 0.67,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0179,
+     "lift": 0.0025,
+     "fold": 1.14,
+     "p": 0.5994740892826577,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0204,
+     "baseline": 0.0179,
+     "lift": 0.0025,
+     "fold": 1.14,
+     "p": 0.5994740892826577,
+     "q": 0.8296245144937257,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0612,
+     "baseline": 0.0619,
+     "lift": -0.0007,
+     "fold": 0.99,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS256",
+   "kind": "IS family",
+   "entries": 43,
+   "types": 19,
+   "genera": 21,
+   "species": 31,
+   "plasmid_rate": 0.2093,
+   "architecture": {
+    "divergent_other": 18,
+    "codirectional_other": 17,
+    "divergent_regulator": 5,
+    "unknown": 2,
+    "codirectional_regulator": 1
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 26,
+    "N_demethylation": 6,
+    "O_demethylation": 4,
+    "C_N_cleavage": 3,
+    "dioxygenation_with_release": 3,
+    "hydroxylation": 1
+   },
+   "chem_families": {
+    "aromatic_acids": 20,
+    "quaternary_amines": 5,
+    "pah": 4,
+    "alkaloids": 4,
+    "anilines": 3,
+    "alkylbenzenes": 2,
+    "biaryls_ethers": 2,
+    "haloaromatics": 2,
+    "sulfoaromatics": 1
+   },
+   "groups": {
+    "3": 13,
+    "4": 12,
+    "1": 9,
+    "5": 5,
+    "2": 4
+   },
+   "top_genera": [
+    [
+     "Mycolicibacterium",
+     9
+    ],
+    [
+     "Rhodococcus",
+     6
+    ],
+    [
+     "Acinetobacter",
+     5
+    ],
+    [
+     "Streptomyces",
+     3
+    ],
+    [
+     "Hyphomonas",
+     2
+    ],
+    [
+     "Sphingobium",
+     2
+    ],
+    [
+     "Burkholderia",
+     2
+    ],
+    [
+     "Thermus",
+     1
+    ]
+   ],
+   "intergenic_median": 273.0,
+   "intergenic_n": 41,
+   "enriched_types": [
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 9,
+     "genera": 5,
+     "share": 0.2093,
+     "baseline": 0.0289,
+     "lift": 0.1804,
+     "fold": 7.25,
+     "p": 6.591805351607293e-07,
+     "q": 1.2524430168053856e-05,
+     "flagged": true
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0839,
+     "lift": -0.0607,
+     "fold": 0.28,
+     "p": 0.24872782087827008,
+     "q": 0.5907285745858915,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.093,
+     "baseline": 0.0495,
+     "lift": 0.0435,
+     "fold": 1.88,
+     "p": 0.15707164076095584,
+     "q": 0.5300044700670797,
+     "flagged": false
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0041,
+     "lift": 0.0424,
+     "fold": 11.27,
+     "p": 0.00987820275863637,
+     "q": 0.09384292620704551,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0619,
+     "lift": -0.0386,
+     "fold": 0.38,
+     "p": 0.5088416787493868,
+     "q": 0.7436916843260268,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0698,
+     "baseline": 0.0426,
+     "lift": 0.0271,
+     "fold": 1.64,
+     "p": 0.4204337500306259,
+     "q": 0.7262037500528993,
+     "flagged": false
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0465,
+     "baseline": 0.022,
+     "lift": 0.0245,
+     "fold": 2.11,
+     "p": 0.24329419676827277,
+     "q": 0.5907285745858915,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0698,
+     "baseline": 0.0922,
+     "lift": -0.0224,
+     "fold": 0.76,
+     "p": 0.7885548744896138,
+     "q": 0.8813260361942743,
+     "flagged": false
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0028,
+     "lift": 0.0205,
+     "fold": 8.45,
+     "p": 0.11487262268805346,
+     "q": 0.5300044700670797,
+     "flagged": false
+    },
+    {
+     "cluster": "3_317_NidA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0041,
+     "lift": 0.0191,
+     "fold": 5.64,
+     "p": 0.16736983265276204,
+     "q": 0.5300044700670797,
+     "flagged": false
+    },
+    {
+     "cluster": "3_318_NidA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0041,
+     "lift": 0.0191,
+     "fold": 5.64,
+     "p": 0.16736983265276204,
+     "q": 0.5300044700670797,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0698,
+     "baseline": 0.0509,
+     "lift": 0.0189,
+     "fold": 1.37,
+     "p": 0.47528969520948805,
+     "q": 0.7436916843260268,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0303,
+     "lift": 0.0163,
+     "fold": 1.54,
+     "p": 0.3781808798943704,
+     "q": 0.7185436717993038,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0316,
+     "lift": 0.0149,
+     "fold": 1.47,
+     "p": 0.6405580755527619,
+     "q": 0.7864060149225197,
+     "flagged": false
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0096,
+     "lift": 0.0136,
+     "fold": 2.42,
+     "p": 0.3485841687941373,
+     "q": 0.7185436717993038,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0578,
+     "lift": -0.0113,
+     "fold": 0.81,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0358,
+     "lift": 0.0107,
+     "fold": 1.3,
+     "p": 0.6622366441452797,
+     "q": 0.7864060149225197,
+     "flagged": false
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0233,
+     "baseline": 0.0179,
+     "lift": 0.0054,
+     "fold": 1.3,
+     "p": 0.5504089787832473,
+     "q": 0.7469836140629785,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0465,
+     "baseline": 0.0454,
+     "lift": 0.0011,
+     "fold": 1.02,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 1
+  },
+  {
+   "family": "IS481",
+   "kind": "IS family",
+   "entries": 36,
+   "types": 18,
+   "genera": 13,
+   "species": 23,
+   "plasmid_rate": 0.0278,
+   "architecture": {
+    "divergent_other": 17,
+    "codirectional_other": 12,
+    "divergent_regulator": 6,
+    "codirectional_regulator": 1
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 11,
+    "hydroxylation": 8,
+    "N_demethylation": 6,
+    "dioxygenation_with_release": 5,
+    "O_demethylation": 4,
+    "C_N_cleavage": 2
+   },
+   "chem_families": {
+    "aromatic_acids": 12,
+    "quaternary_amines": 9,
+    "terpenoids_steroids": 4,
+    "anilines": 4,
+    "haloaromatics": 3,
+    "sulfoaromatics": 2,
+    "biaryls_ethers": 1,
+    "pah": 1
+   },
+   "groups": {
+    "4": 13,
+    "5": 9,
+    "1": 7,
+    "3": 6,
+    "2": 1
+   },
+   "top_genera": [
+    [
+     "Mycobacterium",
+     11
+    ],
+    [
+     "Comamonas",
+     8
+    ],
+    [
+     "Bordetella",
+     3
+    ],
+    [
+     "Acinetobacter",
+     3
+    ],
+    [
+     "Sphingobium",
+     2
+    ],
+    [
+     "Acetobacter",
+     2
+    ],
+    [
+     "Pseudonocardia",
+     1
+    ],
+    [
+     "Nocardia",
+     1
+    ]
+   ],
+   "intergenic_median": 175.5,
+   "intergenic_n": 36,
+   "enriched_types": [
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 5,
+     "genera": 2,
+     "share": 0.1389,
+     "baseline": 0.0454,
+     "lift": 0.0935,
+     "fold": 3.06,
+     "p": 0.019322599665979875,
+     "q": 0.15600157321628674,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 5,
+     "genera": 1,
+     "share": 0.1389,
+     "baseline": 0.0619,
+     "lift": 0.077,
+     "fold": 2.24,
+     "p": 0.06433856080659091,
+     "q": 0.2316188189037273,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 4,
+     "genera": 4,
+     "share": 0.1111,
+     "baseline": 0.0358,
+     "lift": 0.0753,
+     "fold": 3.11,
+     "p": 0.03466701627028594,
+     "q": 0.15600157321628674,
+     "flagged": false
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.0833,
+     "baseline": 0.0096,
+     "lift": 0.0737,
+     "fold": 8.65,
+     "p": 0.0034103791766007772,
+     "q": 0.06138682517881399,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0839,
+     "lift": -0.0561,
+     "fold": 0.33,
+     "p": 0.3519456789562182,
+     "q": 0.7038913579124364,
+     "flagged": false
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "entries": 3,
+     "genera": 3,
+     "share": 0.0833,
+     "baseline": 0.0303,
+     "lift": 0.0531,
+     "fold": 2.75,
+     "p": 0.08980836750000303,
+     "q": 0.26942510250000906,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0556,
+     "baseline": 0.0083,
+     "lift": 0.0473,
+     "fold": 6.73,
+     "p": 0.03155497236346329,
+     "q": 0.15600157321628674,
+     "flagged": false
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0556,
+     "baseline": 0.0922,
+     "lift": -0.0366,
+     "fold": 0.6,
+     "p": 0.7648814616100541,
+     "q": 0.9834190220700696,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0578,
+     "lift": -0.03,
+     "fold": 0.48,
+     "p": 0.7151468281298523,
+     "q": 0.9834190220700696,
+     "flagged": false
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0055,
+     "lift": 0.0223,
+     "fold": 5.05,
+     "p": 0.18419343865252055,
+     "q": 0.47364027082076715,
+     "flagged": false
+    },
+    {
+     "cluster": "4_402_PsbAb",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0069,
+     "lift": 0.0209,
+     "fold": 4.04,
+     "p": 0.2248145122465859,
+     "q": 0.5058326525548184,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0426,
+     "lift": -0.0149,
+     "fold": 0.65,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0138,
+     "lift": 0.014,
+     "fold": 2.02,
+     "p": 0.4001768715624835,
+     "q": 0.7203183688124704,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0358,
+     "lift": -0.008,
+     "fold": 0.78,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.022,
+     "lift": 0.0058,
+     "fold": 1.26,
+     "p": 0.5601464413897621,
+     "q": 0.9166032677287016,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0556,
+     "baseline": 0.0509,
+     "lift": 0.0047,
+     "fold": 1.09,
+     "p": 0.7043966399140196,
+     "q": 0.9834190220700696,
+     "flagged": false
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0316,
+     "lift": -0.0039,
+     "fold": 0.88,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0278,
+     "baseline": 0.0289,
+     "lift": -0.0011,
+     "fold": 0.96,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS4",
+   "kind": "IS family",
+   "entries": 27,
+   "types": 17,
+   "genera": 15,
+   "species": 22,
+   "plasmid_rate": 0.0741,
+   "architecture": {
+    "codirectional_other": 9,
+    "divergent_regulator": 8,
+    "divergent_other": 8,
+    "codirectional_regulator": 1,
+    "unknown": 1
+   },
+   "reaction_classes": {
+    "hydroxylation": 7,
+    "N_demethylation": 6,
+    "C_N_cleavage": 5,
+    "cis_dihydroxylation": 4,
+    "dioxygenation_with_release": 3,
+    "O_demethylation": 2
+   },
+   "chem_families": {
+    "quaternary_amines": 9,
+    "alkaloids": 7,
+    "aromatic_acids": 7,
+    "sulfoaromatics": 3,
+    "anilines": 1
+   },
+   "groups": {
+    "1": 11,
+    "5": 9,
+    "4": 5,
+    "2": 1,
+    "3": 1
+   },
+   "top_genera": [
+    [
+     "Acinetobacter",
+     7
+    ],
+    [
+     "Shigella",
+     2
+    ],
+    [
+     "Microcystis",
+     2
+    ],
+    [
+     "Bacillus",
+     2
+    ],
+    [
+     "Paraburkholderia",
+     2
+    ],
+    [
+     "Burkholderia",
+     2
+    ],
+    [
+     "Escherichia",
+     2
+    ],
+    [
+     "Mesorhizobium",
+     1
+    ]
+   ],
+   "intergenic_median": 238.0,
+   "intergenic_n": 26,
+   "enriched_types": [
+    {
+     "cluster": "5_504_CntA",
+     "entries": 5,
+     "genera": 4,
+     "share": 0.1852,
+     "baseline": 0.0922,
+     "lift": 0.093,
+     "fold": 2.01,
+     "p": 0.09342557059066084,
+     "q": 0.48972828165889376,
+     "flagged": false
+    },
+    {
+     "cluster": "1_111_GxtA",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0741,
+     "baseline": 0.0083,
+     "lift": 0.0658,
+     "fold": 8.98,
+     "p": 0.018183381480367675,
+     "q": 0.3091174851662505,
+     "flagged": false
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "entries": 3,
+     "genera": 1,
+     "share": 0.1111,
+     "baseline": 0.0495,
+     "lift": 0.0616,
+     "fold": 2.24,
+     "p": 0.14418653504930917,
+     "q": 0.48972828165889376,
+     "flagged": false
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0741,
+     "baseline": 0.0234,
+     "lift": 0.0507,
+     "fold": 3.17,
+     "p": 0.1282560091147637,
+     "q": 0.48972828165889376,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0839,
+     "lift": -0.0469,
+     "fold": 0.44,
+     "p": 0.7191865519562379,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0741,
+     "baseline": 0.0358,
+     "lift": 0.0383,
+     "fold": 2.07,
+     "p": 0.25077451771182235,
+     "q": 0.5328958501376225,
+     "flagged": false
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0055,
+     "lift": 0.0315,
+     "fold": 6.73,
+     "p": 0.1407573770990772,
+     "q": 0.48972828165889376,
+     "flagged": false
+    },
+    {
+     "cluster": "4_402_PsbAb",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0069,
+     "lift": 0.0302,
+     "fold": 5.39,
+     "p": 0.17284527587960957,
+     "q": 0.48972828165889376,
+     "flagged": false
+    },
+    {
+     "cluster": "1_108_PobA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0083,
+     "lift": 0.0288,
+     "fold": 4.49,
+     "p": 0.20377765475945803,
+     "q": 0.4948885901301123,
+     "flagged": false
+    },
+    {
+     "cluster": "4_406_PDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0619,
+     "lift": -0.0249,
+     "fold": 0.6,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0179,
+     "lift": 0.0192,
+     "fold": 2.07,
+     "p": 0.3911523365305108,
+     "q": 0.6649589721018684,
+     "flagged": false
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0179,
+     "lift": 0.0192,
+     "fold": 2.07,
+     "p": 0.3911523365305108,
+     "q": 0.6649589721018684,
+     "flagged": false
+    },
+    {
+     "cluster": "1_104_VanA",
+     "entries": 2,
+     "genera": 1,
+     "share": 0.0741,
+     "baseline": 0.0578,
+     "lift": 0.0163,
+     "fold": 1.28,
+     "p": 0.6652224432839511,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0509,
+     "lift": -0.0139,
+     "fold": 0.73,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0454,
+     "lift": -0.0084,
+     "fold": 0.82,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0426,
+     "lift": -0.0056,
+     "fold": 0.87,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.037,
+     "baseline": 0.0358,
+     "lift": 0.0013,
+     "fold": 1.04,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 0
+  },
+  {
+   "family": "IS1380",
+   "kind": "IS family",
+   "entries": 21,
+   "types": 7,
+   "genera": 10,
+   "species": 16,
+   "plasmid_rate": 0.4762,
+   "architecture": {
+    "codirectional_other": 10,
+    "divergent_other": 6,
+    "divergent_regulator": 5
+   },
+   "reaction_classes": {
+    "cis_dihydroxylation": 18,
+    "hydroxylation": 3
+   },
+   "chem_families": {
+    "aromatic_acids": 14,
+    "pah": 4,
+    "sulfoaromatics": 1,
+    "terpenoids_steroids": 1,
+    "alkaloids": 1
+   },
+   "groups": {
+    "3": 12,
+    "4": 7,
+    "1": 2
+   },
+   "top_genera": [
+    [
+     "Rhodococcus",
+     5
+    ],
+    [
+     "Marinobacter",
+     4
+    ],
+    [
+     "Sphingobium",
+     3
+    ],
+    [
+     "Gordonia",
+     2
+    ],
+    [
+     "Mycolicibacterium",
+     2
+    ],
+    [
+     "Pseudomonas",
+     1
+    ],
+    [
+     "Novosphingobium",
+     1
+    ],
+    [
+     "Streptomyces",
+     1
+    ]
+   ],
+   "intergenic_median": 212.0,
+   "intergenic_n": 21,
+   "enriched_types": [
+    {
+     "cluster": "3_311_PhtAa",
+     "entries": 7,
+     "genera": 5,
+     "share": 0.3333,
+     "baseline": 0.0289,
+     "lift": 0.3044,
+     "fold": 11.54,
+     "p": 5.13202599072995e-07,
+     "q": 3.592418193510965e-06,
+     "flagged": true
+    },
+    {
+     "cluster": "4_411_XylX",
+     "entries": 5,
+     "genera": 2,
+     "share": 0.2381,
+     "baseline": 0.0358,
+     "lift": 0.2023,
+     "fold": 6.66,
+     "p": 0.0005408203108840094,
+     "q": 0.001752380382436645,
+     "flagged": true
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "entries": 4,
+     "genera": 2,
+     "share": 0.1905,
+     "baseline": 0.022,
+     "lift": 0.1685,
+     "fold": 8.65,
+     "p": 0.0007510201639014193,
+     "q": 0.001752380382436645,
+     "flagged": true
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "entries": 2,
+     "genera": 2,
+     "share": 0.0952,
+     "baseline": 0.0509,
+     "lift": 0.0443,
+     "fold": 1.87,
+     "p": 0.29018975340271363,
+     "q": 0.40626565476379906,
+     "flagged": false
+    },
+    {
+     "cluster": "1_111_GxtA",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0476,
+     "baseline": 0.0083,
+     "lift": 0.0394,
+     "fold": 5.77,
+     "p": 0.16178807888773433,
+     "q": 0.28312913805353507,
+     "flagged": false
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0476,
+     "baseline": 0.0839,
+     "lift": -0.0363,
+     "fold": 0.57,
+     "p": 1.0,
+     "q": 1.0,
+     "flagged": false
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "entries": 1,
+     "genera": 1,
+     "share": 0.0476,
+     "baseline": 0.0358,
+     "lift": 0.0119,
+     "fold": 1.33,
+     "p": 0.5396249420515912,
+     "q": 0.629562432393523,
+     "flagged": false
+    }
+   ],
+   "n_enriched": 3
+  }
+ ],
+ "mobile_specificity": {
+  "question": "Is a mobile element family tied to the ENZYME it sits next to, or to the HOST it lives in?",
+  "how": "the same insertion-sequence families are cross-tabulated twice, once against the enzyme type and once against the bacterial genus. The two tables have different shapes and Cramer's V rises on its own with the number of rows, so neither value is interpretable alone. Each is therefore measured against a null built by shuffling its own labels, and only the excess over that null is compared.",
+  "by_enzyme_type": {
+   "observed": 0.2336,
+   "null_mean": 0.1681,
+   "null_sd": 0.0069,
+   "excess": 0.0655,
+   "z": 9.48,
+   "rows": 13,
+   "cols": 23,
+   "n": 780,
+   "repeats": 200
+  },
+  "by_host_genus": {
+   "observed": 0.3049,
+   "null_mean": 0.1784,
+   "null_sd": 0.0079,
+   "excess": 0.1265,
+   "z": 16.03,
+   "rows": 13,
+   "cols": 21,
+   "n": 631,
+   "repeats": 200
+  },
+  "verdict": "host genus",
+  "excess_ratio": 0.52
+ },
+ "sankey_regulator_to_reaction": {
+  "nodes": [
+   "AraC",
+   "GntR",
+   "IclR",
+   "LysR",
+   "MarR",
+   "TetR",
+   "regulator_unclassified",
+   "sigma54",
+   "C_N_cleavage",
+   "N_demethylation",
+   "O_demethylation",
+   "cis_dihydroxylation",
+   "dioxygenation_with_release",
+   "hydroxylation"
+  ],
+  "n_left": 8,
+  "links": [
+   {
+    "source": 3,
+    "target": 9,
+    "value": 339
+   },
+   {
+    "source": 6,
+    "target": 11,
+    "value": 284
+   },
+   {
+    "source": 3,
+    "target": 12,
+    "value": 252
+   },
+   {
+    "source": 5,
+    "target": 13,
+    "value": 216
+   },
+   {
+    "source": 3,
+    "target": 11,
+    "value": 168
+   },
+   {
+    "source": 4,
+    "target": 12,
+    "value": 129
+   },
+   {
+    "source": 6,
+    "target": 9,
+    "value": 121
+   },
+   {
+    "source": 2,
+    "target": 11,
+    "value": 112
+   },
+   {
+    "source": 6,
+    "target": 12,
+    "value": 112
+   },
+   {
+    "source": 5,
+    "target": 9,
+    "value": 102
+   },
+   {
+    "source": 3,
+    "target": 13,
+    "value": 102
+   },
+   {
+    "source": 4,
+    "target": 13,
+    "value": 94
+   },
+   {
+    "source": 3,
+    "target": 8,
+    "value": 92
+   },
+   {
+    "source": 2,
+    "target": 10,
+    "value": 92
+   },
+   {
+    "source": 6,
+    "target": 8,
+    "value": 90
+   },
+   {
+    "source": 0,
+    "target": 11,
+    "value": 76
+   },
+   {
+    "source": 2,
+    "target": 9,
+    "value": 76
+   },
+   {
+    "source": 5,
+    "target": 11,
+    "value": 69
+   },
+   {
+    "source": 4,
+    "target": 10,
+    "value": 68
+   },
+   {
+    "source": 6,
+    "target": 13,
+    "value": 64
+   },
+   {
+    "source": 5,
+    "target": 8,
+    "value": 62
+   },
+   {
+    "source": 1,
+    "target": 10,
+    "value": 62
+   },
+   {
+    "source": 6,
+    "target": 10,
+    "value": 58
+   },
+   {
+    "source": 0,
+    "target": 12,
+    "value": 53
+   },
+   {
+    "source": 7,
+    "target": 11,
+    "value": 49
+   },
+   {
+    "source": 5,
+    "target": 12,
+    "value": 43
+   },
+   {
+    "source": 2,
+    "target": 12,
+    "value": 43
+   },
+   {
+    "source": 1,
+    "target": 11,
+    "value": 38
+   },
+   {
+    "source": 5,
+    "target": 10,
+    "value": 34
+   },
+   {
+    "source": 4,
+    "target": 11,
+    "value": 31
+   },
+   {
+    "source": 2,
+    "target": 13,
+    "value": 30
+   },
+   {
+    "source": 1,
+    "target": 13,
+    "value": 28
+   },
+   {
+    "source": 1,
+    "target": 9,
+    "value": 22
+   },
+   {
+    "source": 3,
+    "target": 10,
+    "value": 20
+   },
+   {
+    "source": 1,
+    "target": 12,
+    "value": 18
+   },
+   {
+    "source": 7,
+    "target": 8,
+    "value": 14
+   },
+   {
+    "source": 7,
+    "target": 9,
+    "value": 12
+   },
+   {
+    "source": 0,
+    "target": 13,
+    "value": 11
+   }
+  ],
+  "min_flow": 10,
+  "entries_shown": 3286,
+  "entries_dropped_as_small": 75
+ },
+ "sankey_regulator_to_chem_family": {
+  "nodes": [
+   "AraC",
+   "GntR",
+   "IclR",
+   "LysR",
+   "MarR",
+   "TetR",
+   "regulator_unclassified",
+   "sigma54",
+   "alkaloids",
+   "anilines",
+   "aromatic_acids",
+   "biaryls_ethers",
+   "haloaromatics",
+   "pah",
+   "quaternary_amines",
+   "sulfoaromatics",
+   "terpenoids_steroids"
+  ],
+  "n_left": 8,
+  "links": [
+   {
+    "source": 6,
+    "target": 10,
+    "value": 423
+   },
+   {
+    "source": 3,
+    "target": 14,
+    "value": 282
+   },
+   {
+    "source": 6,
+    "target": 14,
+    "value": 204
+   },
+   {
+    "source": 3,
+    "target": 10,
+    "value": 188
+   },
+   {
+    "source": 2,
+    "target": 10,
+    "value": 187
+   },
+   {
+    "source": 5,
+    "target": 16,
+    "value": 172
+   },
+   {
+    "source": 3,
+    "target": 15,
+    "value": 166
+   },
+   {
+    "source": 5,
+    "target": 14,
+    "value": 157
+   },
+   {
+    "source": 3,
+    "target": 8,
+    "value": 148
+   },
+   {
+    "source": 4,
+    "target": 9,
+    "value": 116
+   },
+   {
+    "source": 1,
+    "target": 10,
+    "value": 115
+   },
+   {
+    "source": 3,
+    "target": 12,
+    "value": 114
+   },
+   {
+    "source": 0,
+    "target": 10,
+    "value": 107
+   },
+   {
+    "source": 4,
+    "target": 10,
+    "value": 105
+   },
+   {
+    "source": 2,
+    "target": 14,
+    "value": 77
+   },
+   {
+    "source": 4,
+    "target": 15,
+    "value": 73
+   },
+   {
+    "source": 3,
+    "target": 9,
+    "value": 62
+   },
+   {
+    "source": 5,
+    "target": 10,
+    "value": 48
+   },
+   {
+    "source": 5,
+    "target": 13,
+    "value": 47
+   },
+   {
+    "source": 7,
+    "target": 13,
+    "value": 43
+   },
+   {
+    "source": 2,
+    "target": 12,
+    "value": 43
+   },
+   {
+    "source": 5,
+    "target": 9,
+    "value": 41
+   },
+   {
+    "source": 5,
+    "target": 15,
+    "value": 29
+   },
+   {
+    "source": 6,
+    "target": 16,
+    "value": 29
+   },
+   {
+    "source": 1,
+    "target": 14,
+    "value": 26
+   },
+   {
+    "source": 6,
+    "target": 15,
+    "value": 22
+   },
+   {
+    "source": 7,
+    "target": 14,
+    "value": 20
+   },
+   {
+    "source": 4,
+    "target": 12,
+    "value": 18
+   },
+   {
+    "source": 6,
+    "target": 8,
+    "value": 18
+   },
+   {
+    "source": 0,
+    "target": 9,
+    "value": 17
+   },
+   {
+    "source": 1,
+    "target": 15,
+    "value": 16
+   },
+   {
+    "source": 2,
+    "target": 11,
+    "value": 15
+   },
+   {
+    "source": 2,
+    "target": 16,
+    "value": 15
+   },
+   {
+    "source": 2,
+    "target": 15,
+    "value": 14
+   },
+   {
+    "source": 6,
+    "target": 11,
+    "value": 13
+   },
+   {
+    "source": 5,
+    "target": 11,
+    "value": 12
+   },
+   {
+    "source": 5,
+    "target": 12,
+    "value": 11
+   },
+   {
+    "source": 1,
+    "target": 11,
+    "value": 10
+   },
+   {
+    "source": 5,
+    "target": 8,
+    "value": 10
+   }
+  ],
+  "min_flow": 10,
+  "entries_shown": 3213,
+  "entries_dropped_as_small": 148
+ }
+}

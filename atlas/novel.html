@@ -1,0 +1,4920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novel candidates · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class="on"
+     aria-current="page">Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class=""
+     >Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class=""
+     >Data quality</a>
+  
+  
+</nav>
+
+
+<h1>Proteins with no close characterised relative</h1>
+<p class="lede">These are confirmed Rieske oxygenase alpha subunits that no curated enzyme explains.
+Each has both metal centres complete, yet is less than 25 % identical to every one of the 71
+characterised references. They are the places where this family still has unknown chemistry.</p>
+
+
+<h2>1 · How much of this family might be doing something new</h2>
+<p>It is a fair question and it has no single answer, so here are three, from the most cautious to
+the most generous. They differ in what counts as "new", not in the data.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Reading</th><th>What it counts</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td>Most cautious</td>
+  <td class="small">No characterised relative at all, under 25 % identity to any of the 71</td>
+  <td class="num" data-v="373">373</td>
+  <td class="num" data-v="0.0327">3.3 %</td></tr>
+
+<tr>
+  <td>Everything too distant to label
+      </td>
+  <td class="small">Variants where <em>every</em> member is below 40 % identity to any characterised
+    enzyme, counting only variants of 1 or more members
+    (1,392 variants)</td>
+  <td class="num" data-v="6386">6,386</td>
+  <td class="num" data-v="0.5591">55.9 %</td></tr>
+
+<tr class="hl">
+  <td>The defensible middle
+      </td>
+  <td class="small">Variants where <em>every</em> member is below 40 % identity to any characterised
+    enzyme, counting only variants of 3 or more members
+    (509 variants)</td>
+  <td class="num" data-v="5274">5,274</td>
+  <td class="num" data-v="0.4617">46.2 %</td></tr>
+
+<tr>
+  <td>Most conservative reproducible</td>
+  <td class="small">Variants where <em>every</em> member is below 40 % identity to any characterised
+    enzyme, counting only variants of 5 or more members
+    (286 variants)</td>
+  <td class="num" data-v="4514">4,514</td>
+  <td class="num" data-v="0.3952">39.5 %</td></tr>
+
+<tr><td>The upper bound</td>
+  <td class="small">Every entry whose substrate label cannot be transferred, that is everything
+    below 60 % identity to a characterised enzyme</td>
+  <td class="num" data-v="8554">8,554</td>
+  <td class="num" data-v="0.7489">74.9 %</td></tr>
+</tbody></table></div>
+<figcaption><b>The honest answer is the highlighted row: about
+46 %.</b> It counts the entries that sit in a variant of
+at least three members where no member is within 40 % of any characterised enzyme. The three-member
+condition matters: a single divergent sequence can be a sequencing artefact, while the same sequence
+found in three genomes is reproducible. The 40 % condition matters because below it no substrate
+label can be carried across, as the <a href="/pro-sim-blast/atlas/evidence.html">evidence page</a> measures
+directly.
+<b>Why the distant level is included and not only the novel one.</b> A protein 25 to 40 % identical
+to a characterised enzyme may well perform a different reaction; nothing about that distance implies
+the same chemistry. Counting only the strictest level would report
+3.3 %, which understates the unexplored part of the
+family by more than tenfold.
+<b>And the real figure is larger than any row here.</b> Seventeen per cent of the genomes in this
+build were downloaded as empty records and their proteins were never read, and those genomes are
+concentrated in the genera richest in these enzymes. Every number on this page is therefore a lower
+bound on what the sampled genomes already contain.</figcaption>
+</figure>
+
+
+<h2>2 · How the strict set is defined</h2>
+<div class="caveat">
+A protein enters this list only if all of the following hold, so that annotation noise and one-off
+sequencing artefacts are excluded:
+<ul>
+  <li>confirmed entry: all four Rieske ligands and a complete 2-His-1-carboxylate triad;</li>
+  <li>at least 300 residues, so fragments cannot qualify;</li>
+  <li>under 25 % identity to every curated reference protein;</li>
+  <li>a member of a variant with at least three members, so the sequence is reproduced in more than
+    one genome rather than standing alone.</li>
+</ul>
+That leaves <b>318</b> proteins in <b>63</b> variants.
+</div>
+
+<h2>3 · Two definitions of novelty, and where they disagree</h2>
+<p>This database measures novelty twice, by different means. The <em>evidence level</em> compares
+each protein with the reference proteins directly. The <em>assignment class</em> asks whether the
+protein is typical of the cluster it was placed in, by comparing it with the consensus of its own
+subfamily. A protein can be the solid core of its own subfamily and still be far from anything
+characterised, which is exactly the case worth looking at.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence level \\ assignment class</th><th class="num">core</th><th class="num">divergent</th><th class="num">alt type</th><th class="num">novel candidate</th></tr></thead>
+<tbody>
+
+<tr><td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+  <td class="num ">206</td><td class="num ">0</td><td class="num ">0</td><td class="num ">9</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+  <td class="num ">2,614</td><td class="num ">15</td><td class="num ">0</td><td class="num ">24</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+  <td class="num ">1,496</td><td class="num ">283</td><td class="num ">0</td><td class="num ">127</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+  <td class="num ">3,585</td><td class="num ">525</td><td class="num ">0</td><td class="num ">2,165</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+  <td class="num diff">223</td><td class="num ">37</td><td class="num ">0</td><td class="num ">113</td></tr>
+
+</tbody></table></div>
+<figcaption>The highlighted cell is the interesting disagreement: proteins that sit at the centre of
+a well-populated subfamily and are nonetheless unlike any characterised enzyme. Counting only
+subfamily outliers, as the earlier version of this pipeline did, would have missed them entirely.</figcaption>
+</figure>
+
+<h2>4 · Who carries them</h2>
+<p><b>Bacteria</b> 215 · <b>Eukaryota</b> 103.
+A third of the most divergent proteins are eukaryotic. Rieske oxygenases of plants, algae and fungi
+are under-represented among characterised enzymes, so divergence from the reference set partly
+measures what has been studied rather than what exists.</p>
+
+<h2>5 · Candidates by variant</h2>
+<p class="note">Grouped by variant, largest first. Identity is to the nearest curated reference,
+which names the closest relative without implying the same function. Operon columns show
+sequence-verified partners.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Variant</th><th>Entry</th><th>Organism</th><th>Domain</th>
+<th>Assigned type</th><th>Nearest reference</th><th class="num">Identity<span class="unit">%</span></th>
+<th>Partners in operon</th><th>Product annotation</th></tr></thead>
+<tbody>
+
+
+<tr>
+  <td rowspan="39"><a href="/pro-sim-blast/leaf/3_313_KshA15-0.html">3_313_KshA15#0</a>
+    <div class="note">39 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LGTW01000017.1_128868-129900_-1.html">WP_067853288.1</a>
+      </td>
+  <td><i>Mycolicibacterium wolinskyi</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JARWNH010000172.1_18230-19280_1.html">WP_062980224.1</a>
+      </td>
+  <td><i>Nocardia flavorosea</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LT717699.1_257233-258241_1.html">WP_077098495.1</a>
+      </td>
+  <td><i>Mycobacterium terramassiliense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSU01000051.1_219536-220571_1.html">WP_066838300.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 852013-51886_SCH5428379</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MLHV01000025.1_89300-90326_-1.html">WP_070946371.1</a>
+      </td>
+  <td><i>Mycobacterium syngnathidarum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_SMFR01000003.1_743484-744513_-1.html">WP_067453296.1</a>
+      </td>
+  <td><i>Nocardia alba</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSX01000035.1_38181-39186_1.html">WP_064879529.1</a>
+      </td>
+  <td><i>Mycobacterium colombiense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAOR01000151.1_27398-28394_1.html">WP_031344996.1</a>
+      </td>
+  <td><i>Mycobacterium sp. MAC_011194_8550</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZMB01000157.1_9424-10432_-1.html">WP_067348637.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1165178.9</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NSFJ01000006.1_6568-7564_1.html">WP_031344996.1</a>
+      </td>
+  <td><i>Mycobacterium avium</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WEHK01000031.1_13091-14087_-1.html">WP_031344996.1</a>
+      </td>
+  <td><i>Mycobacterium avium subsp. hominissuis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZJV01000163.1_25966-26965_1.html">WP_067839702.1</a>
+      </td>
+  <td><i>Mycobacterium mantenii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSF01000028.1_40629-41604_-1.html">WP_064857535.1</a>
+      </td>
+  <td><i>Mycolicibacterium mucogenicum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAAXPJ010000014.1_111767-112799_-1.html">WP_044515378.1</a>
+      </td>
+  <td><i>Mycolicibacterium septicum DSM 44393</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LQOX01000131.1_141818-142850_1.html">WP_036410674.1</a>
+      </td>
+  <td><i>Mycobacterium gastri</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZIC01000037.1_27405-28413_1.html">WP_066963568.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 852002-50816_SCH5313054-b</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKV01000033.1_102551-103559_-1.html">WP_066860890.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1482292.6</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKY01000241.1_48476-49484_-1.html">WP_066860890.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1245801.1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZLC01000188.1_7217-8192_1.html">WP_064983651.1</a>
+      </td>
+  <td><i>Mycolicibacterium mucogenicum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZLL01000307.1_11806-12814_1.html">WP_067140476.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1245852.3</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZLY01000090.1_13865-14846_1.html">WP_067010717.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1081908.1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AGVE01000051.1_1519-2554_1.html">WP_003927632.1</a>
+      </td>
+  <td><i>Mycolicibacterium thermoresistibile ATCC 19527</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LFOD01000019.1_21143-22175_1.html">WP_019344512.1</a>
+      </td>
+  <td><i>Mycolicibacterium conceptionense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKA01000015.1_18345-19377_1.html">WP_064895986.1</a>
+      </td>
+  <td><i>Mycolicibacterium conceptionense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MBEP01000039.1_158469-159477_1.html">WP_076051788.1</a>
+      </td>
+  <td><i>Mycobacterium colombiense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VNFN01000002.1_217863-218895_-1.html">WP_065512612.1</a>
+      </td>
+  <td><i>Mycolicibacterium porcinum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZIR01000059.1_70377-71394_1.html">WP_067113630.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 852002-51057_SCH5723018</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSJ01000172.1_39193-40225_-1.html">WP_061263765.1</a>
+      </td>
+  <td><i>Mycolicibacterium fortuitum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MIHC01000022.1_56271-57279_1.html">WP_069400877.1</a>
+      </td>
+  <td><i>Mycobacterium sherrisii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAAXPE010000004.1_189067-190117_-1.html">WP_040719257.1</a>
+      </td>
+  <td><i>Nocardia veterana</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JXST01000036.1_53185-54157_1.html">WP_043987379.1</a>
+      </td>
+  <td><i>Mycolicibacterium llatzerense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKI01000006.1_102241-103249_-1.html">WP_065026892.1</a>
+      </td>
+  <td><i>Mycobacterium colombiense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKU01000180.1_15781-16801_1.html">WP_066995856.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1465703.0</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKT01000174.1_28680-29697_1.html">WP_067325386.1</a>
+      </td>
+  <td><i>Mycobacterium alsense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NISH01000014.1_113218-114214_-1.html">WP_019732521.1</a>
+      </td>
+  <td><i>Mycobacterium avium subsp. hominissuis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_UPHJ01000038.1_36896-37928_1.html">WP_023372466.1</a>
+      </td>
+  <td><i>Mycobacterium kansasii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZHZ01000004.1_114501-115527_-1.html">WP_067795680.1</a>
+      </td>
+  <td><i>Mycobacterium sp. ACS1612</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSG01000021.1_39265-40291_1.html">WP_067375328.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1164966.3</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MZZM01000026.1_178513-179521_-1.html">WP_061560171.1</a>
+      </td>
+  <td><i>Mycobacterium simiae</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="34"><a href="/pro-sim-blast/leaf/1_104_VanA-2.html">1_104_VanA#2</a>
+    <div class="note">34 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_015758600.1_161-1787_1.html">XP_015614086.1</a>
+      </td>
+  <td><i>Oryza sativa Japonica Group</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="22.8">22.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_012999372.1_130-1735_1.html">XP_012854826.1</a>
+      </td>
+  <td><i>Erythranthe guttata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="22.9">22.9</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003523394.3_83-1676_1.html">XP_003523442.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_009406710.2_56-1679_1.html">XP_009404985.1</a>
+      </td>
+  <td><i>Musa acuminata subsp. malaccensis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_007140963.1_151-1789_1.html">XP_007141025.1</a>
+      </td>
+  <td><i>Phaseolus vulgaris</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_010106193.1_0-1611_1.html">XP_010104495.1</a>
+      </td>
+  <td><i>Morus notabilis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Chlorophyllide a oxygenase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003565075.3_114-1767_1.html">XP_003565123.1</a>
+      </td>
+  <td><i>Brachypodium distachyon</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_004971292.3_105-1731_1.html">XP_004971349.1</a>
+      </td>
+  <td><i>Setaria italica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003526585.3_81-1674_1.html">XP_003526633.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_021950921.1_46-1675_1.html">XP_021806613.1</a>
+      </td>
+  <td><i>Prunus avium</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_002893942.1_72-1683_1.html">XP_002893988.1</a>
+      </td>
+  <td><i>Arabidopsis lyrata subsp. lyrata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003544643.3_80-1685_1.html">XP_003544691.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_014668859.2_193-1798_1.html">XP_014524345.1</a>
+      </td>
+  <td><i>Vigna radiata var. radiata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_014767212.1_345-1668_1.html">XP_014622698.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic isoform X2</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_015758605.1_8-1637_1.html">XP_015614091.1</a>
+      </td>
+  <td><i>Oryza sativa Japonica Group</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_017575148.1_126-1731_1.html">XP_017430637.1</a>
+      </td>
+  <td><i>Vigna angularis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_018637329.2_66-1689_1.html">XP_018492831.1</a>
+      </td>
+  <td><i>Raphanus sativus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011071224.2_257-1865_1.html">XP_011069526.1</a>
+      </td>
+  <td><i>Sesamum indicum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011076546.2_328-1936_1.html">XP_011074848.1</a>
+      </td>
+  <td><i>Sesamum indicum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_009806741.1_160-1765_1.html">XP_009805043.1</a>
+      </td>
+  <td><i>Nicotiana sylvestris</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016644132.1_121-1726_1.html">XP_016499618.1</a>
+      </td>
+  <td><i>Nicotiana tabacum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_029266694.1_64-1690_1.html">XP_029122527.1</a>
+      </td>
+  <td><i>Elaeis guineensis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003542999.3_81-1680_1.html">XP_003543047.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_009124806.2_83-1688_1.html">XP_009123054.1</a>
+      </td>
+  <td><i>Brassica rapa</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_009776209.1_59-1655_1.html">XP_009774511.1</a>
+      </td>
+  <td><i>Nicotiana sylvestris</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016609772.1_48-1644_1.html">XP_016465258.1</a>
+      </td>
+  <td><i>Nicotiana tabacum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016651824.1_110-1715_1.html">XP_016507310.1</a>
+      </td>
+  <td><i>Nicotiana tabacum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_019373400.1_82-1678_1.html">XP_019228945.1</a>
+      </td>
+  <td><i>Nicotiana attenuata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_019375905.1_166-1771_1.html">XP_019231450.1</a>
+      </td>
+  <td><i>Nicotiana attenuata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_021428541.1_74-1685_1.html">XP_021284216.1</a>
+      </td>
+  <td><i>Herrania umbratica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">LOW QUALITY PROTEIN: chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_022912444.1_362-1976_1.html">XP_022768179.1</a>
+      </td>
+  <td><i>Durio zibethinus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_027507649.1_90-1677_1.html">XP_027363450.1</a>
+      </td>
+  <td><i>Abrus precatorius</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016590218.1_71-1667_1.html">XP_016445704.1</a>
+      </td>
+  <td><i>Nicotiana tabacum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_023134747.1_64-1669_1.html">XP_022990515.1</a>
+      </td>
+  <td><i>Cucurbita maxima</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_105_DdmC</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide a oxygenase, chloroplastic-like</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="27"><a href="/pro-sim-blast/leaf/1_110_SxtT-0.html">1_110_SxtT#0</a>
+    <div class="note">27 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LJZP01000051.1_4039-5131_-1.html">WP_054306216.1</a>
+      </td>
+  <td><i>Serratia rubidaea</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LHVB01000014.1_141036-142128_-1.html">WP_038633271.1</a>
+      </td>
+  <td><i>Pseudomonas chlororaphis subsp. aureofaciens</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VCCM02000002.1_822415-823507_1.html">WP_041990063.1</a>
+      </td>
+  <td><i>Pseudomonas sp. ATCC 13985</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_ABLC01000015.1_44073-45186_1.html">WP_006750380.1</a>
+      </td>
+  <td><i>Burkholderia ambifaria IOP40-10</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LTDN01000029.1_2795-3887_-1.html">WP_006327990.1</a>
+      </td>
+  <td><i>Serratia plymuthica</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PTXM01000009.1_151780-152902_1.html">WP_047852955.1</a>
+      </td>
+  <td><i>Burkholderia sp. SRS-25</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QTQY01000005.1_273676-274798_-1.html">WP_047852955.1</a>
+      </td>
+  <td><i>Burkholderia contaminans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_RARP01000013.1_95217-96339_1.html">WP_039371244.1</a>
+      </td>
+  <td><i>Burkholderia contaminans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FMWI01000010.1_113353-114445_1.html">WP_072441291.1</a>
+      </td>
+  <td><i>Pseudomonas sp. NFPP17</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_CP013442.1_92177-93290_-1.html">WP_069271945.1</a>
+      </td>
+  <td><i>Burkholderia cepacia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAIZSP010000018.1_48395-49532_-1.html">WP_059242529.1</a>
+      </td>
+  <td><i>Burkholderia arboris</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOVS01000093.1_1015-2128_-1.html">WP_066571508.1</a>
+      </td>
+  <td><i>Burkholderia sp. ABCPW 14</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOWC01000145.1_35495-36608_1.html">WP_059472967.1</a>
+      </td>
+  <td><i>Burkholderia sp. BDU5</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOYU01000037.1_255842-256955_1.html">WP_059523954.1</a>
+      </td>
+  <td><i>Burkholderia cepacia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QTSG01000049.1_21336-22422_1.html">WP_034175623.1</a>
+      </td>
+  <td><i>Burkholderia cenocepacia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QYYG01000010.1_144486-145581_-1.html">WP_244941699.1</a>
+      </td>
+  <td><i>Serratia inhibens</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_ABLK01000024.1_35795-36908_-1.html">WP_006757229.1</a>
+      </td>
+  <td><i>Burkholderia ambifaria MEX-5</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_ASSI01000095.1_33933-35046_1.html">WP_021160485.1</a>
+      </td>
+  <td><i>Burkholderia sp. AU4i</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FPJF01000002.1_573309-574458_-1.html">WP_072436878.1</a>
+      </td>
+  <td><i>Burkholderia sp. NFACC33-1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LPGI01000076.1_62987-64100_-1.html">WP_059529600.1</a>
+      </td>
+  <td><i>Burkholderia ubonensis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LPLU01000078.1_87244-88357_1.html">WP_060234611.1</a>
+      </td>
+  <td><i>Burkholderia ubonensis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QMFZ01000001.1_243850-244966_1.html">WP_059492937.1</a>
+      </td>
+  <td><i>Burkholderia reimsis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_UARD01000032.1_61881-62997_-1.html">WP_059492937.1</a>
+      </td>
+  <td><i>Burkholderia cepacia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WNDV01000017.1_138158-139280_1.html">WP_278648875.1</a>
+      </td>
+  <td><i>Burkholderia lata</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LWYJ01000062.1_51532-52645_-1.html">WP_004544724.1</a>
+      </td>
+  <td><i>Burkholderia pseudomallei</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MEBK01000023.1_36034-37147_1.html">WP_060065344.1</a>
+      </td>
+  <td><i>Burkholderia ubonensis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">reductase</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NHOI01000033.1_45033-46125_-1.html">WP_050086205.1</a>
+      </td>
+  <td><i>Yersinia intermedia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="21"><a href="/pro-sim-blast/leaf/1_111_GxtA-1.html">1_111_GxtA#1</a>
+    <div class="note">21 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_007159354.1_303-1890_1.html">XP_007159416.1</a>
+      </td>
+  <td><i>Phaseolus vulgaris</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="22.8">22.8</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003629678.1_130-1720_1.html">XP_003629726.1</a>
+      </td>
+  <td><i>Medicago truncatula</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide A oxygenase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003531193.3_107-1703_1.html">XP_003531241.1</a>
+      </td>
+  <td><i>Glycine max</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006445572.1_190-1807_1.html">XP_006445635.1</a>
+      </td>
+  <td><i>Citrus clementina</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006488849.1_188-1805_1.html">XP_006488912.1</a>
+      </td>
+  <td><i>Citrus sinensis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_014636297.2_55-1642_1.html">XP_014491783.1</a>
+      </td>
+  <td><i>Vigna radiata var. radiata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_014668024.2_144-1731_1.html">XP_014523510.1</a>
+      </td>
+  <td><i>Vigna radiata var. radiata</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_007159355.1_233-1820_1.html">XP_007159417.1</a>
+      </td>
+  <td><i>Phaseolus vulgaris</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_008452807.2_123-1761_1.html">XP_008451029.1</a>
+      </td>
+  <td><i>Cucumis melo</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011090842.2_175-1819_1.html">XP_011089144.1</a>
+      </td>
+  <td><i>Sesamum indicum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.5">23.5</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003629673.1_0-1599_1.html">XP_003629721.1</a>
+      </td>
+  <td><i>Medicago truncatula</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide A oxygenase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_021995239.1_442-2089_1.html">XP_021850931.1</a>
+      </td>
+  <td><i>Spinacia oleracea</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006364374.2_57-1689_1.html">XP_006364436.1</a>
+      </td>
+  <td><i>Solanum tuberosum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_010114332.1_0-1626_1.html">XP_010112634.1</a>
+      </td>
+  <td><i>Morus notabilis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Protochlorophyllide-dependent translocon component 52</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_022291923.1_164-1826_1.html">XP_022147615.1</a>
+      </td>
+  <td><i>Momordica charantia</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_018990437.2_298-1924_1.html">XP_018845982.1</a>
+      </td>
+  <td><i>Juglans regia</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_004144041.2_15-1632_1.html">XP_004144089.2</a>
+      </td>
+  <td><i>Cucumis sativus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011026847.1_80-1733_1.html">XP_011025149.1</a>
+      </td>
+  <td><i>Populus euphratica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">LOW QUALITY PROTEIN: protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006445570.1_25-1645_1.html">XP_006445633.1</a>
+      </td>
+  <td><i>Citrus clementina</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011049902.1_153-1776_1.html">XP_011048204.1</a>
+      </td>
+  <td><i>Populus euphratica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_027217305.1_178-1849_1.html">XP_027073106.1</a>
+      </td>
+  <td><i>Coffea arabica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="14"><a href="/pro-sim-blast/leaf/4_403_AtdA-0.html">4_403_AtdA#0</a>
+    <div class="note">14 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LZSK01000040.1_48431-49595_-1.html">WP_064895476.1</a>
+      </td>
+  <td><i>Mycolicibacterium conceptionense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LFOD01000011.1_119650-120814_-1.html">WP_043369536.1</a>
+      </td>
+  <td><i>Mycolicibacterium conceptionense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="23.5">23.5</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAAXPJ010000002.1_551215-552379_1.html">WP_044515031.1</a>
+      </td>
+  <td><i>Mycolicibacterium septicum DSM 44393</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MBEE01000049.1_23080-24250_-1.html">WP_051445869.1</a>
+      </td>
+  <td><i>Mycobacterium malmoense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MLHV01000009.1_124727-125891_-1.html">WP_070944983.1</a>
+      </td>
+  <td><i>Mycobacterium syngnathidarum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NTFX01000005.1_139532-140672_-1.html">WP_042911602.1</a>
+      </td>
+  <td><i>Mycobacterium intracellulare subsp. chimaera</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NTFW01000005.1_139532-140702_-1.html">WP_051445869.1</a>
+      </td>
+  <td><i>Mycobacterium intracellulare subsp. chimaera</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_BHVW01000070.1_7838-9011_-1.html">WP_064859789.1</a>
+      </td>
+  <td><i>Mycolicibacterium sp. NCC-Tsukiji</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_SDLO01000041.1_6063-7236_-1.html">WP_064859789.1</a>
+      </td>
+  <td><i>Mycolicibacterium mucogenicum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LAUZ02000003.1_32334-33507_1.html">WP_046364481.1</a>
+      </td>
+  <td><i>Mycolicibacterium obuense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LMJA01000031.1_503670-504858_-1.html">WP_057170727.1</a>
+      </td>
+  <td><i>Mycobacterium sp. Root265</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKD01000293.1_18979-20161_-1.html">WP_068099211.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E2497</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JXST01000050.1_21966-23139_-1.html">WP_043987889.1</a>
+      </td>
+  <td><i>Mycolicibacterium llatzerense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MBEE01000117.1_64012-65194_1.html">WP_065481196.1</a>
+      </td>
+  <td><i>Mycobacterium malmoense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="14"><a href="/pro-sim-blast/leaf/5_506_Stc2-9.html">5_506_Stc2#9</a>
+    <div class="note">14 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JBDJNX010000001.1_571010-572156_-1.html">WP_062838656.1</a>
+      </td>
+  <td><i>Achromobacter mucicolens</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LMIU01000012.1_492168-493314_-1.html">WP_057285008.1</a>
+      </td>
+  <td><i>Achromobacter sp. Root83</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AGUF01000055.1_117685-118831_-1.html">WP_008164207.1</a>
+      </td>
+  <td><i>Achromobacter arsenitoxydans SY8</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VWXQ01000004.1_207620-208769_-1.html">WP_024068221.1</a>
+      </td>
+  <td><i>Achromobacter xylosoxidans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FRCQ01000037.1_40670-41795_-1.html">WP_073468543.1</a>
+      </td>
+  <td><i>Rhizobacter sp. OV335</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_501_CmoS</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LIPV01000008.1_57304-58411_-1.html">WP_055451147.1</a>
+      </td>
+  <td><i>Thiomonas bhubaneswarensis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAFKED010000036.1_14558-15707_-1.html">WP_054433372.1</a>
+      </td>
+  <td><i>Achromobacter sp.</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAKJWS010000013.1_115489-116638_1.html">WP_054433372.1</a>
+      </td>
+  <td><i>Achromobacter insuavis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PHIK01000012.1_14610-15759_-1.html">WP_049072435.1</a>
+      </td>
+  <td><i>Achromobacter ruhlandii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PHIH01000001.1_872351-873500_-1.html">WP_049072435.1</a>
+      </td>
+  <td><i>Achromobacter ruhlandii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VBUB01000003.1_57547-58696_1.html">WP_064526889.1</a>
+      </td>
+  <td><i>Achromobacter dolens</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QVXO01000031.1_51463-52612_1.html">WP_054451018.1</a>
+      </td>
+  <td><i>Achromobacter xylosoxidans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QWFB01000032.1_177136-178285_1.html">WP_054451018.1</a>
+      </td>
+  <td><i>Achromobacter sp. K91</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_RHXM01000010.1_96583-97732_1.html">WP_054451018.1</a>
+      </td>
+  <td><i>Achromobacter aegrifaciens</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="13"><a href="/pro-sim-blast/leaf/5_504_CntA-1.html">5_504_CntA#1</a>
+    <div class="note">13 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JAOR01000148.1_151658-152804_-1.html">WP_011724269.1</a>
+      </td>
+  <td><i>Mycobacterium sp. MAC_011194_8550</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LQPH01000158.1_109-1306_-1.html">WP_046182678.1</a>
+      </td>
+  <td><i>Mycobacterium nebraskense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PSNL01000009.1_64438-65584_1.html">WP_033717954.1</a>
+      </td>
+  <td><i>Mycobacterium avium subsp. hominissuis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WEHD01000011.1_43366-44512_1.html">WP_011724269.1</a>
+      </td>
+  <td><i>Mycobacterium avium subsp. hominissuis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WEHQ01000004.1_48155-49301_1.html">WP_011724269.1</a>
+      </td>
+  <td><i>Mycobacterium avium subsp. hominissuis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZTA01000038.1_149740-150892_-1.html">WP_067096563.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 852002-40037_SCH5390672</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZSG01000062.1_133496-134633_1.html">WP_067383094.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1164966.3</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_NCXN01000005.1_156219-157365_-1.html">WP_014384132.1</a>
+      </td>
+  <td><i>Mycobacterium paraintracellulare</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZIJ01000094.1_14037-15192_1.html">WP_067236810.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 852002-51163_SCH5372311</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JASZZX010000002.1_182475-183621_1.html">WP_089151488.1</a>
+      </td>
+  <td><i>Mycobacterium intracellulare subsp. chimaera</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZIS01000204.1_55205-56375_1.html">WP_068237799.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E3198</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZMB01000273.1_6996-8148_1.html">WP_067350962.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1165178.9</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MVHT01000022.1_5913-7053_-1.html">WP_069417303.1</a>
+      </td>
+  <td><i>Mycobacterium intermedium</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="12"><a href="/pro-sim-blast/leaf/3_313_KshA15-16.html">3_313_KshA15#16</a>
+    <div class="note">12 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_APIV01000003.1_303872-304967_1.html">WP_031042748.1</a>
+      </td>
+  <td><i>Streptomyces sp. FXJ7.023</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LIXJ01000003.1_446040-447099_-1.html">WP_073782393.1</a>
+      </td>
+  <td><i>Streptomyces sp. CB01580</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WMCB01000451.1_1485-2553_1.html">WP_003959196.1</a>
+      </td>
+  <td><i>Streptomyces clavuligerus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LISX01000006.1_207644-208841_1.html">WP_073812791.1</a>
+      </td>
+  <td><i>Kitasatospora sp. CB01950</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LIVT01000008.1_36663-37758_1.html">WP_073770616.1</a>
+      </td>
+  <td><i>Streptomyces sp. CB02366</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QLLS01000007.1_427953-429093_-1.html">WP_014045581.1</a>
+      </td>
+  <td><i>Streptomyces sp. DpondAA-E10</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WWGO01000019.1_26988-28083_1.html">WP_003964291.1</a>
+      </td>
+  <td><i>Streptomyces sp. SID8364</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WWGT01000011.1_426799-427939_-1.html">WP_014045581.1</a>
+      </td>
+  <td><i>Streptomyces sp. SID8358</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FMCE01000342.1_2764-3865_1.html">WP_010279599.1</a>
+      </td>
+  <td><i>Streptomyces sp. TverLS-915</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FMCN01000025.1_2833-3934_1.html">WP_043255007.1</a>
+      </td>
+  <td><i>Streptomyces sp. SolWspMP-sol7th</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAVRET010000001.1_93356-94457_-1.html">WP_010279599.1</a>
+      </td>
+  <td><i>Streptomyces evansiae</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JBEORV010000133.1_14047-15142_1.html">WP_047180259.1</a>
+      </td>
+  <td><i>Streptomyces anulatus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="9"><a href="/pro-sim-blast/leaf/5_507_BmoA-6.html">5_507_BmoA#6</a>
+    <div class="note">9 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JFYR01000003.1_140852-141953_1.html">WP_034749123.1</a>
+      </td>
+  <td><i>Janthinobacterium lividum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LFKP01000013.1_135852-136953_1.html">WP_071079457.1</a>
+      </td>
+  <td><i>Janthinobacterium lividum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PDZL01000015.1_16099-17200_-1.html">WP_046683421.1</a>
+      </td>
+  <td><i>Janthinobacterium sp. BJB426</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LMIC01000008.1_92184-93285_-1.html">WP_055932433.1</a>
+      </td>
+  <td><i>Duganella sp. Root198D2</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_503_CmoA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FTMV01000007.1_139922-141023_-1.html">WP_076568340.1</a>
+      </td>
+  <td><i>Janthinobacterium sp. TND4EL3</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.8">23.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LMEC01000021.1_134785-135886_-1.html">WP_056398526.1</a>
+      </td>
+  <td><i>Massilia sp. Root418</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JABFMQ010000024.1_30110-31232_1.html">WP_034350972.1</a>
+      </td>
+  <td><i>Herbaspirillum sp. C9C3</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JBCGUI010000004.1_63206-64328_-1.html">WP_310837899.1</a>
+      </td>
+  <td><i>Herbaspirillum huttiense NC40101</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AMXB01000005.1_39298-40405_-1.html">WP_002936609.1</a>
+      </td>
+  <td><i>Thauera sp. 27</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="9"><a href="/pro-sim-blast/leaf/5_504_CntA-15.html">5_504_CntA#15</a>
+    <div class="note">9 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LMXU01000036.1_67650-68838_1.html">WP_060469645.1</a>
+      </td>
+  <td><i>Vibrio toranzoniae</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.8">23.8</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_DRFR01000123.1_4951-6142_-1.html">WP_010553492.1</a>
+      </td>
+  <td><i>Pseudoalteromonas sp.</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_MDKE01000055.1_73907-75095_-1.html">WP_071473777.1</a>
+      </td>
+  <td><i>Oceanisphaera psychrotolerans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_BATK01000007.1_2668-3856_1.html">WP_017635305.1</a>
+      </td>
+  <td><i>Vibrio alginolyticus NBRC 15630 = ATCC 17749</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LHPJ01000005.1_200370-201558_1.html">WP_053394666.1</a>
+      </td>
+  <td><i>Vibrio nereis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAWPOP010000001.1_20819-22007_1.html">WP_005375185.1</a>
+      </td>
+  <td><i>Vibrio sp. 1978</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAWPOW010000002.1_6917-8105_-1.html">WP_025768534.1</a>
+      </td>
+  <td><i>Vibrio sp. 1291-1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VTYF01000002.1_492432-493620_-1.html">WP_005375185.1</a>
+      </td>
+  <td><i>Vibrio alginolyticus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WBOG01000004.1_223876-225064_1.html">WP_005392447.1</a>
+      </td>
+  <td><i>Vibrio sp. 1-2-3a</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="8"><a href="/pro-sim-blast/leaf/5_501_CmoS-0.html">5_501_CmoS#0</a>
+    <div class="note">8 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LMNW01000031.1_687860-688961_1.html">WP_056157788.1</a>
+      </td>
+  <td><i>Duganella sp. Leaf126</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.2">23.2</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QTQU01000034.1_36727-37834_-1.html">WP_015877626.1</a>
+      </td>
+  <td><i>Burkholderia glumae</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_503_CmoA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_QAOR01000028.1_8671-9775_-1.html">WP_074630493.1</a>
+      </td>
+  <td><i>Nitrosospira sp. Nsp5</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_501_CmoS</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JQOI01000032.1_30946-32044_-1.html">WP_039572772.1</a>
+      </td>
+  <td><i>Ralstonia solanacearum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PHHP01000031.1_66619-67717_1.html">WP_003262208.1</a>
+      </td>
+  <td><i>Ralstonia solanacearum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOXK01000023.1_376130-377237_1.html">WP_038743367.1</a>
+      </td>
+  <td><i>Burkholderia sp. MSMB0265</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_503_CmoA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LROM01000091.1_64333-65434_-1.html">WP_070249335.1</a>
+      </td>
+  <td><i>Duganella phyllosphaerae</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOWB01000072.1_65411-66518_-1.html">WP_059570874.1</a>
+      </td>
+  <td><i>Burkholderia sp. TSV86</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_503_CmoA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="6"><a href="/pro-sim-blast/leaf/3_313_KshA15-23.html">3_313_KshA15#23</a>
+    <div class="note">6 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LPFQ01000116.1_1067-2096_-1.html">WP_060103123.1</a>
+      </td>
+  <td><i>Burkholderia territorii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NC_010801.1_251752-252781_-1.html">WP_012218294.1</a>
+      </td>
+  <td><i>Burkholderia multivorans ATCC 17616</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VCCM02000003.1_32333-33368_-1.html">WP_231999328.1</a>
+      </td>
+  <td><i>Pseudomonas sp. ATCC 13985</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_VJSI01000020.1_36147-37176_-1.html">WP_012218294.1</a>
+      </td>
+  <td><i>Burkholderia multivorans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LOWA01000023.1_4284-5382_-1.html">WP_245637166.1</a>
+      </td>
+  <td><i>Burkholderia singularis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LPKD01000042.1_25700-26675_1.html">WP_155638799.1</a>
+      </td>
+  <td><i>Burkholderia territorii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="6"><a href="/pro-sim-blast/leaf/1_105_DdmC-6.html">1_105_DdmC#6</a>
+    <div class="note">6 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_009141132.2_61-1666_1.html">XP_009139380.1</a>
+      </td>
+  <td><i>Brassica rapa</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013752093.1_59-1667_1.html">XP_013607547.1</a>
+      </td>
+  <td><i>Brassica oleracea var. oleracea</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013786594.1_73-1681_1.html">XP_013642048.1</a>
+      </td>
+  <td><i>Brassica napus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013884534.1_66-1671_1.html">XP_013739988.1</a>
+      </td>
+  <td><i>Brassica napus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_057003204.1_52-1657_1.html">XP_056859184.1</a>
+      </td>
+  <td><i>Raphanus sativus</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006285147.1_0-1617_1.html">XP_006285209.1</a>
+      </td>
+  <td><i>Capsella rubella</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="5"><a href="/pro-sim-blast/leaf/5_504_CntA-11.html">5_504_CntA#11</a>
+    <div class="note">5 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_CP016365.1_163312-164467_-1.html">WP_072506673.1</a>
+      <span class="chip chip--plasmid">plasmid</span></td>
+  <td><i>Phaeobacter porticola</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.5">23.5</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JAQIPA010000017.1_19744-20899_1.html">WP_058289708.1</a>
+      </td>
+  <td><i>Tritonibacter multivorans</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.8">23.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FTOU01000002.1_359327-360482_-1.html">WP_076523580.1</a>
+      </td>
+  <td><i>Paracoccus saliphilus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JWLI01000002.1_60175-61330_-1.html">WP_039180223.1</a>
+      </td>
+  <td><i>Leisingera sp. ANG-M7</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LYUZ01000035.1_34768-35923_-1.html">WP_065266499.1</a>
+      </td>
+  <td><i>Leisingera sp. JC1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="5"><a href="/pro-sim-blast/leaf/5_505_qxyA-2.html">5_505_qxyA#2</a>
+    <div class="note">5 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_FOWG01000009.1_364586-365717_-1.html">WP_057589543.1</a>
+      </td>
+  <td><i>Variovorax sp. PDC80</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a></td>
+  <td class="mono small">5_505_qxyA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_PBYB01000054.1_58301-59432_1.html">WP_057589543.1</a>
+      </td>
+  <td><i>Variovorax sp.</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a></td>
+  <td class="mono small">5_505_qxyA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_SCVF01000051.1_146296-147427_-1.html">WP_057589543.1</a>
+      </td>
+  <td><i>Variovorax sp.</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a></td>
+  <td class="mono small">5_505_qxyA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LMCQ01000008.1_75069-76209_1.html">WP_055799318.1</a>
+      </td>
+  <td><i>Variovorax sp. Root318D1</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JZWI01000019.1_51835-52978_-1.html">WP_047785593.1</a>
+      </td>
+  <td><i>Variovorax paradoxus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="5"><a href="/pro-sim-blast/leaf/1_104_VanA-26.html">1_104_VanA#26</a>
+    <div class="note">5 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JNAJ01000017.1_44286-45609_-1.html">WP_032514296.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. MIT 9116</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="21.0">21.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAL01000005.1_128110-129433_1.html">WP_032521513.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. MIT 9201</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="22.2">22.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAV01000004.1_153733-155068_-1.html">WP_036917564.1</a>
+      </td>
+  <td><i>Prochlorococcus sp. MIT 0602</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="22.8">22.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAH01000004.1_133060-134383_-1.html">WP_032524349.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. GP2</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAU01000005.1_480573-481911_-1.html">WP_036902897.1</a>
+      </td>
+  <td><i>Prochlorococcus sp. MIT 0601</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_104_VanA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="4"><a href="/pro-sim-blast/leaf/5_504_CntA-10.html">5_504_CntA#10</a>
+    <div class="note">4 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LMJY01000012.1_166378-167701_-1.html">WP_056769932.1</a>
+      </td>
+  <td><i>Novosphingobium sp. Leaf2</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_505_qxyA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NC_009427.1_153492-154827_1.html">WP_011906783.1</a>
+      <span class="chip chip--plasmid">plasmid</span></td>
+  <td><i>Novosphingobium aromaticivorans DSM 12444</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_505_qxyA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_CP019603.1_549497-550844_1.html">WP_066850432.1</a>
+      <span class="chip chip--plasmid">plasmid</span></td>
+  <td><i>Croceicoccus marinus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">2_216_BPDO</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LYWZ01000021.1_23249-24599_-1.html">WP_066771934.1</a>
+      </td>
+  <td><i>Croceicoccus mobilis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">2_216_BPDO</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="4"><a href="/pro-sim-blast/leaf/3_313_KshA15-15.html">3_313_KshA15#15</a>
+    <div class="note">4 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LZKR01000027.1_24522-25512_-1.html">WP_067149519.1</a>
+      </td>
+  <td><i>Mycobacterium sp. 1245805.9</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.8">23.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKK01000107.1_13873-14854_1.html">WP_068129089.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E796</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZKE01000248.1_8138-9128_-1.html">WP_068113379.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E2327</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LZIS01000139.1_13241-14240_1.html">WP_068234092.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E3198</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="4"><a href="/pro-sim-blast/leaf/1_110_SxtT-6.html">1_110_SxtT#6</a>
+    <div class="note">4 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_003629676.2_0-1584_1.html">XP_003629724.2</a>
+      </td>
+  <td><i>Medicago truncatula</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.5">23.5</td>
+  <td class="note">none detected</td>
+  <td class="small">chlorophyllide A oxygenase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_017556545.1_326-1913_1.html">XP_017412034.1</a>
+      </td>
+  <td><i>Vigna angularis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.5">23.5</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_021995233.1_132-1803_1.html">XP_021850925.1</a>
+      </td>
+  <td><i>Spinacia oleracea</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_030668539.1_85-1696_1.html">XP_030524399.1</a>
+      </td>
+  <td><i>Rhodamnia argentea</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="4"><a href="/pro-sim-blast/leaf/1_104_VanA-32.html">1_104_VanA#32</a>
+    <div class="note">4 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JNAS01000001.1_125477-126800_-1.html">WP_032518819.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. SB</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="22.2">22.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske (2Fe-2S) protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAO01000004.1_4056-5379_1.html">WP_032515171.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. MIT 9314</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="22.7">22.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske (2Fe-2S) protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAR01000016.1_180986-182309_1.html">WP_032517013.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. MIT 9401</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="22.7">22.7</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske (2Fe-2S) protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_JNAM01000005.1_124871-126194_-1.html">WP_032526094.1</a>
+      </td>
+  <td><i>Prochlorococcus marinus str. MIT 9302</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="23.2">23.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/5_504_CntA-21.html">5_504_CntA#21</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_018835660.1_0-3513_1.html">XP_018695310.1</a>
+      </td>
+  <td><i>Fonsecaea erecta</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013428668.1_0-1245_1.html">XP_013284122.1</a>
+      </td>
+  <td><i>Fonsecaea pedrosoi CBS 271.37</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016758484.1_0-1242_1.html">XP_016625733.1</a>
+      </td>
+  <td><i>Cladophialophora bantiana CBS 173.52</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">1_107_CndA#0</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_016871507.1_141-1755_1.html">XP_016726996.1</a>
+      </td>
+  <td><i>Gossypium hirsutum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+  <td class="mono small">1_110_SxtT</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_016871508.1_143-1751_1.html">XP_016726997.1</a>
+      </td>
+  <td><i>Gossypium hirsutum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+  <td class="mono small">1_110_SxtT</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like isoform X2</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_012617495.1_144-1749_1.html">XP_012472949.1</a>
+      </td>
+  <td><i>Gossypium raimondii</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/5_504_CntA-41.html">5_504_CntA#41</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LMDY01000016.1_178398-179559_-1.html">WP_056323777.1</a>
+      </td>
+  <td><i>Methylibium sp. Root1272</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AZND01000158.1_1417-2578_-1.html">WP_036235011.1</a>
+      </td>
+  <td><i>Methylibium sp. T29</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AZSN01000159.1_1497-2658_-1.html">WP_036235011.1</a>
+      </td>
+  <td><i>Methylibium sp. T29-B</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.9">23.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/3_313_KshA15-35.html">3_313_KshA15#35</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_AKGD01000004.1_312097-313102_1.html">WP_007187237.1</a>
+      </td>
+  <td><i>Hydrocarboniphaga effusa AP103</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">ferredoxin </td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_CALRWF010000066.1_10373-11378_1.html">WP_007187237.1</a>
+      </td>
+  <td><i>Hydrocarboniphaga effusa AP103</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">ferredoxin </td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AWXE01000001.1_80750-81752_-1.html">WP_021776197.1</a>
+      </td>
+  <td><i>Candidatus Micropelagos thuwalensis</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/5_504_CntA-44.html">5_504_CntA#44</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_018839103.1_0-1299_1.html">XP_018691871.1</a>
+      </td>
+  <td><i>Fonsecaea erecta</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.0">23.0</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013423463.1_0-1299_1.html">XP_013278917.1</a>
+      </td>
+  <td><i>Fonsecaea pedrosoi CBS 271.37</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.2">23.2</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013455667.1_156-1455_1.html">XP_013311121.1</a>
+      </td>
+  <td><i>Exophiala xenobiotica</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/3_313_KshA15-57.html">3_313_KshA15#57</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NM_073228.4_0-1287_1.html">NP_505629.2</a>
+      </td>
+  <td><i>Caenorhabditis elegans</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Cholesterol 7-desaturase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_003105546.1_0-1287_1.html">XP_003105594.1</a>
+      </td>
+  <td><i>Caenorhabditis remanei</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">CRE-DAF-36 protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_013434939.1_0-1254_1.html">XP_013290393.1</a>
+      </td>
+  <td><i>Necator americanus</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">rieske [2Fe-2S] domain protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/3_313_KshA15-52.html">3_313_KshA15#52</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LMIZ01000042.1_16787-17708_1.html">WP_057581895.1</a>
+      </td>
+  <td><i>Streptomyces sp. Root264</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_BCMM01000037.1_72330-73551_-1.html">WP_059083410.1</a>
+      </td>
+  <td><i>Streptomyces scabiei</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_KQ257831.1_213084-214071_-1.html">WP_233450255.1</a>
+      </td>
+  <td><i>Streptomyces acidiscabies</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/1_113_CdnA-24.html">1_113_CdnA#24</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_012716882.1_333-1929_1.html">XP_012572336.1</a>
+      </td>
+  <td><i>Cicer arietinum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="21.9">21.9</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_027336145.1_148-1744_1.html">XP_027191946.1</a>
+      </td>
+  <td><i>Cicer arietinum</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="21.9">21.9</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_027217258.1_537-2229_1.html">XP_027073059.1</a>
+      </td>
+  <td><i>Coffea arabica</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/5_501_CmoS-17.html">5_501_CmoS#17</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_AMCW01000137.1_176806-177967_1.html">WP_007334364.1</a>
+      </td>
+  <td><i>Rhodopirellula baltica SH28</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AMWG01000043.1_185383-186544_-1.html">WP_007337174.1</a>
+      </td>
+  <td><i>Rhodopirellula baltica SWK14</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.1">23.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_AFAR01000203.1_41157-42318_-1.html">WP_007328033.1</a>
+      </td>
+  <td><i>Rhodopirellula baltica WH47</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="3"><a href="/pro-sim-blast/leaf/1_106_TsaM-68.html">1_106_TsaM#68</a>
+    <div class="note">3 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NM_001044161.1_39-1401_1.html">NP_001037626.1</a>
+      </td>
+  <td><i>Bombyx mori</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol 7-desaturase nvd</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_012691890.1_106-1468_1.html">XP_012547344.1</a>
+      </td>
+  <td><i>Bombyx mori</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">neverland isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_028185795.1_0-1362_1.html">XP_028041596.1</a>
+      </td>
+  <td><i>Bombyx mandarina</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="23.6">23.6</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol 7-desaturase</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/1_105_DdmC-3.html">1_105_DdmC#3</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_009390784.2_86-1697_1.html">XP_009389059.1</a>
+      </td>
+  <td><i>Musa acuminata subsp. malaccensis</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_006858924.2_23-1679_1.html">XP_006858986.1</a>
+      </td>
+  <td><i>Amborella trichopoda</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.7">23.7</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_504_CntA-16.html">5_504_CntA#16</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_SGTD01000002.1_377072-378263_-1.html">WP_044103498.1</a>
+      </td>
+  <td><i>Acinetobacter pittii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_WYAT01000009.1_79531-80722_-1.html">WP_001088745.1</a>
+      </td>
+  <td><i>Acinetobacter baumannii</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">reductase</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_504_CntA-23.html">5_504_CntA#23</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_018382749.1_0-1254_1.html">XP_018239529.1</a>
+      </td>
+  <td><i>Fusarium oxysporum f. sp. lycopersici 4287</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.4">24.4</td>
+  <td class="note">none detected</td>
+  <td class="small">cytochrome P450 oxidoreductase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_008727206.1_0-1251_1.html">XP_008725428.1</a>
+      </td>
+  <td><i>Cladophialophora carrionii CBS 160.54</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_504_CntA-25.html">5_504_CntA#25</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_003715565.1_0-1308_1.html">XP_003715613.1</a>
+      </td>
+  <td><i>Pyricularia oryzae 70-15</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">choline monooxygenase</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_031127810.1_764-2072_1.html">XP_030981369.1</a>
+      </td>
+  <td><i>Pyricularia grisea</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.8">24.8</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_506_Stc2-19.html">5_506_Stc2#19</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LION01000007.1_128935-130045_1.html">WP_055434401.1</a>
+      </td>
+  <td><i>Gulbenkiania indica</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LDUR01000032.1_35291-36401_1.html">WP_048415452.1</a>
+      </td>
+  <td><i>Chromobacterium sp. LK11</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_502_CmoB</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_504_CntA-42.html">5_504_CntA#42</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_QKZM01000033.1_31386-32547_1.html">WP_072630558.1</a>
+      </td>
+  <td><i>Planktotalea frisia</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="22.8">22.8</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_FRBN01000010.1_51079-52237_-1.html">WP_073197912.1</a>
+      </td>
+  <td><i>Roseovarius marisflavi</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/5_506_Stc2-26.html">5_506_Stc2#26</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LAXI01000005.1_107846-109007_-1.html">WP_057815875.1</a>
+      </td>
+  <td><i>Roseovarius indicus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="22.9">22.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LPXO01000022.1_11601-12762_-1.html">WP_058864134.1</a>
+      </td>
+  <td><i>Pseudoponticoccus marisrubri</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/3_313_KshA15-37.html">3_313_KshA15#37</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_011195859.1_200-1451_1.html">XP_011194161.1</a>
+      </td>
+  <td><i>Zeugodacus cucurbitae</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol desaturase daf-36</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_011195860.1_126-1377_1.html">XP_011194162.1</a>
+      </td>
+  <td><i>Zeugodacus cucurbitae</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol desaturase daf-36</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/1_110_SxtT-11.html">1_110_SxtT#11</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_KV757542.1_51198-52530_-1.html">WP_069068049.1</a>
+      </td>
+  <td><i>Nostoc sp. KVJ20</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="22.0">22.0</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LWAJ01000220.1_12946-14284_1.html">WP_063873663.1</a>
+      </td>
+  <td><i>Nodularia spumigena CENA596</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.3">23.3</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/4_401_CmtAb-14.html">4_401_CmtAb#14</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_AMWG01000043.1_74265-75429_-1.html">WP_007337104.1</a>
+      </td>
+  <td><i>Rhodopirellula baltica SWK14</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td class="mono small">4_402_PsbAb</td>
+  <td class="num" data-v="22.1">22.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_ANMO01000061.1_34249-35413_-1.html">WP_008654514.1</a>
+      </td>
+  <td><i>Rhodopirellula europaea 6C</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td class="mono small">4_402_PsbAb</td>
+  <td class="num" data-v="22.5">22.5</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/1_106_TsaM-49.html">1_106_TsaM#49</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JNBA01000039.1_29286-30597_-1.html">WP_036915089.1</a>
+      </td>
+  <td><i>Prochlorococcus sp. MIT 0701</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="22.1">22.1</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske (2Fe-2S) protein</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/NZ_LVHL01000010.1_377761-379072_1.html">WP_063395932.1</a>
+      </td>
+  <td><i>Prochlorococcus sp. MIT 1306</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="mono small">1_106_TsaM</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="2"><a href="/pro-sim-blast/leaf/1_105_DdmC-26.html">1_105_DdmC#26</a>
+    <div class="note">2 candidates</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_010259313.2_159-1776_1.html">XP_010257615.1</a>
+      </td>
+  <td><i>Nelumbo nucifera</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic isoform X1</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/ro/XM_010259314.2_159-1770_1.html">XP_010257616.1</a>
+      </td>
+  <td><i>Nelumbo nucifera</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic isoform X2</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/3_311_PhtAa-0.html">3_311_PhtAa#0</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LZJR01000027.1_87370-88546_1.html">WP_231986278.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E2479</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td class="mono small">4_403_AtdA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/3_313_KshA15-6.html">3_313_KshA15#6</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NM_001142116.1_63-1431_1.html">NP_001135588.1</a>
+      </td>
+  <td><i>Xenopus tropicalis</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein LOC100216141</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/3_313_KshA15-17.html">3_313_KshA15#17</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_012202584.1_0-1302_1.html">XP_012057974.1</a>
+      </td>
+  <td><i>Atta cephalotes</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol desaturase daf-36-like</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/1_111_GxtA-3.html">1_111_GxtA#3</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LATL02000279.1_21805-23140_-1.html">WP_046281112.1</a>
+      </td>
+  <td><i>Limnoraphis robusta CS-951</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-22.html">5_504_CntA#22</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_KQ949030.1_336909-338208_1.html">WP_067253974.1</a>
+      </td>
+  <td><i>Streptomyces sp. DSM 15324</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/4_401_CmtAb-0.html">4_401_CmtAb#0</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JACBWT010000003.1_268126-269380_-1.html">WP_287437674.1</a>
+      </td>
+  <td><i>Maritimibacter sp.</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.6">24.6</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_507_BmoA-14.html">5_507_BmoA#14</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_CP019603.1_482656-483877_-1.html">WP_066850329.1</a>
+      <span class="chip chip--plasmid">plasmid</span></td>
+  <td><i>Croceicoccus marinus</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/3_313_KshA15-31.html">3_313_KshA15#31</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_026627359.1_3-1326_1.html">XP_026483144.1</a>
+      </td>
+  <td><i>Vanessa tameamea</i></td>
+  <td class="note">Eukaryota / animal</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">3_313_KshA15</td>
+  <td class="num" data-v="24.1">24.1</td>
+  <td class="note">none detected</td>
+  <td class="small">cholesterol 7-desaturase</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-36.html">5_504_CntA#36</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_002479622.1_0-1131_1.html">XP_002479667.1</a>
+      </td>
+  <td><i>Talaromyces stipitatus ATCC 10500</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S family protein, putative</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-46.html">5_504_CntA#46</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_007596262.1_0-1215_1.html">XP_007596324.1</a>
+      </td>
+  <td><i>Colletotrichum fioriniae PJ7</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.5">24.5</td>
+  <td class="note">none detected</td>
+  <td class="small">cytochrome P450 oxidoreductase</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-47.html">5_504_CntA#47</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LZJR01000163.1_40064-41225_1.html">WP_067940199.1</a>
+      </td>
+  <td><i>Mycobacterium sp. E2479</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/1_111_GxtA-13.html">1_111_GxtA#13</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_PVWG01000028.1_32800-34225_1.html">WP_073074232.1</a>
+      </td>
+  <td><i>Phormidesmis priestleyi ULC007</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.2">24.2</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_507_BmoA-33.html">5_507_BmoA#33</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JFHR01000026.1_41230-42571_-1.html">WP_037452138.1</a>
+      </td>
+  <td><i>Sphingobium chlorophenolicum</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="mono small">5_507_BmoA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">SRPBCC family protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-55.html">5_504_CntA#55</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_016356314.1_0-1248_1.html">XP_016215837.1</a>
+      </td>
+  <td><i>Verruconis gallopava</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.9">24.9</td>
+  <td class="note">none detected</td>
+  <td class="small">uncharacterized protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/1_110_SxtT-20.html">1_110_SxtT#20</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_AAXW01000041.1_27047-28430_1.html">WP_008277331.1</a>
+      </td>
+  <td><i>Crocosphaera chwakensis CCY0110</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="22.6">22.6</td>
+  <td class="note">none detected</td>
+  <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-73.html">5_504_CntA#73</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_018328121.1_0-1245_1.html">XP_018173354.1</a>
+      </td>
+  <td><i>Purpureocillium lilacinum</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="23.4">23.4</td>
+  <td class="note">none detected</td>
+  <td class="small">iron-sulfur cluster-binding rieske family domain-containingprotein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/1_105_DdmC-27.html">1_105_DdmC#27</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_015772979.1_71-1688_1.html">XP_015628465.1</a>
+      </td>
+  <td><i>Oryza sativa Japonica Group</i></td>
+  <td class="note">Eukaryota / plant/alga</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="23.8">23.8</td>
+  <td class="note">none detected</td>
+  <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/1_110_SxtT-17.html">1_110_SxtT#17</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_LWAF01000014.1_9286-10276_-1.html">WP_069293656.1</a>
+      </td>
+  <td><i>Fervidobacterium thailandense</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="mono small">1_111_GxtA</td>
+  <td class="num" data-v="24.0">24.0</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-98.html">5_504_CntA#98</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/NZ_JHAK01000001.1_463353-464508_1.html">WP_038003256.1</a>
+      </td>
+  <td><i>Thalassobacter sp. 16PALIMAR09</i></td>
+  <td class="note">Bacteria / Bacteria</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.3">24.3</td>
+  <td class="note">none detected</td>
+  <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/3_313_KshA15-61.html">3_313_KshA15#61</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_001461149.1_0-1317_1.html">XP_001461186.1</a>
+      </td>
+  <td><i>Paramecium tetraurelia strain d4-2</i></td>
+  <td class="note">Eukaryota / SAR</td>
+  
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">1_103_CarAa</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">hypothetical protein</td>
+</tr>
+
+
+
+<tr>
+  <td rowspan="1"><a href="/pro-sim-blast/leaf/5_504_CntA-75.html">5_504_CntA#75</a>
+    <div class="note">1 candidate</div></td>
+  <td><a href="/pro-sim-blast/ro/XM_013406418.1_0-1251_1.html">XP_013261872.1</a>
+      </td>
+  <td><i>Exophiala aquamarina CBS 119918</i></td>
+  <td class="note">Eukaryota / fungus</td>
+  
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">5_504_CntA</td>
+  <td class="num" data-v="24.7">24.7</td>
+  <td class="note">none detected</td>
+  <td class="small">cytochrome P450 oxidoreductase</td>
+</tr>
+
+
+</tbody></table></div>
+
+<h2>6 · What would settle it</h2>
+<p>Nothing here is a functional claim. A candidate becomes an enzyme with a known reaction only
+through experiment, and the most informative next steps are the ones this database can point at:
+the variants with the most members and the most complete operons, because a conserved gene
+neighbourhood is independent evidence that the protein is used. Sequences are provided so that any
+of them can be synthesised and tested.</p>
+<p class="dl">
+  <a class="btn" href="/pro-sim-blast/download/novel_candidates.fasta">Candidate sequences (FASTA)</a>
+  <a class="btn" href="/pro-sim-blast/download/analysis/evidence_by_cluster.csv">Evidence per type (CSV)</a>
+</p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,2500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CndA · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 1_107_CndA</nav>
+
+<h1>CndA <span class="note">· type 1_107_CndA · RO group 1</span></h1>
+<div class="numbered">
+
+
+
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>Most members of this type are closer to a different reference enzyme.</b>
+  Membership is decided by profile score, while "nearest reference" is measured by sequence
+  identity, and the two are different questions. Here they disagree: of
+  60 members, only 41
+  (68 %) are in fact most similar to this type's own
+  reference, and the average identity to the nearest reference is
+  35.0 %.
+  
+  At that identity no profile can separate the neighbouring types reliably, so read this as a
+  region of sequence space rather than as a set of proteins like the reference.
+  
+  <br><span class="note">Measured for every type on the
+  <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</span>
+</div>
+
+
+
+
+
+<div class="caveat">
+  <b>chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</b>
+  <span class="chip chip--xenobiotic">xenobiotic</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  Of the 60 members assigned here,
+  <b>0.0%</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  
+  <br><span class="note">Chloroacetanilide herbicides; the oxygenase gene sits in a transposable element conserved between the two Sphingomonas strains.</span>
+  
+  <br><span class="note"><b>Curated from:</b> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4135782/" rel="noopener noreferrer" target="_blank">PMC4135782</a> (Sphingomonads DC-6 and DC-2) ·
+      from a published paper
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="CCc1cccc(CC)c1N(COC)C(=O)CCl" aria-label="chloroacetanilide herbicides (alachlor, acetochlor, butachlor)"></svg>
+      
+      <div class="rxn__label">chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">oxidative N-dealkylation of the herbicide amide nitrogen</div>
+    </div>
+    <div class="rxn__scheme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-N-demethylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><text x="18" y="52" font-size="13" fill="currentColor">R₂N–CH₃</text><line x1="86" y1="46" x2="140" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-N-demethylation)"/><text x="113.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="113.0" y="59" font-size="9" text-anchor="middle" fill="currentColor">− HCHO</text><text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text></svg>
+      
+      <div class="rxnote">One methyl group is removed per catalytic cycle and released as formaldehyde.</div>
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">N-dealkylated herbicide and the corresponding aldehyde</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  <br><b>Note.</b> Three-component system; the oxygenase gene cndA sits in a transposable element conserved between strains, while its ferredoxin and GR-type reductase are encoded elsewhere. Structure shown is alachlor.</figcaption>
+</figure>
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>60 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>30 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>51 replicons, 24 genera</dd>
+      <dt>On plasmids</dt><dd>0.0% (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>16.7%</dd>
+      <dt>Profile match</dt><dd>mean score 190 bits, mean coverage 0.81</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 209</span></dt>
+      <dd><b>Asp branch.</b> Aspartate in 60 of 60 members
+          (100.0%), as in the ring-hydroxylating majority.</dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">column 355</span></dt>
+      <dd>Asp in 52 of
+          60 members (86.7%);
+          8 have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site. This site is aspartate across the whole family.</dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 50 · Eukaryota / plant/alga 9 · Eukaryota / other eukaryote 1</dd>
+      <dt>Phyla</dt><dd class="small">Pseudomonadota 45, Viridiplantae 9, Actinomycetota 4, Bacteroidota 1, Haptista 1</dd>
+      <dt>Top genera</dt><dd><span class="chip">Pseudomonas 12</span> <span class="chip">Sphingobium 7</span> <span class="chip">Novosphingobium 7</span> <span class="chip">Sphingomonas 5</span> <span class="chip">Nicotiana 3</span> <span class="chip">Gossypium 3</span> <span class="chip">Methylobacterium 3</span> <span class="chip">Paraburkholderia 2</span> <span class="chip">Nocardia 2</span> <span class="chip">Burkholderia 2</span> <span class="chip">Sphingopyxis 1</span> <span class="chip">Roseivirga 1</span> </dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_107_CndA.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_107_CndA.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#f2c14e;width:8.33%" title="family_member: 5"></i><i style="background:#f78154;width:86.67%" title="distant: 52"></i><i style="background:#8e44ad;width:5.0%" title="novel: 3"></i></span>
+    <table class="data compact">
+      <tbody>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">5</td><td class="num">8.3%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">52</td><td class="num">86.7%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+          <td class="small">novel (&lt;25 %): no close reference</td>
+          <td class="num">3</td><td class="num">5.0%</td></tr>
+      
+      </tbody>
+    </table>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td><td class="num">98.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">4_405_ROCH34</a></td><td class="num">98.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a></td><td class="num">88.5 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">1_105_DdmC</a></td><td class="num">78.6 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">1_110_SxtT</a></td><td class="num">66.9 %</td></tr>
+      
+    </tbody></table>
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">0.0%</td><td class="num">1.7%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">1.7%</td><td class="num">18.3%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">18.3%</td><td class="num">33.3%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">36</td></tr><tr><td class="mono small">α3 · Fd:none · Red:GR</td><td class="num">9</td></tr><tr><td class="mono small">α3 · Fd:rieske · Red:GR</td><td class="num">8</td></tr><tr><td class="mono small">α3 · Fd:none · Red:FNR</td><td class="num">3</td></tr><tr><td class="mono small">α3 · Fd:rieske · Red:none</td><td class="num">2</td></tr><tr><td class="mono small">α3β3 · Fd:none · Red:none</td><td class="num">1</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:none</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">No member of this type is close enough to the curated enzyme for its gene
+    order to describe this enzyme. Only the distant arrangements below are available.</p>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (35 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">18</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#e67e22" stroke="#5a5a5a" stroke-width="0.7"><title>alpha_other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α′</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; alpha_other &gt; reductase &gt; [alpha]</div></td><td class="num">4</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 157 34" height="34" width="157" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,4 140,4 149,14.0 140,24 103,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; other &gt; [alpha]</div></td><td class="num">3</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 892 34" height="34" width="892" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="299,7 336,7 345,14.0 336,21 299,21" fill="#e67e22" stroke="#5a5a5a" stroke-width="0.7"><title>alpha_other</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α′</text><polygon points="348,4 385,4 394,14.0 385,24 348,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="397,7 434,7 443,14.0 434,21 397,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="415.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="446,7 483,7 492,14.0 483,21 446,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="464.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="495,7 532,7 541,14.0 532,21 495,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="513.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="544,7 581,7 590,14.0 581,21 544,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="562.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="593,7 630,7 639,14.0 630,21 593,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="611.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="642,7 679,7 688,14.0 679,21 642,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="660.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="691,7 728,7 737,14.0 728,21 691,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="709.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="740,7 777,7 786,14.0 777,21 740,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="758.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="789,7 826,7 835,14.0 826,21 789,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="807.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="838,7 875,7 884,14.0 875,21 838,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="856.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text></svg><div class="note mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; alpha_other &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 843 34" height="34" width="843" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="299,4 336,4 345,14.0 336,24 299,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="348,7 385,7 394,14.0 385,21 348,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="397,7 434,7 443,14.0 434,21 397,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="415.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="446,7 483,7 492,14.0 483,21 446,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="464.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="495,7 532,7 541,14.0 532,21 495,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="513.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="544,7 581,7 590,14.0 581,21 544,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="562.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="593,7 630,7 639,14.0 630,21 593,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="611.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="642,7 679,7 688,14.0 679,21 642,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="660.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="691,7 728,7 737,14.0 728,21 691,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="709.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="740,7 777,7 786,14.0 777,21 740,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="758.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="789,7 826,7 835,14.0 826,21 789,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="807.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text></svg><div class="note mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 892 34" height="34" width="892" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#7f8c8d" stroke="#5a5a5a" stroke-width="0.7"><title>transporter</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">tra</text><polygon points="299,4 336,4 345,14.0 336,24 299,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="348,7 385,7 394,14.0 385,21 348,21" fill="#e67e22" stroke="#5a5a5a" stroke-width="0.7"><title>alpha_other</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α′</text><polygon points="397,7 434,7 443,14.0 434,21 397,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="415.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="446,7 483,7 492,14.0 483,21 446,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="464.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="495,7 532,7 541,14.0 532,21 495,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="513.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="544,7 581,7 590,14.0 581,21 544,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="562.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="593,7 630,7 639,14.0 630,21 593,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="611.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="642,7 679,7 688,14.0 679,21 642,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="660.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="691,7 728,7 737,14.0 728,21 691,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="709.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="740,7 777,7 786,14.0 777,21 740,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="758.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="789,7 826,7 835,14.0 826,21 789,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="807.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="838,7 875,7 884,14.0 875,21 838,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="856.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text></svg><div class="note mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; alpha_other &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</div></td><td class="num">2</td></tr>
+        
+      </tbody></table>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 72" height="72" width="118" class="oplayout"><rect x="6" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="33.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">255 bp</text><polygon points="63,18 100,18 109,32.0 100,46 63,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="81.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text></svg>
+<figcaption><b>Canonical arrangement for this type:</b> the most frequent operon gene order,
+preceded by the architecture seen in most of its members
+(codirectional other) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>non-regulator, co-directional
+          </td>
+        <td class="num">17</td><td class="num">28.3%</td></tr>
+      
+      <tr><td><b>regulator, divergent</b> (shared promoter region)
+          </td>
+        <td class="num">15</td><td class="num">25.0%</td></tr>
+      
+      <tr><td>no upstream gene in the window</td>
+        <td class="num">12</td><td class="num">20.0%</td></tr>
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">11</td><td class="num">18.3%</td></tr>
+      
+      <tr><td>regulator, co-directional
+          </td>
+        <td class="num">5</td><td class="num">8.3%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  <div>
+    
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      <tr><td>sigma54</td><td class="num">6</td></tr><tr><td>LysR</td><td class="num">4</td></tr><tr><td>not assignable</td><td class="num">2</td></tr><tr><td>TetR</td><td class="num">2</td></tr><tr><td>AraC</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+    
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      <tr><td>LysR</td><td class="num">14</td></tr><tr><td>TetR</td><td class="num">9</td></tr><tr><td>sigma54</td><td class="num">7</td></tr><tr><td>regulator_unclassified</td><td class="num">6</td></tr><tr><td>MarR</td><td class="num">2</td></tr><tr><td>AraC</td><td class="num">2</td></tr><tr><td>IclR</td><td class="num">1</td></tr><tr><td>GntR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>other</td><td class="num">78.3%</td><td class="num">144</td></tr><tr><td>reductase</td><td class="num">51.7%</td><td class="num">42</td></tr><tr><td>regulator</td><td class="num">50.0%</td><td class="num">42</td></tr><tr><td>hypothetical</td><td class="num">50.0%</td><td class="num">48</td></tr><tr><td>hydrolase</td><td class="num">46.7%</td><td class="num">40</td></tr><tr><td>transporter</td><td class="num">41.7%</td><td class="num">43</td></tr><tr><td>ro_alpha</td><td class="num">23.3%</td><td class="num">14</td></tr><tr><td>dehydrogenase</td><td class="num">18.3%</td><td class="num">14</td></tr><tr><td>transposon</td><td class="num">6.7%</td><td class="num">5</td></tr><tr><td>ring_cleavage</td><td class="num">5.0%</td><td class="num">4</td></tr><tr><td>ferredoxin</td><td class="num">1.7%</td><td class="num">1</td></tr></tbody>
+</table></div>
+
+
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  <th class="num" title="score 1.8113 · catalytic domain">207</th><th class="num" title="score 1.75 · catalytic domain">326</th><th class="num" title="score 1.6352 · rieske domain">71</th><th class="num" title="score 1.5858 · catalytic domain">201</th><th class="num" title="score 1.5609 · linker domain">162</th><th class="num" title="score 1.5488 · catalytic domain">318</th><th class="num" title="score 1.5488 · catalytic domain">307</th><th class="num" title="score 1.5488 · rieske domain">99</th><th class="num" title="score 1.5488 · rieske domain">61</th><th class="num" title="score 1.545 · catalytic domain">322</th><th class="num" title="score 1.5366 · rieske domain">49</th><th class="num" title="score 1.5 · catalytic domain">208</th>
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  <th class="num note">L</th><th class="num note">N</th><th class="num note">F</th><th class="num note">E</th><th class="num note">A</th><th class="num note">H</th><th class="num note">H</th><th class="num note">G</th><th class="num note">R</th><th class="num note">A</th><th class="num note">S</th><th class="num note">M</th><th></th></tr>
+</thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-4.html">4</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-5.html">5</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">7</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-6.html">6</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-7.html">7</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-8.html">8</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  <td class="num">11</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-9.html">9</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-10.html">10</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  <td class="num">12</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-11.html">11</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-12.html">12</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">7</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-13.html">13</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">9</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-14.html">14</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-15.html">15</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-16.html">16</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-17.html">17</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-18.html">18</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-19.html">19</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">N</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">R</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">S</td>
+  
+  
+  <td class="num ">M</td>
+  
+  <td class="num">4</td></tr>
+
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="/pro-sim-blast/download/analysis/variant_signatures.csv">Download signatures</a></p>
+
+
+
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 354" width="100%" class="tree" style="height:auto"><path d="M20.0,47.9 V15.0 H99.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="99.3" cy="15.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#25 | 1 members | median identity 1.00 | representative Pseudomonas nitroreducens</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-25.html"><text x="106.3" y="18.5" font-size="9" fill="currentColor">CndA#25 · Pseudomonas nitroreducens (n=1)<title>variant 1_107_CndA#25 | 1 members | median identity 1.00 | representative Pseudomonas nitroreducens</title></text></a><path d="M20.0,47.9 V33.0 H34.8" fill="none" stroke="#777" stroke-width="1"/><path d="M34.8,33.0 V27.0 H121.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="121.5" cy="27.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#19 | 1 members | median identity 1.00 | representative Sphingomonas sp. Root720</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-19.html"><text x="128.5" y="30.5" font-size="9" fill="currentColor">CndA#19 · Sphingomonas sp. Root720 (n=1)<title>variant 1_107_CndA#19 | 1 members | median identity 1.00 | representative Sphingomonas sp. Root720</title></text></a><path d="M34.8,33.0 V39.0 H131.8" fill="none" stroke="#777" stroke-width="1"/><rect x="127.8" y="35.0" width="8" height="8" fill="#c0392b" stroke="#111" stroke-width="1"><title>curated reference enzyme for 1_107_CndA</title></rect><a href="/pro-sim-blast/cluster/1_107_CndA.html"><text x="138.8" y="42.5" font-size="9" fill="currentColor" font-weight="700">★ 1_107_CndA reference (chloroacetanilide herbicides (alachl<title>curated reference enzyme for 1_107_CndA</title></text></a><path d="M20.0,47.9 V80.7 H22.2" fill="none" stroke="#777" stroke-width="1"/><path d="M22.2,80.7 V51.0 H112.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="112.7" cy="51.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#21 | 1 members | median identity 1.00 | representative Methylibium sp. Root1272</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-21.html"><text x="119.7" y="54.5" font-size="9" fill="currentColor">CndA#21 · Methylibium sp. Root1272 (n=1)<title>variant 1_107_CndA#21 | 1 members | median identity 1.00 | representative Methylibium sp. Root1272</title></text></a><path d="M22.2,80.7 V110.4 H32.7" fill="none" stroke="#777" stroke-width="1"/><path d="M32.7,110.4 V69.0 H53.5" fill="none" stroke="#777" stroke-width="1"/><path d="M53.5,69.0 V63.0 H119.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="119.1" cy="63.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#14 | 1 members | median identity 1.00 | representative Pusillimonas noertemannii</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-14.html"><text x="126.1" y="66.5" font-size="9" fill="currentColor">CndA#14 · Pusillimonas noertemannii (n=1)<title>variant 1_107_CndA#14 | 1 members | median identity 1.00 | representative Pusillimonas noertemannii</title></text></a><path d="M53.5,69.0 V75.0 H172.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="172.4" cy="75.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#17 | 1 members | median identity 1.00 | representative Sphingopyxis sp. H050</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-17.html"><text x="179.4" y="78.5" font-size="9" fill="currentColor">CndA#17 · Sphingopyxis sp. H050 (n=1)<title>variant 1_107_CndA#17 | 1 members | median identity 1.00 | representative Sphingopyxis sp. H050</title></text></a><path d="M32.7,110.4 V151.8 H41.6" fill="none" stroke="#777" stroke-width="1"/><path d="M41.6,151.8 V98.6 H44.2" fill="none" stroke="#777" stroke-width="1"/><path d="M44.2,98.6 V87.0 H139.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="139.4" cy="87.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#11 | 1 members | median identity 1.00 | representative Sphingobium wenxiniae</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-11.html"><text x="146.4" y="90.5" font-size="9" fill="currentColor">CndA#11 · Sphingobium wenxiniae (n=1)<title>variant 1_107_CndA#11 | 1 members | median identity 1.00 | representative Sphingobium wenxiniae</title></text></a><path d="M44.2,98.6 V110.2 H57.0" fill="none" stroke="#777" stroke-width="1"/><path d="M57.0,110.2 V99.0 H132.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="132.3" cy="99.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#3 | 5 members | median identity 0.93 | representative Pseudomonas frederiksbergensis</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-3.html"><text x="139.3" y="102.5" font-size="9" fill="currentColor">CndA#3 · Pseudomonas frederiksbergensis (n=5)<title>variant 1_107_CndA#3 | 5 members | median identity 0.93 | representative Pseudomonas frederiksbergensis</title></text></a><path d="M57.0,110.2 V121.5 H72.1" fill="none" stroke="#777" stroke-width="1"/><path d="M72.1,121.5 V111.0 H131.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="131.7" cy="111.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#1 | 7 members | median identity 0.93 | representative Pseudomonas sp. LAMO17WK12:I1</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-1.html"><text x="138.7" y="114.5" font-size="9" fill="currentColor">CndA#1 · Pseudomonas sp. LAMO17WK12:I1 (n=7)<title>variant 1_107_CndA#1 | 7 members | median identity 0.93 | representative Pseudomonas sp. LAMO17WK12:I1</title></text></a><path d="M72.1,121.5 V132.0 H85.9" fill="none" stroke="#777" stroke-width="1"/><path d="M85.9,132.0 V123.0 H188.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="188.4" cy="123.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#24 | 1 members | median identity 1.00 | representative Sphingomonas sp. SRS2</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-24.html"><text x="195.4" y="126.5" font-size="9" fill="currentColor">CndA#24 · Sphingomonas sp. SRS2 (n=1)<title>variant 1_107_CndA#24 | 1 members | median identity 1.00 | representative Sphingomonas sp. SRS2</title></text></a><path d="M85.9,132.0 V141.0 H93.3" fill="none" stroke="#777" stroke-width="1"/><path d="M93.3,141.0 V135.0 H168.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="168.0" cy="135.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#22 | 1 members | median identity 1.00 | representative Sphingobium chungbukense</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-22.html"><text x="175.0" y="138.5" font-size="9" fill="currentColor">CndA#22 · Sphingobium chungbukense (n=1)<title>variant 1_107_CndA#22 | 1 members | median identity 1.00 | representative Sphingobium chungbukense</title></text></a><path d="M93.3,141.0 V147.0 H175.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="175.3" cy="147.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#27 | 1 members | median identity 1.00 | representative Sphingobium sp. AP50</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-27.html"><text x="182.3" y="150.5" font-size="9" fill="currentColor">CndA#27 · Sphingobium sp. AP50 (n=1)<title>variant 1_107_CndA#27 | 1 members | median identity 1.00 | representative Sphingobium sp. AP50</title></text></a><path d="M41.6,151.8 V205.0 H48.0" fill="none" stroke="#777" stroke-width="1"/><path d="M48.0,205.0 V178.5 H59.4" fill="none" stroke="#777" stroke-width="1"/><path d="M59.4,178.5 V165.0 H76.8" fill="none" stroke="#777" stroke-width="1"/><path d="M76.8,165.0 V159.0 H186.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="186.7" cy="159.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#12 | 1 members | median identity 1.00 | representative Novosphingobium sp. LASN5T</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-12.html"><text x="193.7" y="162.5" font-size="9" fill="currentColor">CndA#12 · Novosphingobium sp. LASN5T (n=1)<title>variant 1_107_CndA#12 | 1 members | median identity 1.00 | representative Novosphingobium sp. LASN5T</title></text></a><path d="M76.8,165.0 V171.0 H166.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="166.8" cy="171.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#28 | 1 members | median identity 1.00 | representative Sphingobium ummariense RL-3</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-28.html"><text x="173.8" y="174.5" font-size="9" fill="currentColor">CndA#28 · Sphingobium ummariense RL-3 (n=1)<title>variant 1_107_CndA#28 | 1 members | median identity 1.00 | representative Sphingobium ummariense RL-3</title></text></a><path d="M59.4,178.5 V192.0 H73.3" fill="none" stroke="#777" stroke-width="1"/><path d="M73.3,192.0 V183.0 H143.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="143.4" cy="183.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#29 | 1 members | median identity 1.00 | representative Sphingobium quisquiliarum P25</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-29.html"><text x="150.4" y="186.5" font-size="9" fill="currentColor">CndA#29 · Sphingobium quisquiliarum P25 (n=1)<title>variant 1_107_CndA#29 | 1 members | median identity 1.00 | representative Sphingobium quisquiliarum P25</title></text></a><path d="M73.3,192.0 V201.0 H88.2" fill="none" stroke="#777" stroke-width="1"/><path d="M88.2,201.0 V195.0 H176.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="176.2" cy="195.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#18 | 1 members | median identity 1.00 | representative Sphingomonas sp. Root720</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-18.html"><text x="183.2" y="198.5" font-size="9" fill="currentColor">CndA#18 · Sphingomonas sp. Root720 (n=1)<title>variant 1_107_CndA#18 | 1 members | median identity 1.00 | representative Sphingomonas sp. Root720</title></text></a><path d="M88.2,201.0 V207.0 H142.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="142.7" cy="207.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#20 | 1 members | median identity 1.00 | representative Noviherbaspirillum sp. Root189</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-20.html"><text x="149.7" y="210.5" font-size="9" fill="currentColor">CndA#20 · Noviherbaspirillum sp. Root189 (n=1)<title>variant 1_107_CndA#20 | 1 members | median identity 1.00 | representative Noviherbaspirillum sp. Root189</title></text></a><path d="M48.0,205.0 V231.5 H54.3" fill="none" stroke="#777" stroke-width="1"/><path d="M54.3,231.5 V219.0 H181.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="181.5" cy="219.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#23 | 1 members | median identity 1.00 | representative Sphingomonas sp. SRS2</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-23.html"><text x="188.5" y="222.5" font-size="9" fill="currentColor">CndA#23 · Sphingomonas sp. SRS2 (n=1)<title>variant 1_107_CndA#23 | 1 members | median identity 1.00 | representative Sphingomonas sp. SRS2</title></text></a><path d="M54.3,231.5 V244.0 H76.1" fill="none" stroke="#777" stroke-width="1"/><path d="M76.1,244.0 V231.0 H190.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="190.6" cy="231.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#2 | 7 members | median identity 0.63 | representative Methyloversatilis universalis FAM5</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-2.html"><text x="197.6" y="234.5" font-size="9" fill="currentColor">CndA#2 · Methyloversatilis universalis FAM5 (n=7)<title>variant 1_107_CndA#2 | 7 members | median identity 0.63 | representative Methyloversatilis universalis FAM5</title></text></a><path d="M76.1,244.0 V257.1 H147.1" fill="none" stroke="#777" stroke-width="1"/><path d="M147.1,257.1 V243.0 H387.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="387.1" cy="243.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#15 | 1 members | median identity 1.00 | representative Rhizorhabdus dicambivorans</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-15.html"><text x="394.1" y="246.5" font-size="9" fill="currentColor">CndA#15 · Rhizorhabdus dicambivorans (n=1)<title>variant 1_107_CndA#15 | 1 members | median identity 1.00 | representative Rhizorhabdus dicambivorans</title></text></a><path d="M147.1,257.1 V271.1 H181.8" fill="none" stroke="#777" stroke-width="1"/><path d="M181.8,271.1 V255.0 H325.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="325.9" cy="255.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#13 | 1 members | median identity 1.00 | representative Burkholderia ubonensis</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-13.html"><text x="332.9" y="258.5" font-size="9" fill="currentColor">CndA#13 · Burkholderia ubonensis (n=1)<title>variant 1_107_CndA#13 | 1 members | median identity 1.00 | representative Burkholderia ubonensis</title></text></a><path d="M181.8,271.1 V287.2 H204.0" fill="none" stroke="#777" stroke-width="1"/><path d="M204.0,287.2 V273.0 H215.3" fill="none" stroke="#777" stroke-width="1"/><path d="M215.3,273.0 V267.0 H456.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="456.9" cy="267.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#16 | 1 members | median identity 1.00 | representative Roseivirga echinicomitans</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-16.html"><text x="463.9" y="270.5" font-size="9" fill="currentColor">CndA#16 · Roseivirga echinicomitans (n=1)<title>variant 1_107_CndA#16 | 1 members | median identity 1.00 | representative Roseivirga echinicomitans</title></text></a><path d="M215.3,273.0 V279.0 H488.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="488.3" cy="279.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#26 | 1 members | median identity 1.00 | representative Gordonia terrae</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-26.html"><text x="495.3" y="282.5" font-size="9" fill="currentColor">CndA#26 · Gordonia terrae (n=1)<title>variant 1_107_CndA#26 | 1 members | median identity 1.00 | representative Gordonia terrae</title></text></a><path d="M204.0,287.2 V301.5 H256.1" fill="none" stroke="#777" stroke-width="1"/><path d="M256.1,301.5 V291.0 H367.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="367.1" cy="291.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#8 | 1 members | median identity 1.00 | representative Emiliania huxleyi CCMP1516</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-8.html"><text x="374.1" y="294.5" font-size="9" fill="currentColor">CndA#8 · Emiliania huxleyi CCMP1516 (n=1)<title>variant 1_107_CndA#8 | 1 members | median identity 1.00 | representative Emiliania huxleyi CCMP1516</title></text></a><path d="M256.1,301.5 V312.0 H297.1" fill="none" stroke="#777" stroke-width="1"/><path d="M297.1,312.0 V303.0 H520.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="520.0" cy="303.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#10 | 1 members | median identity 1.00 | representative Micromonas commoda</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-10.html"><text x="527.0" y="306.5" font-size="9" fill="currentColor">CndA#10 · Micromonas commoda (n=1)<title>variant 1_107_CndA#10 | 1 members | median identity 1.00 | representative Micromonas commoda</title></text></a><path d="M297.1,312.0 V321.0 H314.0" fill="none" stroke="#777" stroke-width="1"/><path d="M314.0,321.0 V315.0 H427.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="427.1" cy="315.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#0 | 7 members | median identity 0.69 | representative Nicotiana sylvestris</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-0.html"><text x="434.1" y="318.5" font-size="9" fill="currentColor">CndA#0 · Nicotiana sylvestris (n=7)<title>variant 1_107_CndA#0 | 7 members | median identity 0.69 | representative Nicotiana sylvestris</title></text></a><path d="M314.0,321.0 V327.0 H458.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="458.2" cy="327.0" r="2.8" fill="#c0392b"><title>variant 1_107_CndA#9 | 1 members | median identity 1.00 | representative Coccomyxa subellipsoidea C-169</title></circle><a href="/pro-sim-blast/leaf/1_107_CndA-9.html"><text x="465.2" y="330.5" font-size="9" fill="currentColor">CndA#9 · Coccomyxa subellipsoidea C-169 (n=1)<title>variant 1_107_CndA#9 | 1 members | median identity 1.00 | representative Coccomyxa subellipsoidea C-169</title></text></a><line x1="20" y1="346" x2="71.7" y2="346" stroke="currentColor" stroke-width="2"/><text x="76.7" y="349" font-size="9" fill="currentColor">0.5 subst./site</text></svg></div>
+
+
+
+<h2>Where its carriers were isolated from</h2>
+
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+Recorded for 36 of this type's 60 entries
+(60.0%); the rest state no source.
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+
+<tr><td>rhizosphere soil</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="7">7</td></tr>
+
+<tr><td>soil</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="6">6</td></tr>
+
+<tr><td>contaminated or industrial site</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="4">4</td></tr>
+
+<tr><td>freshwater</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>plant associated, position unstated</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>not classifiable</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td></tr>
+
+<tr><td>wastewater and sludge</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+<tr><td>sediment</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+</tbody></table></div>
+<p class="note"><a href="/pro-sim-blast/atlas/ecology.html">How the habitat vocabulary is built, and what it
+cannot classify</a> ·
+<a href="/pro-sim-blast/atlas/geography.html#type=1_107_CndA">where this type has been collected, on a
+map</a></p>
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">1_107_CndA#0</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.6932">0.69</td>
+    <td class="small">Nicotiana:3, Gossypium:3, Herrania:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--warn">heterogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1_107_CndA#1</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.9281">0.93</td>
+    <td class="small">Pseudomonas:7</td>
+    <td class="small">fumarylacetoacetate hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">1_107_CndA#2</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.63">0.63</td>
+    <td class="small">Novosphingobium:3, Methyloversatilis:1, Sphingomonas:1, Sphingobium:1, Croceicoccus:1</td>
+    <td class="small">alpha/beta hydrolase | sigma-54-dependent Fis family transcriptional regulator | carboxylesterase/lipase family protein | catechol 2,3-dioxygenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--warn">heterogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">1_107_CndA#3</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.927">0.93</td>
+    <td class="small">Pseudomonas:4, Sphingobium:1</td>
+    <td class="small">fumarylacetoacetate hydrolase family protein | alpha/beta fold hydrolase | MarR family winged helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-4.html">1_107_CndA#4</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.6554">0.66</td>
+    <td class="small">Nocardia:2, Mycobacterium:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | TetR/AcrR family transcriptional regulator | LysR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--warn">heterogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-5.html">1_107_CndA#5</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.841">0.84</td>
+    <td class="small">Methylobacterium:3</td>
+    <td class="small">MBL fold metallo-hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-6.html">1_107_CndA#6</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.5644">0.56</td>
+    <td class="small">Paraburkholderia:2, Burkholderia:1</td>
+    <td class="small">helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--warn">heterogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-7.html">1_107_CndA#7</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9969">1.00</td>
+    <td class="small">Novosphingobium:3</td>
+    <td class="small">LysR family transcriptional regulator | SGNH/GDSL hydrolase family protein | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-8.html">1_107_CndA#8</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Emiliania:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-9.html">1_107_CndA#9</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Coccomyxa:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-10.html">1_107_CndA#10</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Micromonas:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-11.html">1_107_CndA#11</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">GlxA family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-12.html">1_107_CndA#12</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Novosphingobium:1</td>
+    <td class="small">alpha/beta fold hydrolase | TetR/AcrR family transcriptional regulator | NAD(P)-dependent alcohol dehydrogenase | alpha/beta hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-13.html">1_107_CndA#13</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Burkholderia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-14.html">1_107_CndA#14</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pusillimonas:1</td>
+    <td class="small">LysR family transcriptional regulator | alpha/beta hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-15.html">1_107_CndA#15</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Rhizorhabdus:1</td>
+    <td class="small">IclR family transcriptional regulator | IS5/IS1182 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-16.html">1_107_CndA#16</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Roseivirga:1</td>
+    <td class="small">acyl-CoA dehydrogenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-17.html">1_107_CndA#17</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingopyxis:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-18.html">1_107_CndA#18</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingomonas:1</td>
+    <td class="small">MBL fold metallo-hydrolase | fumarylacetoacetate hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-19.html">1_107_CndA#19</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingomonas:1</td>
+    <td class="small">fumarylacetoacetate hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-20.html">1_107_CndA#20</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Noviherbaspirillum:1</td>
+    <td class="small">AraC family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-21.html">1_107_CndA#21</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Methylibium:1</td>
+    <td class="small">aldehyde dehydrogenase family protein | LysR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-22.html">1_107_CndA#22</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">D-amino acid dehydrogenase | MarR family winged helix-turn-helix transcriptional regulator | alpha/beta fold hydrolase | fumarylacetoacetate hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-23.html">1_107_CndA#23</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingomonas:1</td>
+    <td class="small">MBL fold metallo-hydrolase | aldehyde dehydrogenase family protein | LysR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-24.html">1_107_CndA#24</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingomonas:1</td>
+    <td class="small">GntR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-25.html">1_107_CndA#25</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomonas:1</td>
+    <td class="small">acyl-CoA dehydrogenase | AraC family transcriptional regulator | class III extradiol ring-cleavage dioxygenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-26.html">1_107_CndA#26</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Gordonia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-27.html">1_107_CndA#27</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">IS66 family transposase | IS3 family transposase | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-28.html">1_107_CndA#28</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">acyl-CoA dehydrogenase | 2-oxo acid dehydrogenase subunit E2</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_107_CndA-29.html">1_107_CndA#29</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">4-hydroxy-tetrahydrodipicolinate reductase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span></td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">60</span></h2>
+
+
+
+
+<div class="caveat caveat--warn">
+  
+  <b>No member of this type is a close homologue of the reference enzyme.</b>
+  All 60 members are below 60 % identical to it,
+  the closest at 43 %.
+  Nothing here should be read as doing the reaction the reference does. What the profile has
+  collected is the surrounding region of sequence space, and the function of everything in it is
+  unknown. If you came here for the characterised enzyme, it is described above; the table below
+  is a list of relatives, not of examples.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMID01000011.1_628417-629497_1.html">WP_056360296.1</a>
+        </td>
+    <td><i>Sphingomonas sp. Root720</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-19.html">19</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="305.9">306</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_ATHO01000144.1_20924-21998_-1.html">WP_021239250.1</a>
+        </td>
+    <td><i>Sphingobium quisquiliarum P25</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-29.html">29</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="283.9">284</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JUEH01000002.1_358541-359591_-1.html">WP_024767611.1</a>
+        </td>
+    <td><i>Pseudomonas nitroreducens</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-25.html">25</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="307.0">307</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_AUWY01000118.1_99117-100167_1.html">WP_021319320.1</a>
+        </td>
+    <td><i>Sphingobium ummariense RL-3</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-28.html">28</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="253.1">253</td>
+    <td class="small mono">[alpha] &gt; dehydrogenase &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JQGJ02000005.1_421377-422421_-1.html">WP_039589564.1</a>
+        </td>
+    <td><i>Pseudomonas frederiksbergensis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="264.8">265</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; alpha_other &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_MUOA01000046.1_258869-259907_-1.html">WP_018600379.1</a>
+        </td>
+    <td><i>Pseudomonas sp. A25(2017)</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="282.7">283</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; other &gt; other &gt; dehydrogenase &gt; hypothetical</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_POFS01000033.1_48962-50003_1.html">WP_024074554.1</a>
+        </td>
+    <td><i>Pseudomonas sp. MPBC4-3</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="277.0">277</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMDY01000012.1_372626-373688_-1.html">WP_082535876.1</a>
+        </td>
+    <td><i>Methylibium sp. Root1272</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-21.html">21</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="288.9">289</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JXNZ01000003.1_29271-30315_-1.html">WP_042727893.1</a>
+        </td>
+    <td><i>Pseudomonas fluorescens</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="266.7">267</td>
+    <td class="small mono">hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; alpha_other &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_SPVI01000016.1_98735-99779_-1.html">WP_135196838.1</a>
+        </td>
+    <td><i>Pseudomonas fluorescens</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="266.8">267</td>
+    <td class="small mono">hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; alpha_other &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_VFEQ01000014.1_39241-40285_-1.html">WP_065926053.1</a>
+        </td>
+    <td><i>Pseudomonas marginalis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="268.1">268</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; alpha_other &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_FWZV01000002.1_189314-190352_1.html">WP_027603323.1</a>
+        </td>
+    <td><i>Pseudomonas sp. LAMO17WK12:I1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="278.6">279</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_PVFJ01000071.1_37058-38099_-1.html">WP_105787709.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="256.4">256</td>
+    <td class="small mono">other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JQGJ02000005.1_422417-423491_-1.html">WP_039589562.1</a>
+        </td>
+    <td><i>Pseudomonas frederiksbergensis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="273.6">274</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; alpha_other &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LXKA01000154.1_39285-40359_-1.html">WP_064266281.1</a>
+        </td>
+    <td><i>Paraburkholderia ginsengiterrae</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-6.html">6</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="246.3">246</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JXNZ01000003.1_30311-31385_-1.html">WP_042727894.1</a>
+        </td>
+    <td><i>Pseudomonas fluorescens</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="270.2">270</td>
+    <td class="small mono">hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; alpha_other &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_SPVI01000016.1_99775-100849_-1.html">WP_042727894.1</a>
+        </td>
+    <td><i>Pseudomonas fluorescens</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="270.2">270</td>
+    <td class="small mono">hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; alpha_other &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_VFEQ01000014.1_40281-41355_-1.html">WP_065939496.1</a>
+        </td>
+    <td><i>Pseudomonas marginalis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="272.2">272</td>
+    <td class="small mono">reductase &gt; hypothetical &gt; hypothetical &gt; other &gt; transporter &gt; transporter &gt; [alpha] &gt; alpha_other &gt; reductase &gt; other &gt; hydrolase &gt; other &gt; other &gt; regulator &gt; regulator &gt; other &gt; other &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LJHO01000003.1_521960-522959_-1.html">WP_028658239.1</a>
+        </td>
+    <td><i>Novosphingobium sp. AAP1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="241.2">241</td>
+    <td class="small mono">other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_QBUI01000014.1_76137-77136_1.html">WP_028658239.1</a>
+        </td>
+    <td><i>Novosphingobium sp. GV027</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="241.2">241</td>
+    <td class="small mono">other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JBDLAI010000031.1_49005-50091_-1.html">WP_073428477.1</a>
+        </td>
+    <td><i>Paraburkholderia terricola</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-6.html">6</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="232.7">233</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LARW01000153.1_10034-11129_-1.html">WP_046195828.1</a>
+        </td>
+    <td><i>Sphingomonas sp. SRS2</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-23.html">23</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="256.7">257</td>
+    <td class="small mono">other &gt; [alpha] &gt; reductase &gt; dehydrogenase &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JACHZU010000003.1_75383-76382_1.html">WP_171798684.1</a>
+        </td>
+    <td><i>Novosphingobium sp. BK369</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="239.1">239</td>
+    <td class="small mono">other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_VLKK01000006.1_51539-52607_1.html">WP_021245932.1</a>
+        </td>
+    <td><i>Sphingobium wenxiniae</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-11.html">11</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="253.3">253</td>
+    <td class="small mono">[alpha] &gt; reductase &gt; other &gt; other &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMID01000011.1_703236-704289_-1.html">WP_056360474.1</a>
+        </td>
+    <td><i>Sphingomonas sp. Root720</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-18.html">18</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="244.4">244</td>
+    <td class="small mono">hydrolase &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_AFHG01000059.1_41450-42545_1.html">WP_008064277.1</a>
+        </td>
+    <td><i>Methyloversatilis universalis FAM5</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="230.3">230</td>
+    <td class="small mono">reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_QEKO01000003.1_284373-285441_-1.html">WP_116518777.1</a>
+        </td>
+    <td><i>Pusillimonas noertemannii</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-14.html">14</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="257.1">257</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LBIC01000006.1_216689-217736_-1.html">WP_046764289.1</a>
+        </td>
+    <td><i>Sphingobium chungbukense</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-22.html">22</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="241.0">241</td>
+    <td class="small mono">regulator &gt; hydrolase &gt; alpha_other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LXYF01000002.1_195071-196145_-1.html">WP_172451730.1</a>
+        </td>
+    <td><i>Sphingobium sp. SA916</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="241.8">242</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LNRZ01000006.1_331094-332105_-1.html">WP_058817388.1</a>
+        </td>
+    <td><i>Sphingopyxis sp. H050</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-17.html">17</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="213.1">213</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LBIC01000006.1_217779-218814_-1.html">WP_046764290.1</a>
+        </td>
+    <td><i>Sphingobium chungbukense</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="235.7">236</td>
+    <td class="small mono">regulator &gt; hydrolase &gt; [alpha] &gt; alpha_other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMHZ01000003.1_93286-94339_-1.html">WP_057289283.1</a>
+        </td>
+    <td><i>Noviherbaspirillum sp. Root189</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-20.html">20</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="252.0">252</td>
+    <td class="small mono">[alpha] &gt; regulator</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_RQSI01000001.1_480776-481817_1.html">WP_190287075.1</a>
+        </td>
+    <td><i>Novosphingobium sp. LASN5T</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="258.0">258</td>
+    <td class="small mono">[alpha] &gt; other &gt; ferredoxin &gt; dehydrogenase &gt; hydrolase &gt; reductase &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LARW01000057.1_14717-15767_-1.html">WP_046192562.1</a>
+        </td>
+    <td><i>Sphingomonas sp. SRS2</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-24.html">24</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="233.1">233</td>
+    <td class="small mono">[alpha] &gt; regulator</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMQK01000023.1_151907-153014_-1.html">WP_055885635.1</a>
+        </td>
+    <td><i>Methylobacterium sp. Leaf399</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-5.html">5</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="73.0">73</td>
+    <td class="small mono">[alpha] &gt; hypothetical &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMNJ01000052.1_2492-3590_1.html">WP_056190070.1</a>
+        </td>
+    <td><i>Methylobacterium sp. Leaf113</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-5.html">5</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="71.4">71</td>
+    <td class="small mono">[alpha] &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_FNYZ01000007.1_118987-120109_1.html">WP_256215247.1</a>
+        </td>
+    <td><i>Sphingobium sp. AP50</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-27.html">27</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="222.0">222</td>
+    <td class="small mono">other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LYWZ01000029.1_7473-8541_1.html">WP_066777678.1</a>
+        </td>
+    <td><i>Croceicoccus mobilis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="224.2">224</td>
+    <td class="small mono">other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMIB01000018.1_159159-160200_-1.html">WP_056383774.1</a>
+        </td>
+    <td><i>Sphingomonas sp. Root710</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="220.1">220</td>
+    <td class="small mono">other &gt; alpha_other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LJHO01000003.1_570684-571728_-1.html">WP_022676243.1</a>
+        </td>
+    <td><i>Novosphingobium sp. AAP1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="216.4">216</td>
+    <td class="small mono">other &gt; alpha_other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JACHZU010000003.1_27851-28895_1.html">WP_022676243.1</a>
+        </td>
+    <td><i>Novosphingobium sp. BK369</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="216.4">216</td>
+    <td class="small mono">other &gt; alpha_other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_QBUI01000014.1_27440-28484_1.html">WP_107717674.1</a>
+        </td>
+    <td><i>Novosphingobium sp. GV027</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="215.3">215</td>
+    <td class="small mono">other &gt; alpha_other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_005779178.1_0-1539_1.html">XP_005779235.1</a>
+        </td>
+    <td><i>Emiliania huxleyi CCMP1516</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to GxtA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-8.html">8</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="75.4">75</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_QTOD01000011.1_71503-72511_-1.html">WP_095399970.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to ROCH34</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-13.html">13</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="93.9">94</td>
+    <td class="small mono">hypothetical &gt; hypothetical &gt; hypothetical &gt; other &gt; [alpha] &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LMNE01000034.1_161348-162434_-1.html">WP_056494847.1</a>
+        </td>
+    <td><i>Methylobacterium sp. Leaf111</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-5.html">5</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="63.4">63</td>
+    <td class="small mono">[alpha] &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_005643533.1_0-2214_1.html">XP_005643590.1</a>
+        </td>
+    <td><i>Coccomyxa subellipsoidea C-169</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to CndA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-9.html">9</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="72.6">73</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_002499415.1_0-1830_1.html">XP_002499461.1</a>
+        </td>
+    <td><i>Micromonas commoda</i></td>
+    <td class="small">chloroplast envelope protein translocase family</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to VanA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-10.html">10</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="55.9">56</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_009767698.1_115-1765_1.html">XP_009766000.1</a>
+        </td>
+    <td><i>Nicotiana sylvestris</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">30 % to ROCH34</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="56.5">56</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_016578514.1_117-1767_1.html">XP_016434000.1</a>
+        </td>
+    <td><i>Nicotiana tabacum</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">30 % to ROCH34</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="56.5">56</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_016594903.1_93-1743_1.html">XP_016450389.1</a>
+        </td>
+    <td><i>Nicotiana tabacum</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">30 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="55.5">56</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_JNXA01000027.1_22019-23126_1.html">WP_004018952.1</a>
+        </td>
+    <td><i>Gordonia terrae</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">28 % to TsaM</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-26.html">26</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="64.0">64</td>
+    <td class="small mono">dehydrogenase &gt; other &gt; other &gt; reductase &gt; other &gt; hydrolase &gt; reductase &gt; reductase &gt; other &gt; hypothetical &gt; transposon &gt; [alpha] &gt; hypothetical &gt; other &gt; transporter</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LZKD01000070.1_12808-13804_1.html">WP_068093356.1</a>
+        </td>
+    <td><i>Mycobacterium sp. E2497</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">28 % to KshA15</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="44.5">44</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; regulator</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LRDB01000045.1_149312-150365_1.html">WP_068416928.1</a>
+        </td>
+    <td><i>Roseivirga echinicomitans</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">28 % to ROCH34</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-16.html">16</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="64.5">64</td>
+    <td class="small mono">other &gt; hypothetical &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_021422911.1_216-1824_1.html">XP_021278586.1</a>
+        </td>
+    <td><i>Herrania umbratica</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">26 % to GxtA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="63.7">64</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_LZMK01000221.1_88588-89593_-1.html">WP_064909053.1</a>
+        </td>
+    <td><i>Nocardia sp. 852002-20019_SCH5090214</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">25 % to KshA15</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="54.5">54</td>
+    <td class="small mono">[alpha] &gt; other &gt; other &gt; other &gt; hypothetical &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_PYHS01000002.1_177902-178907_1.html">WP_063024510.1</a>
+        </td>
+    <td><i>Nocardia nova</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">25 % to KshA15</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="56.9">57</td>
+    <td class="small mono">[alpha] &gt; other &gt; other &gt; other &gt; hypothetical &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/NZ_NWUF01000002.1_295713-296724_1.html">WP_066961832.1</a>
+        </td>
+    <td><i>Rhizorhabdus dicambivorans</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">25 % to GxtA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-15.html">15</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="69.1">69</td>
+    <td class="small mono">[alpha] &gt; other &gt; other &gt; transposon</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_012617495.1_144-1749_1.html">XP_012472949.1</a>
+        </td>
+    <td><i>Gossypium raimondii</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#8e44ad">novel (&lt;25 %): no close reference</span>
+        <div class="note">25 % to GxtA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="60.6">61</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_016871507.1_141-1755_1.html">XP_016726996.1</a>
+        </td>
+    <td><i>Gossypium hirsutum</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#8e44ad">novel (&lt;25 %): no close reference</span>
+        <div class="note">25 % to SxtT</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="60.9">61</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/ro/XM_016871508.1_143-1751_1.html">XP_016726997.1</a>
+        </td>
+    <td><i>Gossypium hirsutum</i></td>
+    <td class="small">protochlorophyllide-dependent translocon component 52, chloroplastic-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#8e44ad">novel (&lt;25 %): no close reference</span>
+        <div class="note">25 % to SxtT</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_107_CndA-0.html">0</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="60.9">61</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

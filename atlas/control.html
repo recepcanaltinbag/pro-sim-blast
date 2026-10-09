@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulators and mobility · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class="on"
+     aria-current="true">Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Genomic context pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Operons</a>
+  
+  <a href="/pro-sim-blast/atlas/regulation.html" class=""
+     >Regulation</a>
+  
+  <a href="/pro-sim-blast/atlas/control.html" class="on"
+     aria-current="page">Regulators and mobility</a>
+  
+  <a href="/pro-sim-blast/atlas/elements.html" class=""
+     >Who sits next to them</a>
+  
+  <a href="/pro-sim-blast/atlas/cooccurrence.html" class=""
+     >Co-occurrence</a>
+  
+  
+</nav>
+
+
+<h1>What controls these operons, and what moves them</h1>
+<p class="lede">Three questions about the genes around the oxygenase: which regulator sits with
+which chemistry, how far the regulator diverges when the enzyme does &mdash; measured against the
+other genes of the same operon, because the pairs are selected on the enzyme and that alone makes
+everything else look more divergent &mdash; and whether the enzymes that move between genomes are
+really the ones that degrade man-made compounds.</p>
+
+
+
+<h2>1 · Which regulator family goes with which chemistry</h2>
+<p>Each association below is given with the value chance alone produces for a table of the same
+shape, from 2,000 label shufflings. That column is not
+decoration: the regulator family against enzyme type table has twelve rows and sixty-one columns,
+where shuffling alone yields a Cramér's V of about 0.26. Only the excess over it means anything.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Association</th><th>Unit</th><th class="num">V</th>
+<th class="num">Expected by chance</th><th class="num">Excess</th><th>Verdict</th></tr></thead>
+<tbody>
+
+<tr><td>Is the upstream regulator family associated with the enzyme type?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.4531">0.453</td>
+  <td class="num" data-v="0.1239">0.124</td>
+  <td class="num" data-v="0.3292">0.329</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the upstream regulator family associated with the RO group?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.3275">0.328</td>
+  <td class="num" data-v="0.054">0.054</td>
+  <td class="num" data-v="0.2735">0.274</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Which chemical families does each upstream regulator family sit next to?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.2966">0.297</td>
+  <td class="num" data-v="0.0542">0.054</td>
+  <td class="num" data-v="0.2425">0.242</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Do regulator families differ in how they are oriented relative to the operon? LysR regulators are classically divergent and TetR regulators codirectional, so this is the internal consistency check for the family labels.</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.2838">0.284</td>
+  <td class="num" data-v="0.053">0.053</td>
+  <td class="num" data-v="0.2308">0.231</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the upstream regulator family associated with the reaction class?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.26">0.260</td>
+  <td class="num" data-v="0.0542">0.054</td>
+  <td class="num" data-v="0.2058">0.206</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the kind of gene upstream of the operon associated with the RO group?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.2016">0.202</td>
+  <td class="num" data-v="0.0327">0.033</td>
+  <td class="num" data-v="0.169">0.169</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the upstream regulator family associated with the enzyme type? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.4102">0.410</td>
+  <td class="num" data-v="0.2535">0.254</td>
+  <td class="num" data-v="0.1567">0.157</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the operon architecture (divergent or codirectional regulator, other gene, or nothing in the window) associated with the chemical family? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.2102">0.210</td>
+  <td class="num" data-v="0.0643">0.064</td>
+  <td class="num" data-v="0.1459">0.146</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the operon architecture associated with the RO group?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.149">0.149</td>
+  <td class="num" data-v="0.0183">0.018</td>
+  <td class="num" data-v="0.1307">0.131</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Which chemical families does each upstream regulator family sit next to? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.2392">0.239</td>
+  <td class="num" data-v="0.111">0.111</td>
+  <td class="num" data-v="0.1282">0.128</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the operon architecture (divergent or codirectional regulator, other gene, or nothing in the window) associated with the chemical family?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.1523">0.152</td>
+  <td class="num" data-v="0.0294">0.029</td>
+  <td class="num" data-v="0.1229">0.123</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the kind of gene upstream of the operon (regulator, transporter, transposon, ...) associated with the chemical family?</td><td class="small">alpha subunit</td>
+  <td class="num" data-v="0.1465">0.146</td>
+  <td class="num" data-v="0.0327">0.033</td>
+  <td class="num" data-v="0.1138">0.114</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the upstream regulator family associated with the RO group? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.2241">0.224</td>
+  <td class="num" data-v="0.1113">0.111</td>
+  <td class="num" data-v="0.1128">0.113</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the upstream regulator family associated with the reaction class? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.2216">0.222</td>
+  <td class="num" data-v="0.1109">0.111</td>
+  <td class="num" data-v="0.1107">0.111</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the operon architecture associated with the RO group? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.1484">0.148</td>
+  <td class="num" data-v="0.0399">0.040</td>
+  <td class="num" data-v="0.1084">0.108</td>
+  <td><span class="verdict verdict--robust">real</span>
+      </td></tr>
+
+<tr><td>Is the kind of gene upstream of the operon associated with the RO group? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.1618">0.162</td>
+  <td class="num" data-v="0.0712">0.071</td>
+  <td class="num" data-v="0.0906">0.091</td>
+  <td><span class="verdict verdict--none">no more than chance</span></td></tr>
+
+<tr><td>Do regulator families differ in how they are oriented relative to the operon? LysR regulators are classically divergent and TetR regulators codirectional, so this is the internal consistency check for the family labels. Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.1827">0.183</td>
+  <td class="num" data-v="0.1098">0.110</td>
+  <td class="num" data-v="0.0729">0.073</td>
+  <td><span class="verdict verdict--none">no more than chance</span></td></tr>
+
+<tr><td>Is the kind of gene upstream of the operon (regulator, transporter, transposon, ...) associated with the chemical family? Does it survive collapsing repeated strains to one observation per enzyme type and genus?</td><td class="small">enzyme type and genus</td>
+  <td class="num" data-v="0.1295">0.130</td>
+  <td class="num" data-v="0.0716">0.072</td>
+  <td class="num" data-v="0.0579">0.058</td>
+  <td><span class="verdict verdict--none">no more than chance</span></td></tr>
+
+</tbody></table></div>
+<p class="note">The strongest real association is between the regulator family and the enzyme type,
+which is the direct answer to the question. Three associations that look overwhelming by p value,
+all below 1e-20, carry no excess over chance at all; with this many entries a p value measures
+sample size rather than effect.</p>
+
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter by regulator or chemistry…">
+<thead><tr><th>Regulator family</th><th>Chemical family</th><th class="num">Entries</th>
+<th class="num">Expected</th><th class="num">Observed over expected</th>
+<th class="num">Genera</th><th class="num">Types</th></tr></thead>
+<tbody>
+
+<tr class="dim">
+  <td>TetR</td><td>terpenoids steroids</td>
+  <td class="num" data-v="172">172</td>
+  <td class="num">35.9</td>
+  <td class="num" data-v="4.8">4.8×</td>
+  <td class="num">14</td><td class="num">1</td></tr>
+
+<tr>
+  <td>sigma54</td><td>pah</td>
+  <td class="num" data-v="43">43</td>
+  <td class="num">3.0</td>
+  <td class="num" data-v="14.2">14.2×</td>
+  <td class="num">7</td><td class="num">2</td></tr>
+
+<tr>
+  <td>MarR</td><td>anilines</td>
+  <td class="num" data-v="116">116</td>
+  <td class="num">23.8</td>
+  <td class="num" data-v="4.87">4.9×</td>
+  <td class="num">24</td><td class="num">2</td></tr>
+
+<tr>
+  <td>LysR</td><td>alkaloids</td>
+  <td class="num" data-v="148">148</td>
+  <td class="num">55.3</td>
+  <td class="num" data-v="2.68">2.7×</td>
+  <td class="num">24</td><td class="num">3</td></tr>
+
+<tr>
+  <td>regulator_unclassified</td><td>aromatic acids</td>
+  <td class="num" data-v="423">423</td>
+  <td class="num">257.4</td>
+  <td class="num" data-v="1.64">1.6×</td>
+  <td class="num">48</td><td class="num">9</td></tr>
+
+<tr>
+  <td>AraC</td><td>aromatic acids</td>
+  <td class="num" data-v="107">107</td>
+  <td class="num">53.5</td>
+  <td class="num" data-v="2.0">2.0×</td>
+  <td class="num">13</td><td class="num">5</td></tr>
+
+<tr>
+  <td>LysR</td><td>sulfoaromatics</td>
+  <td class="num" data-v="166">166</td>
+  <td class="num">97.0</td>
+  <td class="num" data-v="1.71">1.7×</td>
+  <td class="num">46</td><td class="num">2</td></tr>
+
+<tr>
+  <td>GntR</td><td>aromatic acids</td>
+  <td class="num" data-v="115">115</td>
+  <td class="num">63.7</td>
+  <td class="num" data-v="1.81">1.8×</td>
+  <td class="num">42</td><td class="num">6</td></tr>
+
+<tr>
+  <td>LysR</td><td>haloaromatics</td>
+  <td class="num" data-v="114">114</td>
+  <td class="num">61.7</td>
+  <td class="num" data-v="1.85">1.9×</td>
+  <td class="num">30</td><td class="num">4</td></tr>
+
+<tr class="dim">
+  <td>MarR</td><td>sulfoaromatics</td>
+  <td class="num" data-v="73">73</td>
+  <td class="num">32.2</td>
+  <td class="num" data-v="2.27">2.3×</td>
+  <td class="num">19</td><td class="num">1</td></tr>
+
+<tr>
+  <td>TetR</td><td>pah</td>
+  <td class="num" data-v="47">47</td>
+  <td class="num">18.5</td>
+  <td class="num" data-v="2.54">2.5×</td>
+  <td class="num">17</td><td class="num">6</td></tr>
+
+<tr>
+  <td>IclR</td><td>aromatic acids</td>
+  <td class="num" data-v="187">187</td>
+  <td class="num">125.9</td>
+  <td class="num" data-v="1.49">1.5×</td>
+  <td class="num">33</td><td class="num">7</td></tr>
+
+<tr>
+  <td>LysR</td><td>quaternary amines</td>
+  <td class="num" data-v="282">282</td>
+  <td class="num">224.9</td>
+  <td class="num" data-v="1.25">1.2×</td>
+  <td class="num">62</td><td class="num">5</td></tr>
+
+<tr>
+  <td>IclR</td><td>haloaromatics</td>
+  <td class="num" data-v="43">43</td>
+  <td class="num">22.7</td>
+  <td class="num" data-v="1.9">1.9×</td>
+  <td class="num">10</td><td class="num">3</td></tr>
+
+<tr>
+  <td>TetR</td><td>quaternary amines</td>
+  <td class="num" data-v="157">157</td>
+  <td class="num">122.8</td>
+  <td class="num" data-v="1.28">1.3×</td>
+  <td class="num">41</td><td class="num">5</td></tr>
+
+<tr>
+  <td>regulator_unclassified</td><td>quaternary amines</td>
+  <td class="num" data-v="204">204</td>
+  <td class="num">169.2</td>
+  <td class="num" data-v="1.21">1.2×</td>
+  <td class="num">39</td><td class="num">6</td></tr>
+
+<tr>
+  <td>TetR</td><td>anilines</td>
+  <td class="num" data-v="41">41</td>
+  <td class="num">39.2</td>
+  <td class="num" data-v="1.05">1.1×</td>
+  <td class="num">10</td><td class="num">2</td></tr>
+
+<tr>
+  <td>sigma54</td><td>quaternary amines</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num">20.1</td>
+  <td class="num" data-v="0.99">1.0×</td>
+  <td class="num">7</td><td class="num">3</td></tr>
+
+</tbody></table></div>
+<figcaption>a cell is listed only if it rests on at least 20 entries and at least 3 distinct genera, so that a single sequencing project cannot become a finding Rows shown faint rest on a single enzyme type, so they
+describe that type rather than a property of the regulator family. The regulator is identified by
+position, as the first gene upstream of the operon, and no binding was measured; a distal or global
+regulator is invisible to this.</figcaption>
+</figure>
+
+
+
+
+
+<h2>2 · Regulators are the most variable protein in the operon, but much of the gap was how the pairs were selected</h2>
+
+<div class="caveat caveat--warn">
+  <b>Why this section cannot be read without a control gene.</b> The pairs below are drawn from
+  within one enzyme type, and an enzyme type <em>is</em> the profile model its alpha subunit scored
+  best against. High alpha-to-alpha identity inside a type is therefore guaranteed by construction,
+  not observed: it is the selection, not a result. Any other protein in the operon will look more
+  divergent than the alpha subunit for that reason alone, whether or not it evolves faster, so a
+  gap against the alpha subunit is not by itself a finding about the regulator. The only question
+  the data can answer is whether the regulator is more divergent <em>than the other genes of the
+  same operon are</em>. The beta subunit, the ferredoxin and the reductase are therefore scored on
+  exactly the same genome pairs, from the same evidence class as the regulator itself, and none of
+  them took part in defining the enzyme type.
+</div>
+
+
+<h3>2.1 · Every protein in the operon, measured on the same pairs</h3>
+<p>Each row is the identity between the two copies of one protein, set against the identity between
+the two alpha subunits of the same pairs. The gap is positive in every row, which is exactly what
+selecting the pairs on the alpha subunit produces. Only the <em>differences between the rows</em>
+carry information.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Operon protein</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Alpha identity</th><th class="num">This protein</th><th class="num">Gap to alpha</th>
+<th class="num">Less conserved than alpha</th><th class="num">Cliff&rsquo;s &delta;</th>
+<th class="num">p</th></tr></thead>
+<tbody>
+
+<tr class="hl">
+  <td>regulator <span class="chip chip--data">the claim</span></td>
+  <td class="num" data-v="37018">37,018</td>
+  <td class="num" data-v="48">48</td>
+  <td class="num">54.8 %</td>
+  <td class="num" data-v="39.4">39.4 %</td>
+  <td class="num" data-v="15.4">+15.4</td>
+  <td class="num" data-v="0.91">91 %</td>
+  <td class="num" data-v="0.469">+0.47</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr>
+  <td>beta subunit <span class="chip">control</span></td>
+  <td class="num" data-v="15084">15,084</td>
+  <td class="num" data-v="24">24</td>
+  <td class="num">68.9 %</td>
+  <td class="num" data-v="61.9">61.9 %</td>
+  <td class="num" data-v="7.0">+7.0</td>
+  <td class="num" data-v="0.862">86 %</td>
+  <td class="num" data-v="0.219">+0.22</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr>
+  <td>ferredoxin <span class="chip">control</span></td>
+  <td class="num" data-v="6929">6,929</td>
+  <td class="num" data-v="27">27</td>
+  <td class="num">72.2 %</td>
+  <td class="num" data-v="59.3">59.3 %</td>
+  <td class="num" data-v="12.9">+12.9</td>
+  <td class="num" data-v="0.857">86 %</td>
+  <td class="num" data-v="0.318">+0.32</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr>
+  <td>reductase <span class="chip">control</span></td>
+  <td class="num" data-v="10272">10,272</td>
+  <td class="num" data-v="35">35</td>
+  <td class="num">49.6 %</td>
+  <td class="num" data-v="42.3">42.3 %</td>
+  <td class="num" data-v="7.4">+7.4</td>
+  <td class="num" data-v="0.774">77 %</td>
+  <td class="num" data-v="0.276">+0.28</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+</tbody></table></div>
+<figcaption>Means over the pairs where that protein is present at <em>both</em> ends, with a paired
+Wilcoxon signed-rank test against the alpha subunit of the same pairs &mdash; the right test here,
+because the two measurements are paired inside one genome pair. Cliff&rsquo;s &delta; is the
+probability that a randomly drawn alpha identity beats a randomly drawn identity of that protein,
+minus the reverse. The four rows do not sit on the same pairs, so they are repeated below on the
+pairs where all four are present at once.</figcaption>
+</figure>
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>On the 326 pairs carrying all four proteins</th>
+<th class="num">Alpha identity</th><th class="num">This protein</th><th class="num">Gap to alpha</th>
+<th class="num">Less conserved than alpha</th><th class="num">p</th></tr></thead>
+<tbody>
+
+<tr class="hl">
+  <td>regulator</td>
+  <td class="num">66.7 %</td>
+  <td class="num" data-v="49.3">49.3 %</td>
+  <td class="num" data-v="17.4">+17.4</td>
+  <td class="num" data-v="0.929">93 %</td>
+  <td class="num" data-v="2.6841297118790184e-52">3e-52</td></tr>
+
+<tr>
+  <td>beta subunit</td>
+  <td class="num">66.7 %</td>
+  <td class="num" data-v="61.3">61.3 %</td>
+  <td class="num" data-v="5.4">+5.4</td>
+  <td class="num" data-v="0.801">80 %</td>
+  <td class="num" data-v="9.988104201993183e-40">1e-39</td></tr>
+
+<tr>
+  <td>ferredoxin</td>
+  <td class="num">66.7 %</td>
+  <td class="num" data-v="59.7">59.7 %</td>
+  <td class="num" data-v="6.9">+6.9</td>
+  <td class="num" data-v="0.782">78 %</td>
+  <td class="num" data-v="2.5850739596675003e-31">3e-31</td></tr>
+
+<tr>
+  <td>reductase</td>
+  <td class="num">66.7 %</td>
+  <td class="num" data-v="52.0">52.0 %</td>
+  <td class="num" data-v="14.7">+14.7</td>
+  <td class="num" data-v="0.847">85 %</td>
+  <td class="num" data-v="3.163962538510895e-46">3e-46</td></tr>
+
+</tbody></table></div>
+<figcaption><b>One common pair set, four strictly comparable numbers.</b> An operon with a
+regulator, a beta subunit, a ferredoxin and a reductase all annotated at both ends of a pair is
+uncommon, so this table is small. It is here because it is the only version in which the four
+figures cannot be moved by which pairs each protein happened to be available on.</figcaption>
+</figure>
+
+
+
+
+<h3>2.2 · The regulator against each control, pair by pair</h3>
+<p>This is the comparison the claim stands or falls on. For every pair carrying both the regulator
+and one control protein at both ends, the two identities are compared directly. The alpha subunit
+does not enter at all: the question is only which of two operon genes is the more variable.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Comparison</th><th class="num">Pairs</th><th class="num">Control identity</th>
+<th class="num">Regulator identity</th><th class="num">Regulator&rsquo;s extra divergence</th>
+<th class="num">Regulator less conserved</th><th class="num">Cliff&rsquo;s &delta;</th>
+<th class="num">p</th><th>Verdict</th></tr></thead>
+<tbody>
+
+
+<tr><td>regulator vs the beta subunit</td>
+  <td class="num" data-v="15084">15,084</td>
+  <td class="num">61.9 %</td>
+  <td class="num">46.8 %</td>
+  <td class="num" data-v="15.1">+15.1</td>
+  <td class="num" data-v="0.891">89 %</td>
+  <td class="num" data-v="0.4">+0.40</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td>
+  <td><span class="verdict verdict--robust">clears the control</span></td></tr>
+
+<tr><td>regulator vs the ferredoxin</td>
+  <td class="num" data-v="6929">6,929</td>
+  <td class="num">59.3 %</td>
+  <td class="num">54.6 %</td>
+  <td class="num" data-v="4.7">+4.7</td>
+  <td class="num" data-v="0.702">70 %</td>
+  <td class="num" data-v="0.141">+0.14</td>
+  <td class="num" data-v="8.879001357078133e-243">9e-243</td>
+  <td><span class="verdict verdict--weak">within noise of it</span></td></tr>
+
+<tr><td>regulator vs the reductase</td>
+  <td class="num" data-v="10272">10,272</td>
+  <td class="num">42.3 %</td>
+  <td class="num">37.1 %</td>
+  <td class="num" data-v="5.2">+5.2</td>
+  <td class="num" data-v="0.653">65 %</td>
+  <td class="num" data-v="0.195">+0.20</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td>
+  <td><span class="verdict verdict--robust">clears the control</span></td></tr>
+
+</tbody></table></div>
+<figcaption><b>The regulator claim survives only PARTLY. The regulator&#39;s gap exceeds the gap of the beta subunit and the reductase by more than 5 points, but against the ferredoxin the margin is only +4.7 points. A headline of the form &#39;regulators diverge faster than the enzymes they control&#39; overstates it, because part of the apparent gap is the selection effect: the pairs were chosen on the alpha subunit, so every other operon protein is more variable than it by construction.</b> A margin counts as cleared only beyond
+5 percentage points, because a difference smaller than that is the order of the
+measurement&rsquo;s own noise: which pairs each protein was available on, and where the alignment
+coverage check cut.</figcaption>
+</figure>
+
+<p class="note"><b>Stated the way the controls allow:</b>
+regulators are the most variable protein in the operon, but every operon component is more variable than the alpha subunit, and the alpha subunit&#39;s conservation is an artefact of selecting the pairs on it.</p>
+
+
+
+
+<h3>2.3 · What each orthology gate costs, and what it changes</h3>
+<p>A shared regulator family is not a shared protein. TetR and LysR are very large families, so two
+TetR-family regulators in two genomes may be entirely different proteins, and a low identity
+between them measures replacement rather than divergence. Compounding that, the regulator is
+identified purely by position &mdash; the first gene upstream of the operon 5&prime; end &mdash; so
+a gene that merely happens to sit there can enter the comparison. The ladder below applies
+successively stricter evidence that the two regulators really are the same protein.</p>
+
+<p>The third gate needs a floor, and the floor was measured rather than assumed. Scoring
+4,000 regulator pairs drawn from <em>different</em> enzyme types <em>and</em>
+different families &mdash; pairs known not to be the same protein &mdash; gives a mean identity of
+24.7 % and a 95th percentile of
+<b>31.1 %</b>. That is how similar two unrelated regulators can
+look by alignment alone, so a pair at or below it carries no information about divergence. The
+earlier version of this analysis took 25 %
+from the literature instead, which was too generous.</p>
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Gate</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Alpha identity</th><th class="num">Regulator identity</th><th class="num">Gap</th>
+<th class="num">Regulator less conserved</th><th class="num">p</th></tr></thead>
+<tbody>
+
+<tr>
+  <td>1. all pairs</td>
+  <td class="num" data-v="37018">37,018</td>
+  <td class="num" data-v="48">48</td>
+  <td class="num">54.8 %</td>
+  <td class="num" data-v="39.4">39.4 %</td>
+  <td class="num" data-v="15.4">+15.4</td>
+  <td class="num" data-v="0.91">91 %</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr>
+  <td>2. same regulator family</td>
+  <td class="num" data-v="12505">12,505</td>
+  <td class="num" data-v="45">45</td>
+  <td class="num">65.8 %</td>
+  <td class="num" data-v="54.1">54.1 %</td>
+  <td class="num" data-v="11.7">+11.7</td>
+  <td class="num" data-v="0.868">87 %</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr>
+  <td>3. same family, above the measured floor (31 %)</td>
+  <td class="num" data-v="9634">9,634</td>
+  <td class="num" data-v="43">43</td>
+  <td class="num">73.9 %</td>
+  <td class="num" data-v="62.8">62.8 %</td>
+  <td class="num" data-v="11.1">+11.1</td>
+  <td class="num" data-v="0.845">84 %</td>
+  <td class="num" data-v="0.0">&lt;1e-300</td></tr>
+
+<tr class="hl">
+  <td>4. same family and reciprocal best hit</td>
+  <td class="num" data-v="737">737</td>
+  <td class="num" data-v="45">45</td>
+  <td class="num">90.1 %</td>
+  <td class="num" data-v="90.5">90.5 %</td>
+  <td class="num" data-v="-0.4">-0.4</td>
+  <td class="num" data-v="0.459">46 %</td>
+  <td class="num" data-v="2.1980407623145327e-05">2e-05</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The strictest gate is not the most informative one.</b> Gate 4 biases toward conserved regulators. A fast-diverging regulator is exactly the one whose best match inside its own type is somebody else, so it fails the reciprocal test and leaves the sample. The gate is therefore conservative in one direction only: a gap that survives it is real, while a gap that disappears at it is ambiguous, because the pairs it removed are the ones the claim is about.
+The reciprocal test scanned 48 enzyme types all against
+all, 314,715 alignments, and found 944
+reciprocal pairs, of which 737 carry two classified
+regulators of one family and pass the coverage check.
+No type had to be capped &mdash; the largest is below the
+400-entry limit &mdash; so no reciprocal pair was missed through
+subsampling.
+The gates do not only remove pairs, they move the comparison to a different evolutionary distance. A reciprocal best hit inside one type is easiest to establish between close relatives, so the pairs that survive the last gate have a mean alpha identity of 90.1 % against 54.8 % at the first. Part of the change in the gap is therefore a change in distance rather than a change in orthology evidence, and the two cannot be separated with this design.</figcaption>
+</figure>
+
+
+<h3>2.4 · The gap against the alpha subunit, band by band</h3>
+<p>This is what the section used to report on its own. It is kept because the shape is real and
+section 3 refers to it, but it is a gap against the protein the pairs were selected on, so it
+measures the regulator and the selection together and cannot be read as a divergence rate by
+itself. Pairs are restricted to those whose regulators share a family, which is gate 2 above.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Enzyme identity band</th><th class="num">Pairs</th><th class="num">Types</th>
+<th class="num">Enzyme identity</th><th class="num">Regulator identity</th>
+<th class="num">Gap</th><th class="num">Regulator less conserved</th></tr></thead>
+<tbody>
+
+<tr><td>95-100 %</td>
+  <td class="num" data-v="996">996</td>
+  <td class="num">38</td>
+  <td class="num">98.6 %</td>
+  <td class="num">97.7 %</td>
+  <td class="num" data-v="0.9">+0.9</td>
+  <td class="num" data-v="0.628">63 %</td></tr>
+
+<tr><td>80-95 %</td>
+  <td class="num" data-v="2848">2,848</td>
+  <td class="num">33</td>
+  <td class="num">85.9 %</td>
+  <td class="num">73.6 %</td>
+  <td class="num" data-v="12.3">+12.3</td>
+  <td class="num" data-v="0.918">92 %</td></tr>
+
+<tr><td>60-80 %</td>
+  <td class="num" data-v="4341">4,341</td>
+  <td class="num">33</td>
+  <td class="num">71.4 %</td>
+  <td class="num">51.7 %</td>
+  <td class="num" data-v="19.7">+19.7</td>
+  <td class="num" data-v="0.957">96 %</td></tr>
+
+<tr><td>below 60 %</td>
+  <td class="num" data-v="4320">4,320</td>
+  <td class="num">31</td>
+  <td class="num">39.5 %</td>
+  <td class="num">28.2 %</td>
+  <td class="num" data-v="11.3">+11.3</td>
+  <td class="num" data-v="0.802">80 %</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The gap widens as the enzymes diverge, then appears to close.</b> That last step is
+not regulators becoming conserved again; it is the measurement hitting its floor, since two
+unrelated regulators already reach
+31.1 % at the
+95th percentile, and a large share of
+the pairs in the lowest band sit there. Pairs within a type are not independent observations, so
+the number of distinct types is given beside each band.</figcaption>
+</figure>
+
+
+<h2>3 · The same chemistry under different control</h2>
+<p>A regulator can be replaced rather than merely diverge. Comparing the regulator family at both
+ends of a pair answers how often that happens.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Enzyme identity band</th><th class="num">Pairs</th>
+<th class="num">Regulator family switched</th></tr></thead>
+<tbody>
+
+<tr><td>95-100 %</td><td class="num">996</td>
+  <td class="num" data-v="0.0">0 %</td></tr>
+
+<tr><td>80-95 %</td><td class="num">2,913</td>
+  <td class="num" data-v="0.022">2 %</td></tr>
+
+<tr><td>60-80 %</td><td class="num">6,522</td>
+  <td class="num" data-v="0.334">33 %</td></tr>
+
+<tr><td>below 60 %</td><td class="num">15,532</td>
+  <td class="num" data-v="0.722">72 %</td></tr>
+
+</tbody></table></div>
+<p class="note">At near-identical enzymes the regulator family is always the same; below 60 %
+identity it differs in about seven pairs out of ten. So as an enzyme type spreads and diverges, the
+same chemistry repeatedly comes under a different kind of transcriptional control. This is also why
+the unrestricted comparison overstates regulator divergence, and why section 2 excludes these pairs.</p>
+
+
+
+<h2>4 · Mobility, and how much of it is an annotation artefact</h2>
+<p>The database has reported that enzymes acting on man-made substrates are more often mobile. That
+claim rested on a variable defined as "on a plasmid <em>or</em> with a transposon nearby", and the
+transposon half is a regular expression over the GenBank product text, which measures how a genome
+was annotated. Of 0 confirmed entries, 1,541
+are counted mobile <em>only</em> because of that text match. So the claim was recomputed three ways.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Evidence used</th><th>Level</th><th class="num">Man-made substrate</th>
+<th class="num">Natural substrate</th><th class="num">Ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+
+<tr class="hl">
+  <td>plasmid only</td><td class="small">entry</td>
+  <td class="num">5.6 %</td>
+  <td class="num">1.4 %</td>
+  <td class="num" data-v="3.951">3.95×</td>
+  <td class="num" data-v="8.24521965506315e-31">8.2e-31</td></tr>
+
+<tr class="hl">
+  <td>plasmid only</td><td class="small">genus</td>
+  <td class="num">7.2 %</td>
+  <td class="num">1.7 %</td>
+  <td class="num" data-v="4.348">4.35×</td>
+  <td class="num" data-v="5.008874827449844e-09">5.0e-09</td></tr>
+
+<tr>
+  <td>regex transposon only</td><td class="small">entry</td>
+  <td class="num">19.5 %</td>
+  <td class="num">14.6 %</td>
+  <td class="num" data-v="1.332">1.33×</td>
+  <td class="num" data-v="4.738635194088485e-10">4.7e-10</td></tr>
+
+<tr>
+  <td>published or</td><td class="small">entry</td>
+  <td class="num">21.6 %</td>
+  <td class="num">15.5 %</td>
+  <td class="num" data-v="1.395">1.40×</td>
+  <td class="num" data-v="2.9643932861972274e-14">3.0e-14</td></tr>
+
+<tr>
+  <td>regex transposon only</td><td class="small">genus</td>
+  <td class="num">22.9 %</td>
+  <td class="num">13.7 %</td>
+  <td class="num" data-v="1.673">1.67×</td>
+  <td class="num" data-v="4.755280470260917e-07">4.8e-07</td></tr>
+
+<tr>
+  <td>published or</td><td class="small">genus</td>
+  <td class="num">26.4 %</td>
+  <td class="num">14.9 %</td>
+  <td class="num" data-v="1.766">1.77×</td>
+  <td class="num" data-v="2.083580122160818e-09">2.1e-09</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The conclusion does not depend on the annotation half; it was being diluted by it.</b>
+On plasmid evidence alone, which is a checkable claim about which molecule the gene sits on, the
+effect is about three times stronger than the published figure. The text-derived half points the
+same way but far more weakly, and because it outnumbers the plasmid half roughly six to one the
+combined variable lands near the weaker value and was being read as though it were the stronger.</figcaption>
+</figure>
+
+
+<h2>5 · How large the annotation bias actually is</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Component</th><th>What it does to the transposon rate</th></tr></thead>
+<tbody>
+<tr><td>records with no annotated neighbour at all</td><td class="small">these entries cannot be transposon-positive by construction, yet they sit in the denominator of the published rate. Restricting to records that can be called at all moves the rate from 14.9 % to 16.3 %, a 9 % relative shift that is pure record type and no biology.</td></tr><tr><td>size of the replicon</td><td class="small">the rate falls as the replicon gets larger, from 19.6 % in the smallest quartile to 14.3 % in the largest, while the rate rises with window occupancy. The two run in opposite directions, which is the reason there is no single correction factor. Small contigs and plasmids are genuinely richer in insertion sequences, so the replicon-size component is at least partly real biology and cannot be corrected away as if it were an artefact.</td></tr><tr><td>the same test applied to plasmid evidence</td><td class="small">the plasmid rate also rises with window occupancy, from 0.6 % to 5.8 %, a wider relative spread than the transposon rate. So sampling is not neutral for either variable: completely assembled, richly annotated records are both more likely to be recognised as plasmids and more likely to have a transposon annotated nearby. The difference between the two variables is not that one is unbiased. It is that the plasmid field is a claim about which molecule the gene sits on, which can in principle be checked, while the transposon category is a claim about the wording of a /product field, which cannot.</td></tr>
+</tbody></table></div>
+<p class="note">large enough to change how the number is read, not large enough to erase it. Three separate components were measured. First, a hard floor: 945 entries (8.3 %) are on records with no annotated neighbour at all and can never be called positive, yet they are counted in the denominator. Second, window occupancy: among records that can be called, the rate spans 11.9 % to 24.7 % across quartiles of how many genes the submitter annotated within 10 kb, a 2.07-fold spread. Third, replicon size, where the rate falls with CDS count, the opposite direction from window occupancy; part of that is real insertion-sequence biology. Because the components have opposite signs there is no single correction factor, which is itself the reason the variable cannot be presented as a measurement of mobility.</p>
+
+
+
+<h2>6 · Is a transposon a property of the species or of the enzyme?</h2>
+<p>Both, but the enzyme more. Each factor is measured as the share of variance it explains in the
+binary outcome, next to what the same factor explains after the labels are shuffled. That column is
+essential here: genus has 508 levels and enzyme type only 61, and a factor with more levels explains
+more by chance alone.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Factor</th><th class="num">Levels</th><th class="num">Variance explained</th>
+<th class="num">Expected by chance</th><th class="num">Excess</th></tr></thead>
+<tbody>
+
+<tr>
+  <td>type x genus cell</td>
+  <td class="num" data-v="1974">1,974</td>
+  <td class="num" data-v="0.4583">0.458</td>
+  <td class="num" data-v="0.1884">0.188</td>
+  <td class="num" data-v="0.2698">0.270</td></tr>
+
+<tr class="hl">
+  <td>type</td>
+  <td class="num" data-v="61">61</td>
+  <td class="num" data-v="0.1222">0.122</td>
+  <td class="num" data-v="0.0057">0.006</td>
+  <td class="num" data-v="0.1165">0.117</td></tr>
+
+<tr>
+  <td>species</td>
+  <td class="num" data-v="1645">1,645</td>
+  <td class="num" data-v="0.2594">0.259</td>
+  <td class="num" data-v="0.157">0.157</td>
+  <td class="num" data-v="0.1024">0.102</td></tr>
+
+<tr>
+  <td>genus</td>
+  <td class="num" data-v="508">508</td>
+  <td class="num" data-v="0.1315">0.132</td>
+  <td class="num" data-v="0.0484">0.048</td>
+  <td class="num" data-v="0.0831">0.083</td></tr>
+
+<tr>
+  <td>group</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="0.0445">0.044</td>
+  <td class="num" data-v="0.0004">0.000</td>
+  <td class="num" data-v="0.0441">0.044</td></tr>
+
+<tr>
+  <td>density quartile</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="0.0148">0.015</td>
+  <td class="num" data-v="0.0003">0.000</td>
+  <td class="num" data-v="0.0145">0.015</td></tr>
+
+</tbody></table></div>
+<figcaption><b>Read the last column, not the third.</b> Taken raw, genus appears to beat enzyme type,
+0.132 against 0.122. Against the shuffled baseline the order reverses, because genus was winning on
+having eight times as many levels. The enzyme type carries 0.117 above chance and genus 0.083, and
+the same ordering holds when one factor is held fixed and again when the data are collapsed to one
+observation per type and genus, where the margin is about twofold.
+<b>Two reservations.</b> The margin is not large and no formal test separates two permutation
+excesses; the evidence is that three independent ways of asking agree. And the two factors are
+genuinely entangled, since several types sit mostly in one genus, so no exact split exists. The
+transposon call also remains a regular expression over annotation text, with about a quarter of its
+apparent excess attributable to annotation density, as section 5 measures.</figcaption>
+</figure>
+
+<h2>7 · Do similar enzymes have similar operons?</h2>
+<p>They do, and the expectation is worth stating because its failures are interesting. Each measure
+below is shown against the level reached by pairs from <em>different</em> enzyme types, which is the
+floor: every operon contains the alpha subunit, so any similarity measure starts above zero.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measure of operon similarity</th><th class="num">Within a type</th>
+<th class="num">Between types</th><th class="num">Correlation with enzyme identity</th>
+<th class="num">Per type</th><th class="num">Types where it is positive</th></tr></thead>
+<tbody>
+
+<tr class="hl">
+  <td>component jaccard</td>
+  <td class="num" data-v="0.5">0.50</td>
+  <td class="num" data-v="0.0">0.00</td>
+  <td class="num" data-v="0.7007">0.70</td>
+  <td class="num" data-v="0.4444">0.44</td>
+  <td class="num">48 of 49</td></tr>
+
+<tr>
+  <td>anchor agreement</td>
+  <td class="num" data-v="0.4">0.40</td>
+  <td class="num" data-v="0.0">0.00</td>
+  <td class="num" data-v="0.6234">0.62</td>
+  <td class="num" data-v="0.4336">0.43</td>
+  <td class="num">51 of 52</td></tr>
+
+<tr>
+  <td>category jaccard</td>
+  <td class="num" data-v="0.4">0.40</td>
+  <td class="num" data-v="0.25">0.25</td>
+  <td class="num" data-v="0.5629">0.56</td>
+  <td class="num" data-v="0.3843">0.38</td>
+  <td class="num">54 of 54</td></tr>
+
+<tr>
+  <td>order lcs</td>
+  <td class="num" data-v="0.6667">0.67</td>
+  <td class="num" data-v="0.5">0.50</td>
+  <td class="num" data-v="0.5413">0.54</td>
+  <td class="num" data-v="0.3567">0.36</td>
+  <td class="num">54 of 54</td></tr>
+
+<tr>
+  <td>order lcs sequence evidence only</td>
+  <td class="num" data-v="0.8">0.80</td>
+  <td class="num" data-v="0.6667">0.67</td>
+  <td class="num" data-v="0.3785">0.38</td>
+  <td class="num" data-v="0.2104">0.21</td>
+  <td class="num">48 of 54</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The strongest measure is also the only one free of annotation wording.</b> Component
+overlap compares the beta subunit, ferredoxin and reductase as called by profile models rather than
+by gene name, and it gives the highest correlation of all. So the agreement between enzyme identity
+and operon structure is not an artefact of two genomes being described in the same words. Gene order
+adds something beyond composition: the correlation remains when composition is held fixed.
+<b>The suspected meaningless match is real and very rare.</b> Of 2,196 pairs above 95 % identity,
+one has operons no more similar than two operons from different types, and four more appear if the
+threshold is relaxed to 90 %. All of them are same-genus pairs, which makes them look more like
+duplicated or relocated copies than like wrong assignments. A test that almost nothing fails cannot
+serve as a general filter, but an operon mismatch between near-identical proteins is worth looking
+at when you meet one.</figcaption>
+</figure>
+
+
+<h2>8 · Limits</h2>
+<ul><li>The transposon calls are never verified against sequence. The regular expression also matches integrase, recombinase and resolvase, which are not always transposon components, so the category is an upper bound on text matches and says nothing about what is actually in the DNA.</li><li>The regulator family label comes from the same kind of /product regular expression, so the first question rests on the same annotation chain as the bias measured in the second. The internal consistency check is the geometry: family labels that reproduce the classical orientation and spacing of their family are more believable than ones that do not.</li><li>No promoter sequence was examined. 88.9 % of the source GenBank records are CON entries with no sequence in the file, so operator sites and -35/-10 boxes cannot be inspected and the regulator association cannot be confirmed at the level of DNA binding.</li><li>The plasmid field is GenBank&#39;s own declaration. Integrated plasmids and unnamed megaplasmids are missed, so it is an undercount, but it is a property of the molecule rather than a choice of words.</li><li>Nothing here is causal. Both questions measure co-occurrence in sequenced genomes, and the sampled genomes are not a sample of nature: PAH and xenobiotic degraders are a well studied group, which biases annotation richness and isolate counts in the same direction as the hypotheses.</li><li>Chemical family is a property of the enzyme type, not of the entry, so the regulator-by-family tables are aggregations over at most 61 types. A family carried by two or three types can be moved by one type.</li><li>The third question identifies a regulator by POSITION, as the first gene upstream of the operon 5&#39; end. No binding was measured, so &#39;the regulator of this enzyme&#39; is an inference from gene order. A regulator acting from elsewhere on the replicon, or a global regulator, is invisible to it.</li><li>The third question selects its pairs on the alpha subunit, because an enzyme type IS the profile the alpha subunit scored best against. High alpha-to-alpha identity inside a type is therefore a property of the selection, not an observation, and any gap measured against it is uninterpretable on its own. That is why the same contrast is computed for the beta subunit, the ferredoxin and the reductase on the same pairs; the regulator claim rests entirely on the margin over those controls and not on the gap itself.</li><li>Pairwise identity saturates. The floor was measured rather than assumed, from regulator pairs taken from different enzyme types and different families, and below it the measure cannot separate a fast-diverging regulator from an unrelated protein. No divergence rate is claimed in the bands where most pairs sit at that floor.</li><li>The strictest orthology gate, a reciprocal best hit inside the enzyme type, is conservative in one direction only. A fast-diverging regulator is exactly the one whose best match in its own type is somebody else, so the gate removes the pairs the claim is about: a gap that survives it is real, a gap that disappears there is ambiguous.</li></ul>
+<p class="dl"><a class="btn" href="/pro-sim-blast/download/analysis/operon_relations.json">Full output (JSON)</a></p>
+
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+{
+ "method": {
+  "question": "how much of the reference set is redundant, and what that does to type assignment",
+  "identical": "byte-identical amino acid sequences under different reference names; each becomes its own profile, so which one recruits a member is decided by small numerical differences in score rather than by biology",
+  "contained": "one reference sequence occurs exactly inside another, so the shorter is a fragment of the longer",
+  "near_identical": "distinct sequences at or above 99.0 % identity",
+  "not_fixed_here": "this module measures the problem; repairing it means changing the reference set and rebuilding the profile library, and which name to keep is a nomenclature decision",
+  "near_identical_threshold": 99.0
+ },
+ "totals": {
+  "references": 71,
+  "distinct_sequences": 68,
+  "identical_groups": 3,
+  "references_in_identical_groups": 6,
+  "contained_pairs": 1,
+  "near_identical_pairs": 2,
+  "affected_references": 12,
+  "entries_under_an_ambiguous_reference": 150
+ },
+ "identical_groups": [
+  {
+   "kind": "identical",
+   "members": [
+    {
+     "id": "1_101_OxoO",
+     "entries": 2
+    },
+    {
+     "id": "3_304_OMO",
+     "entries": 11
+    }
+   ],
+   "length": 446,
+   "entries_total": 13,
+   "skew": 0.846
+  },
+  {
+   "kind": "identical",
+   "members": [
+    {
+     "id": "3_309_NahAc",
+     "entries": 0
+    },
+    {
+     "id": "3_315_NDO",
+     "entries": 0
+    }
+   ],
+   "length": 449,
+   "entries_total": 0,
+   "skew": null
+  },
+  {
+   "kind": "identical",
+   "members": [
+    {
+     "id": "3_314_NDO",
+     "entries": 2
+    },
+    {
+     "id": "3_316_NarAa",
+     "entries": 30
+    }
+   ],
+   "length": 470,
+   "entries_total": 32,
+   "skew": 0.938
+  }
+ ],
+ "contained_pairs": [
+  {
+   "contained": "1_115_NdmC",
+   "container": "1_114_NdmB",
+   "contained_length": 355,
+   "container_length": 373,
+   "contained_entries": 0,
+   "container_entries": 15
+  }
+ ],
+ "near_identical_pairs": [
+  {
+   "ref_a": "2_202_EdoA1",
+   "ref_b": "2_203_cumA1",
+   "identity": 99.8,
+   "substrate_a": "ethylbenzene",
+   "substrate_b": "cumene",
+   "same_substrate": false,
+   "entries_a": 29,
+   "entries_b": 6
+  },
+  {
+   "ref_a": "1_102_CARDO",
+   "ref_b": "1_103_CarAa",
+   "identity": 99.2,
+   "substrate_a": "carbazole",
+   "substrate_b": "carbazole",
+   "same_substrate": true,
+   "entries_a": 55,
+   "entries_b": 0
+  }
+ ],
+ "affected": {
+  "1_101_OxoO": {
+   "kind": "identical",
+   "others": [
+    "3_304_OMO"
+   ],
+   "entries": 2,
+   "entries_total": 13
+  },
+  "3_304_OMO": {
+   "kind": "identical",
+   "others": [
+    "1_101_OxoO"
+   ],
+   "entries": 11,
+   "entries_total": 13
+  },
+  "3_309_NahAc": {
+   "kind": "identical",
+   "others": [
+    "3_315_NDO"
+   ],
+   "entries": 0,
+   "entries_total": 0
+  },
+  "3_315_NDO": {
+   "kind": "identical",
+   "others": [
+    "3_309_NahAc"
+   ],
+   "entries": 0,
+   "entries_total": 0
+  },
+  "3_314_NDO": {
+   "kind": "identical",
+   "others": [
+    "3_316_NarAa"
+   ],
+   "entries": 2,
+   "entries_total": 32
+  },
+  "3_316_NarAa": {
+   "kind": "identical",
+   "others": [
+    "3_314_NDO"
+   ],
+   "entries": 30,
+   "entries_total": 32
+  },
+  "1_115_NdmC": {
+   "kind": "contained_in",
+   "others": [
+    "1_114_NdmB"
+   ],
+   "entries": 0,
+   "entries_total": 15
+  },
+  "1_114_NdmB": {
+   "kind": "contains",
+   "others": [
+    "1_115_NdmC"
+   ],
+   "entries": 15,
+   "entries_total": 15
+  },
+  "2_202_EdoA1": {
+   "kind": "near_identical",
+   "others": [
+    "2_203_cumA1"
+   ],
+   "identity": 99.8,
+   "entries": 29,
+   "entries_total": 35
+  },
+  "2_203_cumA1": {
+   "kind": "near_identical",
+   "others": [
+    "2_202_EdoA1"
+   ],
+   "identity": 99.8,
+   "entries": 6,
+   "entries_total": 35
+  },
+  "1_102_CARDO": {
+   "kind": "near_identical",
+   "others": [
+    "1_103_CarAa"
+   ],
+   "identity": 99.2,
+   "entries": 55,
+   "entries_total": 55
+  },
+  "1_103_CarAa": {
+   "kind": "near_identical",
+   "others": [
+    "1_102_CARDO"
+   ],
+   "identity": 99.2,
+   "entries": 0,
+   "entries_total": 55
+  }
+ }
+}

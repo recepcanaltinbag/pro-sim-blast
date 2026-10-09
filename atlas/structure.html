@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Active site · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class="on"
+     aria-current="true">Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Sequence pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Phylogeny</a>
+  
+  <a href="/pro-sim-blast/atlas/network.html" class=""
+     >Sequence space</a>
+  
+  <a href="/pro-sim-blast/atlas/taxonomy.html" class=""
+     >Taxonomy</a>
+  
+  <a href="/pro-sim-blast/atlas/structure.html" class="on"
+     aria-current="page">Active site</a>
+  
+  <a href="/pro-sim-blast/atlas/closeness.html" class=""
+     >Closeness</a>
+  
+  
+</nav>
+
+
+<h1>The active site, and how much of it varies</h1>
+<p class="lede">Every page before this one reasons about sequence. This one puts the sequence into
+three dimensions: which residues actually line the pocket around the catalytic iron, and which of
+them change between the members of a type.</p>
+
+
+<h2>1 · Telling the two irons apart</h2>
+<p>A Rieske oxygenase carries two iron sites and they must not be confused. The Rieske centre is an
+iron pair bridged by inorganic sulfur, held by two cysteines and two histidines; the catalytic
+centre is a single iron held by two histidines and a carboxylate, with no sulfur. They were
+separated by that geometry rather than by trusting the file's labels, in all
+17 types that have a structure.</p>
+<div class="tablewrap"><table class="data compact">
+<tbody>
+<tr><td>Types with a deposited structure</td><td class="num">17 of 71</td></tr>
+<tr><td>Distinct structures behind them</td><td class="num">13</td></tr>
+<tr><td>Catalytic iron located</td><td class="num">17</td></tr>
+<tr><td>Catalytic triad landing on the expected alignment columns</td><td class="num">13 exactly, 17 within the search window</td></tr>
+<tr><td>Pockets added from predicted models</td><td class="num">62<span class="unit"> 9 could not be mapped</span></td></tr>
+</tbody></table></div>
+<p class="note">The four types that need the search window are the OxoO, OMO, CARDO and CarAa group.
+The profile had always tolerated an odd residue at one catalytic column in those four; the crystals
+show why. Their second catalytic histidine sits one column earlier, so it is an alignment shift in
+that subfamily rather than a missing residue.</p>
+
+<h2>2 · Pockets for the types with no crystal, and whether they can be trusted</h2>
+<p>Most types have never been crystallised. Their structures were not folded here; AlphaFold has
+already modelled them, and each model was accepted only when its sequence matched the curated one
+character for character. A predicted model contains no metal, so the pocket cannot be found by
+asking what sits near the iron. It is placed instead at the centre of the catalytic triad, which
+alignment locates reliably.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Test on the 16 types that have both</th><th class="num">Result</th></tr></thead>
+<tbody>
+<tr><td>Distance from the triad centre to the real iron</td>
+    <td class="num">0.99 Å mean, 1.22 Å worst</td></tr>
+<tr><td>Pocket recovered using the centre instead of the iron, inside the same crystal</td>
+    <td class="num">90 %</td></tr>
+<tr><td>Pocket recovered using the centre <em>and</em> the predicted model</td>
+    <td class="num">91 %</td></tr>
+<tr><td>Types reaching the reliability floor</td>
+    <td class="num">16 of 16</td></tr>
+</tbody></table></div>
+<figcaption><b>The two numbers in the middle are the point.</b> Replacing the iron with the triad
+centre already costs most of what is lost, and going on to use a predicted structure costs almost
+nothing more. So the predicted pockets are limited by having no metal, not by the prediction being
+wrong. Where a crystal exists it is used in preference, and the predicted pockets are kept separate
+throughout.</figcaption>
+</figure>
+
+<h2>3 · Which pocket positions never change, and which do</h2>
+<p>Within 8 Å of the iron the pocket is 16 to
+24 residues. The table counts, for each type, how many of its pocket columns are the same residue in
+every member and how many vary.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter by type…">
+<thead><tr><th>Type</th><th>Pocket from</th><th class="num">Members</th>
+<th class="num">Pocket columns</th><th class="num">Invariant</th><th class="num">Variable</th>
+<th class="num">Share invariant</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="1169">1,169</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="0">0</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="0.0">0 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="655">655</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="1">1</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="0.043">4 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="903">903</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="1">1</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.05">5 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="1210">1,210</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="1">1</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="0.062">6 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="107">107</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="0.091">9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_218_BphA1.html">BphA1 (218)</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="64">64</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.095">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="425">425</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0.1">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="1345">1,345</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="0.111">11 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_214_TftA.html">TftA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="0.13">13 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="401">401</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="401">401</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="288">288</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_302_DitA.html">DitA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="61">61</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="30">30</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="0.136">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="49">49</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0.143">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="234">234</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_406_PDO.html">PDO</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="184">184</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="126">126</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="94">94</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">ArhA1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="11">11</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.15">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="115">115</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="0.158">16 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="55">55</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0.182">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_317_NidA.html">NidA (317)</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="37">37</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0.182">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_502_CmoB.html">CmoB</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0.182">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="182">182</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="3">3</td>
+  <td class="num" data-v="13">13</td>
+  <td class="num" data-v="0.188">19 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="273">273</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.19">19 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="31">31</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.19">19 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="188">188</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="0.2">20 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="60">60</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="0.2">20 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.227">23 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="8">8</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.227">23 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_503_CmoA.html">CmoA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="0.227">23 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">GbcA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="336">336</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="0.25">25 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_114_NdmB.html">NdmB</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="0.25">25 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="9">9</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="5">5</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="0.25">25 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">EdoA1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="29">29</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="6">6</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="0.3">30 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_410_CbdC.html">CbdC</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="243">243</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="0.333">33 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">BphA1A2</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="13">13</td>
+  <td class="num" data-v="0.35">35 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_203_cumA1.html">cumA1</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="6">6</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="12">12</td>
+  <td class="num" data-v="0.368">37 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="184">184</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="9">9</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="0.391">39 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="422">422</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="11">11</td>
+  <td class="num" data-v="11">11</td>
+  <td class="num" data-v="0.5">50 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_101_OxoO.html">OxoO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="9">9</td>
+  <td class="num" data-v="0.609">61 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="8">8</td>
+  <td class="num" data-v="0.636">64 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_314_NDO.html">NDO (314)</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="11">11</td>
+  <td class="num" data-v="6">6</td>
+  <td class="num" data-v="0.647">65 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_304_OMO.html">OMO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="11">11</td>
+  <td class="num" data-v="23">23</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="8">8</td>
+  <td class="num" data-v="0.652">65 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_217_HcaE.html">HcaE</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="178">178</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="0.667">67 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html">PsbAb</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="15">15</td>
+  <td class="num" data-v="7">7</td>
+  <td class="num" data-v="0.682">68 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_209_TDO.html">TDO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="4">4</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="0.889">89 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="1">1</td>
+  <td class="num" data-v="0.95">95 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_201_BphA1.html">BphA1 (201)</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="1">1</td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="0">0</td>
+  <td class="num" data-v="0.952">95 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a></td>
+  <td class="small">crystal structure</td>
+  <td class="num" data-v="25">25</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="0">0</td>
+  <td class="num" data-v="1.0">100 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_308_DxnA1.html">DxnA1</a></td>
+  <td class="small"><span class="note">predicted model</span></td>
+  <td class="num" data-v="2">2</td>
+  <td class="num" data-v="24">24</td>
+  <td class="num" data-v="24">24</td>
+  <td class="num" data-v="0">0</td>
+  <td class="num" data-v="1.0">100 %</td></tr>
+
+</tbody></table></div>
+<p class="note"><b>Read the bottom of the table first.</b> In the largest and most heterogeneous
+types almost nothing but the metal ligands is fixed. That is the structural counterpart of what the
+<a href="/pro-sim-blast/atlas/closeness.html">closeness page</a> shows from sequence alone: a type is a
+region of sequence space, and only the residues that hold the iron are common to all of it. A
+column that varies is not necessarily functional, because most members are distant relatives whose
+reaction is unknown, so variation there may be heterogeneity rather than tuning.</p>
+
+
+<h2>4 · Are pocket residues more conserved than the rest of the protein?</h2>
+<p>The obvious answer is yes, and the obvious answer is a tautology. Membership of this database
+requires all four Rieske ligands and at least two of the three iron ligands, so those residues are
+invariant <em>because an entry lacking them was never admitted</em>. They sit inside the pocket, so
+including them measures the admission rule rather than biology.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Pocket columns counted</th><th class="num">Divergence ratio</th>
+<th class="num">Types where the pocket changes more slowly</th><th class="num">p</th><th>Verdict</th></tr></thead>
+<tbody>
+
+
+
+
+<tr><td>All of them, including the metal ligands</td>
+  <td class="num" data-v="0.7343">0.73</td>
+  <td class="num">35 of 35</td>
+  <td class="num">5.8e-11</td>
+  <td><span class="verdict verdict--none">circular</span></td></tr>
+<tr class="hl"><td>Metal ligands removed</td>
+  <td class="num" data-v="0.9125">0.91</td>
+  <td class="num">23 of 35</td>
+  <td class="num">0.090</td>
+  <td><span class="verdict verdict--none">not significant</span></td></tr>
+</tbody></table></div>
+<figcaption><b>Once the admission residues are removed the effect goes.</b> A ratio below one would
+mean the pocket changes more slowly than the protein average. With the ligands counted it is 0.73
+and every single type agrees, which looks decisive and is not: it is the membership test showing up
+in its own measurement. Without them the ratio is 0.91, only 23 of 35 types agree, and the sign test
+gives p = 0.09. The same conclusion comes from a null built by drawing random column sets of the
+same size: with the ligands the pocket sits in the first percentile, without them near the
+twenty-third.
+<b>So the non-ligand pocket of these enzymes is not measurably more conserved than the rest of the
+protein.</b> Comparing variants at the active site is still a more targeted question than comparing
+them across the whole chain, but it is not a sharper signal, and anyone reporting the first row has
+measured their own inclusion criterion.</figcaption>
+</figure>
+
+<h2>5 · What was wrong with the variant comparison</h2>
+<p>Two separate faults were conflated. First, the number shown next to a variant, leaf.median_identity, is the median pairwise identity WITHIN that variant, that is how similar its own members are. It is not a between-variant quantity, so placing two such numbers side by side does not compare the two variants at all. Second, even a correct between-variant global identity is a weak measure in this family: curated pairs with different substrates reach 99.8 % identity, so substrate choice is not set by global similarity. Both numbers are reported here, computed on the same alignment with the same gap rule, so they can finally be read against each other.</p>
+
+<p class="note">Pairs that are similar overall but differ in the pocket are the interesting case,
+and they are rare here, for a reason that is methodological rather than biological: variants are
+created by splitting a type until each piece is internally homogeneous, so two different variants of
+one type are by construction seldom very similar. The sample removes the candidates before the
+comparison begins.</p>
+
+
+
+<h2>6 · What the pocket is made of</h2>
+<p>This is a composition count, not an electrostatic calculation. No Poisson-Boltzmann solver was
+run and no pKa was estimated. [&#39;no Poisson-Boltzmann or any continuum electrostatics solver&#39;, &#39;no pKa prediction or protonation-state assignment&#39;, &#39;no electrostatic potential map, no field, no energy&#39;, &#39;no solvent or counter-ion model&#39;]</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th>Structure</th><th>Substrate</th><th class="num">Pocket residues</th>
+<th class="num">Acidic</th><th class="num">Basic</th><th class="num">Aromatic</th>
+<th class="num">Net charge</th><th class="num">Without the iron ligands</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_203_cumA1.html">cumA1</a></td>
+  <td class="mono small">1WQL</td><td class="small">cumene</td>
+  <td class="num">19</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">4</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a></td>
+  <td class="mono small">2GBW</td><td class="small">biphenyl</td>
+  <td class="num">18</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">2</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_309_NahAc.html">NahAc</a></td>
+  <td class="mono small">1NDO</td><td class="small">naphthalene</td>
+  <td class="num">19</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">3</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_314_NDO.html">NDO (314)</a></td>
+  <td class="mono small">1NDO</td><td class="small">naphthalene</td>
+  <td class="num">18</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">3</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_315_NDO.html">NDO (315)</a></td>
+  <td class="mono small">1NDO</td><td class="small">naphthalene</td>
+  <td class="num">19</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">3</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="mono small">7FHR</td><td class="small">phthalate</td>
+  <td class="num">17</td><td class="num">4</td>
+  <td class="num">0</td><td class="num">1</td>
+  <td class="num" data-v="-4">-4</td>
+  <td class="num" data-v="-3">-3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_101_OxoO.html">OxoO</a></td>
+  <td class="mono small">1Z03</td><td class="small">2-oxo-1,2-dihydroquinoline</td>
+  <td class="num">23</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">4</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a></td>
+  <td class="mono small">1WW9</td><td class="small">carbazole</td>
+  <td class="num">24</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">6</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_103_CarAa.html">CarAa</a></td>
+  <td class="mono small">1WW9</td><td class="small">carbazole</td>
+  <td class="num">24</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">6</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_201_BphA1.html">BphA1 (201)</a></td>
+  <td class="mono small">2XR8</td><td class="small">biphenyl</td>
+  <td class="num">21</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">5</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_209_TDO.html">TDO</a></td>
+  <td class="mono small">3EN1</td><td class="small">toluene</td>
+  <td class="num">18</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">4</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a></td>
+  <td class="mono small">2BMO</td><td class="small">nitrobenzene</td>
+  <td class="num">21</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">3</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_304_OMO.html">OMO</a></td>
+  <td class="mono small">1Z03</td><td class="small">2-oxo-1,2-dihydroquinoline</td>
+  <td class="num">23</td><td class="num">4</td>
+  <td class="num">1</td><td class="num">4</td>
+  <td class="num" data-v="-3">-3</td>
+  <td class="num" data-v="-2">-2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a></td>
+  <td class="mono small">3GKE</td><td class="small">dicamba</td>
+  <td class="num">22</td><td class="num">3</td>
+  <td class="num">1</td><td class="num">2</td>
+  <td class="num" data-v="-2">-2</td>
+  <td class="num" data-v="-1">-1</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td class="mono small">2ZYL</td><td class="small">3-ketosteroid</td>
+  <td class="num">18</td><td class="num">2</td>
+  <td class="num">0</td><td class="num">3</td>
+  <td class="num" data-v="-2">-2</td>
+  <td class="num" data-v="-1">-1</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="mono small">6Y9C</td><td class="small">L-carnitine</td>
+  <td class="num">16</td><td class="num">3</td>
+  <td class="num">1</td><td class="num">3</td>
+  <td class="num" data-v="-2">-2</td>
+  <td class="num" data-v="-1">-1</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="mono small">3VCA</td><td class="small">stachydrine</td>
+  <td class="num">21</td><td class="num">3</td>
+  <td class="num">2</td><td class="num">3</td>
+  <td class="num" data-v="-1">-1</td>
+  <td class="num" data-v="0">0</td></tr>
+
+</tbody></table></div>
+<figcaption><b>Every pocket carries a net negative charge</b>, in all
+17 crystal structures. The pattern across substrate families runs against the
+obvious expectation and is a reason to distrust the measure rather than a finding: the enzymes
+acting on quaternary amines, whose substrates carry a permanent positive charge, have the
+<em>least</em> anionic pockets, while those acting on neutral aromatics are the most anionic. Two
+things confound it. The acidic count is largely set by the carboxylates that hold the iron, which is
+why the last column repeats it with those removed. And substrate family is tangled with
+phylogenetic group, since every quaternary-amine enzyme here belongs to group 5.</figcaption>
+</figure>
+
+<h2>7 · What this cannot tell you</h2>
+<ul>
+<li>Only 17 of the 71 curated types carry a PDB identifier, and those 17 types come from 13 distinct structures, so nothing here generalises to the other types by itself.</li><li>Pocket residues are read from one crystal conformation. Side chains move when a substrate binds, so a residue just outside the cut-off is not evidence that it never contacts substrate.</li><li>The pocket is defined by distance to the iron, not by a bound substrate. Where a structure contains no substrate or inhibitor, the pocket is the cavity around the metal and not a measured binding site.</li><li>Residue distributions at pocket columns describe the members assigned to that type by the profile library. Type assignment is a nearest-reference statement and about three quarters of members sit at distant or novel evidence tiers, so a varying pocket column may reflect that heterogeneity rather than a functional difference.</li><li>Group comparisons of pocket composition have one to four types per group, after de-duplication even fewer. They are descriptive; no test is reported because none would be meaningful at that n.</li><li>The acidic count of a pocket is dominated by residues that are conserved in the whole family rather than by anything substrate-specific: the iron carboxylate at column 355 is an aspartate in every resolved structure and column 354 carries an acidic or amide residue in most of them. Net pocket charge therefore mostly reports the conserved catalytic region, which is a further reason not to read it as a specificity signal.</li><li>No binding energy, specificity prediction or substrate docking is attempted, and none can be supported by this data.</li><li>Pockets in the &#39;predicted_structures&#39; section are inferred from computed models, not observed. They are kept separate from the crystal-derived pockets throughout and must not be merged with them. Side-chain placement is the least reliable part of a structure prediction, and the pocket is exactly a set of side chains, so a predicted pocket residue is weaker evidence than a crystallographic one even when its pLDDT is high.</li>
+</ul>
+<p class="dl"><a class="btn" href="/pro-sim-blast/download/analysis/active_site.json">Full structural output (JSON)</a></p>
+
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

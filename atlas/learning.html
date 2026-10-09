@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is predictable · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class=""
+     >Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class="on"
+     aria-current="page">Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class=""
+     >Data quality</a>
+  
+  
+</nav>
+
+
+<h1>What can be predicted, and what only looks predictable</h1>
+<p class="lede">A model trained on this database can reach high accuracy without having learned
+anything, because the answer is often sitting in the training set as a near-identical copy. This
+page measures that effect rather than hiding it, and the measurement turns out to be the most
+useful result on the page.</p>
+
+
+<h2>1 · The same model, split two ways</h2>
+<p>Each row is one prediction task. The honest column holds out whole enzyme types, so a model must
+generalise to a type it has never seen. The leaked column splits entries at random, which lets
+near-identical sequences of the same type sit on both sides of the split.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>What is predicted</th><th>The label is</th>
+<th class="num">Honest accuracy</th><th class="num">Leaked accuracy</th>
+<th class="num">Inflation</th><th class="num">Always answering the commonest class</th></tr></thead>
+<tbody>
+
+<tr>
+  <td>RO group, from the sequence</td><td class="small">a property of the enzyme type</td>
+  <td class="num" data-v="0.5845">58 %</td>
+  <td class="num" data-v="0.7845">78 %</td>
+  <td class="num" data-v="1.342">1.34×</td>
+  <td class="num" data-v="0.3038">30 %</td></tr>
+
+<tr>
+  <td>Reaction class, from the sequence</td><td class="small">a property of the enzyme type</td>
+  <td class="num" data-v="0.439">44 %</td>
+  <td class="num" data-v="0.5833">58 %</td>
+  <td class="num" data-v="1.329">1.33×</td>
+  <td class="num" data-v="0.2487">25 %</td></tr>
+
+<tr>
+  <td>Substrate class, from the genomic neighbourhood</td><td class="small">a property of the enzyme type</td>
+  <td class="num" data-v="0.4624">46 %</td>
+  <td class="num" data-v="0.5531">55 %</td>
+  <td class="num" data-v="1.196">1.20×</td>
+  <td class="num" data-v="0.4954">50 %</td></tr>
+
+<tr class="hl">
+  <td>Beta subunit present, from the sequence</td><td class="small">varies WITHIN a type</td>
+  <td class="num" data-v="0.9614">96 %</td>
+  <td class="num" data-v="0.9784">98 %</td>
+  <td class="num" data-v="1.018">1.02×</td>
+  <td class="num" data-v="0.7755">78 %</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The highlighted row is the control, and it is what makes the rest interpretable.</b>
+Three of these labels are properties of the enzyme type, so holding a type out removes every clue
+and the random split inflates accuracy by about a third. The fourth, whether a beta subunit sits in
+the operon, varies <em>within</em> a type, so the random split has nothing extra to leak and the two
+numbers agree to within two per cent. The inflation is therefore not a quirk of one model; it is the
+leakage mechanism caught in the act.</figcaption>
+</figure>
+
+
+<h2>2 · The clearest demonstration</h2>
+<p>A nearest-neighbour classifier learns nothing at all. It copies the label of the most similar
+sequence it was shown. On a random split that is almost perfect, because nearly every test sequence
+has a near-twin of the same type in training.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Split</th><th class="num">Accuracy of a classifier that only copies its neighbour</th></tr></thead>
+<tbody>
+<tr><td>Random split over entries</td>
+    <td class="num" data-v="0.929">93 %</td></tr>
+<tr class="hl"><td>Whole types held out</td>
+    <td class="num" data-v="0.3836">38 %</td></tr>
+</tbody></table></div>
+<figcaption>Ninety-three per cent against thirty-eight. Any published accuracy on a database like
+this one should be read with that gap in mind, and it is why every number here holds out types.</figcaption>
+</figure>
+
+
+
+<h2>3 · Which positions carry the signal</h2>
+<p>The model works from residue identities at alignment columns. These are the columns it leans on
+most, with their distance to the nearest catalytic-centre column.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Column</th><th>Residue</th><th>Region</th>
+<th>Nearest catalytic centre position</th><th class="num">Offset</th></tr></thead>
+<tbody>
+
+<tr><td class="num" data-v="358">358</td>
+  <td class="mono">N</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="3">
+    3 <span class="chip chip--ok">close</span>
+    </td></tr>
+
+<tr><td class="num" data-v="284">284</td>
+  <td class="mono">S</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron histidine 2</td>
+  <td class="num" data-v="67">
+    67
+    </td></tr>
+
+<tr><td class="num" data-v="337">337</td>
+  <td class="mono">R</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="18">
+    -18
+    </td></tr>
+
+<tr><td class="num" data-v="207">207</td>
+  <td class="mono">F</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">inter-subunit bridging aspartate</td>
+  <td class="num" data-v="2">
+    -2 <span class="chip chip--ok">close</span>
+    </td></tr>
+
+<tr><td class="num" data-v="22">22</td>
+  <td class="mono">-</td>
+  <td class="small">rieske domain</td>
+  <td class="small">Rieske cysteine 1</td>
+  <td class="num" data-v="63">
+    -63
+    </td></tr>
+
+<tr><td class="num" data-v="404">404</td>
+  <td class="mono">A</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="49">
+    49
+    </td></tr>
+
+<tr><td class="num" data-v="373">373</td>
+  <td class="mono">W</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="18">
+    18
+    </td></tr>
+
+<tr><td class="num" data-v="309">309</td>
+  <td class="mono">W</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="46">
+    -46
+    </td></tr>
+
+<tr><td class="num" data-v="286">286</td>
+  <td class="mono">N</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron histidine 2</td>
+  <td class="num" data-v="69">
+    69
+    </td></tr>
+
+<tr><td class="num" data-v="42">42</td>
+  <td class="mono">G</td>
+  <td class="small">rieske domain</td>
+  <td class="small">Rieske cysteine 1</td>
+  <td class="num" data-v="43">
+    -43
+    </td></tr>
+
+<tr><td class="num" data-v="356">356</td>
+  <td class="mono">N</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="1">
+    1 <span class="chip chip--ok">close</span>
+    </td></tr>
+
+<tr><td class="num" data-v="402">402</td>
+  <td class="mono">W</td>
+  <td class="small">catalytic domain</td>
+  <td class="small">mononuclear iron carboxylate (Asp or Glu)</td>
+  <td class="num" data-v="47">
+    47
+    </td></tr>
+
+</tbody></table></div>
+<p class="note">10 of the top 25 columns lie within ten positions of a
+catalytic-centre column, and 84 % sit in the catalytic
+domain against 83 % of the columns available, so the catalytic
+domain is not over-represented beyond its size. <b>None of this makes them binding residues.</b>
+Being near the metal in the alignment is not the same as lining the pocket, and the
+<a href="/pro-sim-blast/atlas/structure.html">structural page</a> is where pocket membership is actually
+measured.</p>
+
+
+<h2>4 · What this cannot support</h2>
+<ul><li>no claim about a reaction class represented by 2 or 3 types (C_N_cleavage, O_demethylation, angular_dioxygenation): under the grouped scheme those classes have one or two test folds in total</li><li>no claim that the columns reported here are substrate-binding pocket residues. There is no structure in this database; what was measured is which alignment columns separate the classes</li><li>no claim that a residue identity explains the chemistry rather than marking the clade. Reaction class and substrate class are both strongly structured by HMM group, so a sequence model can reach its accuracy by recognising the clade alone; the clade-oracle baseline is there precisely to make that visible</li><li>no causal claim in either direction for question 3. Operon composition and substrate class are both properties of a lineage with a history, and a shared genome is not evidence of a shared pathway</li><li>no claim that the curated labels are correct. Most entries sit in the distant or novel evidence tiers, where the reaction is unknown and was inherited from the type. This module treats the label as given</li><li>no usable sequence-to-substrate predictor for a new protein. The grouped accuracies here are far from a decision rule, and the reference-pair calibration already showed that no global identity threshold guarantees the same substrate</li></ul>
+<p class="dl"><a class="btn" href="/pro-sim-blast/download/analysis/learning.json">Full output (JSON)</a></p>
+
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 71 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-07 · pipeline revision
+  <code>924879d16b</code> of 2026-10-07 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>
