@@ -11,8 +11,20 @@
 # seferinde tum icerigi yeniden yuklemek anlamina geldi ve GitHub Pages
 # derlemesi geride kaldi (yayindaki kopya push'tan bir saat eski kaldi).
 # Simdi kalici bir klon tutulur, yalnizca DEGISEN dosyalar commit edilir ve
-# normal push yapilir; degisiklik yoksa push hic yapilmaz, boylece gereksiz
-# derleme tetiklenmez.
+# degisiklik yoksa push hic yapilmaz, boylece gereksiz derleme tetiklenmez.
+#
+# NEDEN TEK COMMIT: gh-pages her yayinda bir commit daha biriktiriyordu ve dal
+# sinirsiz buyuyordu -- olculdu, depo GitHub'da 673 MB'a ciktI ve bunun 7 MB'i
+# gercekten izlenen icerik; gerisi gecmis. Site main'den bastan uretilebildigi
+# icin gh-pages gecmisinin hicbir degeri yok. Bu yuzden her yayin dali TEK bir
+# commit olarak yeniden kurar ve force-push eder.
+#
+# Bu, her dosyayi yeniden YUKLEMEK anlamina GELMEZ: kalici klon onceki commit'i
+# bildigi icin git yalnizca uzak tarafta bulunmayan nesneleri gonderir --
+# degismeyen dosyalarin blob'lari ve degismeyen dizinlerin agac nesneleri
+# zaten orada. Ilk surumun yavas olmasinin sebebi her seferinde gecici bir
+# dizinde `git init` yapmasiydi; ortak gecmis olmadigi icin pazarlik
+# yapilamiyordu.
 set -euo pipefail
 cd "$(dirname "$0")"
 URL="${1:-https://github.com/recepcanaltinbag/pro-sim-blast.git}"
@@ -85,8 +97,14 @@ if git diff --cached --quiet; then
   exit 0
 fi
 CHANGED=$(git diff --cached --name-only | wc -l)
+
+# Dali tek commit olarak yeniden kur. Calisma agaci oldugu gibi kalir; yalnizca
+# gecmis atilir.
+git checkout -q --orphan __deploy
+git add -A
 git -c user.name="roar-db" -c user.email="roar-db@localhost" \
-    commit -q -m "ROAR-DB static site $(date -u +%F' '%T) UTC ($CHANGED files)"
-git push -q origin "$BRANCH"
-echo "[gonderildi] $CHANGED dosya -> $URL ($BRANCH)"
+    commit -q -m "ROAR-DB static site $(date -u +%F' '%T) UTC ($CHANGED files changed)"
+git branch -q -M __deploy "$BRANCH"
+git push -q --force origin "$BRANCH"
+echo "[gonderildi] $CHANGED degisen dosya -> $URL ($BRANCH, tek commit)"
 echo "  GitHub > Settings > Pages > Branch: $BRANCH"
