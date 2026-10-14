@@ -1,0 +1,111 @@
+# Batie siniflandirmasi -- LITERATURDEN, bu veritabaninin kendi gruplariyla
+# KARISTIRILMAMAK icin ayri tutuluyor.
+#
+# NEDEN AYRI BIR DOSYA. Bu veritabaninin kendi `ro_group` alani 1-5 arasinda
+# deger aliyor ve Batie siniflandirmasi da bes sinif tasiyor. Bu bir TESADUF
+# ve tehlikeli bir tesadUf: bir okuyucu "grup 1" ile "Sinif I"i ayni sey
+# sanabilir. Degiller, ve bu sayfada kanitiyla yaziyor.
+#
+# IKISI FARKLI SEYLERI BOLER
+#   Batie      : elektron zincirinin mimarisi -- reduktazin ve ferredoksinin
+#                TIPI. Yani alfa alt biriminin degil, SISTEMIN ozelligi.
+#   ro_group   : alfa alt biriminin DIZI kumelenmesi. Elektron ortaklarina
+#                hic bakmaz.
+#
+# KANIT 1 -- bir Batie sinifi bizim iki grubumuza yayiliyor.
+#   Batie IB'nin ornekleri BZDO ve OMO. Bu veritabaninda:
+#       OMO   -> 1_101_OxoO   -> grup 1
+#       BZDO  -> 4_411_XylX   -> grup 4
+#   Tek sinif, iki grup. Iki sema uzayi farkli kesiyor.
+#
+# KANIT 2 -- Batie sinifi enzimin bile ozelligi degil, SUSUN ozelligi.
+#   CARDO asagidaki tabloda UC ayri sinifta geciyor: KA1 susu IIA, IC177 susu
+#   IIB, CA10 ve J3 suslari III. Ayni enzim, ucu de farkli sinif, cunku
+#   farkli suslarda farkli elektron ortaklariyla calisiyor. Dolayisiyla
+#   "tip basina Batie sinifi" diye bir sutun ILKESEL OLARAK kurulamaz;
+#   kurulursa referans SUSU basina kurulur.
+#
+# SONUC. Bu veritabanina 6. bir grup eklemek Batie'nin besine dokunmaz; iki
+# sema birbirinin yerine gecmez ve biri otekini duzeltmez. Burada yapilan sey
+# literaturu degistirmek degil, onu AYRICA kaydetmek.
+#
+# Kaynak: Runda M. (2024) "Rieske oxygenases outside a nutshell", doktora tezi,
+# Groningen Universitesi, Tablo 2 (pdf s.35 / basili s.34), Batie, Ballou &
+# Correll'den aktararak. doi:10.33612/diss.1175898687
+# Orijinal: Batie CJ, Ballou DP, Correll CC, "Chemistry and Biochemistry of
+# Flavoenzymes" Cilt 3, CRC Press 1992, s.543-556.
+
+source:
+  via: "Runda M. 2024, PhD thesis, Groningen, Table 2 (pdf p.35)"
+  via_doi: "10.33612/diss.1175898687"
+  original: >
+    Batie CJ, Ballou DP, Correll CC. Chemistry and Biochemistry of
+    Flavoenzymes, Vol 3. CRC Press, 1992, pp. 543-556.
+
+classified_by: >
+  the architecture of the electron transport chain: the type of the reductase
+  and, where there is one, the type of the ferredoxin. It is a property of the
+  whole multi-component system in a given strain, not of the alpha subunit.
+
+classes:
+  - class: IA
+    reductase: "FMN, [2Fe-2S] plant-type"
+    ferredoxin: null
+    components: 2
+    examples: [PDO_PHK, PBDO_POB310]
+
+  - class: IB
+    reductase: "FAD, [2Fe-2S] plant-type"
+    ferredoxin: null
+    components: 2
+    examples: [BZDO, OMO]
+    note: >
+      The clearest demonstration that this scheme and ro_group are different
+      partitions: in this database OMO is 1_101_OxoO in group 1 and BZDO is
+      4_411_XylX in group 4.
+
+  - class: IIA
+    reductase: "FAD"
+    ferredoxin: "[2Fe-2S] adrenodoxin-type"
+    components: 3
+    examples: [DBFDO_SRW1, CARDO_KA1]
+
+  - class: IIB
+    reductase: "FAD"
+    ferredoxin: "[2Fe-2S] Rieske-type"
+    components: 3
+    examples: [BPDO_KF707, CARDO_IC177]
+
+  - class: III
+    reductase: "FAD, [2Fe-2S] plant-type"
+    ferredoxin: "[2Fe-2S] Rieske-type"
+    components: 3
+    examples: [CARDO_CA10, CARDO_J3, NDO_NCIB_9816]
+
+# CARDO uc ayri sinifta. Tablonun kendisinden okunuyor ve bir sutunun neden
+# sus basina olmasi gerektigini tek basina gosteriyor.
+strain_dependence:
+  enzyme: CARDO
+  appears_in:
+    - {class: IIA, strain: KA1}
+    - {class: IIB, strain: IC177}
+    - {class: III, strain: CA10}
+    - {class: III, strain: J3}
+  consequence: >
+    A batie_class column cannot be keyed on enzyme type. If one is ever added
+    to this database it must be keyed on the reference strain, and it will be
+    empty for most entries, because the electron partners of a given genomic
+    neighbourhood are not always resolvable.
+
+relation_to_ro_group:
+  are_they_the_same: false
+  both_have_five_classes: true
+  why_that_is_a_coincidence: >
+    ro_group came from clustering alpha subunit sequences; Batie came from
+    characterising electron transport components. Neither was derived from the
+    other, and the shared count of five is not evidence of correspondence.
+  demonstrated_mismatch: "Batie IB spans ro_group 1 and ro_group 4"
+  what_this_database_claims: >
+    Nothing about Batie. It assigns no Batie class and does not propose a
+    replacement for one. ro_group is a sequence clustering of this set and is
+    documented as such in groups.yaml.
