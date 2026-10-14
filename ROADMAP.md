@@ -5,6 +5,51 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+64. **AKTIF BOLGE IMZASI -- katalitik triada gore GEOMETRIK hizalama.**
+    Kullanicinin onerisi ve veritabaninin bugunku en zayif noktasini tam
+    hedefliyor.
+
+    FIKIR. Katalitik merkez (2-His-1-karboksilat) butun RO'larda degismez.
+    O halde dizi hizalamasi yerine ONU capa yap: 3B yapilarda triada gore
+    superpoze et, triadin 8-10 A cevresindeki kalintilari al, ve hem KIMLIK
+    farklarini hem KONUMSAL kaymalari olc. Cikarilacak sey reaksiyon sinifi
+    ve substrat sinifi basina bir aktif bolge IMZASI.
+
+    NEDEN BU, DIZI HIZALAMASINDAN IYI. Kolon tabanli okuma bu veritabaninda
+    somut olarak kirildi: karboksilat kolonu referans seti 71'den 67'ye
+    dusunce 355'ten 360'a kaydi, ve karboksilat denetimi "eksik" denen 1.414
+    girisin %95'inde kolonun ve komsularinin TAMAMEN BOSLUK oldugunu buldu --
+    yani olculen sey biyoloji degil, hizalama kaymasiydi. Geometrik capa
+    indellerden etkilenmez. Ayrica capanin gercekten degismez oldugu olculdu:
+    o 1.414 girisin HEPSI iki katalitik histidini ve kopru aspartatini
+    tasiyor.
+
+    SINYAL VAR MI? Evet, olculdu. Ceb korunmasi bant bant ayrildiginda
+    olculebilir araliklarda ceb, protein ortalamasinin 0,15-0,35'i hizinda
+    degisiyor ve her tip ayni yonde (q=4,6e-05). Yani aktif bolgede
+    cikarilacak bir imza var; pooled olcum onu doyma yuzunden gizliyordu.
+
+    ELDE NE VAR. `active_site.py` zaten 5 A ve 8 A yaricaplarinda ceb
+    kalintilarini cikariyor, ligand ve elektrostatik bloklari var; 17 deneysel
+    yapi + 47 AlphaFold modeli ile 67 tipin 62'si kapsaniyor.
+
+    EKSIK OLAN UC SEY:
+      a. TRIADA GORE SUPERPOZISYON. Su an ceb, dizi kolonlarindan
+         tanimlaniyor; geometrik hizalama yok.
+      b. KONUMSAL KAYMA olcumu. Su an yalnizca kalinti KIMLIGI sayiliyor;
+         "ayni kalinti ama 2 A kaymis" bilgisi kayboluyor, oysa imzanin asil
+         bilgisi orada olabilir.
+      c. UYELERE TASIMA. Imza tip duzeyinde cikarilabilir (62 yapi), ama
+         11.422 uyenin hepsi katlanamaz. Tasima dizi uzerinden yapilacaksa
+         bu, kacinmaya calistigimiz kolon sorununu geri getirir -- ZAYIF
+         HALKA BURASI ve bastan boyle yazilmali.
+
+    BEKLENEN CIKTI: reaksiyon sinifi basina "bu kimyayi yapan enzimlerin
+    aktif bolgesinde su kalinti su konumda" turunden, literature
+    sunulabilecek bir tablo. Bugunku siniflandirma dizi benzerligine
+    dayaniyor; bu, MEKANIZMAYA dayanan bir siniflandirma olurdu.
+
+
 63. **YENI TIP EKLEME: modulerlik (kullanici acikca istedi).** Yeni Rieske'ler
     kesfedilecek; eklemek kolay ve modular olmali. Bugunku durum degil:
     bir tip `ROs_71_Clean/refs71.fasta` + `chemistry.csv` + (dolayli olarak)
