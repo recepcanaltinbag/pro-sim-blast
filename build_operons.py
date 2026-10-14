@@ -107,9 +107,26 @@ CREATE TABLE IF NOT EXISTS operon_gene (
 CREATE INDEX IF NOT EXISTS idx_og_cand ON operon_gene(candidate_id);
 CREATE INDEX IF NOT EXISTS idx_ro_cluster ON ro(ro_cluster, is_confirmed);
 CREATE INDEX IF NOT EXISTS idx_nb_nuc ON neighbor(nucleotide_id, start, end, strand);
-CREATE INDEX IF NOT EXISTS idx_roleaf_leaf ON ro_leaf(leaf_id);
 CREATE INDEX IF NOT EXISTS idx_nd_key  ON neighbor_domain(protein_key);
 """
+
+# ro_leaf bu adimin TABLOSU DEGIL -- recursive_homogenize.py kuruyor ve bu
+# script ondan once kosuyor. Sema icinde ona indeks kurmak, veritabani sifirdan
+# kuruldugunda "no such table: main.ro_leaf" ile duruyordu; yillardir fark
+# edilmemesinin sebebi tablonun onceki kosudan kalmis olmasiydi. Indeks hala
+# faydali, ama ancak tablo gercekten varsa kurulur ve sahibi degistiginde
+# sessizce yanlis yere dusmez.
+OPTIONAL_INDEXES = [
+    ("ro_leaf", "CREATE INDEX IF NOT EXISTS idx_roleaf_leaf ON ro_leaf(leaf_id)"),
+]
+
+
+def create_optional_indexes(connection):
+    have = {r[0] for r in connection.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'")}
+    for table, statement in OPTIONAL_INDEXES:
+        if table in have:
+            connection.execute(statement)
 
 
 def protein_key(nucleotide_id, start, end, strand):
@@ -399,6 +416,7 @@ def main():
 
     connection = sqlite3.connect(args.db)
     connection.executescript(SCHEMA)
+    create_optional_indexes(connection)
 
     if not args.operons_only:
         fill_ro_sequences(connection, os.path.join(args.context_dir, "ro_candidates.fasta"))
