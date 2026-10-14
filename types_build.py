@@ -45,6 +45,29 @@ CHEMISTRY = "chemistry.csv"
 REFS = "ROs_71_Clean/refs71.fasta"
 
 CLUSTER_RE = re.compile(r"^(\d+)_(\d+)_([A-Za-z0-9_]+)$")
+GROUPS_FILE = "groups.yaml"
+
+
+def known_groups(path=GROUPS_FILE):
+    """groups.yaml'daki grup kimlikleri. Dosya yoksa bos kume -- dogrulama
+    o zaman grup kontrolu yapmaz ve davranis eskisi gibi kalir."""
+    if not os.path.exists(path):
+        return set()
+    ids = set()
+    try:
+        import yaml
+        data = yaml.safe_load(open(path)) or {}
+        for g in data.get("groups") or []:
+            if g.get("id") is not None:
+                ids.add(str(g["id"]))
+        return ids
+    except ImportError:
+        pass
+    for line in open(path):
+        m = re.match(r"\s*-\s*id:\s*(\d+)", line)
+        if m:
+            ids.add(m.group(1))
+    return ids
 CHEMISTRY_FIELDS = ["cluster", "substrate_en", "substrate_smiles", "product_en",
                     "reaction", "reaction_class", "family", "pdb", "source",
                     "source_kind", "curation_confidence", "notes"]
@@ -90,9 +113,10 @@ def read_all(types_dir):
     return out
 
 
-def validate_set(manifests):
+def validate_set(manifests, groups=None):
     """Yalnizca BUTUN sete bakilarak gorulebilecek hatalar."""
     errors, warnings = [], []
+    groups = known_groups() if groups is None else groups
 
     by_cluster = defaultdict(list)
     for fname, m in manifests.items():
@@ -112,6 +136,13 @@ def validate_set(manifests):
         if m.get("group") and str(m["group"]).strip() != mm.group(1):
             errors.append(f"{cluster}: group alani {m['group']} ama kume adi "
                           f"{mm.group(1)} diyor")
+        # Grup groups.yaml'da TANIMLI olmali. Yoksa kume kimliginin ilk hanesi
+        # sessizce yeni bir grup icat eder ve hicbir yerde ne oldugu yazmaz --
+        # gruplarin bugune kadarki hali tam olarak buydu.
+        if groups and mm.group(1) not in groups:
+            errors.append(f"{cluster}: grup {mm.group(1)} {GROUPS_FILE} "
+                          f"icinde tanimli degil. Once orada tanimla "
+                          f"(etiket ve gerekcesiyle), sonra tip ekle")
         for field in REQUIRED:
             if not str(m.get(field) or "").strip():
                 errors.append(f"{cluster}: zorunlu alan bos -- {field}")

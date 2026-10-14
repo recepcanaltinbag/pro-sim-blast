@@ -1,0 +1,99 @@
+# RO gruplari -- kimlik, etiket ve gerekce.
+#
+# NEDEN BU DOSYA VAR. Gruplar bu veritabaninda kume kimliginin ilk hanesi
+# olarak yasiyordu ve BASKA HICBIR YERDE tanimli degillerdi: sitede "group 1"
+# diye geciyor, ne oldugunu soyleyen bir satir yok. Yeni bir grup eklemek de
+# bu yuzden belirsizdi.
+#
+# ETIKETLER VERIDEN TURETILDI, uydurulmadi. Her satirin altindaki sayilar
+# 2026-10-14 tarihli veritabanindan olculmustur (19.074 dogrulanmis giris).
+# Bunlar bir SINIFLANDIRMA IDDIASI DEGIL -- yayimlanmis Batie ya da Kweon
+# semalarina karsilik geldigi one surulmuyor; yalnizca bu sette her grubun
+# ne icerdigini ozetliyorlar.
+#
+# ONEMLI: grup, canlI alemine gore DEGIL. Bitki kolin monooksijenazlari
+# (CmoS, CmoB, CmoA) okaryottur ve grup 5'tedir. Grup 6 "okaryot grubu"
+# degildir; hizalanabilirlige gore ayrilmistir -- asagida yaziyor.
+
+groups:
+  - id: 1
+    label: "Alkaloid and aryl-ether monooxygenases"
+    architecture: "alpha3"
+    beta_rate: 0.01
+    members: 5746
+    types: 14
+    dominant_reactions: [hydroxylation, N_demethylation]
+    dominant_families: [alkaloids, biaryls_ethers]
+
+  - id: 2
+    label: "Biphenyl and alkylbenzene dioxygenases"
+    architecture: "alpha3beta3"
+    beta_rate: 0.80
+    members: 759
+    types: 17
+    dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
+    dominant_families: [biaryls_ethers, alkylbenzenes]
+
+  - id: 3
+    label: "Polycyclic aromatic and nitroarene dioxygenases"
+    architecture: "mixed"
+    beta_rate: 0.27
+    members: 3238
+    types: 17
+    dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
+    dominant_families: [pah, nitroaromatics]
+
+  - id: 4
+    label: "Aromatic acid and aniline dioxygenases"
+    architecture: "alpha3beta3"
+    beta_rate: 0.76
+    members: 3784
+    types: 11
+    dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
+    dominant_families: [aromatic_acids, anilines]
+
+  - id: 5
+    label: "Quaternary amine oxygenases"
+    architecture: "alpha3"
+    beta_rate: 0.00
+    members: 5547
+    types: 8
+    dominant_reactions: [hydroxylation, N_demethylation, C_N_cleavage]
+    dominant_families: [quaternary_amines]
+    note: >
+      The cleanest group in the set: all eight types act on quaternary amines,
+      and not one member carries a beta subunit. It also holds the plant
+      choline monooxygenases, which is why membership of a group is not a
+      statement about the domain of life.
+
+  - id: 6
+    label: "Plastid chlorophyll-pathway oxygenases"
+    architecture: "alpha3"
+    beta_rate: null
+    members: 0
+    types: 0
+    dominant_reactions: [oxygenolytic_ring_opening, hydroxylation]
+    dominant_families: [chlorophyll_pathway]
+    added_on: 2026-10-14
+    note: >
+      Added for pheophorbide a oxygenase, chlorophyllide a oxygenase and
+      PTC52 -- plastid enzymes of chlorophyll metabolism.
+
+      Separated on ALIGNABILITY, not on domain of life. No existing reference
+      aligns to them beyond the Rieske domain: the best hits cover only 30-34 %
+      of the query, which is the sequence-level form of what the carboxylate
+      audit found structurally, where a C-terminal catalytic-lobe probe scored
+      on 2.7 % of this set against 57.7 % of ordinary members. Folding them
+      into group 1 would redefine that group's alignment columns using
+      sequences that cannot be aligned over the catalytic lobe, which is the
+      exact fault that made 1,388 carboxylates read as absent when they were
+      present.
+
+      They are 23-32 % identical to one another over 57-87 % of their length,
+      so they form a family rather than a set of singletons, and none carries
+      a beta subunit.
+
+      NOT called "the eukaryotic group" on purpose: CmoS, CmoB and CmoA are
+      eukaryotic and belong to group 5, and Nvd and DAF-36 are animal sterol
+      desaturases that align full length to group 3. A label by domain of life
+      would contradict the data.
