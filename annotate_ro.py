@@ -41,16 +41,39 @@ def main():
     domtbl = os.path.join(args.context_dir, "cand_dom.out")
     stockholm = os.path.join(args.context_dir, "cand_aln.sto")
 
-    if not os.path.exists(domtbl) or os.path.getsize(domtbl) == 0:
+    # ATLAMA KURALI: dosyanin VAR OLMASI degil, GUNCEL olmasi.
+    #
+    # Olculdu ve pahaliya mal oldu: bu iki ara dosya 21 Temmuz'dan kalmisti,
+    # aday fastasi ise 9 Ekim'de yeniden uretilmisti. Script ikisinin de
+    # "zaten var" oldugunu gorup hmmsearch'u atladi, 26.693 yeni adayi
+    # 14.229 adaylik eski taramanin sonucuyla eslestirmeye calisti ve
+    # DOGRULANMIS RO: 0 yazdi. Hicbir sey hata vermedi.
+    #
+    # Artik ara dosya, girdilerinden (aday fastasi ve ilgili HMM) HERHANGI
+    # biri daha yeniyse yeniden uretilir.
+    def stale(output, *inputs):
+        if not os.path.exists(output) or os.path.getsize(output) == 0:
+            return "yok"
+        out_age = os.path.getmtime(output)
+        newer = [p for p in inputs
+                 if os.path.exists(p) and os.path.getmtime(p) > out_age]
+        return ("girdi daha yeni: " + ", ".join(os.path.basename(p)
+                                                for p in newer)) if newer else None
+
+    why = stale(domtbl, fasta, args.cluster_hmm)
+    if why:
+        print(f"[uretiliyor] {domtbl} ({why})")
         run(["hmmsearch", "--domtblout", domtbl, "--noali", "--cpu", str(args.cpu),
              "-E", "1e-5", args.cluster_hmm, fasta])
     else:
-        print(f"[atlandi] {domtbl} zaten var")
+        print(f"[atlandi] {domtbl} guncel")
 
-    if not os.path.exists(stockholm) or os.path.getsize(stockholm) == 0:
+    why = stale(stockholm, fasta, args.motif_hmm)
+    if why:
+        print(f"[uretiliyor] {stockholm} ({why})")
         run(["hmmalign", "--trim", "--amino", "-o", stockholm, args.motif_hmm, fasta])
     else:
-        print(f"[atlandi] {stockholm} zaten var")
+        print(f"[atlandi] {stockholm} guncel")
 
     print("[parse] domtblout")
     hits = parse_domtblout(domtbl)

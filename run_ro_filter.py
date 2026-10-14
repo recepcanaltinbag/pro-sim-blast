@@ -26,10 +26,24 @@ from ro_filter import (parse_domtblout, classify_target, DEFAULT_MIN_COVERAGE,
 
 
 def run_hmmsearch(hmm_file, fasta_file, domtblout, cpu, evalue):
-    """Tek hmmsearch cagrisi. Cikti dosyasi varsa yeniden calistirmaz."""
+    """Tek hmmsearch cagrisi. Cikti GUNCEL ise yeniden calistirmaz.
+
+    "Var mi" degil "guncel mi" diye bakar. Eski surum varliga bakiyordu ve
+    bu, ayni gun annotate_ro.py'de olculen hatanin aynisiydi: profil
+    kutuphanesi 71'den 67 modele dusurulmustu ama ro_domtbl.out uc ay
+    oncesinden duruyordu, ve tarama sessizce atlanacakti -- yani atama
+    artik var olmayan referanslara gore yapilacakti.
+    """
     if os.path.exists(domtblout) and os.path.getsize(domtblout) > 0:
-        print(f"[atlandi] {domtblout} zaten var, hmmsearch tekrar calistirilmadi.")
-        return
+        out_age = os.path.getmtime(domtblout)
+        newer = [p for p in (hmm_file, fasta_file)
+                 if os.path.exists(p) and os.path.getmtime(p) > out_age]
+        if not newer:
+            print(f"[atlandi] {domtblout} guncel, hmmsearch tekrar "
+                  f"calistirilmadi.")
+            return
+        print(f"[uretiliyor] {domtblout} (girdi daha yeni: "
+              + ", ".join(os.path.basename(p) for p in newer) + ")")
 
     command = [
         "hmmsearch",
