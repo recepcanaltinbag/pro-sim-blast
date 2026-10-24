@@ -12,7 +12,7 @@
   <dt>Signature neighbours</dt><dd>{{ leaf.neighbor_signature or '–' }}</dd>
   <dt>Enriched categories</dt><dd>{{ leaf.enriched_categories or '–' }}</dd>
   <dt>Plasmid / transposon rate</dt><dd>{{ '%.0f%%' % (100 * (leaf.plasmid_rate or 0)) }} / {{ '%.0f%%' % (100 * (leaf.transposon_rate or 0)) }}</dd>
-  <dt>Representative</dt><dd><a href="{{ u('/ro/' ~ slug(leaf.representative)) }}">{{ leaf.representative }}</a></dd>
+  <dt>Representative</dt><dd><a href="{{ entry_href(leaf.representative) }}">{{ leaf.representative }}</a></dd>
 </dl>
 {% if static_mode %}
 <p class="note">Per-variant FASTA files are not published on the static site. The

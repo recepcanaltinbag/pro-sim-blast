@@ -1,0 +1,17 @@
+cluster: 4_412_BZDO
+gene: BenA
+group: 4
+substrate_en: benzoate
+substrate_smiles: OC(=O)c1ccccc1
+product_en: cis-1,2-dihydroxycyclohexa-3,5-diene-1-carboxylate (benzoate cis-diol)
+reaction: cis-dihydroxylation of benzoate at C1 and C2
+reaction_class: cis_dihydroxylation
+family: aromatic_acids
+pdb: 
+source: UniProt P07769 (BENA_ACIAD, reviewed), Acinetobacter baylyi ADP1 benzoate 1,2-dioxygenase subunit alpha, EC 1.14.12.10; proposed as a new type by analysis_out/literature_harvest.json finding NT-13 (Batie class IB), genetics in Neidle et al. 1991
+source_kind: paper
+curation_confidence: high
+notes: RECOMMENDATION IS HOLD, and the reason is chemistry, not sequence quality. The sequence is a reviewed entry with an EC number and the motifs are clean, but 4_411_XylX already in this set has substrate_en "toluate and benzoate" -- so this candidate adds a distinct 66%-identity sequence type and the Batie class IB architecture, NOT a reaction the set is missing. The harvest's own note that NT-13 names no organism is resolved here from the cited genetics work (Acinetobacter, and the reviewed entry is Acinetobacter baylyi ADP1). No structure exists for BenAB; the unmapped 3GZY in reference_structures.csv is a different enzyme (BPDO of Comamonas testosteroni B-356).
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MPRIPVINTSHLDRIDELLVDNTETGEFKLHRSVFTDQALFDLEMKYIFEGNWVYLAHESQIPNNNDYYTTYIGRQPILIARNRNGELNAMINACSHRGAQLCRHKRGNKTTYTCPFHGWTFNNSGKLLKVKDPSDAGYSDCFNQDGSHDLKKVARFESYKGFLFGSLNPDVPSLQEFLGETTKIIDMIVGQSDQGLEVLRGVSTYTYEGNWKLTAENGADGYHVSAVHWNYAATTQHRKEKQAGDTIRAMSAGSWGKHGGGSYGFEHGHMLLWTQWGNPEDRPNFPKAAEYTEKFGAAMSKWMIERSRNLCLYPNVYLMDQFGSQIRVLRPISVNKTEVTIYCIAPVGEAPEARARRIRQYEDFFNASGMATPDDLEEFRACQAGYAGIELEWNDMCRGSKHWIYGPDDAANEIGLKPAISGIKTEDEGLYLAQHQYWLKSMKQAIAAEKEFASRQGENA

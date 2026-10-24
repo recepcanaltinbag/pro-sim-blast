@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Predicted archaeal and fungal Rieske oxygenases{% endblock %}
+{% set page_id = 'predictions' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+<h1>Predicted Rieske oxygenases in archaea and fungi</h1>
+<p class="lede">No archaeal or fungal Rieske oxygenase has ever been characterised
+experimentally. This page is what sequence analysis finds anyway: {{ pr.counts.archaeal }}
+archaeal and {{ pr.counts.fungal }} fungal proteins that carry the complete catalytic apparatus
+of the family. Not one of them has been purified, assayed, or shown to turn over a substrate.
+They are predictions, and the page is built so that they cannot be mistaken for anything else.</p>
+
+<div class="caveat caveat--warn">
+  <b>Nothing on this page is part of the curated set.</b> {{ pr.rule }}. No prediction is
+  assigned an <code>ro_group</code>, none seeds a profile, and none is counted in any figure,
+  ratio or q-value elsewhere in this database. A prediction moves into the curated set only when
+  experimental evidence is published, and then it passes the ordinary admission gates rather than
+  living here.
+</div>
+
+<h2>1 &middot; Why the test can be believed</h2>
+<p>The claim rests on one thing: a protein is called a Rieske oxygenase only if all four Rieske
+ligands <em>and</em> the mononuclear 2-His-1-carboxylate triad sit at the model's derived
+columns. The discriminating power of that rule was measured in the same run, on controls, and
+the negative controls are the important half.</p>
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr><th>Control set</th><th class="num">n</th><th class="num">4/4 Rieske</th>
+  <th class="num">3/3 catalytic</th><th class="num">passes</th></tr></thead>
+  <tbody>
+  <tr><td>{{ pr.controls.positive.set }} <span class="chip chip--ok">positive</span></td>
+    <td class="num">{{ pr.controls.positive.n }}</td>
+    <td class="num">{{ pr.controls.positive.four_of_four_rieske }}</td>
+    <td class="num">{{ pr.controls.positive.three_of_three_catalytic }}</td>
+    <td class="num"><b>{{ pr.controls.positive.passes }}</b></td></tr>
+  {% for c in pr.controls.negative %}
+  <tr><td>{{ c.set }} <span class="chip chip--bad">negative</span></td>
+    <td class="num">{{ c.n }}</td>
+    <td class="num">{{ c.four_of_four_rieske }}</td>
+    <td class="num">{{ c.three_of_three_catalytic if c.three_of_three_catalytic is not none else '–' }}</td>
+    <td class="num"><b>{{ c.passes }}</b></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<p class="note">{{ pr.controls.interpretation }}</p>
+
+<div class="caveat">
+  <b>Low coverage is not a negative.</b> {{ pr.coverage_rule.rule }}
+  This was not a precaution in principle; it was measured. {{ pr.coverage_rule.case }}
+  Every row in the downloadable tables therefore carries its coverage beside its motif score,
+  and the two are meant to be read together.
+</div>
+
+<h2>2 &middot; Archaea</h2>
+<p>{{ pr.archaea.strict_pass }} of {{ pr.archaea.of }} archaeal Rieske-domain proteins pass the
+strict criterion, at {{ pr.archaea.length_range_aa[0] }}&ndash;{{ pr.archaea.length_range_aa[1] }}
+residues (median {{ pr.archaea.length_median_aa }}). Every one of them carries the bridging
+aspartate. Every one of them is also labelled
+{% for k, v in pr.archaea.protein_existence.items() %}{% if not loop.first %}, {% endif %}<i>{{ k }}</i> ({{ v }}){% endfor %} &mdash;
+that is, there is no experimental evidence anywhere in this set.</p>
+
+<dl class="kv">
+  <dt>Phyla</dt><dd>{% for k, v in pr.archaea.phyla.items() %}{% if not loop.first %} · {% endif %}{{ k }} <b>{{ v }}</b>{% endfor %}</dd>
+  <dt>Identity to the curated references</dt>
+  <dd>median {{ pr.archaea.identity_to_curated_refs.median }} %, range
+      {{ pr.archaea.identity_to_curated_refs.min }}&ndash;{{ pr.archaea.identity_to_curated_refs.max }} %</dd>
+  <dt>Nearest reference by group</dt>
+  <dd>{% for g, n in pr.archaea.nearest_refs.by_group.items() %}{% if not loop.first %} · {% endif %}group {{ g }}: <b>{{ n }}</b>{% endfor %}
+      <span class="note">{{ pr.archaea.nearest_refs.summary }}</span></dd>
+</dl>
+
+<h3>Not a recent transfer from bacteria</h3>
+<p>{{ pr.archaea.hgt_test.question }} The 109 sequences were compared against
+{{ pr.archaea.hgt_test.db }}. The nearest bacterium is
+{{ pr.archaea.hgt_test.identity.median }} % identical at the median and
+{{ pr.archaea.hgt_test.identity.max }} % at most;
+{{ pr.archaea.hgt_test.identity.ge70 }} exceed 70 % and
+{{ pr.archaea.hgt_test.identity.ge90 }} exceed 90 %. A recent transfer
+would have left near-identical bacterial copies, and there are none.</p>
+
+<h3>But not one lineage either</h3>
+<p>This was the result that did not go as expected. The tree holds the 109 archaeal sequences,
+the curated references and 281 bacterial Rieske oxygenases. The archaeal proteins do
+<b>not</b> form a single clade: they split into
+{{ pr.archaea.phylogeny.n_clusters }} pure clusters, each well supported within
+itself, and <em>each with a bacterial sister group</em>. Halobacteria alone shows at least two
+independent acquisitions.</p>
+
+<div class="tablewrap">
+<table class="data compact">
+  <thead><tr><th class="num">n</th><th>Members</th><th class="num">cluster support</th>
+  <th>Sister group</th><th class="num">node support</th></tr></thead>
+  <tbody>
+  {% for c in pr.archaea.phylogeny.clusters %}
+  <tr><td class="num">{{ c.n }}</td><td class="small">{{ c.members or '–' }}</td>
+    <td class="num">{{ c.support }}</td>
+    <td class="small">{{ c.sister or '–' }}</td>
+    <td class="num">{{ c.sister_node_support if c.sister_node_support is not none else '–' }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<p class="note">{{ pr.archaea.phylogeny.support_note }}</p>
+
+<h2>3 &middot; Fungi</h2>
+<p>{{ pr.fungi.strict_pass }} of {{ pr.fungi.of }} pass, at median
+{{ pr.fungi.identity_to_curated_refs.median }} % identity to the nearest curated reference
+(maximum {{ pr.fungi.identity_to_curated_refs.max }} %, none above 50 %).</p>
+<p>{{ pr.fungi.pattern }}</p>
+<p class="note">{{ pr.fungi.note }}</p>
+
+<h2>4 &middot; What may and may not be said</h2>
+<div class="cols">
+  <div>
+    <h3>Supported</h3>
+    <ul>{% for x in pr.archaea.supported %}<li>{{ x }}</li>{% endfor %}</ul>
+  </div>
+  <div>
+    <h3>Not supported</h3>
+    <ul>{% for x in pr.archaea.not_supported %}<li>{{ x }}</li>{% endfor %}</ul>
+  </div>
+</div>
+
+{% if pr.correction %}
+{% set corr = pr.correction %}
+<div class="caveat caveat--warn">
+  <b>Two numbers on this page were reported wrongly first and have been corrected.</b>
+  <ul>{% for w in corr.what_was_wrong %}<li>{{ w }}</li>{% endfor %}</ul>
+  <p><b>Cause.</b> {{ corr.cause }}</p>
+  <p><b>What this costs the argument.</b> {{ corr.consequence }}</p>
+  <p class="note">Still standing: {{ corr.still_valid|join('; ') }}.</p>
+</div>
+{% endif %}
+
+<h2>5 &middot; The data</h2>
+<p>Every prediction, with its organism, phylum, length, evidence level, motif score,
+<b>coverage</b>, nearest curated reference and nearest bacterium:</p>
+<p class="dl">
+  <a class="btn" href="{{ u('/download/predictions/archaeal.tsv') }}">archaeal.tsv ({{ pr.counts.archaeal }} rows)</a>
+  <a class="btn" href="{{ u('/download/predictions/fungal.tsv') }}">fungal.tsv ({{ pr.counts.fungal }} rows)</a>
+  <a class="btn" href="{{ u('/download/predictions/predictions.json') }}">predictions.json</a>
+</p>
+<p class="note">Next, to settle the archaeal question: {{ pr.archaea.next_steps }}.
+Generated {{ pr.generated }}.</p>
+{% endblock %}

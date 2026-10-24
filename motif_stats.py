@@ -65,6 +65,11 @@ def main():
     ap.add_argument("--db", default="roar.sqlite")
     ap.add_argument("--alignment", default="genomic_context/cand_aln.sto")
     ap.add_argument("--out", default="analysis_out/motif_stats.json")
+    # Referans setinin KENDI dagilimi. Daha once bu, sayfalarda elle yazili bir
+    # cumleydi ("70 of 71 Asp, one Asn, no Glu") ve referans seti 75'e cikinca
+    # sessizce yanlisa dustu: olculen dagilim E=45, D=28. Artik veriden gelir.
+    ap.add_argument("--ref-alignment",
+                    default="ROs_71_Clean/ROmotif71_hmmaln.sto")
     args = ap.parse_args()
 
     con = sqlite3.connect(args.db)
@@ -108,6 +113,23 @@ def main():
         cluster_of[cid] = cluster
     con2.close()
 
+    # Kuratorlu referanslarin kendi dagilimi (ayri hizalama dosyasi).
+    ref_dist = {}
+    if args.ref_alignment and os.path.exists(args.ref_alignment):
+        ref_seqs = read_stockholm_matchcols(args.ref_alignment)
+        for label, column in (("catalytic_iron", CATALYTIC_SITES[-1][0]),
+                              ("bridging", BRIDGING_SITE[0])):
+            c = Counter()
+            for seq in ref_seqs.values():
+                c[seq[column - 1] if len(seq) >= column else "-"] += 1
+            ref_dist[label] = {"n": len(ref_seqs), "column": column,
+                               "residues": dict(c.most_common()),
+                               "asp": c["D"], "glu": c["E"],
+                               "gap": c["-"],
+                               "other": len(ref_seqs) - c["D"] - c["E"] - c["-"]}
+    else:
+        print(f"[uyari] referans hizalamasi yok: {args.ref_alignment}")
+
     carbox = {}
     for label, column in (("catalytic_iron", CATALYTIC_SITES[-1][0]),
                           ("bridging", BRIDGING_SITE[0])):
@@ -128,6 +150,7 @@ def main():
             "asp_to_glu": round(asp / glu, 1) if glu else None,
             "with_carboxylate": asp + glu,
             "offset_distribution": dict(offsets),
+            "references": ref_dist.get(label),
             "glu_clusters": sorted(
                 ({"cluster": c, "glu": v["E"], "n": sum(v.values()),
                   "fraction": round(v["E"] / sum(v.values()), 4)}

@@ -1,0 +1,17 @@
+cluster: 1_116_GdmA
+gene: GdmA
+group: 1
+substrate_en: guaiacol (2-methoxyphenol)
+substrate_smiles: COc1ccccc1O
+product_en: catechol and formaldehyde
+reaction: O-demethylation of the aryl methyl ether of guaiacol
+reaction_class: O_demethylation
+family: biaryls_ethers
+pdb: 7QWT
+source: 'PDB 7QWT, Rieske non-heme iron monooxygenase for guaiacol O-demethylation, Rhizorhabdus wittichii RW1; doi:10.1016/j.checat.2022.04.019; listed as unmapped in this repo''s reference_structures.csv (best existing reference 1_107_CndA at 34.5%)'
+source_kind: structure+paper
+curation_confidence: high
+notes: 'The best-evidenced candidate in this batch: a deposited structure, a primary paper, and a UniProt sequence. LENGTH DISCREPANCY, recorded rather than smoothed over: UniProt A0A9J9HDN6 (gene Swit_3266) is 353 aa, while the 7QWT entity as quoted in reference_structures.csv is 373 aa -- a 20-residue difference consistent with an expression tag on the crystallised construct. The 353 aa UniProt sequence is stored here because it is the native protein; this was NOT confirmed against the RCSB entity sequence, since network use in this session was limited to UniProt and NCBI. This is the same class of trap that retired 1_115_NdmC (a tag-trimmed crystal construct stored as if it were the native enzyme), so a curator should check the 20 residues before admission. The 9 chains in 7QWT are three alpha3 trimers.'
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MGSTFECLKRAWYVAAMSSEVEGEALFHRRILGTSVMIYRLADGTPVAMHDRCPHRFAPLHLGQREGDEIACRYHALRFDADGRCTHNPHGNGRIPDAARVRRFPLLERYGFLWIWMDDSDPDPALLPDFSPLEEGHPNAVAQTYMHMDVNYELIIDNVMDLSHIDHVHGEIITTRGQLSPVVPKVRERDTHISARWEWSQTPAMMIFAPFLPRPEDAARHYFDISWTAPANIQLSVGAVQDSDDFGDATSQYDLHTCTPEDAFKTHYFFATRRNHIVDDADYNRKKIEAMHAAFETEDGPIITAVQEEMGEAEFFSLDPVLMSNDVAPVKVRRRLRRMIVEEQAAAAAADAA

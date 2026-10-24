@@ -15,7 +15,7 @@
   <tbody>
   {% for m in members %}
   <tr>
-    <td><a href="{{ u('/ro/' ~ slug(m.candidate_id)) }}">{{ m.protein_id or m.locus_tag or m.candidate_id }}</a>
+    <td><a href="{{ entry_href(m.candidate_id) }}">{{ m.protein_id or m.locus_tag or m.candidate_id }}</a>
         {% if m.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
     <td><i>{{ m.organism }}</i></td>
     <td class="small">{{ m.product }}</td>

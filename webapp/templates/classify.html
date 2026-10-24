@@ -2,7 +2,7 @@
 {% block title %}Classify a sequence{% endblock %}
 {% block body %}
 <h1>Classify protein sequences</h1>
-<p class="muted">Paste up to 50 protein sequences (FASTA). Each is searched against the 71 reference RO profiles
+<p class="muted">Paste up to 50 protein sequences (FASTA). Each is searched against the {{ N_REFS }} reference RO profiles
 (hmmsearch, best bit score with model coverage ≥ 0.45) and aligned to the catalytic-centre model to check the
 Rieske ligands (C-x-H…C-x-x-H) and the mononuclear-iron triad (His, His, Asp/Glu). This is the same test every
 database entry passed.</p>

@@ -1,0 +1,19 @@
+cluster: 6_603_PTC52
+gene: PTC52
+group: 6
+substrate_en: protochlorophyllide a
+substrate_smiles: 
+product_en: protochlorophyllide b
+reaction: 'oxygenation of the C7 methyl group of protochlorophyllide a to the C7 formyl group, proposed to drive protochlorophyllide-dependent import of the NADPH:protochlorophyllide oxidoreductase A precursor'
+reaction_class: hydroxylation
+family: tetrapyrroles
+pdb: 
+source: 'UniProt Q8W496 (PTC52_ARATH, reviewed), Arabidopsis thaliana protochlorophyllide-dependent translocon component 52 / ACD1-like / TIC55-IV, EC 1.14.15.- Islevsel karakterizasyon: Bartsch et al., Proc Natl Acad Sci U S A 2008;105:4933-4938, doi:10.1073/pnas.0800378105'
+source_kind: general
+curation_confidence: medium
+notes: 'This is the family behind the largest eukaryotic block in the audit (NCBI calls them "protochlorophyllide-dependent translocon component 52, chloroplastic-like", 4 of the 23 eukaryotic residual entries, three of them Phoenix dactylifera isoforms). curation_confidence is MEDIUM, not high, on purpose: UniProt gives only EC 1.14.15.- with no committed substrate, and the protochlorophyllide a -> b assignment comes from in-organello import work rather than from a clean in vitro turnover. If the curator wants a strictly defensible entry, substrate_en should read "protochlorophyllide a (proposed)". substrate_smiles EMPTY, same reason as PAO and CAO. family "chlorophyll_pathway" is NEW vocabulary. The family field was changed from ''chlorophyll_pathway'' to ''tetrapyrroles'' on 2026-10-16. Every other member of that vocabulary names the chemical class of the substrate (alkylbenzenes, quaternary_amines, terpenoids_steroids), whereas ''chlorophyll_pathway'' named a pathway. The substrate here is a chlorin, that is a reduced tetrapyrrole, so the chemical class is the consistent label; the pathway is already recorded by the group 6 assignment.'
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+citations:
+  - bartsch2008_ptc52
+sequence: MEAALAACALPSLRILNTKPRFRCSFSNPSLPISPNSLITRKSSRFTTAVSSPPSSSAATSTNSPPEPEALFEPGSDKFDWYANWYPVMPICDLDKKVPHGKKVMGIDLVVWWDRNEKQWKVMDDTCPHRLAPLSDGRIDQWGRLQCVYHGWCFNGSGDCKLIPQAPPDGPPVHTFKQACVAVYPSTVQHEIIWFWPNSDPKYKNIIETNKPPYIPELEDPSFTKLMGNRDIPYGYDVLVENLMDPAHVPYAHYGLMRFPKPKGKYIICISNSCFNPFTNLQILLAEKIDREGGKPLEINVKKLDNKGFFSKQEWGYSNFIAPCVYRSSTDPLPEQEHEYPAPAASDKAALSKRRLSLIFICIPVSPGRSRLIWTFPRNFGVFIDKIVPRWVFHIGQNTILDSDLHLLHVEERKILERGPENWQKACFIPTKSDANVVTFRRWFNKYSEARVDWRGKFDPFLLPPTPPREQLFDRYWSHVENCSSCKKAHKYLNALEVILQIASVAMIGVMAVLKQTTMSNVARIAVLVAAVLSFAASKWLSHFIYKTFHYHDYNHAVV

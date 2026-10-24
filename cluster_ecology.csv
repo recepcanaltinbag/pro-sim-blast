@@ -13,7 +13,9 @@ cluster,substrate,substrate_class,ecology_note,confidence
 1_112_NdmA,caffeine,natural_specialized,N-demethylase of a purine alkaloid,high
 1_113_CdnA,caffeine and methylxanthines,natural_specialized,,medium
 1_114_NdmB,caffeine,natural_specialized,N3-demethylase,high
-1_115_NdmC,7-methylxanthine,natural_specialized,N7-demethylase,high
+1_116_GdmA,guaiacol (2-methoxyphenol),natural_aromatic,Lignin-derived methoxyphenol. O-demethylation releases methanol and catechol and is a common entry step into bacterial catabolism of lignin monomers.,high
+1_117_PrnD,aminopyrrolnitrin,natural_specialized,"Intermediate of pyrrolnitrin biosynthesis in Pseudomonas. The six-electron aryl-amine to aryl-nitro oxidation is the final tailoring step of a bacterial antifungal, so this is a biosynthetic enzyme, not a degradative one.",high
+1_118_RedG,undecylprodigiosin,natural_specialized,Prodiginine alkaloid of Streptomyces. RedG carbocyclises an alkyl-chain carbon onto the ring to give streptorubin B; C-C bond formation rather than oxygen insertion into a product.,high
 2_201_BphA1,biphenyl,xenobiotic,Entry enzyme of PCB degradation; the bph operon is classically mobile,high
 2_202_EdoA1,ethylbenzene,xenobiotic,,medium
 2_203_cumA1,cumene,xenobiotic,Isopropylbenzene,high
@@ -34,7 +36,6 @@ cluster,substrate,substrate_class,ecology_note,confidence
 3_301_PhnA1a,phenanthrene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_302_DitA,dehydroabietate,natural_specialized,Conifer resin acid; degradation of a plant defence compound,high
 3_303_NBDO,nitrobenzene,xenobiotic,Nitroaromatic,high
-3_304_OMO,"2-oxo-1,2-dihydroquinoline",natural_aromatic,Same enzyme as the reference entered as OxoO; see that entry. Class assignment shares its ambiguity.,medium
 3_305_ArhA1,polycyclic aromatic hydrocarbons,xenobiotic,,medium
 3_306_3NTDO,3-nitrotoluene,xenobiotic,Nitroaromatic and explosives residue,high
 3_307_NagGH,naphthalene-2-sulfonate,xenobiotic,Dye industry intermediate,high
@@ -44,13 +45,13 @@ cluster,substrate,substrate_class,ecology_note,confidence
 3_311_PhtAa,phthalate,xenobiotic,Plasticiser,high
 3_312_NinA,nitroaromatic compounds,xenobiotic,,medium
 3_313_KshA15,3-ketosteroid,natural_specialized,Cholesterol and steroid degradation; linked to Mycobacterium virulence and chromosomally encoded,high
-3_314_NDO,naphthalene,xenobiotic,Polycyclic aromatic hydrocarbon,high
-3_315_NDO,naphthalene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_316_NarAa,naphthalene,xenobiotic,Rhodococcus nar pathway,high
 3_317_NidA,pyrene,xenobiotic,High molecular weight polycyclic aromatic hydrocarbon,high
 3_318_NidA,pyrene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_319_PhdA,phenanthrene,xenobiotic,Polycyclic aromatic hydrocarbon,high
 3_320_NidA3,polycyclic aromatic hydrocarbons,xenobiotic,,medium
+3_321_Nvd,cholesterol,natural_specialized,Insect host sterol. Neverland performs the C7-C8 desaturation that commits cholesterol to ecdysteroid (moulting hormone) biosynthesis. An animal biosynthetic enzyme; it carries no beta subunit and does not degrade a pollutant.,high
+3_322_DAF36,cholesterol,natural_specialized,"The same C7-C8 desaturation as Neverland, in Caenorhabditis elegans, where it commits cholesterol to dafachronic acid and so to the dauer-formation decision.",high
 4_401_CmtAb,p-cumate,xenobiotic,,high
 4_402_PsbAb,4-sulfobenzoate,xenobiotic,"4-sulfobenzoate, a sulfonated aromatic of industrial origin; released sulfite enters sulfur metabolism.",high
 4_403_AtdA,aniline,xenobiotic,Dye and pesticide intermediate,high
@@ -70,3 +71,7 @@ cluster,substrate,substrate_class,ecology_note,confidence
 5_506_Stc2,stachydrine,natural_specialized,Plant betaine (proline betaine) in the rhizosphere,high
 5_507_BmoA,glycine betaine,natural_specialized,,medium
 5_508_GbcA,glycine betaine,natural_specialized,Osmolyte demethylation; the Pseudomonas gbc pathway,high
+6_601_PAO,pheophorbide a,natural_specialized,Chlorophyll catabolite in senescing plant plastids. Opening the chlorin macrocycle is the committed step of chlorophyll breakdown and is required to avoid phototoxic intermediates. Plastid enzyme; aligns to this set only over the Rieske domain.,high
+6_602_CAO,chlorophyllide a,natural_specialized,"Plastid enzyme of chlorophyll b biosynthesis. Two successive hydroxylations turn the C7 methyl into a formyl group, which is exactly what distinguishes chlorophyll b from chlorophyll a.",high
+6_603_PTC52,protochlorophyllide a,natural_specialized,"Plastid inner-envelope enzyme, proposed to oxidise the C7 methyl of protochlorophyllide and to be coupled to protein import across the envelope. Its physiological role is less firmly established than that of PAO or CAO, hence medium confidence.",medium
+7_701_AerC,N4-isopentenylagmatine,natural_specialized,"Biosynthetic intermediate of the aeruginosins, cyanobacterial peptides whose protease-inhibitory activity depends on the unusual arginine derivative Aeap. AerC builds the pyrroline ring of Aeap from the prenylated agmatine made by Aer3, so this is a biosynthetic enzyme in a secondary metabolite pathway, not a degradative one. The set reaches cyanobacteria otherwise only through SxtT and GxtA.",high

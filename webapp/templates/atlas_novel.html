@@ -6,7 +6,7 @@
 
 <h1>Proteins with no close characterised relative</h1>
 <p class="lede">These are confirmed Rieske oxygenase alpha subunits that no curated enzyme explains.
-Each has both metal centres complete, yet is less than 25 % identical to every one of the 71
+Each has both metal centres complete, yet is less than 25 % identical to every one of the {{ N_REFS }}
 characterised references. They are the places where this family still has unknown chemistry.</p>
 
 {% if budget %}
@@ -18,7 +18,7 @@ the most generous. They differ in what counts as "new", not in the data.</p>
 <thead><tr><th>Reading</th><th>What it counts</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
 <tbody>
 <tr><td>Most cautious</td>
-  <td class="small">No characterised relative at all, under 25 % identity to any of the 71</td>
+  <td class="small">No characterised relative at all, under 25 % identity to any of the {{ N_REFS }}</td>
   <td class="num" data-v="{{ budget.strict_novel }}">{{ budget.strict_novel|fmt }}</td>
   <td class="num" data-v="{{ budget.strict_novel_share }}">{{ '%.1f %%' % (100 * budget.strict_novel_share) }}</td></tr>
 {% for b in budget.bands %}
@@ -113,7 +113,7 @@ sequence-verified partners.</p>
 <tr>
   {% if loop.first %}<td rowspan="{{ items|length }}"><a href="{{ u('/leaf/' ~ leaf_slug(leaf_id)) }}">{{ leaf_id }}</a>
     <div class="note">{{ items|length }} candidate{{ 's' if items|length > 1 }}</div></td>{% endif %}
-  <td><a href="{{ u('/ro/' ~ slug(r.candidate_id)) }}">{{ r.protein_id or r.candidate_id }}</a>
+  <td><a href="{{ entry_href(r.candidate_id) }}">{{ r.protein_id or r.candidate_id }}</a>
       {% if r.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}</td>
   <td><i>{{ r.organism }}</i></td>
   <td class="note">{{ r.domain or '–' }}{% if r.euk_group %} / {{ r.euk_group }}{% endif %}</td>

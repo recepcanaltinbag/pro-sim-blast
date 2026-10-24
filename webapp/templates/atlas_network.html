@@ -18,7 +18,7 @@ residues rather than by overall sequence.</p>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Reference A</th><th>Reference B</th><th class="num">Identity</th><th>Substrate A</th><th>Substrate B</th><th>Same label</th></tr></thead>
 <tbody>
-{#  Ten of the 71 curated references have no confirmed member in this build, so
+{#  Some of the {{ N_REFS }} curated references have no confirmed member in this build, so
     /cluster/<type> answers 404 for them. The similarity network carries one
     "representative" node per variant, and a variant exists only where members
     do, so the clusters of those nodes are exactly the types that have a page.
@@ -34,7 +34,7 @@ residues rather than by overall sequence.</p>
     <td>{% if r.same_substrate_label == '1' %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td></tr>
 {% endfor %}
 </tbody></table></div>
-<figcaption><b>Method.</b> All-against-all DIAMOND blastp of the 71 curated references, pairs with
+<figcaption><b>Method.</b> All-against-all DIAMOND blastp of the {{ N_REFS }} curated references, pairs with
 at least 60 % query coverage, sorted by identity; the 40 most similar pairs are shown.
 <b>Consequence for this database.</b> Membership of a type is reported as nearest characterised
 relative, and every substrate statement is paired with an evidence level rather than a bare

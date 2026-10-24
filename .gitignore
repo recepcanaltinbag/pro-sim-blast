@@ -84,3 +84,17 @@ Per_File_Diversity_Values*.csv
 # curate.py ve types_build.py yedekleri
 *.csv.bak
 *.fasta.bak
+
+# --- yedekler ve ara dosyalar (2026-10-24) ---
+# Bunlar pipeline'in yeniden kosulmasi sirasinda olusan YEDEKLERDIR; toplam
+# ~484 MB. Depoya girmemeleri lazim: depo zaten 673 MB ve yedekler yeniden
+# uretilebilir. Kalici kayit yedek dosyalarda degil
+# analysis_out/revisions/ altindaki surum kayitlarinda tutuluyor.
+*.bak
+*.before_67
+*.before_rerun
+/ROs_71_Clean.before_67/
+/genomic_context.before_rerun/
+/gbk_files_stubs_retired/
+# Statik site ciktisi: freeze.py uretir, gh-pages dalina gider, main'de durmaz
+/webapp/site/

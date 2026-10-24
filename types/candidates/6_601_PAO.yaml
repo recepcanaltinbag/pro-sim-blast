@@ -1,0 +1,17 @@
+cluster: 6_601_PAO
+gene: PAO
+group: 6
+substrate_en: pheophorbide a
+substrate_smiles: 
+product_en: red chlorophyll catabolite (RCC)
+reaction: oxygenolytic opening of the chlorin macrocycle at the C4-C5 (northern) bridge, with reduction of the ring-opened intermediate by RCC reductase
+reaction_class: oxygenolytic_ring_opening
+family: chlorophyll_pathway
+pdb: 
+source: UniProt Q9FYC2 (PAO_ARATH, reviewed), Arabidopsis thaliana pheophorbide a oxygenase / ACD1 / LLS1 homolog, EC 1.14.15.17
+source_kind: general
+curation_confidence: high
+notes: 'Candidate reference for the plastid chlorophyll-catabolism branch of the Rieske oxygenases, which this set has no reference for; analysis_out/carboxylate_audit.json records this family as unreadable by any fixed alignment column. substrate_smiles and a product SMILES are left EMPTY on purpose: pheophorbide a and RCC are large open/closed chlorin macrocycles and no SMILES for them was verified in this session -- a wrong one is worse than a missing one. reaction_class "oxygenolytic_ring_opening" and family "chlorophyll_pathway" are NEW vocabulary, not present in the existing 67; a curator must decide whether to add them. No PDB structure is known for any PAO (the audit and the literature harvest both record IPR013626 as having no structural anchor).'
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MSVVLLSSTSATITKSQSKKIPFLSPTTKFPLKVSISPSRSKLFHNPLRVAAPPSVPTSDSTEEKRIEEEYGGDKEEEGSEFKWRDHWYPVSLVEDLDPNVPTPFQLLGRDLVLWFDRNDQKWAAFDDLCPHRLAPLSEGRLDENGHLQCSYHGWSFGGCGSCTRIPQAATSGPEARAVKSPRACAIKFPTMVSQGLLFVWPDENGWDRANSIEPPRLPDDFDKPEFSTVTIQRDLFYGYDTLMENVSDPSHIDFAHHKVTGRRDRAKPLPFKVESSGPWGFQGANDDSPRITAKFVAPCYSMNKIELDAKLPIVGNQKWVIWICSFNIPMAPGKTRSIVCSARNFFQFSVPGPAWWQVVPRWYEHWTSNLVYDGDMIVLQGQEKVFLAKSMESPDYDVNKQYTKLTFTPTQADRFVLAFRNWLRRHGKSQPEWFGSTPSNQPLPSTVLTKRQMLDRFDQHTQVCSSCKGAYNSFQILKKFLVGATVFWAATAGVPSDVQIRLVLAGLSLISAASAYALHEQEKNFVFRDYVHSEIE

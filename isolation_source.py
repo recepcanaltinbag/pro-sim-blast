@@ -577,6 +577,10 @@ def parse_sources(connection, gbk_dir, processes, force):
             sys.stderr.write(f"[uyari] gbk yok: {path}\n")
     print(f"[replicon_source] {len(jobs)} gbk dosyasi, {processes} surec")
 
+    # INSERT'ler sutun ADLARIYLA: host_kingdom sonradan eklendi ve konumsal
+    # VALUES (?,...,NULL) 7 deger verirken tablo 8 sutun oldu. Eski DB'de tablo
+    # dolu oldugu icin bu yol hic calismadi; taze DB'de ilk kosuda dustu
+    # (2026-10-14).
     connection.execute("DELETE FROM replicon_source")
     seen, fallbacks = set(), 0
     with Pool(processes) as pool:
@@ -584,7 +588,8 @@ def parse_sources(connection, gbk_dir, processes, force):
                                                      chunksize=8), 1):
             for nuc, iso, host, geo, year, fallback in rows:
                 connection.execute(
-                    "INSERT OR REPLACE INTO replicon_source VALUES (?,?,?,?,?,?,NULL)",
+                    "INSERT OR REPLACE INTO replicon_source (nucleotide_id, isolation_source, "
+                    "host, geo, country, collection_year) VALUES (?,?,?,?,?,?)",
                     (nuc, iso, host, geo, split_country(geo), year))
                 seen.add(nuc)
                 fallbacks += fallback
@@ -596,7 +601,7 @@ def parse_sources(connection, gbk_dir, processes, force):
     for nuc in files:
         if nuc not in seen:
             connection.execute(
-                "INSERT OR REPLACE INTO replicon_source VALUES (?,NULL,NULL,NULL,NULL,NULL,NULL)",
+                "INSERT OR REPLACE INTO replicon_source (nucleotide_id) VALUES (?)",
                 (nuc,))
     connection.commit()
     print(f"\r[replicon_source] {len(seen)} replikon okundu, "

@@ -131,8 +131,8 @@ the change, not the absolute count.
 
 {% if refdup and refdup.totals %}
 <h2>4 · Where the reference set repeats itself</h2>
-<p>Everything above concerns the members. This section concerns the 71 curated enzymes they are
-compared against, and it is the one unresolved defect in the database. Those 71 records contain only
+<p>Everything above concerns the members. This section concerns the {{ N_REFS }} curated enzymes they are
+compared against, and it is the one unresolved defect in the database. Those {{ N_REFS }} records contain only
 {{ refdup.totals.distinct_sequences }} distinct sequences. A repeated sequence enters the profile
 library twice, and a member then falls to whichever of the two copies scores fractionally higher.
 That is arithmetic, not biology, and it is why some type pages report a member count far below their
@@ -231,7 +231,7 @@ curator rather than something to settle by script.
     <td>Every taxonomic and ecological figure.</td>
     <td>Nothing available here. The taxonomy tree shows the shape of the bias directly.
     <a href="{{ u('/atlas/taxonomy') }}">Taxonomy</a></td></tr>
-<tr><td><b>Most curated substrates carry no individual citation.</b> All 71 types now have a
+<tr><td><b>Most curated substrates carry no individual citation.</b> All {{ N_REFS }} types now have a
     recorded substrate, but for 50 of them <code>chemistry.csv</code> records the source only as
     established literature on the reference enzyme rather than naming a paper or a structure.</td>
     <td>Every substrate, product and reaction label, and so every chemistry grouping. The claim is

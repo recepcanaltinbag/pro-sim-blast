@@ -626,6 +626,22 @@ def ro_detail(con, candidate_id):
             "eco": ECOLOGY.get(ro["ro_cluster"], {})}
 
 
+@app.get("/entry", response_class=HTMLResponse)
+def entry_page(request: Request):
+    """Tek giris sayfasi kabugu; icerigi tarayici data/ parcalarindan cizer.
+
+    Hem gelistirme sunucusunda hem statik ihracatta AYNI yol kullanilir ki iki
+    render yolu ayrisamasin. Eski /ro/<slug> rotasi, sunucu tarafinda
+    karsilastirma yapan verify_entry_render.py icin duruyor.
+    """
+    return render(request, "entry.html")
+
+
+def entry_href(candidate_id):
+    """Bir girisin adresi. Tek yerde tanimli, sablonlar bunu cagirir."""
+    return u("/entry", id=slug(candidate_id))
+
+
 @app.get("/ro/{ro_slug}", response_class=HTMLResponse)
 def ro_page(request: Request, ro_slug: str):
     con = connect()
@@ -988,6 +1004,27 @@ def dl_all_csv():
         con.close()
 
 
+@app.get("/download/predictions/{name}")
+def dl_prediction_table(name: str):
+    """Tahmin tablolari OLDUGU GIBI servis edilir.
+
+    Bunlar veritabanindan uretilmez: predictions_build.py'nin yazdigi dosyalar
+    dogrudan verilir. Boylece sayfadaki sayilarla indirilen dosya ayni kaynaktan
+    gelir ve ayrisamaz.
+    """
+    if name not in ("archaeal.tsv", "fungal.tsv", "predictions.json"):
+        raise HTTPException(404, "unknown prediction table")
+    path = os.path.join(PARENT, "predictions", name)
+    if not os.path.exists(path):
+        raise HTTPException(404, f"{name} not found (run predictions_build.py)")
+    media = ("application/json" if name.endswith(".json")
+             else "text/tab-separated-values")
+    with open(path, "rb") as fh:
+        body = fh.read()
+    return Response(body, media_type=media, headers={
+        "Content-Disposition": f'attachment; filename="roar_{name}"'})
+
+
 @app.get("/download/operons.csv")
 def dl_operons():
     con = connect()
@@ -1126,7 +1163,17 @@ templates.env.globals.update(
     gap_histogram=atlas.gap_histogram,
     amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
     TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,
-    COMPONENT_COLORS=COMPONENT_COLORS)
+    COMPONENT_COLORS=COMPONENT_COLORS,
+    entry_href=entry_href,
+    # Ham taban onek. u('') KULLANILAMAZ: statik kipte u() sonuna ".html"
+    # ekliyor ve taban "/pro-sim-blast.html" oluyordu -- giris sayfasi bu
+    # yuzden butun veri isteklerinde 404 aldi (2026-10-19'da olculdu).
+    BASE_PREFIX=BASE,
+    # Kuratorlu referans sayisi VERIDEN gelir, sablonlara elle yazilmaz.
+    # 2026-10-18: on iki sablonda "71" sabit yaziliydi ve referans seti 75'e
+    # cikinca hepsi yanlisa dustu. Ayni hata motif_stats.py'de de olmustu
+    # (orada 71 ve 426 sabitti). Sabit sayi, degisen veriyle sessizce ayrisir.
+    N_REFS=len(CHEMISTRY))
 
 
 def apath(*parts):
@@ -1418,6 +1465,22 @@ def atlas_disagreements(request: Request):
         raise HTTPException(404, "disagreements.json not found "
                                  "(run disagreements.py)")
     return render(request, "atlas_disagreements.html", dis=dis)
+
+
+@app.get("/atlas/predictions", response_class=HTMLResponse)
+def atlas_predictions(request: Request):
+    """Arkeal ve fungal TAHMINLER -- kuratorlu setin DISINDA bir katman.
+
+    Veri predictions/predictions.json'dan gelir; bu dosya predictions_build.py
+    tarafindan uretilir ve types/, chemistry.csv, HMM kutuphanesi ve
+    istatistiklerin hicbirine dokunmaz (bkz predictions/README.md).
+    """
+    path = os.path.join(PARENT, "predictions", "predictions.json")
+    pr = atlas.read_json(path)
+    if not pr:
+        raise HTTPException(404, "predictions/predictions.json not found "
+                                 "(run predictions_build.py)")
+    return render(request, "atlas_predictions.html", pr=pr)
 
 
 @app.get("/atlas/elements", response_class=HTMLResponse)

@@ -107,3 +107,48 @@ groups:
       eukaryotic and belong to group 5, and Nvd and DAF-36 are animal sterol
       desaturases that align full length to group 3. A label by domain of life
       would contradict the data.
+
+  - id: 7
+    label: "Long Rieske oxygenases with an inserted catalytic lobe"
+    architecture: "unknown"
+    beta_rate: null
+    members: null
+    types: 1
+    dominant_reactions: [C_C_cleavage, C_C_bond_formation]
+    dominant_families: [alkaloids]
+    added_on: 2026-10-21
+    note: >
+      Added for AerC (7_701_AerC), the aeruginosin-pathway Rieske oxygenase of
+      Kalymmatonema gypsitolerans NIES-4073, which performs oxidative
+      carbocyclisation and C-C bond cleavage in one active site
+      (doi:10.1021/jacs.5c01994).
+
+      Separated on ALIGNABILITY, the same ground as group 6 and a more extreme
+      case of it. AerC is 717 aa, far outside the 330-460 aa range of the other
+      references, and the Rieske domain sits at residue 146 while the
+      mononuclear site sits at 511; in an ordinary alpha subunit that spacing is
+      about 80 to 210. There is a large insertion between the two, so a global
+      alignment to the catalytic-centre model covers only 18.9 % of the model
+      and stops at column 231, never reaching the catalytic columns. Folding
+      AerC into any existing group would redefine that group's alignment columns
+      using a sequence that cannot be aligned across the catalytic lobe.
+
+      THE GROUP IS NOT A SINGLETON, and this was measured before the type was
+      admitted. A single-sequence AerC profile run against the 26,693 candidate
+      proteins passes the 0.45 coverage gate on 18 of them and covers those 18
+      at 0.84-1.00 (median 0.98). Those same 18 are currently assigned to
+      5_507_BmoA (426 aa) and 3_311_PhtAa (462 aa) at coverage 0.21-0.33, that
+      is over roughly a fifth of their length. So admitting AerC does not take
+      members on a technicality; it repairs 18 assignments whose present
+      reference matches a fragment of the protein. The Nodularia sphaerocarpa
+      orthologue ULP74381.1 (720 aa, SuoC) carries the same ligands at the same
+      columns.
+
+      OPEN: the mononuclear carboxylate is present on biochemical grounds (the
+      paper measures 3.00 +/- 0.02 Fe per monomer, that is 2 Fe Rieske plus 1 Fe
+      mononuclear) but its RESIDUE could not be located, because the model
+      region that holds that column has no counterpart in AerC. Recorded as
+      roadmap item 68; see analysis_out/aerc_resolution.json.
+
+      members and beta_rate are null until the pipeline has been rerun with this
+      reference in the library; they are not guesses.

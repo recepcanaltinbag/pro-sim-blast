@@ -1,0 +1,17 @@
+cluster: 3_321_Nvd
+gene: Nvd
+group: 3
+substrate_en: cholesterol
+substrate_smiles: C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C
+product_en: 7-dehydrocholesterol
+reaction: desaturation of the C7-C8 bond of cholesterol, the first committed step of ecdysteroid biosynthesis
+reaction_class: desaturation
+family: terpenoids_steroids
+pdb: 
+source: 'UniProt Q1JUZ1 (NVD_DROME, reviewed), Drosophila melanogaster cholesterol 7-desaturase Neverland, EC 1.14.19.21; proposed independently as a new type by analysis_out/literature_harvest.json finding NT-09 (Runda 2024 thesis, doi:10.33612/diss.1175898687)'
+source_kind: general
+curation_confidence: high
+notes: 'The one candidate both documented gaps point at: the audit names "cholesterol 7-desaturase / DAF-36" among the eukaryotic families with no reference, and harvest NT-09 proposes the same enzyme as Nvd/Neverland. Substrate and product SMILES are the curated ones recorded in literature_harvest.json (PubChem CID 5997 and 439423); only substrate_smiles has a field in this schema, so the product SMILES is not stored. reaction_class "desaturation" is NEW vocabulary -- the existing 67 have no desaturase. Nvd and DAF-36 (3_322_DAF36) are only 36.8% identical, so they are proposed as two references, not one.'
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MTSYSLFWMSLLKNNWKPISNDFVICLWTLAVTFIRIYWIFFVPLEWKKDLDNEKWSFLRKTENVVCYNHKRDTINRLRKLKIQKIIELPPPYPNGWYGILKSSQLKAGEATCVSCLGEDLVIFRSKKDIVFILDAYCPHLGANLGIGGSVADDCVICPFHQWKFRGTDGLCINIPYSTSVPKGSKLKKWISQEVDGFIFIWYHAEQTELPWDLPVPMGEIDDTFVYHGHNEFYINCHIQEIPENGADIAHFNAIHKKNFINGSWAQKKRLFGLGSHHWKARWSPFTGKLKYLAEVNLSHTFKLFGKFGCFRMEVSGKQIGPSIVCLEVNSYTFGKIKVFQYITPIEPMLQKVVHEFYGPRWIAPLMKIFIYGESLMFERDIKIWNHKVFNRNPILAKEDASIKKFRLWFSQFYSSNSKIYSEATNIGW

@@ -2,7 +2,7 @@
 {% block title %}Methods{% endblock %}
 {% block body %}
 <h1>Methods</h1>
-<p class="lede">This database is built from GenBank genome records and a set of 71 Rieske oxygenase
+<p class="lede">This database is built from GenBank genome records and a set of {{ N_REFS }} Rieske oxygenase
 alpha subunits characterised in the literature. Every step below is a script in the repository, and
 every table it produces is downloadable from the page that displays it.</p>
 
@@ -26,7 +26,7 @@ every table it produces is downloadable from the page that displays it.</p>
 
   <rect class="bx" x="4" y="104" width="168" height="64" rx="6"/>
   <text class="ti" x="16" y="126">Curated references</text>
-  <text class="nm" x="16" y="146">71</text>
+  <text class="nm" x="16" y="146">{{ N_REFS }}</text>
   <text class="sub" x="16" y="160">enzymes characterised in the literature</text>
 
   <path class="ar" d="M172,48 H208"/>
@@ -97,7 +97,7 @@ member of both groups passed a 10<sup>−10</sup> cut-off. What distinguishes an
 Rieske domain but the mononuclear Fe(II) catalytic site that accompanies it.</p>
 <p>Two independent criteria are therefore required.</p>
 <ol>
-  <li><b>Profile coverage.</b> Each of the 71 curated references seeds a profile hidden Markov model
+  <li><b>Profile coverage.</b> Each of the {{ N_REFS }} curated references seeds a profile hidden Markov model
     built from its close homologues; these models span the Rieske domain and the catalytic domain
     together. A protein must cover at least 45 % of the best-scoring model. The threshold was
     calibrated on 2,788 full-length alpha subunits and 1,570 proteins known not to be alpha
@@ -202,7 +202,7 @@ protein with a large additional domain can therefore group with a plain enzyme. 
 quoted on variant pages share this definition.</p>
 
 <h2>7 · Phylogeny and sequence space</h2>
-<p>The 71 references and one representative per variant are aligned to the catalytic-centre model;
+<p>The {{ N_REFS }} references and one representative per variant are aligned to the catalytic-centre model;
 columns with gaps in more than half the sequences are discarded, leaving the conserved core, and the
 tree is inferred with FastTree. Separately, an all-against-all search provides a similarity network
 and a type-against-type identity matrix. Together these show which types are coherent lineages and

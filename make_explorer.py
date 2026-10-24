@@ -320,7 +320,7 @@ def build_payload(connection, ecology, null_rates, variance, subfam_data,
             "top_genera": entry["genera"].most_common(8),
             "coverage": round(sum(entry["coverage"]) / len(entry["coverage"]), 3)
                         if entry["coverage"] else 0,
-            "substrate": info.get("substrate", "bilinmiyor"),
+            "substrate": info.get("substrate", "unknown"),
             "sclass": info.get("substrate_class", "unknown"),
             "note": info.get("ecology_note", ""),
             "conf": info.get("confidence", "low"),
@@ -639,9 +639,9 @@ document.getElementById('totals').innerHTML = [
 ].map(([n,l]) => `<div><div class="total__n">${fmt(n)}</div>
   <div class="total__l">${l}</div></div>`).join('');
 
-const SCLASS = {xenobiotic:['ksenobiyotik','xeno'],
-  natural_aromatic:['dogal-aromatik','nat'],
-  natural_specialized:['dogal-ozel','nat'], unknown:['bilinmiyor','']};
+const SCLASS = {xenobiotic:['xenobiotic','xeno'],
+  natural_aromatic:['natural aromatic','nat'],
+  natural_specialized:['natural specialized','nat'], unknown:['unknown','']};
 
 let state = {q:'', groups:new Set(), sclasses:new Set(), sort:'n', dir:-1, sel:null};
 
@@ -735,9 +735,9 @@ function enrClass(e) { return e == null ? 'e-flat' : e >= 1.5 ? 'e-up' : e < 0.8
 function detail(id) {
   const c = C.find(x => x.cluster === id);
   const d = document.getElementById('detail');
-  if (!c) { d.innerHTML = '<div class="detail__empty">Bir kume secin</div>'; return; }
+  if (!c) { d.innerHTML = '<div class="detail__empty">Select a type</div>'; return; }
 
-  const [slabel, stone] = SCLASS[c.sclass] || ['bilinmiyor',''];
+  const [slabel, stone] = SCLASS[c.sclass] || ['unknown',''];
   const maxRate = Math.max(...c.cats.map(x => x.rate), 0.01);
 
   d.innerHTML = `

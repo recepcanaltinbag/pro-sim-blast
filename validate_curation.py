@@ -31,6 +31,7 @@ import json
 import os
 import re
 import sqlite3
+import yaml
 import sys
 from collections import Counter
 
@@ -53,13 +54,49 @@ NEAR_IDENTICAL_PCT = 99.0
 VALID_SUBSTRATE_CLASS = {"xenobiotic", "natural_aromatic", "natural_specialized",
                          "unknown"}
 VALID_CONFIDENCE = {"low", "medium", "high"}
+# 2026-10-16: dort yeni sinif. Sekiz yeni referansin gercekten yaptigi kimya
+# bu; alternatifi onlari "unknown" isaretlemekti. Gerekceler:
+#   desaturation             Nvd / DAF-36, kolesterol C7-C8. Hem Miao & Schmidt
+#                            2025 (doi:10.1021/acs.biochem.5c00369) hem Zhang
+#                            2025 (doi:10.1021/jacs.5c01994) ailenin
+#                            reaksiyonlari arasinda desaturasyonu sayiyor.
+#   N_oxygenation            PrnD, aril amin -> aril nitro, alti elektronlu.
+#                            Zhang 2025 "N-oxygenation" diye listeliyor.
+#   C_C_bond_formation       RedG. Zhang 2025 dogrudan yaziyor: RedG ve
+#                            homologlari prodijinin biyosentezinde C-C bagi
+#                            kuran halkalastirmayi katalizler.
+#   oxygenolytic_ring_opening PAO, klorin makrosiklinin O2 ile acilmasi.
+#                            Pruzinska 2003 (doi:10.1073/pnas.2036571100)
+#                            PAO'nun Rieske-tipi demir-sulfur proteini
+#                            oldugunu kurdu.
+#   C_C_cleavage             AerC (7_701_AerC). Oksidatif karbosiklizasyonun
+#                            ARDINDAN C-C bagi kirilmasi, tek aktif bolgede,
+#                            uc karbon kaybiyla. Zhang et al. JACS 2025,
+#                            doi:10.1021/jacs.5c01994. Sette C_C_bond_formation
+#                            (RedG) ve C_N_cleavage (CntA, qxyA) vardi ama C-C
+#                            KIRILMASI yoktu.
+#                            NOT: reaction_class tip basina TEK deger. AerC iki
+#                            kimyayi birlikte yapiyor; kirilma sinif olarak
+#                            secildi cunku sette eksik olan odur. Bu, semanin
+#                            bir sinirlamasidir, enzimin degil.
 VALID_REACTION_CLASS = {"cis_dihydroxylation", "angular_dioxygenation",
                         "dioxygenation_with_release", "O_demethylation",
                         "N_demethylation", "hydroxylation", "C_N_cleavage",
-                        "unknown"}
+                        "unknown",
+                        "desaturation", "N_oxygenation", "C_C_bond_formation", "oxygenolytic_ring_opening",
+                        "C_C_cleavage"}
+# 2026-10-16: tetrapyrroles eklendi -- PAO, CAO, PTC52 icin.
+# Manifestolar "chlorophyll_pathway" yaziyordu; DEGISTIRILDI. Sebep: bu
+# sozlugun butun oteki uyeleri substratin KIMYASAL SINIFI (alkylbenzenes,
+# quaternary_amines, terpenoids_steroids...), "chlorophyll_pathway" ise bir
+# YOL adi. Substratlar feoforbid a, klorofillid a ve protoklorofillid a --
+# hepsi klorin, yani indirgenmis tetrapirol. Yol/klad bilgisi zaten group: 6
+# alaninda duruyor, family kolonunun onu tekrarlamasi gerekmiyor. Ayrica
+# tetrapyrroles ileride hem/porfirin uzerinde calisan bir RO cikarsa onu da
+# kapsar.
 VALID_FAMILY = {"alkylbenzenes", "pah", "biaryls_ethers", "nitroaromatics",
                 "haloaromatics", "sulfoaromatics", "aromatic_acids", "anilines",
-                "quaternary_amines", "alkaloids", "terpenoids_steroids", "unknown"}
+                "quaternary_amines", "alkaloids", "terpenoids_steroids", "unknown", "tetrapyrroles"}
 VALID_SOURCE_KIND = {"paper", "structure", "curator", "paper+structure",
                      "structure+paper", "paper+curator", "general", "none"}
 
@@ -514,6 +551,89 @@ def check_reference_set(rep, refs_path, pairs_path, eco, chem, con):
               f"{len(fasta_counts) - len(zero)} of {len(fasta_counts)} "
               f"references have members; zero-member: " + first(notes, 12),
               severity="WARN")
+
+
+def check_reference_motifs(rep, root, refs_aln=None):
+    """Her kuratorlu referans motif kapisini geciyor mu -- ve gecmiyorsa
+    motif_exceptions.yaml'da gerekcesi YAZILI mi?
+
+    NEDEN. Kapi (ro_motif.classify_motifs) aday proteinleri suzmek icin var ve
+    REFERANSLARIN gecmesi beklenir. AerC gecmiyor: 717 aa oldugu icin global
+    hizalama katalitik kolonlara ulasmiyor ve 0/3 veriyor. Bu bir artefakt, ama
+    SESSIZ kalmasi yanlis -- sette kendi kapisindan gecemeyen bir referans
+    varsa, gerekcesi ve kaniti yazili olmalidir.
+
+    Dolayisiyla iki sey ayri ayri kontrol edilir:
+      1. gecmeyen her referansin bir istisna kaydi var mi
+      2. istisna kaydi olup da ARTIK GECEN referans kaldi mi (olu istisna)
+    """
+    try:
+        sys.path.insert(0, root)
+        import ro_motif                              # noqa: PLC0415
+    except Exception as exc:                          # noqa: BLE001
+        rep.check("references: motif gate evaluated", True, 0,
+                  f"ro_motif not importable ({exc})", severity="WARN")
+        return
+
+    aln = refs_aln or os.path.join(root, "ROs_71_Clean", "ROmotif71_hmmaln.sto")
+    if not os.path.exists(aln):
+        rep.check("references: motif gate evaluated", True, 0,
+                  f"reference alignment missing: {aln}", severity="WARN")
+        return
+
+    def cluster_of(name):
+        """'7_701_AerC_AerC_pro...' -> '7_701_AerC'.
+
+        Referans fasta basliklari <kume>_<gen>_pro... bicimindedir, yani gen
+        adi TEKRARLIDIR. Sadece '_pro' ile kesmek '7_701_AerC_AerC' veriyordu
+        ve istisna kaydiyla eslesmiyordu -- ayni kontrol hem 'belgelenmemis'
+        hem 'olu istisna' diye iki kez FAIL vermisti.
+        """
+        m = re.match(r"^(\d+_\d+_[^_]+)", name)
+        return m.group(1) if m else name.split("_pro")[0]
+
+    report = ro_motif.motif_report(aln)
+    failing = {cluster_of(n) for n, r in report.items()
+               if not r["is_RO_alpha_motif"]}
+
+    path = os.path.join(root, "motif_exceptions.yaml")
+    excepted, detail = set(), {}
+    if os.path.exists(path):
+        try:
+            doc = yaml.safe_load(open(path, encoding="utf-8")) or {}
+        except Exception:                             # noqa: BLE001
+            doc = {}
+        for e in (doc.get("exceptions") or []):
+            cid = e.get("cluster")
+            if cid:
+                excepted.add(cid)
+                detail[cid] = e
+
+    undocumented = sorted(failing - excepted)
+    rep.check("references: every reference passes the motif gate, or its "
+              "exception is documented",
+              not undocumented, len(undocumented),
+              "; ".join(undocumented) +
+              (" -- add it to motif_exceptions.yaml with reason, evidence and limits"
+               if undocumented else ""))
+
+    # Olu istisna: artik geciyorsa kayit kaldirilmali, yoksa gercek bir
+    # basarisizligi ortmeye devam eder.
+    stale = sorted(excepted - failing)
+    rep.check("references: no stale motif exception", not stale, len(stale),
+              "; ".join(stale) + (" -- passes the gate now; remove the exception"
+                                  if stale else ""))
+
+    # Her istisna gerekce, kanit ve sinir tasimak zorunda.
+    thin = []
+    for cid in sorted(excepted & failing):
+        e = detail.get(cid) or {}
+        for field in ("reason", "how_the_ligands_were_verified",
+                      "evidence_files", "limits"):
+            if not e.get(field):
+                thin.append(f"{cid}:{field}")
+    rep.check("references: each motif exception states reason, evidence and limits",
+              not thin, len(thin), "; ".join(thin[:6]))
 
 
 def check_vocabulary_drift(rep):
@@ -1206,6 +1326,7 @@ def main():
     print()
 
     check_vocabulary_drift(rep)
+    check_reference_motifs(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
 

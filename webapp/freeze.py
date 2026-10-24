@@ -20,6 +20,7 @@ import os
 import shutil
 import csv
 import sqlite3
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -91,9 +92,12 @@ def main():
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
               "atlas/cooccurrence", "atlas/statistics", "atlas/quality",
               "atlas/closeness", "atlas/structure", "atlas/control", "atlas/origin", "atlas/learning",
-              "atlas/geography", "atlas/elements", "atlas/disagreements"):
+              "atlas/geography", "atlas/elements", "atlas/disagreements", "atlas/predictions"):
         save("/" + p, p + ".html")
     save("/download/tree_all.nwk", "download/tree_all.nwk")
+    # Tahmin tablolari: sayfadaki sayilarla indirilen dosya AYNI kaynaktan.
+    for name in ("archaeal.tsv", "fungal.tsv", "predictions.json"):
+        save(f"/download/predictions/{name}", f"download/predictions/{name}")
     save("/download/novel_candidates.fasta", "download/novel_candidates.fasta")
     # Liste atlas.PROVENANCE'tan turetilir. Daha once burada ve indirme
     # rotasinda iki ayri kopya vardi; biri guncellenip oteki unutulunca dosya
@@ -128,12 +132,23 @@ def main():
         print(f"[done] {out} (entry pages left untouched)")
         return
 
-    print(f"[pages] {len(entries)} entries")
-    for i, e in enumerate(entries, 1):
-        s = A.slug(e)
-        save(f"/ro/{s}", f"ro/{s}.html")
-        if i % 1000 == 0:
-            print(f"   {i}/{len(entries)}")
+    # GIRIS SAYFALARI ARTIK TEK TEK URETILMIYOR.
+    #
+    # Olculdu: her dogrulanmis giris icin bir HTML, 22,2 KB; 19.109 girisle
+    # 405 MB ve 19 bin dosya. Sayfanin %66'si komsuluk SVG'si ve komsu genler
+    # tablosuydu -- ayni verinin iki render'i, HTML'e gomuldugu icin 19 bin
+    # kez tekrarlanmis halde.
+    #
+    # Simdi: tek kabuk (/entry.html) + data/ altinda 256 parca JSON. Veri
+    # kaybi yok; her giris hala kendi adresinde (entry.html?id=...), hala
+    # aranabilir, ve ham hali download/ altinda duruyor.
+    print("[pages] entry shell")
+    save("/entry", "entry.html")
+    print(f"[data] {len(entries)} entries -> data/ shards")
+    subprocess.run([sys.executable,
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                 "build_entry_data.py"),
+                    "--db", A.DB_PATH, "--out-dir", out], check=True)
     print("[downloads] bulk")
     save("/download/all_confirmed.fasta", "download/all_confirmed.fasta")
     save("/download/all_confirmed.csv", "download/all_confirmed.csv")
@@ -470,7 +485,7 @@ function render() {
     const dom = (r[7] && r[7] !== 'Bacteria') ? ` <span class="chip">${esc(r[7])}</span>` : '';
     const pl = r[9] ? ' <span class="chip chip--plasmid">plasmid</span>' : '';
     const sub = (CHEM[r[4]] && CHEM[r[4]][1]) || '';
-    return `<tr><td><a href="${BASE}/ro/${esc(r[0])}.html">${esc(r[1] || r[0])}</a>${pl}</td>` +
+    return `<tr><td><a href="${BASE}/entry.html?id=${encodeURIComponent(r[0])}">${esc(r[1] || r[0])}</a>${pl}</td>` +
            `<td><i>${esc(r[2])}</i>${dom}</td><td class="small">${esc(r[3])}</td>` +
            `<td><a href="${BASE}/cluster/${esc(r[4])}.html">${esc(gene(r[4]))}</a></td>` +
            `<td class="small">${esc(sub)}</td>` +

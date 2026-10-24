@@ -76,6 +76,28 @@ BUGS = [
 ]
 
 
+# Kuratorlu referans sayisi VERIDEN okunur, rapora elle yazilmaz. 2026-10-22'de
+# bu dosyada uc yerde "71" sabit yaziliydi ve referans seti 76'ya cikinca
+# hepsi yanlisa dustu; ayni hata sablonlarda 12 yerde ve motif_stats.py'de de
+# vardi. Kaynak olarak ROmotif modelinin NSEQ basligi kullaniliyor, cunku
+# modelin kendisi kac diziden kuruldugunu yaziyor.
+def _n_references(path=os.path.join("ROs_71_Clean", "ROmotif71.hmm")):
+    try:
+        with open(path) as fh:
+            for line in fh:
+                if line.startswith("NSEQ"):
+                    return int(line.split()[1])
+                if line.startswith("HMM "):
+                    break
+    except OSError:
+        pass
+    return None
+
+
+N_REFS = _n_references()
+N_REFS_TXT = str(N_REFS) if N_REFS else "the curated"
+
+
 def esc(value):
     return html.escape(str(value))
 
@@ -393,7 +415,7 @@ def build_html(protein, genomic, db_path="roar.sqlite"):
     <span class="num">133</span> BLAST hitiyle egitilmis bir modeli vardi.
     <code>1_113_CdnD</code>&rsquo;de Rieske var ama katalitik triad yok; dosya adi
     zaten <code>CdnD_<strong>electrontransfer</strong>_pro</code>. Ikisi de cikarildi,
-    HMM&rsquo;ler <span class="num">71</span> referansla yeniden kuruldu.
+    HMM&rsquo;ler o anda <span class="num">71</span> referansla yeniden kuruldu <span class="note">(tarihsel; bugunku sayi asagida)</span>.
   </div>
   <p class="caveat">
     <strong>Sinir:</strong> gevsetilmis kriter (katalitik &ge;2/3) 72/73 referansi
@@ -974,7 +996,7 @@ def variants_section(path="analysis_out/cluster_variance.csv",
 <section id="varyant">
   <h2>9 &middot; Kume ici varyasyon: &quot;ayni enzim&quot; gercekten ayni mi?</h2>
   <p>
-    Kume atamasi 71 model arasindan en yuksek bit skorunu alani secer. Ama bu,
+    Kume atamasi __N_REFS__ model arasindan en yuksek bit skorunu alani secer. Ama bu,
     kumenin homojen oldugunu <em>garanti etmez</em> &mdash; her protein bir kumeye
     gitmek <strong>zorundadir</strong>, hicbirine yeterince benzemese bile.
     Minimum benzerlik tabani yok, sadece goreli kazanan var.
@@ -1088,7 +1110,7 @@ def novel_section(db="roar.sqlite",
     referans tipe uymayan (&lt;%40) ve kucuk alt-ailede oturan uyeler novel aday.
   </p>
   """ + stat_tiles([
-      (f"{n_ref:,}", "referans-tip alt-aile", f"71 model &rarr; {n_ref} ince ayrim", True),
+      (f"{n_ref:,}", "referans-tip alt-aile", f"__N_REFS__ model &rarr; {n_ref} ince ayrim", True),
       (f"{n_sub:,}", "toplam alt-aile", "CD-HIT %70", False),
       (f"{n_nov:,}", "novel aday", f"%{100*n_nov/max(1,n_tot):.0f} &mdash; izole, tipsiz", False),
       (f"{len(high):,}", "yuksek-guven novel", "skor&ge;350, kimlik&lt;%40", False),
@@ -1431,6 +1453,12 @@ def main():
     genomic = read_genomic(args.db)
     page = wrap_page(build_html(protein, genomic, args.db))
 
+    # Yer tutucu yazim aninda dolar. NEDEN YER TUTUCU: bu metinler duz
+    # uclu-tirnakli bloklarin icinde ve f-string degil; sayiyi oraya gommek
+    # yerine tek noktada degistirmek, sayinin iki yerde ayrisma riskini
+    # ortadan kaldiriyor.
+    page = page.replace("__N_REFS__", N_REFS_TXT)
+    assert "__N_REFS__" not in page
     with open(args.output, "w") as handle:
         handle.write(page)
     print(f"[yazildi] {args.output}  ({len(page):,} bayt)")

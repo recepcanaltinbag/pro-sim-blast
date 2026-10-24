@@ -5,6 +5,179 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+69. **BAGIMLILIK GRAFIGINDE IKI HATA DAHA -- ikisi de DUZELTILDI (2026-10-22).**
+    Ikisi de ayni sinif: bir adim bir dosyayi OKUYOR ama grafikte girdi olarak
+    beyan edilmemis. Bu oturumda bu sinifin DORDUNCU ve BESINCI ornegi.
+
+    (a) annotate'in girdilerinde HMM YOKTU. annotate_ro.py iki HMM kullaniyor
+    (RieskeDB71.hmm atama, ROmotif71.hmm motif) ama girdi listesi yalnizca
+    ["annotate_ro.py", DB] idi. AerC kutuphaneye eklendiginde protein_filter
+    bayatladi, annotate BAYATLAMADI, zincir dogrudan evidence_tiers'a atladi ve
+    atama 8 gun onceki cand_dom.out ile kaldi: yeni tip SIFIR uye topladi.
+    Duzeltme: iki HMM girdiye, cand_dom.out ve cand_aln.sto cikti listesine
+    eklendi. Ayrica bir TARAMA yazildi ("HMM kullanip girdide beyan etmeyen
+    adim var mi"): alti supheli cikti, ucu gercek bagimlilikti (motif_stats,
+    phylogeny, validation_gate -- hepsi beyan edildi), ucu yalnizca metinde
+    adini gecirmisti.
+
+    (b) ignore kumesi adimin KENDISINI de iceriyordu. build_operons.py
+    `ro.sequence`i doldurdugu icin `ro` tablosu operons'un kendi yazma
+    kumesindeydi, dolayisiyla ignore'daydi; annotate'in `ro`da yaptigi
+    degisiklik operons'a GORUNMEDI. Sonuc: ro=19.114 iken operon ve
+    ro_regulation 19.109'da kaldi. Duzeltme: ignore artik YALNIZCA sonraki
+    adimlarin yazdiklarini iceriyor. Adimin kendi yazdiklarini yok saymaya
+    gerek yok, cunku karsilastirma adimin KOSTUKTAN SONRAKI sayimina karsi
+    yapiliyor.
+
+    IKISINI DE KAPI YAKALADI, ben degil: (a) "aciklanmamis fazla tip
+    7_701_AerC", (b) "confirmed-RO count agrees across tables". Kapinin HTML
+    uretiminden ONCE durmasi tam bu is icin.
+
+    KURAL: bir adim bir dosyayi okuyorsa grafikte girdi olarak YAZILIR. Yeni
+    adim eklenince yukaridaki tarama tekrar kosulur.
+
+70. **Atif kutugu (`citations.yaml`) + dogrulayici -- BITTI.**
+    Atiflar uc yere dagilmisti (types/*.yaml serbest metin, disagreements.py
+    icinde gomulu DOI, batie_classes.yaml ayri blok) ve 75 tipin yalnizca
+    7'sinde cozulebilir tanimlayici vardi. Simdi tek kutuk, 13 atif, HEPSI
+    Crossref'e karsi dogrulandi (`citations_check.py`). Dogrulama uc hata
+    buldu: iki eksik kunye, bir YANLIS YAZAR LISTESI (CAO makalesi: dogrusu
+    Oster U, Tanaka R, Tanaka A, Rudiger W; id de espineda1999 -> oster2000),
+    ve betigin kendi hatasi (Crossref basliklarda <i> etiketi donduruyor,
+    normalizasyon onu "ia" okuyup basligi uyusmaz sayiyordu).
+    Kutuk manifestolara `citations:` alaniyla baglandi ve kontrol eklendi:
+    manifestodaki her anahtar kutukte olmak zorunda (negatif sinamayla
+    dogrulandi -- uydurma anahtar FAIL veriyor).
+    KURAL: uydurulmus ya da hatirlanan DOI GIRMEZ. Her kayit `verified_by`
+    tasir: local_pdf, crossref_record, uniprot_reference_list...
+
+71. **Motif istisna kaydi (`motif_exceptions.yaml`) -- BITTI.**
+    AerC referans hizalamasinda repo'nun KENDI motif kapisini gecemiyor
+    (4/4 Rieske, 0/3 katalitik) cunku 717 aa'lik dizi global hizalamada
+    katalitik kolonlara ulasmiyor. Sette kendi kapisindan gecemeyen bir
+    referans varsa bu YAZILI olmali. Her istisna uc sey tasimak zorunda:
+    gerekce (olcumle), kanit (hangi dosyada), sinir (neyi kapsamadigi).
+    Dogrulayiciya uc kontrol eklendi, ucu de negatif sinamadan gecti:
+    gecmeyen referansin kaydi var mi, olu istisna kaldi mi, kayit gerekce +
+    kanit + sinir tasiyor mu. Ici bos istisna KABUL EDILMIYOR.
+
+72. **SABIT REFERANS SAYISI SUPURGESI -- BITTI.**
+    Referans seti 71 -> 76'ya cikti ve sayi ON ALTI yerde sabit yaziliydi:
+    12 sablon, make_report.py'de 3, provenance.py'de 1. Hepsi yanlisa dusmustu.
+    Simdi veriden geliyor: sablonlar `N_REFS` (chemistry.csv satir sayisi),
+    make_report.py modelin NSEQ basligindan okuyor (yer tutucu, cunku metinler
+    f-string olmayan bloklarin icinde).
+    DAHA KOTUSU IKI BILIMSEL IDDIAYDI: ana sayfada "70 of 71 Asp, one Asn, no
+    Glu" yaziyordu, olculen dagilim E=45 D=28 (TERSI); ve "the five Glu
+    references" yaziyordu, olculen E=2. Ikisi de artik motif_stats.py'nin
+    hesapladigi referans dagilimina bagli, yani referans seti degisince
+    kendiliginden guncelleniyor.
+    Bir yer BILEREK sabit birakildi: make_report.py'de gecmisi anlatan cumle
+    ("HMM'ler o anda 71 referansla yeniden kuruldu") -- onu dinamik yapmak
+    tarihi tahrif etmek olurdu, yerine "tarihsel" diye isaretlendi.
+
+73. **HAFIF STATIK SITE -- kod bitti, DEPLOY BEKLIYOR.**
+    Olculdu: giris basina bir HTML, 22,2 KB; 19 bin girisle 405 MB ve site
+    toplami 474 MB / 19.000 dosya. Sayfanin %66'si komsuluk SVG'si ve komsu
+    genler tablosuydu -- AYNI VERININ iki render'i, HTML'e gomuldugu icin 19
+    bin kez tekrarlanmis halde.
+    Simdi: tek kabuk (/entry.html?id=...) + data/ altinda 256 parca JSON.
+    Olculen sonuc: 172 MB / 3.930 dosya.
+    PORT RISKI NASIL YONETILDI -- uc sinama, hepsi kalici:
+      verify_shard_key.py     19.109/19.109 kimlikte md5 Python ile birebir
+      verify_entry_render.py  6.000/6.000 giriste SVG dizgisi birebir
+      compare_entry_text.py   40/40 giriste tarayici metni Jinja ile birebir
+    Port sirasinda DORT hata bulundu ve hepsinde JS Python'a uyduruldu
+    (sinama gevsetilmedi, cunku birebir esitlik cok daha guclu bir invaryant):
+      u('') statik kipte sonuna .html ekleyip tabani bozuyordu -> veri 404
+      Python yarimi CIFTE yuvarliyor, JS yukari (SVG'de 10/6000 ayrisma)
+      ayni sorun %.0f'te (kaplama 98,5 -> Python "98", JS "99")
+      ustel bicim: Python 0.0e+00, JS 0.0e+0
+    operon_regulator_svg (157 satir) JS'e PORT EDILMEDI: sekil sunucuda
+    hesaplanip (layout, arch, family, bool(bp)) basina bir kez saklaniyor,
+    girise ozgu iki metin istemcide yerlesiyor. Port edilmeyen kod ayrisamaz.
+    SIRADA: commit, freeze, check_site.py, deploy. Canli site hala 6 Ekim'den
+    (11.422 giris); yerelde 19.114 var.
+
+68. ~~AerC karboksilatini YAPIYLA yerelleştir.~~ **BITTI 2026-10-21: Asp667.**
+    Kullanici istedi: "3d bi protein yapip baksan ya gercekten var mi onlar diye".
+    ESMFold ile kalinti 440-700 katlandi: His513 NE2 ve His518 NE2 arasi 3,22 A
+    (NDO kristali 3,49), Asp667 OD1 2,64 A ve OD2 3,21 A (NDO Asp362 3,41/3,20).
+    En yakin rakip Glu510 4,18 A'da, yani atama belirsiz degil. Aralik hipotezi
+    (E662-E701) D667'yi iceriyordu; geometri onu secti.
+    Rieske merkezi de ayni yolla dogrulandi: C146/H148/C168/H171 icin alti
+    ligand-arasi mesafenin hepsi, ayni yontem NDO'ya uygulandiginda cikan
+    degerlerden en fazla 0,34 A sapiyor -- ve yontem NDO'nun KENDI kristal
+    geometrisini ~0,3 A icinde yeniden uretiyor (pozitif kontrol budur).
+    Kopru D511 mononukleer His'lerden 8,4-9,2 A: NDO'da kopru Asp205 kendi
+    zincirinin Rieske'sinden 46,7 A, KOMSU zincirin Rieske'sinden 7,5 A uzakta,
+    yani bu mesafe kopru roluyle tutarli.
+    SINIRLAR: deneysel yapi degil; tam boy katlanamadi (API 413), iki alan AYRI
+    katlandi, yani merkezler ARASI iliski ve alt birimler arasi kopru bu olcumden
+    cikmaz; metal modellenmedi; Asp667 tahmin, mutagenez kesinlestirir.
+    Kanit: analysis_out/aerc_structure/aerc_metal_sites.json ve oradaki uc PDB.
+    DUZELTILEN HATA: ilk olcumde His icin ND1/NE2 ayrimi yapilmamisti ve
+    His-His 5,52 A cikmisti; gercek yapiyla ayni atom secilince 3,35 A.
+
+67. **rebuild.py grafigi run_all.sh'in 14 adimini eksik tasiyordu -- DUZELTILDI, dogrulama kosusu suruyor.**
+    Bulunus: taze DB ile ilk tam kosuda evidence_tiers "no such column:
+    sequence" ile dustu. ro.sequence'i build_operons.py dolduruyor ve o
+    grafikte YOKTU; eski DB sutunu elle yapilmis bir kosudan tasidigi icin
+    kimse fark etmedi (ro_leaf hatasinin aynisi). Tarama: run_all.sh'taki
+    32 betigin 14'u grafikte yoktu, 6'si DB'ye yaziyor (build_operons,
+    discover_subfamilies, recursive_homogenize, characterize_leaves,
+    classify_domains, variant_signature). FINGERPRINT_TABLES bile grafigin
+    hic uretmedigi tablolari (operon, ro_leaf, neighbor_protein) izliyordu.
+    Yani `--check` "guncel" derken bu ciktilar eski DB'den kalma olabilirdi.
+    Simdi 47 adim, run_all.sh'taki sirayla; her yeni komutun argumanlari
+    betigin --help'ine karsi dogrulandi. Kosu: roar_shots/rebuild_final2.log.
+    KURAL: run_all.sh'a betik eklenirse rebuild.py ARTEFACTS'a da eklenir.
+    EK BULGU 1 (ayni gun): habitat adimi taze DB'de "replicon_source has 8
+    columns but 7 values" ile dustu. host_kingdom sutunu sonradan ALTER ile
+    eklenmis, iki INSERT konumsal kalmisti; eski DB'de tablo dolu oldugu icin
+    parse yolu HIC calismamisti. INSERT'ler sutun adlariyla yazildi.
+    EK BULGU 2: rebuild.py yakinsamiyordu. Bir adimin DB girdisi tum DB'nin
+    parmak iziydi; kendisinden SONRAKI DB-yazar adimlar onu her kosuda
+    bayatlatiyordu (--check asla "guncel" diyemezdi). Ayrica bayatlik bir kez
+    hesaplaniyor, ust adim yeniden uretilince alt adimlara yayilmiyordu.
+    Duzeltme: DB girdisi artik TABLO BAZINDA; her adim yalnizca kendisinden
+    ONCEKI adimlarin yazdigi tablolara bakar (yazar haritasi statik: betik
+    kaynagindaki SQL + dinamik: kosuda olculen degisim). Bayatlik sirayla
+    ileri yayilir. Kabul testi: tam kosudan hemen sonra --check "guncel"
+    demeli. Kosu: roar_shots/rebuild_final4.log.
+
+65. **AerC -- gercek RO, kendi grubunu gerektiriyor. KULLANICI KARARI BEKLIYOR.**
+    Kanit ve tum sayilar: `analysis_out/aerc_resolution.json`. ScAerC =
+    BAZ23339.1 (NIES4073_42270, 717 aa; organizma yeni adiyla Kalymmatonema
+    gypsitolerans NIES-4073). Ligandlar parca parca hizalamayla dogrulandi:
+    Rieske C146/H148/C168/H171, kopru D511, mononukleer H513/H518;
+    karboksilatin kanonik kolonu (479) proteinde YOK. hmmsearch E=3.8e-68.
+    DERS: 600+ aa proteinlerde global hmmalign katalitik kolonlara ulasmiyor;
+    `hmmalign --trim` kirptigi icin parca-ici sayac kalinti numarasi VERMEZ.
+    Ayrica mononukleer regex karistirilmis dizide %11-28 uyuyor -- tek basina
+    kanit DEGIL.
+    KARBOKSILAT (kullanici itirazi, kabul edildi): mononukleer Fe deneysel
+    olarak var (3.00 Fe/monomer), o halde onu tutan karboksilat da VAR.
+    Onceki "2/3" ifadesi hizalamanin ozelligiydi, proteinin degil. Ama KONUMU
+    belirlenemedi: modelin 429-570 bolgesi AerC'de yok; mafft aile hizalamasi
+    AerC'de bozuk (RedG H161/H166'ya karsi K306/T311 koyuyor), o yuzden oradan
+    cikan E693 kanit degil. Aralik hipotezi RedG'den: E662-E701 penceresi.
+    Olculen ve cikarilan AYRI kaydedilir. AerC madde 64'un (geometrik capa)
+    ilk test vakasi.
+
+66. **Arkeal/fungal RO tahmin katmani (`predictions/`).** Analiz bitti, katman
+    henuz kurulmadi. `analysis_out/archaeal_fungal_ro_prediction.json`,
+    `analysis_out/archaeal_clade/`. 109 arkeal + 654 fungal protein tam
+    katalitik donanimli (negatif kontrol 0/66). Arkea monofiletik DEGIL: 7 saf
+    kume, her birinin kardesi bakteriyel; en yakin bakteriye maks %51.7.
+    KURAL: types/, chemistry.csv, HMM kutuphanesi ve istatistiklere GIRMEZ.
+    SAYFA BAGLANDI (2026-10-22): /atlas/predictions, nav'da "How far to trust it"
+    bolumunde; indirme rotasi beyaz listeli (bilinmeyen dosya ve dizin tasmasi
+    404, sinandi). Sayfa duzeltme kaydini GORUNUR tutuyor: once yanlis bildirilen
+    uzunluk araligi ve "hepsi grup 3" iddiasi, sebebiyle ve argumana neye mal
+    oldugu yazili.
+    Sirada: IQ-TREE UFBoot + AU testi; elektron ortaklarinin genomik baglami.
+
 64. **AKTIF BOLGE IMZASI -- katalitik triada gore GEOMETRIK hizalama.**
     Kullanicinin onerisi ve veritabaninin bugunku en zayif noktasini tam
     hedefliyor.

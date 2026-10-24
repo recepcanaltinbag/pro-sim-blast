@@ -1,0 +1,17 @@
+cluster: 1_121_SxtH
+gene: SxtH
+group: 1
+substrate_en: arginine ethyl ketone (a linear arginine-derived surrogate) -- physiological substrate NOT established
+substrate_smiles: 
+product_en: the hydroxylated arginine ethyl ketone -- exact regiochemistry NOT established
+reaction: hydroxylation of an early linear precursor of the saxitoxin pathway; SxtH is reported to be inactive on tricyclic saxitoxin-derived substrates
+reaction_class: hydroxylation
+family: alkaloids
+pdb: 
+source: UniProt B4YPK3 (gene sxtH), Microseira wollei str. Carmichael/Alabama; proposed as a new type by analysis_out/literature_harvest.json finding NT-11
+source_kind: paper
+curation_confidence: low
+notes: 'RECOMMENDATION IS HOLD, for two separate reasons. (1) Redundancy: 82.2% identical to 1_110_SxtT over its full length and 80.7% to 1_111_GxtA. That clears the 99% bar and matches this set''s own precedent for keeping close paralogs, but it is the closest candidate in this batch to an existing reference and a curator should decide deliberately. (2) The substrate is a surrogate: the harvest records activity on arginine ethyl ketone and explicit INACTIVITY on the tricyclic saxitoxin substrates, so the physiological substrate is unknown. Both facts are written into substrate_en and product_en rather than hidden, and curation_confidence is low. Organism: NT-11 could not name one and inferred the sxt cluster of Microseira wollei from its siblings SxtT and GxtA; I picked the Microseira wollei sxtH entry on exactly that inference, so the organism is an inference, not a published attribution. substrate_smiles EMPTY: no verified SMILES for arginine ethyl ketone. No PDB (SxtH is absent from the thesis structure table, which lists only SxtT 6WN3 and GxtA 6WNC).'
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MTTADLILINNWYVVAKVEDCRPGSITTARLLGVKLVLWRSQEQNSPIQVWQDYCPHRGVPLSMGEVANNTLVCPYHGWRYNEAGKCVKIPAHPDMVPPASAQAKTYHCQERYGLVWVCLGDPVNDIPSFPEWDDPNYHKTCTKSYLIKSSPFRVMDNFIDVSHFPFVHDGGLGDGNYAEIEDFEVKVDKDGITIGNIQLQMPRFNSSTEDESWTLWQRISHPLCQYYITKSSEIRTADLMLVTPIDEDNSLVRMLITWNCPEMLDSKTLETLESKLLAEFDETTEQDIPILHSQQPARLPLLAPKQINTQGLPQEIHVPSDRGTVAYRRWLKELGVTYGVC

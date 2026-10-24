@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Entry{% endblock %}
+{% block body %}
+{#  TEK giris sayfasi. Daha once her dogrulanmis giris icin AYRI bir HTML
+    uretiliyordu: 19.109 sayfa x 22,2 KB = 405 MB. Olculdu: sayfanin %66'si
+    komsuluk SVG'si ve komsu genler tablosuydu, yani AYNI VERININ iki render'i,
+    HTML'e gomuldugu icin 19 bin kez tekrarlanmis halde.
+
+    Simdi veri bir kez yayimlanir (build_entry_data.py, 256 parca) ve sayfa
+    burada cizilir. Silinen sey veri degil, verinin tekrarlanan kopyasi.
+
+    Baslik, menu ve altbilgi base.html'den gelir, yani sitenin geri kalaniyla
+    ayni kalir; bu sablon yalnizca govdeyi tasir.                             #}
+<div id="entry-root" data-base="{{ BASE_PREFIX }}">
+  <p class="note" id="entry-status">Loading entry…</p>
+  <noscript>
+    <div class="caveat"><b>This page needs JavaScript.</b> The entry data is published as JSON and
+    drawn in the browser so that the site stays small enough to host statically. Every entry is also
+    in the bulk downloads: <a href="{{ u('/download/all_confirmed.csv') }}">all_confirmed.csv</a>,
+    <a href="{{ u('/download/all_confirmed.fasta') }}">all_confirmed.fasta</a> and
+    <a href="{{ u('/download/operons.csv') }}">operons.csv</a>.</div>
+  </noscript>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ u('/static/md5.js') }}"></script>
+<script src="{{ u('/static/neighsvg.js') }}"></script>
+<script src="{{ u('/static/entry.js') }}"></script>
+{% endblock %}

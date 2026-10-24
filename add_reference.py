@@ -46,12 +46,29 @@ CHEMISTRY_CSV = "chemistry.csv"
 
 VALID_SUBSTRATE_CLASS = ["xenobiotic", "natural_aromatic", "natural_specialized", "unknown"]
 VALID_CONFIDENCE = ["low", "medium", "high"]
+# 2026-10-16: dort yeni sinif. Bu liste validate_curation.py'deki kumeyle AYNI
+# olmak zorunda -- "vocabulary: writer and validator agree" kontrolu tam bunu
+# siniyor, cunku ayrisirsa eklenen satir dogrulamadan gecer ama arayuz onu
+# taniyamaz. Gerekceler validate_curation.py'de yaziyor.
+#   C_C_cleavage             AerC (7_701_AerC). Oksidatif karbosiklizasyonun
+#                            ARDINDAN C-C bagi kirilmasi, tek aktif bolgede,
+#                            uc karbon kaybiyla. Zhang et al. JACS 2025,
+#                            doi:10.1021/jacs.5c01994. Sette C_C_bond_formation
+#                            (RedG) ve C_N_cleavage (CntA, qxyA) vardi ama C-C
+#                            KIRILMASI yoktu.
+#                            NOT: reaction_class tip basina TEK deger. AerC iki
+#                            kimyayi birlikte yapiyor; kirilma sinif olarak
+#                            secildi cunku sette eksik olan odur. Bu, semanin
+#                            bir sinirlamasidir, enzimin degil.
 VALID_REACTION_CLASS = ["cis_dihydroxylation", "angular_dioxygenation",
                         "dioxygenation_with_release", "O_demethylation", "N_demethylation",
-                        "hydroxylation", "C_N_cleavage", "unknown"]
+                        "hydroxylation", "C_N_cleavage", "unknown",
+                        "desaturation", "N_oxygenation", "C_C_bond_formation",
+                        "oxygenolytic_ring_opening",
+                        "C_C_cleavage"]
 VALID_FAMILY = ["alkylbenzenes", "pah", "biaryls_ethers", "nitroaromatics", "haloaromatics",
                 "sulfoaromatics", "aromatic_acids", "anilines", "quaternary_amines",
-                "alkaloids", "terpenoids_steroids", "unknown"]
+                "alkaloids", "terpenoids_steroids", "unknown", "tetrapyrroles"]
 VALID_SOURCE_KIND = ["paper", "structure", "curator", "paper+structure", "structure+paper",
                      "paper+curator", "general", "none"]
 

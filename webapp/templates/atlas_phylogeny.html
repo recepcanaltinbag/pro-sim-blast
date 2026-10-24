@@ -5,7 +5,7 @@
 {% include "_atlas_nav.html" %}
 
 <h1>Phylogeny of the catalytic core</h1>
-<p class="lede">Maximum-likelihood tree of the {{ n_tips|fmt }} tips: the 71 curated reference
+<p class="lede">Maximum-likelihood tree of the {{ n_tips|fmt }} tips: the {{ N_REFS }} curated reference
 enzymes, drawn as squares in bold, and one representative sequence per sequence-homogeneous variant.
 Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic core.</p>
 {% if cover %}
@@ -46,7 +46,7 @@ Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic c
   <div class="treewrap">{{ svg|safe }}</div>
   <figcaption>
     <b>Method.</b> Representatives and references were aligned with <code>hmmalign</code> to the
-    71-reference catalytic-centre profile; only match-state columns present in at least half the
+    {{ N_REFS }}-reference catalytic-centre profile; only match-state columns present in at least half the
     sequences were kept, so insertions and fused domains do not contribute. The tree was inferred
     with FastTree under the JTT model.
     <b>Caveat.</b> One sequence stands for a whole variant, so clade sizes reflect sampled

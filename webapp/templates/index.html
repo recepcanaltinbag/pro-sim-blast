@@ -61,7 +61,7 @@ they point it at.</p>
     number or a sentence.                                                         #}
 
 <p class="note">Positions below are columns of the {{ motif.model.length if motif and motif.model else 426 }}-column
-profile built from {{ motif.model.references if motif and motif.model else 71 }} characterised
+profile built from {{ motif.model.references if motif and motif.model else N_REFS }} characterised
 enzymes, not residue numbers in any one protein.</p>
 
 <figure class="fig">
@@ -239,7 +239,7 @@ chemistry.</p>
   <td class="num" data-v="{{ cat.glu }}">{{ cat.glu|fmt }}</td>
   <td class="num" data-v="{{ cat.asp_to_glu }}">{{ '%.0f' % cat.asp_to_glu }} : 1</td>
   <td class="num" data-v="{{ cat.with_carboxylate }}">{{ cat.with_carboxylate|fmt }} <span class="note">({{ pct(cat.with_carboxylate, motif.n) }})</span></td>
-  <td class="small">70 of 71 Asp, one Asn, no Glu</td>
+  <td class="small">{% set cr = cat.references %}{% if cr %}{{ cr.glu }} Glu, {{ cr.asp }} Asp{% if cr.gap %}, {{ cr.gap }} with a gap at the column{% endif %}{% if cr.other %}, {{ cr.other }} other{% endif %} <span class="note">of {{ cr.n }}</span>{% else %}–{% endif %}</td>
 </tr>
 <tr>
   <td><b>Bridging</b>, links the Rieske centre of one subunit to the iron of the next</td>
@@ -248,7 +248,7 @@ chemistry.</p>
   <td class="num" data-v="{{ brg.glu }}">{{ brg.glu|fmt }}</td>
   <td class="num" data-v="{{ brg.asp_to_glu }}">{{ '%.1f' % brg.asp_to_glu }} : 1</td>
   <td class="num" data-v="{{ brg.with_carboxylate }}">{{ brg.with_carboxylate|fmt }} <span class="note">({{ pct(brg.with_carboxylate, motif.n) }})</span></td>
-  <td class="small">the five Glu references are exactly the five group-5 quaternary-amine enzymes</td>
+  <td class="small">{% set br = brg.references %}{% if br %}{{ br.asp }} Asp, {{ br.glu }} Glu{% if br.other %}, {{ br.other }} neither (Cys or Ser){% endif %} <span class="note">of {{ br.n }}</span>{% else %}–{% endif %}</td>
 </tr>
 </tbody></table></div>
 <p class="note"><b>Read from an alignment column, not from a structure.</b> No structure is used

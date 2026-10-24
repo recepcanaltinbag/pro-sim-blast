@@ -1,0 +1,17 @@
+cluster: 1_117_PrnD
+gene: PrnD
+group: 1
+substrate_en: aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)
+substrate_smiles: C1=CC(=C(C(=C1)Cl)N)C2=CNC=C2Cl
+product_en: pyrrolnitrin
+reaction: six-electron oxidation of an aryl amine to an aryl nitro group, proposed to run amine -> hydroxylamine -> nitroso -> nitro
+reaction_class: N_oxygenation
+family: haloaromatics
+pdb: 
+source: 'UniProt P95483 (PRND_PSEFL, reviewed), Pseudomonas fluorescens aminopyrrolnitrin oxygenase PrnD; proposed as a new type by analysis_out/literature_harvest.json finding NT-01 (Runda 2024 thesis, doi:10.33612/diss.1175898687), primary work Lee J, Simurdiak M, Zhao H, J Biol Chem 2005, 280, 36719-36728'
+source_kind: paper
+curation_confidence: high
+notes: Harvest NT-01 could not pin an accession or a strain; this reviewed UniProt entry supplies both the sequence and the organism (Pseudomonas fluorescens, the species used in the cited in vitro work). reaction_class "N_oxygenation" is NEW vocabulary -- the set has N_demethylation but no arylamine oxidation. family is set to the existing token haloaromatics as the closest fit; pyrrolnitrin is a chlorinated phenylpyrrole and the harvest itself judged that no existing family fits well, so a new halogenated_pyrroles family is a defensible alternative. SMILES are the curated ones from NT-01 (PubChem CID 161174). No PDB exists; PrnD is absent from the thesis structure table.
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MNDIQLDQASVKKRPSGAYDATTRLAASWYVAMRSNELKDKPTELTLFGRPCVAWRGATGRAVVMDRHCSHLGANLADGRIKDGCIQCPFHHWRYDEQGQCVHIPGHNQAVRQLEPVPRGARQPTLVTAERYGYVWVWYGSPLPLHPLPEISAADVDNGDFMHLHFAFETTTAVLRIVENFYDAQHATPVHALPISAFELKLFDDWRQWPEVESLALAGAWFGAGIDFTVDRYFGPLGMLSRALGLNMSQMNLHFDGYPGGCVMTVALDGDVKYKLLQCVTPVSEGKNVMHMLISIKKVGGILRRATDFVLFGLQTRQAAGYDVKIWNGMKPDGGGAYSKYDKLVLKYRAFYRGWVDRVASER

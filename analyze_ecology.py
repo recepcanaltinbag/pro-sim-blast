@@ -132,7 +132,7 @@ def collect(connection, ecology, window=5000):
     # Ekoloji bilgisini ekle
     for cluster, entry in stats.items():
         info = ecology.get(cluster, {})
-        entry["substrate"] = info.get("substrate", "bilinmiyor")
+        entry["substrate"] = info.get("substrate", "unknown")
         entry["class"] = info.get("substrate_class", "unknown")
         entry["confidence"] = info.get("confidence", "low")
         entry["note"] = info.get("ecology_note", "")

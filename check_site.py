@@ -218,6 +218,92 @@ def check_search_parity(root, client):
     return problems, tested
 
 
+def check_entry_shards(root, sample=400):
+    """Giris sayfasinin VERISI yayimlanmis mi -- ve dogru parcada mi?
+
+    NEDEN BU KONTROL VAR. Giris sayfalari artik tek tek HTML olarak
+    uretilmiyor; tek bir /entry.html kabugu var ve icerik data/ altindaki
+    parcali JSON'dan tarayicida ciziliyor (bkz webapp/build_entry_data.py).
+    Bu, denetimde bir KOR NOKTA actı: eskiden bozuk bir giris baglantisi 404
+    HTML donuyordu ve baglanti denetimi onu yakaliyordu. Simdi entry.html HER
+    ZAMAN var; eksik olan parca dosyasi, ve onu yalnizca tarayici fark ediyor.
+
+    Burada dogrudan kontrol edilir: arama indeksindeki her giris kimligi icin
+    parca dosyasi var mi, ve kimlik gercekten O parcanin icinde mi. Parca
+    anahtari md5(candidate_id)'nin ilk hanelerinden geliyor, yani Python ile
+    JS'in ayni anahtari uretmesi de gerekiyor; bunu ayrica
+    webapp/verify_shard_key.py 19.109 kimlikte siniyor.
+    """
+    import hashlib                                   # noqa: PLC0415
+    import random                                    # noqa: PLC0415
+
+    problems = []
+    data = os.path.join(root, "data")
+    shell = os.path.join(root, "entry.html")
+    if not os.path.isdir(data):
+        if os.path.exists(shell):
+            problems.append("entry.html published but data/ is missing: every entry "
+                            "page would render empty")
+        return problems, 0
+
+    meta_path = os.path.join(data, "meta.json")
+    if not os.path.exists(meta_path):
+        problems.append("data/meta.json missing: the entry page cannot resolve any shard")
+        return problems, 0
+    with open(meta_path, encoding="utf-8") as fh:
+        hexlen = (json.load(fh) or {}).get("shard_hex", 2)
+
+    index = os.path.join(root, "search_index.json")
+    if not os.path.exists(index):
+        problems.append("search_index.json missing; entry shards not checked")
+        return problems, 0
+    with open(index, encoding="utf-8") as fh:
+        payload = json.load(fh)
+    rows = payload.get("rows") or payload.get("data") or payload
+    ids = [r[0] for r in rows if isinstance(r, list) and r] if isinstance(rows, list) else []
+    if not ids:
+        problems.append("search_index.json holds no entry identifiers; shards not checked")
+        return problems, 0
+
+    random.seed(0)
+    picked = ids if len(ids) <= sample else random.sample(ids, sample)
+    cache, checked = {}, 0
+    for slug in picked:
+        cid = unslug_static(slug)
+        sh = hashlib.md5(cid.encode()).hexdigest()[:hexlen]
+        path = os.path.join(data, "entry", f"{sh}.json")
+        if sh not in cache:
+            if not os.path.exists(path):
+                problems.append(f"entry shard missing: data/entry/{sh}.json "
+                                f"(needed by {slug})")
+                cache[sh] = None
+            else:
+                with open(path, encoding="utf-8") as fh:
+                    cache[sh] = set((json.load(fh).get("e") or {}))
+        bucket = cache[sh]
+        if bucket is None:
+            continue
+        checked += 1
+        if cid not in bucket:
+            problems.append(f"{slug} is indexed but not in its shard "
+                            f"data/entry/{sh}.json")
+        seq = os.path.join(data, "seq", f"{sh}.json")
+        if not os.path.exists(seq):
+            problems.append(f"sequence shard missing: data/seq/{sh}.json")
+    return problems, checked
+
+
+_UNSLUG_STATIC = re.compile(r"^(.*)_(\d+)-(\d+)_(-?[01])$")
+
+
+def unslug_static(s):
+    """'NC_1.1_10-20_1' -> 'NC_1.1:10-20:1'. webapp/app.py unslug ile AYNI."""
+    m = _UNSLUG_STATIC.match(s)
+    if not m:
+        return s.replace("_", ":")
+    return f"{m.group(1)}:{m.group(2)}-{m.group(3)}:{m.group(4)}"
+
+
 def check_static_site(root):
     """Yayinlanan statik siteyi DISKTE gezer: her baglanti bir dosyaya denk mi?
 
@@ -366,6 +452,9 @@ def main():
         static_problems, static_pages, static_links = check_static_site(args.static)
         print(f"  static pages on disk     {static_pages}")
         print(f"  static links resolved    {static_links}")
+        shard_problems, shards_checked = check_entry_shards(args.static)
+        print(f"  entry shards checked     {shards_checked}")
+        static_problems = static_problems + shard_problems
         search_problems, searched = check_search_parity(args.static, client)
         print(f"  substrates searchable    {searched - len(search_problems)}/{searched}")
 

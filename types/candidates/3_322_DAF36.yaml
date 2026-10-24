@@ -1,0 +1,17 @@
+cluster: 3_322_DAF36
+gene: DAF-36
+group: 3
+substrate_en: cholesterol
+substrate_smiles: C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C
+product_en: 7-dehydrocholesterol
+reaction: desaturation of the C7-C8 bond of cholesterol, the first step of dafachronic acid biosynthesis and of dauer-formation control
+reaction_class: desaturation
+family: terpenoids_steroids
+pdb: 
+source: UniProt Q17938 (DAF36_CAEEL, reviewed), Caenorhabditis elegans cholesterol 7-desaturase daf-36, EC 1.14.19.21; the organism named by analysis_out/literature_harvest.json finding NT-09
+source_kind: general
+curation_confidence: high
+notes: The nematode/vertebrate arm of the same family as 3_321_Nvd. Proposed separately because the two are 36.8% identical over 82% of their length, and the database entries the audit found are split across both arms (one Drosophila mauritiana "cholesterol 7-desaturase isoform X9" against daf-36-like proteins from Notothenia coriiceps, Nothobranchius furzeri, Carassius auratus and Geotrypetes seraphini). A single reference at 37% identity would not read the other arm. If the curator wants only one, keep 3_321_Nvd, which the thesis names, and drop this one. reaction_class "desaturation" is NEW vocabulary. SMILES as in NT-09.
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MLLEQIWGFLTAHPISVVTTILIVYLIHITLKPLNRVRRLGDVGLFFGKPELKGFYRERQLERLKLLRRVGDMPPVFPNGWYCVCESEKLANNQIMEITVLGQFLSLIRSESGAVYITDSYCPHIGANFNIGGRVVRDNCIQCPFHGWIFSAETGKCVEVPYDEGRIPEQAKVTTWPCIERNNNIYLWYHCDGAEPEWEIPEITEITDGFWHLGGRTEHEVMCHIQEIPENGADIAHLNYLHKSAPPVTKGSDIIKTDLSDPQPAVQHVWDGKWEVKSEEDRHCGVMHLNQFMTFWGYKVPLTSSKLVAEQHGPGIVHMLFDFGIWGKGVVFQTVTPEEALLQRVRFRIFSNIPWFFVKFFMTVEAMQFERDVFIWSNKKYIKSPLLVKNDGPIQKHRRWFSQFYTENSPKMLKDGSLSNQAKSIFDW

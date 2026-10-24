@@ -1,0 +1,230 @@
+# ATIF KUTUGU -- tek kaynak.
+#
+# NEDEN BU DOSYA VAR. Atiflar sitenin her yerine dagilmisti: types/*.yaml
+# icindeki `source` alanlarinda serbest metin, disagreements.py icinde gomulu
+# DOI'ler, batie_classes.yaml icinde ayri bir kaynak blogu. 75 tipin yalnizca
+# 7'sinde cozulebilir bir tanimlayici (DOI/PMID/PDB) vardi; gerisi "established
+# literature on the reference enzyme, no individual citation recorded" diyordu.
+# Ayni makaleye iki yerde atif yapilip biri guncellenirse ikisi ayrisir.
+#
+# KURAL. Buraya yalnizca DOGRULANMIS atiflar girer. Bir DOI, ya elimizdeki PDF'in
+# kendi ilk sayfasindan, ya UniProt/PubMed/Crossref kaydindan okunmustur.
+# UYDURULMUS ya da hatirlanan DOI GIRMEZ -- yanlis atif, atifsizdan kotudur.
+#
+# ALAN ANLAMLARI
+#   id          : kisa anahtar; types/*.yaml ve betikler bu anahtarla atif verir
+#   verified_by : bu kaydin NEREDEN dogrulandigi. "local_pdf" = articles/ altinda
+#                 duran dosyanin ilk sayfasindan okundu.
+#   local_pdf   : varsa, depodaki dosya (articles/ depoya DAHIL DEGIL, .gitignore)
+#
+# CROSSREF DOGRULAMASI. 2026-10-14'te sekiz DOI'nin sekizi de Crossref API'sinden
+# cozuldu ve basliklar/kunyeler kutukle karsilastirildi. Iki kayitta eksik kunye
+# Crossref'ten tamamlandi: Higgins 2000 (cilt 267, s.4763-4769) ve Kelly 1996
+# (s.251-260). Yeni bir atif eklenince ayni kontrol yapilir:
+#     python3 citations_check.py
+
+citations:
+
+  # --- elimizde PDF'i olan dort kaynak (kullanici articles/ icine koydu) ---
+
+  - id: miao2025_perspective
+    authors: "Miao H, Schmidt S"
+    title: "Rieske Oxygenases: Powerful Models for Understanding Nature's Orchestration of Electron Transfer and Oxidative Chemistry"
+    journal: "Biochemistry"
+    year: 2025
+    volume: "64"
+    pages: "3801-3813"
+    doi: "10.1021/acs.biochem.5c00369"
+    verified_by: local_pdf
+    local_pdf: "articles/bi5c00369.pdf"
+    used_for:
+      - "Rieske motifi C-x-H-x(15,47)-C-x(2)-H ve mononukleer [DE]-x(2)-H-x(3,5)-H tanimlari (ro_motif.py, aday tarama kapilari)"
+      - "ailenin reaksiyon repertuvari listesi; C-S bagi kirilmasinin ailede bulundugu ama bu sette BULUNMADIGI bu kaynaktan gorulu (MsmA onerisinin gerekcesi)"
+
+  - id: miao2026_redox_preprint
+    authors: "Miao H, Oerlemanns R, Hagedoorn PL, Schmidt S"
+    title: "Decoding and Reprogramming Redox Partner Specificity in Rieske Oxygenases for Enhanced Catalytic Activity"
+    journal: "bioRxiv (preprint, not peer reviewed)"
+    year: 2026
+    posted: "2026-04-06"
+    doi: "10.64898/2026.04.03.713453"
+    peer_reviewed: false
+    verified_by: local_pdf
+    local_pdf: "articles/2026.04.03.713453v1.full.pdf"
+    used_for:
+      - "ferredoksin ortak secimi iddiasi; analysis_out/ferredoxin_residue.json bu iddiayi SINADI ve kismen CELISTI (bkz disagreements sayfasi)"
+    note: >
+      Hakem sureci gormemis bir onbaski. Bu veritabani onunla celisen bir olcum
+      bildiriyor, ve celiski bildirilirken kaynagin onbaski oldugu AYRICA yazilir.
+
+  - id: runda2024_thesis
+    authors: "Runda M"
+    title: "Rieske oxygenases outside a nutshell"
+    type: "PhD thesis, University of Groningen"
+    year: 2024
+    doi: "10.33612/diss.1175898687"
+    verified_by: local_pdf
+    local_pdf: "articles/Complete_thesis.pdf"
+    used_for:
+      - "Batie siniflandirmasi Tablo 2 (batie_classes.yaml); Batie, Ballou & Correll 1992'den aktariliyor"
+      - "PrnD'nin yeni tip olarak onerilmesi (literature_harvest NT-01)"
+
+  - id: zhang2025_aerc
+    authors: "Zhang W, Ushimaru R, Kanaida M, Abe I"
+    title: "Pyrroline Ring Assembly via N-Prenylation and Oxidative Carbocyclization during Biosynthesis of Aeruginosin Derivatives"
+    journal: "J Am Chem Soc"
+    year: 2025
+    volume: "147"
+    pages: "10853-10858"
+    doi: "10.1021/jacs.5c01994"
+    verified_by: local_pdf
+    local_pdf: "articles/ja5c01994.pdf"
+    used_for:
+      - "AerC: tek enzimde oksidatif karbosiklizasyon VE C-C bagi kirilmasi; sette hic olmayan reaksiyon sinifi"
+      - "ScAerC = BAZ23339.1 kimliginin cozulmesi (analysis_out/aerc_resolution.json)"
+      - "mononukleer demirin deneysel kaniti: 3.00 +/- 0.02 Fe ve 2.2 +/- 0.2 S per monomer; UV-vis 330/460/560 nm"
+
+  # --- tarama sirasinda bulunan, PDF'i depoda OLMAYAN kaynaklar ---
+  # Bunlarin DOI'leri UniProt / PubMed kayitlarindan okundu, uydurulmadi.
+
+  - id: berger2026_sesquiterpene
+    authors: "Berger JB, Marques SM, Wissner JL, Schelle JT, Beekwilder J, Damborsky J, Hauer B"
+    title: "Regioselective Sesquiterpene Hydroxylation Directed by Tunnel Remodeling in Rieske Oxygenases"
+    journal: "JACS Au"
+    year: 2026
+    volume: "6"
+    pages: "847-857"
+    doi: "10.1021/jacsau.5c01130"
+    pmid: "41755873"
+    verified_by: pubmed_record
+    used_for:
+      - "2_203_cumA1 substrat araliginin genislemesi: yabanil kumen dioksijenaz beta-bisabolen'i 64:21 oraninda beta-bisabolen-5-ol ve (S)-beta-bisabolen-13-ol'e hidroksilliyor -- kuratorlu bir tip icin ILK terpen substrati"
+
+  - id: demarco1999_msma
+    authors: "De Marco P, Moradas-Ferreira P, Higgins TP, McDonald I, Kenna EM, Murrell JC"
+    title: "Molecular analysis of a novel methanesulfonic acid monooxygenase from the methylotroph Methylosulfonomonas methylovora"
+    journal: "J Bacteriol"
+    year: 1999
+    volume: "181"
+    pages: "2244-2251"
+    doi: "10.1128/jb.181.7.2244-2251.1999"
+    pmid: "10094704"
+    verified_by: uniprot_record
+    used_for: ["MsmA (UniProt Q9X404) aday referansi; C-S bagi kirilmasi"]
+
+  - id: higgins2000_msma
+    authors: "Higgins TP, De Marco P, Murrell JC"
+    title: "Purification and partial characterization of the hydroxylase component of the methanesulfonic acid monooxygenase"
+    journal: "Eur J Biochem"
+    year: 2000
+    volume: "267"
+    pages: "4763-4769"
+    doi: "10.1046/j.1432-1327.2000.01538.x"
+    pmid: "10903510"
+    verified_by: uniprot_record
+    used_for: ["MsmA hidroksilaz bileseninin saflastirilmasi -- protein duzeyinde kanit"]
+
+  - id: kelly1996_msma
+    authors: "Kelly DP, Baker SC, Trickett J, Davey M, Murrell JC"
+    title: "Metabolism of methanesulfonic acid involves a multicomponent monooxygenase enzyme"
+    journal: "Microbiology"
+    year: 1996
+    volume: "142"
+    pages: "251-260"
+    doi: "10.1099/13500872-142-2-251"
+    pmid: "8932698"
+    verified_by: uniprot_record
+    used_for: ["MsmA'nin cok bilesenli monooksijenaz oldugunun gosterilmesi"]
+
+  # --- grup 6 (plastid klorofil yolu) islevsel karakterizasyonlari ---
+  # types_build.py --check bu uc referansin source alaninda cozulebilir bir
+  # tanimlayici olmadigini bildirdi. Atiflar UniProt kayitlarinin referans
+  # listesinden, KAPSAMI "FUNCTION; CATALYTIC ACTIVITY" olanlar suzulerek
+  # secildi -- dizi bildiren makaleler degil, islevi gosterenler.
+
+  - id: pruzinska2003_pao
+    authors: "Pružinská A, Tanner G, Anders I, Roca M, Hörtensteiner S"
+    title: "Chlorophyll breakdown: pheophorbide a oxygenase is a Rieske-type iron-sulfur protein, encoded by the accelerated cell death 1 gene"
+    journal: "Proc Natl Acad Sci U S A"
+    year: 2003
+    volume: "100"
+    pages: "15259-15264"
+    doi: "10.1073/pnas.2036571100"
+    pmid: "14657372"
+    verified_by: uniprot_reference_list
+    uniprot: "Q9FYC2"
+    uniprot_scope: "FUNCTION; CATALYTIC ACTIVITY; BIOPHYSICOCHEMICAL PROPERTIES; CHARACTERIZATION"
+    used_for:
+      - "6_601_PAO referansinin islevsel dayanagi; basligin kendisi PAO'nun Rieske-tipi demir-sulfur proteini oldugunu soyluyor"
+
+  - id: oster2000_cao
+    authors: "Oster U, Tanaka R, Tanaka A, Rüdiger W"
+    title: "Cloning and functional expression of the gene encoding the key enzyme for chlorophyll b biosynthesis"
+    journal: "Plant J"
+    year: 2000
+    volume: "21"
+    pages: "305-310"
+    doi: "10.1046/j.1365-313x.2000.00672.x"
+    pmid: "10758481"
+    verified_by: uniprot_reference_list
+    uniprot: "Q9MBA1"
+    uniprot_scope: "NUCLEOTIDE SEQUENCE [GENOMIC DNA] (ISOFORM 1); FUNCTION; CATALYTIC ACTIVITY"
+    used_for:
+      - "6_602_CAO referansinin islevsel dayanagi: klorofillid a oksijenaz, klorofil b sentezinin anahtar enzimi"
+
+  - id: bartsch2008_ptc52
+    authors: "Bartsch S, Monnet J, Selbach K, Quigley F, Gray J, von Wettstein D, Reinbothe S, Reinbothe C"
+    title: "Three thioredoxin targets in the inner envelope membrane of chloroplasts function in protein import and chlorophyll metabolism"
+    journal: "Proc Natl Acad Sci U S A"
+    year: 2008
+    volume: "105"
+    pages: "4933-4938"
+    doi: "10.1073/pnas.0800378105"
+    pmid: "18349143"
+    verified_by: uniprot_reference_list
+    uniprot: "Q8W496"
+    uniprot_scope: "FUNCTION; ACTIVITY REGULATION; CATALYTIC ACTIVITY"
+    used_for:
+      - "6_603_PTC52 referansinin islevsel dayanagi; protoklorofillid a oksijenaz etkinligi ve tioredoksin regulasyonu"
+
+  # --- yontem kaynaklari: yapi dogrulamasinda kullanildi (2026-10-21) ---
+
+  - id: kauppi1998_ndo
+    authors: "Kauppi B, Lee K, Carredano E, Parales RE, Gibson DT, Eklund H, Ramaswamy S"
+    title: "Structure of an aromatic-ring-hydroxylating dioxygenase - naphthalene 1,2-dioxygenase"
+    journal: "Structure"
+    year: 1998
+    volume: "6"
+    pages: "571-586"
+    doi: "10.1016/s0969-2126(98)00059-8"
+    pdb: "1NDO"
+    verified_by: crossref_and_rcsb
+    used_for:
+      - "AerC metal merkezlerinin POZITIF KONTROLU. 1NDO'nun Rieske merkezi (C81/H83/C101/H104,
+         Fe-Fe 2,77 A) ve mononukleer 2-His-1-karboksilat yuzu (H208/H213/D362) olculup AerC
+         tahminiyle karsilastirildi."
+      - "Kopru aspartatinin rolunun kontrolu: NDO'da Asp205 kendi zincirinin Rieske'sinden
+         46,7 A, KOMSU zincirin Rieske'sinden 7,5 A uzakta -- AerC'de D511'in mononukleer
+         His'lerden 8,4-9,2 A olmasinin neden kopru roluyle tutarli oldugu buradan okunuyor."
+    note: >
+      Bu veritabani kendi siniflandirmasinda YAPI KULLANMAZ; burada yapi yalnizca AerC'nin
+      metal merkezlerinin geometrisini sinamak icin, dis bir olcut olarak kullanildi.
+
+  - id: lin2023_esmfold
+    authors: "Lin Z, Akin H, Rao R, Hie B, Zhu Z, Lu W, Smetanin N, Verkuil R, et al."
+    title: "Evolutionary-scale prediction of atomic-level protein structure with a language model"
+    journal: "Science"
+    year: 2023
+    volume: "379"
+    pages: "1123-1130"
+    doi: "10.1126/science.ade2574"
+    verified_by: crossref_record
+    used_for:
+      - "AerC'nin Rieske alani (kalinti 100-230) ve katalitik alani (440-700) ESMFold ile
+         katlandi; karboksilat Asp667 bu modelde yerelleştirildi."
+      - "Yontemin kendisi de sinandi: ayni ucla 1NDO'nun Rieske alani katlanip kendi kristal
+         yapisiyla karsilastirildi ve geometri ~0,3 A icinde yeniden uretildi."
+    note: >
+      Tahminler APO ve alanlar AYRI katlandi (tam boy icin API 413 donuyor). Dolayisiyla iki
+      merkez ARASINDAKI iliski ve alt birimler arasi kopru geometrisi bu olcumden cikarilamaz.
+

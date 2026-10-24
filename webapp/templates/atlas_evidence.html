@@ -27,7 +27,7 @@ read with the right amount of confidence.</p>
 {% endfor %}
 </tbody></table></div>
 <figcaption><b>Method.</b> Every confirmed alpha subunit was compared with DIAMOND blastp against
-the 71 curated reference proteins; the level follows from identity to the best hit, with the top
+the {{ N_REFS }} curated reference proteins; the level follows from identity to the best hit, with the top
 level additionally requiring 90 % query coverage.
 <b>Consequence.</b> A substrate taken from the literature transfers to roughly
 {{ pct(tot['characterized'] + tot['close_homolog'], total) }} of members. For the remainder the

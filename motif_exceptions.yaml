@@ -1,0 +1,60 @@
+# MOTIF ISTISNALARI -- repo'nun kendi kapisindan gecemeyen kuratorlu referanslar.
+#
+# NEDEN BU DOSYA VAR. ro_motif.py bir proteini "gercek RO alpha" saymak icin
+# Rieske ligandlarinin 4/4'unu ve katalitik triad'in en az 2/3'unu MODEL
+# KOLONUNDA arar. Kuratorlu referanslarin bu kapiyi gecmesi beklenir -- ama
+# AerC gecmiyor, ve bunun sessiz kalmasi yanlis olur: sette kendi kapisindan
+# gecemeyen bir referans varsa bu YAZILI olmali, gerekcesiyle ve kanitiyla.
+#
+# BIR ISTISNA SU UC SEYI TASIMAK ZORUNDADIR:
+#   neden   : kapinin neden bu dizide calismadigi, OLCUMLE
+#   kanit   : ligandlarin baska bir yolla dogrulandigi dosya
+#   sinir   : istisnanin neyi kapsamadigi
+# Bunlardan biri yoksa istisna degil, ortulmus bir hatadir.
+
+exceptions:
+
+  - cluster: 7_701_AerC
+    added_on: 2026-10-22
+    gate: "ro_motif.classify_motifs -- referans hizalamasi uzerinde"
+    observed: "Rieske 4/4, katalitik 0/3, kopru Asp var"
+    expected: "Rieske 4/4, katalitik >=2/3"
+    reason: >
+      Kapi calismiyor degil; GLOBAL HIZALAMA bu dizide katalitik kolonlara
+      ulasmiyor. AerC 717 aa, modelin kuruldugu referanslar 330-460 aa.
+      Rieske alani kalinti 146-171'de, mononukleer merkez 513-518'de; arada
+      buyuk bir insersiyon var. hmmalign tam boy denendiginde modelin yalnizca
+      %18,9'unu kapliyor ve kolon 231'de duruyor -- katalitik kolonlar
+      289/294/471'e hic varmiyor. Olculen 0/3 bu yuzden bir ARTEFAKTTIR,
+      yoklugun kaniti degildir.
+    how_the_ligands_were_verified:
+      - "PARCA HIZALAMASI: dizi parcalara bolunup her parca modele ayri
+         hizalandiginda ligandlar dogru kolonlara dusuyor -- Rieske C146/H148/
+         C168/H171, kopru D511, mononukleer H513/H518."
+      - "hmmsearch (yerel, domain-farkinda): tam boy E = 3,8e-68, uc domain;
+         Rieske parcasinin ali araligi 100-209, hmm araligi 124-231 -- parca
+         hizalamasinin verdigi araligin AYNISI, iki bagimsiz yontem ortusuyor."
+      - "ORTOLOG: ULP74381.1 (Nodularia sphaerocarpa, 720 aa, SuoC) ayni
+         kolonlarda ayni ligandlari veriyor."
+      - "GEOMETRI: Rieske merkezinin alti ligand-arasi mesafesi, ayni yontem
+         1NDO'ya uygulandiginda cikan degerlerden en fazla 0,34 A sapiyor;
+         yontem 1NDO'nun kendi kristal geometrisini ~0,3 A icinde yeniden
+         uretiyor. Mononukleer merkez tam bir 2-His-1-karboksilat yuzu kuruyor
+         ve karboksilat Asp667 (His'lere 2,64 A; en yakin rakip 4,18 A)."
+      - "DENEY: makale monomer basina 3,00 +/- 0,02 Fe ve 2,2 +/- 0,2 S olcuyor,
+         yani 2 Fe Rieske + 1 Fe mononukleer; UV-vis 330/460/560 nm."
+    evidence_files:
+      - analysis_out/aerc_resolution.json
+      - analysis_out/aerc_structure/aerc_metal_sites.json
+    citations: [zhang2025_aerc, kauppi1998_ndo, lin2023_esmfold]
+    limits: >
+      Istisna YALNIZCA referans hizalamasindaki motif skorunu kapsar. Atamayi
+      kapsamaz: AerC'nin atama profili ayri kurulur (build_type_profile.py) ve
+      aday proteinler normal kapiyi gecmek zorundadir. Yapi kanitlari deneysel
+      degil, ESMFold tahminidir ve alanlar AYRI katlanmistir; Asp667 bir
+      tahmindir, mutagenez kesinlestirir.
+    what_would_remove_this_exception: >
+      Motif modeli, 600 aa ustu dizileri de katalitik loba kadar hizalayabilir
+      hale gelirse (ornegin yerel/domain bazli hizalama ya da madde 64'teki
+      geometrik capa) istisnaya gerek kalmaz. Bu, dogru cozumdur; istisna
+      gecici bir kayittir.

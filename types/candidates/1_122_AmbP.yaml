@@ -1,0 +1,17 @@
+cluster: 1_122_AmbP
+gene: AmbP
+group: 1
+substrate_en: a pyran-containing ambruticin polyketide precursor -- exact structure NOT established
+substrate_smiles: 
+product_en: the corresponding alkene (desaturated pyran)
+reaction: desaturation of a pyran ring in ambruticin biosynthesis
+reaction_class: desaturation
+family: polyketides
+pdb: 
+source: UniProt A1YBR2 (gene ambP), Sorangium cellulosum; proposed as a new type by analysis_out/literature_harvest.json finding NT-08
+source_kind: paper
+curation_confidence: low
+notes: RECOMMENDATION IS HOLD. The sequence and organism are solid -- NT-08 could not name an organism and the UniProt entry gives Sorangium cellulosum, the known ambruticin/jerangolid producer -- but the substrate is an unspecified polyketide intermediate, which is why curation_confidence is low and substrate_smiles is empty. Its paralog JerP (UniProt A1YBU0, 352 aa, jerangolid pathway, same organism) is 74.6% identical to this protein over 99.7% of its length and is deliberately NOT proposed as a separate candidate; the harvest names the pair together and one reference covers both at that identity. reaction_class "desaturation" and family "polyketides" are both NEW vocabulary.
+added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_on: 2026-10-14
+sequence: MAELDHWHPVLLSHELRRKPRSVRLAGREIVVFRTSSGGLGAFTDRCPHRSMRLSEGWVEGDRLVCAYHGWRWAADGRGDIPATPAARPCARRDDVFDAVERYGAIWVKRAGAQATFPRFDAEGYVPAGVLRHRAAVPFELALDNFIEVEHTPFVHFMLGYSLDQMPQVEAQVTLSDDAVQVVNTGPKRPIPRIVEKMFRIPHDAKFVVEWTARFSPVHAIYDHSFINPRTREVVTYPLRSAVFFNPVGPESSEIYTFLFASLGRWSEFGLGSLIWPPLRVAMDLELRLDMRLLSRLADKRGILKGNVLGRFDKALVASRDRIDRIYRGQAAEATPEAGDGHEATRAARRLPLAAS

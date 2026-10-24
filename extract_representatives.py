@@ -137,7 +137,7 @@ def main():
             "rep_candidate_id": rep_id,
             "organism": (m["organism"] if m else "") or "",
             "is_plasmid": (m["is_plasmid"] if m else 0) or 0,
-            "substrate": ecology.get(info["cluster"], {}).get("substrate", "bilinmiyor"),
+            "substrate": ecology.get(info["cluster"], {}).get("substrate", "unknown"),
             "rieske_intact": int(motif.get("rieske_intact", False)),
             "catalytic_intact": int(motif.get("catalytic_intact", False)),
             "rieske_sites": f"{motif.get('rieske_sites_found', 0)}/{motif.get('rieske_sites_total', 4)}",
@@ -167,7 +167,7 @@ def main():
             if not seq:
                 continue
             m = meta.get(rep_id, {})
-            substrate = ecology.get(cluster, {}).get("substrate", "bilinmiyor")
+            substrate = ecology.get(cluster, {}).get("substrate", "unknown")
             handle.write(f">{cluster}_type leaf={leaf_id} n={size} "
                          f"{(m.get('protein_id') if m else '') or ''} "
                          f"substrate={substrate}\n{seq}\n")

@@ -83,8 +83,10 @@ SOURCE_DATA = {
     },
     "RieskeDB71.hmm": {
         "kind": "file",
-        "description": "Pressed HMM library of the 71 clean references, used for "
-                       "type assignment by bit score.",
+        "description": "Pressed HMM library of the curated references, used for "
+                       "type assignment by bit score. The count is not written here: "
+                       "it changes when a type is added, and a stale number in a "
+                       "provenance map is worse than none.",
         "hand_curated": True,
     },
     "component_hmms/": {
