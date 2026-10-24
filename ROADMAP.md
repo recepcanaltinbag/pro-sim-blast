@@ -76,7 +76,20 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
     ("HMM'ler o anda 71 referansla yeniden kuruldu") -- onu dinamik yapmak
     tarihi tahrif etmek olurdu, yerine "tarihsel" diye isaretlendi.
 
-73. **HAFIF STATIK SITE -- kod bitti, DEPLOY BEKLIYOR.**
+73. ~~HAFIF STATIK SITE~~ **YAYINDA (2026-10-24).**
+    gh-pages 739ce9bd15, 3.951 dosya, 256+256 veri parcasi. Canli dogrulandi:
+    ana sayfa 19.114 giris, 12 rastgele giris 12 ayri parcada tarayicida
+    cizildi (2 SVG, 2 tablo, hata yok). Uzak agac yerel derlemeyle birebir
+    (tek fark .nojekyll).
+    DEPLOY KORUMASI: MIN_FILES=5000 esigi bu tasarimda yanlis alarm verdi
+    (tam derleme 3.950 dosya) ve kaldirildi. Yerine beklenen PARCA KUMESI
+    arama indeksinden md5 ile hesaplaniyor; tip/varyant/giris sayilari
+    chemistry.csv ve veritabanindan okunuyor. 254 != 256'da durdugu sinandi.
+    HATA KAYDI: ilk degisiklik yine esik kullandi (MIN_SHARDS=200) ve CANLI
+    uzak depoya karsi sinandi; 16 parca silinmisken 240 esigi gecti, koruma
+    bos cikti ve o kosu EKSIK bir derleme yayinladi. Sonraki kosu tamamladi.
+    Iki ders: disa donuk betik canli hedefe karsi sinanmaz; basarisiz oldugu
+    gorulmemis koruma, koruma degildir.
     Olculdu: giris basina bir HTML, 22,2 KB; 19 bin girisle 405 MB ve site
     toplami 474 MB / 19.000 dosya. Sayfanin %66'si komsuluk SVG'si ve komsu
     genler tablosuydu -- AYNI VERININ iki render'i, HTML'e gomuldugu icin 19
