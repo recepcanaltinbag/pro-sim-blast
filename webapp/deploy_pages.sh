@@ -51,9 +51,20 @@ echo "[kontrol] taban onegi /${EXPECTED_BASE} dogrulandi"
 # BOS olan bir agac kaldi; o agac yayinlaninca sitenin stil dosyasi 404 verdi
 # ve tema tamamen gitti. Eksik bir derlemeyi yayinlamak, yayinlamamaktan
 # kotudur: site ayakta gorunur ama kirilmistir.
-MIN_FILES=5000
-FILE_COUNT=$(find site -type f | wc -l)
-for required in site/index.html site/static/style.css site/static/table.js site/search_index.json; do
+# TAMLIK OLCUTU: SIHIRLI DOSYA SAYISI DEGIL, BEKLENEN SAYILAR.
+#
+# Eskiden burada MIN_FILES=5000 vardi ve bu, giris basina bir HTML uretilen
+# tasarima gore kalibre edilmisti (tam bir site 13.000-26.000 dosya). Giris
+# sayfalari tek bir kabuk + data/ parcalariyla degistirilince tam bir derleme
+# 3.950 dosyaya dustu ve esik yanlis alarm verdi: 2026-10-24'te hazir ve
+# denetimden gecmis bir derlemenin yayini bu yuzden durdu.
+#
+# Sabit esigin sorunu, neyin EKSIK oldugunu degil "az" oldugunu olcmesiydi.
+# Simdi beklenen sayilar kaynaktan okunuyor: kac tip, kac yaprak, kac giris.
+# Eksik bir derlemeyi yayinlamak yayinlamamaktan kotudur -- site ayakta
+# gorunur ama kirilmistir.
+for required in site/index.html site/static/style.css site/static/table.js site/search_index.json \
+                site/entry.html site/data/meta.json; do
   if [ ! -s "$required" ]; then
     echo "HATA: derleme eksik, '$required' yok ya da bos."
     echo "      Once tamamlanmis bir derleme uretin:"
@@ -61,12 +72,61 @@ for required in site/index.html site/static/style.css site/static/table.js site/
     exit 1
   fi
 done
-if [ "$FILE_COUNT" -lt "$MIN_FILES" ]; then
-  echo "HATA: derlemede yalnizca $FILE_COUNT dosya var, en az $MIN_FILES bekleniyor."
-  echo "      Derleme yarida kalmis olabilir; tekrar uretip oyle yayinlayin."
+FILE_COUNT=$(find site -type f | wc -l)
+SHARDS=$(find site/data/entry -name '*.json' 2>/dev/null | wc -l)
+SEQ_SHARDS=$(find site/data/seq -name '*.json' 2>/dev/null | wc -l)
+CLUSTERS=$(find site/cluster -name '*.html' 2>/dev/null | wc -l)
+LEAVES=$(find site/leaf -name '*.html' 2>/dev/null | wc -l)
+INDEXED=$(python3 -c "import json;print(len(json.load(open('site/search_index.json'))))" 2>/dev/null || echo 0)
+
+# Beklenenler kaynaktan: chemistry.csv kac tip, veritabani kac yaprak ve kac
+# dogrulanmis giris. Boylece olcut veriyle birlikte buyur, elle guncellenmez.
+EXP_CLUSTERS=$(python3 -c "import csv;print(sum(1 for _ in csv.DictReader(open('../chemistry.csv'))))" 2>/dev/null || echo 0)
+EXP_LEAVES=$(sqlite3 ../roar.sqlite 'SELECT COUNT(*) FROM leaf' 2>/dev/null || echo 0)
+EXP_ENTRIES=$(sqlite3 ../roar.sqlite 'SELECT COUNT(*) FROM ro WHERE is_confirmed=1' 2>/dev/null || echo 0)
+
+# Beklenen PARCA KUMESI arama indeksinden hesaplanir: her kimligin parca
+# anahtari md5'inin ilk hanelerinden geliyor, yani hangi parcalarin var olmasi
+# gerektigi tam olarak bilinebilir. Ilk surumde burada MIN_SHARDS=200 esigi
+# vardi ve 16 parca silindiginde 240 kalip ESIGI GECTI -- yani koruma bos
+# cikti. Sihirli sayi yerine kesin kume.
+EXP_SHARDS=$(python3 - <<'PYEOF' 2>/dev/null || echo 0
+import hashlib, json, re
+m = re.compile(r"^(.*)_(\d+)-(\d+)_(-?[01])$")
+def unslug(s):
+    g = m.match(s)
+    return f"{g.group(1)}:{g.group(2)}-{g.group(3)}:{g.group(4)}" if g else s.replace("_", ":")
+hexlen = json.load(open("site/data/meta.json")).get("shard_hex", 2)
+rows = json.load(open("site/search_index.json"))
+print(len({hashlib.md5(unslug(r[0]).encode()).hexdigest()[:hexlen] for r in rows}))
+PYEOF
+)
+
+fail=0
+if [ "$EXP_SHARDS" -gt 0 ] && { [ "$SHARDS" -ne "$EXP_SHARDS" ] || [ "$SEQ_SHARDS" -ne "$EXP_SHARDS" ]; }; then
+  echo "HATA: veri parcasi eksik -- entry $SHARDS, seq $SEQ_SHARDS, beklenen $EXP_SHARDS."
+  echo "      Giris sayfalari bu parcalardan ciziliyor; eksikse o girisler bos acilir."
+  fail=1
+fi
+if [ "$EXP_CLUSTERS" -gt 0 ] && [ "$CLUSTERS" -lt "$EXP_CLUSTERS" ]; then
+  echo "HATA: $CLUSTERS tip sayfasi var, chemistry.csv $EXP_CLUSTERS tip sayiyor."
+  fail=1
+fi
+if [ "$EXP_LEAVES" -gt 0 ] && [ "$LEAVES" -lt "$EXP_LEAVES" ]; then
+  echo "HATA: $LEAVES varyant sayfasi var, veritabani $EXP_LEAVES yaprak sayiyor."
+  fail=1
+fi
+if [ "$EXP_ENTRIES" -gt 0 ] && [ "$INDEXED" -lt "$EXP_ENTRIES" ]; then
+  echo "HATA: arama indeksinde $INDEXED giris var, veritabani $EXP_ENTRIES dogrulanmis giris sayiyor."
+  fail=1
+fi
+if [ "$fail" -ne 0 ]; then
+  echo "      Tekrar uretip oyle yayinlayin:"
+  echo "      python3 freeze.py --out site --base /${EXPECTED_BASE}"
   exit 1
 fi
-echo "[kontrol] derleme tam: $FILE_COUNT dosya"
+echo "[kontrol] derleme tam: $FILE_COUNT dosya, $SHARDS/$EXP_SHARDS parca, "\
+     "$CLUSTERS/$EXP_CLUSTERS tip, $LEAVES/$EXP_LEAVES varyant, $INDEXED/$EXP_ENTRIES giris"
 
 if [ ! -d "$CLONE/.git" ]; then
   echo "[kuruluyor] kalici klon: $CLONE"

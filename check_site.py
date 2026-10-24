@@ -259,8 +259,13 @@ def check_entry_shards(root, sample=400):
         return problems, 0
     with open(index, encoding="utf-8") as fh:
         payload = json.load(fh)
-    rows = payload.get("rows") or payload.get("data") or payload
-    ids = [r[0] for r in rows if isinstance(r, list) and r] if isinstance(rows, list) else []
+    # search_index.json bir LISTEDIR (satir listesi); ilk surumde sozluk
+    # varsayilmisti ve .get() ile cokuyordu. Ikisini de kaldir.
+    if isinstance(payload, dict):
+        rows = payload.get("rows") or payload.get("data") or []
+    else:
+        rows = payload
+    ids = [r[0] for r in rows if isinstance(r, list) and r]
     if not ids:
         problems.append("search_index.json holds no entry identifiers; shards not checked")
         return problems, 0
