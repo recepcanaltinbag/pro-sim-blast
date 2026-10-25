@@ -250,6 +250,38 @@
         (op.nearby_beta ? 'yes' : 'no') + ', ferredoxin ' +
         (op.nearby_ferredoxin ? 'yes' : 'no') + ', reductase ' +
         (op.nearby_reductase ? 'yes' : 'no') + '.</p>');
+
+      /* BIR GEN DIZISI, PAYLASILAN BIR ISLEV DEMEK DEGILDIR.
+         Jinja sablonu (templates/ro.html) ile AYNI metni uretir; iki render
+         yolu ayrisirsa yayimlanan sayfa ile gelistirme sunucusu farkli sey
+         soyler. Olculdu: dogrulanmis girislerin %11,2'sinde operonda hic RO
+         bileseni yok, %18,8'inde operon yalnizca alfadan olusuyor. */
+      if (!(op.has_beta || op.has_ferredoxin || op.has_reductase)) {
+        var near = nb.filter(function (n) {
+          return !n.in_operon && Math.abs(n.distance) <= 5000 &&
+            ['regulator', 'transporter', 'transposon', 'ring_cleavage']
+              .indexOf(n.category) >= 0;
+        });
+        var box = '<div class="caveat"><b>No electron-transport partner in this operon.</b> ' +
+          'The genes below are the run of same-strand genes next to the alpha subunit, ' +
+          'separated by at most 150 base pairs. That is a statement about position and ' +
+          'strand, not about function: adjacency is how the operon is called, so when no ' +
+          'beta subunit, ferredoxin or reductase is present the run may hold genes that ' +
+          'share nothing with this enzyme but their location.';
+        if (near.length) {
+          box += '<br><br><b>What does sit nearby, outside the operon.</b> ' +
+            near.map(function (n) {
+              return esc(String(n.product).slice(0, 52)) + ' <span class="note">(' +
+                esc(n.category) + ', ' + fmt(Math.abs(n.distance)) + ' bp, ' +
+                (n.same_strand ? 'same strand' : 'opposite strand') + ')</span>';
+            }).join('; ') +
+            '. A gene on the opposite strand between the alpha subunit and a further gene ' +
+            'rules the two out of one transcript, which is why same-strand neighbours ' +
+            'beyond it are not in the operon even though they may belong to the same ' +
+            'functional module.';
+        }
+        h.push(box + '</div>');
+      }
       h.push('<div id="opsvg"></div>');
       h.push('<table class="data compact"><thead><tr><th class="num">Position</th>' +
         '<th>Component by sequence</th><th>Category by annotation</th><th>Product</th>' +

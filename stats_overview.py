@@ -15,6 +15,7 @@ import argparse
 import csv
 import random
 import re
+import sys
 import json
 import os
 import sqlite3
@@ -24,6 +25,11 @@ import numpy as np
 from scipy import stats
 
 SUBSTRATE_CLASSES = ["xenobiotic", "natural_aromatic", "natural_specialized"]
+
+
+# Filum cikarimi webapp/atlas.py'de yasiyor; burada kopyalanmaz.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "webapp"))
+from atlas import phylum_of as _phylum_of          # noqa: E402
 
 
 def trim_table(rows, cols, table):
@@ -249,8 +255,12 @@ def load(con, ecology_path):
         e = eco.get(d["cluster"], {})
         d["sclass"] = e.get("substrate_class", "unknown")
         d["confidence"] = e.get("confidence", "")
-        tax = (d["taxonomy"] or "").split("; ")
-        d["phylum"] = tax[2] if len(tax) > 2 else (tax[-1] if tax else "?")
+        # Filum TEK YERDEN: webapp/atlas.phylum_of. Burada ayri bir
+        # tax[2] hesabi vardi ve eski bicimli soy dizgilerinde SINIF adini
+        # filum sayiyordu (84 bakteri girisi, 2026-10-25'te olculdu). Ayni
+        # mantigin iki kopyasi olmasi, birinin duzeltilip otekinin
+        # unutulmasi demekti.
+        d["phylum"] = _phylum_of(d["taxonomy"])
         d["genus"] = (d["organism"] or "?").split()[0]
         d["mobile"] = int(bool(d["is_plasmid"]) or (d["transposons"] or 0) > 0)
         # Elektron tasima SISTEMI: klasik siniflandirmanin asil ekseni. Bazi

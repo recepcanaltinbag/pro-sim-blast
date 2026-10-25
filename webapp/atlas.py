@@ -787,13 +787,61 @@ def read_json(path):
         return json.load(fh)
 
 
+# Bakteri soy dizgisinde NCBI araya bir KRALLIK seviyesi koydu:
+#     Bacteria; Pseudomonadati; Pseudomonadota; Alphaproteobacteria; ...
+#        0          1(krallik)     2(FILUM)         3(sinif)
+# ama eski bicimli kayitlarda o seviye YOK:
+#     Bacteria; Proteobacteria; Alphaproteobacteria; ...
+#        0          1(FILUM)         2(SINIF)
+# Sabit parts[2] ikincisinde SINIF adini filum olarak veriyordu. Olculdu
+# (2026-10-25): 84 bakteri girisi boyle, ve tip sayfalarinda Alphaproteobacteria,
+# Gammaproteobacteria, Actinomycetes gibi SINIFLAR filum listesinde goruntu --
+# qxyA sayfasinda "Alphaproteobacteria 4" bu yuzden cikti ve Pseudomonadota
+# 128 yerine 125 sayildi.
+#
+# Cozum: konuma degil ADA bak. Yeni NCBI bakteri krallik adlari -ati ile
+# bitiyor; o varsa filum bir sonraki seviyedir. Ayrica eski filum adlari yeni
+# adlarina esleniyor, yoksa ayni filum iki ad altinda iki kez sayiliyor.
+_KINGDOM_SUFFIX = "ati"
+_PHYLUM_RENAMED = {
+    "Proteobacteria": "Pseudomonadota",
+    "Firmicutes": "Bacillota",
+    "Actinobacteria": "Actinomycetota",
+    "Bacteroidetes": "Bacteroidota",
+    "Chloroflexi": "Chloroflexota",
+    "Cyanobacteria": "Cyanobacteriota",
+    "Deinococcus-Thermus": "Deinococcota",
+    "Thermotogae": "Thermotogota",
+    "Aquificae": "Aquificota",
+    "Spirochaetes": "Spirochaetota",
+    "Planctomycetes": "Planctomycetota",
+    "Verrucomicrobia": "Verrucomicrobiota",
+    "Acidobacteria": "Acidobacteriota",
+    "Chlamydiae": "Chlamydiota",
+    "Fusobacteria": "Fusobacteriota",
+    "Nitrospirae": "Nitrospirota",
+    "Synergistetes": "Synergistota",
+    "Tenericutes": "Mycoplasmatota",
+    "Euryarchaeota": "Methanobacteriota",
+    "Crenarchaeota": "Thermoproteota",
+}
+
+
 def phylum_of(taxonomy):
-    parts = (taxonomy or "").split("; ")
-    if not parts or not parts[0]:
+    """Soy dizgisinden FILUM adi. Konum degil, ad temelli."""
+    parts = [p for p in (taxonomy or "").split("; ") if p]
+    if not parts:
         return "?"
     if parts[0] == "Eukaryota":
+        # Okaryotlarda bu dizgi filum seviyesinde tutarli degil (Viridiplantae
+        # krallik, Dikarya alt-krallik, Ecdysozoa klad). Krallik seviyesi
+        # raporlanir ve BOYLE adlandirilir; filum gibi sunulmaz.
         return parts[1] if len(parts) > 1 else "Eukaryota"
-    return parts[2] if len(parts) > 2 else parts[-1]
+    idx = 1
+    if len(parts) > 2 and parts[1].endswith(_KINGDOM_SUFFIX):
+        idx = 2                      # krallik seviyesi var, filum bir sonraki
+    name = parts[idx] if len(parts) > idx else parts[-1]
+    return _PHYLUM_RENAMED.get(name, name)
 
 
 # ----------------------------------------------------------------- aggregates

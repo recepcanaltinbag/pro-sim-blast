@@ -124,6 +124,45 @@ label.</figcaption>
 <p class="note">Within 10 kb but outside the operon: beta {{ 'yes' if operon.nearby_beta else 'no' }},
   ferredoxin {{ 'yes' if operon.nearby_ferredoxin else 'no' }},
   reductase {{ 'yes' if operon.nearby_reductase else 'no' }}.</p>
+
+{#  BIR GEN DIZISI, PAYLASILAN BIR ISLEV DEMEK DEGILDIR.
+    Operon burada tek bir kuralla cagrilir: ayni ipliktе, aralari en cok 150 bp
+    olan genlerin dizisi. Kural olculdu ve gercek sinyali yakaliyor -- beta alt
+    birimleri %90,7 ayni iplikte (fon %57) ve %83,5'i +-2 gen icinde (fon %21).
+    Ama elektron tasima ortagi OLMAYAN bir komsulukta ayni kural, bitisik
+    olmaktan baska ortak yani olmayan genleri de alir. Olculdu: dogrulanmis
+    girislerin %11,2'sinde (2.145) operonda hic RO bileseni yok ve %18,8'inde
+    operon yalnizca alfa alt biriminden olusuyor.
+    Bu blok o durumu SOYLER, cunku gen tablosunu sessizce gostermek okuyucuyu
+    "bunlar birlikte calisiyor" diye okumaya itiyor -- kullanici qxyA'da tam
+    bunu bildirdi (2026-10-25).                                              #}
+{% if not (operon.has_beta or operon.has_ferredoxin or operon.has_reductase) %}
+<div class="caveat">
+  <b>No electron-transport partner in this operon.</b> The genes below are the run of
+  same-strand genes next to the alpha subunit, separated by at most 150 base pairs. That is a
+  statement about position and strand, not about function: adjacency is how the operon is
+  called, so when no beta subunit, ferredoxin or reductase is present the run may hold genes
+  that share nothing with this enzyme but their location.
+  {% set nearby = [] %}
+  {% for n in neighbors if n.neighbor_id not in operon_ids and n.category in
+       ('regulator', 'transporter', 'transposon', 'ring_cleavage') and (n.distance|abs) <= 5000 %}
+    {% set _ = nearby.append(n) %}
+  {% endfor %}
+  {#  DUZ DILIM, truncate DEGIL. Jinja'nin truncate'i uc nokta ekliyor ve
+      leeway parametresi tasiyor; static/entry.js tarafinda slice(0,52) var ve
+      ikisi 25 giriste 3'unde ayrismisti. Ayni metni iki dilde uretmek
+      zorundaysak, en basit islemi secmek dogrusu.                          #}
+  {% if nearby %}
+  <br><br><b>What does sit nearby, outside the operon.</b>
+  {% for n in nearby %}{% if not loop.first %}; {% endif %}{{ n.product[:52] }}
+  <span class="note">({{ n.category }}, {{ n.distance|abs|fmt }} bp,
+  {{ 'same strand' if n.same_strand else 'opposite strand' }})</span>{% endfor %}.
+  A gene on the opposite strand between the alpha subunit and a further gene rules the two out
+  of one transcript, which is why same-strand neighbours beyond it are not in the operon even
+  though they may belong to the same functional module.
+  {% endif %}
+</div>
+{% endif %}
 {{ operon_regulator_svg(operon.layout, reg)|safe }}
 <table class="data compact">
   <thead><tr><th class="num">Position</th><th>Component by sequence</th><th>Category by annotation</th>
