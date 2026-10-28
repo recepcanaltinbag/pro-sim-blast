@@ -5,6 +5,52 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+74. **ATIFLAR KUTUGE TASINDI -- 67 referans tipi artik yapisal olarak atifli
+    (2026-10-28).** Bir veritabaninda yanlis atif, atifsizdan kotudur; o yuzden
+    hicbir kunye el ile yazilmadi ve hicbiri tek bir kaynaktan kabul edilmedi.
+
+    (a) DOGRULAMA, EKLEMEDEN ONCE. 67 birincil DOI Crossref'te **iki kez
+    bagimsiz** cozuldu (ajanin taramasi, sonra benim `recheck_dois` kosum) ve
+    her seferinde baslik/yil kutukle karsilastirildi: 67/67 uyustu, 0 sorun.
+    44 ikincil DOI de ayrica cozuldu, 44/44 baslik birebir. Her accession'in
+    dizisi UniParc CRC64 ile bizdeki diziye karsi tutuldu: **67/67 birebir.**
+    Ayri olarak `verify_reference_sources.py --all` kayitli 35 "birebir"
+    iddiasinin 35'ini canli olarak yeniden dogruladi.
+
+    (b) KUTUK 14'TEN 118 ATIFA CIKTI (67 birincil + 37 yeni ikincil). Kimlikler
+    ve DOI'ler tekil; hicbir kayit yazarsiz degil -- ikincillerin yazar alani
+    da Crossref'ten cekildi.
+
+    (c) TIPLER ARTIK KUTUGE YAPISAL BAGLI. Atiflar bugune kadar `source`
+    icinde serbest metindi: ayni makale iki yerde yazilabiliyor ve biri
+    guncellenirse ikisi ayrisiyordu. Her tipte artik `citations:` (anahtar
+    listesi), `accession:`, `accession_db:`, `accession_verified:`,
+    `accession_evidence:` ve `accession_organism:` var. `accession_organism`
+    kasten boyle adlandirildi: bu, dizimizle birebir ayni olan KAYDIN
+    organizmasi, kuratorun enzim hakkindaki iddiasi degil -- organizma
+    duzeltmeleri (madde 75) ayri bir is.
+
+    (d) DENETIM MODULER HALE GETIRILDI. "Cozulebilir tanimlayici" kontrolu
+    yalnizca `source` prozasini tariyordu; 67 tipe yapisal atif eklendikten
+    SONRA bile 13 uyari veriyordu -- yani tanimlayici vardi, kontrol onu
+    okumuyordu. Artik `citations`/`accession` alanlarini da okuyor ve
+    `citations.yaml`'da KARSILIGI OLMAYAN bir anahtar HATA sayiliyor.
+    Uyari 13 -> 0, hata 0, chemistry.csv gidis-donusu birebir.
+
+    (e) BU SIRADA GERCEK BIR HATA YAKALANDI. `load_manifest` her degeri
+    `str()` ile duzlestiriyordu, yani `citations:` listesi `"['a', 'b']"`
+    metnine donuyordu; yeni kontrol o metni harf harf gezip her karakteri bir
+    atif anahtari saydi ve 2.584 hata verdi. Listeler artik korunuyor
+    (PyYAML'siz yerlesik ayristirici da liste okuyacak sekilde guncellendi ve
+    PyYAML gizlenerek test edildi). Bu alan 2026-10-14'ten beri alti tipte
+    duruyordu ve HICBIR SEY onu okumadigi icin bozuk oldugu gorulmemisti.
+
+    (f) KALAN IS: dort tipin (`1_116_GdmA`, `1_117_PrnD`, `3_307_NagGH`,
+    `3_321_Nvd`) DOI'si hala yalnizca `source` prozasinda, kutukte degil.
+    Ayrica atiflar henuz tip SAYFALARINDA GORUNMUYOR -- `citations.yaml`'i
+    okuyan tek sey `citations_check.py`. Kutuk yayina baglanmadikca yarisi
+    yapilmis is.
+
 69. **BAGIMLILIK GRAFIGINDE IKI HATA DAHA -- ikisi de DUZELTILDI (2026-10-22).**
     Ikisi de ayni sinif: bir adim bir dosyayi OKUYOR ama grafikte girdi olarak
     beyan edilmemis. Bu oturumda bu sinifin DORDUNCU ve BESINCI ornegi.

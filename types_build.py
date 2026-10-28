@@ -48,6 +48,23 @@ CLUSTER_RE = re.compile(r"^(\d+)_(\d+)_([A-Za-z0-9_]+)$")
 GROUPS_FILE = "groups.yaml"
 
 
+CITATIONS_FILE = "citations.yaml"
+
+
+def known_citations(path=CITATIONS_FILE):
+    """citations.yaml icindeki atif anahtarlari. Dosya yoksa bos kume ve
+    atif kontrolu yapilmaz -- davranis eskisi gibi kalir."""
+    if not os.path.exists(path):
+        return set()
+    try:
+        import yaml
+        data = yaml.safe_load(open(path)) or {}
+        return {str(c.get("id")) for c in (data.get("citations") or [])
+                if c.get("id")}
+    except Exception:
+        return set()
+
+
 def known_groups(path=GROUPS_FILE):
     """groups.yaml'daki grup kimlikleri. Dosya yoksa bos kume -- dogrulama
     o zaman grup kontrolu yapmaz ve davranis eskisi gibi kalir."""
@@ -86,7 +103,13 @@ def load_manifest(path):
         import yaml
         data = yaml.safe_load(text)
         if isinstance(data, dict):
-            return {k: ("" if v is None else str(v)) for k, v in data.items()}
+            # LISTELER KORUNUR. Eskiden her deger str() ile duzlestiriliyordu
+            # ve `citations:` listesi "['a', 'b']" metnine donuyordu; o metin
+            # harf harf gezilince her karakter bir atif anahtari sayiliyordu.
+            # Liste disindaki her sey metin kalir -- chemistry.csv gidis-donusu
+            # buna dayaniyor.
+            return {k: ("" if v is None else v if isinstance(v, list)
+                        else str(v)) for k, v in data.items()}
     except ImportError:
         pass
     data, key = {}, None
@@ -97,7 +120,13 @@ def load_manifest(path):
             key, _, value = line.partition(":")
             key = key.strip()
             data[key] = value.strip().strip('"').strip("'")
-        elif key:
+        elif key and line.lstrip().startswith("- "):
+            # PyYAML yoksa da liste alanlari liste olarak okunur.
+            item = line.lstrip()[2:].strip().strip('"').strip("'")
+            if not isinstance(data.get(key), list):
+                data[key] = [] if not str(data.get(key) or "").strip() else [data[key]]
+            data[key].append(item)
+        elif key and isinstance(data.get(key), str):
             data[key] = (data[key] + line.strip()).strip()
     return data
 
@@ -117,6 +146,7 @@ def validate_set(manifests, groups=None):
     """Yalnizca BUTUN sete bakilarak gorulebilecek hatalar."""
     errors, warnings = [], []
     groups = known_groups() if groups is None else groups
+    citations = known_citations()
 
     by_cluster = defaultdict(list)
     for fname, m in manifests.items():
@@ -146,11 +176,36 @@ def validate_set(manifests, groups=None):
         for field in REQUIRED:
             if not str(m.get(field) or "").strip():
                 errors.append(f"{cluster}: zorunlu alan bos -- {field}")
-        if (not str(m.get("source") or "").strip()
-                or not re.search(r"10\.\d{4,}/|PMID|PMC|PDB|\b\d{4};",
-                                 str(m.get("source") or ""))):
-            warnings.append(f"{cluster}: source alaninda cozulebilir bir "
-                            "tanimlayici yok (DOI, PMID ya da PDB)")
+        # COZULEBILIR TANIMLAYICI. Desen once yalnizca DOI/PMID/PMC/PDB
+        # ariyordu ve UniProt ile GenBank accession'larini TANIMIYORDU; oysa
+        # ikisi de cozulebilir. Sonucu: 23 tipe UniProt accession'i eklendikten
+        # sonra bile uyari devam etti (2026-10-28). Artik ikisi de sayiliyor.
+        #   UniProt : P12345 / Q6UP13 / A0A059U1S8
+        #   GenBank : AAQ91914.2 / AEC21006.1 / WVH02003.1
+        # 2026-10-28: kontrol artik SADECE `source` metnine bakmiyor.
+        # Atiflar citations.yaml'a tasindi ve tipler oraya `citations:`
+        # anahtar listesiyle baglanir; dizinin geldigi kayit ise `accession:`
+        # alaninda durur. Yalnizca prozayi tarayan eski kontrol, 67 tipe
+        # yapisal atif eklendikten SONRA bile uyari vermeye devam ediyordu --
+        # yani tanimlayici vardi, kontrol onu okumuyordu.
+        cits = [str(c) for c in (m.get("citations") or []) if str(c).strip()]
+        for c in cits:
+            if citations and c not in citations:
+                errors.append(f"{cluster}: citations icinde "
+                              f"{CITATIONS_FILE} tarafindan taninmayan "
+                              f"anahtar -- {c}")
+        has_structured = bool(str(m.get("accession") or "").strip()) or bool(
+            [c for c in cits if not citations or c in citations])
+        has_prose = bool(re.search(
+            r"10\.\d{4,}/|PMID|PMC|PDB|\b\d{4};"
+            r"|\b[OPQ][0-9][A-Z0-9]{3}[0-9]\b"
+            r"|\b[A-NR-Z][0-9](?:[A-Z][A-Z0-9]{2}[0-9]){1,2}\b"
+            r"|\b[A-Z]{3}[0-9]{5,7}\.[0-9]\b",
+            str(m.get("source") or "")))
+        if not has_structured and not has_prose:
+            warnings.append(f"{cluster}: cozulebilir bir tanimlayici yok -- "
+                            "ne citations/accession alani, ne source "
+                            "icinde DOI/PMID/PDB/UniProt/GenBank")
 
     # AYNI DIZI: bu veritabanindaki dort bos tipin dogrudan sebebi. Ayni
     # diziye sahip iki referans yarismayi beraberlikle bitirir ve biri keyfi

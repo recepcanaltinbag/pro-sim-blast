@@ -8,12 +8,20 @@ reaction: cis-dihydroxylation
 reaction_class: cis_dihydroxylation
 family: pah
 pdb: 2B1X
-source: established literature on the reference enzyme, no individual citation recorded
-source_kind: general
+source: 'PDB 2B1X, naphthalene dioxygenase large subunit; stored sequence verified byte-identical to the deposited polymer entity (470 aa) on 2026-10-28'
+source_kind: structure
 curation_confidence: high
 notes: naphthalene system of Rhodococcus
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 merged_from: "3_314_NDO"
 merge_reason: "Identical 470 aa sequence, but this is not a naming duplicate -- it is a mislabelling. The retired entry was called NDO and carried PDB 1NDO, yet its own sequence is only 27.5 % identical to 1NDO and 100 % identical to NarAa. It is the Rhodococcus sp. NCIMB 12038 naphthalene dioxygenase (PDB 2B1X), not the Pseudomonas enzyme. No synonym is recorded, because 'NDO' was simply the wrong name for this sequence."
+citations:
+  - larkin1999_NarAa
+  - naraa2005_jbacteriol
+accession: Q9X3R9
+accession_db: 'UniProt (TrEMBL); stored sequence identical; PDB 2B1X'
+accession_verified: '2026-10-28 UniParc CRC64; kayitli dizi ile birebir'
+accession_evidence: 'unreviewed (TrEMBL), proteinExistence "Evidence at protein level"'
+accession_organism: 'Rhodococcus sp. NCIMB 12038'
 sequence: MLSNELRQTLQKGLHDVNSDWTVPAAIINDPEVHDVERERIFGHAWVFLAHESEIPERGDYVVRYISEDQFIVCRDEGGEIRGHLNACRHRGMQVCRAEMGNTSHFRCPYHGWTYSNTGSLVGVPAGKDAYGNQLKKSDWNLRPMPNLASYKGLIFGSLDPHADSLEDYLGDLKFYLDIVLDRSDAGLQVVGAPQRWVIDANWKLGADNFVGDAYHTMMTHRSMVELGLAPPDPQFALYGEHIHTGHGHGLGIIGPPPGMPLPEFMGLPENIVEELERRLTPEQVEIFRPTAFIHGTVFPNLSIGNFLMGKDHLSAPTAFLTLRLWHPLGPDKMEVMSFFLVEKDAPDWFKDESYKSYLRTFGISGGFEQDDAENWRSITRVMGGQFAKTGELNYQMGRGVLEPDPNWTGPGEAYPLDYAEANQRNFLEYWMQLMLAESPLRDGNSNGSGTADASTPAAAKSKSPAKAEA

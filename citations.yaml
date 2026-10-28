@@ -228,3 +228,1431 @@ citations:
       Tahminler APO ve alanlar AYRI katlandi (tam boy icin API 413 donuyor). Dolayisiyla iki
       merkez ARASINDAKI iliski ve alt birimler arasi kopru geometrisi bu olcumden cikarilamaz.
 
+  # --- referans dizilerinin kaynagi (2026-10-28 dogrulamasi) ---
+
+  - id: stingley2004_phtAa
+    authors: "Stingley RL, Brezna B, Khan AA, Cerniglia CE"
+    title: "Novel organization of genes in a phthalate degradation operon of Mycobacterium vanbaalenii PYR-1"
+    journal: "Microbiology"
+    year: 2004
+    volume: "150"
+    pages: "3749-3761"
+    doi: "10.1099/mic.0.27263-0"
+    pmid: "15528661"
+    verified_by: crossref_record
+    used_for:
+      - "3_311_PhtAa referansinin kaynagi. Dizi IKI BAGIMSIZ accession'da birebir ayni
+         dogrulandi: UniProt Q6UP13 ve GenBank AAQ91914.2 (gen phtAa, urun PhtAa, 487 aa)."
+    note: >
+      UYARI, KAYDA GECSIN: Q6UP13 reviewed DEGIL (TrEMBL) ve protein kanit duzeyi
+      "Inferred from homology". Yani o UniProt kaydinin KENDISI deneysel kanit tasimiyor;
+      karakterizasyon bu makaleden geliyor ve UniProt'un kanit duzeyi guncellenmemis.
+      Ayrica organizma adinda tutarsizlik var: UniProt "Mycolicibacterium austroafricanum",
+      GenBank "Mycolicibacterium vanbaalenii PYR-1" diyor. Makalelerin susu PYR-1, yani
+      GenBank kaydi makaleyle ortusuyor; fark taksonomik yeniden siniflandirmadan geliyor.
+
+
+  # --- 2026-10-28: referans enzimlerin birincil (ve varsa ikincil)
+  # atiflari. Her DOI iki kez bagimsiz olarak Crossref'te cozuldu ve
+  # baslik/yil kutukle karsilastirildi (67/67, 0 sorun). Her kaydin
+  # accession'i UniParc CRC64 ile bizdeki diziye karsi dogrulandi:
+  # 67/67 birebir. Tipler bu kayitlara types/*.yaml icindeki
+  # `citation:` / `citations:` alanlariyla baglanir. ---
+  - id: rosche1997_OxoO
+    authors: Rosche B, Tshisuaka B, Hauer B, Lingens F, Fetzner S
+    title: '2-oxo-1,2-dihydroquinoline 8-monooxygenase: phylogenetic relationship to other multicomponent
+      nonheme iron oxygenases'
+    journal: J Bacteriol
+    year: 1997
+    volume: '179'
+    pages: 3549-3554
+    doi: 10.1128/jb.179.11.3549-3554.1997
+    pmid: '9171399'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_101_OxoO referans atfi: sequence + phylogeny (1997); the 2005 Structure paper gives the crystal
+      structure of the oxygenase component with its Rieske and mononuclear iron sites'
+  - id: oxoo2005_structure
+    authors: Martins BM, Svetlitchnaia T, Dobbek H
+    title: '2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S]
+      Center Oxidation/Reduction'
+    journal: Structure
+    year: 2005
+    volume: '13'
+    pages: 817-824
+    doi: 10.1016/j.str.2005.03.008
+    pmid: '15893671'
+    verified_by: crossref_api
+    used_for:
+    - 1_101_OxoO ikincil atfi
+  - id: nojiri2005_CARDO
+    authors: Nojiri H, Ashikawa Y, Noguchi H, Nam JW, Urata M, Fujimoto Z, Uchimura H, Terada T, Nakamura
+      S, Shimizu K, Yoshida T, Habe H, Omori T
+    title: Structure of the Terminal Oxygenase Component of Angular Dioxygenase, Carbazole 1,9a-Dioxygenase
+    journal: Journal of Molecular Biology
+    year: 2005
+    volume: '351'
+    pages: 355-370
+    doi: 10.1016/j.jmb.2005.05.059
+    pmid: '16005887'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_102_CARDO referans atfi: crystal structure of the terminal oxygenase of carbazole 1,9a-dioxygenase;
+      the car operon paper reports the sequence and activity'
+  - id: cardo2004_biosciencebi
+    authors: INOUE K, WIDADA J, NAKAI S, ENDOH T, URATA M, ASHIKAWA Y, SHINTANI M, SAIKI Y, YOSHIDA T, HABE
+      H, OMORI T, NOJIRI H
+    title: Divergent Structures of Carbazole DegradativecarOperons Isolated from Gram-negative Bacteria
+    journal: Bioscience, Biotechnology, and Biochemistry
+    year: 2004
+    volume: '68'
+    pages: 1467-1480
+    doi: 10.1271/bbb.68.1467
+    pmid: '15277751'
+    verified_by: crossref_api
+    used_for:
+    - 1_102_CARDO ikincil atfi
+  - id: sato1997_CarAa
+    authors: Sato SI, Nam JW, Kasuga K, Nojiri H, Yamane H, Omori T
+    title: Identification and characterization of genes encoding carbazole 1,9a-dioxygenase in Pseudomonas
+      sp. strain CA10
+    journal: J Bacteriol
+    year: 1997
+    volume: '179'
+    pages: 4850-4858
+    doi: 10.1128/jb.179.15.4850-4858.1997
+    pmid: '9244274'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_103_CarAa referans atfi: functional: car genes of strain CA10 identified and carbazole 1,9a-dioxygenase
+      activity and substrate range reported; the 2002 AEM paper purified the three-component enzyme'
+  - id: caraa2002_applenvironm
+    authors: Nam JW, Nojiri H, Noguchi H, Uchimura H, Yoshida T, Habe H, Yamane H, Omori T
+    title: Purification and Characterization of Carbazole 1,9a-Dioxygenase, a Three-Component Dioxygenase
+      System of Pseudomonas resinovorans Strain CA10
+    journal: Appl Environ Microbiol
+    year: 2002
+    volume: '68'
+    pages: 5882-5890
+    doi: 10.1128/aem.68.12.5882-5890.2002
+    pmid: '12450807'
+    verified_by: crossref_api
+    used_for:
+    - 1_103_CarAa ikincil atfi
+  - id: priefert1997_VanA
+    authors: Priefert H, Rabenhorst J, Steinbüchel A
+    title: Molecular characterization of genes of Pseudomonas sp. strain HR199 involved in bioconversion
+      of vanillin to protocatechuate
+    journal: J Bacteriol
+    year: 1997
+    volume: '179'
+    pages: 2595-2607
+    doi: 10.1128/jb.179.8.2595-2607.1997
+    pmid: '9098058'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_104_VanA referans atfi: sequence only: molecular characterisation of the vanillate catabolic genes
+      of strain HR199; no purified-enzyme assay in this paper'
+  - id: herman2005_DdmC
+    authors: Herman PL, Behrens M, Chakraborty S, Chrastil BM, Barycki J, Weeks DP
+    title: A Three-component Dicamba O-Demethylase from Pseudomonas maltophilia, Strain DI-6
+    journal: Journal of Biological Chemistry
+    year: 2005
+    volume: '280'
+    pages: 24759-24767
+    doi: 10.1074/jbc.m500597200
+    pmid: '15855162'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_105_DdmC referans atfi: functional: three-component dicamba O-demethylase cloned, assayed and its
+      catalytic activity and subunit composition established; structure in 3GKE'
+  - id: ddmc2005_archivesofbi
+    authors: Chakraborty S, Behrens M, Herman PL, Arendsen AF, Hagen WR, Carlson DL, Wang XZ, Weeks DP
+    title: 'A three-component dicamba O-demethylase from Pseudomonas maltophilia, strain DI-6: Purification
+      and characterization'
+    journal: Archives of Biochemistry and Biophysics
+    year: 2005
+    volume: '437'
+    pages: 20-28
+    doi: 10.1016/j.abb.2005.02.024
+    pmid: '15820213'
+    verified_by: crossref_api
+    used_for:
+    - 1_105_DdmC ikincil atfi
+  - id: ddmc1997_applenvironm
+    authors: Wang X, Li B, Herman PL, Weeks DP
+    title: A Three-Component Enzyme System Catalyzes the O Demethylation of the Herbicide Dicamba in Pseudomonas
+      maltophilia DI-6
+    journal: Appl Environ Microbiol
+    year: 1997
+    volume: '63'
+    pages: 1623-1626
+    doi: 10.1128/aem.63.4.1623-1626.1997
+    pmid: '16535584'
+    verified_by: crossref_api
+    used_for:
+    - 1_105_DdmC ikincil atfi
+  - id: ddmc2009_journalofmol
+    authors: Dumitru R, Jiang WZ, Weeks DP, Wilson MA
+    title: 'Crystal Structure of Dicamba Monooxygenase: A Rieske Nonheme Oxygenase that Catalyzes Oxidative
+      Demethylation'
+    journal: Journal of Molecular Biology
+    year: 2009
+    volume: '392'
+    pages: 498-510
+    doi: 10.1016/j.jmb.2009.07.021
+    pmid: '19616011'
+    verified_by: crossref_api
+    used_for:
+    - 1_105_DdmC ikincil atfi
+  - id: locher1991_TsaM
+    authors: Locher HH, Leisinger T, Cook AM
+    title: '4-Toluene sulfonate methyl-monooxygenase from Comamonas testosteroni T-2: purification and some
+      properties of the oxygenase component'
+    journal: J Bacteriol
+    year: 1991
+    volume: '173'
+    pages: 3741-3748
+    doi: 10.1128/jb.173.12.3741-3748.1991
+    pmid: '2050632'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_106_TsaM referans atfi: functional: 4-toluene sulfonate methyl-monooxygenase purified from C. testosteroni
+      T-2, catalytic activity and substrate specificity reported'
+  - id: tsam1997_jbacteriol
+    authors: Junker F, Kiewitz R, Cook AM
+    title: Characterization of the p-toluenesulfonate operon tsaMBCD and tsaR in Comamonas testosteroni
+      T-2
+    journal: J Bacteriol
+    year: 1997
+    volume: '179'
+    pages: 919-927
+    doi: 10.1128/jb.179.3.919-927.1997
+    pmid: '9006050'
+    verified_by: crossref_api
+    used_for:
+    - 1_106_TsaM ikincil atfi
+  - id: chen2014_CndA
+    authors: Chen Q, Wang CH, Deng SK, Wu YD, Li Y, Yao L, Jiang JD, Yan X, He J, Li SP
+    title: Novel Three-Component Rieske Non-Heme Iron Oxygenase System Catalyzing the N -Dealkylation of
+      Chloroacetanilide Herbicides in Sphingomonads DC-6 and DC-2
+    journal: Appl Environ Microbiol
+    year: 2014
+    volume: '80'
+    pages: 5078-5085
+    doi: 10.1128/aem.00659-14
+    pmid: '24928877'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_107_CndA referans atfi: functional characterisation: three-component Rieske oxygenase CndA-CndB-CndC
+      shown to N-dealkylate alachlor/acetochlor/butachlor; catalytic activity, substrate specificity and
+      subunit composition reported'
+  - id: dehmel1995_PobA
+    authors: Dehmel U, Engesser KH, Timmis KN, Dwyer DF
+    title: Cloning, nucleotide sequence, and expression of the gene encoding a novel dioxygenase involved
+      in metabolism of carboxydiphenyl ethers in Pseudomonas pseudoalcaligenes POB310
+    journal: Arch. Microbiol.
+    year: 1995
+    volume: '163'
+    pages: 35-41
+    doi: 10.1007/bf00262201
+    pmid: '7710319'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_108_PobA referans atfi: sequence + heterologous expression of a novel dioxygenase; characterisation
+      is at the level of the cloned activity'
+  - id: sonoki2000_LigX
+    authors: Sonoki T, Obi T, Kubota S, Higashi M, Masai E, Katayama Y
+    title: 'Coexistence of Two Different O Demethylation Systems in Lignin Metabolism by Sphingomonas paucimobilis
+      SYK-6: Cloning and Sequencing of the Lignin Biphenyl-Specific O -Demethylase (LigX) Gene'
+    journal: Appl Environ Microbiol
+    year: 2000
+    volume: '66'
+    pages: 2125-2132
+    doi: 10.1128/aem.66.5.2125-2132.2000
+    pmid: '10788391'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_109_LigX referans atfi: functional: ligX disruption abolishes 5,5''-dehydrodivanillate O-demethylation
+      (DDVA O-demethylase); the 2014 AEM paper then reconstituted the three-component LigXa/LigXc/LigXd
+      system in vitro'
+  - id: ligx2014_applenvironm
+    authors: Yoshikata T, Suzuki K, Kamimura N, Namiki M, Hishiyama S, Araki T, Kasai D, Otsuka Y, Nakamura
+      M, Fukuda M, Katayama Y, Masai E
+    title: Three-Component O -Demethylase System Essential for Catabolism of a Lignin-Derived Biphenyl Compound
+      in Sphingobium sp. Strain SYK-6
+    journal: Appl Environ Microbiol
+    year: 2014
+    volume: '80'
+    pages: 7142-7153
+    doi: 10.1128/aem.02236-14
+    pmid: '25217011'
+    verified_by: crossref_api
+    used_for:
+    - 1_109_LigX ikincil atfi
+  - id: lukowski2020_SxtT
+    authors: Lukowski AL, Liu J, Bridwell-Rabb J, Narayan ARH
+    title: Structural basis for divergent C–H hydroxylation selectivity in two Rieske oxygenases
+    journal: Nat Commun
+    year: 2020
+    volume: '11'
+    doi: 10.1038/s41467-020-16729-0
+    pmid: '32532989'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_110_SxtT referans atfi: functional + structural: SxtT and GxtA crystallised and their divergent
+      C-H hydroxylation selectivity on the saxitoxin scaffold established by activity assays'
+  - id: sxtt2022_natcommun
+    authors: Liu J, Tian J, Perry C, Lukowski AL, Doukov TI, Narayan ARH, Bridwell-Rabb J
+    title: Design principles for site-selective hydroxylation by a Rieske oxygenase
+    journal: Nat Commun
+    year: 2022
+    volume: '13'
+    doi: 10.1038/s41467-021-27822-3
+    pmid: '35017498'
+    verified_by: crossref_api
+    used_for:
+    - 1_110_SxtT ikincil atfi
+  - id: summers2012_NdmA
+    authors: Summers RM, Louie TM, Yu CL, Gakhar L, Louie KC, Subramanian M
+    title: Novel, Highly Specific N -Demethylases Enable Bacteria To Live on Caffeine and Related Purine
+      Alkaloids
+    journal: J Bacteriol
+    year: 2012
+    volume: '194'
+    pages: 2041-2049
+    doi: 10.1128/jb.06637-11
+    pmid: '22328667'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_112_NdmA referans atfi: functional: NdmA shown to be a highly specific N1-demethylase, with catalytic
+      activity and substrate specificity measured; the 2019 JMB paper adds the structures'
+  - id: ndma2011_microbiology
+    authors: Summers RM, Louie TM, Yu CL, Subramanian M
+    title: Characterization of a broad-specificity non-haem iron N-demethylase from Pseudomonas putida CBB5
+      capable of utilizing several purine alkaloids as sole carbon and nitrogen source
+    journal: Microbiology
+    year: 2011
+    volume: '157'
+    pages: 583-592
+    doi: 10.1099/mic.0.043612-0
+    pmid: '20966097'
+    verified_by: crossref_api
+    used_for:
+    - 1_112_NdmA ikincil atfi
+  - id: ndma2019_journalofmol
+    authors: Kim JH, Kim BH, Brooks S, Kang SY, Summers RM, Song HK
+    title: Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase
+      Complex
+    journal: Journal of Molecular Biology
+    year: 2019
+    volume: '431'
+    pages: 3647-3661
+    doi: 10.1016/j.jmb.2019.08.004
+    pmid: '31412262'
+    verified_by: crossref_api
+    used_for:
+    - 1_112_NdmA ikincil atfi
+  - id: sun2020_CdnA
+    authors: Sun D, Yang X, Zeng C, Li B, Wang Y, Zhang C, Hu W, Li X, Gao Z
+    title: Novel caffeine degradation gene cluster is mega-plasmid encoded in Paraburkholderia caffeinilytica
+      CF1
+    journal: Appl Microbiol Biotechnol
+    year: 2020
+    volume: '104'
+    pages: 3025-3036
+    doi: 10.1007/s00253-020-10384-7
+    pmid: '32009202'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_113_CdnA referans atfi: functional/genomic: caffeine degradation gene cluster on a megaplasmid
+      of Paraburkholderia, N-demethylation activity attributed to the cdn gene products'
+  - id: sydor2011_RedG
+    authors: Sydor PK, Barry SM, Odulate OM, Barona-Gomez F, Haynes SW, Corre C, Song L, Challis GL
+    title: Regio- and stereodivergent antibiotic oxidative carbocyclizations catalysed by Rieske oxygenase-like
+      enzymes
+    journal: Nature Chem
+    year: 2011
+    volume: '3'
+    pages: 388-392
+    doi: 10.1038/nchem.1024
+    pmid: '21505498'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '1_118_RedG referans atfi: functional: RedG shown in vivo and in vitro to catalyse the oxidative carbocyclisation
+      of undecylprodigiosin to streptorubin B (Rieske oxygenase-like enzyme)'
+  - id: taira1992_BphA1
+    authors: Taira K, Hirose J, Hayashida S, Furukawa K
+    title: Analysis of bph operon from the polychlorinated biphenyl-degrading strain of Pseudomonas pseudoalcaligenes
+      KF707.
+    journal: Journal of Biological Chemistry
+    year: 1992
+    volume: '267'
+    pages: 4844-4853
+    doi: 10.1016/s0021-9258(18)42908-0
+    pmid: '1537863'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_201_BphA1 referans atfi: sequence only: analysis of the bph operon of the PCB-degrading strain
+      KF707'
+  - id: bpha12011_journalofmol
+    authors: Kumar P, Mohammadi M, Viger JF, Barriault D, Gomez-Gil L, Eltis LD, Bolin JT, Sylvestre M
+    title: Structural Insight into the Expanded PCB-Degrading Abilities of a Biphenyl Dioxygenase Obtained
+      by Directed Evolution
+    journal: Journal of Molecular Biology
+    year: 2011
+    volume: '405'
+    pages: 531-547
+    doi: 10.1016/j.jmb.2010.11.009
+    pmid: '21073881'
+    verified_by: crossref_api
+    used_for:
+    - 2_201_BphA1 ikincil atfi
+  - id: corkery1998_EdoA1
+    authors: Corkery DM, Dobson ADW
+    title: Reverse transcription-PCR analysis of the regulation of ethylbenzene dioxygenase gene expression
+      inPseudomonas fluorescensCA-4
+    journal: FEMS Microbiology Letters
+    year: 1998
+    volume: '166'
+    pages: 171-176
+    doi: 10.1111/j.1574-6968.1998.tb13886.x
+    pmid: '9770272'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_202_EdoA1 referans atfi: sequence + transcript regulation only: RT-PCR analysis of ethylbenzene
+      dioxygenase gene regulation; no purified-enzyme characterisation'
+  - id: dong2005_cumA1
+    authors: Dong X, Fushinobu S, Fukuda E, Terada T, Nakamura S, Shimizu K, Nojiri H, Omori T, Shoun H,
+      Wakagi T
+    title: Crystal Structure of the Terminal Oxygenase Component of Cumene Dioxygenase from Pseudomonas
+      fluorescens IP01
+    journal: J Bacteriol
+    year: 2005
+    volume: '187'
+    pages: 2483-2490
+    doi: 10.1128/jb.187.7.2483-2490.2005
+    pmid: '15774891'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_203_cumA1 referans atfi: structural: crystal structure of the terminal oxygenase of cumene dioxygenase;
+      the 1996 J Ferment Bioeng paper reports the cloning (no DOI in the record)'
+  - id: cai2017_Dpe
+    authors: Cai S, Chen LW, Ai YC, Qiu JG, Wang CH, Shi C, He J, Cai TM
+    title: Degradation of Diphenyl Ether in Sphingobium phenoxybenzoativorans SC_3 Is Initiated by a Novel
+      Ring Cleavage Dioxygenase
+    journal: Appl Environ Microbiol
+    year: 2017
+    volume: '83'
+    doi: 10.1128/aem.00104-17
+    pmid: '28283519'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_204_Dpe referans atfi: functional: diphenyl ether degradation shown to be initiated by angular
+      dioxygenation, catalysed by the DpeA1A2 dioxygenase'
+  - id: eaton1986_IpBAa
+    authors: Eaton RW, Timmis KN
+    title: Characterization of a plasmid-specified pathway for catabolism of isopropylbenzene in Pseudomonas
+      putida RE204
+    journal: J Bacteriol
+    year: 1986
+    volume: '168'
+    pages: 123-131
+    doi: 10.1128/jb.168.1.123-131.1986
+    pmid: '3019995'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_206_IpBAa referans atfi: functional (pathway level): plasmid-specified isopropylbenzene catabolic
+      pathway characterised; the sequence was deposited separately in 1997 without a paper'
+  - id: wang1995_BpdC1
+    authors: Wang Y, Garnon J, Labbé D, Bergeron H, Lau PCK
+    title: Sequence and expression of the bpdC1C2BADE genes involved in the initial steps of biphenyl/chlorobiphenyl
+      degradation by Rhodococcus sp. M5
+    journal: Gene
+    year: 1995
+    volume: '164'
+    pages: 117-122
+    doi: 10.1016/0378-1119(95)00448-f
+    pmid: '7590299'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_207_BpdC1 referans atfi: sequence + heterologous expression of bpdC1C2BADE; biphenyl transformation
+      shown for the cloned operon, not for the isolated subunit'
+  - id: beil1997_TecA1
+    authors: Beil S, Happe B, Timmis KN, Pieper DH
+    title: Genetic and Biochemical Characterization of the Broad Spectrum Chlorobenzene Dioxygenase from
+      Burkholderia Sp. Strain PS12 — Dechlorination of 1,2,4,5‐Tetrachlorobenzene
+    journal: European Journal of Biochemistry
+    year: 1997
+    volume: '247'
+    pages: 190-199
+    doi: 10.1111/j.1432-1033.1997.00190.x
+    pmid: '9249026'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_208_TecA1 referans atfi: functional: genetic and biochemical characterisation of the broad-spectrum
+      chlorobenzene dioxygenase, with catalytic activity and subunit composition'
+  - id: teca11998_jbacteriol
+    authors: Beil S, Mason JR, Timmis KN, Pieper DH
+    title: Identification of Chlorobenzene Dioxygenase Sequence Elements Involved in Dechlorination of 1,2,4,5-Tetrachlorobenzene
+    journal: J Bacteriol
+    year: 1998
+    volume: '180'
+    pages: 5520-5528
+    doi: 10.1128/jb.180.21.5520-5528.1998
+    pmid: '9791099'
+    verified_by: crossref_api
+    used_for:
+    - 2_208_TecA1 ikincil atfi
+  - id: teca12001_applenvironm
+    authors: Pollmann K, Beil S, Pieper DH
+    title: Transformation of Chlorinated Benzenes and Toluenes by Ralstonia sp. Strain PS12 tecA (Tetrachlorobenzene
+      Dioxygenase) and tecB (Chlorobenzene Dihydrodiol Dehydrogenase) Gene Products
+    journal: Appl Environ Microbiol
+    year: 2001
+    volume: '67'
+    pages: 4057-4063
+    doi: 10.1128/aem.67.9.4057-4063.2001
+    pmid: '11526005'
+    verified_by: crossref_api
+    used_for:
+    - 2_208_TecA1 ikincil atfi
+  - id: zylstra1989_TDO
+    authors: Zylstra GJ, Gibson DT
+    title: Toluene Degradation by Pseudomonas putida F1
+    journal: Journal of Biological Chemistry
+    year: 1989
+    volume: '264'
+    pages: 14940-14946
+    doi: 10.1016/s0021-9258(18)63793-7
+    pmid: '2670929'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_209_TDO referans atfi: sequence (1989, todC1C2BADE, with N-terminal protein sequencing); the 2009
+      Acta Cryst D paper gives the structures of the whole three-component toluene 2,3-dioxygenase system'
+  - id: tdo2008_actacrystall
+    authors: Friemann R, Lee K, Brown EN, Gibson DT, Eklund H, Ramaswamy S
+    title: Structures of the multicomponent Rieske non-heme iron toluene 2,3-dioxygenase enzyme system
+    journal: Acta Crystallogr D Biol Crystallogr
+    year: 2008
+    volume: '65'
+    pages: 24-33
+    doi: 10.1107/s0907444908036524
+    pmid: '19153463'
+    verified_by: crossref_api
+    used_for:
+    - 2_209_TDO ikincil atfi
+  - id: wang1996_XylC1
+    authors: Wang Y, Lau PC, Button DK
+    title: A marine oligobacterium harboring genes known to be part of aromatic hydrocarbon degradation
+      pathways of soil pseudomonads
+    journal: Appl Environ Microbiol
+    year: 1996
+    volume: '62'
+    pages: 2169-2173
+    doi: 10.1128/aem.62.6.2169-2173.1996
+    pmid: '8787414'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_210_XylC1 referans atfi: sequence only: a marine oligobacterium found to harbour aromatic-hydrocarbon
+      catabolic genes; no enzyme assay'
+  - id: chen2017_bfzA
+    authors: Chen X, Ji J, Zhao L, Qiu J, Dai C, Wang W, He J, Jiang J, Hong Q, Yan X
+    title: Molecular Mechanism and Genetic Determinants of Buprofezin Degradation
+    journal: Appl Environ Microbiol
+    year: 2017
+    volume: '83'
+    doi: 10.1128/aem.00868-17
+    pmid: '28710269'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_211_bfzA referans atfi: functional: genetic determinants of buprofezin degradation; bfzA1A2 identified
+      as the dioxygenase that attacks buprofezin'
+  - id: tan1993_BedC1
+    authors: Tan HM, Tang HY, Joannou CL, Abdel-Wahab NH, Mason JR
+    title: The Pseudomonas putida ML2 plasmid-encoded genes for benzene dioxygenase are unusual in codon
+      usage and low in G + C content
+    journal: Gene
+    year: 1993
+    volume: '130'
+    pages: 33-39
+    doi: 10.1016/0378-1119(93)90343-2
+    pmid: '8344526'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_212_BedC1 referans atfi: sequence + N-terminal protein sequence of the benzene dioxygenase genes
+      of plasmid pHMT112'
+  - id: masai1995_BphA1A2
+    authors: Masai E, Yamada A, Healy JM, Hatta T, Kimbara K, Fukuda M, Yano K
+    title: Characterization of biphenyl catabolic genes of gram-positive polychlorinated biphenyl degrader
+      Rhodococcus sp. strain RHA1
+    journal: Appl Environ Microbiol
+    year: 1995
+    volume: '61'
+    pages: 2079-2085
+    doi: 10.1128/aem.61.6.2079-2085.1995
+    pmid: '7793929'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_213_BphA1A2 referans atfi: functional: biphenyl catabolic genes of the Gram-positive PCB degrader
+      characterised, with disruption phenotype and pathway; structure in 1ULI; substrate specificity in
+      the 2007 BBB paper'
+  - id: bpha1a22004_journalofmol
+    authors: Furusawa Y, Nagarajan V, Tanokura M, Masai E, Fukuda M, Senda T
+    title: Crystal Structure of the Terminal Oxygenase Component of Biphenyl Dioxygenase Derived from Rhodococcus
+      sp. Strain RHA1
+    journal: Journal of Molecular Biology
+    year: 2004
+    volume: '342'
+    pages: 1041-1052
+    doi: 10.1016/j.jmb.2004.07.062
+    pmid: '15342255'
+    verified_by: crossref_api
+    used_for:
+    - 2_213_BphA1A2 ikincil atfi
+  - id: bpha1a22007_biosciencebi
+    authors: IWASAKI T, TAKEDA H, MIYAUCHI K, YAMADA T, MASAI E, FUKUDA M
+    title: Characterization of Two Biphenyl Dioxygenases for Biphenyl/PCB Degradation in A PCB Degrader,Rhodococcussp.
+      Strain RHA1
+    journal: Bioscience, Biotechnology, and Biochemistry
+    year: 2007
+    volume: '71'
+    pages: 993-1002
+    doi: 10.1271/bbb.60663
+    pmid: '17420585'
+    verified_by: crossref_api
+    used_for:
+    - 2_213_BphA1A2 ikincil atfi
+  - id: danganan1994_TftA
+    authors: Danganan CE, Ye RW, Daubaras DL, Xun L, Chakrabarty AM
+    title: Nucleotide sequence and functional analysis of the genes encoding 2,4,5-trichlorophenoxyacetic
+      acid oxygenase in Pseudomonas cepacia AC1100
+    journal: Appl Environ Microbiol
+    year: 1994
+    volume: '60'
+    pages: 4100-4106
+    doi: 10.1128/aem.60.11.4100-4106.1994
+    pmid: '7527626'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_214_TftA referans atfi: functional: nucleotide sequence and functional analysis of the tftAB genes
+      encoding 2,4,5-trichlorophenoxyacetate oxygenase'
+  - id: nielsen2013_cadA
+    authors: Nielsen TK, Xu Z, Gözdereliler E, Aamand J, Hansen LH, Sørensen SR
+    title: Novel Insight into the Genetic Context of the cadAB Genes from a 4-chloro-2-methylphenoxyacetic
+      Acid-Degrading Sphingomonas
+    journal: PLoS ONE
+    year: 2013
+    volume: '8'
+    pages: e83346
+    doi: 10.1371/journal.pone.0083346
+    pmid: '24391756'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_215_cadA referans atfi: genetic context / sequence: cadAB genes of a 4-chloro-2-methylphenoxyacetic-acid-degrading
+      Sphingomonas; the paper maps the genetic context, it does not purify the enzyme'
+  - id: ferraro2007_BPDO
+    authors: Ferraro DJ, Brown EN, Yu CL, Parales RE, Gibson DT, Ramaswamy S
+    title: Structural investigations of the ferredoxin and terminal oxygenase components of the biphenyl
+      2,3-dioxygenase from Sphingobium yanoikuyae B1
+    journal: BMC Struct Biol
+    year: 2007
+    volume: '7'
+    doi: 10.1186/1472-6807-7-10
+    pmid: '17349044'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_216_BPDO referans atfi: structural: ferredoxin and terminal oxygenase components of the biphenyl
+      2,3-dioxygenase crystallised; the 2007 J Ind Microbiol Biotechnol paper reports cloning and characterisation
+      of the multicomponent enzyme'
+  - id: bpdo2007_jindmicrobio
+    authors: Ní Chadhain SM, Moritz EM, Kim E, Zylstra GJ
+    title: Identification, cloning, and characterization of a multicomponent biphenyl dioxygenase from Sphingobium
+      yanoikuyae B1
+    journal: J Ind Microbiol Biotechnol
+    year: 2007
+    volume: '34'
+    pages: 605-613
+    doi: 10.1007/s10295-007-0235-3
+    pmid: '17647036'
+    verified_by: crossref_api
+    used_for:
+    - 2_216_BPDO ikincil atfi
+  - id: diaz1998_HcaE
+    authors: Díaz E, Ferrández A, García JL
+    title: Characterization of the hca Cluster Encoding the Dioxygenolytic Pathway for Initial Catabolism
+      of 3-Phenylpropionic Acid in Escherichia coli K-12
+    journal: J Bacteriol
+    year: 1998
+    volume: '180'
+    pages: 2915-2923
+    doi: 10.1128/jb.180.11.2915-2923.1998
+    pmid: '9603882'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_217_HcaE referans atfi: functional: the hca cluster shown to encode the dioxygenolytic route for
+      3-phenylpropionate and cinnamate catabolism'
+  - id: kosono1997_BphA1
+    authors: Kosono S, Maeda M, Fuji F, Arai H, Kudo T
+    title: Three of the seven bphC genes of Rhodococcus erythropolis TA421, isolated from a termite ecosystem,
+      are located on an indigenous plasmid associated with biphenyl degradation
+    journal: Appl Environ Microbiol
+    year: 1997
+    volume: '63'
+    pages: 3282-3285
+    doi: 10.1128/aem.63.8.3282-3285.1997
+    pmid: '9251216'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '2_218_BphA1 referans atfi: sequence only: the paper is about the bphC genes of strain TA421; this
+      bphA1 was deposited alongside it'
+  - id: demanche2004_PhnA1a
+    authors: Demanèche S, Meyer C, Micoud J, Louwagie M, Willison JC, Jouanneau Y
+    title: Identification and Functional Analysis of Two Aromatic-Ring-Hydroxylating Dioxygenases from a
+      Sphingomonas Strain That Degrades Various Polycyclic Aromatic Hydrocarbons
+    journal: Appl Environ Microbiol
+    year: 2004
+    volume: '70'
+    pages: 6714-6725
+    doi: 10.1128/aem.70.11.6714-6725.2004
+    pmid: '15528538'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_301_PhnA1a referans atfi: functional: two ring-hydroxylating dioxygenases of strain CHY-1 identified
+      and functionally analysed; the 2007 BBRC paper describes the catalytic pocket from the 2CKF structure'
+  - id: phna1a2007_biochemicala
+    authors: Jakoncic J, Jouanneau Y, Meyer C, Stojanoff V
+    title: The catalytic pocket of the ring-hydroxylating dioxygenase from Sphingomonas CHY-1
+    journal: Biochemical and Biophysical Research Communications
+    year: 2007
+    volume: '352'
+    pages: 861-866
+    doi: 10.1016/j.bbrc.2006.11.117
+    pmid: '17157819'
+    verified_by: crossref_api
+    used_for:
+    - 3_301_PhnA1a ikincil atfi
+  - id: martin1999_DitA
+    authors: Martin VJJ, Mohn WW
+    title: A Novel Aromatic-Ring-Hydroxylating Dioxygenase from the Diterpenoid-Degrading Bacterium Pseudomonas
+      abietaniphila BKME-9
+    journal: J Bacteriol
+    year: 1999
+    volume: '181'
+    pages: 2675-2682
+    doi: 10.1128/jb.181.9.2675-2682.1999
+    pmid: '10217753'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_302_DitA referans atfi: functional: ditA1A2A3 cloned from the diterpenoid degrader and shown to
+      encode a novel aromatic-ring-hydroxylating dioxygenase acting on dehydroabietic acid'
+  - id: lessner2002_NBDO
+    authors: Lessner DJ, Johnson GR, Parales RE, Spain JC, Gibson DT
+    title: Molecular Characterization and Substrate Specificity of Nitrobenzene Dioxygenase from Comamonas
+      sp. Strain JS765
+    journal: Appl Environ Microbiol
+    year: 2002
+    volume: '68'
+    pages: 634-641
+    doi: 10.1128/aem.68.2.634-641.2002
+    pmid: '11823201'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_303_NBDO referans atfi: functional: molecular characterisation and substrate specificity of nitrobenzene
+      dioxygenase; structure in 2BMO'
+  - id: nbdo2005_journalofmol
+    authors: Friemann R, Ivkovic-Jensen MM, Lessner DJ, Yu CL, Gibson DT, Parales RE, Eklund H, Ramaswamy
+      S
+    title: 'Structural Insight into the Dioxygenation of Nitroarene Compounds: the Crystal Structure of
+      Nitrobenzene Dioxygenase'
+    journal: Journal of Molecular Biology
+    year: 2005
+    volume: '348'
+    pages: 1139-1151
+    doi: 10.1016/j.jmb.2005.03.052
+    pmid: '15854650'
+    verified_by: crossref_api
+    used_for:
+    - 3_303_NBDO ikincil atfi
+  - id: pinyakong2004_ArhA1
+    authors: PINYAKONG O, HABE H, KOUZUMA A, NOJIRI H, YAMANE H, OMORI T
+    title: Isolation and characterization of genes encoding polycyclic aromatic hydrocarbon dioxygenase
+      from acenaphthene and acenaphthylene degrading sp. strain A4
+    journal: FEMS Microbiology Letters
+    year: 2004
+    volume: '238'
+    pages: 297-305
+    doi: 10.1016/j.femsle.2004.07.048
+    pmid: '15358414'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_305_ArhA1 referans atfi: functional: genes encoding a polycyclic-aromatic-hydrocarbon dioxygenase
+      isolated and characterised; the 2006 Microbiology paper adds transcriptional/functional analysis for
+      acenaphthylene'
+  - id: kumari2017_3NTDO
+    authors: Kumari A, Singh D, Ramaswamy S, Ramanathan G
+    title: Structural and functional studies of ferredoxin and oxygenase components of 3-nitrotoluene dioxygenase
+      from Diaphorobacter sp. strain DS2
+    journal: PLoS ONE
+    year: 2017
+    volume: '12'
+    pages: e0176398
+    doi: 10.1371/journal.pone.0176398
+    pmid: '28448625'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_306_3NTDO referans atfi: structural + functional: ferredoxin and oxygenase components of 3-nitrotoluene
+      dioxygenase crystallised and assayed; the 2014 Biodegradation paper reports the cloning and expression'
+  - id: 3ntdo2013_biodegradati
+    authors: Singh D, Kumari A, Ramanathan G
+    title: '3-Nitrotoluene dioxygenase from Diaphorobacter sp. strains: cloning, sequencing and evolutionary
+      studies'
+    journal: Biodegradation
+    year: 2013
+    volume: '25'
+    pages: 479-492
+    doi: 10.1007/s10532-013-9675-9
+    pmid: '24217981'
+    verified_by: crossref_api
+    used_for:
+    - 3_306_3NTDO ikincil atfi
+  - id: armengaud1998_DxnA1
+    authors: Armengaud J, Happe B, Timmis KN
+    title: 'Genetic Analysis of Dioxin Dioxygenase of Sphingomonas sp. Strain RW1: Catabolic Genes Dispersed
+      on the Genome'
+    journal: J Bacteriol
+    year: 1998
+    volume: '180'
+    pages: 3954-3966
+    doi: 10.1128/jb.180.15.3954-3966.1998
+    pmid: '9683494'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_308_DxnA1 referans atfi: functional/genetic: genetic analysis of the dioxin dioxygenase dxnA1A2
+      of strain RW1, including expression and angular dioxygenation of dibenzo-p-dioxin'
+  - id: ensley1983_NahAc
+    authors: Ensley BD, Gibson DT
+    title: 'Naphthalene dioxygenase: purification and properties of a terminal oxygenase component'
+    journal: J Bacteriol
+    year: 1983
+    volume: '155'
+    pages: 505-511
+    doi: 10.1128/jb.155.2.505-511.1983
+    pmid: '6874638'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_309_NahAc referans atfi: functional: naphthalene dioxygenase terminal oxygenase purified and its
+      properties reported; later papers give substrate specificity by mutagenesis and the 1NDO/side-on dioxygen
+      structures'
+  - id: nahac2000_jbacteriol
+    authors: Parales RE, Lee K, Resnick SM, Jiang H, Lessner DJ, Gibson DT
+    title: 'Substrate Specificity of Naphthalene Dioxygenase: Effect of Specific Amino Acids at the Active
+      Site of the Enzyme'
+    journal: J Bacteriol
+    year: 2000
+    volume: '182'
+    pages: 1641-1649
+    doi: 10.1128/jb.182.6.1641-1649.2000
+    pmid: '10692370'
+    verified_by: crossref_api
+    used_for:
+    - 3_309_NahAc ikincil atfi
+  - id: nahac2003_science
+    authors: Karlsson A, Parales JV, Parales RE, Gibson DT, Eklund H, Ramaswamy S
+    title: 'Crystal Structure of Naphthalene Dioxygenase: Side-on Binding of Dioxygen to Iron'
+    journal: Science
+    year: 2003
+    volume: '299'
+    pages: 1039-1042
+    doi: 10.1126/science.1078020
+    pmid: '12586937'
+    verified_by: crossref_api
+    used_for:
+    - 3_309_NahAc ikincil atfi
+  - id: johnson2002_DntAc
+    authors: Johnson GR, Jain RK, Spain JC
+    title: Origins of the 2,4-Dinitrotoluene Pathway
+    journal: J Bacteriol
+    year: 2002
+    volume: '184'
+    pages: 4219-4232
+    doi: 10.1128/jb.184.15.4219-4232.2002
+    pmid: '12107140'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_310_DntAc referans atfi: functional/evolutionary: origins of the 2,4-dinitrotoluene pathway, including
+      the dnt dioxygenase genes'
+  - id: dntac1999_archmicrobio
+    authors: Johnson GR, Jain RK, Spain JC
+    title: 'Properties of the trihydroxytoluene oxygenase from Burkholderia cepacia R34: an extradiol dioxygenase
+      from the 2,4-dinitrotoluene pathway'
+    journal: Arch Microbiol
+    year: 1999
+    volume: '173'
+    pages: 86-90
+    doi: 10.1007/s002039900111
+    pmid: '10795678'
+    verified_by: crossref_api
+    used_for:
+    - 3_310_DntAc ikincil atfi
+  - id: li2023_NinA
+    authors: Li T, Xu J, Brower AL, Xu ZJ, Xu Y, Spain JC, Zhou NY
+    title: Molecular Basis and Evolutionary Origin of 1-Nitronaphthalene Catabolism in Sphingobium sp. Strain
+      JS3065
+    journal: Appl Environ Microbiol
+    year: 2023
+    volume: '89'
+    doi: 10.1128/aem.01728-22
+    pmid: '36622195'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_312_NinA referans atfi: functional: molecular basis and evolutionary origin of 1-nitronaphthalene
+      catabolism; the dioxygenase that releases nitrite from the nitroarene is identified and expressed'
+  - id: capyk2009_KshA15
+    authors: Capyk JK, D’Angelo I, Strynadka NC, Eltis LD
+    title: Characterization of 3-Ketosteroid 9α-Hydroxylase, a Rieske Oxygenase in the Cholesterol Degradation
+      Pathway of Mycobacterium tuberculosis
+    journal: Journal of Biological Chemistry
+    year: 2009
+    volume: '284'
+    pages: 9937-9946
+    doi: 10.1074/jbc.m900719200
+    pmid: '19234303'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_313_KshA15 referans atfi: functional + structural: 3-ketosteroid 9alpha-hydroxylase characterised
+      (activity, cofactor, substrate specificity) and crystallised'
+  - id: ksha152011_journalofbio
+    authors: Capyk JK, Casabon I, Gruninger R, Strynadka NC, Eltis LD
+    title: Activity of 3-Ketosteroid 9α-Hydroxylase (KshAB) Indicates Cholesterol Side Chain and Ring Degradation
+      Occur Simultaneously in Mycobacterium tuberculosis
+    journal: Journal of Biological Chemistry
+    year: 2011
+    volume: '286'
+    pages: 40717-40724
+    doi: 10.1074/jbc.m111.289975
+    pmid: '21987574'
+    verified_by: crossref_api
+    used_for:
+    - 3_313_KshA15 ikincil atfi
+  - id: ksha152014_journalofbio
+    authors: Penfield JS, Worrall LJ, Strynadka NC, Eltis LD
+    title: Substrate Specificities and Conformational Flexibility of 3-Ketosteroid 9α-Hydroxylases
+    journal: Journal of Biological Chemistry
+    year: 2014
+    volume: '289'
+    pages: 25523-25536
+    doi: 10.1074/jbc.m114.575886
+    pmid: '25049233'
+    verified_by: crossref_api
+    used_for:
+    - 3_313_KshA15 ikincil atfi
+  - id: larkin1999_NarAa
+    authors: Larkin MJ, Allen CCR, Kulakov LA, Lipscomb DA
+    title: Purification and Characterization of a Novel Naphthalene Dioxygenase from Rhodococcus sp. Strain
+      NCIMB12038
+    journal: J Bacteriol
+    year: 1999
+    volume: '181'
+    pages: 6200-6204
+    doi: 10.1128/jb.181.19.6200-6204.1999
+    pmid: '10498739'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_316_NarAa referans atfi: functional: a novel naphthalene dioxygenase purified and characterised
+      from Rhodococcus; the 2005 J Bacteriol paper adds the structure and thermostability'
+  - id: naraa2005_jbacteriol
+    authors: Gakhar L, Malik ZA, Allen CCR, Lipscomb DA, Larkin MJ, Ramaswamy S
+    title: Structure and Increased Thermostability ofRhodococcussp. Naphthalene 1,2-Dioxygenase
+    journal: J Bacteriol
+    year: 2005
+    volume: '187'
+    pages: 7222-7231
+    doi: 10.1128/jb.187.21.7222-7231.2005
+    pmid: '16237006'
+    verified_by: crossref_api
+    used_for:
+    - 3_316_NarAa ikincil atfi
+  - id: treadway1999_NidA
+    authors: Treadway SL, Yanagimachi KS, Lankenau E, Lessard PA, Stephanopoulos G, Sinskey AJ
+    title: Isolation and characterization of indene bioconversion genes from Rhodococcus strain I24
+    journal: Applied Microbiology and Biotechnology
+    year: 1999
+    volume: '51'
+    pages: 786-793
+    doi: 10.1007/s002530051463
+    pmid: '10422226'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_317_NidA referans atfi: functional (on a different substrate): the genes were isolated as indene
+      bioconversion genes and assayed on indene'
+  - id: khan2001_NidA
+    authors: Khan AA, Wang RF, Cao WW, Doerge DR, Wennerstrom D, Cerniglia CE
+    title: Molecular Cloning, Nucleotide Sequence, and Expression of Genes Encoding a Polycyclic Aromatic
+      Ring Dioxygenase from Mycobacterium sp. Strain PYR-1
+    journal: Appl Environ Microbiol
+    year: 2001
+    volume: '67'
+    pages: 3577-3585
+    doi: 10.1128/aem.67.8.3577-3585.2001
+    pmid: '11472934'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_318_NidA referans atfi: functional: cloning, sequencing and expression of genes encoding a polycyclic-aromatic-hydrocarbon
+      dioxygenase, with activity on pyrene'
+  - id: nida2004_biochemicala
+    authors: Stingley RL, Khan AA, Cerniglia CE
+    title: Molecular characterization of a phenanthrene degradation pathway in Mycobacterium vanbaalenii
+      PYR-1
+    journal: Biochemical and Biophysical Research Communications
+    year: 2004
+    volume: '322'
+    pages: 133-146
+    doi: 10.1016/j.bbrc.2004.07.089
+    pmid: '15313184'
+    verified_by: crossref_api
+    used_for:
+    - 3_318_NidA ikincil atfi
+  - id: saito2000_PhdA
+    authors: Saito A, Iwabuchi T, Harayama S
+    title: 'A Novel Phenanthrene Dioxygenase from Nocardioides sp. Strain KP7: Expression in Escherichia
+      coli'
+    journal: J Bacteriol
+    year: 2000
+    volume: '182'
+    pages: 2134-2141
+    doi: 10.1128/jb.182.8.2134-2141.2000
+    pmid: '10735855'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_319_PhdA referans atfi: functional: a novel phenanthrene dioxygenase from strain KP7 expressed
+      in Streptomyces and assayed'
+  - id: kim2006_NidA3
+    authors: Kim SJ, Kweon O, Freeman JP, Jones RC, Adjei MD, Jhoo JW, Edmondson RD, Cerniglia CE
+    title: Molecular Cloning and Expression of Genes Encoding a Novel Dioxygenase Involved in Low- and High-Molecular-Weight
+      Polycyclic Aromatic Hydrocarbon Degradation inMycobacterium vanbaaleniiPYR-1
+    journal: Appl Environ Microbiol
+    year: 2006
+    volume: '72'
+    pages: 1045-1054
+    doi: 10.1128/aem.72.2.1045-1054.2006
+    pmid: '16461648'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_320_NidA3 referans atfi: functional: cloning and expression of genes encoding a novel dioxygenase
+      involved in PAH degradation in strain PYR-1'
+  - id: wollam2011_DAF-36
+    authors: Wollam J, Magomedova L, Magner DB, Shen Y, Rottiers V, Motola DL, Mangelsdorf DJ, Cummins CL,
+      Antebi A
+    title: The Rieske oxygenase DAF‐36 functions as a cholesterol 7‐desaturase in steroidogenic pathways
+      governing longevity
+    journal: Aging Cell
+    year: 2011
+    volume: '10'
+    pages: 879-884
+    doi: 10.1111/j.1474-9726.2011.00733.x
+    pmid: '21749634'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '3_322_DAF36 referans atfi: functional: DAF-36 shown to act as a cholesterol 7-desaturase in the dafachronic
+      acid pathway; the 2006 Dev Cell paper established the Rieske-like oxygenase role in dauer formation'
+  - id: daf362006_developmenta
+    authors: Rottiers V, Motola DL, Gerisch B, Cummins CL, Nishiwaki K, Mangelsdorf DJ, Antebi A
+    title: Hormonal Control of C. elegans Dauer Formation and Life Span by a Rieske-like Oxygenase
+    journal: Developmental Cell
+    year: 2006
+    volume: '10'
+    pages: 473-482
+    doi: 10.1016/j.devcel.2006.02.008
+    pmid: '16563875'
+    verified_by: crossref_api
+    used_for:
+    - 3_322_DAF36 ikincil atfi
+  - id: daf362011_journalofbio
+    authors: Yoshiyama-Yanagawa T, Enya S, Shimada-Niwa Y, Yaguchi S, Haramoto Y, Matsuya T, Shiomi K, Sasakura
+      Y, Takahashi S, Asashima M, Kataoka H, Niwa R
+    title: The Conserved Rieske Oxygenase DAF-36/Neverland Is a Novel Cholesterol-metabolizing Enzyme
+    journal: Journal of Biological Chemistry
+    year: 2011
+    volume: '286'
+    pages: 25756-25762
+    doi: 10.1074/jbc.m111.244384
+    pmid: '21632547'
+    verified_by: crossref_api
+    used_for:
+    - 3_322_DAF36 ikincil atfi
+  - id: eaton1996_CmtAb
+    authors: Eaton RW
+    title: 'p-Cumate catabolic pathway in Pseudomonas putida Fl: cloning and characterization of DNA carrying
+      the cmt operon'
+    journal: J Bacteriol
+    year: 1996
+    volume: '178'
+    pages: 1351-1362
+    doi: 10.1128/jb.178.5.1351-1362.1996
+    pmid: '8631713'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_401_CmtAb referans atfi: functional: the p-cumate catabolic pathway of P. putida F1 cloned and
+      characterised, including the cmtAaAbAcAd dioxygenase'
+  - id: cmtab1977_jbacteriol
+    authors: DeFrank JJ, Ribbons DW
+    title: 'p-cymene pathway in Pseudomonas putida: initial reactions'
+    journal: J Bacteriol
+    year: 1977
+    volume: '129'
+    pages: 1356-1364
+    doi: 10.1128/jb.129.3.1356-1364.1977
+    pmid: '845117'
+    verified_by: crossref_api
+    used_for:
+    - 4_401_CmtAb ikincil atfi
+  - id: pusks2000_PsbAb
+    authors: Puskás LG, Inui M, Kele Z, Yukawa H
+    title: Cloning of Genes Participating in Aerobic Biodegradation ofp-Cumate fromRhodopseudomonas palustris
+    journal: DNA Sequence
+    year: 2000
+    volume: '11'
+    pages: 9-20
+    doi: 10.3109/10425170009033965
+    pmid: '10902905'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_402_PsbAb referans atfi: sequence only: cloning and sequencing of genes for aerobic p-cumate biodegradation;
+      no purification or activity assay of this subunit'
+  - id: fujii1997_AtdA
+    authors: Fujii T, Takeo M, Maeda Y
+    title: Plasmid-Encoded Genes Specifying Aniline Oxidation from Acinetobacter sp. Strain YAA
+    journal: Microbiology
+    year: 1997
+    volume: '143'
+    pages: 93-99
+    doi: 10.1099/00221287-143-1-93
+    pmid: '9025282'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_403_AtdA referans atfi: functional: plasmid-encoded genes specifying aniline oxidation; the atdA-encoded
+      multicomponent aniline dioxygenase converts aniline to catechol with release of ammonia'
+  - id: atda2013_jbacteriol
+    authors: Takeo M, Ohara A, Sakae S, Okamoto Y, Kitamura C, Kato Di, Negoro S
+    title: Function of a Glutamine Synthetase-Like Protein in Bacterial Aniline Oxidation via γ-Glutamylanilide
+    journal: J Bacteriol
+    year: 2013
+    volume: '195'
+    pages: 4406-4414
+    doi: 10.1128/jb.00397-13
+    pmid: '23893114'
+    verified_by: crossref_api
+    used_for:
+    - 4_403_AtdA ikincil atfi
+  - id: fukumori1997_TdnA1
+    authors: Fukumori F, Saint CP
+    title: Nucleotide sequences and regulational analysis of genes involved in conversion of aniline to
+      catechol in Pseudomonas putida UCC22(pTDN1)
+    journal: J Bacteriol
+    year: 1997
+    volume: '179'
+    pages: 399-408
+    doi: 10.1128/jb.179.2.399-408.1997
+    pmid: '8990291'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_404_TdnA1 referans atfi: sequence + regulation: nucleotide sequences and regulational analysis
+      of the tdn genes for aniline conversion'
+  - id: mahto2021_ROCH34
+    authors: Mahto JK, Neetu N, Waghmode B, Kuatsjah E, Sharma M, Sircar D, Sharma AK, Tomar S, Eltis LD,
+      Kumar P
+    title: Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas
+      testosteroni
+    journal: Journal of Biological Chemistry
+    year: 2021
+    volume: '297'
+    pages: '101416'
+    doi: 10.1016/j.jbc.2021.101416
+    pmid: '34800435'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_405_ROCH34 referans atfi: structural: crystal structure of the phthalate dioxygenase; the 2025
+      J Bacteriol paper reports structure-guided engineering for broader phthalate specificity'
+  - id: roch342025_jbacteriol
+    authors: Mahto JK, Mishra I, Jangid K, Kumar P
+    title: Structure-guided engineering of an aromatic ring-hydroxylating dioxygenase for broad-spectrum
+      phthalate degradation
+    journal: J Bacteriol
+    year: 2025
+    volume: '207'
+    doi: 10.1128/jb.00221-25
+    pmid: '40793770'
+    verified_by: crossref_api
+    used_for:
+    - 4_405_ROCH34 ikincil atfi
+  - id: wang2014_PbaA1
+    authors: Wang C, Chen Q, Wang R, Shi C, Yan X, He J, Hong Q, Li S
+    title: A Novel Angular Dioxygenase Gene Cluster Encoding 3-Phenoxybenzoate 1′,2′-Dioxygenase in Sphingobium
+      wenxiniae JZ-1
+    journal: Appl Environ Microbiol
+    year: 2014
+    volume: '80'
+    pages: 3811-3818
+    doi: 10.1128/aem.00208-14
+    pmid: '24747891'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_407_PbaA1 referans atfi: functional: a novel angular dioxygenase gene cluster encoding 3-phenoxybenzoate
+      1'',2''-dioxygenase identified and expressed'
+  - id: eby2001_AntA
+    authors: Eby DM, Beharry ZM, Coulter ED, Kurtz DM, Neidle EL
+    title: Characterization and Evolution of Anthranilate 1,2-Dioxygenase from Acinetobacter sp. Strain
+      ADP1
+    journal: J Bacteriol
+    year: 2001
+    volume: '183'
+    pages: 109-118
+    doi: 10.1128/jb.183-1.109-118.2001
+    pmid: '11114907'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_408_AntA referans atfi: functional: anthranilate 1,2-dioxygenase characterised and its evolution
+      analysed, with catalytic activity, cofactor and kinetic properties'
+  - id: anta1998_jbacteriol
+    authors: Bundy BM, Campbell AL, Neidle EL
+    title: Similarities between the antABC -Encoded Anthranilate Dioxygenase and the benABC -Encoded Benzoate
+      Dioxygenase of Acinetobacter sp. Strain ADP1
+    journal: J Bacteriol
+    year: 1998
+    volume: '180'
+    pages: 4466-4474
+    doi: 10.1128/jb.180.17.4466-4474.1998
+    pmid: '9721284'
+    verified_by: crossref_api
+    used_for:
+    - 4_408_AntA ikincil atfi
+  - id: anta2003_biochemistry
+    authors: Beharry ZM, Eby DM, Coulter ED, Viswanathan R, Neidle EL, Phillips RS, Kurtz DM
+    title: 'Histidine Ligand Protonation and Redox Potential in the Rieske Dioxygenases: Role of a Conserved
+      Aspartate in Anthranilate 1,2-Dioxygenase'
+    journal: Biochemistry
+    year: 2003
+    volume: '42'
+    pages: 13625-13636
+    doi: 10.1021/bi035385n
+    pmid: '14622009'
+    verified_by: crossref_api
+    used_for:
+    - 4_408_AntA ikincil atfi
+  - id: mahto2022_TPDO
+    authors: Mahto JK, Neetu N, Sharma M, Dubey M, Vellanki BP, Kumar P
+    title: Structural Insights into Dihydroxylation of Terephthalate, a Product of Polyethylene Terephthalate
+      Degradation
+    journal: J Bacteriol
+    year: 2022
+    volume: '204'
+    doi: 10.1128/jb.00543-21
+    pmid: '35007143'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_409_TPDO referans atfi: structural + functional: dihydroxylation of terephthalate (a PET hydrolysis
+      product) analysed from the 7VJU structure'
+  - id: haak1995_CbdC
+    authors: Haak B, Fetzner S, Lingens F
+    title: Cloning, nucleotide sequence, and expression of the plasmid-encoded genes for the two-component
+      2-halobenzoate 1,2-dioxygenase from Pseudomonas cepacia 2CBS
+    journal: J Bacteriol
+    year: 1995
+    volume: '177'
+    pages: 667-675
+    doi: 10.1128/jb.177.3.667-675.1995
+    pmid: '7530709'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_410_CbdC referans atfi: functional: cloning, sequencing and expression of the plasmid-encoded 2-halobenzoate
+      1,2-dioxygenase genes; the 1992 paper purified the two-component enzyme and reported its properties'
+  - id: cbdc1992_jbacteriol
+    authors: Fetzner S, Müller R, Lingens F
+    title: Purification and some properties of 2-halobenzoate 1,2-dioxygenase, a two-component enzyme system
+      from Pseudomonas cepacia 2CBS
+    journal: J Bacteriol
+    year: 1992
+    volume: '174'
+    pages: 279-290
+    doi: 10.1128/jb.174.1.279-290.1992
+    pmid: '1370284'
+    verified_by: crossref_api
+    used_for:
+    - 4_410_CbdC ikincil atfi
+  - id: harayama1991_XylX
+    authors: Harayama S, Rekik M, Bairoch A, Neidle EL, Ornston LN
+    title: Potential DNA slippage structures acquired during evolutionary divergence of Acinetobacter calcoaceticus
+      chromosomal benABC and Pseudomonas putida TOL pWW0 plasmid xylXYZ, genes encoding benzoate dioxygenases
+    journal: J Bacteriol
+    year: 1991
+    volume: '173'
+    pages: 7540-7548
+    doi: 10.1128/jb.173.23.7540-7548.1991
+    pmid: '1938949'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '4_411_XylX referans atfi: sequence only: the xylXYZ region sequenced in the context of evolutionary
+      divergence of the Acinetobacter/Pseudomonas dioxygenase genes'
+  - id: xylx1992_europeanjour
+    authors: NEIDLE E, HARTNETT C, ORNSTON LN, BAIROCH A, REKIK M, HARAYAMA S
+    title: Cis‐diol dehydrogenases encoded by the TOL pWW0 plasmid xylL gene and the Acinetobacter calcoaceticus
+      chromosomal benD gene are members of the short‐chain alcohol dehydrogenase superfamily
+    journal: European Journal of Biochemistry
+    year: 1992
+    volume: '204'
+    pages: 113-120
+    doi: 10.1111/j.1432-1033.1992.tb16612.x
+    pmid: '1740120'
+    verified_by: crossref_api
+    used_for:
+    - 4_411_XylX ikincil atfi
+  - id: rathinasabapathi1997_CmoS
+    authors: Rathinasabapathi B, Burnet M, Russell BL, Gage DA, Liao PC, Nye GJ, Scott P, Golbeck JH, Hanson
+      AD
+    title: 'Choline monooxygenase, an unusual iron-sulfur enzyme catalyzing the first step of glycine betaine
+      synthesis in plants: Prosthetic group characterization and cDNA cloning'
+    journal: Proc. Natl. Acad. Sci. U.S.A.
+    year: 1997
+    volume: '94'
+    pages: 3454-3458
+    doi: 10.1073/pnas.94.7.3454
+    pmid: '9096415'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_501_CmoS referans atfi: functional: choline monooxygenase purified from spinach chloroplasts, cDNA
+      cloned, ferredoxin-dependent conversion of choline to betaine aldehyde demonstrated'
+  - id: russell1998_CmoB
+    authors: Russell BL, Rathinasabapathi B, Hanson AD
+    title: Osmotic Stress Induces Expression of Choline Monooxygenase in Sugar Beet and Amaranth1
+    journal: Plant Physiology
+    year: 1998
+    volume: '116'
+    pages: 859-865
+    doi: 10.1104/pp.116.2.859
+    pmid: '9489025'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_502_CmoB referans atfi: sequence + expression: cDNA isolated and shown to be induced by osmotic
+      stress; the catalytic characterisation of plant CMO rests on the spinach enzyme'
+  - id: meng2001_CmoA
+    authors: MENG YL, WANG YM, ZHANG DB, NII N
+    title: Isolation of a choline monooxygenase cDNA clone from Amaranthus tricolor and its expressions
+      under stress conditions
+    journal: Cell Res
+    year: 2001
+    volume: '11'
+    pages: 187-193
+    doi: 10.1038/sj.cr.7290085
+    pmid: '11642403'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_503_CmoA referans atfi: sequence only: isolation of a choline monooxygenase cDNA clone; no enzyme
+      assay on the purified protein'
+  - id: zhu2014_CntA
+    authors: Zhu Y, Jameson E, Crosatti M, Schäfer H, Rajakumar K, Bugg TDH, Chen Y
+    title: Carnitine metabolism to trimethylamine by an unusual Rieske-type oxygenase from human microbiota
+    journal: Proc. Natl. Acad. Sci. U.S.A.
+    year: 2014
+    volume: '111'
+    pages: 4268-4273
+    doi: 10.1073/pnas.1316569111
+    pmid: '24591617'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_504_CntA referans atfi: functional: carnitine metabolism to trimethylamine by the unusual Rieske-type
+      oxygenase CntAB, with catalytic activity, pathway and mutagenesis'
+  - id: cnta2023_thefebsjourn
+    authors: Quareshy M, Shanmugam M, Cameron AD, Bugg TDH, Chen Y
+    title: Characterisation of an unusual cysteine pair in the Rieske carnitine monooxygenase CntA catalytic
+      site
+    journal: The FEBS Journal
+    year: 2023
+    volume: '290'
+    pages: 2939-2953
+    doi: 10.1111/febs.16722
+    pmid: '36617384'
+    verified_by: crossref_api
+    used_for:
+    - 5_504_CntA ikincil atfi
+  - id: ertekin2016_qxyA
+    authors: Ertekin E, Konstantinidis KT, Tezel U
+    title: A Rieske-Type Oxygenase of Pseudomonas sp. BIOMIG1 Converts Benzalkonium Chlorides to Benzyldimethyl
+      Amine
+    journal: Environmental Science & Technology
+    year: 2016
+    volume: '51'
+    pages: 175-181
+    doi: 10.1021/acs.est.6b03705
+    pmid: '27792326'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_505_qxyA referans atfi: functional: a Rieske-type oxygenase of Pseudomonas sp. BIOMIG1 shown to
+      convert benzalkonium chloride to benzyldimethylamine'
+  - id: qxya2016_environscite
+    authors: Ertekin E, Hatt JK, Konstantinidis KT, Tezel U
+    title: Similar Microbial Consortia and Genes Are Involved in the Biodegradation of Benzalkonium Chlorides
+      in Different Environments
+    journal: Environ. Sci. Technol.
+    year: 2016
+    volume: '50'
+    pages: 4304-4313
+    doi: 10.1021/acs.est.5b05959
+    pmid: '26992451'
+    verified_by: crossref_api
+    used_for:
+    - 5_505_qxyA ikincil atfi
+  - id: daughtry2012_Stc2
+    authors: Daughtry KD, Xiao Y, Stoner-Ma D, Cho E, Orville AM, Liu P, Allen KN
+    title: 'Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman, and UV–Visible
+      Spectroscopic Analysis of a Rieske-Type Demethylase'
+    journal: J. Am. Chem. Soc.
+    year: 2012
+    volume: '134'
+    pages: 2823-2834
+    doi: 10.1021/ja2111898
+    pmid: '22224443'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_506_Stc2 referans atfi: functional + structural: quaternary ammonium oxidative demethylation of
+      stachydrine established by crystallography, resonance Raman and UV-vis; the 2000 Gene paper defined
+      the stc region'
+  - id: stc22000_gene
+    authors: Burnet MW, Goldmann A, Message B, Drong R, El Amrani A, Loreau O, Slightom J, Tepfer D
+    title: The stachydrine catabolism region in Sinorhizobium meliloti encodes a multi-enzyme complex similar
+      to the xenobiotic degrading systems in other bacteria
+    journal: Gene
+    year: 2000
+    volume: '244'
+    pages: 151-161
+    doi: 10.1016/s0378-1119(99)00554-5
+    pmid: '10689197'
+    verified_by: crossref_api
+    used_for:
+    - 5_506_Stc2 ikincil atfi
+  - id: shao2018_BmoA
+    authors: Shao YH, Guo LZ, Zhang YQ, Yu H, Zhao BS, Pang HQ, Lu WD
+    title: Glycine Betaine Monooxygenase, an Unusual Rieske-Type Oxygenase System, Catalyzes the Oxidative
+      N -Demethylation of Glycine Betaine in Chromohalobacter salexigens DSM 3043
+    journal: Appl Environ Microbiol
+    year: 2018
+    volume: '84'
+    doi: 10.1128/aem.00377-18
+    pmid: '29703733'
+    verified_by: crossref_api+uniparc_crc64
+    used_for:
+    - '5_507_BmoA referans atfi: functional: glycine betaine monooxygenase (BmoAB) characterised as an unusual
+      Rieske-type oxygenase system catalysing glycine betaine demethylation'
+  - id: bmoa2008_jbacteriol
+    authors: Wargo MJ, Szwergold BS, Hogan DA
+    title: Identification of Two Gene Clusters and a Transcriptional Regulator Required for Pseudomonas
+      aeruginosa Glycine Betaine Catabolism
+    journal: J Bacteriol
+    year: 2008
+    volume: '190'
+    pages: 2690-2699
+    doi: 10.1128/jb.01393-07
+    pmid: '17951379'
+    verified_by: crossref_api
+    used_for:
+    - 5_507_BmoA ikincil atfi
