@@ -1658,6 +1658,13 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("gate_impact_reanchoring.json", "file", "What reading the catalytic "
+     "carboxylate by per-type re-anchoring would do to membership. Almost "
+     "nothing: the 2,700 candidates that currently fail the catalytic test "
+     "average 0.25 model coverage against 0.83 for those that pass, so they "
+     "are fragments rather than full enzymes with a shifted column; only 99 "
+     "of them even reach 0.45 coverage. What changes is the statistic, not "
+     "who is in the database.", "hand-run gate impact measurement"),
     ("carboxylate_clade_shift.json", "file", "Whether the catalytic "
      "carboxylate column has shifted along the family's evolution, and "
      "whether cutting the profile into a few sub-models would fix it. The "

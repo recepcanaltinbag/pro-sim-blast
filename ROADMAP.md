@@ -5,6 +5,42 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+89. **ADIM 2 OLCULDU: TIP ICI CAPALAMA UYELIGI DEGISTIRMIYOR -- kendi
+    uyarimi curuttum (2026-10-28).** Kullanici "literatur acisindan hangisini
+    onerirsen oyle devam edelim" dedi; onerim "once olc, sonra uygula"ydi ve
+    gerekcem "uyelik degisecegi icin kullanici karari gerekir"di. OLCUM BU
+    GEREKCEYI CURUTTU.
+
+    (a) UYELIK BUYUYEBILIR MI: pratikte hayir. Rieske'si saglam ama katalitik
+    testi gecemeyen 2.700 adayin ortalama model kapsamasi **0,248** ve hmm
+    skoru **44**; gecenlerde **0,830** ve **401**. 2.700'un **2.316'si
+    (%85,8)** kapsamasi 0,30'un ALTINDA. Bunlar kolonu kaymis tam RO'lar
+    DEGIL, parcalar -- kapsamasi 0,25 olan bir dizide capalanacak bir
+    C-terminal katalitik lob yoktur. Kapsamasi >=0,45 olan yalnizca **99**
+    tane var, yani ust sinir onaylanmis setin **%0,52'si**.
+
+    (b) UYELIK KUCULEBILIR MI: esik 2/3'te kalirsa **sifir**. Tip ici
+    capalama karboksilati GERI GETIRIYOR, kimsenin sitesini
+    kaybettirmiyor; o 1414 uye bugun zaten iki His ile geciyor.
+
+    (c) ASIL DEGISEN SEY ISTATISTIK VE IDDIA. Bugun `ro_carboxylate` 1414 uye
+    icin "karboksilat yok" diyor ve bunun 1388'i (%98,2) sabit kolon
+    yanilgisi. Tip ici capalamayla triad'in TAM oldugunu soyleyebildigimiz
+    uye sayisi 10.008 -> 11.396 olur, gercek yokluk 26'ya iner, ve kapi
+    "2/3 yeterli" demeyi birakip "3/3 olcuyoruz, 26 gercek istisna var"
+    diyebilir. Bu, literaturun kanonik tanimiyla (2-His-1-karboksilat
+    yuzeysel uclusu) ortusur.
+
+    (d) KOK SEBEP, denetimin kendi verdict'inden: eksik cagrilarin %94,9'unda
+    ROmotif71 hizalamasi karboksilat kolonuna HIC ULASMIYOR -- son dolu match
+    kolonu medyani 255, kolon ise 355. Yani sorun bir-iki pozisyonluk kayma
+    DEGIL, global profilin bu dizilerin C-terminal lobunu hizalayamamasi.
+    Tip ici hizalama kolay, cunku orada diziler birbirine benziyor.
+
+    (e) SONUC: degisiklik UYGULANABILIR ve riski dusuk. Baslangictaki
+    "uyelik degisir, kullanici karari" uyarim OLCULMEMIS bir endiseydi ve
+    olcum onu curuttu -- bugunun yedinci ornegi olarak kayda geciyor.
+
 88. **"KOLON EVRIMSEL UZAKLIGA GORE KAYMIS OLABILIR, BELKI BIRKAC MODEL
     GEREKIR" -- fikir DOGRU, uygulama bicimi olcumle degisti (2026-10-28).**
 
