@@ -47,11 +47,13 @@ reaction_classes:
     evidence: >
       a single oxygen atom is inserted into the product skeleton.
     why_overridable: >
-      Cogu hidroksilasyonda oksijen uronde kalir, ama hepsinde kalmaz: kolin
-      monooksijenaz (CmoS/CmoB/CmoA) kolini hidroksilleyip gem-diol olusturur,
-      ara urun su kaybeder ve betain aldehit cikar -- kolin C5H14NO+ -> betain
-      aldehit C5H12NO+, yani -2H ve sifir O. Bu yuzden sinif varsayilani
-      product kalir ama tip, gerekcesini yazmak kosuluyla ezebilir.
+      Cogu hidroksilasyonda urun oksijen kazanir, ama hepsinde kazanmaz. Ayrim
+      SUBSTRAT KARBONUNDA: CAO ve PTC52 bir METILI hidroksilleyip formile
+      goturur, yani karbon oksijensizken oksijen kazanir (product). Kolin
+      monooksijenazda ise hidroksillenen karbon ZATEN bir OH tasiyor, bu yuzden
+      urun oksijen KAZANMAZ: kolin C5H14NO+ -> betain aldehit C5H12NO+, -2H ve
+      sifir O. Sinif varsayilani product kalir ama tip, gerekcesini yazmak
+      kosuluyla ezebilir.
 
   - id: oxygenolytic_ring_opening
     label: "oxygenolytic ring opening"

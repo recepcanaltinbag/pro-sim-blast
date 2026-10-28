@@ -5,6 +5,46 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+80. **CMO'NUN OKSIJEN KADERI FAZLA IDDIAYDI -- degeri ve adi duzeltildi
+    (2026-10-28).** Kullanici "CmoS'ta yukseltgen degil mi" diye ikinci kez
+    sorunca kendi degerimi sinadim ve HATALI buldum.
+
+    (a) NE YANLISTI. Deger `transient` adini tasiyordu ve gerekcesinde "urun
+    o oksijeni hic tutmuyor, su olarak cikiyor" yaziyordu. Bu bir ATOM
+    iddiasidir ve dayanagi yoktu: formul dengesi oksijenin SAYISINI soyler,
+    hangi ATOM oldugunu SOYLEMEZ.
+
+    (b) KIMYA NEDEN BELIRSIZ BIRAKIYOR. Kolinde hidroksillenen karbon ZATEN
+    bir OH tasiyor. Oraya oksijen sokulunca ayni karbonda iki OH olan bir
+    gem-diol cikar; bu iki hidroksil kimyasal olarak ESDEGERDIR ve su kaybinda
+    hangisinin gittigi belirsizdir. O2'den gelen atom uronde kalmis da
+    olabilir. Bunu yalnizca 18O2 isaretlemesi cozer.
+
+    (c) KANIT ARANDI, YOK. Elimizdeki uc kaynagin hicbirinde gem-diol ya da
+    18O isaretlemesi GECMIYOR (derleme ve tezde sifir kayit). Bizim atfimiz
+    (rathinasabapathi1997_CmoS) yalnizca "ferredoxin-dependent conversion of
+    choline to betaine aldehyde" gosteriyor -- mekanizmayi kurmuyor.
+
+    (d) DUZELTME. Deger `no_net_gain` olarak yeniden adlandirildi ve artik
+    YALNIZCA DESTEKLENEN seyi iddia ediyor: urun oksijen KAZANMIYOR (kolin
+    C5H14NO+ -> betain aldehit C5H12NO+, -2H ve sifir O). Site metni de
+    duzeltildi: "An oxygen atom is genuinely inserted and this enzyme is a
+    true Rieske-type monooxygenase, but the product gains no oxygen overall.
+    Which atom ends up in the product is NOT established... Only labelling
+    with 18O2 could resolve it."
+
+    (e) AYRIM NEREDE OLDUGU NETLESTI: SUBSTRAT KARBONUNDA. CAO ve PTC52 bir
+    METILI hidroksilleyip formile goturuyor; karbon oksijensiz basladigi icin
+    urun oksijen KAZANIYOR ve `product` DOGRU. CMO'da karbon zaten OH
+    tasidigi icin net kazanc sifir. Yani `hydroxylation` sinifinin iki ayri
+    kaderi tasimasi tesadufi degil, karbonun baslangic durumuna bagli --
+    `overridable` gerekcesi buna gore yeniden yazildi.
+
+    (f) Kullanicinin ilk sorusu (madde 79'daki "CmoS icin Rieske diyorlar
+    ama") degeri YANLIS BULDURMUSTU; ikinci sorusu GEREKCEYI yanlis buldurdu.
+    Ikisi de ayni dersi veriyor: formul dengesi ile atom izlemesi ayri
+    seylerdir ve biri otekinin yerine kullanilamaz.
+
 79. **"PROTEIN DIZISI YETER MI" SORUSUNUN CEVABI: KISMEN -- ve sinir yaziya
     gecirildi (2026-10-28).** Kullanici yeni bir RO bulan birinin bizim
     semayla oksijen kaderini, tipi ve rolu cikarabilecegini sordu.

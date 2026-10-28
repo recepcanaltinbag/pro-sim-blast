@@ -15,18 +15,23 @@ import os
 import yaml
 
 VOCAB_FILE = "reaction_classes.yaml"
-# transient: oksijen gercekten sokulur ama urunde KALMAZ. CMO bunun ornegi:
-# kolin hidroksillenip gem-diol olusur, ara urun su kaybeder ve betain
-# aldehit cikar -- kolin C5H14NO+ -> betain aldehit C5H12NO+, yani -2H ve
-# sifir O. "hydroxylation" sinifinin varsayilani product'tir ve CMO icin
-# YANLISTI; deger kullanicinin "CmoS icin Rieske diyorlar ama" sorusu
-# uzerine formulle kontrol edilince bulundu.
-FATES = ("product", "leaving_group", "transient", "oxidant_only",
+# no_net_gain: bir oksijen SOKULUR ama urun oksijen KAZANMAZ. CMO bunun
+# ornegi: kolin C5H14NO+ -> betain aldehit C5H12NO+, yani -2H ve sifir O.
+#
+# ADI 2026-10-28'DE DEGISTI: once "transient" denmisti ve gerekcesinde "urun
+# o oksijeni hic tutmuyor" yaziliyordu. BU FAZLA IDDIAYDI. Formul dengesi
+# oksijen SAYISINI soyler, hangi ATOM oldugunu soylemez. Kolinde hidroksillenen
+# karbon ZATEN bir OH tasiyor; oraya oksijen sokulunca ayni karbonda iki
+# esdeger OH olan bir gem-diol cikar ve su kaybinda hangisinin gittigi
+# belirsizdir -- O2'den gelen atom uronde kalmis da olabilir. Bunu yalnizca
+# 18O2 isaretlemesi cozer ve elimizdeki kaynaklarin hicbirinde yok.
+# Deger artik yalnizca DESTEKLENEN seyi iddia ediyor: net kazanc sifir.
+FATES = ("product", "leaving_group", "no_net_gain", "oxidant_only",
          "unknown")
 
 # Filtrede ne gosterilecegi: oksijen AKTARAN enzimler bu ikisidir.
-# Oksijeni bir urunde BIRAKAN enzimler. transient buraya girmez: oksijen
-# sokulur ama su olarak geri cikar, yani hicbir uronde bulunmaz.
+# Urune oksijen KAZANDIRAN enzimler. no_net_gain buraya girmez: bir oksijen
+# sokulur ama urunun oksijen sayisi degismez.
 TRANSFERRING = ("product", "leaving_group")
 
 

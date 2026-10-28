@@ -205,10 +205,10 @@ OXYGEN_FATE_PATH = os.environ.get(
 OXYGEN_FATE_LABEL = {
     "product": "into the product",
     "leaving_group": "into the leaving group",
-    # transient: oksijen sokulur ama urunde kalmaz (CMO'nun gem-diolu su
-    # kaybediyor). Deger eklenip bu harita GUNCELLENMEYINCE site "unknown"
-    # gosterdi -- sessiz bir yanlis, cunku deger vardi.
-    "transient": "inserted, then lost as water",
+    # no_net_gain: bir oksijen sokulur ama urun oksijen kazanmaz. Etiket
+    # kasten ATOM iddiasi tasimiyor: onceki "inserted, then lost as water"
+    # metni, formul dengesinin DESTEKLEMEDIGI bir seyi soyluyordu.
+    "no_net_gain": "inserted, but no net gain",
     "oxidant_only": "not incorporated",
     "unknown": "unknown",
 }
