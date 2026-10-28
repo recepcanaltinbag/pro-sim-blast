@@ -1658,6 +1658,11 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("reaction_anchors.json", "file", "The search for an official reaction "
+     "anchor for the types that had none: an EC number in the record text, or "
+     "a UniProt entry named as holding the same sequence. Five of 53 were "
+     "anchored; no anchor is invented, so the rest stay curated.",
+     "anchor_reactions.py"),
     ("oxygen_fate_computed.json", "file", "The oxygen fate COMPUTED by atom "
      "counting over the balanced equation Rhea gives for each enzyme's EC "
      "number, with participant formulas from ChEBI, compared against the "
