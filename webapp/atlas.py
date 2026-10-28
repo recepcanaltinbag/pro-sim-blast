@@ -1658,6 +1658,18 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("bridging_geometry_audit.json", "file", "Whether the bridging-carboxylate "
+     "column really reports the bridge, measured against the crystal "
+     "structures the same way the catalytic column was. It passes: in 8 of the "
+     "9 structures that contain the neighbouring subunit, the residue sits "
+     "about 6.6 A from that neighbour's Rieske cluster and about 7.1 A from "
+     "its own subunit's iron.", "bridging_geometry_audit.py"),
+    ("oxygen_role_phylogeny.json", "file", "Whether the tree predicts which "
+     "enzymes use O2 only as an oxidant. Sister groups share the label 8.9 "
+     "times more often than chance even after same-type neighbours are "
+     "removed, but every one of those cross-type neighbourings is the one "
+     "orthologue pair Nvd/DAF36; the independent third type sits nowhere near "
+     "them. The signal is real and entirely trivial.", "hand-run tree test"),
     ("reaction_anchors.json", "file", "The search for an official reaction "
      "anchor for the types that had none: an EC number in the record text, or "
      "a UniProt entry named as holding the same sequence. Five of 53 were "

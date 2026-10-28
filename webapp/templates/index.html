@@ -215,11 +215,11 @@ the iron are two different residues with two different behaviours, set out next.
 {% if motif and motif.carboxylate_identity %}
 {% set cat = motif.carboxylate_identity.catalytic_iron %}
 {% set brg = motif.carboxylate_identity.bridging %}
-<p>Writing both of these positions as "D/E" hides the sharpest sequence-level result in the
-database. The carboxylate that completes the iron triad is aspartate and effectively nothing else.
-The carboxylate at the subunit interface is aspartate in the ring-hydroxylating enzymes and
-glutamate in the quaternary-amine branch, so a single alignment column tracks the substrate
-chemistry.</p>
+<p>These two positions behave differently, and one of them turned out not to be readable from
+an alignment column at all. The carboxylate at the subunit interface is aspartate in the
+ring-hydroxylating enzymes and glutamate in the quaternary-amine branch, so a single column
+tracks the substrate chemistry there. The carboxylate at the iron is a different matter: the
+column this database had been reading is not the ligand, as the row below sets out.</p>
 
 <div class="tablewrap"><table class="data compact">
 <thead><tr>
@@ -232,14 +232,24 @@ chemistry.</p>
   <th>In the reference set</th>
 </tr></thead>
 <tbody>
+{#  KATALITIK SATIRIN SAYILARI KALDIRILDI. Kolon {{ cat.column }} ligandi
+    OKUMUYOR: 27 kuratorlu referansin kristal yapisina karsi sinandi ve
+    cagirdigi kalinti 26/26'sinda demirden 10,9-14,7 A uzakta cikti. Test
+    geciyordu cunku o kolonda gercekten bir D/E var -- test "kolonda asidik
+    kalinti var mi" diye soruyor, "metali koordine ediyor mu" diye SORMUYOR.
+    Sayilari burada yayimlamak, olculmeyen bir seyi olculmus gibi gostermek
+    olurdu.                                                                #}
 <tr>
   <td><b>Catalytic</b>, completes the 2-His-1-carboxylate triad at the mononuclear iron</td>
-  <td class="num">{{ cat.column }}</td>
-  <td class="num" data-v="{{ cat.asp }}">{{ cat.asp|fmt }}</td>
-  <td class="num" data-v="{{ cat.glu }}">{{ cat.glu|fmt }}</td>
-  <td class="num" data-v="{{ cat.asp_to_glu }}">{{ '%.0f' % cat.asp_to_glu }} : 1</td>
-  <td class="num" data-v="{{ cat.with_carboxylate }}">{{ cat.with_carboxylate|fmt }} <span class="note">({{ pct(cat.with_carboxylate, motif.n) }})</span></td>
-  <td class="small">{% set cr = cat.references %}{% if cr %}{{ cr.glu }} Glu, {{ cr.asp }} Asp{% if cr.gap %}, {{ cr.gap }} with a gap at the column{% endif %}{% if cr.other %}, {{ cr.other }} other{% endif %} <span class="note">of {{ cr.n }}</span>{% else %}–{% endif %}</td>
+  <td class="num">–</td>
+  <td class="num" colspan="4"><b>not readable from a fixed column.</b> Tested against the crystal
+  structures of 27 curated references: the residue column {{ cat.column }} calls is 10.9–14.7 Å
+  from the iron in <b>26 of 26</b> testable structures, so it is not the ligand. The column test
+  passed only because an acidic residue does sit there — it asks whether the column holds a D or
+  an E, not whether that residue coordinates the metal.</td>
+  <td class="small">the iron-coordinating carboxylate is <b>aspartate in 26 of 26</b> structures.
+  It lands on column 431 in 18 of them and on 432 in 2 more, with the remaining 6 spread over
+  407–411 and 449–451, so no single column holds them all.</td>
 </tr>
 <tr>
   <td><b>Bridging</b>, links the Rieske centre of one subunit to the iron of the next</td>
@@ -251,12 +261,21 @@ chemistry.</p>
   <td class="small">{% set br = brg.references %}{% if br %}{{ br.asp }} Asp, {{ br.glu }} Glu{% if br.other %}, {{ br.other }} neither (Cys or Ser){% endif %} <span class="note">of {{ br.n }}</span>{% else %}–{% endif %}</td>
 </tr>
 </tbody></table></div>
-<p class="note"><b>Read from an alignment column, not from a structure.</b> No structure is used
-anywhere in this database: these are the residues the profile alignment places at columns
-{{ cat.column }} and {{ brg.column }}, counted over {{ motif.n|fmt }} confirmed entries. The
-{{ pct(motif.n - cat.with_carboxylate, motif.n) }} of entries with no carboxylate within two
-columns of position {{ cat.column }} reflect alignment shift in that loop rather than a missing
-site, which is why membership requires only two of the three iron ligands.</p>
+<p class="note"><b>Both columns were checked against structures, and they came out
+differently.</b> The bridging column <b>passes</b>: in the 9 structures where the neighbouring
+subunit is present in the file, the residue it calls sits 5.9–7.2 Å from that neighbour's Rieske
+cluster and 6.7–10.6 Å from its own subunit's iron in 8 of 9, which is the geometry of a bridge
+and nothing else. For naphthalene dioxygenase it returns Asp205, the residue whose carboxylate is
+hydrogen-bonded to a Rieske ligand on one side and an iron ligand on the other. The catalytic
+column <b>fails</b>: the residue it calls is 10.9–14.7 Å from the iron in 26 of 26 testable
+structures. The two mononuclear histidine columns pass as well — for the phthalate dioxygenase
+they give His181 and His186, exactly the residues that coordinate the iron in the crystal, at 2.01
+and 1.94 Å. So membership requiring two of the three iron ligands is no longer a tolerance for
+alignment shift but a necessity: the third ligand is not something a fixed column can report.
+A structurally interesting detail falls out of the bridging audit. In the quaternary-amine branch
+the position is not aspartate — carnitine oxygenase has Glu205 and the stachydrine demethylase has
+Cys202 — and both occupy the <i>same</i> site, 6.9 and 6.0 Å from their own iron. The substitution
+is at the electron-transfer bridge itself, not somewhere incidental.</p>
 
 {% set glu = brg.glu_clusters|selectattr('n', 'ge', 20)|list %}
 {% if glu %}

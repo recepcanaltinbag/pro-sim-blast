@@ -5,6 +5,57 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+85. **KOPRU KARBOKSILAT KOLONU YAPIYA KARSI DOGRULANDI VE GECTI -- katalitik
+    kolonun tam ziddi (2026-10-28).** Kullanici "kopru karboksilati elektron
+    tasimasiyla ilgili aslinda, belki ilginc sonuc verebilir" dedi. Dogru
+    sezgi, ve kolon dogrulanmadan ustune hicbir sey kurulmadi.
+
+    (a) ONCE ESLEME. Kolon -> kalinti numarasi eslemesini kendim kurdum ve
+    denetimin katalitik cagrilarina karsi **0/26 TUTTU**: sebebi
+    `read_stockholm_matchcols`in insersiyon durumlarindaki kalintilari
+    atmasi (OxoO'da 64 kalinti fark). Kendi eslememi ATTIM,
+    `carboxylate_audit.AlignmentIndex`i ice aktardim ve **26/26** tuttu.
+    Ancak ondan sonra geometriye gecildi.
+
+    (b) OLCUM (`bridging_geometry_audit.py`). Kopru kolonu 286. Komsu alt
+    birimin dosyada OLDUGU 9 yapinin **8'inde** sikici bir kopru geometrisi:
+    komsu zincirin Rieske kumesine 5,92-7,15 A (ortanca 6,6), KENDI zincirinin
+    demirine 6,65-10,55 A (ortanca 7,1). 1NDO icin kolon Asp205'i veriyor --
+    karboksilati bir yanda Rieske ligandina, obur yanda demir ligandina
+    hidrojen bagli olan kalinti. Tek aykiri GxtA (6WNC, 36,43 A).
+    **Karsilastirma: katalitik kolon 26/26 yapida demirden 10,9-14,7 A
+    uzakti.** Yani iki kolon ayni testten gecirildi ve biri gecti, obur
+    gecmedi.
+
+    (c) BENIM IKINCI HATAM, aninda yakalandi. `spans_two_chains` testini TERS
+    kodlamistim (Rieske kendi zincirinde, Fe komsuda) ve 12/12 "hayir"
+    vermisti. Gercek yon tersi: kopru, DEMIRI tasiyan alt birimde oturup
+    KOMSUNUN Rieske merkezine uzaniyor. Duzeltilince 9/9 oldu. Bir bulgu
+    sanip yayimlamak cok kolaydi.
+
+    (d) SINIR DURUSTCE: 27 hedefin 12'si olculebildi. Tek alt birimli 8
+    yapida komsunun Rieske'si DOSYADA YOK, o yuzden Rieske uzakligi 44-48 A
+    cikiyor (kendi merkezine olan mesafe) ve anlamsiz; demir tarafi orada da
+    5,99-7,18 A. Besinde kalinti yapida cozulmemis, yedisinde dosyada Fe ya
+    da Rieske yok.
+
+    (e) KULLANICININ SEZGISI BIR BULGUYA DONDU. Kuaterner amin dalinda bu
+    pozisyon aspartat DEGIL: CntA'da **Glu205**, Stc2'de **Cys202**, ve ikisi
+    de kendi demirlerinden 6,89 ve 5,99 A uzakta, yani halka-hidroksilleyenlerdeki
+    Asp ile AYNI yapisal pozisyonu dolduruyorlar. Ikame, elektron transfer
+    koprusunun TAM KENDISINDE. On sayfadaki "tek bir kolon substrat kimyasini
+    izliyor" iddiasi artik dogrulanmis bir kolona dayaniyor.
+
+    (f) ON SAYFA DUZELTILDI. Madde 83'te koydugum "bu kolon yapilara karsi
+    kontrol edilmedi" uyarisi KALDIRILDI cunku artik kontrol edildi ve gecti;
+    yerine iki kolonun ayni testten gecip farkli sonuc verdigi ve grup 5'teki
+    Glu/Cys ikamesi yazildi.
+
+    (g) ACIK: GxtA'nin 36,43 A'si aciklanmadi (6WNC'de komsu zincir B olarak
+    bulundu, otekilerde C/D). Ve kopru kolonunun Asp/Glu dagilimi HALA
+    yalnizca 27 yapili referans icin yapisal olarak dogrulandi; 76 tipin
+    tamamindaki sayim hala yalnizca kolon okumasi.
+
 84. **B ADIMI: ALTI KURASYON DUZELTMESI UYGULANDI (2026-10-28).** Madde 75'te
     kaynaktan dogrulanan uyusmazliklarin hepsi kapatildi.
 
