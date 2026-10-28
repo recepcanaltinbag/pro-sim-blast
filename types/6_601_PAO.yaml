@@ -12,7 +12,7 @@ source: 'UniProt Q9FYC2 (PAO_ARATH, reviewed), Arabidopsis thaliana pheophorbide
 source_kind: general
 curation_confidence: high
 notes: 'Candidate reference for the plastid chlorophyll-catabolism branch of the Rieske oxygenases, which this set has no reference for; analysis_out/carboxylate_audit.json records this family as unreadable by any fixed alignment column. substrate_smiles and a product SMILES are left EMPTY on purpose: pheophorbide a and RCC are large open/closed chlorin macrocycles and no SMILES for them was verified in this session -- a wrong one is worse than a missing one. reaction_class "oxygenolytic_ring_opening" and family "chlorophyll_pathway" are NEW vocabulary, not present in the existing 67; a curator must decide whether to add them. No PDB structure is known for any PAO (the audit and the literature harvest both record IPR013626 as having no structural anchor). The family field was changed from ''chlorophyll_pathway'' to ''tetrapyrroles'' on 2026-10-16. Every other member of that vocabulary names the chemical class of the substrate (alkylbenzenes, quaternary_amines, terpenoids_steroids), whereas ''chlorophyll_pathway'' named a pathway. The substrate here is a chlorin, that is a reduced tetrapyrrole, so the chemical class is the consistent label; the pathway is already recorded by the group 6 assignment.'
-added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_by: claude-opus-5 subagent (proposed); CURATOR APPROVED 2026-10-28 on the cofactor criterion -- motif gate passed with Rieske 4/4 and both mononuclear histidines, same profile as NahAc and PDO, no exception needed
 added_on: 2026-10-14
 citations:
   - pruzinska2003_pao

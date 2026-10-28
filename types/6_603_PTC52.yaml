@@ -12,7 +12,7 @@ source: 'UniProt Q8W496 (PTC52_ARATH, reviewed), Arabidopsis thaliana protochlor
 source_kind: general
 curation_confidence: medium
 notes: 'This is the family behind the largest eukaryotic block in the audit (NCBI calls them "protochlorophyllide-dependent translocon component 52, chloroplastic-like", 4 of the 23 eukaryotic residual entries, three of them Phoenix dactylifera isoforms). curation_confidence is MEDIUM, not high, on purpose: UniProt gives only EC 1.14.15.- with no committed substrate, and the protochlorophyllide a -> b assignment comes from in-organello import work rather than from a clean in vitro turnover. If the curator wants a strictly defensible entry, substrate_en should read "protochlorophyllide a (proposed)". substrate_smiles EMPTY, same reason as PAO and CAO. family "chlorophyll_pathway" is NEW vocabulary. The family field was changed from ''chlorophyll_pathway'' to ''tetrapyrroles'' on 2026-10-16. Every other member of that vocabulary names the chemical class of the substrate (alkylbenzenes, quaternary_amines, terpenoids_steroids), whereas ''chlorophyll_pathway'' named a pathway. The substrate here is a chlorin, that is a reduced tetrapyrrole, so the chemical class is the consistent label; the pathway is already recorded by the group 6 assignment.'
-added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_by: claude-opus-5 subagent (proposed); CURATOR APPROVED 2026-10-28 on the cofactor criterion -- motif gate passed with Rieske 4/4 and both mononuclear histidines, same profile as NahAc and PDO, no exception needed
 added_on: 2026-10-14
 citations:
   - bartsch2008_ptc52

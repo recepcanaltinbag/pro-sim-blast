@@ -12,7 +12,7 @@ source: 'UniProt Q9MBA1 (CAO_ARATH, reviewed), Arabidopsis thaliana chlorophylli
 source_kind: general
 curation_confidence: high
 notes: 'The chlorophyll b branch; 6 database entries are annotated "chlorophyllide a oxygenase" by NCBI and the audit could not read their catalytic lobe. substrate_smiles left EMPTY: chlorophyllide a is a Mg-chlorin and no SMILES was verified here. reaction_class uses the existing token "hydroxylation" because the committed reaction is two C-H hydroxylations; the literature harvest proposed a new token "hydroxylation_for_formylation" instead -- a curator decision. family "chlorophyll_pathway" is NEW vocabulary. Substrate and product are taken from the UniProt EC assignment, not from the thesis, which only drew a generic methylpyrrole (harvest NT-12, confidence medium). The family field was changed from ''chlorophyll_pathway'' to ''tetrapyrroles'' on 2026-10-16. Every other member of that vocabulary names the chemical class of the substrate (alkylbenzenes, quaternary_amines, terpenoids_steroids), whereas ''chlorophyll_pathway'' named a pathway. The substrate here is a chlorin, that is a reduced tetrapyrrole, so the chemical class is the consistent label; the pathway is already recorded by the group 6 assignment.'
-added_by: claude-opus-5 subagent (candidate manifest, NOT admitted; awaiting curator review)
+added_by: claude-opus-5 subagent (proposed); CURATOR APPROVED 2026-10-28 on the cofactor criterion -- motif gate passed with Rieske 4/4 and both mononuclear histidines, same profile as NahAc and PDO, no exception needed
 added_on: 2026-10-14
 citations:
   - oster2000_cao

@@ -5,6 +5,51 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+76. **SEKIZ ADAY REFERANS FIILEN SETTEYDI AMA ETIKETI "ONAYLANMADI" DIYORDU --
+    kofaktor olcutuyle onaylandi (2026-10-28).** Kullanici PAO ve RedG'yi RO
+    saymanin sorun olup olmadigini sordu ve gerekcesini "o da bir
+    biyotransformasyon, kesin yukseltgen" diye verdi.
+
+    (a) O GEREKCE TEK BASINA YETMEZ, cunku fazla gecirgen: P450'ler, flavin
+    monooksijenazlar ve bakir oksidazlar da kesin yukseltgen ve
+    biyotransformasyon yapiyor. Isi yapan olcut KOFAKTOR CIFTIDIR: Rieske
+    [2Fe-2S] + mononukleer demir.
+
+    (b) OLCULDU, sekizi de kapiyi geciyor (`ro_motif.motif_report`, referans
+    hizalamasi uzerinde): GdmA, PrnD, RedG, Nvd, DAF36, PAO, CAO, PTC52 --
+    hepsi Rieske 4/4, her iki mononukleer histidin yerinde, kopru Asp var.
+    NahAc ve PDO ile BIREBIR ayni profil; AerC'nin aksine istisna kaydi
+    GEREKMIYOR. Elimizdeki Miao & Schmidt 2025 derlemesi de ailenin reaksiyon
+    repertuvarina desaturasyon ve C-C bagi kurmayi dahil ediyor.
+
+    (c) ETIKET BAYATTI. Sekizinin `added_by` alani "candidate manifest, NOT
+    admitted; awaiting curator review" diyordu, yani yayimlanan sette
+    duruyorlar ama etiketleri onaylanmadiklarini soyluyordu. Bu metin siteye
+    CIKMIYOR (sablonlarda `added_by` kullanilmiyor), yani yayimlanan bir
+    celiski degildi; yine de kutuk yanlisti. Etiket, kanitiyla birlikte
+    duzeltildi.
+
+    (d) IKI UYARI KAYDEDILDI.
+    * "Katalitik 3/3" ASLINDA 2/2. Ucuncu ayak karboksilat ve madde 73'te
+      yanlis oldugu olculen kolondan okunuyor: 26 kristal yapinin 26'sinda
+      kolonun cagirdigi kalinti demirden 10,9-14,7 A uzakta. His kolonlari
+      (289/294) kristallere karsi DOGRULANDI, karboksilat kolonu
+      dogrulanMAdi. Kabul karari bundan etkilenmiyor -- Rieske 4/4 ve iki His
+      zaten belirleyici -- ama "triad saglam" diye YAYIMLAMAK, kolon 431
+      duzeltilene kadar dogru olmaz.
+    * RedG, Nvd ve DAF36'da URUNE OKSIJEN GIRMIYOR. Formuller PubChem'den
+      okundu: undesilprodigiosin C25H35N3O -> streptorubin B C25H33N3O ve
+      kolesterol C27H46O -> 7-dehidrokolesterol C27H44O. Ikisinde de -2H,
+      sifir O. O2 burada yukseltgen, oksijen VERICISI degil; bu enzimler
+      mekanistik olarak oksidaz/desaturaz. "Oksijenaz" demek bir AILE UYELIGI
+      ifadesidir ve oksijen transferi ima edecek sekilde okunmamalidir. Uc
+      tipin `notes` alanina bu, formulleriyle yazildi.
+
+    (e) KALAN IS: alti adayin (GdmA, PrnD, Nvd, PAO, CAO, PTC52) yapisal
+    `accession` alani yok -- 67'lik atif setinde degillerdi. PAO'nun
+    `substrate_smiles` alani da kasten bos (buyuk klorin makrohalkasi icin
+    dogrulanmis SMILES yok; yanlis SMILES eksikten kotudur).
+
 75. **ELLE HAZIRLANAN KIMYA/ORGANIZMA ALANLARININ DENETIMI -- 39 uyusmazlik,
     6'si MAJOR; birincisi duzeltildi (2026-10-28).** Kullanici referans
     tiplerini elle hazirladigini ve hata olabilecegini soyledi; atif taramasi
