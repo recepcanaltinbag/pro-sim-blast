@@ -5,6 +5,48 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+88. **"KOLON EVRIMSEL UZAKLIGA GORE KAYMIS OLABILIR, BELKI BIRKAC MODEL
+    GEREKIR" -- fikir DOGRU, uygulama bicimi olcumle degisti (2026-10-28).**
+
+    (a) KAYMA GERCEKTEN KLAD YAPILI. Yapidan bilinen 26 gercek karboksilat,
+    dogrulanmis esleme TERS yonde kullanilarak model kolonuna cevrildi. Uc
+    SIKI banda dusuyorlar:
+      407-411 : NdmB 407, NdmA 408, NagGH 411
+      431-432 : 20 tip
+      449-451 : ROCH34 449, KshA15 451, PDO 451
+    NdmA ve NdmB ayni alt aile ve komsu kolonlarda -- kayma rastgele degil.
+
+    (b) AMA BIZIM BOLMELERIMIZ BANDI ONGORMUYOR. RO grubu: grup 1'de hem
+    407/408 hem 431, grup 3'te 411/431/451, grup 4'te 431/449/451. Protein
+    uzunlugu da ayirmiyor (407-411 bandi 369/373/442 aa, 431-432 bandi
+    334-470 aa).
+
+    (c) DIZI BENZERLIGI DE GUVENILIR BIR YONLENDIRICI DEGIL. Ayni bantta
+    olan tip ciftleri biraz daha benziyor (ortanca %18,8 karsisinda %16,9,
+    ortalama %25,7 karsisinda %18,2) ama en yakin referansa gore bant tahmini
+    **23/26**. Ve en kotu hata EN YUKSEK KIMLIKLI ciftte: NagGH (407-411) ile
+    TPDO (431-432) birbirinin en yakin referansi, **%40,4** kimlikle, ve
+    farkli bantlarda. Benzerlige dayali bir yonlendirici tam onemli olan
+    vakalari yanlis yonlendirir.
+
+    (d) DEPO BU CoZUMU ZATEN SINAMIS. `carboxylate_audit.json`'un
+    `anchored_reread` asamasi: karboksilat sabit global kolon yerine TIP
+    ICINDE yeniden hizalanip o tipin KENDI karboksilat pozisyonlarina
+    capalandiginda, sabit kolonun "yok" dedigi 1414 uyenin **1388'i (%98,2)**
+    geri geliyor (1369 homolog kolonda, 19 grup-korunmus kolonda). Buna
+    karsilik pencereyi genisletmek neredeyse hicbir sey kurtarmiyor: ±5'te
+    %0,8, ±10'da %5,1. Yani CARE PENCERE DEGIL, YENIDEN CAPALAMA.
+
+    (e) ONERILEN TASARIM. Onceden kesilmis alt-modellere YONLENDIRMEK yerine
+    (yonlendirme 23/26 ve en yuksek kimlikli ciftte basarisiz), her tipin
+    KENDI capasini tasimasi: tip ici yeniden hizalama + o tipin bilinen
+    karboksilat pozisyonlarinin modu. Yonlendirme sorunu boylece hic ortaya
+    cikmaz. Bu, kullanicinin "birkac model" fikrinin olcume dayanan hali.
+
+    (f) KULLANICI KARARI GEREKIYOR: bu degisiklik kapinin >=2/3 esigini ve 55
+    tek-His uyesini yeniden degerlendirmeyi gerektiriyor, yani UYELIK
+    degisecek. Veri degisikligi degil, yayimlanan setin tanimi degisiyor.
+
 87. **"CATALYTIC UCLUDEKI EVET AMA KOPRU FARKLI" -- kullanici hakliydi, iki
     karboksilat AYNI TUR BOLGE DEGIL (2026-10-28).** On sayfa ikisini tek
     tabloda ayni "Asp : Glu" cercevesinde sunuyordu ve bu, kullanicinin bir

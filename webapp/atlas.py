@@ -1658,6 +1658,14 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("carboxylate_clade_shift.json", "file", "Whether the catalytic "
+     "carboxylate column has shifted along the family's evolution, and "
+     "whether cutting the profile into a few sub-models would fix it. The "
+     "shift is real and clade-structured — the 26 structurally known "
+     "carboxylates fall into three tight column bands — but routing a "
+     "sequence to the right band by similarity fails on the highest-identity "
+     "cross-band pair, so the workable design is to re-anchor within each "
+     "type rather than to pre-cut sub-models.", "hand-run clade test"),
     ("bridging_geometry_audit.json", "file", "Whether the bridging-carboxylate "
      "column really reports the bridge, measured against the crystal "
      "structures the same way the catalytic column was. It passes: in 8 of the "
