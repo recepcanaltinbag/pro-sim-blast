@@ -197,18 +197,11 @@
   {% if ofate %}
   <div class="rxnote rxnote--fate">
     <b>Where the O<sub>2</sub> oxygen ends up:</b> {{ ofate.label }}.
-    {#  SIRA ONEMLI. `transfers` hem oxidant_only hem no_net_gain icin False ve
+    {#  SIRA ONEMLI. `transfers` oxidant_only icin False ve
         "oksidaz, oksijenaz degil" dali once yazilinca CMO sayfasinda YANLIS
         metin cikti: CMO gercek bir monooksijenazdir, oksijeni sokar ama urun
-        onu KAZANMAZ. no_net_gain bu yuzden EN BASTA elenir.                    #}
-    {% if ofate.fate == 'no_net_gain' %}
-    An oxygen atom is genuinely inserted and this enzyme is a true
-    Rieske-type monooxygenase, but the product gains no oxygen overall. Which
-    atom ends up in the product is NOT established: the carbon being
-    hydroxylated already carries a hydroxyl, so the insertion gives a gem-diol
-    whose two hydroxyls are equivalent and either can leave on dehydration.
-    Only labelling with <sup>18</sup>O<sub>2</sub> could resolve it.
-    {% elif not ofate.transfers %}
+        onu kazanmaz.                    #}
+    {% if not ofate.transfers %}
     O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
     mechanistically an oxidase rather than an oxygenase. It is in this database
     because it carries the Rieske cluster and the mononuclear iron site: the

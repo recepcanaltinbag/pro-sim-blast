@@ -43,17 +43,8 @@ reaction_classes:
   - id: hydroxylation
     label: "hydroxylation"
     oxygen_fate: product
-    overridable: true
     evidence: >
       a single oxygen atom is inserted into the product skeleton.
-    why_overridable: >
-      Cogu hidroksilasyonda urun oksijen kazanir, ama hepsinde kazanmaz. Ayrim
-      SUBSTRAT KARBONUNDA: CAO ve PTC52 bir METILI hidroksilleyip formile
-      goturur, yani karbon oksijensizken oksijen kazanir (product). Kolin
-      monooksijenazda ise hidroksillenen karbon ZATEN bir OH tasiyor, bu yuzden
-      urun oksijen KAZANMAZ: kolin C5H14NO+ -> betain aldehit C5H12NO+, -2H ve
-      sifir O. Sinif varsayilani product kalir ama tip, gerekcesini yazmak
-      kosuluyla ezebilir.
 
   - id: oxygenolytic_ring_opening
     label: "oxygenolytic ring opening"

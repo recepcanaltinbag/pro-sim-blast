@@ -202,13 +202,18 @@ OXYGEN_FATE_PATH = os.environ.get(
     "ROAR_OXYGEN_FATE", os.path.join(PARENT, "oxygen_fate.csv"))
 
 # Yayimlanan etiketler. Alan adlari makine icin, bu metinler insan icin.
+# O2'nin rolu -- oksijen kaderinden turetilir. Ayri sutun olarak duruyor
+# cunku "hangileri yalnizca yukseltgen" sorusu okuyucunun iki degeri kafasinda
+# birlestirmesine birakilmamali.
+O2_ROLE_LABEL = {
+    "donor": "oxidant + O donor",
+    "oxidant_only": "oxidant only",
+    "unknown": "unknown",
+}
+
 OXYGEN_FATE_LABEL = {
     "product": "into the product",
     "leaving_group": "into the leaving group",
-    # no_net_gain: bir oksijen sokulur ama urun oksijen kazanmaz. Etiket
-    # kasten ATOM iddiasi tasimiyor: onceki "inserted, then lost as water"
-    # metni, formul dengesinin DESTEKLEMEDIGI bir seyi soyluyordu.
-    "no_net_gain": "inserted, but no net gain",
     "oxidant_only": "not incorporated",
     "unknown": "unknown",
 }
@@ -369,6 +374,8 @@ def _cluster_row(d, leaves, euk, genera):
               "oxygen_fate_label": OXYGEN_FATE_LABEL.get(
                   ofate.get("oxygen_fate", ""), ""),
               "oxygen_fate_basis": ofate.get("basis", ""),
+              "o2_role": ofate.get("o2_role", ""),
+              "o2_role_label": O2_ROLE_LABEL.get(ofate.get("o2_role", ""), ""),
               "metabolic_role": mrole.get("metabolic_role", ""),
               "metabolic_role_label": METABOLIC_ROLE_LABEL.get(
                   mrole.get("metabolic_role", ""), ""),

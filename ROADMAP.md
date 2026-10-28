@@ -5,6 +5,52 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+81. **CMO: IKI KEZ YANLIS KAYDEDILDI, GUNCEL LITERATUR COZDU (2026-10-28).**
+    Kullanici once "CmoS icin Rieske diyorlar ama", sonra "CmoS'ta yukseltgen
+    degil mi", sonunda "guncel literature bi baksa ya" dedi. Ucuncusu dogru
+    cevabi verdirdi; ilk ikisi benim iki ayri hatami buldurdu.
+
+    (a) HATANIN KOKU TEK: denge, enzimin BIRAKTIGI urunden degil, onun
+    DEHIDRATLANMIS DENGE FORMUNDAN hesaplandi. `product_en` alani "betaine
+    aldehyde" yaziyordu; serbest aldehit C5H12NO+ ve kolinle (C5H14NO+)
+    karsilastirilinca -2H / sifir O cikiyor, yani "oksijen kazanci yok".
+    Bu yuzden deger once `transient` ("sonra su olarak cikar"), sonra
+    `no_net_gain` oldu. IKISI DE YANLIS.
+
+    (b) BRENDA (EC 1.14.15.7) reaksiyonu birebir soyle veriyor: "choline + O2
+    + 2 reduced ferredoxin + 2 H+ = betaine aldehyde **HYDRATE** + H2O + 2
+    oxidized ferredoxin". Urun HIDRAT, yani gem-diolun kendisi. Dengelenince
+    kolin C5H14NO+ + O2 -> hidrat C5H14NO2+ + H2O: **bir oksijen URUNE, bir
+    oksijen suya** -- sira bir monooksijenaz stokiyometrisi. EC 1.14.15 sinif
+    basligi da "incorporation of one atom of oxygen into the other donor".
+    Serbest aldehit, BADH'nin tukettigi KENDILIGINDEN denge formudur;
+    dehidratasyon bu enzimin katalizledigi bir adim DEGIL.
+
+    (c) DUZELTMELER: uc CMO tipinde `oxygen_fate` -> `product` (BRENDA
+    gerekcesiyle), `product_en` -> "betaine aldehyde hydrate (in equilibrium
+    with betaine aldehyde)". Dayanagi curuyen iki sey de GERI ALINDI:
+    `no_net_gain` degeri sozlukten ve koddan kaldirildi (uyesi kalmadi;
+    uyesi olmayan ve gerekcesi curuyen bir kategori kullanilmaktan cok yanlis
+    kullanilir) ve `hydroxylation`'a acilan `overridable` izni kaldirildi.
+    Site metni, tablo etiketi ve sablon dali da temizlendi; eski iki degerden
+    hicbir iz kalmadi (dogrulandi).
+
+    (d) YENI SUTUN: `o2_role`, oksijen kaderinden TURETILIR, ayri kurasyon
+    gerektirmez. donor 72 | oxidant_only 3 | unknown 1. Kullanicinin
+    "hangileri yukseltgen onu da belirtelim" istegi: okuyucu artik iki degeri
+    kafasinda birlestirmek zorunda degil, `/clusters` tablosunda "O2 role"
+    facet'iyle dogrudan suzuyor. Tablo 18 sutun, basliklar ve hucreler 18/18
+    hizali, "oxidant only" 3 satir.
+
+    (e) YALNIZCA YUKSELTGEN OLAN UC TIP: RedG (C-C bagi kurma), Nvd ve DAF36
+    (desaturasyon). Ucu de biyosentetik. CMO artik bu kumede DEGIL.
+
+    (f) DERS, madde 80'de yazilanin duzeltilmis hali: formul dengesi ile atom
+    izlemesi ayri seylerdir -- AMA once hangi molekulun URUN oldugu
+    dogrulanmalidir. Yanlis urunle yapilan denge iki kez yanlis sonuc verdi ve
+    ikisi de "olculdu" gibi gorundu. Bir sonraki oksijen kaderi karari
+    verilirken ilk is EC kaydindaki reaksiyon denklemine bakmak olmali.
+
 80. **CMO'NUN OKSIJEN KADERI FAZLA IDDIAYDI -- degeri ve adi duzeltildi
     (2026-10-28).** Kullanici "CmoS'ta yukseltgen degil mi" diye ikinci kez
     sorunca kendi degerimi sinadim ve HATALI buldum.

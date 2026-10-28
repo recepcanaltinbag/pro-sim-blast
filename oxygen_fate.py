@@ -15,19 +15,16 @@ import os
 import yaml
 
 VOCAB_FILE = "reaction_classes.yaml"
-# no_net_gain: bir oksijen SOKULUR ama urun oksijen KAZANMAZ. CMO bunun
-# ornegi: kolin C5H14NO+ -> betain aldehit C5H12NO+, yani -2H ve sifir O.
-#
-# ADI 2026-10-28'DE DEGISTI: once "transient" denmisti ve gerekcesinde "urun
-# o oksijeni hic tutmuyor" yaziliyordu. BU FAZLA IDDIAYDI. Formul dengesi
-# oksijen SAYISINI soyler, hangi ATOM oldugunu soylemez. Kolinde hidroksillenen
-# karbon ZATEN bir OH tasiyor; oraya oksijen sokulunca ayni karbonda iki
-# esdeger OH olan bir gem-diol cikar ve su kaybinda hangisinin gittigi
-# belirsizdir -- O2'den gelen atom uronde kalmis da olabilir. Bunu yalnizca
-# 18O2 isaretlemesi cozer ve elimizdeki kaynaklarin hicbirinde yok.
-# Deger artik yalnizca DESTEKLENEN seyi iddia ediyor: net kazanc sifir.
-FATES = ("product", "leaving_group", "no_net_gain", "oxidant_only",
-         "unknown")
+# 2026-10-28: burada bir sure "transient", sonra "no_net_gain" diye bir deger
+# duruyordu ve kolin monooksijenaz icin kuruldu. IKISI DE YANLISTI ve ikisi de
+# ayni hatadan geliyordu: denge, enzimin BIRAKTIGI urunden degil, onun
+# dehidratlanmis denge formundan (serbest betain aldehit) hesaplanmisti. BRENDA
+# EC 1.14.15.7'nin reaksiyonu "choline + O2 + 2 reduced ferredoxin + 2 H+ =
+# betaine aldehyde HYDRATE + H2O" diyor; bu, kolin C5H14NO+ + O2 -> hidrat
+# C5H14NO2+ + H2O olarak dengelenir, yani bir oksijen URUNE girer. Deger
+# kaldirildi: uyesi olmayan ve gerekcesi curuyen bir kategori, kullanilmaktan
+# cok yanlis kullanilir.
+FATES = ("product", "leaving_group", "oxidant_only", "unknown")
 
 # Filtrede ne gosterilecegi: oksijen AKTARAN enzimler bu ikisidir.
 # Urune oksijen KAZANDIRAN enzimler. no_net_gain buraya girmez: bir oksijen
@@ -74,9 +71,21 @@ def transfers_oxygen(fate):
     return fate in TRANSFERRING
 
 
+# O2'NIN ROLU -- oksijen kaderinden TURETILIR, ayri kurasyon gerektirmez.
+#   donor        : O2 hem yukseltgen hem oksijen VERICISI; bir urun oksijen
+#                  kazaniyor (product, leaving_group)
+#   oxidant_only : O2 YALNIZCA yukseltgen; hicbir urun oksijen kazanmiyor.
+O2_ROLE = {"product": "donor", "leaving_group": "donor",
+           "oxidant_only": "oxidant_only", "unknown": "unknown"}
+
+
+def o2_role(fate):
+    return O2_ROLE.get(fate, "unknown")
+
+
 OUT_FILE = "oxygen_fate.csv"
-OUT_FIELDS = ["cluster", "reaction_class", "oxygen_fate", "resolved_from",
-              "basis"]
+OUT_FIELDS = ["cluster", "reaction_class", "oxygen_fate", "o2_role",
+              "resolved_from", "basis"]
 
 
 def table(root="."):
@@ -96,7 +105,8 @@ def table(root="."):
             basis = (cls or {}).get("evidence", "")
         rows.append({"cluster": m.get("cluster"),
                      "reaction_class": m.get("reaction_class"),
-                     "oxygen_fate": fate, "resolved_from": src,
+                     "oxygen_fate": fate, "o2_role": o2_role(fate),
+                     "resolved_from": src,
                      "basis": " ".join(str(basis).split())})
     return rows
 
@@ -124,6 +134,9 @@ def main():
             print(f"  [dikkat] {m.get('cluster')}: {src}")
     print("oksijen kaderi:", dict(counts))
     print("cozum kaynagi :", dict(srcs))
+    import collections as _c
+    print("O2 rolu:", dict(_c.Counter(o2_role(r["oxygen_fate"])
+                                      for r in table(a.root))))
     n = sum(v for k, v in counts.items() if transfers_oxygen(k))
     print(f"oksijen AKTARAN: {n} | aktarmayan: {counts['oxidant_only']} | "
           f"bilinmeyen: {counts['unknown']}")

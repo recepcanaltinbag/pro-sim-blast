@@ -15,6 +15,9 @@
     {#  Oksijen kaderi: ailede urune hic oksijen sokmayan uyeler var, o yuzden
         "dioksijenaz" diye suzmek yetmiyor. Sutun facet, yani filtrelenebilir. #}
     <th data-facet="O&#8322; fate">O&#8322; ends up</th>
+    {#  O2'nin rolu: "hangileri yalnizca yukseltgen" sorusu dogrudan
+        suzulebilsin. Kaderden turetilir, ayri kurasyon yok.             #}
+    <th data-facet="O&#8322; role">O&#8322; role</th>
     {#  Metabolik rol: biyodegradasyona odaklanan okur bu facet ile suzer.
         Oksijen kaderinden AYRI bir eksen -- birini otekinin yerine kullanmak
         yanlis tipleri eler.                                               #}
@@ -44,6 +47,7 @@
     <td class="small">{{ (c.family or 'unknown').replace('_', ' ') }}</td>
     <td class="small">{{ (c.reaction_class or 'unknown').replace('_', ' ') }}</td>
     <td class="small"{% if c.oxygen_fate_basis %} title="{{ c.oxygen_fate_basis }}"{% endif %}>{{ c.oxygen_fate_label or 'unknown' }}</td>
+    <td class="small">{{ c.o2_role_label or 'unknown' }}</td>
     <td class="small"{% if c.metabolic_role_basis %} title="{{ c.metabolic_role_basis }}"{% endif %}>{{ c.metabolic_role_label or 'unknown' }}</td>
     <td>{{ c.confidence or '–' }}</td>
     <td class="num" data-v="{{ c.n }}">{% if c.n %}{{ c.n|fmt }}{% else %}<span class="verdict verdict--none">0</span>{% endif %}</td>

@@ -3,7 +3,7 @@ gene: CmoS
 group: 5
 substrate_en: choline
 substrate_smiles: C[N+](C)(C)CCO
-product_en: betaine aldehyde
+product_en: betaine aldehyde hydrate (in equilibrium with betaine aldehyde)
 reaction: hydroxylation of the choline hydroxymethyl carbon
 reaction_class: hydroxylation
 family: quaternary_amines
@@ -11,7 +11,7 @@ pdb:
 source: established literature on the reference enzyme, no individual citation recorded
 source_kind: general
 curation_confidence: high
-notes: the plant chloroplast enzyme of osmolyte synthesis; 37 % of this type's members are plant proteins
+notes: 'the plant chloroplast enzyme of osmolyte synthesis; 37 % of this type''''s members are plant proteins PRODUCT CORRECTED 2026-10-28: the enzymatic product is betaine aldehyde HYDRATE (the gem-diol), in spontaneous equilibrium with the free aldehyde that the next enzyme (BADH) consumes. Dehydration is an equilibrium, not a step this enzyme catalyses.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:
@@ -23,6 +23,6 @@ accession_evidence: 'reviewed (Swiss-Prot), proteinExistence "Evidence at protei
 accession_organism: 'Spinacia oleracea (spinach)'
 metabolic_role: biosynthetic
 metabolic_role_basis: 'choline -> betaine aldehyde: the first step of glycine betaine SYNTHESIS, an osmoprotectant the plant makes. The opposite direction from BmoA and GbcA, which degrade glycine betaine.'
-oxygen_fate: no_net_gain
-oxygen_fate_basis: 'no NET oxygen is gained: choline C5H14NO+ -> betaine aldehyde C5H12NO+ is a loss of two hydrogens with no change in oxygen count (PubChem CID 305 -> 249). This enzyme is a genuine Rieske-type MONOOXYGENASE and an oxygen atom is inserted; what is NOT established is whether that particular atom stays in the product. The carbon being hydroxylated already carries a hydroxyl, so the insertion gives a gem-diol whose two hydroxyls sit on the same carbon and are equivalent, and either can leave on dehydration. Only 18O2 labelling could resolve it, and none of the sources held here reports it. The value therefore claims only the net count, not the fate of the atom.'
+oxygen_fate: product
+oxygen_fate_basis: 'one oxygen atom from O2 IS incorporated into the product. BRENDA gives the reaction of EC 1.14.15.7 as ''choline + O2 + 2 reduced ferredoxin + 2 H+ = betaine aldehyde HYDRATE + H2O + 2 oxidized ferredoxin'', and that balances as choline C5H14NO+ + O2 -> hydrate C5H14NO2+ + H2O: one oxygen into the product, one into water, the ordinary monooxygenase stoichiometry. EC class 1.14.15 is defined as ''incorporation of one atom of oxygen into the other donor''. The free aldehyde C5H12NO+ is the DEHYDRATED equilibrium form, not what the enzyme releases; computing the balance from it gives a loss of two hydrogens and no oxygen gain, which is how this field was twice recorded wrongly before the reaction was checked against BRENDA on 2026-10-28.'
 sequence: MMAASASATTMLLKYPTTVCGIPNPSSNNNNDPSNNIVSIPQNTTNPTLKSRTPNKITTNAVAAPSFPSLTTTTPSSIQSLVHEFDPQIPPEDAHTPPSSWYTEPAFYSHELERIFYKGWQVAGISDQIKEPNQYFTGSLGNVEYLVSRDGEGKVHAFHNVCTHRASILACGSGKKSCFVCPYHGWVYGMDGSLAKASKAKPEQNLDPKELGLVPLKVAVWGPFVLISLDRSLEEGGDVGTEWLGTSAEDVKAHAFDPSLQFIHRSEFPMESNWKIFSDNYLDSSYHVPYAHKYYATELNFDTYDTQMIENVTIQRVEGSSNKPDGFDRVGIQAFYAFAYPNFAVERYGPWMTTMHIHPLGPRKCKLVVDYYIENSMLDDKDYIEKGIAINDNVQREDVVLCESVQRGLETPAYRSGRYVMPIEKGIHHFHCWLQQTLK
