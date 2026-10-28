@@ -5,6 +5,60 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+79. **"PROTEIN DIZISI YETER MI" SORUSUNUN CEVABI: KISMEN -- ve sinir yaziya
+    gecirildi (2026-10-28).** Kullanici yeni bir RO bulan birinin bizim
+    semayla oksijen kaderini, tipi ve rolu cikarabilecegini sordu.
+
+    (a) DIZI SU SORUYA YETER: "bu bir Rieske oksijenaz mi". Cunku bu bir
+    KOFAKTOR iddiasidir ve kofaktor ligandlari dizide okunabilir: Rieske 4/4
+    (`C-x-H...C-x-x-H`) + mononukleer histidinler. Kapi tam bunu yapiyor.
+
+    (b) DIZI SU IKISINE YETMEZ: `oxygen_fate` ve `metabolic_role`. Ikisi de
+    REAKSIYON hakkinda olgudur; substrat ve URUN bilinmeden belirlenemez.
+    Bizim degerlerimiz 76 REFERANS TIPI icin kuratorlu -- substrati ve urunu
+    bilinen enzimler icin -- ve 19.114 uye icin OLCULMUS DEGILDIR.
+
+    (c) CIKARIM NE KADAR TASIR: OLCULDU. En yakin karakterize referansa
+    kimlik, tier'lara gore:
+      characterized   369 uye  ort. %98,8
+      close_homolog  4.601 uye ort. %74,9
+      family_member  3.480 uye ort. %49,0
+      distant       10.376 uye ort. %32,2
+      novel            288 uye ort. %24,1
+    **19.114 uyenin 10.664'u (%55,8) herhangi bir karakterize referansa
+    %40'in ALTINDA benziyor.** %32 kimlikte substrat cikarilamaz, oksijenin
+    nereye gittigi hic cikarilamaz. Yani veritabaninin yarisindan fazlasi icin
+    dizi bu iki eksen hakkinda HICBIR SEY soylemiyor.
+
+    (d) BU YUZDEN TASARIM KURALI: iki eksen YALNIZCA TIP SEVIYESINDE
+    gosterilir. Dogrulandi: `ro.html` (uye sayfasi) ve `leaf.html` (varyant
+    sayfasi) ikisini de HIC tasimiyor; yalnizca `_cluster_table.html` (tip
+    listesi) ve `cluster.html` (tip sayfasi) tasiyor. Bir uye icin
+    gosterilecek olursa "CIKARIM" olarak ve en yakin referansa kimlikle
+    birlikte etiketlenmek ZORUNDADIR; aksi halde olculmemis bir sey iddia
+    edilmis olur.
+
+    (e) LITERATUR, bu tiplerin aileye ait oldugunu DOGRULUYOR (kullanicinin
+    "literature gore hangileri olmali" sorusu). Miao & Schmidt 2025
+    (`miao2025_perspective`, elimizdeki PDF) ailenin repertuvarini sayiyor:
+    "dioxygenation, monooxygenation, oxidative N- and O-dealkylation,
+    desaturation, sulfoxidation, C-C bond formation, N-oxygenation, and C-N
+    bond cleavage". Sekil 1 enzimleri ADIYLA aniyor: DAF-36/Neverland (Nvd)
+    -- metinde birebir "catalyzed by Rieske oxygenase DAF-36/Neverland" --,
+    RedG (undesilprodigiosin karbosiklizasyonu), PrnD (N-oksijenasyon), CntA
+    (C-N kirilmasi), DMO (bizim DdmC) ve NdmA. Yani Nvd, DAF36, RedG, PrnD ve
+    CntA bizim genislemelerimiz DEGIL, derlemenin kendi kapsami. Madde 76'daki
+    kabul karari literaturle uyumlu.
+    NOT: derlemede sulfoksidasyon NDO'nun yan aktivitesi olarak geciyor ve
+    bizim `reaction_class` sozlugunde KARSILIGI YOK; sema tip basina TEK
+    reaksiyon tutuyor, yani yan aktiviteler kaydedilemiyor. Bu, semanin
+    bilinen bir siniri.
+
+    (f) KUCUK TUTARSIZLIK: `citations.yaml` icindeki `local_pdf: articles/...`
+    yollari depo kokunden COZULMUYOR -- PDF'ler bir ust dizinde
+    (`/home/lin-bio/RieskeDB/articles/`). Yol ya duzeltilmeli ya da neye gore
+    oldugu yazilmali.
+
 78. **"BIYODEGRADASYON YAPMAYANLARI ELEME" ISTEGI: OLCUT DEGISTIRILDI, HICBIR
     TIP SILINMEDI (2026-10-28).** Kullanici oksijen aktarmayan uyeleri suzmek
     istedi. Istek dogru, ilk onerilen olcut YANLIS eksendi.
