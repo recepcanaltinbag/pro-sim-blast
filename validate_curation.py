@@ -578,6 +578,61 @@ def check_reference_set(rep, refs_path, pairs_path, eco, chem, con):
               severity="WARN")
 
 
+def check_metabolic_role(rep, root):
+    """Her tipin metabolik rolu cozulebiliyor mu ve tablo taze mi?
+
+    NEDEN AYRI BIR EKSEN. Biyodegradasyon odagi icin "oksijen urune giriyor
+    mu" olcutu YANLIS: SxtT ve PrnD oksijeni urune sokar ama biyosentetiktir,
+    vanillat/kafein demetilazlarinda oksijen kopan formaldehite gider ama
+    bunlar klasik biyodegradasyondur. Birini otekinin yerine kullanmak yanlis
+    tipleri eler.
+
+    Rol, enzimin RIESKE OLUP OLMADIGI hakkinda hicbir sey soylemez.
+    """
+    try:
+        sys.path.insert(0, root)
+        import metabolic_role as mr                     # noqa: PLC0415
+    except Exception as exc:                            # noqa: BLE001
+        rep.check("metabolic role: module usable", False, 1, str(exc))
+        return
+    rows = mr.table(root)
+    bad = sorted(r["cluster"] for r in rows if r["resolved_from"] in
+                 ("missing_declaration", "no_rule", "type_overrides_default"))
+    rep.check("metabolic role: every type resolves to a role",
+              not bad, len(bad),
+              f"{sum(1 for r in rows if r['resolved_from'] == 'type')} declared "
+              f"by the type, {sum(1 for r in rows if r['resolved_from'] == 'substrate_class')} "
+              f"from the substrate class" if not bad else first(bad))
+    bad_val = sorted(r["cluster"] for r in rows
+                     if r["metabolic_role"] not in mr.ROLES)
+    rep.check("metabolic role: every value is from the vocabulary",
+              not bad_val, len(bad_val),
+              "/".join(mr.ROLES) if not bad_val else first(bad_val))
+    leaks = []
+    for r in rows:
+        hits = turkish_hits(r.get("basis") or "")
+        if hits:
+            leaks.append(f"{r['cluster']}: {', '.join(sorted(hits))}")
+    rep.check("metabolic role: the published basis text carries no Turkish",
+              not leaks, len(leaks),
+              f"{len(rows)} basis strings checked" if not leaks
+              else first(leaks, 4))
+    path = os.path.join(root, mr.OUT_FILE)
+    if not os.path.exists(path):
+        rep.check("metabolic role: derived table exists", True, 0,
+                  f"{mr.OUT_FILE} not written yet", severity="WARN")
+    else:
+        with open(path) as fh:
+            disk = list(csv.DictReader(fh))
+        by = {r["cluster"]: r for r in rows}
+        stale = [r["cluster"] for r in disk
+                 if by.get(r["cluster"], {}).get("metabolic_role")
+                 != r["metabolic_role"]]
+        rep.check("freshness: the derived metabolic-role table matches types/",
+                  not stale, len(stale),
+                  f"{len(disk)} rows agree" if not stale else first(stale, 4))
+
+
 def check_oxygen_fate(rep, root, chem):
     """O2 oksijeninin kaderi her tip icin COZULEBILIYOR mu, ve turetilmis
     tablo TAZE mi?
@@ -1436,6 +1491,7 @@ def main():
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)
+    check_metabolic_role(rep, ROOT)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
     con.text_factory = str

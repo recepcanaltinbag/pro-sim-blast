@@ -1,0 +1,36 @@
+# METABOLIK ROL -- katabolik mi, biyosentetik mi.
+#
+# NEDEN BU DOSYA VAR. Kullanici biyodegradasyon yapmayan uyeleri suzmek istedi
+# ve ilk akla gelen olcut "oksijen urune giriyor mu" idi. O olcut YANLIS eksen:
+#   * SxtT, GxtA, PrnD, CAO oksijeni urune sokar ama biyodegradasyon YAPMAZ
+#     (saksitoksin tailoring, pirrolnitrin biyosentezi, klorofil b sentezi) --
+#     oksijen kaderine gore suzulse KALIRLARDI;
+#   * vanillat, guaiakol, dikamba, kafein ve 2,4-D demetilasyonlarinda oksijen
+#     urune degil kopan formaldehite girer, ama bunlar klasik biyodegradasyon --
+#     oksijen kaderine gore suzulse SILINIRLERDI (13 tip).
+# Iki eksen DIKTIR. Bu dosya ikincisini tanimlar.
+#
+# DEGERLER
+#   catabolic    : enzim bir bilesigi YIKAN yolun parcasi
+#   biosynthetic : enzim bir ozel metaboliti YAPAN yolun parcasi
+#   unknown      : belirlenmedi -- tahmin YAZILMAZ
+#
+# VARSAYILAN KURAL. cluster_ecology.csv'deki substrate_class zaten bir ayrim
+# tasiyor ve iki sinifi icin rol tek anlamlidir:
+#   xenobiotic       -> catabolic (insan yapimi bilesigin yikimi)
+#   natural_aromatic -> catabolic (lignin turevi aromatiklerin yikimi)
+# ucuncu sinif icin kural YOKTUR: natural_specialized hem katabolik hem
+# biyosentetik enzim barindirir (ayni kimyanin iki yonu: CmoS koli betain
+# aldehide YAPAR, BmoA glisin betaini YIKAR). O yuzden o siniftaki her tip
+# kendi `metabolic_role` alanini beyan ETMEK ZORUNDADIR.
+
+defaults_by_substrate_class:
+  xenobiotic: catabolic
+  natural_aromatic: catabolic
+  natural_specialized: per_type
+
+# Filtrede ne gosterilecegi -- yayimlanan etiketler Ingilizce.
+labels:
+  catabolic: "catabolic (degradation)"
+  biosynthetic: "biosynthetic"
+  unknown: "unknown"

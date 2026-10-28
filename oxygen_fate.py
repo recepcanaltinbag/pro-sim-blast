@@ -15,9 +15,18 @@ import os
 import yaml
 
 VOCAB_FILE = "reaction_classes.yaml"
-FATES = ("product", "leaving_group", "oxidant_only", "unknown")
+# transient: oksijen gercekten sokulur ama urunde KALMAZ. CMO bunun ornegi:
+# kolin hidroksillenip gem-diol olusur, ara urun su kaybeder ve betain
+# aldehit cikar -- kolin C5H14NO+ -> betain aldehit C5H12NO+, yani -2H ve
+# sifir O. "hydroxylation" sinifinin varsayilani product'tir ve CMO icin
+# YANLISTI; deger kullanicinin "CmoS icin Rieske diyorlar ama" sorusu
+# uzerine formulle kontrol edilince bulundu.
+FATES = ("product", "leaving_group", "transient", "oxidant_only",
+         "unknown")
 
 # Filtrede ne gosterilecegi: oksijen AKTARAN enzimler bu ikisidir.
+# Oksijeni bir urunde BIRAKAN enzimler. transient buraya girmez: oksijen
+# sokulur ama su olarak geri cikar, yani hicbir uronde bulunmaz.
 TRANSFERRING = ("product", "leaving_group")
 
 
@@ -43,9 +52,15 @@ def resolve(manifest, vocab):
             return declared, "type"
         return "unknown", "missing_declaration"
     if declared:
-        # Sinif homojen oldugu halde tip ayri beyan etmis: celiski olabilir.
+        # Sinif homojen oldugu halde tip ayri beyan etmis. Bu SESSIZCE
+        # gecerli sayilmaz: sozluk o sinif icin `overridable: true` demis VE
+        # tip gerekcesini yazmis olmak zorunda. Aksi halde celiski olarak
+        # bildirilir ve dogrulama bagirir.
         if declared != cls["oxygen_fate"]:
-            return declared, "type_overrides_class"
+            ok = bool(cls.get("overridable")) and bool(
+                str(manifest.get("oxygen_fate_basis") or "").strip())
+            return declared, ("type_override_allowed" if ok
+                              else "type_overrides_class")
         return declared, "type_redundant"
     return cls["oxygen_fate"], "class"
 

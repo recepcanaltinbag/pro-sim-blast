@@ -197,7 +197,16 @@
   {% if ofate %}
   <div class="rxnote rxnote--fate">
     <b>Where the O<sub>2</sub> oxygen ends up:</b> {{ ofate.label }}.
-    {% if not ofate.transfers %}
+    {#  SIRA ONEMLI. `transfers` hem oxidant_only hem transient icin False ve
+        "oksidaz, oksijenaz degil" dali once yazilinca CMO sayfasinda YANLIS
+        metin cikti: CMO gercek bir monooksijenazdir, oksijeni sokar ama urun
+        onu tutmaz. transient bu yuzden EN BASTA elenir.                    #}
+    {% if ofate.fate == 'transient' %}
+    An oxygen atom is genuinely inserted, but the product keeps none of it:
+    the hydroxylated intermediate loses water. The enzyme is a true
+    Rieske-type monooxygenase; this field records where the oxygen ends up,
+    not what the enzyme does.
+    {% elif not ofate.transfers %}
     O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
     mechanistically an oxidase rather than an oxygenase. It is in this database
     because it carries the Rieske cluster and the mononuclear iron site: the

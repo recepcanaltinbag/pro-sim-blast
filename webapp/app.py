@@ -205,6 +205,10 @@ OXYGEN_FATE_PATH = os.environ.get(
 OXYGEN_FATE_LABEL = {
     "product": "into the product",
     "leaving_group": "into the leaving group",
+    # transient: oksijen sokulur ama urunde kalmaz (CMO'nun gem-diolu su
+    # kaybediyor). Deger eklenip bu harita GUNCELLENMEYINCE site "unknown"
+    # gosterdi -- sessiz bir yanlis, cunku deger vardi.
+    "transient": "inserted, then lost as water",
     "oxidant_only": "not incorporated",
     "unknown": "unknown",
 }
@@ -220,6 +224,31 @@ def load_oxygen_fate():
 
 
 OXYGEN_FATE = load_oxygen_fate()
+
+# METABOLIK ROL. Oksijen kaderinden AYRI bir eksen: SxtT ve PrnD oksijeni
+# urune sokar ama biyodegradasyon yapmaz, vanillat/kafein demetilazlarinda ise
+# oksijen kopan formaldehite gider ama bunlar klasik biyodegradasyondur. Rol,
+# enzimin Rieske olup olmadigi hakkinda HICBIR SEY soylemez.
+METABOLIC_ROLE_PATH = os.environ.get(
+    "ROAR_METABOLIC_ROLE", os.path.join(PARENT, "metabolic_role.csv"))
+
+METABOLIC_ROLE_LABEL = {
+    "catabolic": "catabolic (degradation)",
+    "biosynthetic": "biosynthetic",
+    "unknown": "unknown",
+}
+
+
+def load_metabolic_role():
+    rows = {}
+    if os.path.exists(METABOLIC_ROLE_PATH):
+        with open(METABOLIC_ROLE_PATH) as fh:
+            for r in csv.DictReader(fh):
+                rows[r["cluster"]] = r
+    return rows
+
+
+METABOLIC_ROLE = load_metabolic_role()
 
 
 def _oxygen_fate_view(cluster):
@@ -333,12 +362,17 @@ def _cluster_row(d, leaves, euk, genera):
     chem = CHEMISTRY.get(cluster, {})
     d.update(cluster_parts(cluster))
     ofate = OXYGEN_FATE.get(cluster, {})
+    mrole = METABOLIC_ROLE.get(cluster, {})
     d.update({"family": chem.get("family", ""),
               "reaction_class": chem.get("reaction_class", ""),
               "oxygen_fate": ofate.get("oxygen_fate", ""),
               "oxygen_fate_label": OXYGEN_FATE_LABEL.get(
                   ofate.get("oxygen_fate", ""), ""),
               "oxygen_fate_basis": ofate.get("basis", ""),
+              "metabolic_role": mrole.get("metabolic_role", ""),
+              "metabolic_role_label": METABOLIC_ROLE_LABEL.get(
+                  mrole.get("metabolic_role", ""), ""),
+              "metabolic_role_basis": mrole.get("basis", ""),
               "reaction": chem.get("reaction", ""),
               "pdb": chem.get("pdb", ""),
               "substrate": chem.get("substrate_en") or eco.get("substrate", ""),
@@ -541,7 +575,8 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
         return render(request, "cluster.html", c=info, members=rows, total=total, page=page,
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "",
                       chem=CHEMISTRY.get(cluster), x=cluster_extras(con, cluster),
-                      ofate=_oxygen_fate_view(cluster))
+                      ofate=_oxygen_fate_view(cluster),
+                      mrole=METABOLIC_ROLE.get(cluster))
     finally:
         con.close()
 

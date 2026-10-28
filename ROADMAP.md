@@ -5,6 +5,68 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+78. **"BIYODEGRADASYON YAPMAYANLARI ELEME" ISTEGI: OLCUT DEGISTIRILDI, HICBIR
+    TIP SILINMEDI (2026-10-28).** Kullanici oksijen aktarmayan uyeleri suzmek
+    istedi. Istek dogru, ilk onerilen olcut YANLIS eksendi.
+
+    (a) OKSIJEN KADERI, BIYODEGRADASYON ICIN YANLIS EKSEN. Iki yonlu kanit:
+    SxtT, GxtA, PrnD ve CAO oksijeni URUNE sokar ama biyodegradasyon yapmaz
+    (saksitoksin tailoring, pirrolnitrin biyosentezi, klorofil b sentezi) --
+    oksijen kaderine gore suzulse KALIRLARDI. Tersine vanillat, guaiakol,
+    dikamba, kafein ve 2,4-D demetilasyonlarinda oksijen kopan formaldehite
+    gider ama bunlar klasik biyodegradasyondur -- suzulse 13 TIP SILINIRDI.
+    Iki eksen DIKTIR.
+
+    (b) IKINCI EKSEN EKLENDI: `metabolic_role` (catabolic / biosynthetic /
+    unknown), `metabolic_roles.yaml` + `metabolic_role.py` + turetilmis
+    `metabolic_role.csv`, rebuild grafiginde (51 artefakt). Varsayilan kural
+    yalnizca rolun TEK ANLAMLI oldugu substrat siniflari icin var (xenobiotic
+    ve natural_aromatic -> catabolic); `natural_specialized` icin kural YOK ve
+    22 tipin hepsi kendi rolunu gerekcesiyle beyan etti.
+    Sonuc: **catabolic 64, biosynthetic 11, unknown 1 (AerC).**
+    Ogretici karsitlik: CmoS/CmoB/CmoA kolini betain aldehide YAPAR (bitkide
+    ozmoprotektan sentezi, biyosentetik), BmoA/GbcA glisin betaini YIKAR
+    (katabolik) -- ayni kimyanin iki yonu. Ayni sekilde grup 6'da PAO klorofili
+    YIKAR (katabolik) ama CAO ve PTC52 klorofil b YAPAR (biyosentetik).
+
+    (c) HICBIR TIP SILINMEDI, cunku silmek aile taramasini yanlis yapar.
+    Ikisi de `data-facet` ile FILTRELENEBILIR sutun: "O2 ends up" ve "Role".
+    Biyodegradasyon odakli okur Role=catabolic ile suzer.
+
+    (d) KULLANICININ "CmoS icin Rieske diyorlar ama" SORUSU GERCEK BIR HATA
+    BULDURDU. CmoS'un oksijen kaderi `hydroxylation` sinif varsayilanindan
+    `product` geliyordu ve bu YANLISTI: kolin C5H14NO+ -> betain aldehit
+    C5H12NO+, yani -2H ve SIFIR O (PubChem CID 305 -> 249). CMO gercekten
+    hidroksilliyor ama gem-diol ara urunu su kaybediyor, oksijen uronde
+    KALMIYOR. Dorduncu deger eklendi: **transient** -- "oksijen sokulur, sonra
+    su olarak cikar". Sinif varsayilani product kaldi ama `hydroxylation`
+    artik `overridable: true` ve ezme YALNIZCA sozluk izin verdiginde VE tip
+    gerekcesini yazdiginda gecerli; aksi halde celiski olarak FAIL.
+    CmoS Rieske olmaktan cikmiyor: motif kapisini Rieske 4/4 ile geciyor ve
+    `metabolic_role` enzimin Rieske olup olmadigi hakkinda HICBIR SEY soylemez.
+
+    (e) IKI SESSIZ HATA DAHA BULUNDU VE DUZELTILDI, ikisi de "deger eklendi,
+    tuketici guncellenmedi" sinifindan:
+    * `transient` cozucuye eklendi ama app.py'deki etiket haritasina
+      eklenmedi: site degeri olan tipler icin "unknown" gosterdi.
+    * Tip sayfasindaki dal sirasi yanlisti: `transfers` hem oxidant_only hem
+      transient icin False oldugu icin CmoS sayfasinda "mechanistically an
+      oxidase rather than an oxygenase" YAZDI -- oysa CMO bir monooksijenazdir.
+      transient artik en basta eleniyor. RedG'de dogru metin cikiyor.
+
+    (f) DORT YENI KONTROL (kapi 94 -> 98): her tip bir role cozuluyor mu,
+    degerler sozlukten mi, yayimlanan gerekce metninde Turkce var mi, tablo
+    taze mi. Hepsi gecti.
+
+    (g) HOCAYA VERILECEK GEREKCE. Hoca PAO/RedG icin "oksidatif bir
+    biyotransformasyon, kesin yukseltgen" dedi. Sonuc dogru, gerekce eksik: o
+    olcut P450'leri, flavin monooksijenazlari ve bakir oksidazlari da iceri
+    alir. Savunulabilir gerekce KOFAKTOR CIFTIDIR -- sekiz adayin hepsi motif
+    kapisini NahAc ve PDO ile birebir ayni profille geciyor (madde 76). Yaninda
+    iki kayit: RedG/Nvd/DAF36'da urune oksijen girmiyor (formuller), ve
+    katalitik triad'in ucuncu ayagi yayimlanmiyor cunku karboksilat kolonu
+    26/26 yapida yanlis (madde 73).
+
 77. **OKSIJENIN KADERI ARTIK BIR ALAN VE BIR FILTRE (2026-10-28).** Kullanici,
     urune oksijen sokmayan uyeler bulununca "bunu filtreye eklemek gerekir,
     biz oksijen aktaranlara odakleniyoruz" dedi. Dogru teshis: "dioksijenaz"

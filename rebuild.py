@@ -80,6 +80,13 @@ ARTEFACTS = [
     ("oxygen_fate", ["oxygen_fate.csv"],
      ["python3", "oxygen_fate.py", "--write"],
      ["oxygen_fate.py", "reaction_classes.yaml", "types"], False),
+    # metabolic_role: types/ + metabolic_roles.yaml + cluster_ecology.csv ->
+    # metabolic_role.csv. Ekoloji dosyasi GIRDIDIR cunku varsayilan kural
+    # substrate_class'a bakiyor; o dosya degisirse rol yeniden cozulmelidir.
+    ("metabolic_role", ["metabolic_role.csv"],
+     ["python3", "metabolic_role.py", "--write"],
+     ["metabolic_role.py", "metabolic_roles.yaml", "types",
+      "cluster_ecology.csv"], False),
     ("protein_filter", ["ro_alpha.csv", "ro_alpha.fasta", "ro_domtbl.out"],
      ["python3", "run_ro_filter.py", "--fasta", "combined_pfam.fasta",
       "--hmm", "RieskeDB71.hmm"],
