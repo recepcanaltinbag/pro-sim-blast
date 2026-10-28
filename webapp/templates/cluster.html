@@ -398,8 +398,30 @@
 {% if x.canonical_svg %}
 <figure class="fig">
 {{ x.canonical_svg|safe }}
-<figcaption><b>Canonical arrangement for this type:</b> the most frequent operon gene order,
-preceded by the architecture seen in most of its members
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference{% if x.layout_basis == 'all' %} &mdash; or, here, among all members, because too few
+resemble it closely enough to count{% endif %}
+{% if x.layout_share %}&mdash; {{ '%.0f' % x.layout_share }} %
+({{ x.layout_n }} of {{ x.layout_total }}){% endif %}.</b>
+{% if x.layout_basis == 'close' %}
+Members are assigned by profile score, and most of them are distant: counting all of them would
+describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+family-member level are counted here.
+{% endif %}
+{% if x.layout_share and x.layout_share < 50 %}
+<b>This is a plurality, not a typical case:</b> the other
+{{ '%.0f' % (100 - x.layout_share) }} % are spread over
+{{ x.layout_distinct - 1 }} further arrangements, so the figure shows the commonest order rather
+than the order of this type.
+{% endif %}
+{% if x.layout_alpha_only %}
+The commonest order holds the alpha subunit alone, which means that in most members no other gene
+lies on the same strand within 150 base pairs &mdash; not that this enzyme has no partners
+anywhere. Genes beyond that distance, and genes on the opposite strand such as a divergent
+regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
+pages and in the sections above.
+{% endif %}
+Preceded by the architecture seen in most of its members
 ({{ x.canonical_arch.replace('_', ' ') }}) and the median length of the intergenic region in which
 the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
 one regulatory site can control both.</figcaption>

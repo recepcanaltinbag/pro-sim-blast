@@ -1669,17 +1669,51 @@ def cluster_extras(con, cluster):
     x["carboxylate"] = carbox
     reg_rows = {r["cluster"]: r for r in atlas.read_csv(apath("regulation_by_cluster.csv"))}
     x["reg_row"] = reg_rows.get(cluster)
-    top_layout = con.execute(
-        "SELECT o.layout FROM operon o JOIN ro r USING(candidate_id) "
-        "WHERE r.is_confirmed=1 AND r.ro_cluster=? GROUP BY o.layout "
-        "ORDER BY COUNT(*) DESC LIMIT 1", (cluster,)).fetchone()
+    # En sik operon dizilişi -- REFERANSA BENZEYEN uyeler uzerinden.
+    #
+    # NEDEN KISITLI. Bir tipin uyeleri profile gore atanir ve cogu UZAK olur:
+    # qxyA'nin 164 uyesinden 104'u referansa %25-38 kimlikte. Onlarin operonu
+    # "bu enzimin operonu" degil. Butun uyeler alindiginda qxyA'nin en sik
+    # dizilişi [alpha] ve payi 60/164 (%37) -- cogunluk bile degil. Yalnizca
+    # referansa benzeyenler alindiginda ayni diziliş 51/53 (%96) cikiyor, yani
+    # ifade hem dogru hem anlamli hale geliyor. Butun tiplerde olculdu
+    # (2026-10-28): ortalama mod payi %25 -> %33, gercek cogunluk saglayan tip
+    # 5 -> 9 (57 tip icinde). Kullanici bunu istedi.
+    #
+    # Yakin uye sayisi cok azsa butun uyelere DUSULUR ve sayfa hangi temele
+    # dayandigini SOYLER; sessizce taban degistirmek daha kotu olurdu.
+    CLOSE = ("characterized", "close_homolog", "family_member")
+    def _layout_rows(close_only):
+        q = ("SELECT o.layout, COUNT(*) n FROM operon o JOIN ro r USING(candidate_id) "
+             + ("JOIN ro_evidence e USING(candidate_id) " if close_only else "")
+             + "WHERE r.is_confirmed=1 AND r.ro_cluster=? "
+             + ("AND e.tier IN ('characterized','close_homolog','family_member') "
+                if close_only else "")
+             + "GROUP BY o.layout ORDER BY n DESC")
+        return con.execute(q, (cluster,)).fetchall()
+
+    MIN_CLOSE = 5
+    rows = _layout_rows(True)
+    total = sum(r["n"] for r in rows)
+    x["layout_basis"] = "close"
+    if total < MIN_CLOSE:
+        rows = _layout_rows(False)
+        total = sum(r["n"] for r in rows)
+        x["layout_basis"] = "all"
+    top_layout = rows[0] if rows else None
+    x["layout_total"] = total
+    x["layout_distinct"] = len(rows)
+    if top_layout:
+        x["layout_n"] = top_layout["n"]
+        x["layout_share"] = 100.0 * top_layout["n"] / total if total else 0
+        x["layout_alpha_only"] = top_layout["layout"] == "[alpha]"
     if top_layout and x["reg_row"]:
         row = x["reg_row"]
         dominant = max(("divergent_regulator", "codirectional_regulator", "divergent_other",
                         "codirectional_other", "unknown"),
                        key=lambda k: int(row.get(k) or 0))
         x["canonical_arch"] = dominant
-        x["canonical_svg"] = atlas.operon_regulator_svg(top_layout[0], {
+        x["canonical_svg"] = atlas.operon_regulator_svg(top_layout["layout"], {
             "architecture": dominant,
             "upstream_family": row.get("top_regulator_family") or "",
             "intergenic_bp": int(row["median_intergenic_bp"]) if row.get("median_intergenic_bp") else None,
