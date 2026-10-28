@@ -272,10 +272,24 @@ structures. The two mononuclear histidine columns pass as well — for the phtha
 they give His181 and His186, exactly the residues that coordinate the iron in the crystal, at 2.01
 and 1.94 Å. So membership requiring two of the three iron ligands is no longer a tolerance for
 alignment shift but a necessity: the third ligand is not something a fixed column can report.
-A structurally interesting detail falls out of the bridging audit. In the quaternary-amine branch
-the position is not aspartate — carnitine oxygenase has Glu205 and the stachydrine demethylase has
-Cys202 — and both occupy the <i>same</i> site, 6.9 and 6.0 Å from their own iron. The substitution
-is at the electron-transfer bridge itself, not somewhere incidental.</p>
+The measurement also reproduces a known number, which is the best check that it is reading the
+right thing: in the structures that hold only one subunit the nearest Rieske cluster comes out
+44–48 Å away, and the distance from the iron to its own subunit's Rieske centre is reported as
+43.5 Å, against 12 Å across the subunit junction. The bridge reaches the neighbour, not its own
+cluster.</p>
+
+<p class="note"><b>An open question, not a result.</b> In the quaternary-amine branch this
+position is not aspartate: carnitine oxygenase has Glu205 and the stachydrine demethylase has
+Cys202. Neither is a Rieske ligand — the cluster in both structures is held by the usual
+Cys86/Cys106/His88/His109, and these residues sit 46 and 48 Å from it — and both are 6.9 and
+6.0 Å from their own mononuclear iron, the same distance the verified bridging Asp205 of
+naphthalene dioxygenase sits at. So they occupy the equivalent position. Whether they do the
+equivalent job cannot be concluded here, for two reasons. Both structures contain a single
+subunit, so the neighbouring cluster the bridge would reach is simply absent from the file. And
+replacing Asp205 with glutamate in naphthalene dioxygenase <i>abolishes</i> the route to the
+active-site iron while leaving the NADH-to-Rieske step intact, so a naturally occurring glutamate
+at the equivalent position is a puzzle rather than a confirmation. Resolving it needs a structure
+of one of these enzymes with the oligomer intact.</p>
 
 {% set glu = brg.glu_clusters|selectattr('n', 'ge', 20)|list %}
 {% if glu %}

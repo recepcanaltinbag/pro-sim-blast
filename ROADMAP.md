@@ -5,6 +5,41 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+86. **KULLANICININ ITIRAZI DOGRU BIR SORUYDU VE YAYIMLANAN CUMLEYI DUZELTTI
+    (2026-10-28).** Kullanici "C202'nin kopru olduguna emin misin, sistein
+    sanki Rieske merkezde demir-sulfuru tutan kalinti" dedi. Itiraz yerinde:
+    sistein klasik bir Rieske ligandi (merkez 2 Cys + 2 His). Yapidan olculdu.
+
+    (a) ITIRAZ CURUTULDU, ama olcumle. 3VCA'da Rieske kumesini tutan
+    kalintilar **Cys86, Cys106, His88, His109** (2,33 / 2,36 / 2,16 / 2,17 A)
+    ve C202 kumeden **47,97 A** uzakta; bir ligand ~2,3 A olurdu. CntA
+    E205 icin ayni tablo (46,46 A). Yani ikisi de Rieske ligandi DEGIL.
+
+    (b) YONTEM BAGIMSIZ OLARAK DOGRULANDI. Tek alt birimli yapilarda
+    olctugum 44-48 A, literaturun bildirdigi "demirden KENDI alt biriminin
+    Rieske merkezine 43,5 A, alt birim birlesimi uzerinden 12 A" degerleriyle
+    ortusuyor. Yani o buyuk sayilar artefakt degil, bilinen ic mesafe; kopru
+    komsuya uzaniyor, kendi kumesine degil.
+
+    (c) AMA BENIM YAYIMLADIGIM CUMLE FAZLA IDDIAYDI. "Ikame elektron transfer
+    koprusunun tam kendisinde" demisim. Olculen sey yalnizca POZISYON
+    esdegerligi: ikisi de kendi demirinden 6,9 ve 6,0 A uzakta, yani
+    dogrulanmis Asp205 ile ayni mesafede. Kopru ISLEVINI yaptiklari
+    SONUCLANAMAZ, iki sebeple:
+      * Iki yapi da TEK alt birim iceriyor, yani koprunun uzanacagi komsu
+        kume dosyada YOK.
+      * Parales 1999, NDO'da Asp205'i Glu ile degistirdiginde aktif bolge
+        demirine giden yol KAYBOLUYOR, NADH->Rieske adimi duruyor. Yani
+        glutamat NDO'da bu isi YAPMIYOR. Dogal olarak glutamat tasiyan bir
+        enzim bu yuzden bir DOGRULAMA degil, bir BILMECE.
+    On sayfa buna gore yeniden yazildi ve bolum "An open question, not a
+    result" diye etiketlendi. Cozum, bu enzimlerden birinin oligomeri saglam
+    bir yapisini gerektiriyor.
+
+    (d) LITERATUR CAPASI: Kauppi et al. 1998 (yapi, Asp205 kendi alt
+    biriminde His208'e ve komsu alt birimde Rieske ligandi His104'e hidrojen
+    bagli) ve Parales et al. 1999 (mutagenez, J Bacteriol 181:1831).
+
 85. **KOPRU KARBOKSILAT KOLONU YAPIYA KARSI DOGRULANDI VE GECTI -- katalitik
     kolonun tam ziddi (2026-10-28).** Kullanici "kopru karboksilati elektron
     tasimasiyla ilgili aslinda, belki ilginc sonuc verebilir" dedi. Dogru
