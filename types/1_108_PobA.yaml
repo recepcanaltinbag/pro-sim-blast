@@ -1,17 +1,17 @@
 cluster: 1_108_PobA
 gene: PobA
 group: 1
-substrate_en: 4-hydroxybenzoate
-substrate_smiles: OC(=O)c1ccc(O)cc1
-product_en: protocatechuate
-reaction: ring hydroxylation next to the existing hydroxyl
-reaction_class: hydroxylation
-family: aromatic_acids
+substrate_en: '4-carboxydiphenyl ether (phenoxybenzoate)'
+substrate_smiles: 'C1=CC=C(C=C1)OC2=CC=C(C=C2)C(=O)O'
+product_en: 'a hemiacetal that spontaneously hydrolyses to phenol and protocatechuate'
+reaction: 'angular dioxygenation at the ether carbon'
+reaction_class: 'angular_dioxygenation'
+family: 'biaryls_ethers'
 pdb: 
 source: 'UniProt Q52185 (POBA_ECTOL, reviewed), Ectopseudomonas oleovorans; stored sequence verified byte-identical to that entry (409 aa) on 2026-10-28. Identified by gene name, not from a recorded citation -- the enzyme''s primary paper is still unlinked'
 source_kind: paper
 curation_confidence: high
-notes: reaction taken from the original curation and not re-verified in this work
+notes: 'reaction taken from the original curation and not re-verified in this work SUBSTRATE AND PRODUCT CORRECTED 2026-10-28, both wrong and both settled by the UniProt entry of the accession whose sequence is byte-identical to the one stored here (Q52185). (1) The substrate was recorded as 4-hydroxybenzoate, which this enzyme does not act on: UniProt names the protein ''Phenoxybenzoate dioxygenase subunit alpha'', with the alternative name ''4-carboxydiphenyl ether'', and places it in carboxydiphenyl ether degradation. 4-hydroxybenzoate does not even appear in the pathway. (2) The product was recorded as protocatechuate, which is DOWNSTREAM: UniProt states the enzyme ''yields a hemiacetal that spontaneously hydrolyzes to phenol and protocatechuate'', so protocatechuate comes from a non-enzymatic hydrolysis. This is the third record found with that error class, after choline monooxygenase and HcaE. reaction_class moved from hydroxylation to angular_dioxygenation and family from aromatic_acids to biaryls_ethers, matching 2_204_Dpe, which performs the same angular attack on the unsubstituted diaryl ether. The substrate SMILES is PubChem CID 75182 (C13H10O3), not written from memory. OPEN: 2_204_Dpe records its product as ''phenol and catechol'', which is the same downstream naming; it has no official equation linked and should get the same review.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:

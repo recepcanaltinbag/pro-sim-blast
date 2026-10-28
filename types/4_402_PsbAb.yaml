@@ -1,17 +1,17 @@
 cluster: 4_402_PsbAb
 gene: PsbAb
 group: 4
-substrate_en: 4-sulfobenzoate
-substrate_smiles: OC(=O)c1ccc(cc1)S(=O)(=O)O
-product_en: protocatechuate and sulfite
-reaction: dioxygenation with release of the sulfonate
-reaction_class: dioxygenation_with_release
-family: sulfoaromatics
+substrate_en: 'p-cumate'
+substrate_smiles: 'CC(C)c1ccc(cc1)C(=O)O'
+product_en: 'cis-2,3-dihydroxy-2,3-dihydro-p-cumate'
+reaction: 'cis-dihydroxylation at ring positions 2 and 3'
+reaction_class: 'cis_dihydroxylation'
+family: 'aromatic_acids'
 pdb: 
-source: "PMID:8828208 (Comamonas testosteroni PSB-4 and T-2)"
+source: 'GenBank BAA82116.1 (psbAb, from AB022919), Rhodopseudomonas palustris; stored sequence verified byte-identical to that record (429 aa) on 2026-10-28. Functional context: Pusks et al., DNA Sequence 2000, doi:10.3109/10425170009033965, which cloned the p-cumate degradation gene cluster this gene belongs to'
 source_kind: paper
 curation_confidence: high
-notes: 4-sulfobenzoate 3,4-dioxygenase. The oxygenase component was shown by electron paramagnetic resonance to carry a Rieske [2Fe-2S] centre.
+notes: '4-sulfobenzoate 3,4-dioxygenase. The oxygenase component was shown by electron paramagnetic resonance to carry a Rieske [2Fe-2S] centre. SUBSTRATE, PRODUCT AND ORGANISM CORRECTED 2026-10-28. The record gave the substrate as 4-sulfobenzoate and cited PMID:8828208 (Comamonas testosteroni PSB-4 and T-2). That paper is about a different organism''s enzyme and nothing in it covers this sequence. The sequence stored here is byte-identical to GenBank BAA82116.1, which GenBank labels psbAb of Rhodopseudomonas palustris, and the paper that deposited it is ''Cloning of Genes Participating in Aerobic Biodegradation of p-Cumate from Rhodopseudomonas palustris''. The gene sits in a p-cumate degradation cluster whose sequence resembles the P. putida cmt genes, and BAA82116.1 aligns to the P. putida p-cumate dioxygenase large subunit at about 39-40% identity. The chemistry is therefore recorded to match 4_401_CmtAb, the characterised p-cumate 2,3-dioxygenase of P. putida F1. CAVEAT: the literature names the large subunit of this cluster inconsistently, psbAb in one alignment and psbAc in a comparative figure; the label used here follows the GenBank record of this exact sequence, whose /gene is psbAb. The assignment rests on gene-cluster context and homology, not on an assay of this purified subunit, so chemistry_evidence stays ''curated''.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:

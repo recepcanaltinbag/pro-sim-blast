@@ -6,7 +6,7 @@ cluster,reaction_class,oxygen_fate,o2_role,resolved_from,basis
 1_105_DdmC,O_demethylation,leaving_group,donor,class,guaiacol C7H8O2 -> catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -> protocatechuate C7H6O4 + CH2O gives the same result.
 1_106_TsaM,hydroxylation,product,donor,class,a single oxygen atom is inserted into the product skeleton.
 1_107_CndA,N_demethylation,leaving_group,donor,class,caffeine C8H10N4O2 -> theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.
-1_108_PobA,hydroxylation,product,donor,class,a single oxygen atom is inserted into the product skeleton.
+1_108_PobA,angular_dioxygenation,product,donor,class,two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.
 1_109_LigX,O_demethylation,leaving_group,donor,class,guaiacol C7H8O2 -> catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -> protocatechuate C7H6O4 + CH2O gives the same result.
 1_110_SxtT,hydroxylation,product,donor,class,a single oxygen atom is inserted into the product skeleton.
 1_111_GxtA,hydroxylation,product,donor,class,a single oxygen atom is inserted into the product skeleton.
@@ -53,7 +53,7 @@ cluster,reaction_class,oxygen_fate,o2_role,resolved_from,basis
 3_321_Nvd,desaturation,oxidant_only,oxidant_only,class,"cholesterol C27H46O -> 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor."
 3_322_DAF36,desaturation,oxidant_only,oxidant_only,class,"cholesterol C27H46O -> 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor."
 4_401_CmtAb,cis_dihydroxylation,product,donor,class,"naphthalene C10H8 -> cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product."
-4_402_PsbAb,dioxygenation_with_release,product,donor,type,the oxygens enter the protocatechuate ring while the substituent leaves as sulfite.
+4_402_PsbAb,cis_dihydroxylation,product,donor,type_redundant,the oxygens enter the protocatechuate ring while the substituent leaves as sulfite.
 4_403_AtdA,dioxygenation_with_release,product,donor,type,"aniline C6H7N -> catechol C6H6O2: aniline carries no oxygen at all, so both catechol oxygens must be O2-derived; ammonia is released."
 4_404_TdnA1,dioxygenation_with_release,product,donor,type,"as AtdA: aniline carries no oxygen, so both catechol oxygens are O2-derived."
 4_405_ROCH34,cis_dihydroxylation,product,donor,class,"naphthalene C10H8 -> cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product."

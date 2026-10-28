@@ -1,17 +1,17 @@
 cluster: 3_312_NinA
 gene: NinA
 group: 3
-substrate_en: nitroaromatic compounds
-substrate_smiles: O=[N+]([O-])c1ccccc1
-product_en: hydroxylated aromatic and nitrite
+substrate_en: '1-nitronaphthalene'
+substrate_smiles: 'C1=CC=C2C(=C1)C=CC=C2[N+](=O)[O-]'
+product_en: '1,2-dihydroxynaphthalene and nitrite'
 reaction: dioxygenation with release of the nitro group
 reaction_class: dioxygenation_with_release
 family: nitroaromatics
 pdb: 
-source: established literature on the reference enzyme, no individual citation recorded
+source: 'GenBank UZW58199.1 (plasmid), Sphingobium sp. JS3065; stored sequence verified byte-identical to that record (447 aa) on 2026-10-28. Functional basis: the 2023 Appl Environ Microbiol paper on 1-nitronaphthalene catabolism in this strain'
 source_kind: general
 curation_confidence: high
-notes: broad nitroaromatic specificity reported; nitrobenzene shown
+notes: 'broad nitroaromatic specificity reported; nitrobenzene shown SUBSTRATE NARROWED 2026-10-28. The record said ''nitroaromatic compounds'' with the product ''hydroxylated aromatic and nitrite'', which is so generic that it cannot be checked or drawn, and the source field said ''established literature on the reference enzyme, no individual citation recorded''. The paper behind this sequence is specifically about 1-nitronaphthalene catabolism, and the reaction it describes is dioxygenation of that substrate with release of nitrite, giving 1,2-dihydroxynaphthalene. The SMILES is PubChem CID 6849, not written from memory. Note that neither GenBank nor RefSeq calls this gene ninA; the label is this database''s own and the GenBank product is the generic ''aromatic ring-hydroxylating dioxygenase subunit alpha''.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:

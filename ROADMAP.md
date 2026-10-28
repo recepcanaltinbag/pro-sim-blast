@@ -5,6 +5,68 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+84. **B ADIMI: ALTI KURASYON DUZELTMESI UYGULANDI (2026-10-28).** Madde 75'te
+    kaynaktan dogrulanan uyusmazliklarin hepsi kapatildi.
+
+    (a) `1_108_PobA` -- IKI HATA BIRDEN, ikisi de UniProt Q52185 ile cozuldu.
+    Substrat 4-hydroxybenzoate yaziliyordu; UniProt proteini "Phenoxybenzoate
+    dioxygenase subunit alpha" diye adlandiriyor, alt adi "4-carboxydiphenyl
+    ether" ve yolu "carboxydiphenyl ether degradation" -- 4-hidroksibenzoat
+    yolda hic gecmiyor. Urun protocatechuate yaziliyordu; UniProt enzimin
+    "yields a hemiacetal that spontaneously hydrolyzes to phenol and
+    protocatechuate" dedigini kaydediyor, yani protokatekuat KENDILIGINDEN
+    hidrolizden geliyor. **Bu, o hata sinifinin UCUNCU ornegi** (CMO ve HcaE'den
+    sonra). reaction_class hydroxylation -> angular_dioxygenation ve family
+    aromatic_acids -> biaryls_ethers, 2_204_Dpe ile ayni (ayni acil saldiri).
+    SMILES PubChem CID 75182. ACIK: Dpe'nin urunu de "phenol and catechol"
+    yaziyor, yani ayni asagi-akis adlandirmasi; resmi denklem bagi yok ve ayni
+    incelemeyi hak ediyor.
+
+    (b) `1_103_CarAa` -- `pdb: 1WW9` KALDIRILDI. RCSB'ye karsi olculdu: 1WW9'un
+    polimer varligi Janthinobacterium sp. J3'ten ve dizisi buradakiyle
+    UYUSMUYOR, `1_102_CARDO` ile uyusuyor. Iki ayri protein ayni yapiya isaret
+    ediyordu, yani bu tip sahip OLMADIGI bir yapiyi iddia ediyordu. source_kind
+    structure -> paper.
+
+    (c) `2_201_BphA1` -- `pdb: 2XR8` KALDIRILDI ve organizma duzeltildi. 2XR8'in
+    iki varligi da Burkholderia xenovorans'tan ve hicbiri bizim diziyle
+    uyusmuyor; 2XR8 ayrica LB400 enziminin yonlendirilmis-evrim varyanti.
+    Bizim dizi UniProt Q52028 ile birebir: KF707 enzimi (artik Metapseudomonas
+    furukawaii), BASKA BIR SUS.
+
+    (d) `2_215_cadA` -- organizma ve kaynak duzeltildi. Kayit "J Bacteriol
+    2002;184:509-518 (Bradyrhizobium sp. HW13)" diyordu; dizimiz HW13 CadA
+    DEGIL (UniProt Q8VUZ2, ayni uzunlukta ama ~%85 kimlikli), GenBank
+    AGU69349.1 ile birebir, yani Sphingomonas sp. ERG5 CadA. Substrat 2,4-D
+    DOGRU ve artik kaynakli.
+
+    (e) `4_402_PsbAb` -- SUBSTRAT, URUN VE ORGANIZMA duzeltildi. Kayit substrati
+    4-sulfobenzoate yazip PMID:8828208'i (Comamonas testosteroni) gosteriyordu;
+    o makale baska bir organizmanin enzimi hakkinda ve bu diziyi hic
+    kapsamiyor. Dizi GenBank BAA82116.1 ile birebir (psbAb, Rhodopseudomonas
+    palustris) ve onu yatiran makale "Cloning of Genes Participating in
+    Aerobic Biodegradation of p-Cumate from Rhodopseudomonas palustris".
+    BAA82116.1, P. putida p-kumat dioksijenazinin buyuk alt birimine ~%39-40
+    kimlikle hizaliyor. Kimya 4_401_CmtAb'ye gore kaydedildi. UYARI: literatur
+    bu kumenin buyuk alt birimini tutarsiz adlandiriyor (bir hizalamada psbAb,
+    bir karsilastirma sekilde psbAc); kullanilan etiket bu DIZININ GenBank
+    kaydini izliyor (/gene = psbAb). Atama kume baglami ve homolojiye dayaniyor,
+    saflastirilmis alt birimin olcumune DEGIL, o yuzden chemistry_evidence
+    `curated` kaldi. family sulfoaromatics -> aromatic_acids, yani
+    sulfoaromatics artik tek uyeli (TsaM).
+
+    (f) `3_312_NinA` -- substrat daraltildi. "nitroaromatic compounds" ve
+    "hydroxylated aromatic and nitrite" o kadar genel ki ne kontrol edilebilir
+    ne cizdirilebilir; source alani da "no individual citation recorded"
+    diyordu. Dizinin arkasindaki makale 1-nitronaftalin katabolizmasi
+    hakkinda; substrat 1-nitronaphthalene (PubChem CID 6849), urun
+    1,2-dihydroxynaphthalene ve nitrit. Not: ne GenBank ne RefSeq bu gene ninA
+    demiyor; etiket bu veritabaninin kendi etiketi.
+
+    (g) Kapi: PDB sayisi 27 -> 25, hepsi gecerli. Tek FAIL, uc tipin bayat
+    `ro_search` girdisi (PobA 170, bfzA 93, PsbAb 28 kayit) -- DOGRU davranis,
+    tek rebuild'i bekliyor.
+
 83. **TEMEL: OKSIJEN KADERI ARTIK HESAPLANIYOR, OKUNMUYOR (2026-10-28).**
     Kullanici "temeli saglam atalim" dedi. Dogru teshis: 16 tipi firsatci
     capalarla yamamak temel atmak degildi. Asil sorun kimya alanlarinin
