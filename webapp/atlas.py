@@ -1655,6 +1655,37 @@ PROVENANCE = [
      "evidence_tiers.py"),
     ("tree_all.nwk", "file", "Maximum-likelihood tree of references and variant representatives.",
      "build_phylogeny.py"),
+    # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
+    # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
+    # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("repertoire_matrix.json", "file", "Reaction class crossed with where the "
+     "O2 oxygen ends up and with the catabolic/biosynthetic role, plus the "
+     "comparison against the reaction repertoire listed in the Miao & Schmidt "
+     "2025 review: seven of its eight reaction types are present here, "
+     "sulfoxidation is not, and two categories here are beyond its list.",
+     "hand-run cross-tab over chemistry.csv, oxygen_fate.csv and "
+     "metabolic_role.csv"),
+    ("curation_claims.json", "file", "Contested curation fields measured "
+     "against UniProt and RCSB: organism, protein name and whether the PDB "
+     "entry's sequence matches the one stored here.",
+     "verify_curation_claims.py"),
+    ("curation_claims_ncbi.json", "file", "The same check for the references "
+     "whose accession is GenBank or RefSeq rather than UniProt.",
+     "verify_curation_claims.py (NCBI efetch pass)"),
+    ("motif_site_audit.json", "file", "Which catalytic columns each confirmed "
+     "member actually hits. The database stores only a boolean, so 2/3 and "
+     "3/3 are indistinguishable in it; this records the pattern, including "
+     "the 55 members whose second hit is the carboxylate column that the "
+     "crystal structures show to be misplaced.", "motif_site_audit.py"),
+    ("motif_single_his_members.json", "file", "The 55 members above, with the "
+     "offset at which a histidine is actually found. 41 carry two distinct "
+     "histidines just outside the +-2 window (an alignment shift); 14, all "
+     "CmtAb, carry only one in the region.", "hand-run follow-up"),
+    ("motif_gate_B_new.json", "file", "The sequences a wider catalytic window "
+     "would newly admit. Recorded because it must NOT be adopted as it "
+     "stands: the two catalytic columns are five apart, so a +-5 window lets "
+     "one histidine satisfy both sites and ISP-domain and P450 proteins leak "
+     "in.", "hand-run gate comparison"),
     ("reference_pairs.csv", "file", "Pairwise identity between the 71 curated references, with "
      "their substrates; the calibration for every identity threshold.", "evidence_tiers.py"),
     ("evidence_by_cluster.csv", "file", "Evidence level composition of each type.",
