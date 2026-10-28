@@ -5,6 +5,70 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+82. **URUN KIMLIGI ARTIK RESMI DENKLEME KARSI DOGRULANIYOR -- uc gercek hata
+    daha bulundu (2026-10-28).** Kullanici "boyle hatalar yapmayalim, hepsi
+    icin guncel literature bakalim" dedi. Dogru teshis: sorun tek bir kayit
+    degil, YONTEMDI.
+
+    (a) HATANIN SINIFI. Kolin monooksijenazda oksijen kaderini kendi formul
+    hesabimdan cikardim. Aritmetik dogruydu ama YANLIS MOLEKULUN formuluydu:
+    kaydimiz urunu "betaine aldehyde" yaziyordu, enzimin biraktigi urun ise
+    hidrat. Hesap saglam, girdi curuk -- ve "olculdu" diye sunuldugunda en
+    tehlikeli hata turu bu.
+
+    (b) YONTEM DEGISTI: `verify_reactions.py`. Her tip icin UniProt'tan EC
+    numarasi ve Rhea'nin DENGELENMIS resmi reaksiyon denklemi cekilip kayitli
+    `product_en` ile karsilastiriliyor.
+
+    (c) ILK YAZDIGIM KONTROL BOSTU VE ELENDI. Yalnizca ORTAK kelime sayiyordu,
+    bu yuzden "betaine aldehyde" ile "betaine aldehyde hydrate" iki kelime
+    paylasip "uyusuyor" cikiyordu -- yani kontrol, KENDISINI YAZDIRAN hatayi
+    yakalamiyordu. Karsilastirma iki yonlu yapildi: resmi adda OLUP bizde
+    olmayan kelimeler de bildiriliyor. Simulasyonla dogrulandi, eski kayit
+    icin "INCELE -> hydrate" diyor.
+
+    (d) UC GERCEK HATA BULUNDU, hepsi ayni sinif -- enzimin BIRAKTIGI molekul
+    yerine baska bir molekulu urun yazmak:
+    * `2_217_HcaE` urunu "3-(2,3-dihydroxyphenyl)propionate" yaziyordu, yani
+      ASAGI AKISTAKI dehidrogenazin urettigi yeniden-aromatik katekol. Resmi
+      denklem (EC 1.14.12.19) urunu
+      "3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate" veriyor:
+      aromatik OLMAYAN cis-dihidrodiol. CMO hatasinin tam esi.
+    * `1_107_CndA` "the corresponding aldehyde" diyordu; resmi denklem (EC
+      1.14.15.23) butachlor'dan BUTIL FORMAT, alachlor'dan metil format,
+      acetochlor'dan etil format veriyor -- kopan parca bir ESTER, aldehit
+      degil.
+    * `5_506_Stc2` yalnizca "N-methylproline" diyordu; resmi denklem (EC
+      1.14.13.247) FORMALDEHITI de veriyor. Bu onemli, cunku oksijenin
+      bittigi yer orasi ve `oxygen_fate: leaving_group` degeri urun alani
+      tarafindan desteklenmiyordu.
+    Ucu de duzeltildi, gerekcesine resmi denklem BIREBIR yazildi.
+
+    (e) KAPSAMA SINIRI DURUSTCE: 76 tipin **23'u** kontrol EDILEBILDI
+    (14 temiz, 9 fark). **53'u edilemedi**: 27'sinde UniProt kaydinda
+    katalitik aktivite yok, 26'sinda UniProt accession'i yok. Yani bu tur bir
+    temizlik getirdi ama TAM KAPSAMA getirmedi; kalan 53 tipin urun iddiasi
+    hala yalnizca bizim kurasyonumuza dayaniyor ve bu GORUNUR olmali.
+
+    (f) ADLANDIRMA FARKLARI KUTUGE GECTI: `reaction_name_exceptions.yaml`,
+    dokuz kayit. Ayni molekulun geleneksel adiyla IUPAC adi ("cis-benzene
+    dihydrodiol" ile "cis-1,2-dihydrobenzene-1,2-diol") uyusmaz sayiliyordu;
+    bunlari SESSIZCE gecmek yanlis olurdu, cunku bir gun gercek bir kimya
+    farki ayni kutuya duser. Her kayit resmi adi, bizim adi, neden ayni
+    molekul oldugunu ve okundugu tarihi tasiyor.
+
+    (g) DORT YENI KONTROL (kapi 98 -> 102): bildirilen her fark kayitli mi,
+    olu kayit var mi, her kayit dort alani tasiyor mu, ve RAPOR types/'TAN
+    TAZE mi (bayat raporla kapi eski veriye bakar). Kontrol BOZULARAK sinandi:
+    bir kayit cikarilinca adiyla FAIL veriyor, geri konunca geciyor.
+
+    (h) 20 tipe `ec` alani eklendi -- resmi kayda gelecekte baglanmanin
+    capasi. EC numarasi UniProt'tan geldi, elle yazilmadi.
+
+    (i) KURAL: bundan sonra bir oksijen kaderi ya da urun karari verilirken
+    ILK IS EC/Rhea denklemine bakmak. Kendi formul hesabi ancak urunun kimligi
+    resmi kayittan dogrulandiktan SONRA yapilir.
+
 81. **CMO: IKI KEZ YANLIS KAYDEDILDI, GUNCEL LITERATUR COZDU (2026-10-28).**
     Kullanici once "CmoS icin Rieske diyorlar ama", sonra "CmoS'ta yukseltgen
     degil mi", sonunda "guncel literature bi baksa ya" dedi. Ucuncusu dogru

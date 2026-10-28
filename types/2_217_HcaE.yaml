@@ -3,7 +3,7 @@ gene: HcaE
 group: 2
 substrate_en: 3-phenylpropionate
 substrate_smiles: OC(=O)CCc1ccccc1
-product_en: 3-(2,3-dihydroxyphenyl)propionate
+product_en: '3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate (the cis-dihydrodiol)'
 reaction: cis-dihydroxylation at ring positions 2 and 3
 reaction_class: cis_dihydroxylation
 family: aromatic_acids
@@ -11,7 +11,7 @@ pdb: 8K0A
 source: 'PDB 8K0A, 3-phenylpropionate/cinnamic acid dioxygenase; stored sequence verified byte-identical to the deposited polymer entity (453 aa) on 2026-10-28'
 source_kind: structure
 curation_confidence: high
-notes: 
+notes: 'PRODUCT CORRECTED 2026-10-28 against the official equation. The record named 3-(2,3-dihydroxyphenyl)propionate, which is the RE-AROMATISED catechol produced by the downstream dehydrogenase, not by this dioxygenase. UniProt/Rhea give EC 1.14.12.19 as ''3-phenylpropanoate + NADH + O2 + H(+) = 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate + NAD(+)'': the product is the non-aromatic cis-dihydrodiol. This is the same error class as the choline monooxygenase one -- naming a downstream molecule as this enzyme''s product.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:
@@ -21,4 +21,5 @@ accession_db: 'UniProt (Swiss-Prot); stored sequence identical; PDB 8K0A'
 accession_verified: '2026-10-28 UniParc CRC64; kayitli dizi ile birebir'
 accession_evidence: 'reviewed (Swiss-Prot), proteinExistence "Evidence at protein level"'
 accession_organism: 'Escherichia coli K-12'
+ec: 1.14.12.19
 sequence: MTTPSDLNIYQLIDTQNGRVTPRIYTDPDIYQLELERIFGRCWLFLAHESQIPKPGDFFNTYMGEDAVVVVRQKDGSIKAFLNQCRHRAMRVSYADCGNTRAFTCPYHGWSYGINGELIDVPLEPRAYPQGLCKSHWGLNEVPCVESYKGLIFGNWDTSAPGLRDYLGDIAWYLDGMLDRREGGTEIVGGVQKWVINCNWKFPAEQFASDQYHALFSHASAVQVLGAKDDGSDKRLGDGQTARPVWETAKDALQFGQDGHGSGFFFTEKPDANVWVDGAVSSYYRETYAEAEQRLGEVRALRLAGHNNIFPTLSWLNGTATLRVWHPRGPDQVEVWAFCITDKAASDEVKAAFENSATRAFGPAGFLEQDDSENWCEIQKLLKGHRARNSKLCLEMGLGQEKRRDDGIPGITNYIFSETAARGMYQRWADLLSSESWQEVLDKTAAYQQEVMK

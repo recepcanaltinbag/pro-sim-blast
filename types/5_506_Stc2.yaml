@@ -3,7 +3,7 @@ gene: Stc2
 group: 5
 substrate_en: stachydrine
 substrate_smiles: C[N+]1(C)CCCC1C(=O)[O-]
-product_en: N-methylproline
+product_en: 'N-methyl-L-proline and formaldehyde'
 reaction: N-demethylation of proline betaine
 reaction_class: N_demethylation
 family: quaternary_amines
@@ -11,7 +11,7 @@ pdb: 3VCA
 source: PDB 3VCA, quaternary ammonium oxidative demethylation
 source_kind: structure
 curation_confidence: high
-notes: a plant-derived osmolyte used as a carbon source by rhizosphere bacteria
+notes: 'a plant-derived osmolyte used as a carbon source by rhizosphere bacteria CO-PRODUCT ADDED 2026-10-28 against the official equation. The record named only N-methylproline; UniProt/Rhea give EC 1.14.13.247 as ''L-proline betaine + NAD(P)H + O2 + H(+) = N-methyl-L-proline + FORMALDEHYDE + NAD(P)(+) + H2O''. The formaldehyde matters here because it is where the O2-derived oxygen ends up, which is what the oxygen_fate value (leaving_group) records; omitting it left that value unsupported by the product field. Stachydrine and L-proline betaine are the same compound.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:
@@ -24,4 +24,5 @@ accession_evidence: 'reviewed (Swiss-Prot), proteinExistence "Evidence at protei
 accession_organism: 'Sinorhizobium (Rhizobium) meliloti 1021'
 metabolic_role: catabolic
 metabolic_role_basis: 'stachydrine catabolism.'
+ec: 1.14.13.247
 sequence: MTANPTSIHQRLDRRLSGFSLEQPFYTSPEVYALDLQHIFYKQWLYAVPVCQLAKAGSYTTLRVGAYEVVIVRSRDGEVRAFHNSCRHRGSLICKARQGQVAKLVCPYHQWTYELDGKLIWANDMGPDFDASKYGLKPVNLRNLDGLIYICLSDTPPDFQTFAQLARPYLEVHDLKDAKVAFTSTIIEKGNWKLVWENNRECYHCSSNHPALCRSFPLDPEVAGVQADGGVSKKLQAHFDRCEAAGTPAQFVLAGDGQYRLARMPLQEKALSYTMDGKAAVSRHLGRVAPPDAGTLLMFHYPSTWNHFLPDHSLTFRVMPISPTETEVTTTWLVHKDAVEGVDYDLKRLTEVWIATNDEDREIVETNQQGILSPAYVPGPYSPGQESGVMQFVDWYAASLERALAPRQVAAE

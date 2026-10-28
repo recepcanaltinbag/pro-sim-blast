@@ -1658,6 +1658,11 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("reaction_verification.json", "file", "Every reference's recorded "
+     "product checked against the official reaction equation in UniProt/Rhea. "
+     "It found three records that named the wrong molecule as the product, "
+     "the same error that had the oxygen fate of choline monooxygenase "
+     "recorded wrongly twice.", "verify_reactions.py"),
     ("repertoire_matrix.json", "file", "Reaction class crossed with where the "
      "O2 oxygen ends up and with the catabolic/biosynthetic role, plus the "
      "comparison against the reaction repertoire listed in the Miao & Schmidt "

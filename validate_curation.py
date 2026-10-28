@@ -633,6 +633,78 @@ def check_metabolic_role(rep, root):
                   f"{len(disk)} rows agree" if not stale else first(stale, 4))
 
 
+def check_reaction_names(rep, root):
+    """Resmi denklemle uyusmayan her urun adi KAYDA GECMIS mi?
+
+    NEDEN. verify_reactions.py her tipin kayitli urununu UniProt/Rhea'nin
+    resmi denklemine karsi tutuyor ve 2026-10-28'de UC GERCEK HATA buldu:
+    HcaE'nin urunu asagi akistaki katekol yazilmisti, CndA'da bir ester
+    "aldehit" denmisti, Stc2'de formaldehit atlanmisti. Ucu de ayni sinif --
+    enzimin BIRAKTIGI molekul yerine baska bir molekulu urun yazmak -- ve
+    kolin monooksijenazin iki kez yanlis kaydedilmesinin de sebebi buydu.
+
+    Ayni kontrol, ayni molekulun geleneksel adiyla IUPAC adini da uyusmaz
+    sayiyor. Bu farklari SESSIZCE gecmek yanlis olur, cunku bir gun gercek bir
+    kimya farki ayni kutuya duser. O yuzden iki sey ayri ayri kontrol edilir:
+      1. bildirilen her uyusmazligin bir kaydi var mi
+      2. kaydi olup ARTIK bildirilmeyen (olu) kayit kaldi mi
+    """
+    reg_path = os.path.join(root, "reaction_name_exceptions.yaml")
+    rep_path = os.path.join(root, "analysis_out", "reaction_verification.json")
+    if not os.path.exists(rep_path):
+        rep.check("reaction names: verification report present", True, 0,
+                  "analysis_out/reaction_verification.json not written yet "
+                  "(run verify_reactions.py)", severity="WARN")
+        return
+    try:
+        import yaml as _y                               # noqa: PLC0415
+        reg = {e["cluster"]: e for e in
+               ((_y.safe_load(open(reg_path)) or {}).get("exceptions") or [])}
+    except Exception as exc:                            # noqa: BLE001
+        rep.check("reaction names: registry readable", False, 1, str(exc))
+        return
+    # TAZELIK. Rapor types/'tan eskiyse kapi ESKI veriye bakar ve yeni bir
+    # urun hatasi sessizce gecer. Raporu yeniden uretmek bir ag cagrisi
+    # gerektirdigi icin otomatik adim DEGIL, ama bayatligi GORUNUR olmak
+    # zorunda.
+    import glob as _glob                                # noqa: PLC0415
+    newest = max((os.path.getmtime(f) for f in
+                  _glob.glob(os.path.join(root, "types", "*.yaml"))),
+                 default=0)
+    stale_by = newest - os.path.getmtime(rep_path)
+    rep.check("freshness: the reaction verification report is newer than "
+              "types/",
+              stale_by <= 0, 1 if stale_by > 0 else 0,
+              "report is current" if stale_by <= 0 else
+              f"types/ changed {stale_by / 60:.0f} min after the report was "
+              "written -- re-run verify_reactions.py", severity="WARN")
+
+    rows = json.load(open(rep_path)).get("rows") or []
+    flagged = {r["cluster"] for r in rows
+               if r.get("product_agrees") is False
+               or r.get("qualifiers_missing_from_our_product")}
+    unregistered = sorted(flagged - set(reg))
+    rep.check("reaction names: every mismatch with the official equation is "
+              "recorded",
+              not unregistered, len(unregistered),
+              f"{len(flagged)} differences, all recorded"
+              if not unregistered else first(unregistered, 6))
+    dead = sorted(set(reg) - flagged)
+    rep.check("reaction names: no stale entry in the registry",
+              not dead, len(dead),
+              f"{len(reg)} entries, all still reported"
+              if not dead else first(dead, 6))
+    incomplete = sorted(c for c, e in reg.items()
+                        if not all(str(e.get(k) or "").strip()
+                                   for k in ("official", "ours", "why",
+                                             "checked_on")))
+    rep.check("reaction names: each recorded difference states the official "
+              "name, ours, why and when",
+              not incomplete, len(incomplete),
+              "all entries complete" if not incomplete
+              else first(incomplete, 6))
+
+
 def check_oxygen_fate(rep, root, chem):
     """O2 oksijeninin kaderi her tip icin COZULEBILIYOR mu, ve turetilmis
     tablo TAZE mi?
@@ -1491,6 +1563,7 @@ def main():
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)
+    check_reaction_names(rep, ROOT)
     check_metabolic_role(rep, ROOT)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)

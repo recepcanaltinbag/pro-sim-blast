@@ -1,0 +1,103 @@
+# URUN ADI ISTISNALARI -- resmi denklemle AYNI KIMYA, farkli adlandirma.
+#
+# NEDEN BU DOSYA VAR. verify_reactions.py her tipin kayitli urununu
+# UniProt/Rhea'nin resmi denklemine karsi tutuyor. Bu kontrol 2026-10-28'de
+# UC GERCEK HATA buldu (HcaE'nin urunu asagi akistaki katekol yazilmisti,
+# CndA'da ester "aldehit" denmisti, Stc2'de formaldehit atlanmisti). Ama ayni
+# kontrol, ayni molekulun geleneksel adiyla IUPAC adini da "uyusmuyor" diye
+# bildiriyor: "cis-benzene dihydrodiol" ile "cis-1,2-dihydrobenzene-1,2-diol"
+# ayni seydir.
+#
+# BU FARKLARI SESSIZCE GECMEK YANLIS OLUR, cunku bir gun gercek bir kimya
+# farki ayni kutuya duser. O yuzden her biri BURADA, resmi denklemiyle ve
+# neden yalnizca adlandirma oldugunun gerekcesiyle kayda geciyor. Kayitsiz
+# her uyusmazlik YUKSEK SESLE kalir.
+#
+# BIR ISTISNA SU UCUNU TASIMAK ZORUNDADIR:
+#   official  : resmi denklemdeki urun adi, BIREBIR
+#   why       : ayni molekul oldugunun gerekcesi
+#   checked_on: ne zaman okundu
+# Biri eksikse istisna degil, ortulmus bir hatadir.
+
+exceptions:
+
+  - cluster: 1_106_TsaM
+    official: "4-(hydroxymethyl)benzenesulfonate"
+    ours: "4-sulfobenzyl alcohol"
+    why: >
+      Same molecule. The ring methyl of toluene-4-sulfonate is hydroxylated,
+      giving a benzyl alcohol bearing a sulfonate; the official name states
+      the hydroxymethyl and sulfonate groups systematically, ours names the
+      same groups in the older style. Oxygen is gained either way, so the
+      oxygen_fate value is unaffected.
+    checked_on: 2026-10-28
+
+  - cluster: 2_201_BphA1
+    official: "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol"
+    ours: "cis-2,3-dihydro-2,3-dihydroxybiphenyl"
+    why: >
+      Same molecule, two naming conventions for a biphenyl cis-dihydrodiol:
+      the official name treats the oxidised ring as a cyclohexadiene carrying
+      a phenyl substituent, ours keeps the biphenyl parent and marks the
+      dihydro-dihydroxy positions. Both are the non-aromatic cis-diol.
+    checked_on: 2026-10-28
+
+  - cluster: 2_213_BphA1A2
+    official: "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol"
+    ours: "cis-2,3-dihydro-2,3-dihydroxybiphenyl"
+    why: "Same as 2_201_BphA1: the same compound under the two conventions."
+    checked_on: 2026-10-28
+
+  - cluster: 2_208_TecA1
+    official: "(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol"
+    ours: "chlorinated cis-dihydrodiol"
+    why: >
+      Same chemistry. Ours is deliberately generic because this enzyme has
+      broad specificity across chlorinated benzenes, so no single official
+      product covers the type; the official entry names the chlorobenzene
+      case. The generic wording is a curation choice, not a disagreement.
+    checked_on: 2026-10-28
+
+  - cluster: 2_209_TDO
+    official: "(1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol"
+    ours: "cis-2,3-dihydroxy-2,3-dihydrotoluene"
+    why: >
+      Same molecule, toluene cis-dihydrodiol, under the two conventions. The
+      entry also records the benzene reaction, which this type does not name.
+    checked_on: 2026-10-28
+
+  - cluster: 2_212_BedC1
+    official: "cis-1,2-dihydrobenzene-1,2-diol"
+    ours: "cis-benzene dihydrodiol"
+    why: "Same molecule; ours omits the locants the official name states."
+    checked_on: 2026-10-28
+
+  - cluster: 3_309_NahAc
+    official: "(1R,2S)-1,2-dihydronaphthalene-1,2-diol"
+    ours: "cis-1,2-dihydroxy-1,2-dihydronaphthalene"
+    why: >
+      Same molecule; the official name gives the stereodescriptors and ours
+      writes cis, and the substituent order differs.
+    checked_on: 2026-10-28
+
+  - cluster: 3_313_KshA15
+    official: "9alpha-hydroxy-3-oxo-23,24-bisnorchola-1,4-dien-22-oate (and
+      the androstadienedione series)"
+    ours: "9-alpha-hydroxy-3-ketosteroid"
+    why: >
+      Ours is deliberately generic: this enzyme hydroxylates a family of
+      3-ketosteroids at C9-alpha and the official entry names particular
+      members of that family. The chemistry recorded is the same reaction on
+      the same position.
+    checked_on: 2026-10-28
+
+  - cluster: 1_107_CndA
+    official: "butyl formate / methyl formate / ethyl formate (with the
+      N-dealkylated chloroacetamide)"
+    ours: "N-dealkylated chloroacetanilide and the corresponding alkyl formate"
+    why: >
+      After the correction of 2026-10-28 the chemistry agrees; what remains
+      is that the official entry names the three specific esters (from
+      butachlor, alachlor and acetochlor) while ours says "the corresponding
+      alkyl formate", because the type covers all three substrates.
+    checked_on: 2026-10-28
