@@ -633,6 +633,69 @@ def check_metabolic_role(rep, root):
                   f"{len(disk)} rows agree" if not stale else first(stale, 4))
 
 
+def check_computed_oxygen_fate(rep, root):
+    """Hesaplanabilen her oksijen kaderi, HESAPLANANLA AYNI mi?
+
+    NEDEN. Oksijen kaderi bu oturumda iki kez yanlis kaydedildi ve her
+    seferinde sebep ayniydi: deger KURATORUN OKUMASINA dayaniyordu. Artik
+    resmi dengelenmis denklem (Rhea) ve katilimci formulleri (ChEBI) uzerinden
+    ATOM SAYIMIYLA hesaplanabiliyor; hesaplanabildigi yerde insan okumasi
+    HAKEM DEGIL.
+
+    Sayim atom IZLEMEZ, bunu da bilir: iskelet parcalanmis ve substrat zaten
+    oksijen tasiyorsa deger "ambiguous" doner ve kuratorun gerekcesi ayakta
+    kalir. Bu kontrol yalnizca HESAPLANMIS olanlari karsilastirir -- yani
+    yalnizca sayimin guvenilir oldugu yerde bagirir.
+    """
+    path = os.path.join(root, "analysis_out", "oxygen_fate_computed.json")
+    if not os.path.exists(path):
+        rep.check("oxygen fate: computed comparison present", True, 0,
+                  "analysis_out/oxygen_fate_computed.json not written yet",
+                  severity="WARN")
+        return
+    rows = json.load(open(path)).get("rows") or []
+    decided = [r for r in rows
+               if r.get("computed") and r["computed"] != ["ambiguous"]]
+    bad = [f"{r['cluster']}: db={r.get('resolved_in_db')} "
+           f"computed={'/'.join(r['computed'])}"
+           for r in decided
+           if r.get("resolved_in_db") not in r["computed"]]
+    rep.check("oxygen fate: agrees with the value computed from the official "
+              "balanced equation",
+              not bad, len(bad),
+              f"{len(decided)} of {len(rows)} Rhea-anchored types computed, "
+              f"all agree" if not bad else first(bad, 5))
+
+    # Katman alani ile gercek durum tutarli mi: "computed" diyen bir tipin
+    # hesaplanmis bir degeri OLMAK zorunda, yoksa etiket bos bir guvence olur.
+    try:
+        import yaml as _y                               # noqa: PLC0415
+        import glob as _g                               # noqa: PLC0415
+        tiers = {}
+        for f in _g.glob(os.path.join(root, "types", "*.yaml")):
+            m = _y.safe_load(open(f))
+            tiers[m.get("cluster")] = m.get("chemistry_evidence")
+    except Exception as exc:                            # noqa: BLE001
+        rep.check("chemistry evidence: tiers readable", False, 1, str(exc))
+        return
+    computed_ok = {r["cluster"] for r in decided}
+    lying = sorted(c for c, t in tiers.items()
+                   if t == "computed_from_official_equation"
+                   and c not in computed_ok)
+    rep.check("chemistry evidence: every type claiming a computed oxygen fate "
+              "really has one",
+              not lying, len(lying),
+              f"{len(computed_ok)} computed, "
+              f"{sum(1 for t in tiers.values() if t == 'curated')} curated"
+              if not lying else first(lying, 5))
+    missing = sorted(c for c, t in tiers.items() if not t)
+    rep.check("chemistry evidence: every type states what its chemistry rests "
+              "on",
+              not missing, len(missing),
+              f"{len(tiers)} types tiered" if not missing
+              else first(missing, 5))
+
+
 def check_reaction_names(rep, root):
     """Resmi denklemle uyusmayan her urun adi KAYDA GECMIS mi?
 
@@ -1564,6 +1627,7 @@ def main():
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)
     check_reaction_names(rep, ROOT)
+    check_computed_oxygen_fate(rep, ROOT)
     check_metabolic_role(rep, ROOT)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)

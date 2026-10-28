@@ -5,6 +5,63 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+83. **TEMEL: OKSIJEN KADERI ARTIK HESAPLANIYOR, OKUNMUYOR (2026-10-28).**
+    Kullanici "temeli saglam atalim" dedi. Dogru teshis: 16 tipi firsatci
+    capalarla yamamak temel atmak degildi. Asil sorun kimya alanlarinin
+    SERBEST METIN olmasi ve hicbir makine-cozulebilir bagi olmamasiydi -- o
+    yuzden oksijen kaderini OKUYARAK cikarmak zorunda kaldim ve iki kez
+    yanildim.
+
+    (a) ZINCIR KURULDU (`reaction_balance.py`). Uc resmi kaynak:
+    UniProt -> EC numarasi ve Rhea reaksiyon kimligi; Rhea -> DENGELENMIS
+    denklem ve katilimcilarin ChEBI kimlikleri (ChEBI listesi denklem
+    SIRASINDA geliyor, yani yanlara bolunebiliyor); ChEBI (OLS4) -> her
+    katilimcinin molekul formulu. Sonrasi atom sayimi. **Kurator adlandirmasi
+    bu zincire HIC girmiyor** -- iki hatamin ikisi de bu yuzden imkansiz
+    hale geliyor.
+
+    (b) SONUC: 23 tipin Rhea kimligi var. **15'i hesaplandi ve 15'inin de
+    kayitli degeri hesaplananla UYUSTU, sifir celiski.** Yani o 15 deger artik
+    bagimsiz olarak dogrulanmis durumda.
+
+    (c) ARAC KENDI SINIRINI OGRENDI -- ve bu, ayni dersin kendi aracimi
+    vurmasiydi. Ilk surum AntA ve CbdC icin EMIN BIR YANLIS uretiyordu:
+    antranilat C7H6NO2 (O=2) -> katekol C6H6O2 (O=2) + CO2, sayim "ana urunde
+    kazanc yok" diyor ve `leaving_group` donduruyordu. Oysa katekolun IKI
+    OH'i da O2'den gelir, antranilatin iki oksijeni CO2 olarak cikar. **Toplam
+    sayim atom IZLEMEZ.** Artik iskelet parcalandiysa (ana urunun karbon
+    sayisi substrattan kucukse) ve substrat oksijen tasiyorsa deger
+    `ambiguous` donuyor ve kuratorun gerekceli degeri ayakta kaliyor. Bedeli
+    acik: demetilasyonlar da (kafein C8 -> C7) bu sinifa giriyor, yani sekiz
+    tipin degeri hesapla degil kayitli gerekceyle duruyor. Arac yalnizca
+    GUVENILIR oldugu yerde konusuyor.
+
+    (d) KAPSAMA VERIDE GORUNUR OLDU: her tipe `chemistry_evidence` alani.
+      computed_from_official_equation  15
+      official_equation_ambiguous       8
+      curated                          53
+    "Olculdu" ile "kurator yazdi" artik veride ayirt edilebiliyor. Bu, enzim
+    hakkinda daha zayif bir iddia DEGIL -- bu veritabaninin su an neyi
+    dogrulayabildigi hakkinda bir ifade. Rhea kimligi ve resmi denklem de
+    manifestoya yazildi (`rhea`, `official_equation`), yani bag kutukte degil
+    VERIDE duruyor.
+
+    (e) UC YENI KONTROL (kapi 102 -> 105): hesaplanabilen her deger
+    hesaplananla uyusuyor mu (celiski FAIL), "computed" diyen her tipin
+    gercekten hesaplanmis bir degeri var mi (bos guvence olmasin), her tip
+    kimyasinin neye dayandigini soyluyor mu. Kontrol BOZULARAK sinandi: bir
+    degeri degistirince adiyla FAIL veriyor.
+
+    (f) BENIM IKI HATAM DAHA: karsilastirmayi ilk kez MANIFESTO alanina
+    yaptim, oysa o alan yalnizca 14 tipte var ve digerleri degeri sinif
+    varsayilanindan aliyor -- "kayitli None" cikan 12 satir veri bulgusu
+    degil, benim hatamdi. Cozumlenmis degere (`oxygen_fate.csv`) gecildi.
+
+    (g) SIRADAKI: 53 "curated" tip. Bunlarin bir kismi icin EC numarasi
+    `source` metninde duruyor (PAO 1.14.15.17, Nvd 1.14.19.21) ve EC uzerinden
+    Rhea'ya baglanabilir; 37'sinde hicbir capa yok. Capa bulunamayan her tip
+    `curated` olarak kalmali -- uydurma bir EC, eksik EC'den kotudur.
+
 82. **URUN KIMLIGI ARTIK RESMI DENKLEME KARSI DOGRULANIYOR -- uc gercek hata
     daha bulundu (2026-10-28).** Kullanici "boyle hatalar yapmayalim, hepsi
     icin guncel literature bakalim" dedi. Dogru teshis: sorun tek bir kayit

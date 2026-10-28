@@ -1658,6 +1658,15 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("oxygen_fate_computed.json", "file", "The oxygen fate COMPUTED by atom "
+     "counting over the balanced equation Rhea gives for each enzyme's EC "
+     "number, with participant formulas from ChEBI, compared against the "
+     "value this database resolves. Where the skeleton fragments and the "
+     "substrate already carries oxygen, counting cannot trace atoms and the "
+     "entry says so instead of guessing.", "reaction_balance.py"),
+    ("chebi_formula_cache.json", "file", "Molecular formulas fetched from "
+     "ChEBI, cached so the balance check can re-run without the network.",
+     "reaction_balance.py"),
     ("reaction_verification.json", "file", "Every reference's recorded "
      "product checked against the official reaction equation in UniProt/Rhea. "
      "It found three records that named the wrong molecule as the product, "
