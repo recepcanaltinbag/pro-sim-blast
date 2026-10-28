@@ -5,6 +5,42 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+87. **"CATALYTIC UCLUDEKI EVET AMA KOPRU FARKLI" -- kullanici hakliydi, iki
+    karboksilat AYNI TUR BOLGE DEGIL (2026-10-28).** On sayfa ikisini tek
+    tabloda ayni "Asp : Glu" cercevesinde sunuyordu ve bu, kullanicinin bir
+    onceki sorusunda yasadigi karisikligin kaynagiydi.
+
+    (a) OLCULDU (1NDO, zincir A). Mononukleer demiri KOORDINE EDENLER:
+    His208 NE2 2,04 A, His213 NE2 2,15 A, **Asp362 OD2 2,27 A**. Yani
+    2-His-1-karboksilat uclusu ve karboksilati Asp362; birinci kabuk LIGANDI.
+    Kopru **Asp205** ayni demirden **6,95 A** ve HICBIR metali koordine
+    etmiyor: ikinci kabuk ROLESI, bir yanda His208'e, obur yanda alt birim
+    birlesimi uzerinden komsunun Rieske ligandi His104'e hidrojen bagli.
+    Biri metali TUTUYOR, obur elektronu ona TASIYOR.
+
+    (b) SAYFA DUZELTILDI. Baslik "Two carboxylates, and they are not the same
+    kind of site" oldu; satir etiketleri artik "first-shell ligand" ve
+    "second-shell relay" diyor ve 1NDO'nun rakamlari metinde duruyor. Ikisi
+    tabloda yan yana KALDI ama NEDEN yan yana oldugu yazildi: ikisi de
+    hizalama kolonundan okunan karboksilat, ve asil bulgu o iki kolonun
+    denetimden FARKLI cikmasi.
+
+    (c) OLCULMEMIS BIR HIPOTEZ, iddia olarak YAZILMADI. Iki kolonun farkli
+    sonuc vermesi tesadufi olmayabilir: birinci kabuk ligandi katalitik lobdaki
+    ESNEK bir ilmekte duruyor ve hizalama orada kayiyor -- karboksilatin 26
+    yapida 431, 432, 407-411 ve 449-451'e dagilmasinin sebebi bu olabilir.
+    Kopru ise iki alt birimin ARAYUZUNDE, yapisal olarak kisitli bir yerde;
+    orada kayma olmuyor, o yuzden tek kolon 8/9 tutuyor. TEST EDILEBILIR: iki
+    kolonun 76 referans uzerindeki hizalama kayma dagilimini karsilastirmak
+    yeterli. Olculmedigi icin sayfaya KONULMADI.
+
+    (d) BUGUNUN DERSI, uc kez tekrarlandiktan sonra: olctugum sey ile
+    sonuclandirdigim sey arasindaki bosluk. CMO'da iki kez (urun kimligi),
+    koprude bir kez (pozisyon esdegerligini islev esdegerligi sanmak). Ucunde
+    de kullanici sormasa duzelmezdi. KURAL: bir cumle yayimlanmadan once
+    "bunu hangi olcum destekliyor" sorusu cumlenin HER YUKLEMI icin ayri ayri
+    sorulacak.
+
 86. **KULLANICININ ITIRAZI DOGRU BIR SORUYDU VE YAYIMLANAN CUMLEYI DUZELTTI
     (2026-10-28).** Kullanici "C202'nin kopru olduguna emin misin, sistein
     sanki Rieske merkezde demir-sulfuru tutan kalinti" dedi. Itiraz yerinde:

@@ -211,15 +211,19 @@ the enzyme is active only as an oligomer. The carboxylate at the interface and t
 the iron are two different residues with two different behaviours, set out next.</figcaption>
 </figure>
 
-<h3>1.2 · The two carboxylates behave differently</h3>
+<h3>1.2 · Two carboxylates, and they are not the same kind of site</h3>
 {% if motif and motif.carboxylate_identity %}
 {% set cat = motif.carboxylate_identity.catalytic_iron %}
 {% set brg = motif.carboxylate_identity.bridging %}
-<p>These two positions behave differently, and one of them turned out not to be readable from
-an alignment column at all. The carboxylate at the subunit interface is aspartate in the
-ring-hydroxylating enzymes and glutamate in the quaternary-amine branch, so a single column
-tracks the substrate chemistry there. The carboxylate at the iron is a different matter: the
-column this database had been reading is not the ligand, as the row below sets out.</p>
+<p>Calling both of these "the carboxylate" obscures that they sit in different shells. In
+naphthalene dioxygenase the mononuclear iron is coordinated by His208 at 2.04 Å, His213 at 2.15 Å
+and <b>Asp362</b> at 2.27 Å: that is the 2-His-1-carboxylate triad, and its carboxylate is a
+first-shell <b>ligand</b>. The bridging <b>Asp205</b> is 6.95 Å from the same iron and
+coordinates nothing at all; it is a second-shell <b>relay</b>, hydrogen-bonded to His208 on one
+side and, across the subunit junction, to the Rieske ligand His104 of the neighbour. One holds the
+metal, the other carries electrons to it. They are listed together below only because both are
+carboxylates read from an alignment column — and the audit of those columns came out differently
+for the two, which is the point of the table.</p>
 
 <div class="tablewrap"><table class="data compact">
 <thead><tr>
@@ -240,7 +244,8 @@ column this database had been reading is not the ligand, as the row below sets o
     Sayilari burada yayimlamak, olculmeyen bir seyi olculmus gibi gostermek
     olurdu.                                                                #}
 <tr>
-  <td><b>Catalytic</b>, completes the 2-His-1-carboxylate triad at the mononuclear iron</td>
+  <td><b>Catalytic</b> — a first-shell <b>ligand</b>: it coordinates the mononuclear iron
+  directly, at 2.27 Å in naphthalene dioxygenase (Asp362)</td>
   <td class="num">–</td>
   <td class="num" colspan="4"><b>not readable from a fixed column.</b> Tested against the crystal
   structures of 27 curated references: the residue column {{ cat.column }} calls is 10.9–14.7 Å
@@ -252,7 +257,9 @@ column this database had been reading is not the ligand, as the row below sets o
   407–411 and 449–451, so no single column holds them all.</td>
 </tr>
 <tr>
-  <td><b>Bridging</b>, links the Rieske centre of one subunit to the iron of the next</td>
+  <td><b>Bridging</b> — a second-shell <b>relay</b>: it coordinates no metal, sitting 6.95 Å from
+  the iron (Asp205), and hydrogen-bonds the Rieske centre of one subunit to the iron ligand of the
+  next</td>
   <td class="num">{{ brg.column }}</td>
   <td class="num" data-v="{{ brg.asp }}">{{ brg.asp|fmt }}</td>
   <td class="num" data-v="{{ brg.glu }}">{{ brg.glu|fmt }}</td>
