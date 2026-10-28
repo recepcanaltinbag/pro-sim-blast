@@ -26,6 +26,7 @@ Cikti:
 
 import argparse
 import csv
+import hashlib
 import os
 import random
 import re
@@ -33,7 +34,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
-from collections import Counter, defaultdict
+from collections import Counter, namedtuple, defaultdict
 
 from ro_motif import read_stockholm_matchcols
 
@@ -155,12 +156,63 @@ def homogenize(members, aligned, raw, rng):
     return leaves
 
 
+# Yaprak satiri ADLANDIRILMIS alanlarla tutulur. Konumsal demet kullanilirken
+# sema degisince asagi akis sessizce bozuldu: variant_id/nearest_type/label_kind
+# eklenince r[2] "size" iken "nearest_type" oldu ve ozet satiri
+# "'>=' not supported between str and int" ile patladi (2026-10-28). Patlamasi
+# iyiydi; yanlis sayi basmasi daha kotu olurdu. Adlandirilmis alan bunu
+# tamamen ortadan kaldiriyor.
+LeafRow = namedtuple("LeafRow", "leaf_id variant_id nearest_type label_kind cluster "
+                                "size depth median_identity is_homogeneous "
+                                "representative top_genera")
+
+
+def variant_id(member_sequences):
+    """Kume kimligi: UYE DIZILERINDEN turetilir, atamadan DEGIL.
+
+    NEDEN. Eski kimlik f"{cluster}#{leaf_index}" idi, yani tip adini ve
+    konumsal bir sayaci tasiyordu. Bir tipin uyeligi degisince O TIPIN butun
+    yapraklari yeniden numaralaniyordu: AerC eklendiginde (rev-0004 ->
+    rev-0005) TsaM 4 uye kaybetti ve yapraklari kaydi, yayimlanmis bir URL'in
+    anlami sessizce degisebilir hale geldi.
+
+    Ustelik tip adlari ve gruplar LITERATURDEN geliyor ve literaturde hata var
+    -- bu projede olculenler: bir onbaskinin ferredoksin iddiasi curutuldu,
+    3_313_KshA15'in adi yaniltici, grup 6'nin aile etiketi duzeltildi. Kimligi
+    literaturden gelen bir ada baglamak iki kat kirilgan.
+
+    Burada kimlik yalnizca ICERIGE bagli: ayni dizi kumesi her kosuda ayni
+    kimligi alir, uye girip cikarsa kimlik degisir (ki olmasi gereken bu,
+    artik baska bir kumedir), ve DOKUNULMAYAN kumeler kimligini korur.
+    """
+    h = hashlib.sha256()
+    for digest in sorted(hashlib.sha256(seq.encode()).hexdigest()
+                         for seq in member_sequences):
+        h.update(digest.encode())
+    return "RO-" + h.hexdigest()[:12]
+
+
+def label_of(tiers):
+    """'named' mi 'placeholder' mi -- YENI ESIK ICAT EDILMEZ.
+
+    Kanit duzeyi zaten olculuyor (ro_evidence.tier). Bir yaprakta referansa
+    benzeyen en az bir uye varsa adlandirilmis sayilir; yoksa yer tutucu.
+    Olculdu: 2.081 yaprak (10.093 giris) tamamen uzak/novel uyelerden olusuyor
+    ve hepsi bugun karakterize bir enzimin adi altinda duruyor.
+    """
+    return "named" if {"characterized", "close_homolog", "family_member"} & set(tiers) \
+        else "placeholder"
+
+
 def ensure_schema(connection):
     connection.executescript("""
     DROP TABLE IF EXISTS leaf;
     DROP TABLE IF EXISTS ro_leaf;
     CREATE TABLE leaf (
-        leaf_id        TEXT PRIMARY KEY,   -- "cluster#index"
+        leaf_id        TEXT PRIMARY KEY,   -- ESKI bicim "cluster#index"; yonlendirme icin duruyor
+        variant_id     TEXT,               -- KALICI kimlik: RO-<12 hex>, icerikten
+        nearest_type   TEXT,               -- o anki en yakin kuratorlu tip: ETIKET, kimlik degil
+        label_kind     TEXT,               -- 'named' | 'placeholder'
         cluster        TEXT,
         size           INTEGER,
         depth          INTEGER,            -- kac bolme sonrasi homojenlesti
@@ -173,11 +225,14 @@ def ensure_schema(connection):
         candidate_id TEXT PRIMARY KEY,
         cluster      TEXT,
         leaf_id      TEXT,
+        variant_id   TEXT,
         leaf_size    INTEGER,
         leaf_depth   INTEGER
     );
     CREATE INDEX idx_leaf_cluster ON leaf(cluster);
     CREATE INDEX idx_roleaf_leaf  ON ro_leaf(leaf_id);
+    CREATE INDEX idx_leaf_variant ON leaf(variant_id);
+    CREATE INDEX idx_roleaf_var   ON ro_leaf(variant_id);
     """)
 
 
@@ -217,6 +272,16 @@ def main():
             by_cluster[row["ro_cluster"]].append(row["candidate_id"])
             organism_of[row["candidate_id"]] = row["organism"] or ""
 
+    # Kanit duzeyi: label_kind bunun uzerine kurulu, yeni esik icat edilmiyor.
+    # ro_evidence henuz yoksa (ilk kurulumda sira onceyse) hepsi placeholder
+    # olur ve bu DOGRU taraf: adlandirilmis saymak icin kanit gerekir.
+    tier_of = {}
+    try:
+        tier_of = {r[0]: r[1] for r in connection.execute(
+            "SELECT candidate_id, tier FROM ro_evidence")}
+    except Exception:                                   # noqa: BLE001
+        print("[uyari] ro_evidence yok; butun yapraklar placeholder sayilacak")
+
     ensure_schema(connection)
     leaf_rows, member_rows = [], []
     clusters = sorted(by_cluster.items(), key=lambda x: -len(x[1]))
@@ -227,20 +292,28 @@ def main():
         leaves = homogenize(members, aligned, raw, rng)
         leaves.sort(key=lambda x: -len(x[0]))
         for leaf_index, (leaf_members, depth, median) in enumerate(leaves):
-            leaf_id = f"{cluster}#{leaf_index}"
+            leaf_id = f"{cluster}#{leaf_index}"      # ESKI bicim; yonlendirme icin
+            # raw'da olmayan uye icin hizalanmis diziye dusulur -- homogenize()
+            # ayni geri dususu kullaniyor (raw.get(m, aligned[m])); kimlik ile
+            # bolme ayni diziyi gormek zorunda.
+            vid = variant_id(raw.get(m, aligned[m]) for m in leaf_members)
+            kind = label_of(tier_of.get(m, "") for m in leaf_members)
             genera = Counter(organism_of[m].split()[0] for m in leaf_members
                              if organism_of[m].split())
-            leaf_rows.append((
-                leaf_id, cluster, len(leaf_members), depth, round(median, 4),
-                1 if median >= HOMOGENEITY_TARGET else 0, leaf_members[0],
-                ";".join(f"{g}:{n}" for g, n in genera.most_common(5))))
+            leaf_rows.append(LeafRow(
+                leaf_id=leaf_id, variant_id=vid, nearest_type=cluster,
+                label_kind=kind, cluster=cluster, size=len(leaf_members),
+                depth=depth, median_identity=round(median, 4),
+                is_homogeneous=1 if median >= HOMOGENEITY_TARGET else 0,
+                representative=leaf_members[0],
+                top_genera=";".join(f"{g}:{n}" for g, n in genera.most_common(5))))
             for candidate_id in leaf_members:
-                member_rows.append((candidate_id, cluster, leaf_id,
+                member_rows.append((candidate_id, cluster, leaf_id, vid,
                                     len(leaf_members), depth))
     print()
 
-    connection.executemany("INSERT INTO leaf VALUES (?,?,?,?,?,?,?,?)", leaf_rows)
-    connection.executemany("INSERT INTO ro_leaf VALUES (?,?,?,?,?)", member_rows)
+    connection.executemany("INSERT INTO leaf VALUES (?,?,?,?,?,?,?,?,?,?,?)", leaf_rows)
+    connection.executemany("INSERT INTO ro_leaf VALUES (?,?,?,?,?,?)", member_rows)
     connection.commit()
 
     if CDHIT_FAILURES:
@@ -249,10 +322,10 @@ def main():
 
     # --- Ozet
     total_leaves = len(leaf_rows)
-    homogeneous = sum(1 for r in leaf_rows if r[5])
-    big_leaves = [r for r in leaf_rows if r[2] >= 10]
-    singletons = sum(1 for r in leaf_rows if r[2] == 1)
-    covered = sum(r[2] for r in leaf_rows if r[2] >= 10)
+    homogeneous = sum(1 for r in leaf_rows if r.is_homogeneous)
+    big_leaves = [r for r in leaf_rows if r.size >= 10]
+    singletons = sum(1 for r in leaf_rows if r.size == 1)
+    covered = sum(r.size for r in leaf_rows if r.size >= 10)
 
     print("\n" + "=" * 70)
     print(f"OZYINELEMELI HOMOJENIZASYON (hedef medyan kimlik >= {HOMOGENEITY_TARGET:.0%})")
@@ -262,10 +335,10 @@ def main():
     print(f"  >=10 uyeli yaprak   : {len(big_leaves):,}  ({covered:,} RO kapsiyor)")
     print(f"  tekil yaprak        : {singletons:,}")
 
-    per_cluster = Counter(r[1] for r in leaf_rows)
+    per_cluster = Counter(r.cluster for r in leaf_rows)
     depth_of = defaultdict(int)
     for r in leaf_rows:
-        depth_of[r[1]] = max(depth_of[r[1]], r[3])
+        depth_of[r.cluster] = max(depth_of[r.cluster], r.depth)
     print("\n  En cok yaprak veren kumeler (heterojenlik = cok yaprak):")
     print(f"  {'kume':16s} {'uye':>6s} {'yaprak':>7s} {'max derinlik':>12s} "
           f"{'en buyuk yaprak':>15s}")
@@ -273,7 +346,7 @@ def main():
     size = {c: len(m) for c, m in by_cluster.items()}
     largest_leaf = defaultdict(int)
     for r in leaf_rows:
-        largest_leaf[r[1]] = max(largest_leaf[r[1]], r[2])
+        largest_leaf[r.cluster] = max(largest_leaf[r.cluster], r.size)
     for cluster in sorted(per_cluster, key=lambda c: -per_cluster[c])[:14]:
         print(f"  {cluster:16s} {size[cluster]:>6,} {per_cluster[cluster]:>7d} "
               f"{depth_of[cluster]:>12d} {largest_leaf[cluster]:>15,}")
@@ -281,15 +354,16 @@ def main():
     path = os.path.join(args.out_dir, "leaves.csv")
     with open(path, "w", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["leaf_id", "cluster", "size", "depth", "median_identity",
-                         "is_homogeneous", "representative", "top_genera"])
+        # Basliklar alan adlarindan: sema degisince CSV de kendiliginden
+        # dogru kalir, elle guncellenen bir liste kalmaz.
+        writer.writerow(list(LeafRow._fields))
         writer.writerows(leaf_rows)
     print(f"\n[yazildi] {path}  ({total_leaves} yaprak)")
 
     print("\n  En homojen buyuk yapraklar (temiz enzim tipleri):")
-    for r in sorted(big_leaves, key=lambda x: -x[4])[:10]:
-        genera = r[7].split(";")[0] if r[7] else "?"
-        print(f"    {r[0]:20s} n={r[2]:>4d}  kimlik={r[4]:.2f}  {genera}")
+    for r in sorted(big_leaves, key=lambda x: -x.median_identity)[:10]:
+        genera = r.top_genera.split(";")[0] if r.top_genera else "?"
+        print(f"    {r.variant_id:16s} {r.label_kind:11s} n={r.size:>4d}  kimlik={r.median_identity:.2f}  {genera}")
     connection.close()
 
 

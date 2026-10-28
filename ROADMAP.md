@@ -5,6 +5,73 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+75. **ELLE HAZIRLANAN KIMYA/ORGANIZMA ALANLARININ DENETIMI -- 39 uyusmazlik,
+    6'si MAJOR; birincisi duzeltildi (2026-10-28).** Kullanici referans
+    tiplerini elle hazirladigini ve hata olabilecegini soyledi; atif taramasi
+    39 uyusmazlik bildirdi. Bir ajanin "uyusmuyor" demesi DUZELTME GEREKCESI
+    DEGILDIR, o yuzden `verify_curation_claims.py` yazildi: iddialari UniProt,
+    RCSB ve NCBI'ya karsi KENDISI olcer, duzeltmeyi yapmaz.
+
+    KAYNAKTAN DOGRULANAN TABLO (11 tartismali tip + 6 GenBank kaydi; her
+    kaydin dizisi bizdekiyle birebir, yani accession'lar DOGRU -- hata
+    kimya/organizma alanlarinda):
+    * `2_211_bfzA` -- kayitli substrat "benzene and fluorene", SMILES fluoren.
+      GenBank /product = "alpha subunit of buprofezin dioxygenase", /gene =
+      bfzA1. YANLIS. **DUZELTILDI** (asagida).
+    * `1_108_PobA` -- kayitli substrat 4-hydroxybenzoate; UniProt Q52185'in
+      protein adi "Phenoxybenzoate dioxygenase subunit alpha". 4-hidroksibenzoat
+      eter kirilmasinin URUN tarafi, substrat degil. YANLIS.
+    * `1_103_CarAa` -- `pdb: 1WW9` yanlis: 1WW9'un varligi Janthinobacterium
+      sp. J3 ve dizisi CarAa ile UYUSMUYOR; `1_102_CARDO` ile uyusuyor. Iki
+      ayri protein ayni PDB kaydina isaret ediyordu.
+    * `2_201_BphA1` -- `pdb: 2XR8` yanlis: 2XR8 varliklari B. xenovorans ve
+      dizimizle uyusmuyor. Dizimiz Q52028 = Metapseudomonas furukawaii (KF707).
+    * `2_215_cadA` -- substrat 2,4-D **DOGRU** (GenBank: "large subunit of
+      2,4-D oxygenase CadA"), ama organizma/makale yanlis: Sphingomonas sp.
+      ERG5, Bradyrhizobium HW13 degil. **Bu, "Acik sorular" bolumundeki
+      "cadA'nin substrati 2,4-D mi 2,4,5-T mi" sorusunu KAPATIR**: dizinin
+      geldigi kayit 2,4-D diyor.
+    * `4_402_PsbAb` -- dizi Rhodopseudomonas palustris psbAb; kayitli organizma
+      (C. testosteroni) ve substrat (4-sulfobenzoate) dizinin arkasindaki
+      kayitla desteklenmiyor.
+    * `3_312_NinA` -- substrat "nitroaromatic compounds" fazla genel; makale
+      1-nitronaftalin hakkinda. Gen adi hicbir kaynakta ninA degil.
+    * `3_313_KshA15` -- "15" ekinin hicbir kaynakta karsiligi yok; accession
+      P71875 = M. tuberculosis H37Rv kshA. Yalnizca ETIKET sorunu; degistirmek
+      URL'leri yeniden numaralandirir.
+    * `5_507_BmoA` **DOGRU** (RefSeq: "glycine betaine monooxygenase").
+
+    (a) bfzA DUZELTILDI. substrate_en -> buprofezin, SMILES PubChem CID
+    50367'den (hatirlanarak degil; yanlis SMILES eksik SMILES'ten kotudur),
+    product_en -> benzen halkasi dihidroksillenmis cis-dihidrodiol, family
+    pah -> anilines, source_kind general -> paper. Reaksiyon sinifi DEGISMEDI:
+    makalenin ozeti "degradation is initiated by the dihydroxylation of the
+    benzene ring" diyor, yani cis_dihydroxylation dogruydu.
+    AILE KURATOR ONAYI BEKLIYOR: `pah` kesin yanlisti (tek halka, PAH degil);
+    `anilines` secildi cunku oksitlenen halka N-substitue bir benzen, ama buradaki
+    azot amid benzeri, amin degil -- pestisit heterohalkalari icin yeni bir
+    sozluk girdisi tercih edilebilir.
+
+    (b) `types_build.py` surukleme kapisi ise yaradi: chemistry.csv'yi
+    farkliyken yazmayi REDDETTI ve farkin yalnizca bfzA'nin 7 alani oldugu
+    dogrulandiktan sonra `--allow-drift` ile yazildi. 37 degisen satirin
+    35'i yalnizca `source` (daha onceki kaynak dogrulamasinin metni), biri
+    AerC'nin `notes`'u, biri gerçek duzeltme.
+
+    (c) Dogrulama kapisindaki FAIL kapatildi: varyant kimligi isinden kalan
+    dort metin sutunu (`leaf.variant_id`, `leaf.nearest_type`,
+    `leaf.label_kind`, `ro_leaf.variant_id`) dil kontrolu siniflandirmasinda
+    yoktu. Ucu de kimlik olarak kaydedildi.
+
+    (d) ACIK: `ro_search` indeksi hala eski bfzA degerlerini tasiyor (93 kayit)
+    ve kapi bunu FAIL olarak gosteriyor -- DOGRU davranis. Rebuild butun
+    duzeltmeler bitince TEK kosuda yapilacak; o zamana kadar site yayina
+    ALINMAYACAK.
+
+    (e) SIRADAKI: PobA substrati, CarAa ve BphA1'in PDB alanlari, cadA
+    organizmasi, PsbAb organizma+substrat, NinA substrati. Sonra karboksilat
+    kolonu 471 -> 431.
+
 74. **ATIFLAR KUTUGE TASINDI -- 67 referans tipi artik yapisal olarak atifli
     (2026-10-28).** Bir veritabaninda yanlis atif, atifsizdan kotudur; o yuzden
     hicbir kunye el ile yazilmadi ve hicbiri tek bir kaynaktan kabul edilmedi.
@@ -931,9 +998,11 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
   denklestirilemiyor ya da cizdirilemiyor. Eklensin mi?
 - `curation_confidence` 71 tipin 70'inde "high"; alan hicbir ayrim tasimiyor.
   Yeniden derecelendirilsin mi?
-- cadA'nin substrati 2,4-D olarak isaretlendi ama KESIN DEGIL; Bradyrhizobium
-  HW13 cadABC makalesi hem 2,4-D hem 2,4,5-T aktivitesinden soz ediyor.
-  Elindeki orijinal referans hangisiyse soyler misin?
+- ~~cadA'nin substrati 2,4-D mi, 2,4,5-T mi?~~ **KAPANDI (2026-10-28, madde
+  75).** Soru yanlis makaleye dayaniyordu: bizdeki dizi Bradyrhizobium HW13
+  CadA DEGIL, Sphingomonas sp. ERG5 CadA (GenBank AGU69349.1, dizi birebir) ve
+  o kayit "large subunit of 2,4-D oxygenase CadA" diyor. Substrat 2,4-D olarak
+  DOGRU; duzeltilmesi gereken organizma ve atif.
 - Varyant kumelemesi ham dizide tekrarlanacak mi (madde 1)? Site genelinde
   sayilar degisir.
 - Site Ingilizce; Turkce surum de istenir mi?

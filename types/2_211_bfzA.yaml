@@ -1,17 +1,17 @@
 cluster: 2_211_bfzA
 gene: bfzA
 group: 2
-substrate_en: benzene and fluorene
-substrate_smiles: C1c2ccccc2-c2ccccc21
-product_en: cis-dihydrodiol
+substrate_en: buprofezin
+substrate_smiles: CC(C)N1C(=NC(C)(C)C)SCN(C1=O)C2=CC=CC=C2
+product_en: buprofezin cis-dihydrodiol (benzene ring dihydroxylated)
 reaction: cis-dihydroxylation
 reaction_class: cis_dihydroxylation
-family: pah
+family: anilines
 pdb: 
-source: established literature on the reference enzyme, no individual citation recorded
-source_kind: general
+source: 'GenBank ASM60826.1 (bfzA1, plasmid), Rhodococcus qingshengii YL-1; /product = "alpha subunit of buprofezin dioxygenase"; stored sequence verified byte-identical to that record (450 aa) on 2026-10-28. Functional basis: Chen et al., Appl Environ Microbiol 2017, doi:10.1128/aem.00868-17'
+source_kind: paper
 curation_confidence: high
-notes: substrate assignment is weak; the structure shown is fluorene
+notes: 'SUBSTRATE CORRECTED 2026-10-28. The record previously gave the substrate as "benzene and fluorene" with the fluorene SMILES, and its own note admitted the assignment was weak. Both the GenBank and the UniProt annotation of the accession whose sequence is byte-identical to the one stored here name the protein the alpha subunit of BUPROFEZIN dioxygenase (gene bfzA1), and the primary paper states that degradation of buprofezin is initiated by dihydroxylation of its benzene ring. The reaction class is therefore unchanged (cis-dihydroxylation); the substrate, its SMILES and the product are. CURATOR DECISION PENDING on family: it was "pah", which is wrong because buprofezin carries a single benzene ring and is not a polycyclic aromatic hydrocarbon. It is recorded as "anilines" because the ring that is oxidised is an N-substituted benzene, as in the two existing members of that family; but the nitrogen here is amide-like rather than an amine, so a curator may prefer a new vocabulary entry for pesticide heterocycles.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:

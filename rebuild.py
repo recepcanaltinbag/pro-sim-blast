@@ -55,6 +55,22 @@ MOTIF_HMM = "ROs_71_Clean/ROmotif71.hmm"
 # stats.json elle yeniden uretilmeseydi sayfa eski sayilari gosterecekti.
 ARTEFACTS = [
     # --- cekirdek pipeline (agir olanlar isaretli)
+    # reference_models: types/ -> chemistry.csv + refs71.fasta zincirinin SON
+    # halkasi. GRAFIKTE YOKTU (2026-10-28'de bulundu): biri types/'a referans
+    # ekleyip types_build.py --write kostuktan sonra rebuild.py --run
+    # calistirsa, motif modeli YENIDEN KURULMAZDI ve butun zincir eski modelle
+    # koscaktI. Bugune kadar yalnizca elle kosuldugu icin sorun cikmadi --
+    # yani dogru sonuc bir insanin hatirlamasina bagliydi. Bu, bu oturumda
+    # bulunan ALTINCI eksik kenar.
+    #
+    # RieskeDB71.hmm (atama kutuphanesi) BILEREK burada DEGIL: her tip icin
+    # profili build_type_profile.py kuruyor ve bu, aday havuzuna ve kurator
+    # kararina (kayma sinamasi, yarisma onizlemesi) bagli bir adim.
+    ("reference_models", [MOTIF_HMM, "ROs_71_Clean/ROmotif71_hmmaln.sto",
+                          "ROs_71_Clean/motif_columns.json"],
+     ["python3", "build_reference_models.py", "--refs", REFS,
+      "--out-dir", "ROs_71_Clean", "--name", "ROmotif71"],
+     ["build_reference_models.py", REFS], True),
     ("protein_filter", ["ro_alpha.csv", "ro_alpha.fasta", "ro_domtbl.out"],
      ["python3", "run_ro_filter.py", "--fasta", "combined_pfam.fasta",
       "--hmm", "RieskeDB71.hmm"],

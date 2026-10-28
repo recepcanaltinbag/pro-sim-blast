@@ -183,6 +183,14 @@ IDENTIFIER_TEXT_FIELDS = {
     ("gene_category", "category"),
     ("leaf", "leaf_id"), ("leaf", "cluster"), ("leaf", "representative"),
     ("leaf", "top_genera"),
+    # 2026-10-28, icerikten turetilen varyant kimlikleri. Ucu de KIMLIK:
+    # variant_id "RO-" + uye dizilerinin ozetinden turer, nearest_type bir
+    # kume kimligi, label_kind iki degerli bir sabit ("named"/"placeholder").
+    # Hicbiri cevrilecek proza degil, ama uc listeden birinde olmak ZORUNDA --
+    # yoksa dil kontrolu onlari hic gormez ve bir Turkce etiket sessizce
+    # arayuze cikar (euk_group'ta tam olarak bu oldu).
+    ("leaf", "variant_id"), ("leaf", "nearest_type"), ("leaf", "label_kind"),
+    ("ro_leaf", "variant_id"),
     ("leaf_profile", "leaf_id"), ("leaf_profile", "cluster"),
     ("leaf_profile", "top_genera"), ("leaf_profile", "neighbor_signature"),
     ("leaf_sdp", "leaf_id"), ("leaf_sdp", "cluster"), ("leaf_sdp", "residues"),
