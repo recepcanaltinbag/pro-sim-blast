@@ -192,6 +192,25 @@
       <div class="rxn__label">product</div>
     </div>
   </div>
+  {#  OKSIJENIN KADERI. Aile adi "oksijenaz" ama ailede urune hic oksijen
+      sokmayan uyeler var; o yuzden bu, sayfanin soylemesi gereken bir sey. #}
+  {% if ofate %}
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> {{ ofate.label }}.
+    {% if not ofate.transfers %}
+    O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
+    mechanistically an oxidase rather than an oxygenase. It is in this database
+    because it carries the Rieske cluster and the mononuclear iron site: the
+    name is a statement of family membership, not of mechanism.
+    {% elif ofate.fate == 'leaving_group' %}
+    The principal product keeps the oxygen count of the substrate; the oxygen
+    from O<sub>2</sub> leaves in the small released fragment.
+    {% endif %}
+    {% if ofate.basis %}<br><span class="small">{{ ofate.basis }}</span>{% endif %}
+    {% if ofate.from_type %}<br><span class="small note">Declared for this type:
+      its reaction class covers more than one oxygen fate.</span>{% endif %}
+  </div>
+  {% endif %}
   <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
   literature. The substrate is drawn from its SMILES string; products are given by name because
   drawing them would require assuming which ring positions are attacked in every member.

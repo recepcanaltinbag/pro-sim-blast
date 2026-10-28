@@ -192,6 +192,54 @@ def load_chemistry():
 
 CHEMISTRY = load_chemistry()
 
+# O2 OKSIJENININ KADERI. "Rieske oksijenaz" bir aile adidir ve ailenin icinde
+# urune hic oksijen sokmayan uyeler var (desaturasyon, C-C bagi kurma): O2
+# orada yalnizca yukseltgen. Site "dioksijenaz" diye suzen birine onlari da
+# veriyordu. Tablo oxygen_fate.py tarafindan types/ ve reaction_classes.yaml'dan
+# TURETILIR; chemistry.csv'ye sutun EKLENMEDI cunku o dosyayi yirmiden fazla
+# betik okuyor. Dosya yoksa sutun bos kalir, sayfa calisir.
+OXYGEN_FATE_PATH = os.environ.get(
+    "ROAR_OXYGEN_FATE", os.path.join(PARENT, "oxygen_fate.csv"))
+
+# Yayimlanan etiketler. Alan adlari makine icin, bu metinler insan icin.
+OXYGEN_FATE_LABEL = {
+    "product": "into the product",
+    "leaving_group": "into the leaving group",
+    "oxidant_only": "not incorporated",
+    "unknown": "unknown",
+}
+
+
+def load_oxygen_fate():
+    rows = {}
+    if os.path.exists(OXYGEN_FATE_PATH):
+        with open(OXYGEN_FATE_PATH) as fh:
+            for r in csv.DictReader(fh):
+                rows[r["cluster"]] = r
+    return rows
+
+
+OXYGEN_FATE = load_oxygen_fate()
+
+
+def _oxygen_fate_view(cluster):
+    """Tip sayfasi icin O2 oksijeninin kaderi, etiketi ve GEREKCESI.
+
+    Gerekce birlikte gonderilir cunku bu alan bir KARARDIR, veri degil: bazi
+    tiplerde deger reaksiyon sinifindan gelir, bazilarinda tipin kendi beyani
+    sinifi ezer. Sayfa degeri gosterip nereden geldigini soyleyemezse okur
+    onu veri sanar.
+    """
+    r = OXYGEN_FATE.get(cluster)
+    if not r:
+        return None
+    fate = r.get("oxygen_fate") or "unknown"
+    return {"fate": fate,
+            "label": OXYGEN_FATE_LABEL.get(fate, fate),
+            "basis": r.get("basis") or "",
+            "from_type": r.get("resolved_from") == "type",
+            "transfers": fate in ("product", "leaving_group")}
+
 
 def cluster_parts(cluster):
     parts = (cluster or "").split("_", 2)
@@ -284,8 +332,13 @@ def _cluster_row(d, leaves, euk, genera):
     eco = ECOLOGY.get(cluster, {})
     chem = CHEMISTRY.get(cluster, {})
     d.update(cluster_parts(cluster))
+    ofate = OXYGEN_FATE.get(cluster, {})
     d.update({"family": chem.get("family", ""),
               "reaction_class": chem.get("reaction_class", ""),
+              "oxygen_fate": ofate.get("oxygen_fate", ""),
+              "oxygen_fate_label": OXYGEN_FATE_LABEL.get(
+                  ofate.get("oxygen_fate", ""), ""),
+              "oxygen_fate_basis": ofate.get("basis", ""),
               "reaction": chem.get("reaction", ""),
               "pdb": chem.get("pdb", ""),
               "substrate": chem.get("substrate_en") or eco.get("substrate", ""),
@@ -487,7 +540,8 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
         total, rows = members_query(con, cluster=cluster, q=q, page=page)
         return render(request, "cluster.html", c=info, members=rows, total=total, page=page,
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "",
-                      chem=CHEMISTRY.get(cluster), x=cluster_extras(con, cluster))
+                      chem=CHEMISTRY.get(cluster), x=cluster_extras(con, cluster),
+                      ofate=_oxygen_fate_view(cluster))
     finally:
         con.close()
 

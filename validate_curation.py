@@ -79,12 +79,29 @@ VALID_CONFIDENCE = {"low", "medium", "high"}
 #                            kimyayi birlikte yapiyor; kirilma sinif olarak
 #                            secildi cunku sette eksik olan odur. Bu, semanin
 #                            bir sinirlamasidir, enzimin degil.
-VALID_REACTION_CLASS = {"cis_dihydroxylation", "angular_dioxygenation",
-                        "dioxygenation_with_release", "O_demethylation",
-                        "N_demethylation", "hydroxylation", "C_N_cleavage",
-                        "unknown",
-                        "desaturation", "N_oxygenation", "C_C_bond_formation", "oxygenolytic_ring_opening",
-                        "C_C_cleavage"}
+# 2026-10-28: liste ELLE TUTULMUYOR artik. Sinif adlari burada,
+# add_reference.py'de ve tiplerin alanlarinda ucuz ucuz ayrisabiliyordu; daha
+# onemlisi sinifin adi enzimin oksijen aktarip aktarmadigini soylemiyordu.
+# Tek kaynak reaction_classes.yaml ve oxygen_fate.py onu okur. Dosya yoksa
+# eski sabit liste yedek olarak kullanilir, yani davranis bozulmaz.
+_FALLBACK_REACTION_CLASS = {"cis_dihydroxylation", "angular_dioxygenation",
+                            "dioxygenation_with_release", "O_demethylation",
+                            "N_demethylation", "hydroxylation",
+                            "C_N_cleavage", "unknown", "desaturation",
+                            "N_oxygenation", "C_C_bond_formation",
+                            "oxygenolytic_ring_opening", "C_C_cleavage"}
+
+
+def _reaction_classes():
+    try:
+        import oxygen_fate                              # noqa: PLC0415
+        ids = set(oxygen_fate.load_vocab(ROOT))
+        return (ids | {"unknown"}) if ids else _FALLBACK_REACTION_CLASS
+    except Exception:                                   # noqa: BLE001
+        return _FALLBACK_REACTION_CLASS
+
+
+VALID_REACTION_CLASS = _reaction_classes()
 # 2026-10-16: tetrapyrroles eklendi -- PAO, CAO, PTC52 icin.
 # Manifestolar "chlorophyll_pathway" yaziyordu; DEGISTIRILDI. Sebep: bu
 # sozlugun butun oteki uyeleri substratin KIMYASAL SINIFI (alkylbenzenes,
@@ -559,6 +576,87 @@ def check_reference_set(rep, refs_path, pairs_path, eco, chem, con):
               f"{len(fasta_counts) - len(zero)} of {len(fasta_counts)} "
               f"references have members; zero-member: " + first(notes, 12),
               severity="WARN")
+
+
+def check_oxygen_fate(rep, root, chem):
+    """O2 oksijeninin kaderi her tip icin COZULEBILIYOR mu, ve turetilmis
+    tablo TAZE mi?
+
+    NEDEN. "Rieske oksijenaz" bir aile adidir; icinde urune hic oksijen
+    sokmayan uyeler var (desaturasyon, C-C bagi kurma). "Dioksijenaz" diye
+    filtreleyen biri onlari da aliyordu. Deger reaksiyon sinifindan
+    TURETILEMEZ: dioxygenation_with_release homojen degil -- nitroarenlerde
+    oksijen ana urune, fenoksiasetatlarda kopan glioksilata gidiyor. O yuzden
+    sozluk o siniflari `per_type` isaretler ve tipin kendi beyanini ZORUNLU
+    kilar. Bu kontrol beyanin EKSIK kalmasini sessizlestirmez.
+    """
+    try:
+        sys.path.insert(0, root)
+        import oxygen_fate                              # noqa: PLC0415
+        vocab = oxygen_fate.load_vocab(root)
+    except Exception as exc:                            # noqa: BLE001
+        rep.check("oxygen fate: vocabulary readable", False, 1,
+                  f"reaction_classes.yaml not usable ({exc})")
+        return
+
+    used = {(r.get("reaction_class") or "").strip() for r in chem}
+    undefined = sorted(c for c in used if c and c not in vocab)
+    rep.check("oxygen fate: every reaction class is defined in the vocabulary",
+              not undefined, len(undefined),
+              f"{len(vocab)} classes defined, {len(used)} in use"
+              if not undefined else first(undefined))
+
+    rows = oxygen_fate.table(root)
+    by = {r["cluster"]: r for r in rows}
+    bad_src = sorted(r["cluster"] for r in rows if r["resolved_from"] in
+                     ("missing_declaration", "undefined_class"))
+    rep.check("oxygen fate: every per-type class member declares its fate",
+              not bad_src, len(bad_src),
+              f"{sum(1 for r in rows if r['resolved_from'] == 'type')} types "
+              f"declare their own fate" if not bad_src else first(bad_src))
+
+    override = sorted(r["cluster"] for r in rows
+                      if r["resolved_from"] == "type_overrides_class")
+    rep.check("oxygen fate: no type silently contradicts its class default",
+              not override, len(override),
+              "no overrides" if not override else first(override))
+
+    bad_val = sorted(r["cluster"] for r in rows
+                     if r["oxygen_fate"] not in oxygen_fate.FATES)
+    rep.check("oxygen fate: every value is from the vocabulary",
+              not bad_val, len(bad_val),
+              "/".join(oxygen_fate.FATES) if not bad_val else first(bad_val))
+
+    # Gerekce alani SITEYE CIKAR: Turkce sizmasi burada yakalanmali.
+    leaks = []
+    for r in rows:
+        hits = turkish_hits(r.get("basis") or "")
+        if hits:
+            leaks.append(f"{r['cluster']}: {', '.join(sorted(hits))}")
+    rep.check("oxygen fate: the published basis text carries no Turkish",
+              not leaks, len(leaks),
+              f"{len(rows)} basis strings checked" if not leaks
+              else first(leaks, 4))
+
+    # TAZELIK: tablo diskte duruyorsa, tiplerden YENIDEN hesaplanmis haliyle
+    # ayni olmak zorunda. Bir tipin sinifi degisip tablo guncellenmezse site
+    # eski kaderi filtreler ve kimse farketmez.
+    path = os.path.join(root, oxygen_fate.OUT_FILE)
+    if not os.path.exists(path):
+        rep.check("oxygen fate: derived table exists", True, 0,
+                  f"{oxygen_fate.OUT_FILE} not written yet", severity="WARN")
+    else:
+        with open(path) as fh:
+            disk = list(csv.DictReader(fh))
+        stale = [r["cluster"] for r in disk
+                 if by.get(r["cluster"], {}).get("oxygen_fate")
+                 != r["oxygen_fate"]]
+        missing = sorted(set(by) - {r["cluster"] for r in disk})
+        rep.check("freshness: the derived oxygen-fate table matches types/",
+                  not stale and not missing, len(stale) + len(missing),
+                  f"{len(disk)} rows agree"
+                  if not stale and not missing
+                  else first(stale + [f"missing: {m}" for m in missing], 4))
 
 
 def check_reference_motifs(rep, root, refs_aln=None):
@@ -1337,6 +1435,7 @@ def main():
     check_reference_motifs(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
+    check_oxygen_fate(rep, ROOT, chem)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
     con.text_factory = str

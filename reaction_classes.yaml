@@ -1,0 +1,125 @@
+# REAKSIYON SINIFI SOZLUGU -- tek kaynak.
+#
+# NEDEN BU DOSYA VAR. Sinif adlari uc yerde yasiyordu: validate_curation.py ve
+# add_reference.py icindeki iki ayri VALID_REACTION_CLASS kumesi, ve tiplerin
+# kendi alanlari. Ucu ayrisabiliyordu. Daha onemlisi, sinifin ADI tek basina
+# enzimin OKSIJEN AKTARIP AKTARMADIGINI soylemiyordu: "desaturation" ve
+# "C_C_bond_formation" olan uc tipte urune hic oksijen girmiyor, O2 yalnizca
+# yukseltgen. "Dioksijenaz" diye filtreleyen biri onlari da aliyordu.
+#
+# OXYGEN_FATE ALANININ ANLAMI. O2'den gelen oksijen atomu NEREDE bitiyor:
+#   product       : en az bir O2 oksijeni ANA URUNDE (donusen iskelette)
+#   leaving_group : O2 oksijeni YALNIZCA kopan kucuk parcada (formaldehit,
+#                   glioksilat); ana urunun oksijen sayisi DEGISMIYOR
+#   oxidant_only  : hicbir urunde O2 oksijeni yok; O2 yalnizca elektron alicisi
+#   unknown       : belirlenmedi -- tahmin YAZILMAZ
+#   per_type      : SINIF HOMOJEN DEGIL; her tip kendi `oxygen_fate` alanini
+#                   beyan ETMEK ZORUNDA (dogrulama bunu arar)
+#
+# DIL. `evidence` alani SITEYE CIKAR, o yuzden Ingilizcedir. `why_per_type`
+# yalnizca kuratore bakar ve yayimlanmaz, Turkce kalabilir. Bu ayrim onemli:
+# ilk denemede gerekceler Turkce yazildi ve turetilmis tabloya Turkce metin
+# sizdi.
+#
+# Her deger formul aritmetigiyle sinandi; formuller PubChem'den okundu,
+# hatirlanmadi.
+
+reaction_classes:
+
+  - id: cis_dihydroxylation
+    label: "cis-dihydroxylation"
+    oxygen_fate: product
+    evidence: >
+      naphthalene C10H8 -> cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2:
+      both oxygens are new and both are in the product.
+
+  - id: angular_dioxygenation
+    label: "angular dioxygenation"
+    oxygen_fate: product
+    evidence: >
+      two hydroxyls are added to the angular ring carbons; the product
+      skeleton gains oxygen.
+
+  - id: hydroxylation
+    label: "hydroxylation"
+    oxygen_fate: product
+    evidence: >
+      a single oxygen atom is inserted into the product skeleton.
+
+  - id: oxygenolytic_ring_opening
+    label: "oxygenolytic ring opening"
+    oxygen_fate: product
+    evidence: >
+      PAO: oxygen is incorporated into the ring-opened product as the chlorin
+      macrocycle is cleaved.
+
+  - id: N_oxygenation
+    label: "N-oxygenation"
+    oxygen_fate: product
+    evidence: >
+      PrnD: amine -> nitro; the oxygen stays on the nitrogen of the product.
+
+  - id: O_demethylation
+    label: "O-demethylation"
+    oxygen_fate: leaving_group
+    evidence: >
+      guaiacol C7H8O2 -> catechol C6H6O2 + CH2O. Catechol holds the SAME
+      number of oxygens as guaiacol (2); the added oxygen is in the
+      formaldehyde. Vanillate C8H8O4 -> protocatechuate C7H6O4 + CH2O gives
+      the same result.
+
+  - id: N_demethylation
+    label: "N-demethylation"
+    oxygen_fate: leaving_group
+    evidence: >
+      caffeine C8H10N4O2 -> theobromine C7H8N4O2 + CH2O. Theobromine holds the
+      SAME number of oxygens as caffeine (2); the added oxygen is in the
+      formaldehyde.
+
+  - id: desaturation
+    label: "desaturation"
+    oxygen_fate: oxidant_only
+    evidence: >
+      cholesterol C27H46O -> 7-dehydrocholesterol C27H44O: two hydrogens lost,
+      no oxygen gained. O2 is the oxidant here, not an oxygen donor.
+
+  - id: C_C_bond_formation
+    label: "oxidative C-C bond formation"
+    oxygen_fate: oxidant_only
+    evidence: >
+      undecylprodigiosin C25H35N3O -> streptorubin B C25H33N3O: two hydrogens
+      lost, no oxygen gained.
+
+  - id: dioxygenation_with_release
+    label: "dioxygenation with substituent release"
+    oxygen_fate: per_type
+    evidence: >
+      the class is not homogeneous, so each type declares its own fate: in the
+      nitroarenes and anilines both oxygens enter the catechol, whereas in the
+      phenoxyacetates the ether is cleaved and the oxygen leaves in the
+      glyoxylate.
+    why_per_type: >
+      SINIF HOMOJEN DEGIL. Nitroarenlerde ve anilinlerde her iki oksijen
+      katekole girer (nitrobenzen C6H5NO2 -> katekol C6H6O2: katekolun iki
+      oksijeni de yeni, eskiler nitritle ayrilir). Fenoksiasetatlarda ise eter
+      kirilir ve oksijen GLIOKSILATA gider: 2,4-D C8H6Cl2O3 -> 2,4-diklorofenol
+      C6H4Cl2O + glioksilat C2H2O3; fenolun tek oksijeni eski eter oksijenidir.
+
+  - id: C_N_cleavage
+    label: "oxidative C-N cleavage"
+    oxygen_fate: per_type
+    evidence: >
+      the skeleton splits in two and which fragment keeps the oxygen varies by
+      type, so each type declares its own fate.
+    why_per_type: >
+      Iskelet iki parcaya ayrilir ve oksijenin hangi parcada bittigi tipe gore
+      degisir.
+
+  - id: C_C_cleavage
+    label: "oxidative C-C cleavage"
+    oxygen_fate: per_type
+    evidence: >
+      the single member is AerC and the oxygen fate of its product was not
+      determined; no value is guessed.
+    why_per_type: >
+      Tek uye AerC ve urunun oksijen kaderi belirlenmedi; tahmin yazilmaz.

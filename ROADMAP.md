@@ -5,6 +5,67 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+77. **OKSIJENIN KADERI ARTIK BIR ALAN VE BIR FILTRE (2026-10-28).** Kullanici,
+    urune oksijen sokmayan uyeler bulununca "bunu filtreye eklemek gerekir,
+    biz oksijen aktaranlara odakleniyoruz" dedi. Dogru teshis: "dioksijenaz"
+    diye suzen biri desaturazlari da aliyordu.
+
+    (a) DEGER REAKSIYON SINIFINDAN TURETILEMEZ. Ilk tasarim sinif -> kader
+    eslemesiydi ve YANLIS olacakti: `dioxygenation_with_release` homojen degil.
+    Nitroarenlerde ve anilinlerde her iki oksijen katekole giriyor (nitrobenzen
+    C6H5NO2 -> katekol C6H6O2: katekolun iki oksijeni de yeni, eskiler
+    nitritle ayriliyor; anilin C6H7N'de hic oksijen yok, yani ikisi de yeni
+    olmak ZORUNDA). Fenoksiasetatlarda ise eter kiriliyor ve oksijen
+    GLIOKSILATA gidiyor: 2,4-D C8H6Cl2O3 -> 2,4-diklorofenol C6H4Cl2O +
+    glioksilat C2H2O3; fenolun tek oksijeni eski eter oksijenidir. Ayni sinif
+    iki ayri kader tasiyor.
+
+    (b) UC DEGER DEGIL, DORT. Ikili bir "oksijen giriyor mu" alani veriyi
+    yanlis temsil ederdi, cunku demetilasyonlarda oksijen URUNE DEGIL kopan
+    formaldehite giriyor ve bu 13 tip ediyor:
+      product 59 | leaving_group 13 | oxidant_only 3 | unknown 1
+    Her deger formul aritmetigiyle sinandi, formuller PubChem'den okundu:
+    kafein C8H10N4O2 -> teobromin C7H8N4O2 + CH2O (teobrominin oksijen sayisi
+    kafeinle AYNI), guaiacol C7H8O2 -> katekol C6H6O2 + CH2O, vanillat
+    C8H8O4 -> protokatekuat C7H6O4 + CH2O. unknown olan AerC: tahmin yazilmadi.
+
+    (c) TEK KAYNAK: `reaction_classes.yaml`. Sinif adlari uc yerde yasiyordu
+    (validate_curation.py ve add_reference.py'de iki ayri VALID_REACTION_CLASS
+    kumesi, ve tiplerin alanlari). Artik sozluk dosyada, VALID_REACTION_CLASS
+    onu okuyor, dosya yoksa eski sabit liste yedek. Homojen OLMAYAN siniflar
+    `per_type` isaretli ve tipin kendi `oxygen_fate` + `oxygen_fate_basis`
+    beyanini ZORUNLU kiliyor; 14 tip beyan etti.
+
+    (d) chemistry.csv'ye SUTUN EKLENMEDI. O dosyayi yirmiden fazla betik
+    okuyor ve sema degisikligi gereksiz risk. Deger `oxygen_fate.py` ile
+    types/ + sozlukten TURETILIP `oxygen_fate.csv`'ye yaziliyor; adim
+    rebuild.py grafigine girdi (50 artefakt) cunku bir tipin sinifi degisip
+    tablo guncellenmezse site eski kaderi filtreler ve kimse farketmez.
+
+    (e) ALTI YENI KONTROL, hepsi gecti (kapi 88 -> 94 kontrol): her sinif
+    sozlukte tanimli mi, her per_type uyesi beyan etmis mi, tip sinifi
+    sessizce eziyor mu, degerler sozlukten mi, yayimlanan gerekce metninde
+    Turkce var mi, turetilmis tablo taze mi. Kontroller BOZULARAK sinandi:
+    alti saldirgan senaryonun hicbiri sessizce `product` varsaymiyor; gecersiz
+    deger bile `unknown` donuyor.
+
+    (f) DIL TUZAGINA DUSULDU VE YAKALANDI. Ilk yazimda sinif gerekceleri
+    Turkce yazildi ve turetilmis tabloya Turkce metin SIZDI -- bu tablo siteye
+    besleme yapiyor. `evidence` alani artik Ingilizce (yayimlanir),
+    `why_per_type` Turkce (yalnizca kurator). Sizintiyi kalici olarak kapatmak
+    icin Turkce kontrolu bu sutuna da baglandi.
+
+    (g) SITE. `/clusters` tablosuna "O2 ends up" sutunu eklendi ve
+    `data-facet` ile FILTRELENEBILIR; gerekce tooltip olarak geliyor. Tip
+    sayfasinda reaksiyon sekilinin altinda bir kutu var ve oksijen
+    girmiyorsa sunu YAZIYOR: "O2 is the oxidant here, not an oxygen donor, so
+    this enzyme is mechanistically an oxidase rather than an oxygenase... the
+    name is a statement of family membership, not of mechanism." 76 tip
+    sayfasinin 76'sinda kutu goruldu; basliklar ve hucreler 16/16 hizali.
+
+    (h) ACIK: rebuild henuz kosulmadi (bfzA icin ro_search bayat) ve site
+    yayina ALINMADI.
+
 76. **SEKIZ ADAY REFERANS FIILEN SETTEYDI AMA ETIKETI "ONAYLANMADI" DIYORDU --
     kofaktor olcutuyle onaylandi (2026-10-28).** Kullanici PAO ve RedG'yi RO
     saymanin sorun olup olmadigini sordu ve gerekcesini "o da bir

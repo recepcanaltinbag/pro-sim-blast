@@ -71,6 +71,15 @@ ARTEFACTS = [
      ["python3", "build_reference_models.py", "--refs", REFS,
       "--out-dir", "ROs_71_Clean", "--name", "ROmotif71"],
      ["build_reference_models.py", REFS], True),
+    # oxygen_fate: types/ + reaction_classes.yaml -> oxygen_fate.csv. Hafif
+    # ama GRAFIKTE OLMAK ZORUNDA: bir tipin reaksiyon sinifi degisip tablo
+    # guncellenmezse site eski kaderi filtreler ve kimse farketmez.
+    # chemistry.csv BILEREK girdi degil -- deger tiplerden ve sozlukten
+    # turetilir, chemistry.csv'ye sutun eklenmedi (o dosyayi yirmiden fazla
+    # betik okuyor).
+    ("oxygen_fate", ["oxygen_fate.csv"],
+     ["python3", "oxygen_fate.py", "--write"],
+     ["oxygen_fate.py", "reaction_classes.yaml", "types"], False),
     ("protein_filter", ["ro_alpha.csv", "ro_alpha.fasta", "ro_domtbl.out"],
      ["python3", "run_ro_filter.py", "--fasta", "combined_pfam.fasta",
       "--hmm", "RieskeDB71.hmm"],
