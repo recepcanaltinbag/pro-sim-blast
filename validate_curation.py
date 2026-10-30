@@ -236,6 +236,13 @@ IDENTIFIER_TEXT_FIELDS = {
     ("ro_triad", "carboxylate_residue"), ("ro_triad", "carboxylate_source"),
     ("ro_triad", "his_source"), ("ro_triad", "triad_status"),
     ("ro_triad_meta", "key"), ("ro_triad_meta", "value"),
+    # 2026-10-30, genomik baglami olmayan protein-duzeyi girisler.
+    # protein_name/accession UniProt kimlikleri, ro_cluster bir tip kimligi,
+    # kalinti harfleri sabit kume, linked_candidate_id bir `ro` anahtari.
+    # Hicbiri cevrilecek proza degil.
+    ("ro_protein", "protein_name"), ("ro_protein", "accession"),
+    ("ro_protein", "ro_cluster"), ("ro_protein", "carboxylate_residue"),
+    ("ro_protein", "bridging_residue"), ("ro_protein", "linked_candidate_id"),
     ("ro_domain", "candidate_id"), ("ro_domain", "cluster"), ("ro_domain", "domain"),
     ("ro_etc", "candidate_id"),
     ("ro_evidence", "candidate_id"), ("ro_evidence", "nearest_ref"),

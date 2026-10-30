@@ -158,7 +158,14 @@ def main():
 
     print("\n[sonuc] protein-duzeyi giris: %d" % len(rows))
     print("   Rieske 4/4 + triad >=2/3 (mevcut kapi) : %d" % gate_pass)
-    print("   Rieske 4/4 + triad 3/3   (3/3 kapisi)  : %d" % triad3)
+    # Bu sayi SABIT KOLON okumasidir ve dolayisiyla SISMIS bir yokluk
+    # bildirir. `ro` tablosunda ayni okuma 2388 giriste "karboksilat yok"
+    # dedi; tip-ici capali okuma o sayiyi 24'e dusurdu. Buradaki 3/3 sayisi
+    # bir KAPI DEGERI olarak kullanilmamalidir -- protein-duzeyi girislerde
+    # henuz capali okuma YOK (tip basina pozitif capa kurulmasi gerekiyor).
+    print("   Rieske 4/4 + triad 3/3 SABIT KOLONDA     : %d" % triad3)
+    print("      (SISMIS: sabit kolon okumasi; `ro`da ayni okuma 2388 yokluk "
+          "dedi, capali okuma 24'e dusurdu -- kapi degeri DEGIL)")
     print("   genom-baglamli bir girisle AYNI dizi   : %d" % linked)
     print("   yeni, baglamsiz dizi                   : %d"
           % (len(rows) - linked))

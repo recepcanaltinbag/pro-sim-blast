@@ -262,7 +262,10 @@ def main():
             else:
                 his_source = "anchored"
                 h1_off = h2_off = None
-                h1, h2 = anchored["his1"], anchored["his2"]
+                # Capa kolonunda OTURAN kalinti. Pencerede bulunani yazmak
+                # "his_absent" satirlarinda kalinti olarak H gosteriyordu.
+                h1 = anchored.get("his1_at_column", anchored["his1"])
+                h2 = anchored.get("his2_at_column", anchored["his2"])
                 his_note = ("no histidine at this type's own anchored columns "
                             "(the type's positives carry one in %s of cases), "
                             "so the site is genuinely incomplete"

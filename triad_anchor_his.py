@@ -180,6 +180,8 @@ def anchor_his_for_cluster(cluster, undecided, positives, entries, index, refs,
         res2, off2, at2 = read_at(row, col2, "H", window)
         if off1 is None or off2 is None:
             calls[cid] = {"call": "absent", "his1": res1, "his2": res2,
+                          "his1_at_column": row[col1].upper(),
+                          "his2_at_column": row[col2].upper(),
                           "spacing": None}
             spacings["bulunamadi"] += 1
             continue
@@ -200,7 +202,14 @@ def anchor_his_for_cluster(cluster, undecided, positives, entries, index, refs,
             call = "present_at_shifted_column"
         else:
             call = "absent"
-        calls[cid] = {"call": call, "his1": res1, "his2": res2,
+        calls[cid] = {"call": call,
+                      # Pencerede BULUNAN kalinti (cagri icin) ve capa
+                      # kolonunda OTURAN kalinti (yokluk gerekcesi icin)
+                      # ayri saklanir: ikisini karistirmak "his_absent" olan
+                      # bir satirda kalinti olarak H yazdiriyordu.
+                      "his1": res1, "his2": res2,
+                      "his1_at_column": row[col1].upper(),
+                      "his2_at_column": row[col2].upper(),
                       "spacing": spacing, "offset": (off1, off2),
                       "at_exact_anchor_column": exact,
                       "canonical_spacing": canonical,
@@ -321,18 +330,25 @@ def main():
     entries = {r[0]: {"sequence": r[1], "cluster": r[2]} for r in con.execute(
         "SELECT candidate_id, sequence, ro_cluster FROM ro WHERE is_confirmed = 1")}
     try:
-        triad = {r[0]: (r[1], r[2]) for r in con.execute(
-            "SELECT candidate_id, triad_status, carboxylate_source FROM ro_triad")}
+        # Secim his_source uzerinden yapilir, triad_status uzerinden DEGIL:
+        # bu betik kostuktan sonra triad_gate durumu 'his_needs_anchoring'ten
+        # 'his_absent'e cevirdigi icin duruma bakan bir secim ikinci kosuda
+        # BOS kume dondurur (dongusel bagimlilik; 2026-10-30'da gorildu).
+        # his_source != 'fixed_column' = "His sabit kolonda okunamadi" ve bu
+        # kosudan kosuya sabittir.
+        triad = {r[0]: (r[1], r[2], r[3]) for r in con.execute(
+            "SELECT candidate_id, triad_status, carboxylate_source, his_source "
+            "FROM ro_triad")}
     except sqlite3.OperationalError:
         log("[HATA] ro_triad yok. Once: python3 triad_gate.py --apply")
         return 2
     con.close()
     log("[DB] onaylanmis giris %d, ro_triad satiri %d" % (len(entries), len(triad)))
 
-    his_undecided = sorted(c for c, (s, _) in triad.items()
-                           if s == "his_needs_anchoring")
-    carbox_untested = sorted(c for c, (s, _) in triad.items()
-                             if s == "carboxylate_untested")
+    his_undecided = sorted(c for c, (_s, _c, hs) in triad.items()
+                           if hs and hs != "fixed_column")
+    carbox_untested = sorted(c for c, (_s, cs, _hs) in triad.items()
+                             if cs == "untested")
     log("[is] His karari verilemeyen %d giris, karboksilati test edilemeyen %d"
         % (len(his_undecided), len(carbox_untested)))
     if not his_undecided and not carbox_untested:
@@ -367,8 +383,8 @@ def main():
         % (len(ref_carbox_raw), len(refs)))
 
     his_positives = defaultdict(list)
-    for cid, (status, _) in triad.items():
-        if status != "his_needs_anchoring" and cid in index:
+    for cid, (_status, _carbox, his_source) in triad.items():
+        if his_source == "fixed_column" and cid in index:
             his_positives[entries[cid]["cluster"]].append(cid)
 
     by_cluster = defaultdict(list)

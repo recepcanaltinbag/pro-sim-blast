@@ -1967,8 +1967,32 @@ Siradaki (bu sirayla):
   2. Geriye kalan 44 gercek yoklugu (24 karboksilat + 20 His) tek tek motif
      ISTISNASI olarak belgelemek: hicbiri "RO degil" demek degil, Rieske 4/4
      hepsinde tam.
-  3. `ingest_protein_entries.py`: hizalama hazir (657 MB, tamamlanmis),
-     ro_protein tablosu kurulacak.
+  3. Protein-duzeyi girisler icin de capali okuma kurmak (asagi, 97).
+
+## 97. `ro_protein` kuruldu -- genomik baglami olmayan 73.699 RO alpha
+
+Kullanici karari: "annotasyonlu genbank olmasa da protein olmali bizim
+db'de". `ingest_protein_entries.py` kosuldu (hizalama 657 MB, onceden
+tamamlanmis, yeniden hizalanmadi).
+
+    protein-duzeyi giris                      73.699
+    Rieske 4/4 + triad >=2/3 (mevcut kapi)    72.586
+    Rieske 4/4 + triad 3/3 SABIT KOLONDA      62.063   <- SISMIS, bkz asagi
+    genom-baglamli bir girisle AYNI dizi      17.452
+    yeni, baglamsiz dizi                      56.247
+
+AYRI TABLO, `ro`'ya ek satir DEGIL: sitedeki her giris-bazli istatistik
+(plazmit orani, operon kurallari, komsuluk zenginlesmesi, izolasyon kaynagi,
+regulasyon) bir genom konumu varsayar. Baglamsiz satirlar `ro`'ya eklenirse
+paydalar 3,4 katina cikar ve paylar degismez. Ayri tabloda baglam isteyen
+bir sorgu bu satirlari BULAMAZ, yani yanlis sayi yerine eksik sayi uretir.
+
+62.063 sayisi KAPI DEGERI OLARAK KULLANILMAMALI: sabit-kolon okumasidir ve
+dolayisiyla sismis bir yokluk bildirir -- `ro`da ayni okuma 2388 yokluk
+dedi, capali okuma 24'e dusurdu. Protein-duzeyi girislerde capali okuma
+henuz YOK; tip basina pozitif capa kurulmasi gerekiyor. 3/3 kapisi
+protein tablosuna uygulanmadan once bu yapilmali, yoksa ~10.000 gercek
+enzim sessizce elenir.
 
 Yeni hata, ayni sinifin dordunculusu: `has_carbox = (carbox or "") in "DE"`
 Python'da BOS okumayi "var" sayar (`"" in "DE"` True'dur) ve AerC'nin 7
