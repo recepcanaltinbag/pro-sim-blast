@@ -518,7 +518,8 @@ def cluster_detail(con, cluster):
           AND (e.tier IS NULL OR e.tier NOT IN ('characterized', 'close_homolog'))
         GROUP BY o.layout ORDER BY n DESC LIMIT 8""", (cluster,)).fetchall()
     info["leaves"] = con.execute("""
-        SELECT l.leaf_id, l.size, l.median_identity, l.is_homogeneous, l.top_genera,
+        SELECT l.leaf_id, l.size, l.median_identity, l.is_homogeneous, l.depth,
+               l.top_genera,
                l.representative, lp.label, lp.plasmid_rate, lp.neighbor_signature
         FROM leaf l LEFT JOIN leaf_profile lp USING(leaf_id)
         WHERE l.cluster=? ORDER BY l.size DESC""", (cluster,)).fetchall()
@@ -1267,6 +1268,8 @@ import atlas  # noqa: E402
 
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
+    leaf_stop_reason=atlas.leaf_stop_reason,
+    LEAF_STOP_REASONS=atlas.LEAF_STOP_REASONS,
     element_slug=atlas.element_slug,
     hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,

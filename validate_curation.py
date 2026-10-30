@@ -983,6 +983,86 @@ def check_literature_motif_spacing(rep, root):
               f"these columns has moved")
 
 
+def check_leaf_stop_reason(rep, root):
+    """Heterojen bir yapragin NEDEN bolunmeyi biraktigi kayitli mi?
+
+    NEDEN. recursive_homogenize.py yapraklari, medyan ikili kimlik 0,70'e
+    ulasana kadar artan CD-HIT esikleriyle boluyor. Ama iki BAGIMSIZ kural
+    bolmeyi erken kesebiliyor: dugum MIN_SPLIT_SIZE'dan kucukse, ya da esik
+    listesi tukenmisse. 2026-10-30'da olculdu: is_homogeneous=0 olan 420
+    yapragin 420'si (1.460 uye) BOYUT tabani yuzunden durdu, hicbiri esik
+    listesini tuketmedi. Yani sayfadaki yalin "heterogeneous" etiketi
+    yaniltiyordu: okuyucu homojenlik hedefinin tutturulamadigini sanirken
+    hedef hic sorulmamisti. Bu, bu projenin tekrar eden hata bicimi --
+    karar veren kural, karar verdigini soyledigimiz kural degil (bkz. triad
+    aralik sarti ve kolon 471/431 vakalari). Kapi iki seyi tutuyor:
+    sabitlerin kopyasi kaynagindan ayrismasin, ve her heterojen yapragin
+    durma nedeni TURETILEBILIR olsun. "unexplained" cikan bir yaprak,
+    homojenizasyonun belgelenmemis bir yoldan ciktigi anlamina gelir.
+
+    Yaprak taksonomik bir birim DEGIL. Literaturde bir RO "varyantini"
+    tanimlayan yuzde esigi yok: Kweon 2008 semasi elektron ortaklarina,
+    ro_group alfa alt birimi kumelenmesine dayanir (citations.yaml'deki
+    kweon2008_classification notu). Yaprak bunlarin hicbiri degil, agac
+    boyutunu kisan islevsel bir gruplamadir ve sayfada oyle okunmali.
+    """
+    label = "leaves: every heterogeneous leaf records why splitting stopped"
+    db = os.path.join(root, "roar.sqlite")
+    if not os.path.exists(db):
+        rep.check(label, False, 0, "roar.sqlite yok", severity="WARN")
+        return
+
+    problems = []
+    try:
+        sys.path.insert(0, root)
+        sys.path.insert(0, os.path.join(root, "webapp"))
+        import atlas  # noqa: F401
+        import recursive_homogenize as rh
+    except Exception as exc:  # pragma: no cover
+        rep.check(label, False, 0, "sabitler okunamadi: %s" % exc, severity="WARN")
+        return
+
+    # Sabitler atlas.py'de KOPYALANMIS; kaynak recursive_homogenize.py.
+    # Ayrisirlarsa sayfa yanlis neden basar, o yuzden burada tutuluyor.
+    if atlas.HOMOGENEITY_MIN_SPLIT_SIZE != rh.MIN_SPLIT_SIZE:
+        problems.append(
+            "atlas.HOMOGENEITY_MIN_SPLIT_SIZE=%s, recursive_homogenize.MIN_SPLIT_SIZE=%s"
+            % (atlas.HOMOGENEITY_MIN_SPLIT_SIZE, rh.MIN_SPLIT_SIZE))
+    if atlas.HOMOGENEITY_MAX_DEPTH != len(rh.THRESHOLDS):
+        problems.append(
+            "atlas.HOMOGENEITY_MAX_DEPTH=%s, len(THRESHOLDS)=%s"
+            % (atlas.HOMOGENEITY_MAX_DEPTH, len(rh.THRESHOLDS)))
+
+    con = sqlite3.connect("file:%s?mode=ro" % db, uri=True)
+    try:
+        have = {r[0] for r in con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'")}
+        if "leaf" not in have:
+            rep.check(label, False, 0, "leaf tablosu yok", severity="WARN")
+            return
+        rows = con.execute(
+            "SELECT leaf_id, size, depth, is_homogeneous FROM leaf "
+            "WHERE is_homogeneous = 0").fetchall()
+    finally:
+        con.close()
+
+    counts = {}
+    unexplained = []
+    for leaf_id, size, depth, homo in rows:
+        reason = atlas.leaf_stop_reason(size, depth, homo)
+        counts[reason] = counts.get(reason, 0) + 1
+        if reason == "unexplained":
+            unexplained.append(leaf_id)
+    if unexplained:
+        problems.append("durma nedeni turetilemeyen %d yaprak: %s"
+                        % (len(unexplained), ", ".join(unexplained[:5])))
+
+    detail = "%d heterojen yaprak; %s" % (
+        len(rows), ", ".join("%s=%d" % kv for kv in sorted(counts.items())) or "-")
+    rep.check(label, not problems, len(problems),
+              "; ".join(problems) if problems else detail)
+
+
 def check_triad_gate(rep, root):
     """Yayinlanan triad tanimi 3/3 mu, ve bu karar TAZE mi?
 
@@ -1834,6 +1914,7 @@ def main():
     check_motif_columns_anchored(rep, ROOT)
     check_literature_motif_spacing(rep, ROOT)
     check_triad_gate(rep, ROOT)
+    check_leaf_stop_reason(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)

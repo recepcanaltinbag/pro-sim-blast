@@ -579,7 +579,11 @@ target. A variant is the finest unit at which a distinct function can reasonably
     <td class="small">{{ (l.top_genera or '').replace(';', ', ') }}</td>
     <td class="small">{{ l.neighbor_signature or '–' }}</td>
     <td class="num" data-v="{{ 100 * (l.plasmid_rate or 0) }}">{{ '%.0f' % (100 * (l.plasmid_rate or 0)) }}</td>
-    <td>{% if l.is_homogeneous %}<span class="chip chip--ok">homogeneous</span>{% else %}<span class="chip chip--warn">heterogeneous</span>{% endif %}</td></tr>
+    <td>{% if l.is_homogeneous %}<span class="chip chip--ok">homogeneous</span>
+      {% else %}{% set stop = leaf_stop_reason(l.size, l.depth, l.is_homogeneous) %}
+      <span class="chip chip--warn" title="Splitting stopped because {{ LEAF_STOP_REASONS[stop] }}.">heterogeneous</span>
+      <span class="note">{{ 'too small to split' if stop == 'too_small_to_split' else ('thresholds exhausted' if stop == 'identity_thresholds_exhausted' else 'unexplained') }}</span>
+      {% endif %}</td></tr>
   {% endfor %}
   </tbody>
 </table></div>

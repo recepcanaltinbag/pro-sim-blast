@@ -40,7 +40,23 @@ from ro_motif import read_stockholm_matchcols
 
 # Bir dugumun "homojen yaprak" sayilmasi icin gereken medyan ikili kimlik
 HOMOGENEITY_TARGET = 0.70
-# Bundan kucuk dugumler bolunmez (asiri parcalanmayi onler)
+# Bundan kucuk dugumler bolunmez (asiri parcalanmayi onler).
+#
+# AMA BU TABAN SANILDIGINDAN COK DAHA FAZLA KARAR VERIYOR. 2026-10-30'da
+# olculdu: is_homogeneous=0 olan 420 yapragin 420'si (1.460 uye) BURADA durdu;
+# HICBIRI esik listesini tuketmedi (en derin adim 4, liste 5 uzunlugunda).
+# Yani "homojenlik hedefi tutturulamadi" dedigimiz yapraklarda hedef aslinda
+# hic SORULMAMIS -- dugum 8 uyeden kucuk oldugu icin bolme hic denenmemis.
+# Ortalama medyan kimlikleri 0,60, en dususu 0,425: bu yapraklarin temsilcisi
+# birbirinden gercekten ayrilan uyeleri temsil ediyor.
+#
+# Bu, bu projenin tekrar eden hata bicimi: karar veren kural, karar verdigini
+# soyledigimiz kural degil (bkz. triad aralik sarti, kolon 471/431 vakasi).
+# Tabani dusurmek homojenligi gercekten karar verici yapar, ama tum
+# yapraklari yeniden kurar -- leaf_id'ler degisir, yani agac, leaf_profile,
+# leaf_sdp ve kalici sayfa baglantilari da degisir. O yuzden sabit DEGISMEDI;
+# bunun yerine durma nedeni yayimlaniyor (webapp/atlas.py leaf_stop_reason)
+# ve validate_curation.py check_leaf_stop_reason sabitlerin ayrismasini tutuyor.
 MIN_SPLIT_SIZE = 8
 # Artan CD-HIT esikleri -- her derinlikte bir sonraki kullanilir
 THRESHOLDS = [0.50, 0.60, 0.70, 0.80, 0.90]

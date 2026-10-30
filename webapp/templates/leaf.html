@@ -7,7 +7,14 @@
   <dt>Reference type</dt><dd><a href="{{ u('/cluster/' ~ leaf.cluster) }}">{{ leaf.cluster }}</a></dd>
   <dt>Label</dt><dd>{{ leaf.label or '–' }}</dd>
   <dt>Size</dt><dd>{{ leaf.size }} members, {{ leaf.genus_n or '?' }} genera · split depth {{ leaf.depth }}</dd>
-  <dt>Median identity</dt><dd>{{ '%.3f' % leaf.median_identity }} {% if not leaf.is_homogeneous %}<span class="chip chip--warn">did not reach homogeneity target</span>{% endif %}</dd>
+  <dt>Median identity</dt><dd>{{ '%.3f' % leaf.median_identity }}
+    {% if not leaf.is_homogeneous %}
+      {% set stop = leaf_stop_reason(leaf.size, leaf.depth, leaf.is_homogeneous) %}
+      <span class="chip chip--warn">below the 0.70 homogeneity target</span>
+      <div class="note">Splitting stopped because {{ LEAF_STOP_REASONS[stop] }}.
+      The representative sequence therefore stands for members that differ from one
+      another; read this leaf as an operational grouping, not as a variant.</div>
+    {% endif %}</dd>
   <dt>Top genera</dt><dd>{{ (leaf.top_genera or '').replace(';', ', ') }}</dd>
   <dt>Signature neighbours</dt><dd>{{ leaf.neighbor_signature or '–' }}</dd>
   <dt>Enriched categories</dt><dd>{{ leaf.enriched_categories or '–' }}</dd>

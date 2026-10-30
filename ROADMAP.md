@@ -2036,6 +2036,44 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 99. Heterojen yapraklarda karari veren kural yayimlandi (2026-10-30)
+
+`recursive_homogenize.py` yapraklari medyan ikili kimlik 0,70'e (HOMOGENEITY_TARGET)
+ulasana kadar artan CD-HIT esikleriyle (0,50 ... 0,90) boluyor. Sayfa heterojen
+yapraga yalin bir "heterogeneous" etiketi basiyordu ve bu YANILTICIYDI.
+
+OLCUM (2026-10-30, 2.789 yaprak / 19.125 onayli uye):
+  - homojen 2.369, heterojen 420 (1.460 uye)
+  - heterojen 420'nin **420'si** `size < MIN_SPLIT_SIZE (8)` yuzunden durdu
+  - **hicbiri** esik listesini tuketmedi (en derin adim 4, liste 5 uzunlugunda)
+  - bu yapraklarin ortalama medyan kimligi 0,603, en dususu 0,425
+  - tip dagilimi basi: CntA 64 yaprak, TsaM 42, BmoA 32, Stc2 30, CdnA 23
+
+Yani "homojenlik hedefi tutturulamadi" denen yerde hedef hic SORULMAMIS. Bu,
+projenin tekrar eden hata bicimi: karar veren kural, karar verdigini
+soyledigimiz kural degil (triad aralik sarti, kolon 471/431 vakasi).
+
+YAPILDI, kumelenme DEGISTIRILMEDI:
+  - `webapp/atlas.py` `leaf_stop_reason()` + `LEAF_STOP_REASONS` (sabitler
+    kaynagindan kopya, kaynak hala recursive_homogenize.py)
+  - `leaf.html` / `cluster.html` durma nedenini yaziyor; yaprak sayfasi artik
+    temsilcinin birbirinden ayrilan uyeleri temsil ettigini soyluyor
+  - `validate_curation.py` `check_leaf_stop_reason`: sabitler ayrisirsa ve
+    durma nedeni turetilemeyen bir yaprak cikarsa FAIL (113 kontrol, PASS)
+  - `recursive_homogenize.py` MIN_SPLIT_SIZE yorumuna olcum islendi
+
+ACIK KARAR (kullaniciya): `MIN_SPLIT_SIZE` 8'den dusurulurse homojenlik
+GERCEKTEN karar verici olur ve 420 yaprak varyant duzeyinde cozulur. Bedeli
+tum yapraklarin yeniden kurulmasi: leaf_id'ler degisir, yani agac,
+leaf_profile, leaf_sdp ve kalici /leaf/ baglantilari da degisir. Bilincli
+karar gerektirir, o yuzden bu kosuda DEGISTIRILMEDI.
+
+LITERATUR CERCEVESI: yaprak taksonomik bir birim DEGIL. Literaturde bir RO
+"varyantini" tanimlayan yuzde esigi yok -- Kweon 2008 semasi elektron
+ortaklarina, `ro_group` alfa alt birimi dizi kumelenmesine dayanir
+(citations.yaml kweon2008_classification notu). Yaprak bunlarin hicbiri
+degil, agac boyutunu kisan islevsel bir gruplamadir ve sayfada oyle okunuyor.
+
 ## Yeniden uretim
 
 ```

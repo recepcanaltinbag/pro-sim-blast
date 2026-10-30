@@ -912,6 +912,50 @@ def table_exists(con, name):
     return con.execute("SELECT name FROM sqlite_master WHERE name=?", (name,)).fetchone() is not None
 
 
+# --- YAPRAK HOMOJENIZASYONUNUN DURMA NEDENI -------------------------------
+# recursive_homogenize.py bir dugumu, medyan ikili kimligi HOMOGENEITY_TARGET'a
+# (0,70) ulasana kadar artan CD-HIT esikleriyle bolup yaprak uretir. Ama iki
+# bagimsiz kural bolmeyi erken kesebilir: dugum MIN_SPLIT_SIZE'dan kucukse, ya
+# da esik listesi tukenmisse. Asagidakiler o iki sabitin KOPYASI; kaynak hala
+# recursive_homogenize.py, ve validate_curation.py (check_leaf_stop_reason)
+# ikisinin ayni kalmasini kontrol ediyor -- sessizce ayrismasinlar.
+#
+# 2026-10-30'da olculdu: is_homogeneous=0 olan 420 yapragin 420'si (1.460 uye)
+# size<8 yuzunden durdu; HICBIRI esik listesini tuketmedi (en derin adim 4/5).
+# Yani heterojen yapraklarda KARAR VEREN kural homojenlik hedefi degil, boyut
+# tabani. Sayfada yalin "heterogeneous" etiketi bunu gizliyordu: okuyucu
+# "homojenlik hedefi tutturulamadi" sanirken aslinda hedef hic SORULMAMIS.
+# Bu yuzden neden de yayimlaniyor.
+HOMOGENEITY_MIN_SPLIT_SIZE = 8
+HOMOGENEITY_MAX_DEPTH = 5
+
+LEAF_STOP_REASONS = {
+    "too_small_to_split":
+        "fewer than %d members, so the homogeneity target was never applied"
+        % HOMOGENEITY_MIN_SPLIT_SIZE,
+    "identity_thresholds_exhausted":
+        "the identity threshold ladder ran out before the target was reached",
+    "unexplained":
+        "stopped for a reason this database does not record -- treat as a defect",
+}
+
+
+def leaf_stop_reason(size, depth, is_homogeneous):
+    """Heterojen bir yapragin NEDEN bolunmeyi biraktigini dondurur.
+
+    Homojen yaprak icin None. Donen anahtar LEAF_STOP_REASONS'ta aciklanir.
+    "unexplained" bir hata isaretidir: homojenizasyonun belgelenmemis bir
+    yoldan cikmasi demektir, o yuzden kapi onu FAIL sayar.
+    """
+    if is_homogeneous:
+        return None
+    if (size or 0) < HOMOGENEITY_MIN_SPLIT_SIZE:
+        return "too_small_to_split"
+    if (depth or 0) >= HOMOGENEITY_MAX_DEPTH:
+        return "identity_thresholds_exhausted"
+    return "unexplained"
+
+
 def identity_matrix(path):
     rows = read_csv(path)
     if not rows:
