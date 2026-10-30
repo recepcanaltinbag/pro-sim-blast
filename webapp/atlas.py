@@ -1666,6 +1666,22 @@ PROVENANCE = [
      "column in 10 of 10 types -- the machinery reads correctly. (It does "
      "NOT validate the column it was pointed at; see the method card.)",
      "carboxylate_anchor_holdout.py"),
+    ("triad_gate.json", "file", "The 2-His-1-carboxylate triad called with "
+     "all three ligands required -- the definition the literature uses, and "
+     "the one the admission rule did not use. Each ligand is read the way "
+     "that ligand can be read: the carboxylate at the fixed column and, "
+     "where that column is empty, by the within-type anchored re-reading; "
+     "the two histidines at the fixed column only, because their anchored "
+     "reading is not built yet. 19,028 of 19,114 confirmed entries are "
+     "complete; 24 lack a carboxylate after anchoring, 7 could not be tested "
+     "(AerC has no anchor positives of its own), and 55 cannot be decided "
+     "until the histidine reading is anchored too -- widening the window "
+     "finds a histidine in all 55, but one separated by 0 or 7 residues "
+     "instead of the 3-5 the literature requires, so it is the wrong "
+     "histidine. Written to the ro_triad table, which leaves is_confirmed "
+     "untouched so no published denominator moves until the reading is "
+     "finished.",
+     "triad_gate.py"),
     ("carboxylate_method_card.txt", "file", "The carboxylate reading method "
      "printed step by step with the number each step produced -- what is "
      "looked at, in what order, and each step's own accuracy. Generated from "

@@ -1887,6 +1887,60 @@ Oncelik sirasi: (a) elimizdeki 54.298 baglamsiz protein girisini al (kosuyor),
 (b) PF00848'i ikinci giris kapisi yap (+1.253 aday, ucuz), (c) yeni UniProt
 cekimini BIRLESIM olarak ekle, (d) NCBI taramasi -- disk ve karar gerektirir.
 
+## 96. Triad kapisi literaturun tanimina getirildi (3/3) -- 2026-10-30
+
+Literatur mononukleer Fe merkezini ISTISNASIZ 2-His-1-karboksilat olarak
+tanimlar ve karboksilat sus degildir: NDO'da D362A TAMAMEN inaktiftir
+(Barry & Challis 2013, ACS Catal 3:2362). Kabul kurali ise >=2/3 idi.
+
+`triad_gate.py` triad'i uc ligandin HEPSINI isteyerek cagirir ve her ligandi
+O LIGANDIN okunabildigi yoldan okur:
+
+    karboksilat   sabit kolon +-2; kolon bossa tip-ici capali okuma (adim 6)
+    His-1, His-2  SADECE sabit kolon +-2  <-- capali okuma henuz YOK
+
+Olculen (19.114 onaylanmis giris, ro_triad tablosu):
+
+    3/3 tam                      19.028
+    karboksilat yok (capalandi)      24   -> 11 tip, 20'si okaryot
+    karboksilat test EDILEMEDI        7   -> 7_701_AerC; tipin kendi
+                                            pozitifi yok, capa kurulamadi
+    His karari verilemez             55   -> CntA 28, TsaM 12, CmtAb 8, ...
+
+HIS OKUMASI AYNI HATA SINIFINI TASIYOR, ama pencere genisletmek COZUM DEGIL.
+Olcum: sabit kolonda okunan 19.059 giriste His-1 -> His-2 arasindaki kalinti
+sayisi 4 (18.445) ya da 3 (607) -- literaturun H-x(3-5)-H sarti. Pencere
++-5'e cikarilinca 55 girisin 55'inde "His bulunuyor", ama bulunan ciftin
+arasi 0 (27 giris) ya da 7 (27 giris): pencere bitisik bir HH'yi yakaliyor,
+triad'in His'ini DEGIL. Ham dizide D-x(2)-H-x(3-5)-H konsensusu arandiginda
+CmtAb'nin 8 girisinde eslesme VAR (ornek: raw 204, ELYHEWGHIV) -- yani His
+cifti gercekten orada, sadece 5 kolon kaymis; TsaM/VanA/CdnA/TdnA1/Stc2/
+PAO/Nvd'nin 19 girisinde dizinin HICBIR yerinde eslesme YOK.
+
+KARAR. Kural 3/3'tur ve `ro_triad` bu tanimi yayinlar. `ro.is_confirmed`e
+DOKUNULMADI: 62 giris (55 His + 7 AerC) henuz capalanmamis bir okumaya
+dayaniyor ve hicbiri "triad yok" diye yayinlanamaz. Kapi kontrolu bunu WARN
+olarak acik tutuyor (`validate_curation.py: check_triad_gate`).
+
+Siradaki (bu sirayla):
+  1. His okumasini da capalamak -- karboksilattakiyle AYNI metot, ayni
+     tutulan-yari dogrulamasi. 55 girisin kaderi buna bagli.
+  2. AerC'nin karboksilatini KURATORLU REFERANSA capalamak: tipin kendi
+     pozitifi yok ama `7_701_AerC_AerC_pro` refs71.fasta'da duruyor.
+     `stage_anchored_reread` <5 pozitifte tipi atliyor ve referansi hic
+     denemiyor -- duzeltilebilir bir bosluk.
+  3. Ikisi bittikten sonra `annotate_ro.py`'de MIN_CATALYTIC_SITES = 3 ve
+     `rebuild.py --run --include-heavy`; o noktada is_confirmed duser ve
+     TUM denominatorler degisir, yani ayni kosuda site yeniden donmali.
+  4. Geriye kalan gercek yokluklari (su an 24) tek tek motif ISTISNASI
+     olarak belgelemek: hicbiri "RO degil" demek degil, Rieske 4/4 hepsinde
+     tam ve kopru karboksilati 23/24'unde yerinde.
+
+Yeni hata, ayni sinifin dordunculusu: `has_carbox = (carbox or "") in "DE"`
+Python'da BOS okumayi "var" sayar (`"" in "DE"` True'dur) ve AerC'nin 7
+girisini "3/3 tam" isaretledi. Kume tipine cevrildi; uyelik testleri artik
+`frozenset` uzerinden.
+
 ## Yeniden uretim
 
 ```

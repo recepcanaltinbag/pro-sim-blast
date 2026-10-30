@@ -152,6 +152,9 @@ USER_FACING_DB_FIELDS = [
     ("leaf_profile", "leaf_id", "label"),
     ("leaf", "leaf_id", "top_genera"),
     ("ro_etc", "candidate_id", "etc_profile"),
+    # 2026-10-30: triad kapisinin "neden cagri yapilmadi" gerekcesi. Proza,
+    # giris sayfasinda gosterilebilir, bu yuzden Ingilizce olmak zorunda.
+    ("ro_triad", "candidate_id", "note"),
     ("operon", "candidate_id", "layout"),
     # Proje tarafindan URETILEN habitat etiketi (serbest metin degil, sozluk).
     # isolation_source.py'nin HABITAT_RULES sonucu; web'de gosteriliyor.
@@ -225,6 +228,14 @@ IDENTIFIER_TEXT_FIELDS = {
     ("ro", "ro_cluster"), ("ro", "ro_group"),
     ("ro_carboxylate", "candidate_id"), ("ro_carboxylate", "catalytic_residue"),
     ("ro_carboxylate", "bridging_residue"),
+    # 2026-10-30, 3/3 triad kapisi. Kalinti harfleri, kaynak etiketleri ve
+    # durum etiketleri KIMLIK (sabit kucuk kume); ro_triad.note ise proza,
+    # o yuzden USER_FACING_DB_FIELDS'ta ve Ingilizce.
+    ("ro_triad", "candidate_id"), ("ro_triad", "ro_cluster"),
+    ("ro_triad", "his1_residue"), ("ro_triad", "his2_residue"),
+    ("ro_triad", "carboxylate_residue"), ("ro_triad", "carboxylate_source"),
+    ("ro_triad", "his_source"), ("ro_triad", "triad_status"),
+    ("ro_triad_meta", "key"), ("ro_triad_meta", "value"),
     ("ro_domain", "candidate_id"), ("ro_domain", "cluster"), ("ro_domain", "domain"),
     ("ro_etc", "candidate_id"),
     ("ro_evidence", "candidate_id"), ("ro_evidence", "nearest_ref"),
@@ -930,6 +941,90 @@ def check_reference_motifs(rep, root, refs_aln=None):
                 thin.append(f"{cid}:{field}")
     rep.check("references: each motif exception states reason, evidence and limits",
               not thin, len(thin), "; ".join(thin[:6]))
+
+
+def check_triad_gate(rep, root):
+    """Yayinlanan triad tanimi 3/3 mu, ve bu karar TAZE mi?
+
+    NEDEN. Literatur mononukleer Fe merkezini istisnasiz 2-His-1-karboksilat
+    olarak tanimlar ve karboksilat sus degildir: NDO'da D362A tamamen
+    inaktiftir (Barry & Challis 2013). Buna karsin kabul kurali uzun sure
+    >=2/3'te kaldi, cunku 3/3'u SABIT kolonda uygulamak 2388 girisi
+    kaybettiriyordu -- oysa o girislerin 2357'sinde karboksilat FIILEN vardi,
+    sadece kolon hizalamada bostu. Karar artik ro_triad'da durur ve tabloyu
+    ureten denetimin bu DB icin uretilmis oldugu her kapi kosusunda kontrol
+    edilir; bayat bir denetimden tablo uretmek bu projede zaten bir kere
+    yanlis bulgu dogurdu (kolon 355/471/431 vakasi).
+    """
+    label = "triad gate: ro_triad is the published 3/3 definition and is fresh"
+    db = os.path.join(root, "roar.sqlite")
+    if not os.path.exists(db):
+        rep.check(label, True, 0, "roar.sqlite yok", severity="WARN")
+        return
+    con = sqlite3.connect("file:%s?mode=ro" % db, uri=True)
+    try:
+        have = {r[0] for r in con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'")}
+        if "ro_triad" not in have or "ro_triad_meta" not in have:
+            rep.check(label, True, 0,
+                      "ro_triad yok; triad_gate.py --apply kosulmali",
+                      severity="WARN")
+            return
+        meta = {k: json.loads(v) for k, v in
+                con.execute("SELECT key, value FROM ro_triad_meta")}
+        confirmed = con.execute(
+            "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
+        n_rows = con.execute("SELECT COUNT(*) FROM ro_triad").fetchone()[0]
+    finally:
+        con.close()
+
+    problems = []
+    if n_rows != confirmed:
+        problems.append(f"ro_triad {n_rows} satir, onaylanmis giris {confirmed}")
+    if meta.get("confirmed_entries") != confirmed:
+        problems.append(f"meta {meta.get('confirmed_entries')} giris diyor")
+
+    try:
+        sys.path.insert(0, root)
+        import ro_motif                              # noqa: PLC0415
+        want = {"his1": ro_motif.CATALYTIC_SITES[0][0],
+                "his2": ro_motif.CATALYTIC_SITES[1][0],
+                "carboxylate": ro_motif.CATALYTIC_SITES[2][0]}
+        if meta.get("columns") != want:
+            problems.append(f"meta kolonlari {meta.get('columns')}, "
+                            f"ro_motif {want}")
+    except Exception as exc:                          # noqa: BLE001
+        problems.append(f"ro_motif okunamadi ({exc})")
+
+    used = (meta.get("audit_used") or {})
+    audit_path = os.path.join(root, "analysis_out", "carboxylate_audit.json")
+    if os.path.exists(audit_path):
+        try:
+            stamp = json.load(open(audit_path, encoding="utf-8"))["generated"]
+        except Exception:                             # noqa: BLE001
+            stamp = None
+        if stamp and used.get("generated") != stamp:
+            problems.append(f"tablo {used.get('generated')} denetiminden "
+                            f"uretilmis, dosyada {stamp} var")
+
+    rep.check(label, not problems, len(problems),
+              "" if not problems else "; ".join(problems))
+
+    rule = meta.get("rule") or ""
+    rep.check("triad gate: the rule on record requires 3/3, not 2/3",
+              "3/3" in rule, 0 if "3/3" in rule else 1,
+              "" if "3/3" in rule else f"kayitli kural: {rule!r}")
+
+    undecided = (meta.get("his_undecided") or 0) + (meta.get("absence_not_proven") or 0)
+    rep.check("triad gate: every triad call rests on an anchored reading",
+              not undecided, undecided,
+              "" if not undecided else
+              f"{undecided} entries are still decided on an unanchored reading "
+              f"({meta.get('his_undecided')} histidine, "
+              f"{meta.get('absence_not_proven')} carboxylate); ro_triad does "
+              f"NOT call them absent, but the histidine reading must be "
+              f"anchored before is_confirmed is tightened to 3/3",
+              severity="WARN")
 
 
 def check_motif_columns_anchored(rep, root, refs_aln=None):
@@ -1691,6 +1786,7 @@ def main():
     check_vocabulary_drift(rep)
     check_reference_motifs(rep, ROOT)
     check_motif_columns_anchored(rep, ROOT)
+    check_triad_gate(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)
