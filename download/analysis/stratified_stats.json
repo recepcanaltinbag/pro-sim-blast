@@ -1,0 +1,1016 @@
+{
+ "method": {
+  "question": "how much of the bridging-carboxylate association comes from members whose chemistry is actually known",
+  "close_definition": "evidence levels characterized and close_homolog, that is at least 60 % identity to a curated enzyme",
+  "why": "a single association computed over every entry weights a distant relative of unknown reaction the same as a characterised enzyme; stratifying by evidence level says whether the signal depends on the uncertain members",
+  "answer": "it does not: the association is near-deterministic among close members and degrades with distance, so distant members add noise rather than creating the pattern",
+  "tiers": [
+   "characterized",
+   "close_homolog",
+   "family_member",
+   "distant",
+   "novel"
+  ],
+  "classes": [
+   "core",
+   "divergent",
+   "novel_candidate"
+  ]
+ },
+ "strata": {
+  "all": {
+   "chi2": 13217.0,
+   "dof": 6,
+   "cramers_v": 0.831,
+   "n": 19120,
+   "glu": 5156,
+   "asp": 13964,
+   "glu_share": 0.2697,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "table": [
+    [
+     5075,
+     28
+    ],
+    [
+     655,
+     104
+    ],
+    [
+     3146,
+     163
+    ],
+    [
+     3612,
+     172
+    ],
+    [
+     859,
+     4682
+    ],
+    [
+     617,
+     0
+    ],
+    [
+     0,
+     7
+    ]
+   ]
+  },
+  "close": {
+   "chi2": 4882.4,
+   "dof": 5,
+   "cramers_v": 0.991,
+   "n": 4970,
+   "glu": 973,
+   "asp": 3997,
+   "glu_share": 0.1958,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     787,
+     13
+    ],
+    [
+     367,
+     0
+    ],
+    [
+     1168,
+     0
+    ],
+    [
+     1447,
+     0
+    ],
+    [
+     1,
+     960
+    ],
+    [
+     227,
+     0
+    ]
+   ]
+  },
+  "distant": {
+   "chi2": 8874.3,
+   "dof": 6,
+   "cramers_v": 0.792,
+   "n": 14150,
+   "glu": 4183,
+   "asp": 9967,
+   "glu_share": 0.2956,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "table": [
+    [
+     4288,
+     15
+    ],
+    [
+     288,
+     104
+    ],
+    [
+     1978,
+     163
+    ],
+    [
+     2165,
+     172
+    ],
+    [
+     858,
+     3722
+    ],
+    [
+     390,
+     0
+    ],
+    [
+     0,
+     7
+    ]
+   ]
+  },
+  "tier:characterized": {
+   "chi2": 335.1,
+   "dof": 5,
+   "cramers_v": 0.953,
+   "n": 369,
+   "glu": 82,
+   "asp": 287,
+   "glu_share": 0.2222,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     16,
+     7
+    ],
+    [
+     153,
+     0
+    ],
+    [
+     67,
+     0
+    ],
+    [
+     40,
+     0
+    ],
+    [
+     1,
+     75
+    ],
+    [
+     10,
+     0
+    ]
+   ]
+  },
+  "tier:close_homolog": {
+   "chi2": 4562.9,
+   "dof": 5,
+   "cramers_v": 0.996,
+   "n": 4601,
+   "glu": 891,
+   "asp": 3710,
+   "glu_share": 0.1937,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     771,
+     6
+    ],
+    [
+     214,
+     0
+    ],
+    [
+     1101,
+     0
+    ],
+    [
+     1407,
+     0
+    ],
+    [
+     0,
+     885
+    ],
+    [
+     217,
+     0
+    ]
+   ]
+  },
+  "tier:family_member": {
+   "chi2": 2974.3,
+   "dof": 5,
+   "cramers_v": 0.924,
+   "n": 3481,
+   "glu": 929,
+   "asp": 2552,
+   "glu_share": 0.2669,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     562,
+     5
+    ],
+    [
+     178,
+     1
+    ],
+    [
+     931,
+     3
+    ],
+    [
+     724,
+     0
+    ],
+    [
+     100,
+     920
+    ],
+    [
+     57,
+     0
+    ]
+   ]
+  },
+  "tier:distant": {
+   "chi2": 6284.5,
+   "dof": 6,
+   "cramers_v": 0.778,
+   "n": 10383,
+   "glu": 3110,
+   "asp": 7273,
+   "glu_share": 0.2995,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "table": [
+    [
+     3699,
+     10
+    ],
+    [
+     110,
+     103
+    ],
+    [
+     1027,
+     155
+    ],
+    [
+     1441,
+     143
+    ],
+    [
+     663,
+     2692
+    ],
+    [
+     333,
+     0
+    ],
+    [
+     0,
+     7
+    ]
+   ]
+  },
+  "tier:novel": {
+   "chi2": 66.1,
+   "dof": 3,
+   "cramers_v": 0.481,
+   "n": 286,
+   "glu": 144,
+   "asp": 142,
+   "glu_share": 0.5035,
+   "rows": [
+    "1",
+    "3",
+    "4",
+    "5"
+   ],
+   "table": [
+    [
+     27,
+     0
+    ],
+    [
+     20,
+     5
+    ],
+    [
+     0,
+     29
+    ],
+    [
+     95,
+     110
+    ]
+   ]
+  },
+  "class:core": {
+   "chi2": 10838.0,
+   "dof": 6,
+   "cramers_v": 0.87,
+   "n": 14326,
+   "glu": 3612,
+   "asp": 10714,
+   "glu_share": 0.2521,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+   ],
+   "table": [
+    [
+     3449,
+     13
+    ],
+    [
+     500,
+     41
+    ],
+    [
+     2564,
+     10
+    ],
+    [
+     3160,
+     71
+    ],
+    [
+     622,
+     3470
+    ],
+    [
+     419,
+     0
+    ],
+    [
+     0,
+     7
+    ]
+   ]
+  },
+  "class:divergent": {
+   "chi2": 976.1,
+   "dof": 5,
+   "cramers_v": 0.829,
+   "n": 1421,
+   "glu": 289,
+   "asp": 1132,
+   "glu_share": 0.2034,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     421,
+     5
+    ],
+    [
+     71,
+     1
+    ],
+    [
+     245,
+     5
+    ],
+    [
+     250,
+     1
+    ],
+    [
+     77,
+     277
+    ],
+    [
+     68,
+     0
+    ]
+   ]
+  },
+  "class:novel_candidate": {
+   "chi2": 1866.7,
+   "dof": 5,
+   "cramers_v": 0.744,
+   "n": 3373,
+   "glu": 1255,
+   "asp": 2118,
+   "glu_share": 0.3721,
+   "rows": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6"
+   ],
+   "table": [
+    [
+     1205,
+     10
+    ],
+    [
+     84,
+     62
+    ],
+    [
+     337,
+     148
+    ],
+    [
+     202,
+     100
+    ],
+    [
+     160,
+     935
+    ],
+    [
+     130,
+     0
+    ]
+   ]
+  }
+ },
+ "contaminated_origin": {
+  "question": "do members close to a characterised pollutant-degrading enzyme come from contaminated sites more often than their distant relatives, which would be consistent with the family pre-existing in natural environments and specialising later",
+  "anthropogenic_habitats": [
+   "built_environment",
+   "contaminated_industrial",
+   "engineered_system",
+   "mining_acid_drainage",
+   "wastewater_sludge"
+  ],
+  "natural_habitats": [
+   "air_dust",
+   "cave",
+   "extreme_thermal",
+   "freshwater",
+   "freshwater_sediment",
+   "fungal_associated",
+   "hypersaline",
+   "marine",
+   "marine_sediment",
+   "plant_associated",
+   "plant_tissue",
+   "rhizosphere_soil",
+   "sediment",
+   "soil",
+   "subsurface_deep",
+   "water_unspecified"
+  ],
+  "excluded": "host-associated habitats such as human clinical, gut, animal and food are left out: they are neither a natural environment nor a contaminated site, and mixing them in would make the ratio meaningless",
+  "levels": [
+   {
+    "level": "every entry",
+    "table": [
+     [
+      230,
+      986
+     ],
+     [
+      477,
+      3164
+     ]
+    ],
+    "close_n": 1216,
+    "distant_n": 3641,
+    "close_anthropogenic_share": 0.1891,
+    "distant_anthropogenic_share": 0.131,
+    "odds_ratio": 1.547,
+    "p": 1.2354234284274564e-06
+   },
+   {
+    "level": "one observation per species",
+    "table": [
+     [
+      91,
+      321
+     ],
+     [
+      128,
+      685
+     ]
+    ],
+    "close_n": 412,
+    "distant_n": 813,
+    "close_anthropogenic_share": 0.2209,
+    "distant_anthropogenic_share": 0.1574,
+    "odds_ratio": 1.517,
+    "p": 0.007243177947907754
+   },
+   {
+    "level": "only the 116 genera present on both sides",
+    "table": [
+     [
+      218,
+      947
+     ],
+     [
+      426,
+      2483
+     ]
+    ],
+    "close_n": 1165,
+    "distant_n": 2909,
+    "close_anthropogenic_share": 0.1871,
+    "distant_anthropogenic_share": 0.1464,
+    "odds_ratio": 1.342,
+    "p": 0.0016897722910916102
+   }
+  ],
+  "by_substrate_class": {
+   "xenobiotic": {
+    "level": "xenobiotic",
+    "table": [
+     [
+      118,
+      400
+     ],
+     [
+      220,
+      1239
+     ]
+    ],
+    "close_n": 518,
+    "distant_n": 1459,
+    "close_anthropogenic_share": 0.2278,
+    "distant_anthropogenic_share": 0.1508,
+    "odds_ratio": 1.661,
+    "p": 0.00010246197702894121
+   },
+   "natural_aromatic": {
+    "level": "natural_aromatic",
+    "table": [
+     [
+      56,
+      250
+     ],
+     [
+      38,
+      361
+     ]
+    ],
+    "close_n": 306,
+    "distant_n": 399,
+    "close_anthropogenic_share": 0.183,
+    "distant_anthropogenic_share": 0.0952,
+    "odds_ratio": 2.128,
+    "p": 0.0007760739340157127
+   },
+   "natural_specialized": {
+    "level": "natural_specialized",
+    "table": [
+     [
+      56,
+      336
+     ],
+     [
+      219,
+      1564
+     ]
+    ],
+    "close_n": 392,
+    "distant_n": 1783,
+    "close_anthropogenic_share": 0.1429,
+    "distant_anthropogenic_share": 0.1228,
+    "odds_ratio": 1.19,
+    "p": 0.27610100508033414
+   }
+  },
+  "interpretation": "The direction holds at every level, including the genus control: members close to a characterised enzyme are about one and a half times more likely to come from a contaminated or engineered site than distant relatives, which sit in natural habitats. But the discriminating test does not support the stronger reading. If this were specialisation to man-made chemistry the enrichment should be confined to types with a man-made substrate, and it is not: types acting on natural aromatics show it at least as strongly. The pattern is therefore consistent with the family being widespread in natural environments while aromatic-degrading lineages accumulate where aromatics accumulate, and it cannot be separated from the fact that the characterised references were themselves discovered at such sites."
+ },
+ "glu_share_within_group_by_tier": {
+  "1": {
+   "characterized": {
+    "n": 23,
+    "glu": 7,
+    "glu_share": 0.3043
+   },
+   "close_homolog": {
+    "n": 777,
+    "glu": 6,
+    "glu_share": 0.0077
+   },
+   "family_member": {
+    "n": 567,
+    "glu": 5,
+    "glu_share": 0.0088
+   },
+   "distant": {
+    "n": 3709,
+    "glu": 10,
+    "glu_share": 0.0027
+   },
+   "novel": {
+    "n": 27,
+    "glu": 0,
+    "glu_share": 0.0
+   }
+  },
+  "2": {
+   "characterized": {
+    "n": 153,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "close_homolog": {
+    "n": 214,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "family_member": {
+    "n": 179,
+    "glu": 1,
+    "glu_share": 0.0056
+   },
+   "distant": {
+    "n": 213,
+    "glu": 103,
+    "glu_share": 0.4836
+   }
+  },
+  "3": {
+   "characterized": {
+    "n": 67,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "close_homolog": {
+    "n": 1101,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "family_member": {
+    "n": 934,
+    "glu": 3,
+    "glu_share": 0.0032
+   },
+   "distant": {
+    "n": 1182,
+    "glu": 155,
+    "glu_share": 0.1311
+   },
+   "novel": {
+    "n": 25,
+    "glu": 5,
+    "glu_share": 0.2
+   }
+  },
+  "4": {
+   "characterized": {
+    "n": 40,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "close_homolog": {
+    "n": 1407,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "family_member": {
+    "n": 724,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "distant": {
+    "n": 1584,
+    "glu": 143,
+    "glu_share": 0.0903
+   },
+   "novel": {
+    "n": 29,
+    "glu": 29,
+    "glu_share": 1.0
+   }
+  },
+  "5": {
+   "characterized": {
+    "n": 76,
+    "glu": 75,
+    "glu_share": 0.9868
+   },
+   "close_homolog": {
+    "n": 885,
+    "glu": 885,
+    "glu_share": 1.0
+   },
+   "family_member": {
+    "n": 1020,
+    "glu": 920,
+    "glu_share": 0.902
+   },
+   "distant": {
+    "n": 3355,
+    "glu": 2692,
+    "glu_share": 0.8024
+   },
+   "novel": {
+    "n": 205,
+    "glu": 110,
+    "glu_share": 0.5366
+   }
+  },
+  "6": {
+   "characterized": {
+    "n": 10,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "close_homolog": {
+    "n": 217,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "family_member": {
+    "n": 57,
+    "glu": 0,
+    "glu_share": 0.0
+   },
+   "distant": {
+    "n": 333,
+    "glu": 0,
+    "glu_share": 0.0
+   }
+  }
+ },
+ "types_unstable_across_tiers": [
+  {
+   "cluster": "3_311_PhtAa",
+   "spread": 0.857,
+   "shares": {
+    "close_homolog": 0.0,
+    "distant": 0.8571
+   }
+  },
+  {
+   "cluster": "5_506_Stc2",
+   "spread": 0.791,
+   "shares": {
+    "close_homolog": 1.0,
+    "family_member": 1.0,
+    "distant": 0.8954,
+    "novel": 0.2093
+   }
+  },
+  {
+   "cluster": "5_507_BmoA",
+   "spread": 0.767,
+   "shares": {
+    "close_homolog": 1.0,
+    "family_member": 0.9636,
+    "distant": 0.8744,
+    "novel": 0.2333
+   }
+  },
+  {
+   "cluster": "3_317_NidA",
+   "spread": 0.737,
+   "shares": {
+    "family_member": 0.0,
+    "distant": 0.7368
+   }
+  },
+  {
+   "cluster": "4_403_AtdA",
+   "spread": 0.609,
+   "shares": {
+    "distant": 0.3913,
+    "novel": 1.0
+   }
+  },
+  {
+   "cluster": "3_319_PhdA",
+   "spread": 0.471,
+   "shares": {
+    "family_member": 0.0,
+    "distant": 0.4711
+   }
+  },
+  {
+   "cluster": "4_401_CmtAb",
+   "spread": 0.465,
+   "shares": {
+    "family_member": 0.0,
+    "distant": 0.4646
+   }
+  }
+ ],
+ "misassignment_suspects": [
+  {
+   "group": "4",
+   "close_glu_share": 0.0,
+   "distant_glu_share": 1.0,
+   "entries": 172,
+   "assigned_types": [
+    [
+     "4_403_AtdA",
+     83
+    ],
+    [
+     "4_401_CmtAb",
+     68
+    ],
+    [
+     "4_404_TdnA1",
+     16
+    ],
+    [
+     "4_409_TPDO",
+     4
+    ],
+    [
+     "4_408_AntA",
+     1
+    ]
+   ],
+   "nearest_reference_group": [
+    [
+     "4",
+     79
+    ],
+    [
+     "3",
+     42
+    ],
+    [
+     "5",
+     32
+    ],
+    [
+     "2",
+     19
+    ]
+   ],
+   "median_identity_to_nearest": 29.5
+  },
+  {
+   "group": "3",
+   "close_glu_share": 0.0,
+   "distant_glu_share": 0.2,
+   "entries": 163,
+   "assigned_types": [
+    [
+     "3_319_PhdA",
+     58
+    ],
+    [
+     "3_316_NarAa",
+     32
+    ],
+    [
+     "3_311_PhtAa",
+     20
+    ],
+    [
+     "3_301_PhnA1a",
+     15
+    ],
+    [
+     "3_317_NidA",
+     14
+    ]
+   ],
+   "nearest_reference_group": [
+    [
+     "3",
+     106
+    ],
+    [
+     "2",
+     26
+    ],
+    [
+     "5",
+     19
+    ],
+    [
+     "4",
+     12
+    ]
+   ],
+   "median_identity_to_nearest": 32.4
+  },
+  {
+   "group": "2",
+   "close_glu_share": 0.0,
+   "distant_glu_share": 0.4836,
+   "entries": 104,
+   "assigned_types": [
+    [
+     "2_211_bfzA",
+     61
+    ],
+    [
+     "2_212_BedC1",
+     16
+    ],
+    [
+     "2_214_TftA",
+     8
+    ],
+    [
+     "2_218_BphA1",
+     7
+    ],
+    [
+     "2_202_EdoA1",
+     7
+    ]
+   ],
+   "nearest_reference_group": [
+    [
+     "2",
+     34
+    ],
+    [
+     "5",
+     32
+    ],
+    [
+     "3",
+     31
+    ],
+    [
+     "4",
+     7
+    ]
+   ],
+   "median_identity_to_nearest": 32.1
+  }
+ ],
+ "totals": {
+  "entries": 19125,
+  "with_bridging_residue": 19120
+ }
+}

@@ -1,0 +1,1424 @@
+{
+ "generated": "2026-10-30T18:54:47+00:00",
+ "module": "triad_anchor_his.py",
+ "writes_to_db": false,
+ "inputs": {
+  "db": "roar.sqlite",
+  "alignment": "genomic_context/cand_aln.sto",
+  "reference_alignment": "ROs_71_Clean/refs71_hmmaln.sto",
+  "columns": {
+   "his1": 289,
+   "his2": 294,
+   "carboxylate": 431
+  },
+  "window_columns": 3,
+  "his_spacing_canonical": [
+   3,
+   5
+  ],
+  "decision_rule": "column homology decides; the His-His spacing is reported, not required",
+  "mafft_threads": 1
+ },
+ "histidine_anchoring": {
+  "per_cluster": [
+   {
+    "cluster": "5_504_CntA",
+    "n_undecided": 32,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "5_504_CntA_CntA_pro"
+    ],
+    "anchor_columns": [
+     353,
+     361
+    ],
+    "anchor_column_vote_share": [
+     0.992,
+     0.983
+    ],
+    "method_recovery_on_positives": 0.992,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      353,
+      361
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "5_504_CntA_CntA_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     0.992,
+     1.0
+    ],
+    "spacing_counts": {
+     "7": 27,
+     "bulunamadi": 5
+    },
+    "called_at_exact_anchor_column": 27,
+    "non_canonical_spacing": 27,
+    "calls": {
+     "present_at_homologous_column": 27,
+     "absent": 5
+    }
+   },
+   {
+    "cluster": "1_106_TsaM",
+    "n_undecided": 12,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "1_106_TsaM_TsaM_pro"
+    ],
+    "anchor_columns": [
+     282,
+     287
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      282,
+      287
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "1_106_TsaM_TsaM_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 10,
+     "0": 2
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 2,
+    "calls": {
+     "absent": 12
+    }
+   },
+   {
+    "cluster": "4_401_CmtAb",
+    "n_undecided": 8,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "4_401_CmtAb_CmtAb_pro"
+    ],
+    "anchor_columns": [
+     286,
+     291
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      286,
+      291
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "4_401_CmtAb_CmtAb_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "3": 8
+    },
+    "called_at_exact_anchor_column": 8,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "present_at_homologous_column": 8
+    }
+   },
+   {
+    "cluster": "1_113_CdnA",
+    "n_undecided": 5,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "1_113_CdnA_CdnA_pro"
+    ],
+    "anchor_columns": [
+     231,
+     236
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      231,
+      236
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "1_113_CdnA_CdnA_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 5
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "absent": 5
+    }
+   },
+   {
+    "cluster": "1_104_VanA",
+    "n_undecided": 3,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "1_104_VanA_VanA_pro"
+    ],
+    "anchor_columns": [
+     238,
+     243
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      238,
+      243
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "1_104_VanA_VanA_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 3
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "absent": 3
+    }
+   },
+   {
+    "cluster": "5_506_Stc2",
+    "n_undecided": 3,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "5_506_Stc2_Stc2_pro"
+    ],
+    "anchor_columns": [
+     291,
+     296
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      291,
+      296
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "5_506_Stc2_Stc2_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 3
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "absent": 3
+    }
+   },
+   {
+    "cluster": "4_404_TdnA1",
+    "n_undecided": 1,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "4_404_TdnA1_TdnA1_pro"
+    ],
+    "anchor_columns": [
+     246,
+     251
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      246,
+      251
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "4_404_TdnA1_TdnA1_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 1
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "absent": 1
+    }
+   },
+   {
+    "cluster": "6_601_PAO",
+    "n_undecided": 1,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "6_601_PAO_PAO_pro"
+    ],
+    "anchor_columns": [
+     534,
+     539
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     0.992
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      534,
+      539
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "6_601_PAO_PAO_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     0.992
+    ],
+    "spacing_counts": {
+     "1": 1
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 1,
+    "calls": {
+     "absent": 1
+    }
+   },
+   {
+    "cluster": "5_501_CmoS",
+    "n_undecided": 1,
+    "n_positive_anchors": 120,
+    "status": "tested",
+    "curated_reference_in_alignment": [
+     "5_501_CmoS_CmoS_pro"
+    ],
+    "anchor_columns": [
+     329,
+     334
+    ],
+    "anchor_column_vote_share": [
+     1.0,
+     1.0
+    ],
+    "method_recovery_on_positives": 1.0,
+    "holdout": {
+     "n_fit": 60,
+     "n_held": 60,
+     "fit_columns": [
+      329,
+      334
+     ],
+     "fit_equals_full_vote": [
+      true,
+      true
+     ],
+     "held_out_recovery": 1.0
+    },
+    "reference_residues_at_anchor": {
+     "5_501_CmoS_CmoS_pro": [
+      "H",
+      "H"
+     ]
+    },
+    "anchor_column_his_fraction_in_positives": [
+     1.0,
+     1.0
+    ],
+    "spacing_counts": {
+     "bulunamadi": 1
+    },
+    "called_at_exact_anchor_column": 0,
+    "non_canonical_spacing": 0,
+    "calls": {
+     "absent": 1
+    }
+   }
+  ],
+  "call_counts": {
+   "present_at_homologous_column": 35,
+   "absent": 31
+  }
+ },
+ "carboxylate_reference_anchoring": {
+  "per_cluster": [
+   {
+    "cluster": "7_701_AerC",
+    "n_undecided": 7,
+    "curated_reference": [
+     "7_701_AerC_AerC_pro"
+    ],
+    "status": "reference_carboxylate_position_unknown"
+   }
+  ],
+  "call_counts": {
+   "untested": 7
+  }
+ },
+ "per_entry_calls": {
+  "histidine": {
+   "NC_002927.3:545740-546922:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_002928.3:544399-545581:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_003919.1:372003-373056:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NC_010322.1:3365881-3367045:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NC_015458.1:2630751-2631984:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_015564.1:2457520-2458546:1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "Y",
+    "spacing": 0,
+    "offset": [
+     3,
+     -2
+    ],
+    "at_exact_anchor_column": false,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_018518.1:3644552-3645632:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_019382.1:3136208-3137390:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NC_019957.1:134492-135584:-1": {
+    "call": "absent",
+    "his1": "Y",
+    "his2": "H",
+    "his1_at_column": "Y",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NC_020133.1:197637-199008:-1": {
+    "call": "absent",
+    "his1": "R",
+    "his2": "H",
+    "his1_at_column": "R",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NC_020800.1:373214-374267:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NZ_AEJF01000062.1:189612-190779:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AKJL01000308.1:3880-5050:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AKJM01000045.1:12352-13522:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AKJQ01000041.1:35830-37000:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AKJS01000019.1:15408-16578:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AP014862.1:2443299-2444469:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AP022227.1:3258139-3259303:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_AP028092.1:5778378-5779578:-1": {
+    "call": "absent",
+    "his1": "R",
+    "his2": "H",
+    "his1_at_column": "R",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_BAOP01000011.1:80131-81181:-1": {
+    "call": "absent",
+    "his1": "N",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_BBUN01000079.1:21108-22158:-1": {
+    "call": "absent",
+    "his1": "D",
+    "his2": "H",
+    "his1_at_column": "D",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_BHVW01000129.1:11566-12598:1": {
+    "call": "absent",
+    "his1": "D",
+    "his2": "H",
+    "his1_at_column": "D",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_CP015992.1:4782536-4783706:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_CP022313.1:4023640-4024810:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_CP029608.1:4164847-4166017:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_CP048833.1:3994469-3995636:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_CP062255.2:371995-373048:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NZ_CP086379.1:2355633-2356803:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_CP140157.1:1939751-1941005:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NZ_FCOK02000160.1:3247-4414:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_HF570958.1:1927194-1928493:1": {
+    "call": "absent",
+    "his1": "Y",
+    "his2": "H",
+    "his1_at_column": "Y",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_JABELY010000002.1:117068-118076:-1": {
+    "call": "absent",
+    "his1": "N",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_JABFID010000007.1:258749-259913:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_JACAQE010000001.1:337999-339169:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_JACHWS010000001.1:1366461-1367484:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "Y",
+    "spacing": 0,
+    "offset": [
+     3,
+     -2
+    ],
+    "at_exact_anchor_column": false,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NZ_JALKHN010000001.1:3510574-3511738:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_JUEH01000001.1:359737-360904:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_JYFE01000023.1:77721-78738:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NZ_KQ130438.1:27767-29024:-1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NZ_KV793285.1:80866-82030:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LACH01000058.1:6401-7571:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LHPC01000053.1:39522-40692:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LJXB01000073.1:16262-17432:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LKKK01000013.1:73188-74352:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LKTM01000001.1:9582-10641:-1": {
+    "call": "absent",
+    "his1": "Y",
+    "his2": "H",
+    "his1_at_column": "Y",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LQOX01000129.1:45672-46722:-1": {
+    "call": "absent",
+    "his1": "D",
+    "his2": "H",
+    "his1_at_column": "D",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LR026975.1:4333155-4334250:-1": {
+    "call": "absent",
+    "his1": "Y",
+    "his2": "H",
+    "his1_at_column": "Y",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LSRF01000056.1:57376-58420:1": {
+    "call": "absent",
+    "his1": "N",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LSRJ01000001.1:662191-663241:-1": {
+    "call": "absent",
+    "his1": "N",
+    "his2": "H",
+    "his1_at_column": "N",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LZDG02000029.1:84974-86141:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_LZIJ01000147.1:33295-34360:1": {
+    "call": "absent",
+    "his1": "D",
+    "his2": "H",
+    "his1_at_column": "D",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_LZSF01000196.1:12724-13756:1": {
+    "call": "absent",
+    "his1": "D",
+    "his2": "H",
+    "his1_at_column": "D",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_MACM02000007.1:22165-23332:1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_MDJT01000130.1:35992-37045:1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "R",
+    "his1_at_column": "H",
+    "his2_at_column": "R",
+    "spacing": null
+   },
+   "NZ_PHNR01000104.1:7732-8902:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_PISI01000036.1:79999-81154:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 7,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     0.992,
+     1.0
+    ]
+   },
+   "NZ_RKHY01000001.1:1978730-1979747:1": {
+    "call": "absent",
+    "his1": "R",
+    "his2": "H",
+    "his1_at_column": "R",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "NZ_UFUJ01000001.1:3954020-3955229:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "NZ_UYIW01000004.1:2528637-2529846:-1": {
+    "call": "present_at_homologous_column",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "H",
+    "his2_at_column": "H",
+    "spacing": 3,
+    "offset": [
+     0,
+     0
+    ],
+    "at_exact_anchor_column": true,
+    "canonical_spacing": true,
+    "anchor_column_his_fraction": [
+     1.0,
+     1.0
+    ]
+   },
+   "XM_001825500.2:66-1308:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "H",
+    "his1_at_column": "-",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "XM_002381503.1:0-1242:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "H",
+    "his1_at_column": "-",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "XM_002561432.1:0-1263:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "H",
+    "his1_at_column": "-",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "XM_005647704.1:0-1443:1": {
+    "call": "absent",
+    "his1": "H",
+    "his2": "H",
+    "his1_at_column": "R",
+    "his2_at_column": "H",
+    "spacing": 1,
+    "offset": [
+     3,
+     0
+    ],
+    "at_exact_anchor_column": false,
+    "canonical_spacing": false,
+    "anchor_column_his_fraction": [
+     1.0,
+     0.992
+    ]
+   },
+   "XM_007287089.1:0-1221:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "H",
+    "his1_at_column": "-",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "XM_007596262.1:0-1215:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "H",
+    "his1_at_column": "-",
+    "his2_at_column": "H",
+    "spacing": null
+   },
+   "XM_020256475.1:147-1347:1": {
+    "call": "absent",
+    "his1": "-",
+    "his2": "-",
+    "his1_at_column": "-",
+    "his2_at_column": "-",
+    "spacing": null
+   }
+  },
+  "carboxylate": {
+   "NC_006349.2:817610-820934:-1": {
+    "call": "untested"
+   },
+   "NC_006351.1:1980889-1984240:1": {
+    "call": "untested"
+   },
+   "NC_008835.1:694529-697862:1": {
+    "call": "untested"
+   },
+   "NC_009078.1:1934298-1937703:1": {
+    "call": "untested"
+   },
+   "NZ_CP004380.1:989665-993043:-1": {
+    "call": "untested"
+   },
+   "NZ_CP009537.1:604796-608147:1": {
+    "call": "untested"
+   },
+   "NZ_LXCF01000073.1:17274-20607:1": {
+    "call": "untested"
+   }
+  }
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "_generated": "2026-10-28 13:59 UTC",
+ "_question": "Oksijenin yukseltgen mi verici mi oldugu FILOGENIDEN ya da yapi tahmininden cikarilabilir mi?",
+ "_answer": "NO. The signal measured here is real and entirely trivial.",
+ "measurement": {
+  "tree": "analysis_out/tree_all.nwk, 1940 varyant temsilcisi",
+  "labels": {
+   "donor": 1757,
+   "oxidant_only": 106,
+   "unknown": 77
+  },
+  "sister_group_shares_label": {
+   "all_siblings": {
+    "oxidant_only": 0.746,
+    "donor": 0.947,
+    "random_expectation_oxidant_only": 0.055
+   },
+   "same_type_siblings_removed": {
+    "oxidant_only": 0.488,
+    "donor": 0.868,
+    "enrichment": "8.9x",
+    "n_leaves": 65
+   }
+  },
+  "where_the_cross_type_signal_comes_from": {
+   "3_321_Nvd <-> 3_322_DAF36": 94,
+   "RedG <-> either desaturase": 0,
+   "note": "Every cross-type neighbouring of identically labelled enzymes comes from a single orthologue pair: Nvd and DAF36, both cholesterol 7-desaturases. RedG -- the only independent oxidant_only type -- sits nowhere near them."
+  }
+ },
+ "why_it_cannot_predict": [
+  "The signal says no more than 'orthologues of the same enzyme sit together on a tree', which is the ordinary behaviour of sequence similarity rather than information about the label.",
+  "The positive class is n=3 and two of the three are orthologues, so the number of independent observations is 2. No rule built on that many positives is falsifiable.",
+  "Where the oxygen goes depends on the substrate and the chemistry, not on the fold: all 76 types carry the same fold and the same cofactor pair (they pass the motif gate) and yet they spread across four different oxygen fates. A structure prediction can say that the cofactor centre is intact -- which is what we already use it for -- but it cannot say what the substrate is, and without the substrate the fate of the oxygen cannot be known."
+ ],
+ "what_does_work": "Resmi dengelenmis denklem (Rhea) + ChEBI formulleri uzerinden atom sayimi; bkz. reaction_balance.py. 28 capali tipin 18'inde hesaplandi."
+}

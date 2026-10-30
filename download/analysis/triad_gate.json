@@ -1,0 +1,104 @@
+{
+ "generated": "2026-10-30T18:54:53+00:00",
+ "module": "triad_gate.py",
+ "rule": "Rieske 4/4 (annotate_ro) + mononuclear Fe triad 3/3",
+ "carboxylate_reading": "fixed column +-2; if not found there, the within-type anchored re-reading",
+ "his_reading": "fixed column +-2; if no histidine is there, the within-type anchored reading, where the call needs the exact anchored column (a shifted hit must also match the literature's H-x(3-5)-H spacing)",
+ "audit_used": {
+  "path": "analysis_out/carboxylate_audit.json",
+  "generated": "2026-10-30T18:45:09+00:00"
+ },
+ "his_anchor_used": {
+  "path": "analysis_out/triad_anchor_his.json",
+  "generated": "2026-10-30T18:54:47+00:00"
+ },
+ "columns": {
+  "his1": 289,
+  "his2": 294,
+  "carboxylate": 431
+ },
+ "confirmed_entries": 19125,
+ "triad_complete": 19063,
+ "triad_complete_canonical_his_spacing": 19030,
+ "triad_complete_non_canonical_his_spacing": 33,
+ "non_canonical_spacing_note": "Both iron-binding histidines sit at the type's own homologous columns, but are separated by more or fewer residues than the 3-5 the literature reports (NDO His208/His213 are 4 apart, and so are CntA's). Column homology says the ligand is there; it does not say that a longer loop still assembles the facial triad. These entries are counted as complete and kept separately visible so that claim is never made silently.",
+ "triad_incomplete": 62,
+ "status_counts": {
+  "complete": 19030,
+  "complete_non_canonical_his_spacing": 33,
+  "his_absent": 31,
+  "carboxylate_absent": 24,
+  "carboxylate_untested": 7
+ },
+ "carboxylate_source_counts": {
+  "fixed_column": 16738,
+  "anchored_homologous": 2199,
+  "anchored_group_conserved": 157,
+  "absent": 24,
+  "untested": 7
+ },
+ "incomplete_by_type": {
+  "1_106_TsaM": 13,
+  "7_701_AerC": 7,
+  "1_113_CdnA": 5,
+  "5_504_CntA": 5,
+  "6_602_CAO": 5,
+  "6_603_PTC52": 5,
+  "5_506_Stc2": 4,
+  "3_322_DAF36": 4,
+  "1_104_VanA": 3,
+  "3_321_Nvd": 3,
+  "5_501_CmoS": 2,
+  "3_319_PhdA": 1,
+  "4_404_TdnA1": 1,
+  "5_507_BmoA": 1,
+  "3_305_ArhA1": 1,
+  "6_601_PAO": 1,
+  "1_107_CndA": 1
+ },
+ "incomplete_by_status_and_type": {
+  "his_absent": {
+   "1_106_TsaM": 12,
+   "1_113_CdnA": 5,
+   "5_504_CntA": 5,
+   "1_104_VanA": 3,
+   "5_506_Stc2": 3,
+   "4_404_TdnA1": 1,
+   "6_601_PAO": 1,
+   "5_501_CmoS": 1
+  },
+  "carboxylate_untested": {
+   "7_701_AerC": 7
+  },
+  "carboxylate_absent": {
+   "6_602_CAO": 5,
+   "6_603_PTC52": 5,
+   "3_322_DAF36": 4,
+   "3_321_Nvd": 3,
+   "3_319_PhdA": 1,
+   "5_506_Stc2": 1,
+   "5_507_BmoA": 1,
+   "3_305_ArhA1": 1,
+   "1_106_TsaM": 1,
+   "1_107_CndA": 1,
+   "5_501_CmoS": 1
+  }
+ },
+ "his_pair_spacing_fixed_column": {
+  "4": 18445,
+  "3": 607,
+  "6": 5,
+  "5": 1,
+  "2": 1
+ },
+ "his_pair_spacing_wide_window": {
+  "0": 38,
+  "7": 27,
+  "1": 1
+ },
+ "his_wide_window_verdict": "Widening the window to +-5 does find a histidine in the entries that have none at the fixed column, but the pair it finds is not separated by the 3-5 residues the literature requires (H-x(3-5)-H): the window catches an adjacent HH instead. These entries are therefore neither complete nor absent; they need the same within-type anchored reading the carboxylate got.",
+ "absence_not_proven": 7,
+ "his_absent": 31,
+ "his_undecided": 0,
+ "applied": true
+}

@@ -1,0 +1,3226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PrnD · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 1_117_PrnD</nav>
+
+<h1>PrnD <span class="note">· type 1_117_PrnD · RO group 1</span></h1>
+<div class="numbered">
+
+
+
+
+
+
+
+
+
+
+
+<div class="caveat">
+  <b>aminopyrrolnitrin</b>
+  <span class="chip chip--natural_specialized">natural_specialized</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  Of the 160 members assigned here,
+  <b>41.2%</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  
+  <br><span class="note">Intermediate of pyrrolnitrin biosynthesis in Pseudomonas. The six-electron aryl-amine to aryl-nitro oxidation is the final tailoring step of a bacterial antifungal, so this is a biosynthetic enzyme, not a degradative one.</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt P95483 (PRND_PSEFL, reviewed), Pseudomonas fluorescens aminopyrrolnitrin oxygenase PrnD; proposed as a new type by analysis_out/literature_harvest.json finding NT-01 (Runda 2024 thesis, <a href="https://doi.org/10.33612/diss.1175898687" rel="noopener noreferrer" target="_blank">doi:10.33612/diss.1175898687</a>), primary work Lee J, Simurdiak M, Zhao H, J Biol Chem 2005, 280, 36719-36728 ·
+      from a published paper
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="C1=CC(=C(C(=C1)Cl)N)C2=CNC=C2Cl" aria-label="aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)"></svg>
+      
+      <div class="rxn__label">aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">six-electron oxidation of an aryl amine to an aryl nitro group, proposed to run amine -&gt; hydroxylamine -&gt; nitroso -&gt; nitro</div>
+    </div>
+    <div class="rxn__scheme">
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">pyrrolnitrin</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> into the product.
+    
+    
+    <br><span class="small">PrnD: amine -&gt; nitro; the oxygen stays on the nitrogen of the product.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  <br><b>Note.</b> Harvest NT-01 could not pin an accession or a strain; this reviewed UniProt entry supplies both the sequence and the organism (Pseudomonas fluorescens, the species used in the cited in vitro work). reaction_class &#34;N_oxygenation&#34; is NEW vocabulary -- the set has N_demethylation but no arylamine oxidation. family is set to the existing token haloaromatics as the closest fit; pyrrolnitrin is a chlorinated phenylpyrrole and the harvest itself judged that no existing family fits well, so a new halogenated_pyrroles family is a defensible alternative. SMILES are the curated ones from NT-01 (PubChem CID 161174). No PDB exists; PrnD is absent from the thesis structure table.</figcaption>
+</figure>
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>160 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>31 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>128 replicons, 42 genera</dd>
+      <dt>On plasmids</dt><dd>0.0% (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>22.5%</dd>
+      <dt>Profile match</dt><dd>mean score 413 bits, mean coverage 0.76</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 286</span></dt>
+      <dd><b>Asp branch.</b> Aspartate in 160 of 160 members
+          (100.0%), as in the ring-hydroxylating majority.</dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">column 431</span></dt>
+      <dd>Asp in 88 of
+          160 members (55.0%);
+          72 have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site. This site is aspartate across the whole family.</dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 160</dd>
+      <dt>Phyla</dt><dd class="small">Pseudomonadota 75, Cyanobacteriota 60, Actinomycetota 21, Bdellovibrionota 2, Verrucomicrobiota 2</dd>
+      <dt>Top genera</dt><dd><span class="chip">Burkholderia 46</span> <span class="chip">Streptomyces 15</span> <span class="chip">Pseudomonas 11</span> <span class="chip">Nostoc 9</span> <span class="chip">Serratia 8</span> <span class="chip">Frankia 5</span> <span class="chip">Tolypothrix 5</span> <span class="chip">Chlorogloeopsis 4</span> <span class="chip">Rivularia 3</span> <span class="chip">Cylindrospermum 3</span> <span class="chip">Allocoleopsis 3</span> <span class="chip">Anabaena 3</span> </dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_117_PrnD.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_117_PrnD.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#1f7a4d;width:3.75%" title="characterized: 6"></i><i style="background:#7fb069;width:37.5%" title="close_homolog: 60"></i><i style="background:#f2c14e;width:2.5%" title="family_member: 4"></i><i style="background:#f78154;width:55.0%" title="distant: 88"></i><i style="background:#8e44ad;width:1.25%" title="novel: 2"></i></span>
+    <table class="data compact">
+      <tbody>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+          <td class="small">characterized reference (≥95 % identity)</td>
+          <td class="num">6</td><td class="num">3.8%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+          <td class="small">close homolog (≥60 %)</td>
+          <td class="num">60</td><td class="num">37.5%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">4</td><td class="num">2.5%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">88</td><td class="num">55.0%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+          <td class="small">novel (&lt;25 %): no close reference</td>
+          <td class="num">2</td><td class="num">1.2%</td></tr>
+      
+      </tbody>
+    </table>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_104_VanA.html">1_104_VanA</a></td><td class="num">81.7 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td><td class="num">70.2 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_116_GdmA.html">1_116_GdmA</a></td><td class="num">62.5 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a></td><td class="num">61.9 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">1_105_DdmC</a></td><td class="num">60.0 %</td></tr>
+      
+    </tbody></table>
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">3.8%</td><td class="num">9.4%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">6.2%</td><td class="num">7.5%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">133</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:none</td><td class="num">13</td></tr><tr><td class="mono small">α3 · Fd:none · Red:GR</td><td class="num">12</td></tr><tr><td class="mono small">α3 · Fd:rieske · Red:none</td><td class="num">2</td></tr>
+    </tbody></table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
+    are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
+    describe this enzyme.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; other &gt; other &gt; [alpha]</div></td><td class="num">20</td></tr>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; other &gt; reductase &gt; [alpha]</div></td><td class="num">18</td></tr>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">reductase &gt; other &gt; reductase &gt; [alpha]</div></td><td class="num">6</td></tr>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255 34" height="34" width="255" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,4 238,4 247,14.0 238,24 201,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</div></td><td class="num">5</td></tr>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353 34" height="34" width="353" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="299,7 336,7 345,14.0 336,21 299,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text></svg><div class="note mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other &gt; reductase</div></td><td class="num">4</td></tr>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255 34" height="34" width="255" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">other &gt; other &gt; reductase &gt; [alpha] &gt; other</div></td><td class="num">3</td></tr>
+      
+    </tbody></table>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (44 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">26</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="54,4 91,4 100,14.0 91,24 54,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">hypothetical &gt; [alpha]</div></td><td class="num">5</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,4 91,4 100,14.0 91,24 54,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; [alpha]</div></td><td class="num">3</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 34" height="34" width="500" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>ro_alpha</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">ro_</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="299,4 336,4 345,14.0 336,24 299,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="348,7 385,7 394,14.0 385,21 348,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="397,7 434,7 443,14.0 434,21 397,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="415.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="446,7 483,7 492,14.0 483,21 446,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="464.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text></svg><div class="note mono">other &gt; other &gt; other &gt; other &gt; ro_alpha &gt; hypothetical &gt; [alpha] &gt; hypothetical &gt; hypothetical &gt; ferredoxin</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 34" height="34" width="304" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#e67e22" stroke="#5a5a5a" stroke-width="0.7"><title>alpha_other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α′</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="250,4 287,4 296,14.0 287,24 250,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">hypothetical &gt; alpha_other &gt; other &gt; hypothetical &gt; hypothetical &gt; [alpha]</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255 34" height="34" width="255" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="54,4 91,4 100,14.0 91,24 54,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text></svg><div class="note mono">hypothetical &gt; [alpha] &gt; other &gt; other &gt; ferredoxin</div></td><td class="num">2</td></tr>
+        
+      </tbody></table>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 72" height="72" width="265" class="oplayout"><rect x="6" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="33.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">378 bp</text><polygon points="63,20 100,20 109,32.0 100,44 63,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="81.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="112,20 149,20 158,32.0 149,44 112,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="130.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="161,20 198,20 207,32.0 198,44 161,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="179.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="210,18 247,18 256,32.0 247,46 210,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="228.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text></svg>
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference
+&mdash; 29 %
+(20 of 70).</b>
+
+Members are assigned by profile score, and most of them are distant: counting all of them would
+describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+family-member level are counted here.
+
+
+<b>This is a plurality, not a typical case:</b> the other
+71 % are spread over
+17 further arrangements, so the figure shows the commonest order rather
+than the order of this type.
+
+
+Preceded by the architecture seen in most of its members
+(divergent other) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">77</td><td class="num">48.1%</td></tr>
+      
+      <tr><td>non-regulator, co-directional
+          </td>
+        <td class="num">55</td><td class="num">34.4%</td></tr>
+      
+      <tr><td><b>regulator, divergent</b> (shared promoter region)
+          </td>
+        <td class="num">19</td><td class="num">11.9%</td></tr>
+      
+      <tr><td>regulator, co-directional
+          </td>
+        <td class="num">6</td><td class="num">3.8%</td></tr>
+      
+      <tr><td>no upstream gene in the window</td>
+        <td class="num">3</td><td class="num">1.9%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  <div>
+    
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      <tr><td>TetR</td><td class="num">10</td></tr><tr><td>not assignable</td><td class="num">9</td></tr>
+    </tbody></table>
+    
+    
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      <tr><td>regulator_unclassified</td><td class="num">22</td></tr><tr><td>TetR</td><td class="num">15</td></tr><tr><td>LysR</td><td class="num">8</td></tr><tr><td>AraC</td><td class="num">5</td></tr><tr><td>sigma_factor</td><td class="num">4</td></tr><tr><td>sigma54</td><td class="num">3</td></tr><tr><td>MarR</td><td class="num">3</td></tr><tr><td>Crp_Fnr</td><td class="num">3</td></tr>
+    </tbody></table>
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>other</td><td class="num">100.0%</td><td class="num">653</td></tr><tr><td>hypothetical</td><td class="num">74.4%</td><td class="num">233</td></tr><tr><td>reductase</td><td class="num">39.4%</td><td class="num">91</td></tr><tr><td>regulator</td><td class="num">36.2%</td><td class="num">66</td></tr><tr><td>ferredoxin</td><td class="num">28.1%</td><td class="num">68</td></tr><tr><td>hydrolase</td><td class="num">27.5%</td><td class="num">47</td></tr><tr><td>transporter</td><td class="num">20.6%</td><td class="num">36</td></tr><tr><td>ro_alpha</td><td class="num">15.6%</td><td class="num">30</td></tr><tr><td>transposon</td><td class="num">15.0%</td><td class="num">26</td></tr><tr><td>dehydrogenase</td><td class="num">5.0%</td><td class="num">8</td></tr><tr><td>ring_cleavage</td><td class="num">0.6%</td><td class="num">2</td></tr></tbody>
+</table></div>
+
+
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  <th class="num" title="score 1.5813 · linker domain">124</th><th class="num" title="score 1.5324 · catalytic domain">293</th><th class="num" title="score 1.5197 · catalytic domain">202</th><th class="num" title="score 1.4911 · linker domain">162</th><th class="num" title="score 1.3742 · linker domain">150</th><th class="num" title="score 1.2516 · linker domain">127</th><th class="num" title="score 1.2475 · catalytic domain">281</th><th class="num" title="score 1.2023 · linker domain">152</th><th class="num" title="score 1.0512 · linker domain">125</th><th class="num" title="score 1.0324 · linker domain">138</th><th class="num" title="score 1.0141 · catalytic domain">232</th><th class="num" title="score 0.9646 · catalytic domain">217</th>
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  <th class="num note">W</th><th class="num note">V</th><th class="num note">G</th><th class="num note">A</th><th class="num note">W</th><th class="num note">P</th><th class="num note">L</th><th class="num note">G</th><th class="num note">A</th><th class="num note">P</th><th class="num note">W</th><th class="num note">T</th><th></th></tr>
+</thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+  <td class="num">66</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-1.html">1</a></td>
+  <td class="num">9</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">7</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+  <td class="num">9</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">3</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-4.html">4</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-5.html">5</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">H</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-6.html">6</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html">7</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-8.html">8</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">H</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-9.html">9</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-10.html">10</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">2</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-11.html">11</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-12.html">12</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-13.html">13</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-14.html">14</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">9</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-15.html">15</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-16.html">16</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-17.html">17</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">H</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  <td class="num">9</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-18.html">18</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">T</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-19.html">19</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">G</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  <td class="num">8</td></tr>
+
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="/pro-sim-blast/download/analysis/variant_signatures.csv">Download signatures</a></p>
+
+
+
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 294" width="100%" class="tree" style="height:auto"><path d="M20.0,104.2 V33.0 H39.5" fill="none" stroke="#777" stroke-width="1"/><path d="M39.5,33.0 V21.0 H180.5" fill="none" stroke="#777" stroke-width="1"/><path d="M180.5,21.0 V15.0 H363.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="363.5" cy="15.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#25 | 1 members | median identity 1.00 | representative Chthoniobacter flavus Ellin428</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-25.html"><text x="370.5" y="18.5" font-size="9" fill="currentColor">PrnD#25 · Chthoniobacter flavus Ellin428 (n=1)<title>variant 1_117_PrnD#25 | 1 members | median identity 1.00 | representative Chthoniobacter flavus Ellin428</title></text></a><path d="M180.5,21.0 V27.0 H283.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="283.5" cy="27.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#26 | 1 members | median identity 1.00 | representative Pedosphaera parvula Ellin514</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-26.html"><text x="290.5" y="30.5" font-size="9" fill="currentColor">PrnD#26 · Pedosphaera parvula Ellin514 (n=1)<title>variant 1_117_PrnD#26 | 1 members | median identity 1.00 | representative Pedosphaera parvula Ellin514</title></text></a><path d="M39.5,33.0 V45.0 H85.7" fill="none" stroke="#777" stroke-width="1"/><path d="M85.7,45.0 V39.0 H304.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="304.5" cy="39.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#23 | 1 members | median identity 1.00 | representative Sphingobium cupriresistens LL01</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-23.html"><text x="311.5" y="42.5" font-size="9" fill="currentColor">PrnD#23 · Sphingobium cupriresistens LL01 (n=1)<title>variant 1_117_PrnD#23 | 1 members | median identity 1.00 | representative Sphingobium cupriresistens LL01</title></text></a><path d="M85.7,45.0 V51.0 H238.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="238.6" cy="51.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#19 | 1 members | median identity 1.00 | representative Rhizorhabdus dicambivorans</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-19.html"><text x="245.6" y="54.5" font-size="9" fill="currentColor">PrnD#19 · Rhizorhabdus dicambivorans (n=1)<title>variant 1_117_PrnD#19 | 1 members | median identity 1.00 | representative Rhizorhabdus dicambivorans</title></text></a><path d="M20.0,104.2 V79.1 H50.5" fill="none" stroke="#777" stroke-width="1"/><path d="M50.5,79.1 V63.0 H345.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="345.3" cy="63.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#20 | 1 members | median identity 1.00 | representative Mycobacterium sp. GA-2829</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-20.html"><text x="352.3" y="66.5" font-size="9" fill="currentColor">PrnD#20 · Mycobacterium sp. GA-2829 (n=1)<title>variant 1_117_PrnD#20 | 1 members | median identity 1.00 | representative Mycobacterium sp. GA-2829</title></text></a><path d="M50.5,79.1 V95.2 H62.3" fill="none" stroke="#777" stroke-width="1"/><path d="M62.3,95.2 V81.0 H463.8" fill="none" stroke="#777" stroke-width="1"/><path d="M463.8,81.0 V75.0 H520.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="520.0" cy="75.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#5 | 6 members | median identity 0.64 | representative Gloeothece citriformis PCC 7424</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-5.html"><text x="527.0" y="78.5" font-size="9" fill="currentColor">PrnD#5 · Gloeothece citriformis PCC 7424 (n=6)<title>variant 1_117_PrnD#5 | 6 members | median identity 0.64 | representative Gloeothece citriformis PCC 7424</title></text></a><path d="M463.8,81.0 V87.0 H516.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="516.4" cy="87.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#8 | 5 members | median identity 0.74 | representative Chroococcidiopsis thermalis PCC 7203</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-8.html"><text x="523.4" y="90.5" font-size="9" fill="currentColor">PrnD#8 · Chroococcidiopsis thermalis PCC 7203 (n=5)<title>variant 1_117_PrnD#8 | 5 members | median identity 0.74 | representative Chroococcidiopsis thermalis PCC 7203</title></text></a><path d="M62.3,95.2 V109.5 H166.9" fill="none" stroke="#777" stroke-width="1"/><path d="M166.9,109.5 V99.0 H320.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="320.0" cy="99.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#4 | 6 members | median identity 0.50 | representative Streptomyces noursei</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-4.html"><text x="327.0" y="102.5" font-size="9" fill="currentColor">PrnD#4 · Streptomyces noursei (n=6)<title>variant 1_117_PrnD#4 | 6 members | median identity 0.50 | representative Streptomyces noursei</title></text></a><path d="M166.9,109.5 V120.0 H198.7" fill="none" stroke="#777" stroke-width="1"/><path d="M198.7,120.0 V111.0 H331.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="331.3" cy="111.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#24 | 1 members | median identity 1.00 | representative Tolypothrix sp. NIES-4075</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-24.html"><text x="338.3" y="114.5" font-size="9" fill="currentColor">PrnD#24 · Tolypothrix sp. NIES-4075 (n=1)<title>variant 1_117_PrnD#24 | 1 members | median identity 1.00 | representative Tolypothrix sp. NIES-4075</title></text></a><path d="M198.7,120.0 V129.0 H344.6" fill="none" stroke="#777" stroke-width="1"/><path d="M344.6,129.0 V123.0 H349.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="349.6" cy="123.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#0 | 66 members | median identity 0.93 | representative Pseudomonas protegens Pf-5</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html"><text x="356.6" y="126.5" font-size="9" fill="currentColor">PrnD#0 · Pseudomonas protegens Pf-5 (n=66)<title>variant 1_117_PrnD#0 | 66 members | median identity 0.93 | representative Pseudomonas protegens Pf-5</title></text></a><path d="M344.6,129.0 V135.0 H350.8" fill="none" stroke="#777" stroke-width="1"/><rect x="346.8" y="131.0" width="8" height="8" fill="#c0392b" stroke="#111" stroke-width="1"><title>curated reference enzyme for 1_117_PrnD</title></rect><a href="/pro-sim-blast/cluster/1_117_PrnD.html"><text x="357.8" y="138.5" font-size="9" fill="currentColor" font-weight="700">★ 1_117_PrnD reference (aminopyrrolnitrin)<title>curated reference enzyme for 1_117_PrnD</title></text></a><path d="M20.0,104.2 V175.5 H110.3" fill="none" stroke="#777" stroke-width="1"/><path d="M110.3,175.5 V156.0 H169.5" fill="none" stroke="#777" stroke-width="1"/><path d="M169.5,156.0 V147.0 H300.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="300.0" cy="147.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#1 | 9 members | median identity 0.71 | representative Nostoc sp. PCC 7524</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-1.html"><text x="307.0" y="150.5" font-size="9" fill="currentColor">PrnD#1 · Nostoc sp. PCC 7524 (n=9)<title>variant 1_117_PrnD#1 | 9 members | median identity 0.71 | representative Nostoc sp. PCC 7524</title></text></a><path d="M169.5,156.0 V165.0 H200.6" fill="none" stroke="#777" stroke-width="1"/><path d="M200.6,165.0 V159.0 H329.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="329.4" cy="159.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#21 | 1 members | median identity 1.00 | representative Candidatus Berkiella aquae</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-21.html"><text x="336.4" y="162.5" font-size="9" fill="currentColor">PrnD#21 · Candidatus Berkiella aquae (n=1)<title>variant 1_117_PrnD#21 | 1 members | median identity 1.00 | representative Candidatus Berkiella aquae</title></text></a><path d="M200.6,165.0 V171.0 H301.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="301.2" cy="171.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#29 | 1 members | median identity 1.00 | representative Halobacteriovorax marinus SJ</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-29.html"><text x="308.2" y="174.5" font-size="9" fill="currentColor">PrnD#29 · Halobacteriovorax marinus SJ (n=1)<title>variant 1_117_PrnD#29 | 1 members | median identity 1.00 | representative Halobacteriovorax marinus SJ</title></text></a><path d="M110.3,175.5 V194.9 H190.8" fill="none" stroke="#777" stroke-width="1"/><path d="M190.8,194.9 V183.0 H329.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="329.9" cy="183.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#22 | 1 members | median identity 1.00 | representative Candidatus Berkiella aquae</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-22.html"><text x="336.9" y="186.5" font-size="9" fill="currentColor">PrnD#22 · Candidatus Berkiella aquae (n=1)<title>variant 1_117_PrnD#22 | 1 members | median identity 1.00 | representative Candidatus Berkiella aquae</title></text></a><path d="M190.8,194.9 V206.8 H224.1" fill="none" stroke="#777" stroke-width="1"/><path d="M224.1,206.8 V195.0 H282.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="282.2" cy="195.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#28 | 1 members | median identity 1.00 | representative Halobacteriovorax marinus SJ</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-28.html"><text x="289.2" y="198.5" font-size="9" fill="currentColor">PrnD#28 · Halobacteriovorax marinus SJ (n=1)<title>variant 1_117_PrnD#28 | 1 members | median identity 1.00 | representative Halobacteriovorax marinus SJ</title></text></a><path d="M224.1,206.8 V218.6 H239.6" fill="none" stroke="#777" stroke-width="1"/><path d="M239.6,218.6 V207.0 H318.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="318.4" cy="207.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#27 | 1 members | median identity 1.00 | representative Synechocystis sp. PCC 6714</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-27.html"><text x="325.4" y="210.5" font-size="9" fill="currentColor">PrnD#27 · Synechocystis sp. PCC 6714 (n=1)<title>variant 1_117_PrnD#27 | 1 members | median identity 1.00 | representative Synechocystis sp. PCC 6714</title></text></a><path d="M239.6,218.6 V230.2 H248.2" fill="none" stroke="#777" stroke-width="1"/><path d="M248.2,230.2 V219.0 H414.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="414.4" cy="219.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#6 | 5 members | median identity 0.55 | representative Geitlerinema sp. PCC 7407</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-6.html"><text x="421.4" y="222.5" font-size="9" fill="currentColor">PrnD#6 · Geitlerinema sp. PCC 7407 (n=5)<title>variant 1_117_PrnD#6 | 5 members | median identity 0.55 | representative Geitlerinema sp. PCC 7407</title></text></a><path d="M248.2,230.2 V241.5 H271.6" fill="none" stroke="#777" stroke-width="1"/><path d="M271.6,241.5 V231.0 H336.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="336.5" cy="231.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#3 | 7 members | median identity 0.66 | representative Nostoc punctiforme PCC 73102</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html"><text x="343.5" y="234.5" font-size="9" fill="currentColor">PrnD#3 · Nostoc punctiforme PCC 73102 (n=7)<title>variant 1_117_PrnD#3 | 7 members | median identity 0.66 | representative Nostoc punctiforme PCC 73102</title></text></a><path d="M271.6,241.5 V252.0 H305.6" fill="none" stroke="#777" stroke-width="1"/><path d="M305.6,252.0 V243.0 H338.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="338.4" cy="243.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#7 | 5 members | median identity 0.68 | representative &#x27;Nostoc azollae&#x27; 0708</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html"><text x="345.4" y="246.5" font-size="9" fill="currentColor">PrnD#7 · &#x27;Nostoc azollae&#x27; 0708 (n=5)<title>variant 1_117_PrnD#7 | 5 members | median identity 0.68 | representative &#x27;Nostoc azollae&#x27; 0708</title></text></a><path d="M305.6,252.0 V261.0 H312.5" fill="none" stroke="#777" stroke-width="1"/><path d="M312.5,261.0 V255.0 H350.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="350.3" cy="255.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#2 | 9 members | median identity 0.72 | representative Nostoc punctiforme PCC 73102</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html"><text x="357.3" y="258.5" font-size="9" fill="currentColor">PrnD#2 · Nostoc punctiforme PCC 73102 (n=9)<title>variant 1_117_PrnD#2 | 9 members | median identity 0.72 | representative Nostoc punctiforme PCC 73102</title></text></a><path d="M312.5,261.0 V267.0 H378.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="378.9" cy="267.0" r="2.8" fill="#c0392b"><title>variant 1_117_PrnD#30 | 1 members | median identity 1.00 | representative Nostoc sp. PCC 7524</title></circle><a href="/pro-sim-blast/leaf/1_117_PrnD-30.html"><text x="385.9" y="270.5" font-size="9" fill="currentColor">PrnD#30 · Nostoc sp. PCC 7524 (n=1)<title>variant 1_117_PrnD#30 | 1 members | median identity 1.00 | representative Nostoc sp. PCC 7524</title></text></a><line x1="20" y1="286" x2="114.7" y2="286" stroke="currentColor" stroke-width="2"/><text x="119.7" y="289" font-size="9" fill="currentColor">0.5 subst./site</text></svg></div>
+
+
+
+<h2>Where its carriers were isolated from</h2>
+
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+Recorded for 52 of this type's 160 entries
+(32.5%); the rest state no source.
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+
+<tr><td>soil</td>
+    <td class="num" data-v="16">16</td>
+    <td class="num" data-v="10">10</td></tr>
+
+<tr><td>plant tissue and endophytes</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="2">2</td></tr>
+
+<tr><td>water, compartment unstated</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="5">5</td></tr>
+
+<tr><td>rhizosphere soil</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="5">5</td></tr>
+
+<tr><td>animal host</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="2">2</td></tr>
+
+<tr><td>not classifiable</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>marine</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="2">2</td></tr>
+
+<tr><td>plant associated, position unstated</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="2">2</td></tr>
+
+</tbody></table></div>
+<p class="note"><a href="/pro-sim-blast/atlas/ecology.html">How the habitat vocabulary is built, and what it
+cannot classify</a> ·
+<a href="/pro-sim-blast/atlas/geography.html#type=1_117_PrnD">where this type has been collected, on a
+map</a></p>
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">1_117_PrnD#0</a></td>
+    <td class="num" data-v="66">66</td>
+    <td class="num" data-v="0.9288">0.93</td>
+    <td class="small">Burkholderia:46, Pseudomonas:11, Serratia:8, Yersinia:1</td>
+    <td class="small">transposase | alpha/beta fold hydrolase | thioesterase II family protein | LysR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-1.html">1_117_PrnD#1</a></td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="0.7072">0.71</td>
+    <td class="small">Chlorogloeopsis:2, Nostoc:1, Allocoleopsis:1, Crinalium:1, Cylindrospermum:1</td>
+    <td class="small">amidohydrolase family protein | Crp/Fnr family transcriptional regulator | RNA polymerase sigma factor, RpoD/SigA family | N-acetylmuramoyl-L-alanine amidase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">1_117_PrnD#2</a></td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="0.7233">0.72</td>
+    <td class="small">Nostoc:3, Nodularia:2, Calothrix:1, Crinalium:1, Cylindrospermum:1</td>
+    <td class="small">heavy metal-responsive transcriptional regulator | tetratricopeptide repeat protein | AraC family transcriptional regulator | metallophosphoesterase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">1_117_PrnD#3</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.6584">0.66</td>
+    <td class="small">Nostoc:2, Cylindrospermum:1, Oxynema:1, Microcystis:1, Tolypothrix:1</td>
+    <td class="small">tetratricopeptide repeat protein | IS4 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-4.html">1_117_PrnD#4</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.5036">0.50</td>
+    <td class="small">Streptomyces:5, Frankia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-5.html">1_117_PrnD#5</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.6367">0.64</td>
+    <td class="small">Gloeothece:1, Rivularia:1, Allocoleopsis:1, Stanieria:1, Anabaena:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | NAD(P)-dependent alcohol dehydrogenase | 5-formyltetrahydrofolate cyclo-ligase</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-6.html">1_117_PrnD#6</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.5465">0.55</td>
+    <td class="small">Geitlerinema:1, Allocoleopsis:1, Cyanobacterium:1, Leptolyngbya:1, Phormidium:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html">1_117_PrnD#7</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.6829">0.68</td>
+    <td class="small">Anabaena:2, Cylindrospermopsis:2, &#39;Nostoc:1</td>
+    <td class="small">heavy metal-responsive transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-8.html">1_117_PrnD#8</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.7356">0.74</td>
+    <td class="small">Scytonema:2, Chroococcidiopsis:1, Tolypothrix:1, Aliterella:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | thioesterase II family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-9.html">1_117_PrnD#9</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.5952">0.60</td>
+    <td class="small">Streptomyces:2, Frankia:2</td>
+    <td class="small">IS66 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-10.html">1_117_PrnD#10</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.7653">0.77</td>
+    <td class="small">Streptomyces:4</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-11.html">1_117_PrnD#11</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.9884">0.99</td>
+    <td class="small">Planktothrix:3, Nostoc:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-12.html">1_117_PrnD#12</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.5857">0.59</td>
+    <td class="small">Frankia:2, Streptomyces:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-13.html">1_117_PrnD#13</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.8364">0.84</td>
+    <td class="small">Streptomyces:3</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-14.html">1_117_PrnD#14</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9511">0.95</td>
+    <td class="small">Mesorhizobium:3</td>
+    <td class="small">MBL fold metallo-hydrolase | MarR family winged helix-turn-helix transcriptional regulator | MarR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-15.html">1_117_PrnD#15</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.671">0.67</td>
+    <td class="small">Rivularia:1, Calothrix:1, Mastigocoleus:1</td>
+    <td class="small">heavy metal-responsive transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-16.html">1_117_PrnD#16</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9383">0.94</td>
+    <td class="small">Caulobacter:2</td>
+    <td class="small">MBL fold metallo-hydrolase | acyl-CoA dehydrogenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-17.html">1_117_PrnD#17</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.6927">0.69</td>
+    <td class="small">Nostoc:1, Rivularia:1</td>
+    <td class="small">Crp/Fnr family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-18.html">1_117_PrnD#18</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Chlorogloeopsis:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-19.html">1_117_PrnD#19</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Rhizorhabdus:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-20.html">1_117_PrnD#20</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Mycobacterium:1</td>
+    <td class="small">AraC family transcriptional regulator | alpha/beta hydrolase-fold protein | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-21.html">1_117_PrnD#21</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Candidatus:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-22.html">1_117_PrnD#22</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Candidatus:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-23.html">1_117_PrnD#23</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">muconolactone Delta-isomerase | muconate/chloromuconate family cycloisomerase | LysR family transcriptional regulator | IclR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-24.html">1_117_PrnD#24</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Tolypothrix:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-25.html">1_117_PrnD#25</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Chthoniobacter:1</td>
+    <td class="small">AraC family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-26.html">1_117_PrnD#26</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pedosphaera:1</td>
+    <td class="small">ADP-ribosylglycohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-27.html">1_117_PrnD#27</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Synechocystis:1</td>
+    <td class="small">bifunctional diguanylate cyclase/phosphodiesterase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-28.html">1_117_PrnD#28</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Halobacteriovorax:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-29.html">1_117_PrnD#29</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Halobacteriovorax:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/1_117_PrnD-30.html">1_117_PrnD#30</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Nostoc:1</td>
+    <td class="small">metallophosphoesterase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">160</span></h2>
+
+
+
+
+<div class="caveat">
+  
+  <b>66 of 160 members are close enough for the substrate
+  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
+  94 are more distant relatives whose reaction has not been measured and cannot be
+  inferred from membership alone. The table is ordered with the closest first, so the informative
+  members are on this page and the distant ones follow.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP025261.1_4135592-4136684_-1">WP_101338135.1</a>
+        </td>
+    <td><i>Pseudomonas sp. 09C 129</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">96 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="846.5">846</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LT629747.1_3604170-3605262_1">WP_038578957.1</a>
+        </td>
+    <td><i>Pseudomonas chlororaphis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">96 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="847.0">847</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP008696.1_3955180-3956272_-1">WP_038633271.1</a>
+        </td>
+    <td><i>Pseudomonas chlororaphis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="845.5">846</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP027752.1_4040004-4041096_-1">WP_038633271.1</a>
+        </td>
+    <td><i>Pseudomonas chlororaphis subsp. aureofaciens</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="845.5">846</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LHVB01000014.1_141036-142128_-1">WP_038633271.1</a>
+        </td>
+    <td><i>Pseudomonas chlororaphis subsp. aureofaciens</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="845.5">846</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_VCCM02000002.1_822415-823507_1">WP_041990063.1</a>
+        </td>
+    <td><i>Pseudomonas sp. ATCC 13985</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="847.5">848</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha] &gt; reductase &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP011110.1_3043269-3044361_1">WP_045882845.1</a>
+        </td>
+    <td><i>Pseudomonas chlororaphis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="840.6">841</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP065684.1_1044510-1045623_1">WP_038801627.1</a>
+        </td>
+    <td><i>Burkholderia oklahomensis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">95 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="849.3">849</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP010892.1_3682708-3683800_-1">WP_044463356.1</a>
+        </td>
+    <td><i>Pseudomonas sp. MRSN 12121</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="838.4">838</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP013389.1_3134715-3135828_1">WP_066490402.1</a>
+        </td>
+    <td><i>Burkholderia mayonis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="849.7">850</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LOVS01000093.1_1015-2128_-1">WP_066571508.1</a>
+        </td>
+    <td><i>Burkholderia sp. ABCPW 14</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="846.9">847</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JAIZSP010000018.1_48395-49532_-1">WP_059242529.1</a>
+        </td>
+    <td><i>Burkholderia arboris</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="832.0">832</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JBBMXW010000003.1_1101786-1102923_-1">WP_340626175.1</a>
+        </td>
+    <td><i>Burkholderia arboris</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="829.0">829</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LOXK01000029.1_8157-9270_1">WP_059582758.1</a>
+        </td>
+    <td><i>Burkholderia sp. MSMB0265</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="841.1">841</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP013387.1_1621623-1622736_-1">WP_059472967.1</a>
+        </td>
+    <td><i>Burkholderia mayonis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.8">840</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LWYJ01000062.1_51532-52645_-1">WP_004544724.1</a>
+        </td>
+    <td><i>Burkholderia pseudomallei</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="844.8">845</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_WUTI01000110.1_20319-21432_-1">WP_004540419.1</a>
+        </td>
+    <td><i>Burkholderia pseudomallei</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="845.9">846</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_009078.1_2669942-2671055_1">WP_004529243.1</a>
+        </td>
+    <td><i>Burkholderia pseudomallei 1106a</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="844.7">845</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CM000833.1_1885859-1886972_1">WP_004529243.1</a>
+        </td>
+    <td><i>Burkholderia pseudomallei 1710a</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="844.7">845</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_007435.1_1399443-1400556_1">WP_004529243.1</a>
+        </td>
+    <td><i>Burkholderia pseudomallei 1710b</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="844.7">845</td>
+    <td class="small mono">hypothetical &gt; other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LOWC01000145.1_35495-36608_1">WP_059472967.1</a>
+        </td>
+    <td><i>Burkholderia sp. BDU5</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.8">840</td>
+    <td class="small mono">hypothetical &gt; reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MEBK01000023.1_36034-37147_1">WP_060065344.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="844.7">845</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JRFO01000005.1_234135-235248_1">WP_042585429.1</a>
+        </td>
+    <td><i>Burkholderia sp. MSHR3999</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="841.6">842</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LPGI01000076.1_62987-64100_-1">WP_059529600.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="842.2">842</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LPLU01000078.1_87244-88357_1">WP_060234611.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="840.6">841</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MECO01000028.1_140062-141175_1">WP_060025998.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">93 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="843.1">843</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_ABLC01000015.1_44073-45186_1">WP_006750380.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria IOP40-10</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="840.2">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP011505.1_364253-365366_-1">WP_047904144.1</a>
+        </td>
+    <td><i>Burkholderia pyrrocinia</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="841.0">841</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; transposon &gt; other &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QJJY01000001.1_573052-574201_-1">WP_072436878.1</a>
+        </td>
+    <td><i>Burkholderia pyrrocinia</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.7">840</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_FPJF01000002.1_573309-574458_-1">WP_072436878.1</a>
+        </td>
+    <td><i>Burkholderia sp. NFACC33-1</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.7">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_FMWI01000010.1_113353-114445_1">WP_072441291.1</a>
+        </td>
+    <td><i>Pseudomonas sp. NFPP17</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="833.1">833</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_ABLK01000024.1_35795-36908_-1">WP_006757229.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria MEX-5</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="837.3">837</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LDWR01000113.1_13315-14428_1">WP_048252055.1</a>
+        </td>
+    <td><i>Burkholderia cepacia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.8">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LPIX01000073.1_151683-152799_1">WP_060326039.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="837.4">837</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QTOD01000011.1_195841-196957_1">WP_095399889.1</a>
+        </td>
+    <td><i>Burkholderia ubonensis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="841.0">841</td>
+    <td class="small mono">reductase &gt; other &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LS999205.1_4090067-4091159_1">WP_011061884.1</a>
+        </td>
+    <td><i>Pseudomonas protegens CHA0</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="830.3">830</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_004129.6_4161542-4162634_1">WP_011061884.1</a>
+        </td>
+    <td><i>Pseudomonas protegens Pf-5</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="830.3">830</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_UZVX01000003.1_1741965-1743078_1">WP_126226134.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.6">840</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP009799.1_1708279-1709392_1">WP_011659684.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria AMMD</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="836.8">837</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_010552.1_2481523-2482636_1">WP_012366944.1</a>
+        </td>
+    <td><i>Burkholderia ambifaria MC40-6</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">92 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="838.4">838</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_UAQW01000007.1_1134864-1135977_-1">WP_027792879.1</a>
+        </td>
+    <td><i>Burkholderia cepacia</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="840.1">840</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_UARD01000032.1_61881-62997_-1">WP_059492937.1</a>
+        </td>
+    <td><i>Burkholderia cepacia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.7">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QMFZ01000001.1_243850-244966_1">WP_059492937.1</a>
+        </td>
+    <td><i>Burkholderia reimsis</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.7">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_ASSI01000095.1_33933-35046_1">WP_021160485.1</a>
+        </td>
+    <td><i>Burkholderia sp. AU4i</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.7">840</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LOYU01000037.1_255842-256955_1">WP_059523954.1</a>
+        </td>
+    <td><i>Burkholderia cepacia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="840.8">841</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP013442.1_92177-93290_-1">WP_069271945.1</a>
+        </td>
+    <td><i>Burkholderia cepacia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="839.4">839</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_007509.1_225488-226610_1">WP_011349402.1</a>
+        </td>
+    <td><i>Burkholderia lata</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="829.3">829</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QTSG01000049.1_21336-22422_1">WP_034175623.1</a>
+        </td>
+    <td><i>Burkholderia cenocepacia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="836.7">837</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LTDN01000029.1_2795-3887_-1">WP_006327990.1</a>
+        </td>
+    <td><i>Serratia plymuthica</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="833.0">833</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha] &gt; hypothetical &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_021659.1_4584662-4585757_-1">WP_004948052.1</a>
+        </td>
+    <td><i>Serratia plymuthica S13</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="833.0">833</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha] &gt; reductase &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP045996.1_1087552-1088647_-1">WP_204384841.1</a>
+        </td>
+    <td><i>Burkholderia sp. MS389</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="838.8">839</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_NKFN01000008.1_313757-314873_-1">WP_027786148.1</a>
+        </td>
+    <td><i>Burkholderia sp. HI2761</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="835.1">835</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_WNDV01000017.1_138158-139280_1">WP_278648875.1</a>
+        </td>
+    <td><i>Burkholderia lata</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="826.0">826</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QYYG01000010.1_144486-145581_-1">WP_244941699.1</a>
+        </td>
+    <td><i>Serratia inhibens</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="828.6">829</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_017573.1_4561060-4562155_-1">WP_013814510.1</a>
+        </td>
+    <td><i>Serratia sp. AS13</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="830.6">831</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_UGYI01000001.1_310054-311146_1">WP_061808710.1</a>
+        </td>
+    <td><i>Serratia grimesii</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="827.3">827</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MCAU02000002.1_1364067-1365189_-1">WP_046543616.1</a>
+        </td>
+    <td><i>Burkholderia contaminans</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="827.1">827</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QTQY01000005.1_273676-274798_-1">WP_047852955.1</a>
+        </td>
+    <td><i>Burkholderia contaminans</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="827.6">828</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_RARP01000013.1_95217-96339_1">WP_039371244.1</a>
+        </td>
+    <td><i>Burkholderia contaminans</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="827.0">827</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_PTXM01000009.1_151780-152902_1">WP_047852955.1</a>
+        </td>
+    <td><i>Burkholderia sp. SRS-25</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="827.6">828</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_NHOI01000033.1_45033-46125_-1">WP_050086205.1</a>
+        </td>
+    <td><i>Yersinia intermedia</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">89 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="819.1">819</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_010512.1_1099870-1100986_1">WP_041492373.1</a>
+        </td>
+    <td><i>Burkholderia orbicola MC0-3</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">88 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="822.3">822</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP072522.1_953893-955009_-1">WP_034191034.1</a>
+        </td>
+    <td><i>Burkholderia seminalis</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">88 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="816.7">817</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LJZP01000051.1_4039-5131_-1">WP_054306216.1</a>
+        </td>
+    <td><i>Serratia rubidaea</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">86 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="818.4">818</td>
+    <td class="small mono">other &gt; other &gt; reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LR134493.1_3795696-3796788_-1">WP_126532220.1</a>
+        </td>
+    <td><i>Serratia rubidaea</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">86 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="818.7">819</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_020064.1_2746724-2747813_1">WP_015672694.1</a>
+        </td>
+    <td><i>Serratia sp. FGI94</i></td>
+    <td class="small">aminopyrrolnitrin oxygenase PrnD</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">86 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="816.6">817</td>
+    <td class="small mono">other &gt; other &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LMHC01000012.1_263155-264175_-1">WP_056721212.1</a>
+        </td>
+    <td><i>Caulobacter sp. Root655</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-16.html">16</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="57.8">58</td>
+    <td class="small mono">other &gt; reductase &gt; hydrolase &gt; hypothetical &gt; other &gt; hypothetical &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_WWGW01000019.1_82985-84038_1">WP_018537305.1</a>
+        </td>
+    <td><i>Streptomyces sp. SID8354</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="282.8">283</td>
+    <td class="small mono">other &gt; alpha_other &gt; alpha_other &gt; [alpha] &gt; other &gt; hypothetical &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_BDUC01000016.1_26431-27502_1">WP_029634534.1</a>
+        </td>
+    <td><i>Tolypothrix sp. NIES-4075</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-24.html">24</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="280.6">281</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_BBPA01000019.1_74820-75906_1">WP_045357790.1</a>
+        </td>
+    <td><i>Microcystis aeruginosa NIES-44</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">3</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="115.2">115</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other &gt; other &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP104098.1_973290-974340_-1">WP_016572492.1</a>
+        </td>
+    <td><i>Streptomyces noursei</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-10.html">10</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="266.8">267</td>
+    <td class="small mono">other &gt; ferredoxin &gt; ferredoxin &gt; [alpha] &gt; other &gt; hypothetical &gt; other &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019753.1_2521744-2522818_-1">WP_015203206.1</a>
+        </td>
+    <td><i>Crinalium epipsammum PCC 9333</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="111.9">112</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other &gt; hypothetical &gt; ferredoxin &gt; ro_alpha</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019757.1_1406718-1407807_1">WP_015206771.1</a>
+        </td>
+    <td><i>Cylindrospermum stagnale PCC 7417</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="106.0">106</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JENI01000080.1_3035-4094_1">WP_011437084.1</a>
+        </td>
+    <td><i>Frankia casuarinae</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="255.7">256</td>
+    <td class="small mono">other &gt; alpha_other &gt; alpha_other &gt; [alpha] &gt; other &gt; hypothetical &gt; other &gt; transporter &gt; hypothetical &gt; hypothetical</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LRTJ01000089.1_4112-5171_1">WP_011437084.1</a>
+        </td>
+    <td><i>Frankia casuarinae</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="255.7">256</td>
+    <td class="small mono">alpha_other &gt; [alpha] &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_AKKF01000260.1_11186-12206_1">WP_007674940.1</a>
+        </td>
+    <td><i>Caulobacter sp. AP07</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to DdmC</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-16.html">16</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="63.6">64</td>
+    <td class="small mono">transporter &gt; hydrolase &gt; other &gt; reductase &gt; hydrolase &gt; hypothetical &gt; other &gt; hypothetical &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JENI01000080.1_1977-3048_1">WP_011437083.1</a>
+        </td>
+    <td><i>Frankia casuarinae</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-9.html">9</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="211.6">212</td>
+    <td class="small mono">other &gt; alpha_other &gt; [alpha] &gt; alpha_other &gt; other &gt; hypothetical &gt; other &gt; transporter &gt; hypothetical &gt; hypothetical</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LRTJ01000089.1_3054-4125_1">WP_011437083.1</a>
+        </td>
+    <td><i>Frankia casuarinae</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-9.html">9</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="211.6">212</td>
+    <td class="small mono">[alpha] &gt; alpha_other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019757.1_2311167-2312208_-1">WP_015207476.1</a>
+        </td>
+    <td><i>Cylindrospermum stagnale PCC 7417</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="79.1">79</td>
+    <td class="small mono">other &gt; other &gt; hypothetical &gt; other &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KV757607.1_59970-61056_1">WP_069070361.1</a>
+        </td>
+    <td><i>Nostoc sp. KVJ20</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">3</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="116.3">116</td>
+    <td class="small mono">hypothetical &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019771.1_3520351-3521476_-1">WP_015215130.1</a>
+        </td>
+    <td><i>Anabaena cylindrica PCC 7122</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="108.4">108</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JAMQOK010000096.1_27243-28368_-1">WP_015215130.1</a>
+        </td>
+    <td><i>Anabaena sp. PCC 7938</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="108.4">108</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP020114.1_4785139-4786225_-1">WP_107806863.1</a>
+        </td>
+    <td><i>Nodularia spumigena UHCC 0039</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="101.0">101</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019738.1_2946020-2947052_-1">WP_015182507.1</a>
+        </td>
+    <td><i>Allocoleopsis franciscana PCC 7113</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-6.html">6</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.9">105</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other &gt; other &gt; ferredoxin &gt; ro_alpha &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LKAJ02000001.1_555795-556920_1">WP_200957106.1</a>
+        </td>
+    <td><i>Candidatus Berkiella aquae</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-21.html">21</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="94.9">95</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MQTZ01000017.1_217542-218631_-1">WP_075597727.1</a>
+        </td>
+    <td><i>Leptolyngbya sp. &#39;hensonii&#39;</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="98.7">99</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other &gt; other &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LWAJ01000285.1_7331-8417_1">WP_063874559.1</a>
+        </td>
+    <td><i>Nodularia spumigena CENA596</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="100.9">101</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_JH930373.1_77285-78374_1">WP_045874055.1</a>
+        </td>
+    <td><i>Tolypothrix sp. PCC 7601</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="114.6">115</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_ABOX02000007.1_82812-83928_1">WP_007414038.1</a>
+        </td>
+    <td><i>Pedosphaera parvula Ellin514</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-26.html">26</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="93.7">94</td>
+    <td class="small mono">[alpha] &gt; other &gt; hypothetical &gt; other &gt; other &gt; hypothetical &gt; hypothetical &gt; other &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP104098.1_975394-976468_-1">WP_016572490.1</a>
+        </td>
+    <td><i>Streptomyces noursei</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="239.2">239</td>
+    <td class="small mono">other &gt; [alpha] &gt; ferredoxin &gt; ferredoxin &gt; other &gt; hypothetical &gt; other &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_WWGW01000019.1_80836-81931_1">WP_018537303.1</a>
+        </td>
+    <td><i>Streptomyces sp. SID8354</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="241.0">241</td>
+    <td class="small mono">other &gt; [alpha] &gt; alpha_other &gt; alpha_other &gt; other &gt; hypothetical &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MRCE01000010.1_66762-67788_-1">WP_073593667.1</a>
+        </td>
+    <td><i>Phormidium ambiguum IAM M-71</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-6.html">6</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.3">104</td>
+    <td class="small mono">other &gt; other &gt; hydrolase &gt; other &gt; alpha_other &gt; hypothetical &gt; [alpha] &gt; other &gt; other &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019757.1_2309048-2310062_-1">WP_015207474.1</a>
+        </td>
+    <td><i>Cylindrospermum stagnale PCC 7417</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-3.html">3</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="112.7">113</td>
+    <td class="small mono">hypothetical &gt; [alpha] &gt; other &gt; hypothetical &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP104098.1_974336-975398_-1">WP_037631866.1</a>
+        </td>
+    <td><i>Streptomyces noursei</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-9.html">9</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="211.2">211</td>
+    <td class="small mono">other &gt; ferredoxin &gt; [alpha] &gt; ferredoxin &gt; other &gt; hypothetical &gt; other &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_BJCD01000039.1_102278-103322_1">WP_141294249.1</a>
+        </td>
+    <td><i>Planktothrix agardhii CCAP 1459/11A</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="105.3">105</td>
+    <td class="small mono">other &gt; other &gt; hydrolase &gt; other &gt; alpha_other &gt; hypothetical &gt; [alpha] &gt; hypothetical &gt; hypothetical &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KE734738.1_4081121-4082165_1">WP_026798669.1</a>
+        </td>
+    <td><i>Planktothrix prolifica NIVA-CYA 98</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.8">105</td>
+    <td class="small mono">other &gt; other &gt; other &gt; other &gt; ro_alpha &gt; hypothetical &gt; [alpha] &gt; hypothetical &gt; hypothetical &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LR812491.1_1350619-1351663_-1">WP_026798669.1</a>
+        </td>
+    <td><i>Planktothrix rubescens CCAP 1459/22</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PrnD</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.8">105</td>
+    <td class="small mono">other &gt; other &gt; other &gt; other &gt; ro_alpha &gt; hypothetical &gt; [alpha] &gt; hypothetical &gt; hypothetical &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KQ130434.1_1722214-1723231_-1">WP_082679018.1</a>
+        </td>
+    <td><i>Sphingobium cupriresistens LL01</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to RedG</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-23.html">23</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="81.9">82</td>
+    <td class="small mono">other &gt; dehydrogenase &gt; other &gt; other &gt; reductase &gt; dehydrogenase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_019684.1_4224989-4226075_-1">WP_015139684.1</a>
+        </td>
+    <td><i>Nostoc sp. PCC 7524</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to GxtA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-30.html">30</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="95.6">96</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_014248.1_4496645-4497749_1">WP_013192737.1</a>
+        </td>
+    <td><i>&#39;Nostoc azollae&#39; 0708</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/1_117_PrnD-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="105.8">106</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

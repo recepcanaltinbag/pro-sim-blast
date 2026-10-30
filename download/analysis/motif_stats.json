@@ -1,0 +1,1458 @@
+{
+ "n": 19125,
+ "sites": [
+  {
+   "label": "Rieske cysteine 1",
+   "column": 164,
+   "expected": "C",
+   "found": 19125,
+   "fraction": 1.0
+  },
+  {
+   "label": "Rieske histidine 1",
+   "column": 166,
+   "expected": "H",
+   "found": 19125,
+   "fraction": 1.0
+  },
+  {
+   "label": "Rieske cysteine 2",
+   "column": 184,
+   "expected": "C",
+   "found": 19125,
+   "fraction": 1.0
+  },
+  {
+   "label": "Rieske histidine 2",
+   "column": 187,
+   "expected": "H",
+   "found": 19125,
+   "fraction": 1.0
+  },
+  {
+   "label": "mononuclear iron histidine 1",
+   "column": 289,
+   "expected": "H",
+   "found": 19106,
+   "fraction": 0.999
+  },
+  {
+   "label": "mononuclear iron histidine 2",
+   "column": 294,
+   "expected": "H",
+   "found": 19078,
+   "fraction": 0.9975
+  },
+  {
+   "label": "mononuclear iron carboxylate (Asp or Glu)",
+   "column": 431,
+   "expected": "D/E",
+   "found": 16738,
+   "fraction": 0.8752
+  },
+  {
+   "label": "inter-subunit bridging aspartate",
+   "column": 286,
+   "expected": "D/E",
+   "found": 19120,
+   "fraction": 0.9997
+  }
+ ],
+ "rieske_ligands": {
+  "4": 19125
+ },
+ "catalytic_triad": {
+  "3": 16672,
+  "2": 2453
+ },
+ "bridging_present": 19120,
+ "carboxylate_identity": {
+  "catalytic_iron": {
+   "column": 431,
+   "window": 2,
+   "residues": {
+    "D": 16299,
+    "-": 2166,
+    "E": 439,
+    "N": 76,
+    "T": 41,
+    "A": 29,
+    "G": 16,
+    "S": 16,
+    "Q": 14,
+    "L": 12,
+    "P": 11,
+    "V": 3,
+    "R": 1,
+    "K": 1,
+    "Y": 1
+   },
+   "asp": 16299,
+   "glu": 439,
+   "asp_fraction": 0.9738,
+   "asp_to_glu": 37.1,
+   "with_carboxylate": 16738,
+   "offset_distribution": {
+    "0": 16024,
+    "none": 2387,
+    "-1": 302,
+    "-2": 243,
+    "1": 79,
+    "2": 90
+   },
+   "references": {
+    "n": 76,
+    "column": 431,
+    "residues": {
+     "D": 68,
+     "-": 5,
+     "K": 1,
+     "Q": 1,
+     "L": 1
+    },
+    "asp": 68,
+    "glu": 0,
+    "gap": 5,
+    "other": 3
+   },
+   "glu_clusters": [
+    {
+     "cluster": "1_109_LigX",
+     "glu": 22,
+     "n": 87,
+     "fraction": 0.2529
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "glu": 240,
+     "n": 1599,
+     "fraction": 0.1501
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "glu": 59,
+     "n": 456,
+     "fraction": 0.1294
+    },
+    {
+     "cluster": "1_108_PobA",
+     "glu": 21,
+     "n": 170,
+     "fraction": 0.1235
+    },
+    {
+     "cluster": "1_112_NdmA",
+     "glu": 3,
+     "n": 41,
+     "fraction": 0.0732
+    },
+    {
+     "cluster": "3_321_Nvd",
+     "glu": 13,
+     "n": 273,
+     "fraction": 0.0476
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "glu": 1,
+     "n": 31,
+     "fraction": 0.0323
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "glu": 7,
+     "n": 223,
+     "fraction": 0.0314
+    },
+    {
+     "cluster": "5_502_CmoB",
+     "glu": 1,
+     "n": 33,
+     "fraction": 0.0303
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "glu": 10,
+     "n": 364,
+     "fraction": 0.0275
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "glu": 24,
+     "n": 1045,
+     "fraction": 0.023
+    },
+    {
+     "cluster": "3_322_DAF36",
+     "glu": 7,
+     "n": 319,
+     "fraction": 0.0219
+    },
+    {
+     "cluster": "4_406_PDO",
+     "glu": 6,
+     "n": 281,
+     "fraction": 0.0214
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "glu": 2,
+     "n": 111,
+     "fraction": 0.018
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "glu": 8,
+     "n": 1066,
+     "fraction": 0.0075
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "glu": 1,
+     "n": 216,
+     "fraction": 0.0046
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "glu": 3,
+     "n": 670,
+     "fraction": 0.0045
+    },
+    {
+     "cluster": "5_504_CntA",
+     "glu": 8,
+     "n": 1871,
+     "fraction": 0.0043
+    },
+    {
+     "cluster": "1_104_VanA",
+     "glu": 2,
+     "n": 1755,
+     "fraction": 0.0011
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "glu": 1,
+     "n": 1460,
+     "fraction": 0.0007
+    }
+   ],
+   "per_cluster": {
+    "1_101_OxoO": {
+     "asp": 36,
+     "glu": 0,
+     "other": 0,
+     "n": 36,
+     "dominant": "Asp"
+    },
+    "1_102_CARDO": {
+     "asp": 106,
+     "glu": 2,
+     "other": 3,
+     "n": 111,
+     "dominant": "Asp"
+    },
+    "1_104_VanA": {
+     "asp": 1685,
+     "glu": 2,
+     "other": 68,
+     "n": 1755,
+     "dominant": "Asp"
+    },
+    "1_105_DdmC": {
+     "asp": 235,
+     "glu": 0,
+     "other": 166,
+     "n": 401,
+     "dominant": "Asp"
+    },
+    "1_106_TsaM": {
+     "asp": 893,
+     "glu": 8,
+     "other": 165,
+     "n": 1066,
+     "dominant": "Asp"
+    },
+    "1_107_CndA": {
+     "asp": 62,
+     "glu": 0,
+     "other": 11,
+     "n": 73,
+     "dominant": "Asp"
+    },
+    "1_108_PobA": {
+     "asp": 68,
+     "glu": 21,
+     "other": 81,
+     "n": 170,
+     "dominant": "Asp"
+    },
+    "1_109_LigX": {
+     "asp": 57,
+     "glu": 22,
+     "other": 8,
+     "n": 87,
+     "dominant": "Asp"
+    },
+    "1_110_SxtT": {
+     "asp": 174,
+     "glu": 1,
+     "other": 41,
+     "n": 216,
+     "dominant": "Asp"
+    },
+    "1_111_GxtA": {
+     "asp": 125,
+     "glu": 0,
+     "other": 46,
+     "n": 171,
+     "dominant": "Asp"
+    },
+    "1_112_NdmA": {
+     "asp": 26,
+     "glu": 3,
+     "other": 12,
+     "n": 41,
+     "dominant": "Asp"
+    },
+    "1_113_CdnA": {
+     "asp": 627,
+     "glu": 3,
+     "other": 40,
+     "n": 670,
+     "dominant": "Asp"
+    },
+    "1_114_NdmB": {
+     "asp": 24,
+     "glu": 0,
+     "other": 2,
+     "n": 26,
+     "dominant": "Asp"
+    },
+    "1_116_GdmA": {
+     "asp": 52,
+     "glu": 0,
+     "other": 5,
+     "n": 57,
+     "dominant": "Asp"
+    },
+    "1_117_PrnD": {
+     "asp": 88,
+     "glu": 0,
+     "other": 72,
+     "n": 160,
+     "dominant": "Asp"
+    },
+    "1_118_RedG": {
+     "asp": 54,
+     "glu": 0,
+     "other": 10,
+     "n": 64,
+     "dominant": "Asp"
+    },
+    "2_201_BphA1": {
+     "asp": 1,
+     "glu": 0,
+     "other": 0,
+     "n": 1,
+     "dominant": "Asp"
+    },
+    "2_202_EdoA1": {
+     "asp": 47,
+     "glu": 0,
+     "other": 0,
+     "n": 47,
+     "dominant": "Asp"
+    },
+    "2_203_cumA1": {
+     "asp": 8,
+     "glu": 0,
+     "other": 0,
+     "n": 8,
+     "dominant": "Asp"
+    },
+    "2_204_Dpe": {
+     "asp": 54,
+     "glu": 0,
+     "other": 0,
+     "n": 54,
+     "dominant": "Asp"
+    },
+    "2_208_TecA1": {
+     "asp": 18,
+     "glu": 0,
+     "other": 1,
+     "n": 19,
+     "dominant": "Asp"
+    },
+    "2_209_TDO": {
+     "asp": 6,
+     "glu": 0,
+     "other": 0,
+     "n": 6,
+     "dominant": "Asp"
+    },
+    "2_211_bfzA": {
+     "asp": 74,
+     "glu": 0,
+     "other": 19,
+     "n": 93,
+     "dominant": "Asp"
+    },
+    "2_212_BedC1": {
+     "asp": 24,
+     "glu": 1,
+     "other": 6,
+     "n": 31,
+     "dominant": "Asp"
+    },
+    "2_213_BphA1A2": {
+     "asp": 21,
+     "glu": 0,
+     "other": 0,
+     "n": 21,
+     "dominant": "Asp"
+    },
+    "2_214_TftA": {
+     "asp": 55,
+     "glu": 0,
+     "other": 0,
+     "n": 55,
+     "dominant": "Asp"
+    },
+    "2_215_cadA": {
+     "asp": 14,
+     "glu": 0,
+     "other": 0,
+     "n": 14,
+     "dominant": "Asp"
+    },
+    "2_216_BPDO": {
+     "asp": 29,
+     "glu": 0,
+     "other": 0,
+     "n": 29,
+     "dominant": "Asp"
+    },
+    "2_217_HcaE": {
+     "asp": 259,
+     "glu": 0,
+     "other": 0,
+     "n": 259,
+     "dominant": "Asp"
+    },
+    "2_218_BphA1": {
+     "asp": 116,
+     "glu": 0,
+     "other": 6,
+     "n": 122,
+     "dominant": "Asp"
+    },
+    "3_301_PhnA1a": {
+     "asp": 145,
+     "glu": 0,
+     "other": 1,
+     "n": 146,
+     "dominant": "Asp"
+    },
+    "3_302_DitA": {
+     "asp": 111,
+     "glu": 0,
+     "other": 0,
+     "n": 111,
+     "dominant": "Asp"
+    },
+    "3_303_NBDO": {
+     "asp": 24,
+     "glu": 0,
+     "other": 0,
+     "n": 24,
+     "dominant": "Asp"
+    },
+    "3_305_ArhA1": {
+     "asp": 19,
+     "glu": 0,
+     "other": 5,
+     "n": 24,
+     "dominant": "Asp"
+    },
+    "3_306_3NTDO": {
+     "asp": 2,
+     "glu": 0,
+     "other": 0,
+     "n": 2,
+     "dominant": "Asp"
+    },
+    "3_307_NagGH": {
+     "asp": 332,
+     "glu": 0,
+     "other": 0,
+     "n": 332,
+     "dominant": "Asp"
+    },
+    "3_308_DxnA1": {
+     "asp": 2,
+     "glu": 0,
+     "other": 0,
+     "n": 2,
+     "dominant": "Asp"
+    },
+    "3_311_PhtAa": {
+     "asp": 174,
+     "glu": 0,
+     "other": 10,
+     "n": 184,
+     "dominant": "Asp"
+    },
+    "3_313_KshA15": {
+     "asp": 867,
+     "glu": 240,
+     "other": 492,
+     "n": 1599,
+     "dominant": "Asp"
+    },
+    "3_316_NarAa": {
+     "asp": 43,
+     "glu": 0,
+     "other": 5,
+     "n": 48,
+     "dominant": "Asp"
+    },
+    "3_317_NidA": {
+     "asp": 62,
+     "glu": 0,
+     "other": 2,
+     "n": 64,
+     "dominant": "Asp"
+    },
+    "3_318_NidA": {
+     "asp": 18,
+     "glu": 0,
+     "other": 1,
+     "n": 19,
+     "dominant": "Asp"
+    },
+    "3_319_PhdA": {
+     "asp": 115,
+     "glu": 0,
+     "other": 25,
+     "n": 140,
+     "dominant": "Asp"
+    },
+    "3_320_NidA3": {
+     "asp": 22,
+     "glu": 0,
+     "other": 0,
+     "n": 22,
+     "dominant": "Asp"
+    },
+    "3_321_Nvd": {
+     "asp": 37,
+     "glu": 13,
+     "other": 223,
+     "n": 273,
+     "dominant": "Asp"
+    },
+    "3_322_DAF36": {
+     "asp": 139,
+     "glu": 7,
+     "other": 173,
+     "n": 319,
+     "dominant": "Asp"
+    },
+    "4_401_CmtAb": {
+     "asp": 203,
+     "glu": 7,
+     "other": 13,
+     "n": 223,
+     "dominant": "Asp"
+    },
+    "4_402_PsbAb": {
+     "asp": 28,
+     "glu": 0,
+     "other": 0,
+     "n": 28,
+     "dominant": "Asp"
+    },
+    "4_403_AtdA": {
+     "asp": 176,
+     "glu": 0,
+     "other": 6,
+     "n": 182,
+     "dominant": "Asp"
+    },
+    "4_404_TdnA1": {
+     "asp": 781,
+     "glu": 0,
+     "other": 0,
+     "n": 781,
+     "dominant": "Asp"
+    },
+    "4_405_ROCH34": {
+     "asp": 310,
+     "glu": 10,
+     "other": 44,
+     "n": 364,
+     "dominant": "Asp"
+    },
+    "4_406_PDO": {
+     "asp": 242,
+     "glu": 6,
+     "other": 33,
+     "n": 281,
+     "dominant": "Asp"
+    },
+    "4_408_AntA": {
+     "asp": 304,
+     "glu": 0,
+     "other": 0,
+     "n": 304,
+     "dominant": "Asp"
+    },
+    "4_409_TPDO": {
+     "asp": 458,
+     "glu": 0,
+     "other": 8,
+     "n": 466,
+     "dominant": "Asp"
+    },
+    "4_410_CbdC": {
+     "asp": 424,
+     "glu": 0,
+     "other": 0,
+     "n": 424,
+     "dominant": "Asp"
+    },
+    "4_411_XylX": {
+     "asp": 731,
+     "glu": 0,
+     "other": 0,
+     "n": 731,
+     "dominant": "Asp"
+    },
+    "5_501_CmoS": {
+     "asp": 317,
+     "glu": 59,
+     "other": 80,
+     "n": 456,
+     "dominant": "Asp"
+    },
+    "5_502_CmoB": {
+     "asp": 31,
+     "glu": 1,
+     "other": 1,
+     "n": 33,
+     "dominant": "Asp"
+    },
+    "5_503_CmoA": {
+     "asp": 11,
+     "glu": 0,
+     "other": 1,
+     "n": 12,
+     "dominant": "Asp"
+    },
+    "5_504_CntA": {
+     "asp": 1606,
+     "glu": 8,
+     "other": 257,
+     "n": 1871,
+     "dominant": "Asp"
+    },
+    "5_505_qxyA": {
+     "asp": 162,
+     "glu": 0,
+     "other": 2,
+     "n": 164,
+     "dominant": "Asp"
+    },
+    "5_506_Stc2": {
+     "asp": 1422,
+     "glu": 1,
+     "other": 37,
+     "n": 1460,
+     "dominant": "Asp"
+    },
+    "5_507_BmoA": {
+     "asp": 877,
+     "glu": 24,
+     "other": 144,
+     "n": 1045,
+     "dominant": "Asp"
+    },
+    "5_508_GbcA": {
+     "asp": 504,
+     "glu": 0,
+     "other": 0,
+     "n": 504,
+     "dominant": "Asp"
+    },
+    "6_601_PAO": {
+     "asp": 306,
+     "glu": 0,
+     "other": 33,
+     "n": 339,
+     "dominant": "Asp"
+    },
+    "6_602_CAO": {
+     "asp": 130,
+     "glu": 0,
+     "other": 8,
+     "n": 138,
+     "dominant": "Asp"
+    },
+    "6_603_PTC52": {
+     "asp": 126,
+     "glu": 0,
+     "other": 14,
+     "n": 140,
+     "dominant": "Asp"
+    },
+    "7_701_AerC": {
+     "asp": 0,
+     "glu": 0,
+     "other": 7,
+     "n": 7,
+     "dominant": "none"
+    }
+   }
+  },
+  "bridging": {
+   "column": 286,
+   "window": 2,
+   "residues": {
+    "D": 13964,
+    "E": 5156,
+    "C": 2,
+    "L": 1,
+    "T": 1,
+    "-": 1
+   },
+   "asp": 13964,
+   "glu": 5156,
+   "asp_fraction": 0.7303,
+   "asp_to_glu": 2.7,
+   "with_carboxylate": 19120,
+   "offset_distribution": {
+    "0": 17176,
+    "-1": 1941,
+    "1": 3,
+    "none": 5
+   },
+   "references": {
+    "n": 76,
+    "column": 286,
+    "residues": {
+     "D": 66,
+     "C": 4,
+     "E": 3,
+     "S": 3
+    },
+    "asp": 66,
+    "glu": 3,
+    "gap": 0,
+    "other": 7
+   },
+   "glu_clusters": [
+    {
+     "cluster": "5_508_GbcA",
+     "glu": 504,
+     "n": 504,
+     "fraction": 1.0
+    },
+    {
+     "cluster": "7_701_AerC",
+     "glu": 7,
+     "n": 7,
+     "fraction": 1.0
+    },
+    {
+     "cluster": "2_201_BphA1",
+     "glu": 1,
+     "n": 1,
+     "fraction": 1.0
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "glu": 1363,
+     "n": 1460,
+     "fraction": 0.9336
+    },
+    {
+     "cluster": "5_504_CntA",
+     "glu": 1697,
+     "n": 1871,
+     "fraction": 0.907
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "glu": 913,
+     "n": 1045,
+     "fraction": 0.8737
+    },
+    {
+     "cluster": "5_505_qxyA",
+     "glu": 137,
+     "n": 164,
+     "fraction": 0.8354
+    },
+    {
+     "cluster": "3_316_NarAa",
+     "glu": 32,
+     "n": 48,
+     "fraction": 0.6667
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "glu": 61,
+     "n": 93,
+     "fraction": 0.6559
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "glu": 14,
+     "n": 24,
+     "fraction": 0.5833
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "glu": 16,
+     "n": 31,
+     "fraction": 0.5161
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "glu": 83,
+     "n": 182,
+     "fraction": 0.456
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "glu": 58,
+     "n": 140,
+     "fraction": 0.4143
+    },
+    {
+     "cluster": "3_318_NidA",
+     "glu": 7,
+     "n": 19,
+     "fraction": 0.3684
+    },
+    {
+     "cluster": "1_118_RedG",
+     "glu": 20,
+     "n": 64,
+     "fraction": 0.3125
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "glu": 68,
+     "n": 223,
+     "fraction": 0.3049
+    },
+    {
+     "cluster": "5_502_CmoB",
+     "glu": 9,
+     "n": 33,
+     "fraction": 0.2727
+    },
+    {
+     "cluster": "3_317_NidA",
+     "glu": 14,
+     "n": 64,
+     "fraction": 0.2188
+    },
+    {
+     "cluster": "5_503_CmoA",
+     "glu": 2,
+     "n": 12,
+     "fraction": 0.1667
+    },
+    {
+     "cluster": "2_208_TecA1",
+     "glu": 3,
+     "n": 19,
+     "fraction": 0.1579
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "glu": 7,
+     "n": 47,
+     "fraction": 0.1489
+    },
+    {
+     "cluster": "2_214_TftA",
+     "glu": 8,
+     "n": 55,
+     "fraction": 0.1455
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "glu": 57,
+     "n": 456,
+     "fraction": 0.125
+    },
+    {
+     "cluster": "2_203_cumA1",
+     "glu": 1,
+     "n": 8,
+     "fraction": 0.125
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "glu": 20,
+     "n": 184,
+     "fraction": 0.1087
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "glu": 15,
+     "n": 146,
+     "fraction": 0.1027
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "glu": 7,
+     "n": 122,
+     "fraction": 0.0574
+    },
+    {
+     "cluster": "3_320_NidA3",
+     "glu": 1,
+     "n": 22,
+     "fraction": 0.0455
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "glu": 16,
+     "n": 781,
+     "fraction": 0.0205
+    },
+    {
+     "cluster": "1_111_GxtA",
+     "glu": 2,
+     "n": 171,
+     "fraction": 0.0117
+    },
+    {
+     "cluster": "3_302_DitA",
+     "glu": 1,
+     "n": 111,
+     "fraction": 0.009
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "glu": 4,
+     "n": 466,
+     "fraction": 0.0086
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "glu": 2,
+     "n": 401,
+     "fraction": 0.005
+    },
+    {
+     "cluster": "4_408_AntA",
+     "glu": 1,
+     "n": 304,
+     "fraction": 0.0033
+    },
+    {
+     "cluster": "1_104_VanA",
+     "glu": 4,
+     "n": 1755,
+     "fraction": 0.0023
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "glu": 1,
+     "n": 1599,
+     "fraction": 0.0006
+    }
+   ],
+   "per_cluster": {
+    "1_101_OxoO": {
+     "asp": 36,
+     "glu": 0,
+     "other": 0,
+     "n": 36,
+     "dominant": "Asp"
+    },
+    "1_102_CARDO": {
+     "asp": 110,
+     "glu": 0,
+     "other": 1,
+     "n": 111,
+     "dominant": "Asp"
+    },
+    "1_104_VanA": {
+     "asp": 1751,
+     "glu": 4,
+     "other": 0,
+     "n": 1755,
+     "dominant": "Asp"
+    },
+    "1_105_DdmC": {
+     "asp": 399,
+     "glu": 2,
+     "other": 0,
+     "n": 401,
+     "dominant": "Asp"
+    },
+    "1_106_TsaM": {
+     "asp": 1066,
+     "glu": 0,
+     "other": 0,
+     "n": 1066,
+     "dominant": "Asp"
+    },
+    "1_107_CndA": {
+     "asp": 73,
+     "glu": 0,
+     "other": 0,
+     "n": 73,
+     "dominant": "Asp"
+    },
+    "1_108_PobA": {
+     "asp": 170,
+     "glu": 0,
+     "other": 0,
+     "n": 170,
+     "dominant": "Asp"
+    },
+    "1_109_LigX": {
+     "asp": 87,
+     "glu": 0,
+     "other": 0,
+     "n": 87,
+     "dominant": "Asp"
+    },
+    "1_110_SxtT": {
+     "asp": 216,
+     "glu": 0,
+     "other": 0,
+     "n": 216,
+     "dominant": "Asp"
+    },
+    "1_111_GxtA": {
+     "asp": 169,
+     "glu": 2,
+     "other": 0,
+     "n": 171,
+     "dominant": "Asp"
+    },
+    "1_112_NdmA": {
+     "asp": 41,
+     "glu": 0,
+     "other": 0,
+     "n": 41,
+     "dominant": "Asp"
+    },
+    "1_113_CdnA": {
+     "asp": 670,
+     "glu": 0,
+     "other": 0,
+     "n": 670,
+     "dominant": "Asp"
+    },
+    "1_114_NdmB": {
+     "asp": 26,
+     "glu": 0,
+     "other": 0,
+     "n": 26,
+     "dominant": "Asp"
+    },
+    "1_116_GdmA": {
+     "asp": 57,
+     "glu": 0,
+     "other": 0,
+     "n": 57,
+     "dominant": "Asp"
+    },
+    "1_117_PrnD": {
+     "asp": 160,
+     "glu": 0,
+     "other": 0,
+     "n": 160,
+     "dominant": "Asp"
+    },
+    "1_118_RedG": {
+     "asp": 44,
+     "glu": 20,
+     "other": 0,
+     "n": 64,
+     "dominant": "Asp"
+    },
+    "2_201_BphA1": {
+     "asp": 0,
+     "glu": 1,
+     "other": 0,
+     "n": 1,
+     "dominant": "Glu"
+    },
+    "2_202_EdoA1": {
+     "asp": 40,
+     "glu": 7,
+     "other": 0,
+     "n": 47,
+     "dominant": "Asp"
+    },
+    "2_203_cumA1": {
+     "asp": 7,
+     "glu": 1,
+     "other": 0,
+     "n": 8,
+     "dominant": "Asp"
+    },
+    "2_204_Dpe": {
+     "asp": 54,
+     "glu": 0,
+     "other": 0,
+     "n": 54,
+     "dominant": "Asp"
+    },
+    "2_208_TecA1": {
+     "asp": 16,
+     "glu": 3,
+     "other": 0,
+     "n": 19,
+     "dominant": "Asp"
+    },
+    "2_209_TDO": {
+     "asp": 6,
+     "glu": 0,
+     "other": 0,
+     "n": 6,
+     "dominant": "Asp"
+    },
+    "2_211_bfzA": {
+     "asp": 32,
+     "glu": 61,
+     "other": 0,
+     "n": 93,
+     "dominant": "Glu"
+    },
+    "2_212_BedC1": {
+     "asp": 15,
+     "glu": 16,
+     "other": 0,
+     "n": 31,
+     "dominant": "Glu"
+    },
+    "2_213_BphA1A2": {
+     "asp": 21,
+     "glu": 0,
+     "other": 0,
+     "n": 21,
+     "dominant": "Asp"
+    },
+    "2_214_TftA": {
+     "asp": 47,
+     "glu": 8,
+     "other": 0,
+     "n": 55,
+     "dominant": "Asp"
+    },
+    "2_215_cadA": {
+     "asp": 14,
+     "glu": 0,
+     "other": 0,
+     "n": 14,
+     "dominant": "Asp"
+    },
+    "2_216_BPDO": {
+     "asp": 29,
+     "glu": 0,
+     "other": 0,
+     "n": 29,
+     "dominant": "Asp"
+    },
+    "2_217_HcaE": {
+     "asp": 259,
+     "glu": 0,
+     "other": 0,
+     "n": 259,
+     "dominant": "Asp"
+    },
+    "2_218_BphA1": {
+     "asp": 115,
+     "glu": 7,
+     "other": 0,
+     "n": 122,
+     "dominant": "Asp"
+    },
+    "3_301_PhnA1a": {
+     "asp": 131,
+     "glu": 15,
+     "other": 0,
+     "n": 146,
+     "dominant": "Asp"
+    },
+    "3_302_DitA": {
+     "asp": 110,
+     "glu": 1,
+     "other": 0,
+     "n": 111,
+     "dominant": "Asp"
+    },
+    "3_303_NBDO": {
+     "asp": 24,
+     "glu": 0,
+     "other": 0,
+     "n": 24,
+     "dominant": "Asp"
+    },
+    "3_305_ArhA1": {
+     "asp": 10,
+     "glu": 14,
+     "other": 0,
+     "n": 24,
+     "dominant": "Glu"
+    },
+    "3_306_3NTDO": {
+     "asp": 2,
+     "glu": 0,
+     "other": 0,
+     "n": 2,
+     "dominant": "Asp"
+    },
+    "3_307_NagGH": {
+     "asp": 332,
+     "glu": 0,
+     "other": 0,
+     "n": 332,
+     "dominant": "Asp"
+    },
+    "3_308_DxnA1": {
+     "asp": 2,
+     "glu": 0,
+     "other": 0,
+     "n": 2,
+     "dominant": "Asp"
+    },
+    "3_311_PhtAa": {
+     "asp": 164,
+     "glu": 20,
+     "other": 0,
+     "n": 184,
+     "dominant": "Asp"
+    },
+    "3_313_KshA15": {
+     "asp": 1598,
+     "glu": 1,
+     "other": 0,
+     "n": 1599,
+     "dominant": "Asp"
+    },
+    "3_316_NarAa": {
+     "asp": 16,
+     "glu": 32,
+     "other": 0,
+     "n": 48,
+     "dominant": "Glu"
+    },
+    "3_317_NidA": {
+     "asp": 50,
+     "glu": 14,
+     "other": 0,
+     "n": 64,
+     "dominant": "Asp"
+    },
+    "3_318_NidA": {
+     "asp": 12,
+     "glu": 7,
+     "other": 0,
+     "n": 19,
+     "dominant": "Asp"
+    },
+    "3_319_PhdA": {
+     "asp": 82,
+     "glu": 58,
+     "other": 0,
+     "n": 140,
+     "dominant": "Asp"
+    },
+    "3_320_NidA3": {
+     "asp": 21,
+     "glu": 1,
+     "other": 0,
+     "n": 22,
+     "dominant": "Asp"
+    },
+    "3_321_Nvd": {
+     "asp": 273,
+     "glu": 0,
+     "other": 0,
+     "n": 273,
+     "dominant": "Asp"
+    },
+    "3_322_DAF36": {
+     "asp": 319,
+     "glu": 0,
+     "other": 0,
+     "n": 319,
+     "dominant": "Asp"
+    },
+    "4_401_CmtAb": {
+     "asp": 155,
+     "glu": 68,
+     "other": 0,
+     "n": 223,
+     "dominant": "Asp"
+    },
+    "4_402_PsbAb": {
+     "asp": 28,
+     "glu": 0,
+     "other": 0,
+     "n": 28,
+     "dominant": "Asp"
+    },
+    "4_403_AtdA": {
+     "asp": 99,
+     "glu": 83,
+     "other": 0,
+     "n": 182,
+     "dominant": "Asp"
+    },
+    "4_404_TdnA1": {
+     "asp": 765,
+     "glu": 16,
+     "other": 0,
+     "n": 781,
+     "dominant": "Asp"
+    },
+    "4_405_ROCH34": {
+     "asp": 364,
+     "glu": 0,
+     "other": 0,
+     "n": 364,
+     "dominant": "Asp"
+    },
+    "4_406_PDO": {
+     "asp": 281,
+     "glu": 0,
+     "other": 0,
+     "n": 281,
+     "dominant": "Asp"
+    },
+    "4_408_AntA": {
+     "asp": 303,
+     "glu": 1,
+     "other": 0,
+     "n": 304,
+     "dominant": "Asp"
+    },
+    "4_409_TPDO": {
+     "asp": 462,
+     "glu": 4,
+     "other": 0,
+     "n": 466,
+     "dominant": "Asp"
+    },
+    "4_410_CbdC": {
+     "asp": 424,
+     "glu": 0,
+     "other": 0,
+     "n": 424,
+     "dominant": "Asp"
+    },
+    "4_411_XylX": {
+     "asp": 731,
+     "glu": 0,
+     "other": 0,
+     "n": 731,
+     "dominant": "Asp"
+    },
+    "5_501_CmoS": {
+     "asp": 399,
+     "glu": 57,
+     "other": 0,
+     "n": 456,
+     "dominant": "Asp"
+    },
+    "5_502_CmoB": {
+     "asp": 24,
+     "glu": 9,
+     "other": 0,
+     "n": 33,
+     "dominant": "Asp"
+    },
+    "5_503_CmoA": {
+     "asp": 10,
+     "glu": 2,
+     "other": 0,
+     "n": 12,
+     "dominant": "Asp"
+    },
+    "5_504_CntA": {
+     "asp": 172,
+     "glu": 1697,
+     "other": 2,
+     "n": 1871,
+     "dominant": "Glu"
+    },
+    "5_505_qxyA": {
+     "asp": 27,
+     "glu": 137,
+     "other": 0,
+     "n": 164,
+     "dominant": "Glu"
+    },
+    "5_506_Stc2": {
+     "asp": 95,
+     "glu": 1363,
+     "other": 2,
+     "n": 1460,
+     "dominant": "Glu"
+    },
+    "5_507_BmoA": {
+     "asp": 132,
+     "glu": 913,
+     "other": 0,
+     "n": 1045,
+     "dominant": "Glu"
+    },
+    "5_508_GbcA": {
+     "asp": 0,
+     "glu": 504,
+     "other": 0,
+     "n": 504,
+     "dominant": "Glu"
+    },
+    "6_601_PAO": {
+     "asp": 339,
+     "glu": 0,
+     "other": 0,
+     "n": 339,
+     "dominant": "Asp"
+    },
+    "6_602_CAO": {
+     "asp": 138,
+     "glu": 0,
+     "other": 0,
+     "n": 138,
+     "dominant": "Asp"
+    },
+    "6_603_PTC52": {
+     "asp": 140,
+     "glu": 0,
+     "other": 0,
+     "n": 140,
+     "dominant": "Asp"
+    },
+    "7_701_AerC": {
+     "asp": 0,
+     "glu": 7,
+     "other": 0,
+     "n": 7,
+     "dominant": "Glu"
+    }
+   }
+  }
+ },
+ "model": {
+  "name": "ROmotif71",
+  "length": 603,
+  "references": 76
+ }
+}

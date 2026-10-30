@@ -1,0 +1,4139 @@
+{
+ "q1_reaction_class_from_sequence": {
+  "n_entries": 19125,
+  "n_types": 68,
+  "n_features": 1150,
+  "classes": [
+   "C_C_bond_formation",
+   "C_C_cleavage",
+   "C_N_cleavage",
+   "N_demethylation",
+   "N_oxygenation",
+   "O_demethylation",
+   "angular_dioxygenation",
+   "cis_dihydroxylation",
+   "desaturation",
+   "dioxygenation_with_release",
+   "hydroxylation",
+   "oxygenolytic_ring_opening"
+  ],
+  "class_entry_counts": {
+   "C_C_bond_formation": 64,
+   "C_C_cleavage": 7,
+   "C_N_cleavage": 2035,
+   "N_demethylation": 3819,
+   "N_oxygenation": 160,
+   "O_demethylation": 2300,
+   "angular_dioxygenation": 337,
+   "cis_dihydroxylation": 3487,
+   "desaturation": 592,
+   "dioxygenation_with_release": 1786,
+   "hydroxylation": 4199,
+   "oxygenolytic_ring_opening": 339
+  },
+  "class_type_counts": {
+   "cis_dihydroxylation": 26,
+   "dioxygenation_with_release": 8,
+   "O_demethylation": 4,
+   "N_demethylation": 7,
+   "hydroxylation": 11,
+   "angular_dioxygenation": 4,
+   "C_N_cleavage": 2,
+   "C_C_bond_formation": 1,
+   "N_oxygenation": 1,
+   "C_C_cleavage": 1,
+   "oxygenolytic_ring_opening": 1,
+   "desaturation": 2
+  },
+  "tree_max_depth": 5,
+  "grouped_tree": {
+   "accuracy": 0.3432,
+   "balanced_accuracy": 0.1843,
+   "type_level_accuracy": 0.4559,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "C_C_bond_formation": {
+     "support": 64,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_C_cleavage": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_N_cleavage": {
+     "support": 2035,
+     "recall": 0.0683,
+     "precision": 0.4877,
+     "f1": 0.1198
+    },
+    "N_demethylation": {
+     "support": 3819,
+     "recall": 0.4412,
+     "precision": 0.5453,
+     "f1": 0.4878
+    },
+    "N_oxygenation": {
+     "support": 160,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "O_demethylation": {
+     "support": 2300,
+     "recall": 0.0535,
+     "precision": 0.1299,
+     "f1": 0.0758
+    },
+    "angular_dioxygenation": {
+     "support": 337,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "cis_dihydroxylation": {
+     "support": 3487,
+     "recall": 0.6995,
+     "precision": 0.3805,
+     "f1": 0.4929
+    },
+    "desaturation": {
+     "support": 592,
+     "recall": 0.0186,
+     "precision": 0.0065,
+     "f1": 0.0096
+    },
+    "dioxygenation_with_release": {
+     "support": 1786,
+     "recall": 0.7206,
+     "precision": 0.7405,
+     "f1": 0.7304
+    },
+    "hydroxylation": {
+     "support": 4199,
+     "recall": 0.2096,
+     "precision": 0.2045,
+     "f1": 0.207
+    },
+    "oxygenolytic_ring_opening": {
+     "support": 339,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     0,
+     0,
+     0,
+     35,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     29,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     7,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     139,
+     43,
+     0,
+     0,
+     9,
+     1720,
+     0,
+     10,
+     113,
+     0
+    ],
+    [
+     2,
+     0,
+     31,
+     1685,
+     0,
+     49,
+     3,
+     1182,
+     4,
+     41,
+     822,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     14,
+     0,
+     72,
+     0,
+     2,
+     59,
+     0,
+     12,
+     1
+    ],
+    [
+     0,
+     0,
+     0,
+     649,
+     10,
+     123,
+     53,
+     49,
+     14,
+     0,
+     1398,
+     4
+    ],
+    [
+     0,
+     0,
+     1,
+     0,
+     0,
+     38,
+     0,
+     58,
+     0,
+     0,
+     239,
+     1
+    ],
+    [
+     0,
+     2,
+     101,
+     27,
+     22,
+     99,
+     373,
+     2439,
+     0,
+     399,
+     10,
+     15
+    ],
+    [
+     0,
+     0,
+     0,
+     11,
+     7,
+     39,
+     0,
+     4,
+     11,
+     0,
+     520,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     9,
+     0,
+     0,
+     54,
+     428,
+     0,
+     1287,
+     7,
+     0
+    ],
+    [
+     4,
+     7,
+     13,
+     617,
+     4,
+     527,
+     16,
+     521,
+     1608,
+     1,
+     880,
+     1
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0,
+     0,
+     62,
+     0,
+     0,
+     0,
+     273,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "GroupKFold, 10 entry-balanced folds, group = ro.ro_cluster"
+  },
+  "leaked_random_tree": {
+   "accuracy": 0.549,
+   "balanced_accuracy": 0.4353,
+   "type_level_accuracy": 0.75,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "C_C_bond_formation": {
+     "support": 64,
+     "recall": 0.0938,
+     "precision": 0.6667,
+     "f1": 0.1644
+    },
+    "C_C_cleavage": {
+     "support": 7,
+     "recall": 0.1429,
+     "precision": 0.0179,
+     "f1": 0.0317
+    },
+    "C_N_cleavage": {
+     "support": 2035,
+     "recall": 0.1165,
+     "precision": 0.7848,
+     "f1": 0.2028
+    },
+    "N_demethylation": {
+     "support": 3819,
+     "recall": 0.4087,
+     "precision": 0.9994,
+     "f1": 0.5802
+    },
+    "N_oxygenation": {
+     "support": 160,
+     "recall": 0.3125,
+     "precision": 0.6494,
+     "f1": 0.4219
+    },
+    "O_demethylation": {
+     "support": 2300,
+     "recall": 0.0365,
+     "precision": 0.9438,
+     "f1": 0.0703
+    },
+    "angular_dioxygenation": {
+     "support": 337,
+     "recall": 0.7418,
+     "precision": 0.3536,
+     "f1": 0.4789
+    },
+    "cis_dihydroxylation": {
+     "support": 3487,
+     "recall": 0.9372,
+     "precision": 0.4578,
+     "f1": 0.6151
+    },
+    "desaturation": {
+     "support": 592,
+     "recall": 0.9375,
+     "precision": 0.5092,
+     "f1": 0.6599
+    },
+    "dioxygenation_with_release": {
+     "support": 1786,
+     "recall": 0.7447,
+     "precision": 0.9294,
+     "f1": 0.8269
+    },
+    "hydroxylation": {
+     "support": 4199,
+     "recall": 0.7518,
+     "precision": 0.4738,
+     "f1": 0.5813
+    },
+    "oxygenolytic_ring_opening": {
+     "support": 339,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     6,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     58,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     6,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     32,
+     237,
+     1,
+     0,
+     0,
+     22,
+     1633,
+     0,
+     3,
+     107,
+     0
+    ],
+    [
+     0,
+     13,
+     55,
+     1561,
+     2,
+     0,
+     65,
+     1244,
+     6,
+     2,
+     871,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0,
+     50,
+     0,
+     0,
+     1,
+     12,
+     0,
+     96,
+     0
+    ],
+    [
+     1,
+     0,
+     0,
+     0,
+     8,
+     84,
+     140,
+     23,
+     39,
+     0,
+     2005,
+     0
+    ],
+    [
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     250,
+     43,
+     0,
+     0,
+     43,
+     0
+    ],
+    [
+     0,
+     5,
+     3,
+     0,
+     0,
+     4,
+     100,
+     3268,
+     0,
+     95,
+     12,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     10,
+     1,
+     0,
+     3,
+     555,
+     0,
+     23,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     10,
+     432,
+     0,
+     1330,
+     14,
+     0
+    ],
+    [
+     2,
+     4,
+     6,
+     0,
+     7,
+     0,
+     58,
+     486,
+     478,
+     1,
+     3157,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     62,
+     0,
+     0,
+     0,
+     277,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "random 10-fold split over entries; INVALID here because near-identical sequences of the same type land on both sides and the label is a property of the type"
+  },
+  "leakage_gap": {
+   "grouped_accuracy": 0.3432,
+   "leaked_accuracy": 0.549,
+   "absolute_gap": 0.2058,
+   "leaked_over_grouped": 1.6
+  },
+  "baselines": {
+   "global_majority_class": "hydroxylation",
+   "global_majority_rate": 0.2196,
+   "type_level_majority_rate": 0.3824,
+   "grouped_train_majority_accuracy": 0.0661,
+   "note": "the per-fold train-majority baseline can fall far below the global majority rate: holding out a whole type removes a large block of one class, so the training majority changes from fold to fold. The global rate is the fair reading of 'always answer the commonest class'; the type-level rate is its counterpart when every type counts once",
+   "clade_oracle": {
+    "accuracy": 0.216,
+    "balanced_accuracy": 0.0971,
+    "type_level_accuracy": 0.4118,
+    "n_types": 68,
+    "n_entries": 19125,
+    "per_class": {
+     "C_C_bond_formation": {
+      "support": 64,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "C_C_cleavage": {
+      "support": 7,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "C_N_cleavage": {
+      "support": 2035,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "N_demethylation": {
+      "support": 3819,
+      "recall": 0.132,
+      "precision": 0.0896,
+      "f1": 0.1068
+     },
+     "N_oxygenation": {
+      "support": 160,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "O_demethylation": {
+      "support": 2300,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "angular_dioxygenation": {
+      "support": 337,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "cis_dihydroxylation": {
+      "support": 3487,
+      "recall": 1.0,
+      "precision": 0.4437,
+      "f1": 0.6147
+     },
+     "desaturation": {
+      "support": 592,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "dioxygenation_with_release": {
+      "support": 1786,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "hydroxylation": {
+      "support": 4199,
+      "recall": 0.0333,
+      "precision": 0.0469,
+      "f1": 0.039
+     },
+     "oxygenolytic_ring_opening": {
+      "support": 339,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     }
+    },
+    "confusion_matrix": [
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      64,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      2035,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      504,
+      0,
+      810,
+      0,
+      0,
+      0,
+      0,
+      2505,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      160,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      2300,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      111,
+      0,
+      170,
+      0,
+      56,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3487,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      592,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1786,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      672,
+      0,
+      1318,
+      0,
+      1931,
+      0,
+      0,
+      140,
+      138
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      339,
+      0
+     ]
+    ],
+    "confusion_rows_are_true_classes": true,
+    "what_it_is": "predict the majority label of the training TYPES that share the HMM group (ro.ro_group) of the test entry. ro_group comes from sequence similarity, so it is available for a new protein; if the model does not beat this, the alignment columns add nothing beyond deep clade membership"
+   }
+  },
+  "nearest_neighbour_leakage_demo": {
+   "grouped_accuracy": 0.382,
+   "leaked_random_accuracy": 0.9333,
+   "leaked_over_grouped": 2.443,
+   "what_it_shows": "a one-nearest-neighbour classifier has nothing to learn: it copies the label of the most similar training row. On a random split it is close to perfect, because almost every test row has a near-identical twin of the same type in training. Hold the type out and the same classifier collapses. This is the leakage mechanism in its plainest form, and it is the reason every other number in this file is grouped by type"
+  },
+  "sensitivity_unweighted": {
+   "accuracy": 0.3152,
+   "note": "entries weighted equally instead of 1/type-size, so the largest types dominate training"
+  },
+  "depth_sweep": {
+   "rows": [
+    {
+     "max_depth": 1,
+     "grouped_accuracy": 0.3248,
+     "leaked_random_accuracy": 0.3248,
+     "ratio": 1.0
+    },
+    {
+     "max_depth": 2,
+     "grouped_accuracy": 0.2598,
+     "leaked_random_accuracy": 0.393,
+     "ratio": 1.513
+    },
+    {
+     "max_depth": 3,
+     "grouped_accuracy": 0.2805,
+     "leaked_random_accuracy": 0.4039,
+     "ratio": 1.44
+    },
+    {
+     "max_depth": 4,
+     "grouped_accuracy": 0.3231,
+     "leaked_random_accuracy": 0.5257,
+     "ratio": 1.627
+    },
+    {
+     "max_depth": 5,
+     "grouped_accuracy": 0.3432,
+     "leaked_random_accuracy": 0.549,
+     "ratio": 1.599
+    },
+    {
+     "max_depth": 6,
+     "grouped_accuracy": 0.3212,
+     "leaked_random_accuracy": 0.608,
+     "ratio": 1.893
+    },
+    {
+     "max_depth": 8,
+     "grouped_accuracy": 0.3659,
+     "leaked_random_accuracy": 0.7034,
+     "ratio": 1.923
+    },
+    {
+     "max_depth": 12,
+     "grouped_accuracy": 0.4124,
+     "leaked_random_accuracy": 0.8118,
+     "ratio": 1.969
+    },
+    {
+     "max_depth": 20,
+     "grouped_accuracy": 0.4254,
+     "leaked_random_accuracy": 0.8601,
+     "ratio": 2.022
+    }
+   ],
+   "note": "the gap between the two columns is what a random split buys by memorising types: it widens with model capacity, which is the signature of leakage rather than of learning. The best grouped row of this sweep must NOT be read as an achieved accuracy, because it was chosen by looking at the held-out score; see nested_depth_selection"
+  },
+  "nested_depth_selection": {
+   "accuracy": 0.338,
+   "balanced_accuracy": 0.1857,
+   "type_level_accuracy": 0.4853,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "C_C_bond_formation": {
+     "support": 64,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_C_cleavage": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_N_cleavage": {
+     "support": 2035,
+     "recall": 0.0683,
+     "precision": 0.5167,
+     "f1": 0.1207
+    },
+    "N_demethylation": {
+     "support": 3819,
+     "recall": 0.4072,
+     "precision": 0.6482,
+     "f1": 0.5002
+    },
+    "N_oxygenation": {
+     "support": 160,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "O_demethylation": {
+     "support": 2300,
+     "recall": 0.0109,
+     "precision": 0.0456,
+     "f1": 0.0176
+    },
+    "angular_dioxygenation": {
+     "support": 337,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "cis_dihydroxylation": {
+     "support": 3487,
+     "recall": 0.7364,
+     "precision": 0.3734,
+     "f1": 0.4955
+    },
+    "desaturation": {
+     "support": 592,
+     "recall": 0.0642,
+     "precision": 0.022,
+     "f1": 0.0328
+    },
+    "dioxygenation_with_release": {
+     "support": 1786,
+     "recall": 0.7508,
+     "precision": 0.7475,
+     "f1": 0.7492
+    },
+    "hydroxylation": {
+     "support": 4199,
+     "recall": 0.1903,
+     "precision": 0.1667,
+     "f1": 0.1777
+    },
+    "oxygenolytic_ring_opening": {
+     "support": 339,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     0,
+     0,
+     0,
+     32,
+     0,
+     9,
+     0,
+     0,
+     0,
+     0,
+     20,
+     3
+    ],
+    [
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0,
+     5,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     139,
+     24,
+     0,
+     0,
+     9,
+     1721,
+     0,
+     10,
+     132,
+     0
+    ],
+    [
+     0,
+     14,
+     124,
+     1555,
+     0,
+     75,
+     1,
+     1181,
+     4,
+     41,
+     824,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     22,
+     0,
+     2,
+     50,
+     0,
+     18,
+     68
+    ],
+    [
+     3,
+     0,
+     0,
+     544,
+     12,
+     25,
+     10,
+     91,
+     14,
+     2,
+     1589,
+     10
+    ],
+    [
+     0,
+     0,
+     0,
+     2,
+     0,
+     30,
+     0,
+     59,
+     0,
+     0,
+     245,
+     1
+    ],
+    [
+     0,
+     1,
+     4,
+     10,
+     0,
+     25,
+     83,
+     2568,
+     19,
+     399,
+     358,
+     20
+    ],
+    [
+     0,
+     0,
+     0,
+     9,
+     5,
+     1,
+     0,
+     15,
+     38,
+     0,
+     524,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     9,
+     0,
+     0,
+     0,
+     429,
+     0,
+     1341,
+     7,
+     0
+    ],
+    [
+     42,
+     1,
+     0,
+     214,
+     5,
+     361,
+     43,
+     807,
+     1599,
+     1,
+     799,
+     327
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     63,
+     0,
+     0,
+     0,
+     276,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "depths_chosen_per_fold": [
+    5,
+    6,
+    8,
+    6,
+    8,
+    4,
+    8,
+    6,
+    2,
+    6
+   ],
+   "what_it_is": "the honest number: in every outer fold the tree depth was chosen by an inner grouped cross-validation over the training types only, so the held-out types took no part in the choice"
+  },
+  "leave_one_type_out_tree": {
+   "accuracy": 0.301,
+   "balanced_accuracy": 0.1665,
+   "type_level_accuracy": 0.4412,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "C_C_bond_formation": {
+     "support": 64,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_C_cleavage": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_N_cleavage": {
+     "support": 2035,
+     "recall": 0.0688,
+     "precision": 0.875,
+     "f1": 0.1276
+    },
+    "N_demethylation": {
+     "support": 3819,
+     "recall": 0.3045,
+     "precision": 0.5162,
+     "f1": 0.3831
+    },
+    "N_oxygenation": {
+     "support": 160,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "O_demethylation": {
+     "support": 2300,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "angular_dioxygenation": {
+     "support": 337,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "cis_dihydroxylation": {
+     "support": 3487,
+     "recall": 0.7809,
+     "precision": 0.3805,
+     "f1": 0.5116
+    },
+    "desaturation": {
+     "support": 592,
+     "recall": 0.0828,
+     "precision": 0.0281,
+     "f1": 0.0419
+    },
+    "dioxygenation_with_release": {
+     "support": 1786,
+     "recall": 0.6265,
+     "precision": 0.6912,
+     "f1": 0.6573
+    },
+    "hydroxylation": {
+     "support": 4199,
+     "recall": 0.1341,
+     "precision": 0.1276,
+     "f1": 0.1307
+    },
+    "oxygenolytic_ring_opening": {
+     "support": 339,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     12,
+     0,
+     0,
+     0,
+     0,
+     52,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     7,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     61,
+     140,
+     6,
+     0,
+     0,
+     0,
+     1695,
+     0,
+     1,
+     132,
+     0
+    ],
+    [
+     0,
+     13,
+     17,
+     1163,
+     3,
+     92,
+     507,
+     1226,
+     5,
+     1,
+     792,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     3,
+     0,
+     0,
+     0,
+     1,
+     59,
+     0,
+     96,
+     0
+    ],
+    [
+     1,
+     0,
+     0,
+     458,
+     1,
+     0,
+     82,
+     94,
+     27,
+     0,
+     1637,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     32,
+     0,
+     56,
+     0,
+     2,
+     192,
+     55
+    ],
+    [
+     0,
+     4,
+     3,
+     0,
+     0,
+     8,
+     124,
+     2723,
+     0,
+     487,
+     138,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     11,
+     7,
+     1,
+     0,
+     4,
+     49,
+     0,
+     520,
+     0
+    ],
+    [
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     1,
+     651,
+     0,
+     1119,
+     14,
+     0
+    ],
+    [
+     0,
+     8,
+     0,
+     612,
+     3,
+     663,
+     35,
+     700,
+     1606,
+     9,
+     563,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     62,
+     0,
+     0,
+     0,
+     277,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "leave-one-type-out: each type is predicted by a model that never saw a single member of it"
+  },
+  "grouped_l1_logistic": {
+   "accuracy": 0.4358,
+   "balanced_accuracy": 0.2728,
+   "type_level_accuracy": 0.6029,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "C_C_bond_formation": {
+     "support": 64,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_C_cleavage": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "C_N_cleavage": {
+     "support": 2035,
+     "recall": 0.0531,
+     "precision": 0.2667,
+     "f1": 0.0885
+    },
+    "N_demethylation": {
+     "support": 3819,
+     "recall": 0.6229,
+     "precision": 0.6854,
+     "f1": 0.6527
+    },
+    "N_oxygenation": {
+     "support": 160,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "O_demethylation": {
+     "support": 2300,
+     "recall": 0.1435,
+     "precision": 0.22,
+     "f1": 0.1737
+    },
+    "angular_dioxygenation": {
+     "support": 337,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "cis_dihydroxylation": {
+     "support": 3487,
+     "recall": 0.7932,
+     "precision": 0.5159,
+     "f1": 0.6252
+    },
+    "desaturation": {
+     "support": 592,
+     "recall": 0.6402,
+     "precision": 0.1937,
+     "f1": 0.2974
+    },
+    "dioxygenation_with_release": {
+     "support": 1786,
+     "recall": 0.7934,
+     "precision": 0.7803,
+     "f1": 0.7868
+    },
+    "hydroxylation": {
+     "support": 4199,
+     "recall": 0.2277,
+     "precision": 0.2217,
+     "f1": 0.2247
+    },
+    "oxygenolytic_ring_opening": {
+     "support": 339,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     0,
+     0,
+     0,
+     15,
+     0,
+     5,
+     0,
+     0,
+     0,
+     0,
+     44,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     7,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     108,
+     177,
+     0,
+     0,
+     0,
+     1127,
+     0,
+     14,
+     609,
+     0
+    ],
+    [
+     0,
+     0,
+     249,
+     2379,
+     1,
+     65,
+     3,
+     622,
+     2,
+     13,
+     482,
+     3
+    ],
+    [
+     0,
+     0,
+     0,
+     6,
+     0,
+     80,
+     2,
+     5,
+     9,
+     0,
+     58,
+     0
+    ],
+    [
+     2,
+     0,
+     0,
+     278,
+     12,
+     330,
+     37,
+     55,
+     7,
+     2,
+     1575,
+     2
+    ],
+    [
+     0,
+     0,
+     0,
+     64,
+     0,
+     85,
+     0,
+     67,
+     0,
+     6,
+     115,
+     0
+    ],
+    [
+     0,
+     0,
+     4,
+     51,
+     0,
+     20,
+     114,
+     2766,
+     0,
+     364,
+     168,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     16,
+     4,
+     1,
+     0,
+     1,
+     379,
+     0,
+     191,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     12,
+     0,
+     0,
+     0,
+     346,
+     0,
+     1417,
+     11,
+     0
+    ],
+    [
+     6,
+     0,
+     44,
+     342,
+     4,
+     885,
+     54,
+     357,
+     1551,
+     0,
+     956,
+     0
+    ],
+    [
+     9,
+     0,
+     0,
+     131,
+     0,
+     29,
+     49,
+     9,
+     9,
+     0,
+     103,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "penalty": 0.002
+  },
+  "leaked_random_l1_logistic": {
+   "accuracy": 0.8075
+  },
+  "permutation_null": {
+   "reps": 200,
+   "max_depth": 5,
+   "shuffled_at": "type level, because the label is a property of the type",
+   "mean": 0.3168,
+   "sd": 0.0814,
+   "p95": 0.4422,
+   "max": 0.5443,
+   "type_level_mean": 0.3268,
+   "type_level_p95": 0.3824,
+   "type_level_max": 0.4265,
+   "seconds": 791.5
+  },
+  "grouped_vs_null": {
+   "grouped_accuracy": 0.3432,
+   "null_mean": 0.3168,
+   "null_sd": 0.0814,
+   "null_max": 0.5443,
+   "z_against_null": 0.32,
+   "empirical_p": 0.3582,
+   "type_level_accuracy": 0.4559,
+   "type_level_null_mean": 0.3268,
+   "type_level_empirical_p": 0.005,
+   "note": "the empirical p is one-sided over the permutation replicates. With 61 types of very unequal size the null spread is wide, which is exactly why an accuracy without a null is not interpretable here"
+  },
+  "tree_rules_depth3_fitted_on_all_data": [
+   {
+    "path": "col278=K AND col280=Q AND col472=E",
+    "n_entries": 5,
+    "predicted_class": "angular_dioxygenation",
+    "class_share_of_weight": 0.991
+   },
+   {
+    "path": "col278=K AND col280=Q AND NOT col472=E",
+    "n_entries": 1455,
+    "predicted_class": "dioxygenation_with_release",
+    "class_share_of_weight": 0.881
+   },
+   {
+    "path": "col278=K AND NOT col280=Q AND col287=-",
+    "n_entries": 2296,
+    "predicted_class": "N_demethylation",
+    "class_share_of_weight": 0.416
+   },
+   {
+    "path": "col278=K AND NOT col280=Q AND NOT col287=-",
+    "n_entries": 6740,
+    "predicted_class": "cis_dihydroxylation",
+    "class_share_of_weight": 0.687
+   },
+   {
+    "path": "NOT col278=K AND col462=R AND col385=R",
+    "n_entries": 81,
+    "predicted_class": "O_demethylation",
+    "class_share_of_weight": 0.988
+   },
+   {
+    "path": "NOT col278=K AND col462=R AND NOT col385=R",
+    "n_entries": 650,
+    "predicted_class": "cis_dihydroxylation",
+    "class_share_of_weight": 0.842
+   },
+   {
+    "path": "NOT col278=K AND NOT col462=R AND col121=G",
+    "n_entries": 2252,
+    "predicted_class": "desaturation",
+    "class_share_of_weight": 0.506
+   },
+   {
+    "path": "NOT col278=K AND NOT col462=R AND NOT col121=G",
+    "n_entries": 5646,
+    "predicted_class": "hydroxylation",
+    "class_share_of_weight": 0.34
+   }
+  ],
+  "tree_rules_note": "printed from a depth-3 tree fitted on every entry, so it is a description of the data and NOT a performance estimate",
+  "verdict": "per entry: inside the label-permutation null (one-sided p = 0.3582), so no signal is demonstrated; per type: above the null (p = 0.005) and above the clade oracle (0.456 against 0.412), so the features add something clade membership alone does not give",
+  "question": "can the reaction class of an enzyme be predicted from its sequence alone, for a type the model has never seen",
+  "features": {
+   "kind": "residue identity at alignment match-state columns",
+   "alignment": "genomic_context/cand_aln.sto",
+   "column_pool": "top 60 rows of analysis_out/sdp_positions.csv, the specificity-determining positions the pipeline already computes",
+   "encoding": "one binary feature per (column, residue) pair seen in at least 25 entries; the gap character is a state of its own"
+  }
+ },
+ "q2_informative_columns": {
+  "top_features": [
+   {
+    "feature": "column 278 residue K",
+    "tree_gain": 4.84225,
+    "l1_abs_weight": 5.64982,
+    "forest_gain": 1.9506,
+    "rank_tree": 1,
+    "rank_l1": 1,
+    "rank_forest": 1,
+    "column": 278,
+    "residue": "K",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 286,
+    "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+    "offset_from_nearest": -8,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 121 residue G",
+    "tree_gain": 0.80298,
+    "l1_abs_weight": 3.1679,
+    "forest_gain": 0.44319,
+    "rank_tree": 10,
+    "rank_l1": 2,
+    "rank_forest": 11,
+    "column": 121,
+    "residue": "G",
+    "is_gap_state": false,
+    "zone": "linker",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 164,
+    "nearest_catalytic_centre_label": "Rieske cysteine 1",
+    "offset_from_nearest": -43,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 280 residue Q",
+    "tree_gain": 1.63641,
+    "l1_abs_weight": 1.18287,
+    "forest_gain": 1.55132,
+    "rank_tree": 3,
+    "rank_l1": 29,
+    "rank_forest": 2,
+    "column": 280,
+    "residue": "Q",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 286,
+    "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+    "offset_from_nearest": -6,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 462 residue R",
+    "tree_gain": 1.14917,
+    "l1_abs_weight": 1.86702,
+    "forest_gain": 0.22418,
+    "rank_tree": 4,
+    "rank_l1": 9,
+    "rank_forest": 27,
+    "column": 462,
+    "residue": "R",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": 31,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 427 residue T",
+    "tree_gain": 0.41817,
+    "l1_abs_weight": 1.38421,
+    "forest_gain": 0.42822,
+    "rank_tree": 13,
+    "rank_l1": 22,
+    "rank_forest": 12,
+    "column": 427,
+    "residue": "T",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -4,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 427 residue G",
+    "tree_gain": 0.26445,
+    "l1_abs_weight": 2.20312,
+    "forest_gain": 0.32417,
+    "rank_tree": 25,
+    "rank_l1": 4,
+    "rank_forest": 18,
+    "column": 427,
+    "residue": "G",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -4,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 232 residue Y",
+    "tree_gain": 0.62211,
+    "l1_abs_weight": 1.93151,
+    "forest_gain": 0.17291,
+    "rank_tree": 11,
+    "rank_l1": 6,
+    "rank_forest": 36,
+    "column": 232,
+    "residue": "Y",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 187,
+    "nearest_catalytic_centre_label": "Rieske histidine 2",
+    "offset_from_nearest": 45,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 480 residue A",
+    "tree_gain": 0.84292,
+    "l1_abs_weight": 1.15673,
+    "forest_gain": 0.38612,
+    "rank_tree": 9,
+    "rank_l1": 31,
+    "rank_forest": 14,
+    "column": 480,
+    "residue": "A",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": 49,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 366 residue N",
+    "tree_gain": 1.13385,
+    "l1_abs_weight": 0.98248,
+    "forest_gain": 0.6991,
+    "rank_tree": 5,
+    "rank_l1": 44,
+    "rank_forest": 6,
+    "column": 366,
+    "residue": "N",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -65,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 424 residue W",
+    "tree_gain": 1.05257,
+    "l1_abs_weight": 1.01164,
+    "forest_gain": 0.52954,
+    "rank_tree": 6,
+    "rank_l1": 42,
+    "rank_forest": 9,
+    "column": 424,
+    "residue": "W",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -7,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 385 residue R",
+    "tree_gain": 0.89099,
+    "l1_abs_weight": 1.7787,
+    "forest_gain": 0.15662,
+    "rank_tree": 8,
+    "rank_l1": 10,
+    "rank_forest": 42,
+    "column": 385,
+    "residue": "R",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -46,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 278 residue Q",
+    "tree_gain": 0.13747,
+    "l1_abs_weight": 1.97493,
+    "forest_gain": 0.2273,
+    "rank_tree": 41,
+    "rank_l1": 5,
+    "rank_forest": 26,
+    "column": 278,
+    "residue": "Q",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 286,
+    "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+    "offset_from_nearest": -8,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 383 residue R",
+    "tree_gain": 0.15631,
+    "l1_abs_weight": 1.04702,
+    "forest_gain": 0.65828,
+    "rank_tree": 38,
+    "rank_l1": 38,
+    "rank_forest": 7,
+    "column": 383,
+    "residue": "R",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -48,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 232 residue W",
+    "tree_gain": 0.17553,
+    "l1_abs_weight": 2.77464,
+    "forest_gain": 0.14238,
+    "rank_tree": 34,
+    "rank_l1": 3,
+    "rank_forest": 48,
+    "column": 232,
+    "residue": "W",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 187,
+    "nearest_catalytic_centre_label": "Rieske histidine 2",
+    "offset_from_nearest": 45,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 202 residue Y",
+    "tree_gain": 0.17395,
+    "l1_abs_weight": 1.71409,
+    "forest_gain": 0.16713,
+    "rank_tree": 35,
+    "rank_l1": 12,
+    "rank_forest": 40,
+    "column": 202,
+    "residue": "Y",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 187,
+    "nearest_catalytic_centre_label": "Rieske histidine 2",
+    "offset_from_nearest": 15,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 432 residue N",
+    "tree_gain": 0.27231,
+    "l1_abs_weight": 0.8058,
+    "forest_gain": 0.59667,
+    "rank_tree": 23,
+    "rank_l1": 61,
+    "rank_forest": 8,
+    "column": 432,
+    "residue": "N",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": 1,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 302 residue E",
+    "tree_gain": 0.19411,
+    "l1_abs_weight": 1.24788,
+    "forest_gain": 0.17082,
+    "rank_tree": 30,
+    "rank_l1": 25,
+    "rank_forest": 37,
+    "column": 302,
+    "residue": "E",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 294,
+    "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+    "offset_from_nearest": 8,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 296 residue L",
+    "tree_gain": 0.20643,
+    "l1_abs_weight": 1.73552,
+    "forest_gain": 0.10286,
+    "rank_tree": 29,
+    "rank_l1": 11,
+    "rank_forest": 57,
+    "column": 296,
+    "residue": "L",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 294,
+    "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+    "offset_from_nearest": 2,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 292 residue A",
+    "tree_gain": 0.50274,
+    "l1_abs_weight": 0.83737,
+    "forest_gain": 0.21916,
+    "rank_tree": 12,
+    "rank_l1": 56,
+    "rank_forest": 31,
+    "column": 292,
+    "residue": "A",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 294,
+    "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+    "offset_from_nearest": -2,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 232 residue N",
+    "tree_gain": 0.29939,
+    "l1_abs_weight": 1.6428,
+    "forest_gain": 0.09034,
+    "rank_tree": 19,
+    "rank_l1": 14,
+    "rank_forest": 71,
+    "column": 232,
+    "residue": "N",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 187,
+    "nearest_catalytic_centre_label": "Rieske histidine 2",
+    "offset_from_nearest": 45,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 285 residue M",
+    "tree_gain": 0.12109,
+    "l1_abs_weight": 1.60104,
+    "forest_gain": 0.1443,
+    "rank_tree": 43,
+    "rank_l1": 15,
+    "rank_forest": 47,
+    "column": 285,
+    "residue": "M",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 286,
+    "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+    "offset_from_nearest": -1,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 297 residue T",
+    "tree_gain": 0.07132,
+    "l1_abs_weight": 1.65272,
+    "forest_gain": 0.15275,
+    "rank_tree": 51,
+    "rank_l1": 13,
+    "rank_forest": 43,
+    "column": 297,
+    "residue": "T",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 294,
+    "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+    "offset_from_nearest": 3,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 435 residue Y",
+    "tree_gain": 0.09433,
+    "l1_abs_weight": 0.8155,
+    "forest_gain": 0.28343,
+    "rank_tree": 44,
+    "rank_l1": 58,
+    "rank_forest": 21,
+    "column": 435,
+    "residue": "Y",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": 4,
+    "within_10_columns_of_centre": true
+   },
+   {
+    "feature": "column 124 residue P",
+    "tree_gain": 0.3214,
+    "l1_abs_weight": 1.42769,
+    "forest_gain": 0.0489,
+    "rank_tree": 17,
+    "rank_l1": 19,
+    "rank_forest": 102,
+    "column": 124,
+    "residue": "P",
+    "is_gap_state": false,
+    "zone": "linker",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 164,
+    "nearest_catalytic_centre_label": "Rieske cysteine 1",
+    "offset_from_nearest": -40,
+    "within_10_columns_of_centre": false
+   },
+   {
+    "feature": "column 397 residue R",
+    "tree_gain": 0.15966,
+    "l1_abs_weight": 0.69437,
+    "forest_gain": 0.35654,
+    "rank_tree": 37,
+    "rank_l1": 85,
+    "rank_forest": 16,
+    "column": 397,
+    "residue": "R",
+    "is_gap_state": false,
+    "zone": "catalytic_domain",
+    "is_motif_column": false,
+    "nearest_catalytic_centre_column": 431,
+    "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+    "offset_from_nearest": -34,
+    "within_10_columns_of_centre": false
+   }
+  ],
+  "l1_nonzero_features": 306,
+  "l1_total_features": 1150,
+  "method": "features ranked by the sum of three ranks: mean split gain of the depth-limited tree over the grouped training folds, absolute L1 logistic weight summed over classes, and mean split gain of a random forest. The forest is fitted ONLY to rank features; every accuracy in this file comes from the tree or the L1 model, both of which can be read",
+  "univariate_type_level": {
+   "note": "one row per alignment column. The residue of a TYPE is the consensus of its members, so each type counts once and a large sequenced clade cannot inflate the association. Cramer's V on a 61-type table is noisy and is given for ordering, not as a test",
+   "rows": [
+    {
+     "column": 383,
+     "n_types_scored": 68,
+     "n_residue_states": 16,
+     "cramers_v_type_level": 0.671,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -48,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 278,
+     "n_types_scored": 68,
+     "n_residue_states": 12,
+     "cramers_v_type_level": 0.634,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 286,
+     "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+     "offset_from_nearest": -8,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 97,
+     "n_types_scored": 63,
+     "n_residue_states": 14,
+     "cramers_v_type_level": 0.629,
+     "zone": "rieske_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 164,
+     "nearest_catalytic_centre_label": "Rieske cysteine 1",
+     "offset_from_nearest": -67,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 101,
+     "n_types_scored": 65,
+     "n_residue_states": 16,
+     "cramers_v_type_level": 0.624,
+     "zone": "rieske_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 164,
+     "nearest_catalytic_centre_label": "Rieske cysteine 1",
+     "offset_from_nearest": -63,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 402,
+     "n_types_scored": 68,
+     "n_residue_states": 17,
+     "cramers_v_type_level": 0.615,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -29,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 366,
+     "n_types_scored": 68,
+     "n_residue_states": 18,
+     "cramers_v_type_level": 0.604,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -65,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 445,
+     "n_types_scored": 67,
+     "n_residue_states": 18,
+     "cramers_v_type_level": 0.599,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 14,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 300,
+     "n_types_scored": 68,
+     "n_residue_states": 19,
+     "cramers_v_type_level": 0.595,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 294,
+     "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+     "offset_from_nearest": 6,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 474,
+     "n_types_scored": 66,
+     "n_residue_states": 12,
+     "cramers_v_type_level": 0.582,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 43,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 296,
+     "n_types_scored": 68,
+     "n_residue_states": 13,
+     "cramers_v_type_level": 0.581,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 294,
+     "nearest_catalytic_centre_label": "mononuclear iron histidine 2",
+     "offset_from_nearest": 2,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 447,
+     "n_types_scored": 65,
+     "n_residue_states": 16,
+     "cramers_v_type_level": 0.58,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 16,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 434,
+     "n_types_scored": 67,
+     "n_residue_states": 10,
+     "cramers_v_type_level": 0.577,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 3,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 473,
+     "n_types_scored": 66,
+     "n_residue_states": 15,
+     "cramers_v_type_level": 0.562,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 42,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 397,
+     "n_types_scored": 68,
+     "n_residue_states": 17,
+     "cramers_v_type_level": 0.557,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -34,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 385,
+     "n_types_scored": 68,
+     "n_residue_states": 15,
+     "cramers_v_type_level": 0.555,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -46,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 427,
+     "n_types_scored": 67,
+     "n_residue_states": 11,
+     "cramers_v_type_level": 0.554,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -4,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 432,
+     "n_types_scored": 67,
+     "n_residue_states": 17,
+     "cramers_v_type_level": 0.55,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 1,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 376,
+     "n_types_scored": 67,
+     "n_residue_states": 15,
+     "cramers_v_type_level": 0.549,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -55,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 378,
+     "n_types_scored": 67,
+     "n_residue_states": 16,
+     "cramers_v_type_level": 0.542,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -53,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 466,
+     "n_types_scored": 65,
+     "n_residue_states": 16,
+     "cramers_v_type_level": 0.542,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 35,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 469,
+     "n_types_scored": 65,
+     "n_residue_states": 14,
+     "cramers_v_type_level": 0.536,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": 38,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 124,
+     "n_types_scored": 68,
+     "n_residue_states": 11,
+     "cramers_v_type_level": 0.53,
+     "zone": "linker",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 164,
+     "nearest_catalytic_centre_label": "Rieske cysteine 1",
+     "offset_from_nearest": -40,
+     "within_10_columns_of_centre": false
+    },
+    {
+     "column": 424,
+     "n_types_scored": 67,
+     "n_residue_states": 15,
+     "cramers_v_type_level": 0.53,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 431,
+     "nearest_catalytic_centre_label": "mononuclear iron carboxylate (Asp or Glu)",
+     "offset_from_nearest": -7,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 280,
+     "n_types_scored": 68,
+     "n_residue_states": 14,
+     "cramers_v_type_level": 0.529,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 286,
+     "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+     "offset_from_nearest": -6,
+     "within_10_columns_of_centre": true
+    },
+    {
+     "column": 284,
+     "n_types_scored": 68,
+     "n_residue_states": 13,
+     "cramers_v_type_level": 0.529,
+     "zone": "catalytic_domain",
+     "is_motif_column": false,
+     "nearest_catalytic_centre_column": 286,
+     "nearest_catalytic_centre_label": "inter-subunit bridging aspartate",
+     "offset_from_nearest": -2,
+     "within_10_columns_of_centre": true
+    }
+   ]
+  },
+  "catalytic_centre_columns": [
+   {
+    "column": 164,
+    "label": "Rieske cysteine 1",
+    "expected": "C",
+    "conserved_fraction": 1.0
+   },
+   {
+    "column": 166,
+    "label": "Rieske histidine 1",
+    "expected": "H",
+    "conserved_fraction": 1.0
+   },
+   {
+    "column": 184,
+    "label": "Rieske cysteine 2",
+    "expected": "C",
+    "conserved_fraction": 1.0
+   },
+   {
+    "column": 187,
+    "label": "Rieske histidine 2",
+    "expected": "H",
+    "conserved_fraction": 1.0
+   },
+   {
+    "column": 289,
+    "label": "mononuclear iron histidine 1",
+    "expected": "H",
+    "conserved_fraction": 0.999
+   },
+   {
+    "column": 294,
+    "label": "mononuclear iron histidine 2",
+    "expected": "H",
+    "conserved_fraction": 0.9975
+   },
+   {
+    "column": 431,
+    "label": "mononuclear iron carboxylate (Asp or Glu)",
+    "expected": "D/E",
+    "conserved_fraction": 0.8752
+   },
+   {
+    "column": 286,
+    "label": "inter-subunit bridging aspartate",
+    "expected": "D/E",
+    "conserved_fraction": 0.9997
+   }
+  ],
+  "catalytic_centre_source": "analysis_out/motif_stats.json",
+  "zone_convention": {
+   "rieske_domain": "column <= 120",
+   "linker": "120 < column < 191",
+   "catalytic_domain": "column >= 191",
+   "note": "the boundaries are the convention of variant_signature.py and are approximate; no structure was used, so a column close to a metal ligand is a hypothesis about the active site and not evidence of one"
+  },
+  "zone_counts_in_top_features": {
+   "catalytic_domain": 23,
+   "linker": 2
+  },
+  "top_features_within_10_columns_of_a_centre_column": 13,
+  "zone_counts_in_whole_pool": {
+   "rieske_domain": 5,
+   "linker": 2,
+   "catalytic_domain": 53
+  },
+  "gap_state_features_in_top": 0,
+  "catalytic_domain_share_in_top_features": 0.92,
+  "catalytic_domain_share_in_whole_pool": 0.883,
+  "catalytic_domain_enrichment_over_pool": 1.042,
+  "how_to_read_the_offsets": "the zone counts of the top features have to be read against the zone counts of the whole pool: the pool is already dominated by catalytic domain columns, so a catalytic majority among the top features is only informative if it exceeds the pool proportion. Two traps are flagged separately. First, a feature one or two columns away from a motif column may be the SAME residue displaced by an alignment shift rather than a different position: motif_stats.json records that the iron carboxylate sits at column 355 in 9,936 entries but is offset or absent in the rest, and the motif test itself uses a window of plus or minus two columns. Second, a gap state says the protein has no letter in that column at all, so it encodes length or alignment quality and not residue chemistry; is_gap_state marks those rows"
+ },
+ "q1_column_selection_variants": {
+  "rows": [
+   {
+    "selection": "precomputed_sdp_positions_csv",
+    "n_columns": 60,
+    "grouped_accuracy": 0.3432,
+    "selection_leak": "yes -- the ranking in sdp_positions.csv was computed with every type visible, including the types held out in each fold"
+   },
+   {
+    "selection": "sdp_recomputed_inside_each_training_fold",
+    "n_columns": 60,
+    "grouped_accuracy": 0.4235,
+    "mean_overlap_with_precomputed_list": 0.383,
+    "selection_leak": "no -- the held-out types take no part in the scoring"
+   },
+   {
+    "selection": "no_selection_all_occupied_columns",
+    "n_columns": 169,
+    "grouped_accuracy": 0.3193,
+    "selection_leak": "no -- no label was consulted; occupancy is the only filter"
+   }
+  ],
+  "occupancy_threshold": 0.9,
+  "note": "if the precomputed row were far above the in-fold row, the headline accuracy would be partly an artefact of choosing the columns on the full data set"
+ },
+ "q3_substrate_class_from_context": {
+  "n_entries": 19125,
+  "n_types": 68,
+  "n_features": 78,
+  "classes": [
+   "natural_aromatic",
+   "natural_specialized",
+   "xenobiotic"
+  ],
+  "class_entry_counts": {
+   "natural_aromatic": 2668,
+   "natural_specialized": 9655,
+   "xenobiotic": 6802
+  },
+  "class_type_counts": {
+   "xenobiotic": 39,
+   "natural_aromatic": 7,
+   "natural_specialized": 22
+  },
+  "tree_max_depth": 5,
+  "grouped_tree": {
+   "accuracy": 0.5028,
+   "balanced_accuracy": 0.3881,
+   "type_level_accuracy": 0.6765,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "natural_aromatic": {
+     "support": 2668,
+     "recall": 0.0007,
+     "precision": 0.0034,
+     "f1": 0.0012
+    },
+    "natural_specialized": {
+     "support": 9655,
+     "recall": 0.5954,
+     "precision": 0.6084,
+     "f1": 0.6019
+    },
+    "xenobiotic": {
+     "support": 6802,
+     "recall": 0.5682,
+     "precision": 0.4256,
+     "f1": 0.4867
+    }
+   },
+   "confusion_matrix": [
+    [
+     2,
+     958,
+     1708
+    ],
+    [
+     398,
+     5749,
+     3508
+    ],
+    [
+     195,
+     2742,
+     3865
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "GroupKFold, 10 entry-balanced folds, group = ro.ro_cluster"
+  },
+  "leaked_random_tree": {
+   "accuracy": 0.6265,
+   "balanced_accuracy": 0.5332,
+   "type_level_accuracy": 0.8382,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "natural_aromatic": {
+     "support": 2668,
+     "recall": 0.199,
+     "precision": 0.8734,
+     "f1": 0.3242
+    },
+    "natural_specialized": {
+     "support": 9655,
+     "recall": 0.6741,
+     "precision": 0.7202,
+     "f1": 0.6964
+    },
+    "xenobiotic": {
+     "support": 6802,
+     "recall": 0.7266,
+     "precision": 0.5213,
+     "f1": 0.607
+    }
+   },
+   "confusion_matrix": [
+    [
+     531,
+     741,
+     1396
+    ],
+    [
+     4,
+     6508,
+     3143
+    ],
+    [
+     73,
+     1787,
+     4942
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "random 10-fold split over entries; INVALID here because near-identical sequences of the same type land on both sides and the label is a property of the type"
+  },
+  "leakage_gap": {
+   "grouped_accuracy": 0.5028,
+   "leaked_accuracy": 0.6265,
+   "absolute_gap": 0.1237,
+   "leaked_over_grouped": 1.246
+  },
+  "baselines": {
+   "global_majority_class": "natural_specialized",
+   "global_majority_rate": 0.5048,
+   "type_level_majority_rate": 0.5735,
+   "grouped_train_majority_accuracy": 0.5048,
+   "note": "the per-fold train-majority baseline can fall far below the global majority rate: holding out a whole type removes a large block of one class, so the training majority changes from fold to fold. The global rate is the fair reading of 'always answer the commonest class'; the type-level rate is its counterpart when every type counts once",
+   "clade_oracle": {
+    "accuracy": 0.5985,
+    "balanced_accuracy": 0.4674,
+    "type_level_accuracy": 0.7206,
+    "n_types": 68,
+    "n_entries": 19125,
+    "per_class": {
+     "natural_aromatic": {
+      "support": 2668,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     },
+     "natural_specialized": {
+      "support": 9655,
+      "recall": 0.6691,
+      "precision": 0.6224,
+      "f1": 0.6449
+     },
+     "xenobiotic": {
+      "support": 6802,
+      "recall": 0.7332,
+      "precision": 0.6346,
+      "f1": 0.6803
+     }
+    },
+    "confusion_matrix": [
+     [
+      0,
+      2105,
+      563
+     ],
+     [
+      886,
+      6460,
+      2309
+     ],
+     [
+      0,
+      1815,
+      4987
+     ]
+    ],
+    "confusion_rows_are_true_classes": true,
+    "what_it_is": "predict the majority label of the training TYPES that share the HMM group (ro.ro_group) of the test entry. ro_group comes from sequence similarity, so it is available for a new protein; if the model does not beat this, the alignment columns add nothing beyond deep clade membership"
+   }
+  },
+  "nearest_neighbour_leakage_demo": {
+   "grouped_accuracy": 0.5621,
+   "leaked_random_accuracy": 0.8075,
+   "leaked_over_grouped": 1.437,
+   "what_it_shows": "a one-nearest-neighbour classifier has nothing to learn: it copies the label of the most similar training row. On a random split it is close to perfect, because almost every test row has a near-identical twin of the same type in training. Hold the type out and the same classifier collapses. This is the leakage mechanism in its plainest form, and it is the reason every other number in this file is grouped by type"
+  },
+  "sensitivity_unweighted": {
+   "accuracy": 0.6599,
+   "note": "entries weighted equally instead of 1/type-size, so the largest types dominate training"
+  },
+  "nested_depth_selection": {
+   "accuracy": 0.4804,
+   "balanced_accuracy": 0.3682,
+   "type_level_accuracy": 0.6176,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "natural_aromatic": {
+     "support": 2668,
+     "recall": 0.0007,
+     "precision": 0.0053,
+     "f1": 0.0013
+    },
+    "natural_specialized": {
+     "support": 9655,
+     "recall": 0.5881,
+     "precision": 0.5713,
+     "f1": 0.5796
+    },
+    "xenobiotic": {
+     "support": 6802,
+     "recall": 0.5157,
+     "precision": 0.3981,
+     "f1": 0.4494
+    }
+   },
+   "confusion_matrix": [
+    [
+     2,
+     1332,
+     1334
+    ],
+    [
+     8,
+     5678,
+     3969
+    ],
+    [
+     365,
+     2929,
+     3508
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "depths_chosen_per_fold": [
+    3,
+    2,
+    8,
+    2,
+    3,
+    4,
+    3,
+    8,
+    2,
+    4
+   ],
+   "what_it_is": "the honest number: in every outer fold the tree depth was chosen by an inner grouped cross-validation over the training types only, so the held-out types took no part in the choice"
+  },
+  "leave_one_type_out_tree": {
+   "accuracy": 0.4662,
+   "balanced_accuracy": 0.3651,
+   "type_level_accuracy": 0.6029,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "natural_aromatic": {
+     "support": 2668,
+     "recall": 0.0011,
+     "precision": 0.0099,
+     "f1": 0.002
+    },
+    "natural_specialized": {
+     "support": 9655,
+     "recall": 0.5152,
+     "precision": 0.5622,
+     "f1": 0.5376
+    },
+    "xenobiotic": {
+     "support": 6802,
+     "recall": 0.5791,
+     "precision": 0.3949,
+     "f1": 0.4696
+    }
+   },
+   "confusion_matrix": [
+    [
+     3,
+     1307,
+     1358
+    ],
+    [
+     4,
+     4974,
+     4677
+    ],
+    [
+     296,
+     2567,
+     3939
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "leave-one-type-out: each type is predicted by a model that never saw a single member of it"
+  },
+  "grouped_l1_logistic": {
+   "accuracy": 0.5777,
+   "balanced_accuracy": 0.4582,
+   "type_level_accuracy": 0.7794,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "natural_aromatic": {
+     "support": 2668,
+     "recall": 0.0525,
+     "precision": 0.1367,
+     "f1": 0.0758
+    },
+    "natural_specialized": {
+     "support": 9655,
+     "recall": 0.6709,
+     "precision": 0.6886,
+     "f1": 0.6797
+    },
+    "xenobiotic": {
+     "support": 6802,
+     "recall": 0.6513,
+     "precision": 0.5095,
+     "f1": 0.5718
+    }
+   },
+   "confusion_matrix": [
+    [
+     140,
+     1000,
+     1528
+    ],
+    [
+     441,
+     6478,
+     2736
+    ],
+    [
+     443,
+     1929,
+     4430
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "penalty": 0.002
+  },
+  "leaked_random_l1_logistic": {
+   "accuracy": 0.6589
+  },
+  "permutation_null": {
+   "reps": 200,
+   "max_depth": 5,
+   "shuffled_at": "type level, because the label is a property of the type",
+   "mean": 0.5278,
+   "sd": 0.0773,
+   "p95": 0.6582,
+   "max": 0.7081,
+   "type_level_mean": 0.5363,
+   "type_level_p95": 0.5882,
+   "type_level_max": 0.6324,
+   "seconds": 170.6
+  },
+  "grouped_vs_null": {
+   "grouped_accuracy": 0.5028,
+   "null_mean": 0.5278,
+   "null_sd": 0.0773,
+   "null_max": 0.7081,
+   "z_against_null": -0.32,
+   "empirical_p": 0.602,
+   "type_level_accuracy": 0.6765,
+   "type_level_null_mean": 0.5363,
+   "type_level_empirical_p": 0.005,
+   "note": "the empirical p is one-sided over the permutation replicates. With 61 types of very unequal size the null spread is wide, which is exactly why an accuracy without a null is not interpretable here"
+  },
+  "tree_rules_depth3_fitted_on_all_data": [
+   {
+    "path": "operon_gene_category=ro_beta AND regulator_family=regulator_unclassified AND operon_gene_category=reductase",
+    "n_entries": 63,
+    "predicted_class": "xenobiotic",
+    "class_share_of_weight": 0.968
+   },
+   {
+    "path": "operon_gene_category=ro_beta AND regulator_family=regulator_unclassified AND NOT operon_gene_category=reductase",
+    "n_entries": 528,
+    "predicted_class": "natural_aromatic",
+    "class_share_of_weight": 0.742
+   },
+   {
+    "path": "operon_gene_category=ro_beta AND NOT regulator_family=regulator_unclassified AND regulator_family=AraC",
+    "n_entries": 274,
+    "predicted_class": "xenobiotic",
+    "class_share_of_weight": 0.602
+   },
+   {
+    "path": "operon_gene_category=ro_beta AND NOT regulator_family=regulator_unclassified AND NOT regulator_family=AraC",
+    "n_entries": 3499,
+    "predicted_class": "xenobiotic",
+    "class_share_of_weight": 0.942
+   },
+   {
+    "path": "NOT operon_gene_category=ro_beta AND operon_size_class=1 AND intergenic_class=unknown",
+    "n_entries": 978,
+    "predicted_class": "natural_specialized",
+    "class_share_of_weight": 0.989
+   },
+   {
+    "path": "NOT operon_gene_category=ro_beta AND operon_size_class=1 AND NOT intergenic_class=unknown",
+    "n_entries": 2614,
+    "predicted_class": "natural_specialized",
+    "class_share_of_weight": 0.609
+   },
+   {
+    "path": "NOT operon_gene_category=ro_beta AND NOT operon_size_class=1 AND replicon_is_plasmid=1",
+    "n_entries": 220,
+    "predicted_class": "xenobiotic",
+    "class_share_of_weight": 0.913
+   },
+   {
+    "path": "NOT operon_gene_category=ro_beta AND NOT operon_size_class=1 AND NOT replicon_is_plasmid=1",
+    "n_entries": 10949,
+    "predicted_class": "natural_specialized",
+    "class_share_of_weight": 0.449
+   }
+  ],
+  "tree_rules_note": "printed from a depth-3 tree fitted on every entry, so it is a description of the data and NOT a performance estimate",
+  "verdict": "per entry: below the majority-class rate (0.503 against 0.505), so the model is worse than always answering with the commonest class; per type: above the null (p = 0.005) but not above the clade oracle (0.676 against 0.721), so what is recovered is deep clade membership",
+  "question": "does the genomic neighbourhood of the gene predict the chemical class of its substrate, for a type never seen in training",
+  "features": {
+   "kind": "genomic context only; no residue of the protein is used",
+   "blocks": {
+    "operon": 36,
+    "regulation": 36,
+    "neighbourhood": 5,
+    "mobility": 1
+   },
+   "sources": [
+    "operon",
+    "operon_gene",
+    "neighbor_component",
+    "ro_etc",
+    "ro_regulation",
+    "replicon.is_plasmid"
+   ]
+  }
+ },
+ "q3_ablations": {
+  "context_without_taxonomy": {
+   "n_features": 78,
+   "grouped_accuracy": 0.5028,
+   "grouped_balanced_accuracy": 0.3881,
+   "type_level_accuracy": 0.6765,
+   "leaked_random_accuracy": 0.6265
+  },
+  "taxonomy_only": {
+   "n_features": 130,
+   "grouped_accuracy": 0.3875,
+   "grouped_balanced_accuracy": 0.3412,
+   "type_level_accuracy": 0.6029,
+   "leaked_random_accuracy": 0.4327
+  },
+  "context_plus_taxonomy": {
+   "n_features": 208,
+   "grouped_accuracy": 0.5859,
+   "grouped_balanced_accuracy": 0.4602,
+   "type_level_accuracy": 0.8088,
+   "leaked_random_accuracy": 0.6925
+  },
+  "note": "taxonomy and neighbourhood are entangled: a lineage carries both its gene repertoire and its habitat. If taxonomy alone reaches what the neighbourhood reaches, then 'the neighbourhood predicts the chemistry' is not established -- what is established is that the lineage does"
+ },
+ "q3_informative_context_features": {
+  "top_features": [
+   {
+    "feature": "operon_gene_category=ro_beta",
+    "tree_gain": 6.99764,
+    "l1_abs_weight": 2.57064,
+    "forest_gain": 2.94648,
+    "rank_tree": 1,
+    "rank_l1": 1,
+    "rank_forest": 1
+   },
+   {
+    "feature": "regulator_family=regulator_unclassified",
+    "tree_gain": 1.06056,
+    "l1_abs_weight": 1.68247,
+    "forest_gain": 0.53537,
+    "rank_tree": 2,
+    "rank_l1": 3,
+    "rank_forest": 6
+   },
+   {
+    "feature": "operon_gene_category=dehydrogenase",
+    "tree_gain": 0.6808,
+    "l1_abs_weight": 0.45178,
+    "forest_gain": 0.65624,
+    "rank_tree": 4,
+    "rank_l1": 18,
+    "rank_forest": 5
+   },
+   {
+    "feature": "upstream_category=other",
+    "tree_gain": 0.33645,
+    "l1_abs_weight": 0.47246,
+    "forest_gain": 0.36539,
+    "rank_tree": 7,
+    "rank_l1": 16,
+    "rank_forest": 8
+   },
+   {
+    "feature": "operon_gene_category=ferredoxin",
+    "tree_gain": 0.31084,
+    "l1_abs_weight": 0.59257,
+    "forest_gain": 0.22255,
+    "rank_tree": 9,
+    "rank_l1": 12,
+    "rank_forest": 14
+   },
+   {
+    "feature": "regulation_architecture=divergent_regulator",
+    "tree_gain": 0.08742,
+    "l1_abs_weight": 1.2441,
+    "forest_gain": 0.25645,
+    "rank_tree": 18,
+    "rank_l1": 5,
+    "rank_forest": 13
+   },
+   {
+    "feature": "intergenic_class=unknown",
+    "tree_gain": 0.59875,
+    "l1_abs_weight": 0.375,
+    "forest_gain": 0.33422,
+    "rank_tree": 5,
+    "rank_l1": 22,
+    "rank_forest": 11
+   },
+   {
+    "feature": "regulator_family=LysR",
+    "tree_gain": 0.1174,
+    "l1_abs_weight": 1.84958,
+    "forest_gain": 0.13086,
+    "rank_tree": 14,
+    "rank_l1": 2,
+    "rank_forest": 22
+   },
+   {
+    "feature": "operon_size_class=7plus",
+    "tree_gain": 0.04994,
+    "l1_abs_weight": 0.62015,
+    "forest_gain": 0.47176,
+    "rank_tree": 24,
+    "rank_l1": 10,
+    "rank_forest": 7
+   },
+   {
+    "feature": "replicon_is_plasmid=1",
+    "tree_gain": 0.31671,
+    "l1_abs_weight": 0.90917,
+    "forest_gain": 0.08866,
+    "rank_tree": 8,
+    "rank_l1": 7,
+    "rank_forest": 29
+   },
+   {
+    "feature": "operon_size_class=1",
+    "tree_gain": 0.52439,
+    "l1_abs_weight": 0.21425,
+    "forest_gain": 0.95089,
+    "rank_tree": 6,
+    "rank_l1": 37,
+    "rank_forest": 2
+   },
+   {
+    "feature": "operon_gene_category=reductase",
+    "tree_gain": 0.83224,
+    "l1_abs_weight": 0.25221,
+    "forest_gain": 0.36452,
+    "rank_tree": 3,
+    "rank_l1": 34,
+    "rank_forest": 9
+   },
+   {
+    "feature": "window_component=alpha_other",
+    "tree_gain": 0.11318,
+    "l1_abs_weight": 0.56269,
+    "forest_gain": 0.1586,
+    "rank_tree": 15,
+    "rank_l1": 14,
+    "rank_forest": 19
+   },
+   {
+    "feature": "operon_gene_category=hydrolase",
+    "tree_gain": 0.08742,
+    "l1_abs_weight": 0.61304,
+    "forest_gain": 0.15742,
+    "rank_tree": 19,
+    "rank_l1": 11,
+    "rank_forest": 20
+   },
+   {
+    "feature": "regulator_family=AraC",
+    "tree_gain": 0.20372,
+    "l1_abs_weight": 1.03103,
+    "forest_gain": 0.07345,
+    "rank_tree": 11,
+    "rank_l1": 6,
+    "rank_forest": 34
+   },
+   {
+    "feature": "operon_gene_category=ring_cleavage",
+    "tree_gain": 0.01425,
+    "l1_abs_weight": 1.45595,
+    "forest_gain": 0.10785,
+    "rank_tree": 31,
+    "rank_l1": 4,
+    "rank_forest": 25
+   },
+   {
+    "feature": "operon_size_class=2to3",
+    "tree_gain": 0.01652,
+    "l1_abs_weight": 0.46527,
+    "forest_gain": 0.19282,
+    "rank_tree": 30,
+    "rank_l1": 17,
+    "rank_forest": 15
+   },
+   {
+    "feature": "regulator_family=none",
+    "tree_gain": 0.12974,
+    "l1_abs_weight": 0.23485,
+    "forest_gain": 0.18808,
+    "rank_tree": 13,
+    "rank_l1": 36,
+    "rank_forest": 16
+   },
+   {
+    "feature": "regulator_family=TetR",
+    "tree_gain": 0.07605,
+    "l1_abs_weight": 0.83506,
+    "forest_gain": 0.07284,
+    "rank_tree": 21,
+    "rank_l1": 8,
+    "rank_forest": 36
+   },
+   {
+    "feature": "etc_oligomer=alpha3beta3",
+    "tree_gain": 0.0638,
+    "l1_abs_weight": 0.04149,
+    "forest_gain": 0.88913,
+    "rank_tree": 22,
+    "rank_l1": 49,
+    "rank_forest": 3
+   },
+   {
+    "feature": "regulation_architecture=codirectional_regulator",
+    "tree_gain": 0.22211,
+    "l1_abs_weight": 0.18652,
+    "forest_gain": 0.09335,
+    "rank_tree": 10,
+    "rank_l1": 39,
+    "rank_forest": 27
+   },
+   {
+    "feature": "operon_gene_category=other",
+    "tree_gain": 0.10778,
+    "l1_abs_weight": 0.1401,
+    "forest_gain": 0.15371,
+    "rank_tree": 16,
+    "rank_l1": 40,
+    "rank_forest": 21
+   },
+   {
+    "feature": "operon_gene_category=transposon",
+    "tree_gain": 0.05457,
+    "l1_abs_weight": 0.64678,
+    "forest_gain": 0.04425,
+    "rank_tree": 23,
+    "rank_l1": 9,
+    "rank_forest": 47
+   },
+   {
+    "feature": "upstream_category=regulator",
+    "tree_gain": 0.02116,
+    "l1_abs_weight": 0.23485,
+    "forest_gain": 0.17678,
+    "rank_tree": 28,
+    "rank_l1": 35,
+    "rank_forest": 17
+   },
+   {
+    "feature": "nearby_ferredoxin=1",
+    "tree_gain": 0.18417,
+    "l1_abs_weight": 0.26831,
+    "forest_gain": 0.0715,
+    "rank_tree": 12,
+    "rank_l1": 31,
+    "rank_forest": 38
+   }
+  ],
+  "l1_nonzero_features": 52,
+  "l1_total_features": 78,
+  "method": "features ranked by the sum of three ranks: mean split gain of the depth-limited tree over the grouped training folds, absolute L1 logistic weight summed over classes, and mean split gain of a random forest. The forest is fitted ONLY to rank features; every accuracy in this file comes from the tree or the L1 model, both of which can be read"
+ },
+ "q4a_positive_control_ro_group_from_sequence": {
+  "n_entries": 19125,
+  "n_types": 68,
+  "n_features": 1150,
+  "classes": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7"
+  ],
+  "class_entry_counts": {
+   "1": 5104,
+   "2": 759,
+   "3": 3309,
+   "4": 3784,
+   "5": 5545,
+   "6": 617,
+   "7": 7
+  },
+  "class_type_counts": {
+   "2": 14,
+   "4": 10,
+   "3": 16,
+   "1": 16,
+   "5": 8,
+   "7": 1,
+   "6": 3
+  },
+  "tree_max_depth": 5,
+  "grouped_tree": {
+   "accuracy": 0.5994,
+   "balanced_accuracy": 0.4393,
+   "type_level_accuracy": 0.6324,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "1": {
+     "support": 5104,
+     "recall": 0.9269,
+     "precision": 0.8199,
+     "f1": 0.8701
+    },
+    "2": {
+     "support": 759,
+     "recall": 0.6667,
+     "precision": 0.1357,
+     "f1": 0.2254
+    },
+    "3": {
+     "support": 3309,
+     "recall": 0.7785,
+     "precision": 0.5919,
+     "f1": 0.6725
+    },
+    "4": {
+     "support": 3784,
+     "recall": 0.1401,
+     "precision": 0.442,
+     "f1": 0.2127
+    },
+    "5": {
+     "support": 5545,
+     "recall": 0.5627,
+     "precision": 0.8021,
+     "f1": 0.6614
+    },
+    "6": {
+     "support": 617,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    },
+    "7": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     4731,
+     3,
+     86,
+     108,
+     8,
+     168,
+     0
+    ],
+    [
+     0,
+     506,
+     88,
+     79,
+     86,
+     0,
+     0
+    ],
+    [
+     101,
+     224,
+     2576,
+     297,
+     99,
+     12,
+     0
+    ],
+    [
+     301,
+     2346,
+     26,
+     530,
+     577,
+     4,
+     0
+    ],
+    [
+     68,
+     643,
+     1576,
+     138,
+     3120,
+     0,
+     0
+    ],
+    [
+     569,
+     1,
+     0,
+     47,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     7,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "GroupKFold, 10 entry-balanced folds, group = ro.ro_cluster"
+  },
+  "leaked_random_tree": {
+   "accuracy": 0.7742,
+   "balanced_accuracy": 0.666,
+   "type_level_accuracy": 0.9118,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "1": {
+     "support": 5104,
+     "recall": 0.973,
+     "precision": 0.9236,
+     "f1": 0.9476
+    },
+    "2": {
+     "support": 759,
+     "recall": 0.8195,
+     "precision": 0.193,
+     "f1": 0.3124
+    },
+    "3": {
+     "support": 3309,
+     "recall": 0.851,
+     "precision": 0.8806,
+     "f1": 0.8655
+    },
+    "4": {
+     "support": 3784,
+     "recall": 0.7104,
+     "precision": 0.7814,
+     "f1": 0.7442
+    },
+    "5": {
+     "support": 5545,
+     "recall": 0.5901,
+     "precision": 0.9695,
+     "f1": 0.7336
+    },
+    "6": {
+     "support": 617,
+     "recall": 0.718,
+     "precision": 0.8652,
+     "f1": 0.7848
+    },
+    "7": {
+     "support": 7,
+     "recall": 0.0,
+     "precision": 0.0,
+     "f1": 0.0
+    }
+   },
+   "confusion_matrix": [
+    [
+     4966,
+     11,
+     11,
+     44,
+     3,
+     69,
+     0
+    ],
+    [
+     0,
+     622,
+     80,
+     57,
+     0,
+     0,
+     0
+    ],
+    [
+     34,
+     282,
+     2816,
+     92,
+     85,
+     0,
+     0
+    ],
+    [
+     137,
+     899,
+     46,
+     2688,
+     14,
+     0,
+     0
+    ],
+    [
+     68,
+     1402,
+     245,
+     558,
+     3272,
+     0,
+     0
+    ],
+    [
+     172,
+     1,
+     0,
+     0,
+     1,
+     443,
+     0
+    ],
+    [
+     0,
+     6,
+     0,
+     1,
+     0,
+     0,
+     0
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "random 10-fold split over entries; INVALID here because near-identical sequences of the same type land on both sides and the label is a property of the type"
+  },
+  "leakage_gap": {
+   "grouped_accuracy": 0.5994,
+   "leaked_accuracy": 0.7742,
+   "absolute_gap": 0.1748,
+   "leaked_over_grouped": 1.292
+  },
+  "baselines": {
+   "global_majority_class": "5",
+   "global_majority_rate": 0.2899,
+   "type_level_majority_rate": 0.2353,
+   "grouped_train_majority_accuracy": 0.029,
+   "note": "the per-fold train-majority baseline can fall far below the global majority rate: holding out a whole type removes a large block of one class, so the training majority changes from fold to fold. The global rate is the fair reading of 'always answer the commonest class'; the type-level rate is its counterpart when every type counts once",
+   "clade_oracle": {
+    "accuracy": 0.9996,
+    "balanced_accuracy": 0.8571,
+    "type_level_accuracy": 0.9853,
+    "n_types": 68,
+    "n_entries": 19125,
+    "per_class": {
+     "1": {
+      "support": 5104,
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+     },
+     "2": {
+      "support": 759,
+      "recall": 1.0,
+      "precision": 0.9909,
+      "f1": 0.9954
+     },
+     "3": {
+      "support": 3309,
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+     },
+     "4": {
+      "support": 3784,
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+     },
+     "5": {
+      "support": 5545,
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+     },
+     "6": {
+      "support": 617,
+      "recall": 1.0,
+      "precision": 1.0,
+      "f1": 1.0
+     },
+     "7": {
+      "support": 7,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+     }
+    },
+    "confusion_matrix": [
+     [
+      5104,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      759,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      3309,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      3784,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      5545,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      617,
+      0
+     ],
+     [
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    ],
+    "confusion_rows_are_true_classes": true,
+    "what_it_is": "predict the majority label of the training TYPES that share the HMM group (ro.ro_group) of the test entry. ro_group comes from sequence similarity, so it is available for a new protein; if the model does not beat this, the alignment columns add nothing beyond deep clade membership"
+   }
+  },
+  "sensitivity_unweighted": {
+   "accuracy": 0.6281,
+   "note": "entries weighted equally instead of 1/type-size, so the largest types dominate training"
+  },
+  "permutation_null": {
+   "reps": 50,
+   "max_depth": 5,
+   "shuffled_at": "type level, because the label is a property of the type",
+   "mean": 0.1887,
+   "sd": 0.0824,
+   "p95": 0.3287,
+   "max": 0.3782,
+   "type_level_mean": 0.1797,
+   "type_level_p95": 0.2728,
+   "type_level_max": 0.2941,
+   "seconds": 179.0
+  },
+  "grouped_vs_null": {
+   "grouped_accuracy": 0.5994,
+   "null_mean": 0.1887,
+   "null_sd": 0.0824,
+   "null_max": 0.3782,
+   "z_against_null": 4.98,
+   "empirical_p": 0.0196,
+   "type_level_accuracy": 0.6324,
+   "type_level_null_mean": 0.1797,
+   "type_level_empirical_p": 0.0196,
+   "note": "the empirical p is one-sided over the permutation replicates. With 61 types of very unequal size the null spread is wide, which is exactly why an accuracy without a null is not interpretable here"
+  },
+  "tree_rules_depth3_fitted_on_all_data": [
+   {
+    "path": "col278=K AND col268=P AND col101=R",
+    "n_entries": 119,
+    "predicted_class": "2",
+    "class_share_of_weight": 0.707
+   },
+   {
+    "path": "col278=K AND col268=P AND NOT col101=R",
+    "n_entries": 528,
+    "predicted_class": "3",
+    "class_share_of_weight": 0.979
+   },
+   {
+    "path": "col278=K AND NOT col268=P AND col434=N",
+    "n_entries": 962,
+    "predicted_class": "2",
+    "class_share_of_weight": 0.806
+   },
+   {
+    "path": "col278=K AND NOT col268=P AND NOT col434=N",
+    "n_entries": 8887,
+    "predicted_class": "4",
+    "class_share_of_weight": 0.345
+   },
+   {
+    "path": "NOT col278=K AND col121=G AND col202=Y",
+    "n_entries": 2054,
+    "predicted_class": "3",
+    "class_share_of_weight": 1.0
+   },
+   {
+    "path": "NOT col278=K AND col121=G AND NOT col202=Y",
+    "n_entries": 263,
+    "predicted_class": "1",
+    "class_share_of_weight": 0.675
+   },
+   {
+    "path": "NOT col278=K AND NOT col121=G AND col467=P",
+    "n_entries": 503,
+    "predicted_class": "6",
+    "class_share_of_weight": 0.826
+   },
+   {
+    "path": "NOT col278=K AND NOT col121=G AND NOT col467=P",
+    "n_entries": 5809,
+    "predicted_class": "1",
+    "class_share_of_weight": 0.817
+   }
+  ],
+  "tree_rules_note": "printed from a depth-3 tree fitted on every entry, so it is a description of the data and NOT a performance estimate",
+  "verdict": "per entry: above the null (p = 0.0196) but not above the clade oracle (0.599 against 1.000), so what is recovered is deep clade membership; per type: above the null (p = 0.0196) but not above the clade oracle (0.632 against 0.985), so what is recovered is deep clade membership",
+  "why_this_control": "ro_group is the coarse HMM group of the type, so it is itself derived from sequence similarity. A model that recovers it across held-out types proves the grouped scheme is not blind, so a low accuracy elsewhere says something about the biology and not about the method. It is NOT an independent biological result, and its clade-oracle baseline is 1.0 by construction"
+ },
+ "q4b_modality_comparison": {
+  "reaction_class_from_sequence": {
+   "grouped_accuracy": 0.3432,
+   "grouped_balanced_accuracy": 0.1843,
+   "type_level_accuracy": 0.4559,
+   "global_majority_rate": 0.2196,
+   "type_level_majority_rate": 0.3824,
+   "clade_oracle_accuracy": 0.216,
+   "clade_oracle_type_level": 0.4118,
+   "leaked_random_accuracy": 0.549
+  },
+  "reaction_class_from_context": {
+   "grouped_accuracy": 0.2852,
+   "grouped_balanced_accuracy": 0.1262,
+   "type_level_accuracy": 0.4853,
+   "global_majority_rate": 0.2196,
+   "type_level_majority_rate": 0.3824,
+   "clade_oracle_accuracy": 0.216,
+   "clade_oracle_type_level": 0.4118,
+   "leaked_random_accuracy": 0.3701
+  },
+  "substrate_class_from_sequence": {
+   "grouped_accuracy": 0.5739,
+   "grouped_balanced_accuracy": 0.4503,
+   "type_level_accuracy": 0.75,
+   "global_majority_rate": 0.5048,
+   "type_level_majority_rate": 0.5735,
+   "clade_oracle_accuracy": 0.5985,
+   "clade_oracle_type_level": 0.7206,
+   "leaked_random_accuracy": 0.7639
+  },
+  "substrate_class_from_context": {
+   "grouped_accuracy": 0.5028,
+   "grouped_balanced_accuracy": 0.3881,
+   "type_level_accuracy": 0.6765,
+   "global_majority_rate": 0.5048,
+   "type_level_majority_rate": 0.5735,
+   "clade_oracle_accuracy": 0.5985,
+   "clade_oracle_type_level": 0.7206,
+   "leaked_random_accuracy": 0.6265
+  },
+  "note": "the same folds, the same model and the same baselines in every cell, so the four rows can be compared with one another"
+ },
+ "q4c_beta_subunit_from_sequence": {
+  "n_entries": 19125,
+  "n_types": 68,
+  "n_features": 1150,
+  "classes": [
+   "alpha3",
+   "alpha3beta3"
+  ],
+  "class_entry_counts": {
+   "alpha3": 16561,
+   "alpha3beta3": 2564
+  },
+  "class_type_counts": {
+   "alpha3beta3": 10,
+   "alpha3": 58
+  },
+  "tree_max_depth": 5,
+  "grouped_tree": {
+   "accuracy": 0.8305,
+   "balanced_accuracy": 0.604,
+   "type_level_accuracy": 0.75,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "alpha3": {
+     "support": 16561,
+     "recall": 0.9135,
+     "precision": 0.8932,
+     "f1": 0.9032
+    },
+    "alpha3beta3": {
+     "support": 2564,
+     "recall": 0.2945,
+     "precision": 0.3451,
+     "f1": 0.3178
+    }
+   },
+   "confusion_matrix": [
+    [
+     15128,
+     1433
+    ],
+    [
+     1809,
+     755
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "GroupKFold, 10 entry-balanced folds, group = ro.ro_cluster"
+  },
+  "leaked_random_tree": {
+   "accuracy": 0.8863,
+   "balanced_accuracy": 0.8788,
+   "type_level_accuracy": 0.7647,
+   "n_types": 68,
+   "n_entries": 19125,
+   "per_class": {
+    "alpha3": {
+     "support": 16561,
+     "recall": 0.889,
+     "precision": 0.9776,
+     "f1": 0.9312
+    },
+    "alpha3beta3": {
+     "support": 2564,
+     "recall": 0.8686,
+     "precision": 0.5478,
+     "f1": 0.6719
+    }
+   },
+   "confusion_matrix": [
+    [
+     14723,
+     1838
+    ],
+    [
+     337,
+     2227
+    ]
+   ],
+   "confusion_rows_are_true_classes": true,
+   "scheme": "random 10-fold split over entries; INVALID here because near-identical sequences of the same type land on both sides and the label is a property of the type"
+  },
+  "leakage_gap": {
+   "grouped_accuracy": 0.8305,
+   "leaked_accuracy": 0.8863,
+   "absolute_gap": 0.0558,
+   "leaked_over_grouped": 1.067
+  },
+  "baselines": {
+   "global_majority_class": "alpha3",
+   "global_majority_rate": 0.8659,
+   "type_level_majority_rate": 0.8529,
+   "grouped_train_majority_accuracy": 0.8659,
+   "note": "the per-fold train-majority baseline can fall far below the global majority rate: holding out a whole type removes a large block of one class, so the training majority changes from fold to fold. The global rate is the fair reading of 'always answer the commonest class'; the type-level rate is its counterpart when every type counts once",
+   "clade_oracle": {
+    "accuracy": 0.8621,
+    "balanced_accuracy": 0.5123,
+    "type_level_accuracy": 0.7941,
+    "n_types": 68,
+    "n_entries": 19125,
+    "per_class": {
+     "alpha3": {
+      "support": 16561,
+      "recall": 0.9902,
+      "precision": 0.8688,
+      "f1": 0.9256
+     },
+     "alpha3beta3": {
+      "support": 2564,
+      "recall": 0.0343,
+      "precision": 0.352,
+      "f1": 0.0625
+     }
+    },
+    "confusion_matrix": [
+     [
+      16399,
+      162
+     ],
+     [
+      2476,
+      88
+     ]
+    ],
+    "confusion_rows_are_true_classes": true,
+    "what_it_is": "predict the majority label of the training TYPES that share the HMM group (ro.ro_group) of the test entry. ro_group comes from sequence similarity, so it is available for a new protein; if the model does not beat this, the alignment columns add nothing beyond deep clade membership"
+   }
+  },
+  "sensitivity_unweighted": {
+   "accuracy": 0.8777,
+   "note": "entries weighted equally instead of 1/type-size, so the largest types dominate training"
+  },
+  "permutation_null": {
+   "reps": 50,
+   "max_depth": 5,
+   "shuffled_at": "entry level, because this label varies within a type",
+   "mean": 0.8604,
+   "sd": 0.0045,
+   "p95": 0.8645,
+   "max": 0.8652,
+   "type_level_mean": 0.8594,
+   "type_level_p95": 0.9346,
+   "type_level_max": 0.9559,
+   "seconds": 180.1
+  },
+  "grouped_vs_null": {
+   "grouped_accuracy": 0.8305,
+   "null_mean": 0.8604,
+   "null_sd": 0.0045,
+   "null_max": 0.8652,
+   "z_against_null": -6.64,
+   "empirical_p": 1.0,
+   "type_level_accuracy": 0.75,
+   "type_level_null_mean": 0.8594,
+   "type_level_empirical_p": 0.9412,
+   "note": "the empirical p is one-sided over the permutation replicates. With 61 types of very unequal size the null spread is wide, which is exactly why an accuracy without a null is not interpretable here"
+  },
+  "tree_rules_depth3_fitted_on_all_data": [
+   {
+    "path": "col478=Y AND col203=E AND col287=F",
+    "n_entries": 6,
+    "predicted_class": "alpha3beta3",
+    "class_share_of_weight": 0.983
+   },
+   {
+    "path": "col478=Y AND col203=E AND NOT col287=F",
+    "n_entries": 573,
+    "predicted_class": "alpha3beta3",
+    "class_share_of_weight": 0.658
+   },
+   {
+    "path": "col478=Y AND NOT col203=E AND col280=S",
+    "n_entries": 5,
+    "predicted_class": "alpha3",
+    "class_share_of_weight": 0.958
+   },
+   {
+    "path": "col478=Y AND NOT col203=E AND NOT col280=S",
+    "n_entries": 1271,
+    "predicted_class": "alpha3beta3",
+    "class_share_of_weight": 0.517
+   },
+   {
+    "path": "NOT col478=Y AND col383=R AND col466=-",
+    "n_entries": 960,
+    "predicted_class": "alpha3",
+    "class_share_of_weight": 0.944
+   },
+   {
+    "path": "NOT col478=Y AND col383=R AND NOT col466=-",
+    "n_entries": 2642,
+    "predicted_class": "alpha3",
+    "class_share_of_weight": 0.526
+   },
+   {
+    "path": "NOT col478=Y AND NOT col383=R AND col478=W",
+    "n_entries": 227,
+    "predicted_class": "alpha3beta3",
+    "class_share_of_weight": 0.602
+   },
+   {
+    "path": "NOT col478=Y AND NOT col383=R AND NOT col478=W",
+    "n_entries": 13441,
+    "predicted_class": "alpha3",
+    "class_share_of_weight": 0.992
+   }
+  ],
+  "tree_rules_note": "printed from a depth-3 tree fitted on every entry, so it is a description of the data and NOT a performance estimate",
+  "verdict": "per entry: below the majority-class rate (0.831 against 0.866), so the model is worse than always answering with the commonest class; per type: below the majority-class rate (0.750 against 0.853), so the model is worse than always answering with the commonest class",
+  "why_this_question": "every other label in this file is a property of the type, so the effective sample size is the number of types. Whether a beta subunit sits next to the gene varies WITHIN a type (mean within-type entropy 0.27 bit against 0.76 bit overall), so this is the one question where the individual entries carry information of their own. It also has a structural meaning: alpha3 against alpha3beta3 oligomer architecture",
+  "limit": "the label comes from the annotation of the neighbouring gene, so a missing beta may mean a missing annotation rather than a missing subunit. The permutation null for this question shuffles at ENTRY level, because the label is not a property of the type"
+ },
+ "summary": {
+  "q1_reaction_class_from_sequence": {
+   "grouped_accuracy": 0.3432,
+   "grouped_type_level_accuracy": 0.4559,
+   "grouped_balanced_accuracy": 0.1843,
+   "leaked_random_accuracy": 0.549,
+   "leaked_over_grouped": 1.6,
+   "majority_rate": 0.2196,
+   "type_level_majority_rate": 0.3824,
+   "clade_oracle_accuracy": 0.216,
+   "clade_oracle_type_level": 0.4118,
+   "null_mean": 0.3168,
+   "null_sd": 0.0814,
+   "null_type_level_mean": 0.3268,
+   "nn_grouped": 0.382,
+   "nn_leaked_random": 0.9333,
+   "verdict": "per entry: inside the label-permutation null (one-sided p = 0.3582), so no signal is demonstrated; per type: above the null (p = 0.005) and above the clade oracle (0.456 against 0.412), so the features add something clade membership alone does not give"
+  },
+  "q3_substrate_class_from_context": {
+   "grouped_accuracy": 0.5028,
+   "grouped_type_level_accuracy": 0.6765,
+   "grouped_balanced_accuracy": 0.3881,
+   "leaked_random_accuracy": 0.6265,
+   "leaked_over_grouped": 1.246,
+   "majority_rate": 0.5048,
+   "type_level_majority_rate": 0.5735,
+   "clade_oracle_accuracy": 0.5985,
+   "clade_oracle_type_level": 0.7206,
+   "null_mean": 0.5278,
+   "null_sd": 0.0773,
+   "null_type_level_mean": 0.5363,
+   "nn_grouped": 0.5621,
+   "nn_leaked_random": 0.8075,
+   "verdict": "per entry: below the majority-class rate (0.503 against 0.505), so the model is worse than always answering with the commonest class; per type: above the null (p = 0.005) but not above the clade oracle (0.676 against 0.721), so what is recovered is deep clade membership"
+  },
+  "q4a_positive_control_ro_group_from_sequence": {
+   "grouped_accuracy": 0.5994,
+   "grouped_type_level_accuracy": 0.6324,
+   "grouped_balanced_accuracy": 0.4393,
+   "leaked_random_accuracy": 0.7742,
+   "leaked_over_grouped": 1.292,
+   "majority_rate": 0.2899,
+   "type_level_majority_rate": 0.2353,
+   "clade_oracle_accuracy": 0.9996,
+   "clade_oracle_type_level": 0.9853,
+   "null_mean": 0.1887,
+   "null_sd": 0.0824,
+   "null_type_level_mean": 0.1797,
+   "nn_grouped": null,
+   "nn_leaked_random": null,
+   "verdict": "per entry: above the null (p = 0.0196) but not above the clade oracle (0.599 against 1.000), so what is recovered is deep clade membership; per type: above the null (p = 0.0196) but not above the clade oracle (0.632 against 0.985), so what is recovered is deep clade membership"
+  },
+  "q4c_beta_subunit_from_sequence": {
+   "grouped_accuracy": 0.8305,
+   "grouped_type_level_accuracy": 0.75,
+   "grouped_balanced_accuracy": 0.604,
+   "leaked_random_accuracy": 0.8863,
+   "leaked_over_grouped": 1.067,
+   "majority_rate": 0.8659,
+   "type_level_majority_rate": 0.8529,
+   "clade_oracle_accuracy": 0.8621,
+   "clade_oracle_type_level": 0.7941,
+   "null_mean": 0.8604,
+   "null_sd": 0.0045,
+   "null_type_level_mean": 0.8594,
+   "nn_grouped": null,
+   "nn_leaked_random": null,
+   "verdict": "per entry: below the majority-class rate (0.831 against 0.866), so the model is worse than always answering with the commonest class; per type: below the majority-class rate (0.750 against 0.853), so the model is worse than always answering with the commonest class"
+  },
+  "note": "the leaked_over_grouped column is the point of the whole file: it is above 1.3 wherever the label is a property of the type and essentially 1.0 for the one label that varies within a type (the beta subunit). That contrast is the leakage mechanism caught in the act -- a random split helps only when the test entry has a near-identical twin of the same type in training"
+ },
+ "method": {
+  "why_this_module_exists": "the data set is large enough to invite a sequence-to-reaction classifier, and a careless one would report an accuracy close to 1.0 that means nothing",
+  "leakage": "entries are not independent. 11,422 entries hold 10,019 distinct sequences, and the reaction class and the substrate class are curated per TYPE, not per entry. Under a random split a model recognises the type of a test sequence from its near-identical training twins and reads the label off it",
+  "how_it_was_avoided": "every headline number comes from grouped cross-validation with the group being ro.ro_cluster: GroupKFold with 10 entry-balanced folds plus leave-one-type-out. The random-split number sits next to it and is labelled invalid, because the size of the gap is itself a result",
+  "baselines": "four of them: the global majority class, the type-level majority class, the per-fold training majority, and a clade oracle that answers with the majority label of the training types sharing the HMM group of the test entry. The clade oracle is the demanding one, because it asks whether residue identities add anything to deep clade membership",
+  "weights": "each entry carries weight 1/(size of its type) so that a type with 1,345 members and a type with 2 members have the same say; the unweighted variant is reported as a sensitivity",
+  "models": "a depth-limited CART and an L1-penalised multinomial logistic regression, both written here with numpy because scikit-learn is not installed in this project environment. A random forest is fitted ONLY to rank features and never used for an accuracy",
+  "hyperparameters": "tree depth was chosen inside each training fold by a nested grouped cross-validation, so the reported accuracy is not inflated by tuning on held-out types. The full depth sweep is also given, but its best row is not an achieved accuracy",
+  "effective_sample_size": "61 types, not 11,422 entries. For a 7-class problem this is small: no claim about the small classes can be supported",
+  "primary_metric": "two numbers everywhere: accuracy over entries, and type-level accuracy where each type is scored once by the majority vote of its members. The second is the honest one",
+  "seed": 20261006
+ },
+ "cannot_be_supported": [
+  "no claim about a reaction class represented by 2 or 3 types (C_N_cleavage, O_demethylation, angular_dioxygenation): under the grouped scheme those classes have one or two test folds in total",
+  "no claim that the columns reported here are substrate-binding pocket residues. There is no structure in this database; what was measured is which alignment columns separate the classes",
+  "no claim that a residue identity explains the chemistry rather than marking the clade. Reaction class and substrate class are both strongly structured by HMM group, so a sequence model can reach its accuracy by recognising the clade alone; the clade-oracle baseline is there precisely to make that visible",
+  "no causal claim in either direction for question 3. Operon composition and substrate class are both properties of a lineage with a history, and a shared genome is not evidence of a shared pathway",
+  "no claim that the curated labels are correct. Most entries sit in the distant or novel evidence tiers, where the reaction is unknown and was inherited from the type. This module treats the label as given",
+  "no usable sequence-to-substrate predictor for a new protein. The grouped accuracies here are far from a decision rule, and the reference-pair calibration already showed that no global identity threshold guarantees the same substrate"
+ ],
+ "inputs": {
+  "db": "/home/lin-bio/RieskeDB/pro-sim-blast/roar.sqlite",
+  "alignment": "/home/lin-bio/RieskeDB/pro-sim-blast/genomic_context/cand_aln.sto",
+  "chemistry": "/home/lin-bio/RieskeDB/pro-sim-blast/chemistry.csv",
+  "ecology": "/home/lin-bio/RieskeDB/pro-sim-blast/cluster_ecology.csv",
+  "sdp_positions": "/home/lin-bio/RieskeDB/pro-sim-blast/analysis_out/sdp_positions.csv",
+  "motif_stats": "analysis_out/motif_stats.json",
+  "entries": 19125,
+  "types": 68,
+  "hmm_groups": 7,
+  "alignment_match_columns": 603,
+  "sequence_features": 1150,
+  "context_features": 78,
+  "taxonomy_features": 130
+ },
+ "runtime_seconds": 2197.2
+}

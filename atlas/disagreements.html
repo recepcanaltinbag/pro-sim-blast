@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disagreements · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class=""
+     >Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class=""
+     >Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/disagreements.html" class="on"
+     aria-current="page">Disagreements</a>
+  
+  <a href="/pro-sim-blast/atlas/predictions.html" class=""
+     >Predictions</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class=""
+     >Data quality</a>
+  
+  
+</nav>
+
+
+<h1>Where this database disagrees with the literature</h1>
+<p class="lede">A database that only reproduces what is already published has not
+earned its keep. These are the places where what is measured here does not match a
+published claim — including 2 claims this project
+made earlier and has had to withdraw. Every number below is read from the analysis file
+that produced it, not retyped here, so it cannot drift away from the page that shows the
+working.</p>
+
+<div class="caveat caveat--warn">
+  <b>A disagreement is not a refutation.</b> Everything on this page is a measurement
+  over sequences and genomic context. That kind of measurement can show that a pattern
+  does not generalise; it cannot overturn an experiment. A residue can be functionally
+  essential and almost invariant; two proteins can be adjacent in a genome without ever
+  interacting. Each entry therefore carries an explicit statement of what its test does
+  <b>not</b> show, and that line is as much the result as the headline is.
+</div>
+
+
+<section class="stat statcard" id="ferredoxin_class_residue">
+<h2>1 · The residue at the NDO-Fd A50 / CDO-Fd W48 column is class-dependent: tryptophan predominates in Class IIB ...</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    <span class="verdict verdict--weak">contradicted</span>
+    
+    <span class="note"><a href="https://doi.org/10.64898/2026.04.03.713453">10.64898/2026.04.03.713453</a></span>
+    
+  </div>
+  <p class="plain">Alanine holds this column in 81 % of observations across the whole family, and in 87 % of the Class IIB-like set where tryptophan was said to predominate. Tryptophan is at 2.9 % overall.</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>The residue at the NDO-Fd A50 / CDO-Fd W48 column is class-dependent: tryptophan predominates in Class IIB ferredoxins, alanine in Class III, and tyrosine in certain plant-type Class IIA ferredoxins.</p>
+<p class="note">— Miao H, Oerlemanns R, Hagedoorn P-L, Schmidt S. Decoding and Reprogramming Redox Partner Specificity in Rieske Oxygenases for Enhanced Catalytic Activity. bioRxiv 2026, <a href="https://doi.org/10.64898/2026.04.03.713453">doi:10.64898/2026.04.03.713453</a>.
+<br>Established by: mutagenesis and chimera construction on two ferredoxins, plus a reading of previously published alignments.</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>the equivalent column read in 3,029 ferredoxins (1,793 distinct sequences) out of 7,022 in the database. The rest were discarded, almost all of them because the four Rieske ligands did not align to the chemically identical residue -- the column sits three residues after one of those ligands, so without that anchor the register is noise.</p>
+
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Proxy class</th><th class="num">Tryptophan</th><th class="num">Alanine</th></tr></thead>
+<tbody>
+<tr><td>Class IIB-like — where tryptophan was said to predominate</td>
+  <td class="num">5.7 %</td>
+  <td class="num"><b>87.5 %</b></td></tr>
+<tr><td>Class III-like — where alanine was said to predominate</td>
+  <td class="num">0.0 %</td>
+  <td class="num"><b>88.3 %</b></td></tr>
+</tbody></table></div>
+<p class="note">Alanine dominates both, so it marks nothing. The positive controls rule out a
+broken alignment: of the ferredoxins closest to CDO-Fd,
+21 of 21
+read tryptophan, and of those closest to NDO-Fd, all read alanine — the method recovers the
+authors' own two observations exactly.</p>
+
+<h3>The refinement, which is the part worth having</h3>
+<p class="plain">the residue is strongly structured, but by ENZYME TYPE, not by class. Cramér&rsquo;s V against the enzyme type is
+<b>0.59</b> against
+0.18 for the class proxy, a
+3.37-fold larger effect. Tryptophan is real, but it marks a
+narrow clade rather than a class — and a two-protein sample drawn from inside that clade
+cannot tell the two apart, which is exactly how the generalisation fails.</p>
+
+
+
+
+<h3>What this does not show</h3>
+<p class="plain">that the position does not matter. The authors&#39; mutagenesis shows it does, and a residue can be functionally critical while being almost invariant across a family - indeed that is the usual case. What the distribution contradicts is only the claim that the IDENTITY of this residue tracks RO class</p>
+<p class="note"><b>What would settle it:</b> an agreed assignment of Batie classes to these enzymes. This database assigns none, and its own groups are built from alpha subunit sequence rather than electron-chain architecture, so the class arm of the claim is answered here only through a proxy that the output states in full.<br>
+Computed in <code>ferredoxin_residue.json</code>.</p>
+</section>
+
+<section class="stat statcard" id="ferredoxin_more_selective">
+<h2>2 · The reductase shows moderate promiscuity in redox partner compatibility, while interactions between ferredo...</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    <span class="verdict verdict--weak">not supported</span>
+    
+    <span class="note"><a href="https://doi.org/10.1021/acs.biochem.5c00369">10.1021/acs.biochem.5c00369</a></span>
+    
+  </div>
+  <p class="plain">If the ferredoxin coupling were the more selective of the two, the ferredoxin should track the enzyme type more tightly than the reductase does. It does not: Cramér&#39;s V is 0.38 for the ferredoxin against 0.39 for the reductase, a difference of 0.01 in the opposite direction to the claim.</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>The reductase shows moderate promiscuity in redox partner compatibility, while interactions between ferredoxin and oxygenase are typically more selective.</p>
+<p class="note">— Miao H, Schmidt S. Rieske Oxygenases: Powerful Models for Understanding Nature&#39;s Orchestration of Electron Transfer and Oxidative Chemistry. Biochemistry 2025;64:3801-3813, <a href="https://doi.org/10.1021/acs.biochem.5c00369">doi:10.1021/acs.biochem.5c00369</a>.
+<br>Established by: structural studies of individual complexes and reconstitution experiments with non-native partners.</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>how tightly each partner&#39;s identity tracks the enzyme type across the whole database, measured the same way for both and against the same kind of shuffled null.</p>
+
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Partner</th><th class="num">Tracks the enzyme type at</th>
+<th class="num">Shuffled null</th><th class="num">Observations</th></tr></thead>
+<tbody>
+<tr><td>ferredoxin — predicted to be the more selective</td>
+  <td class="num">0.38</td>
+  <td class="num">0.06</td>
+  <td class="num">18,029</td></tr>
+<tr><td>reductase — predicted to be the more promiscuous</td>
+  <td class="num">0.39</td>
+  <td class="num">0.06</td>
+  <td class="num">18,077</td></tr>
+</tbody></table></div>
+
+
+
+<h3>What this does not show</h3>
+<p class="plain">that ferredoxin coupling is not selective in the biochemical sense. What is measured here is which partner FAMILY sits beside which enzyme in the genome, not whether a given ferredoxin can productively transfer electrons to a given oxygenase. Those are different questions and the second is the one their experiments answer.</p>
+<p class="note"><b>What would settle it:</b> cross-reconstitution assays across many more pairs than the handful tested so far, which is laboratory work this database cannot substitute for.<br>
+Computed in <code>stats.json</code>.</p>
+</section>
+
+<section class="stat statcard" id="conserved_bridging_aspartate">
+<h2>3 · Electron transfer between the Rieske cluster and the mononuclear iron proceeds by a proton-coupled mechanis...</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    <span class="verdict verdict--weak">refined</span>
+    
+    <span class="note"><a href="https://doi.org/10.1021/acs.biochem.5c00369">10.1021/acs.biochem.5c00369</a></span>
+    
+  </div>
+  <p class="plain">Conserved in kind, not in identity. The bridging position is a carboxylate almost without exception, but it is aspartate 13,964 times and glutamate 5,156 times, a ratio of 2.7 to 1 rather than invariance. The glutamate is not scattered: it maps onto a definable branch, with Cramér&#39;s V = 0.83 against the RO group and 0.79 against the reaction class.</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>Electron transfer between the Rieske cluster and the mononuclear iron proceeds by a proton-coupled mechanism mediated by a highly conserved aspartate residue, which bridges the two metal centres of neighbouring subunits.</p>
+<p class="note">— Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, <a href="https://doi.org/10.1021/acs.biochem.5c00369">doi:10.1021/acs.biochem.5c00369</a>.
+<br>Established by: crystal structures and computational studies of a small number of model systems.</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>the identity of the bridging carboxylate read from every confirmed alpha subunit that has one.</p>
+
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Bridging residue</th><th class="num">Entries</th><th class="num">Share</th></tr></thead>
+<tbody>
+<tr><td>aspartate</td><td class="num">13,964</td>
+  <td class="num">73.0 %</td></tr>
+<tr><td>glutamate</td><td class="num">5,156</td>
+  <td class="num">27.0 %</td></tr>
+</tbody></table></div>
+<p class="note">Association with the RO group: Cramér&rsquo;s V = 0.83;
+with the reaction class, 0.79. A scattering of exceptions would
+show neither. <a href="/pro-sim-blast/atlas/statistics.html">The test in full</a></p>
+
+
+
+<h3>What this does not show</h3>
+<p class="plain">that the mechanism differs in the glutamate branch. Both residues are carboxylates and either could in principle carry the same proton-coupled step; no kinetics were measured here. The claim being refined is about conservation, not mechanism.</p>
+<p class="note"><b>What would settle it:</b> a structure or a kinetic measurement from an enzyme in the glutamate branch.<br>
+Computed in <code>stats.json</code>.</p>
+</section>
+
+<section class="stat statcard" id="regulators_diverge_faster">
+<h2>4 · Regulators diverge faster than the enzymes they control. Measured over 45 enzyme types and 2,382 pairs: mea...</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    <span class="verdict verdict--weak">overturned in part, and it was our own</span>
+    <span class="chip chip--data">our own earlier result</span>
+  </div>
+  <p class="plain">The pairs are drawn from within an enzyme type, and an enzyme type is defined by alpha subunit similarity, so a high alpha identity is a property of the selection rather than an observation. Against controls, roughly sixty per cent of the gap disappears: the regulator does beat the beta subunit, beats the reductase only marginally, and does not beat the ferredoxin at all. Under the strictest orthology gate the gap vanishes.</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>Regulators diverge faster than the enzymes they control. Measured over 45 enzyme types and 2,382 pairs: mean main diversity 0.378 against mean regulator diversity 0.446.</p>
+<p class="note">— this project&#39;s own earlier analysis (evolution_rates_of_reg_and_enz.py, enzyme_regulator_graphs.py), and the same direction is widely assumed in the literature.
+<br>Established by: they ask the same question and reach the same direction. From the old pipeline&#39;s proteins_output.fasta they paired each main gene with the nearest regulator within 1000 to 1500 bp by midpoint distance, aligned all main sequences of a type together with MUSCLE and all regulator sequences together, took the mean pairwise p-distance of each alignment, and compared the two numbers per type. Published result: 45 types, 2382 pairs, mean main diversity 0.378 against mean regulator diversity 0.446, concluding that regulators are the more diverse..</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>the same comparison, but with the beta subunit, the ferredoxin and the reductase measured at the same genome pairs as controls.</p>
+
+
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Regulator compared against</th><th class="num">Pairs</th>
+<th class="num">Control identity</th><th class="num">Regulator identity</th>
+<th class="num">Regulator&rsquo;s extra divergence</th><th>Clears it?</th></tr></thead>
+<tbody>
+
+
+
+
+<tr><td>beta subunit</td>
+  <td class="num">17,541</td>
+  <td class="num">60.4 %</td>
+  <td class="num">45.9 %</td>
+  <td class="num">+14.5</td>
+  <td><span class="verdict verdict--robust">clears</span>
+      
+      <span class="note">δ = 0.39</span></td></tr>
+
+
+
+<tr><td>ferredoxin</td>
+  <td class="num">7,946</td>
+  <td class="num">57.7 %</td>
+  <td class="num">52.9 %</td>
+  <td class="num">+4.9</td>
+  <td><span class="verdict verdict--weak">within noise</span>
+      <span class="note">δ = 0.15</span></td></tr>
+
+
+
+<tr><td>reductase</td>
+  <td class="num">12,233</td>
+  <td class="num">42.5 %</td>
+  <td class="num">37.9 %</td>
+  <td class="num">+4.5</td>
+  <td><span class="verdict verdict--weak">within noise</span>
+      <span class="note">δ = 0.18</span></td></tr>
+
+</tbody></table></div>
+
+<p class="note"><a href="/pro-sim-blast/atlas/control.html">The controls and the orthology gate ladder in full</a></p>
+
+
+
+<h3>What this does not show</h3>
+<p class="plain">that regulators evolve at the same rate as their enzymes. The regulator remains the most variable protein in the operon on every measure here. What collapses is the size of the effect and the claim that it is specific to regulators.</p>
+<p class="note"><b>What would settle it:</b> a phylogeny-aware rate comparison on confidently orthologous sets, rather than pairwise identity within profile bins.<br>
+Computed in <code>operon_relations.json</code>.</p>
+</section>
+
+<section class="stat statcard" id="taxonomic_breadth_metric">
+<h2>5 · Enzyme types acting on man-made substrates occupy more bacterial genera than types acting on natural ones, ...</h2>
+<div class="statcard__head">
+  <div class="statcard__verdict">
+    <span class="verdict verdict--weak">overturned, and it was our own</span>
+    <span class="chip chip--data">our own earlier result</span>
+  </div>
+  <p class="plain">The old metric was measuring type size, not breadth: it correlated with the number of members at rho = -0.77. Rarefied to a common size the direction REVERSES and the difference is not significant. A result that exists only because of how the measure behaves is not a result.</p>
+</div>
+
+<h3>The claim</h3>
+<blockquote class="caveat"><p>Enzyme types acting on man-made substrates occupy more bacterial genera than types acting on natural ones, measured as distinct genera per member.</p>
+<p class="note">— this database&#39;s own earlier metric.
+<br>Established by: genera per member, computed per enzyme type.</p></blockquote>
+
+<h3>What this database measures</h3>
+<p>the same question with every type rarefied to a common sample size.</p>
+
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measure</th><th class="num">Xenobiotic types</th>
+<th class="num">Natural-substrate types</th><th class="num">p</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td>genera per member (the old metric)</td>
+  <td class="num">0.27</td>
+  <td class="num">0.29</td>
+  <td class="num">0.92</td>
+  <td>xenobiotic wider</td></tr>
+<tr><td>genera at a common sample size (rarefied)</td>
+  <td class="num">11.77</td>
+  <td class="num">12.94</td>
+  <td class="num">0.21</td>
+  <td><b>reversed</b></td></tr>
+</tbody></table></div>
+<p class="note">The old metric correlated with type size at Spearman
+ρ = 0.31
+after rarefaction, against −0.77 before it.</p>
+
+
+<h3>What this does not show</h3>
+<p class="plain">that there is no difference in taxonomic breadth. With this many types the rarefied test has little power; it shows that the original evidence does not survive, not that the opposite is true.</p>
+<p class="note"><b>What would settle it:</b> more characterised types.<br>
+Computed in <code>stats.json</code>.</p>
+</section>
+
+
+<h2>How this page is built</h2>
+<p class="note">Assembled by <code>disagreements.py</code>, which reads each counter-measurement
+from the analysis file that produced it rather than restating it. If an analysis changes, this
+page changes with it; a stale number on a page about disagreeing with the literature would be
+worse than the disagreement.
+<a href="/pro-sim-blast/download/analysis/disagreements.json">Download disagreements.json</a></p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

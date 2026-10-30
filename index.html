@@ -1,0 +1,1749 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+<h1>Rieske oxygenases: one catalytic architecture, many chemistries</h1>
+<p class="lede">A Rieske oxygenase alpha subunit carries two metal centres in one chain. A Rieske
+[2Fe-2S] cluster at the N-terminus accepts electrons from a ferredoxin, passes them across the
+subunit interface, and a mononuclear Fe(II) site at the C-terminus uses them to activate O<sub>2</sub>
+and attack the substrate. Every one of the 19,125 proteins in this database was
+confirmed to have both centres intact, so what differs between them is not the machinery but what
+they point it at.</p>
+
+
+
+<section class="tiles">
+  <div class="tile"><div class="tile__n">19,125</div><div class="tile__l">confirmed alpha subunits</div></div>
+  <div class="tile"><div class="tile__n">68</div><div class="tile__l">characterised enzyme types</div></div>
+  <div class="tile"><div class="tile__n">11</div><div class="tile__l">chemical families attacked</div></div>
+  <div class="tile"><div class="tile__n">7</div><div class="tile__l">distinct reaction types</div></div>
+  <div class="tile"><div class="tile__n">2,789</div><div class="tile__l">sequence variants</div></div>
+  <div class="tile"><div class="tile__n">11,610</div><div class="tile__l">genomes represented</div></div>
+</section>
+
+<h2>1 · The shared architecture, as measured</h2>
+
+
+
+<p class="note">Positions below are columns of the 603-column
+profile built from 76 characterised
+enzymes, not residue numbers in any one protein.</p>
+
+<figure class="fig">
+<div class="archscroll">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 118" class="arch" role="img"
+     aria-label="Schematic of the alpha subunit showing the Rieske domain, the catalytic domain and the eight defining positions">
+  <style>
+    .arch-lb  { font-size: 11px; }
+    .arch-lbs { font-size: 10px; }
+    .arch-dim { font-size: 10px; opacity: .75; }
+    .arch-dom { stroke: var(--fig-stroke); stroke-width: 1; }
+    .arch-tick { stroke: var(--fig-iron); stroke-width: 1.4; }
+    .arch-brk { stroke: var(--fig-stroke); stroke-width: 1; fill: none; }
+    .c-rieske { fill: var(--fig-rieske); }
+    .c-cat    { fill: var(--fig-cat); }
+    .c-iron   { fill: var(--fig-iron); }
+  </style>
+
+  <!-- domain bars: 0-130 Rieske, 130-426 catalytic, scaled col/426*980 -->
+  <rect class="arch-dom c-rieske" x="0" y="14" width="300" height="40" rx="4"/>
+  <text class="arch-lb" x="12" y="39">Rieske [2Fe-2S] domain</text>
+  <rect class="arch-dom c-cat" x="300" y="14" width="680" height="40" rx="4"/>
+  <text class="arch-lb" x="312" y="39">catalytic domain, mononuclear Fe(II) site</text>
+
+  <!-- the eight required positions: ticks only. Columns 85/87, 105/108 and
+       209/212/217 are 4.6 to 11.5 user units apart at this scale, so printing a
+       residue label and a percentage under each one guaranteed an overlap. The
+       values are in the table below instead. -->
+  
+  
+  <line class="arch-tick" x1="195.5" y1="14" x2="195.5" y2="54"/>
+  <circle class="c-iron" cx="195.5" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="200.1" y1="14" x2="200.1" y2="54"/>
+  <circle class="c-iron" cx="200.1" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="241.5" y1="14" x2="241.5" y2="54"/>
+  <circle class="c-iron" cx="241.5" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="248.5" y1="14" x2="248.5" y2="54"/>
+  <circle class="c-iron" cx="248.5" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="480.8" y1="14" x2="480.8" y2="54"/>
+  <circle class="c-iron" cx="480.8" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="487.7" y1="14" x2="487.7" y2="54"/>
+  <circle class="c-iron" cx="487.7" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="499.2" y1="14" x2="499.2" y2="54"/>
+  <circle class="c-iron" cx="499.2" cy="60" r="3"/>
+  
+  
+  <line class="arch-tick" x1="816.7" y1="14" x2="816.7" y2="54"/>
+  <circle class="c-iron" cx="816.7" cy="60" r="3"/>
+  
+
+  <!-- grouped brackets, placed so no two labels can touch -->
+  <path class="arch-brk" d="M195.5,68 V72 H248.5 V68"/>
+  <text class="arch-lbs" x="222" y="86" text-anchor="middle">4 Rieske ligands</text>
+
+  <path class="arch-brk" d="M480.7,68 V72 H499.1 V68"/>
+  <text class="arch-lbs" x="490" y="86" text-anchor="middle">bridge + 2 Fe histidines</text>
+
+  <path class="arch-brk" d="M816.6,68 V72"/>
+  <text class="arch-lbs" x="816.6" y="86" text-anchor="middle">catalytic Asp</text>
+
+  <text class="arch-dim" x="0" y="106">N-terminus</text>
+  <text class="arch-dim" x="980" y="106" text-anchor="end">C-terminus</text>
+</svg>
+</div>
+<figcaption><b>The alpha subunit and the eight positions membership depends on.</b> Ticks mark the
+columns listed in Table&nbsp;1. Residue identities and conservation are given there rather than on
+the drawing, because three of the groups are only a few profile columns wide. Nothing in this figure
+is derived from a structure.</figcaption>
+</figure>
+
+
+<h3>Table 1 · The eight defining positions</h3>
+<div class="tablewrap"><table class="data compact" data-filter="Filter positions…">
+<thead><tr>
+  <th class="num">Profile<span class="unit">column</span></th>
+  <th>Position</th>
+  <th data-facet="Centre">Centre</th>
+  <th class="num">Expected<span class="unit">residue</span></th>
+  <th class="num">Entries with it<span class="unit">of 19,125</span></th>
+  <th class="num">Conservation<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+
+<tr>
+  <td class="num">164</td>
+  <td>Rieske cysteine 1</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">C</td>
+  <td class="num" data-v="19125">19,125</td>
+  <td class="num" data-v="1.0">100.00</td>
+</tr>
+
+<tr>
+  <td class="num">166</td>
+  <td>Rieske histidine 1</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">H</td>
+  <td class="num" data-v="19125">19,125</td>
+  <td class="num" data-v="1.0">100.00</td>
+</tr>
+
+<tr>
+  <td class="num">184</td>
+  <td>Rieske cysteine 2</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">C</td>
+  <td class="num" data-v="19125">19,125</td>
+  <td class="num" data-v="1.0">100.00</td>
+</tr>
+
+<tr>
+  <td class="num">187</td>
+  <td>Rieske histidine 2</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">H</td>
+  <td class="num" data-v="19125">19,125</td>
+  <td class="num" data-v="1.0">100.00</td>
+</tr>
+
+<tr>
+  <td class="num">286</td>
+  <td>inter-subunit bridging aspartate</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">D/E</td>
+  <td class="num" data-v="19120">19,120</td>
+  <td class="num" data-v="0.9997">99.97</td>
+</tr>
+
+<tr>
+  <td class="num">289</td>
+  <td>mononuclear iron histidine 1</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">H</td>
+  <td class="num" data-v="19106">19,106</td>
+  <td class="num" data-v="0.999">99.90</td>
+</tr>
+
+<tr>
+  <td class="num">294</td>
+  <td>mononuclear iron histidine 2</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">H</td>
+  <td class="num" data-v="19078">19,078</td>
+  <td class="num" data-v="0.9975">99.75</td>
+</tr>
+
+<tr>
+  <td class="num">431</td>
+  <td>mononuclear iron carboxylate (Asp or Glu)</td>
+  <td>mononuclear Fe(II)</td>
+  <td class="num">D/E</td>
+  <td class="num" data-v="16738">16,738</td>
+  <td class="num" data-v="0.8752">87.52</td>
+</tr>
+
+</tbody></table></div>
+<p class="note"><b>Method.</b> Each entry was aligned to the profile and the residue at each column
+read directly from the alignment. Membership requires all four Rieske ligands and at least two of
+the three iron ligands. The one position with real variation is the catalytic carboxylate, for the
+reason set out in section 1.2.</p>
+
+
+<h3>1.1 · The electron path</h3>
+<figure class="fig">
+<div class="archscroll">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 104" class="flowfig" role="img"
+     aria-label="Electron path from NAD(P)H through a reductase and ferredoxin to the Rieske centre and the mononuclear iron">
+  <style>
+    .fl-lb  { font-size: 11px; }
+    .fl-lbs { font-size: 10px; }
+    .fl-box { stroke: var(--fig-stroke); stroke-width: 1; }
+    .fl-arr { stroke: currentColor; stroke-width: 1.4; fill: none; marker-end: url(#flarrow); }
+    .fl-tick { stroke: var(--fig-stroke); stroke-width: 1; }
+    .c-rieske  { fill: var(--fig-rieske); }
+    .c-cat     { fill: var(--fig-cat); }
+    .c-red     { fill: var(--fig-red); }
+    .c-fd      { fill: var(--fig-fd); }
+    .c-neutral { fill: var(--fig-neutral); }
+    .c-iron    { fill: var(--fig-iron); }
+    .c-sulfur  { fill: var(--fig-sulfur); }
+  </style>
+  <defs>
+    <marker id="flarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+
+  <rect class="fl-box c-neutral" x="0" y="22" width="96" height="34" rx="4"/>
+  <text class="fl-lb" x="48" y="43" text-anchor="middle">NAD(P)H</text>
+  <path class="fl-arr" d="M100,39 H132"/>
+
+  <rect class="fl-box c-red" x="140" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="192" y="43" text-anchor="middle">reductase</text>
+  <path class="fl-arr" d="M248,39 H280"/>
+
+  <rect class="fl-box c-fd" x="288" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="340" y="43" text-anchor="middle">ferredoxin</text>
+  <path class="fl-arr" d="M396,39 H428"/>
+
+  <rect class="fl-box c-rieske" x="436" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-sulfur" cx="453" cy="39" r="5"/>
+  <circle class="c-sulfur" cx="471" cy="39" r="5"/>
+  <circle class="c-iron" cx="462" cy="30" r="4"/>
+  <circle class="c-iron" cx="462" cy="48" r="4"/>
+  <text class="fl-lbs" x="486" y="36">Rieske</text>
+  <text class="fl-lbs" x="486" y="48">[2Fe-2S]</text>
+  <path class="fl-arr" d="M590,39 H622"/>
+
+  <rect class="fl-box c-cat" x="630" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-iron" cx="652" cy="39" r="6"/>
+  <text class="fl-lbs" x="666" y="36">mononuclear</text>
+  <text class="fl-lbs" x="666" y="48">Fe(II)</text>
+  <path class="fl-arr" d="M784,39 H816"/>
+
+  <rect class="fl-box c-neutral" x="824" y="22" width="156" height="34" rx="4"/>
+  <text class="fl-lb" x="902" y="43" text-anchor="middle">substrate + O₂ → product</text>
+
+  <!-- the one annotation that stays on the drawing, below the boxes where it has
+       the full width to itself -->
+  <path class="fl-tick" d="M606,64 V76"/>
+  <text class="fl-lbs" x="606" y="88" text-anchor="middle">subunit interface</text>
+</svg>
+</div>
+<figcaption><b>Electrons reach the iron of a neighbouring subunit, not its own.</b> The Rieske
+centre of one chain donates across the interface to the mononuclear iron of the next, which is why
+the enzyme is active only as an oligomer. The carboxylate at the interface and the carboxylate at
+the iron are two different residues with two different behaviours, set out next.</figcaption>
+</figure>
+
+<h3>1.2 · Two carboxylates, and they are not the same kind of site</h3>
+
+
+
+<p>Calling both of these "the carboxylate" obscures that they sit in different shells. In
+naphthalene dioxygenase the mononuclear iron is coordinated by His208 at 2.04 Å, His213 at 2.15 Å
+and <b>Asp362</b> at 2.27 Å: that is the 2-His-1-carboxylate triad, and its carboxylate is a
+first-shell <b>ligand</b>. The bridging <b>Asp205</b> is 6.95 Å from the same iron and
+coordinates nothing at all; it is a second-shell <b>relay</b>, hydrogen-bonded to His208 on one
+side and, across the subunit junction, to the Rieske ligand His104 of the neighbour. One holds the
+metal, the other carries electrons to it. They are listed together below only because both are
+carboxylates read from an alignment column — and the audit of those columns came out differently
+for the two, which is the point of the table.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th>Carboxylate</th>
+  <th class="num">Profile<span class="unit">column</span></th>
+  <th class="num">Asp<span class="unit">entries</span></th>
+  <th class="num">Glu<span class="unit">entries</span></th>
+  <th class="num">Asp : Glu</th>
+  <th class="num">Carboxylate in window<span class="unit">of 19,125</span></th>
+  <th>In the reference set</th>
+</tr></thead>
+<tbody>
+
+<tr>
+  <td><b>Catalytic</b> — a first-shell <b>ligand</b>: it coordinates the mononuclear iron
+  directly, at 2.27 Å in naphthalene dioxygenase (Asp362)</td>
+  <td class="num">–</td>
+  <td class="num" colspan="4"><b>not readable from a fixed column.</b> Tested against the crystal
+  structures of 27 curated references: the residue column 431 calls is 10.9–14.7 Å
+  from the iron in <b>26 of 26</b> testable structures, so it is not the ligand. The column test
+  passed only because an acidic residue does sit there — it asks whether the column holds a D or
+  an E, not whether that residue coordinates the metal.</td>
+  <td class="small">the iron-coordinating carboxylate is <b>aspartate in 26 of 26</b> structures.
+  It lands on column 431 in 18 of them and on 432 in 2 more, with the remaining 6 spread over
+  407–411 and 449–451, so no single column holds them all.</td>
+</tr>
+<tr>
+  <td><b>Bridging</b> — a second-shell <b>relay</b>: it coordinates no metal, sitting 6.95 Å from
+  the iron (Asp205), and hydrogen-bonds the Rieske centre of one subunit to the iron ligand of the
+  next</td>
+  <td class="num">286</td>
+  <td class="num" data-v="13964">13,964</td>
+  <td class="num" data-v="5156">5,156</td>
+  <td class="num" data-v="2.7">2.7 : 1</td>
+  <td class="num" data-v="19120">19,120 <span class="note">(100.0%)</span></td>
+  <td class="small">66 Asp, 3 Glu, 7 neither (Cys or Ser) <span class="note">of 76</span></td>
+</tr>
+</tbody></table></div>
+<p class="note"><b>Both columns were checked against structures, and they came out
+differently.</b> The bridging column <b>passes</b>: in the 9 structures where the neighbouring
+subunit is present in the file, the residue it calls sits 5.9–7.2 Å from that neighbour's Rieske
+cluster and 6.7–10.6 Å from its own subunit's iron in 8 of 9, which is the geometry of a bridge
+and nothing else. For naphthalene dioxygenase it returns Asp205, the residue whose carboxylate is
+hydrogen-bonded to a Rieske ligand on one side and an iron ligand on the other. The catalytic
+column <b>fails</b>: the residue it calls is 10.9–14.7 Å from the iron in 26 of 26 testable
+structures. The two mononuclear histidine columns pass as well — for the phthalate dioxygenase
+they give His181 and His186, exactly the residues that coordinate the iron in the crystal, at 2.01
+and 1.94 Å. So membership requiring two of the three iron ligands is no longer a tolerance for
+alignment shift but a necessity: the third ligand is not something a fixed column can report.
+The measurement also reproduces a known number, which is the best check that it is reading the
+right thing: in the structures that hold only one subunit the nearest Rieske cluster comes out
+44–48 Å away, and the distance from the iron to its own subunit's Rieske centre is reported as
+43.5 Å, against 12 Å across the subunit junction. The bridge reaches the neighbour, not its own
+cluster.</p>
+
+<p class="note"><b>An open question, not a result.</b> In the quaternary-amine branch this
+position is not aspartate: carnitine oxygenase has Glu205 and the stachydrine demethylase has
+Cys202. Neither is a Rieske ligand — the cluster in both structures is held by the usual
+Cys86/Cys106/His88/His109, and these residues sit 46 and 48 Å from it — and both are 6.9 and
+6.0 Å from their own mononuclear iron, the same distance the verified bridging Asp205 of
+naphthalene dioxygenase sits at. So they occupy the equivalent position. Whether they do the
+equivalent job cannot be concluded here, for two reasons. Both structures contain a single
+subunit, so the neighbouring cluster the bridge would reach is simply absent from the file. And
+replacing Asp205 with glutamate in naphthalene dioxygenase <i>abolishes</i> the route to the
+active-site iron while leaving the NADH-to-Rieske step intact, so a naturally occurring glutamate
+at the equivalent position is a puzzle rather than a confirmation. Resolving it needs a structure
+of one of these enzymes with the oligomer intact.</p>
+
+
+
+<h4>The glutamate is a branch marker, not scattered noise</h4>
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th>Type</th>
+  <th class="num">RO<span class="unit">group</span></th>
+  <th class="num">Glu<span class="unit">members</span></th>
+  <th class="num">Members</th>
+  <th class="num">Glu share<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+
+<tr class="hl">
+  <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">GbcA</a>
+      <span class="note small">5_508_GbcA</span></td>
+  <td class="num">5</td>
+  <td class="num" data-v="504">504</td>
+  <td class="num" data-v="504">504</td>
+  <td class="num" data-v="1.0">100.0</td>
+</tr>
+
+<tr class="hl">
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a>
+      <span class="note small">5_506_Stc2</span></td>
+  <td class="num">5</td>
+  <td class="num" data-v="1363">1,363</td>
+  <td class="num" data-v="1460">1,460</td>
+  <td class="num" data-v="0.9336">93.4</td>
+</tr>
+
+<tr class="hl">
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a>
+      <span class="note small">5_504_CntA</span></td>
+  <td class="num">5</td>
+  <td class="num" data-v="1697">1,697</td>
+  <td class="num" data-v="1871">1,871</td>
+  <td class="num" data-v="0.907">90.7</td>
+</tr>
+
+<tr class="hl">
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a>
+      <span class="note small">5_507_BmoA</span></td>
+  <td class="num">5</td>
+  <td class="num" data-v="913">913</td>
+  <td class="num" data-v="1045">1,045</td>
+  <td class="num" data-v="0.8737">87.4</td>
+</tr>
+
+<tr class="hl">
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a>
+      <span class="note small">5_505_qxyA</span></td>
+  <td class="num">5</td>
+  <td class="num" data-v="137">137</td>
+  <td class="num" data-v="164">164</td>
+  <td class="num" data-v="0.8354">83.5</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a>
+      <span class="note small">3_316_NarAa</span></td>
+  <td class="num">3</td>
+  <td class="num" data-v="32">32</td>
+  <td class="num" data-v="48">48</td>
+  <td class="num" data-v="0.6667">66.7</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a>
+      <span class="note small">2_211_bfzA</span></td>
+  <td class="num">2</td>
+  <td class="num" data-v="61">61</td>
+  <td class="num" data-v="93">93</td>
+  <td class="num" data-v="0.6559">65.6</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">ArhA1</a>
+      <span class="note small">3_305_ArhA1</span></td>
+  <td class="num">3</td>
+  <td class="num" data-v="14">14</td>
+  <td class="num" data-v="24">24</td>
+  <td class="num" data-v="0.5833">58.3</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a>
+      <span class="note small">2_212_BedC1</span></td>
+  <td class="num">2</td>
+  <td class="num" data-v="16">16</td>
+  <td class="num" data-v="31">31</td>
+  <td class="num" data-v="0.5161">51.6</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a>
+      <span class="note small">4_403_AtdA</span></td>
+  <td class="num">4</td>
+  <td class="num" data-v="83">83</td>
+  <td class="num" data-v="182">182</td>
+  <td class="num" data-v="0.456">45.6</td>
+</tr>
+
+</tbody></table></div>
+<p class="note">Types with at least 20 members, ordered by the share of members carrying glutamate at
+column 286. The enzymes at the top of this table cleave carbon–nitrogen bonds or
+demethylate open-chain quaternary amines; the ring-hydroxylating types carry aspartate. Again, these
+are alignment residues, not structurally verified contacts.
+<a href="/pro-sim-blast/atlas/evidence.html">How far a residue may be read as a function</a></p>
+
+
+
+
+<h3>1.3 · Completeness of the two centres</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Requirement</th><th class="num">Entries<span class="unit">of 19,125</span></th><th class="num">Share<span class="unit">%</span></th></tr></thead>
+<tbody>
+<tr><td>All four Rieske ligands present</td>
+    <td class="num" data-v="19125">19,125</td>
+    <td class="num" data-v="100.0">100.0</td></tr>
+<tr><td>Complete 2-His-1-carboxylate triad at the iron</td>
+    <td class="num" data-v="16672">16,672</td>
+    <td class="num" data-v="87.17385620915033">87.2</td></tr>
+<tr><td>Two of the three iron ligands, the minimum for membership</td>
+    <td class="num" data-v="2453">2,453</td>
+    <td class="num" data-v="12.826143790849674">12.8</td></tr>
+<tr><td>Inter-subunit bridging Asp or Glu present</td>
+    <td class="num" data-v="19120">19,120</td>
+    <td class="num" data-v="99.97385620915033">100.0</td></tr>
+</tbody></table></div>
+<p class="note">The Rieske centre is invariant across the whole database. <a href="/pro-sim-blast/about.html">Full
+methods</a> · <a href="/pro-sim-blast/atlas/quality.html">what these counts cannot tell you</a></p>
+
+
+<h2>2 · What the reaction actually is</h2>
+<p>The two metal centres support more than one chemistry. Counting types and members by reaction
+shows that the <em>cis</em>-dihydroxylation the family is named for is only the most common case, not
+the whole story.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Reaction</th><th class="num">Types</th><th class="num">Entries</th>
+<th>Generic scheme</th><th>What happens</th></tr></thead>
+<tbody>
+
+<tr><td><span class="chip chip--data" style="--chip:#1f4e79">cis-dihydroxylation</span></td>
+    <td class="num" data-v="30">30</td><td class="num" data-v="3487">3,487</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-cis-dihydroxylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="34.0,27.0 17.5,36.5 17.5,55.5 34.0,65.0 50.5,55.5 50.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="34" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="62" y1="46" x2="120" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-cis-dihydroxylation)"/><text x="91.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="150.0,27.0 133.5,36.5 133.5,55.5 150.0,65.0 166.5,55.5 166.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="151.8" y1="30.1" x2="135.4" y2="39.6" stroke="currentColor" stroke-width="1.1"/><line x1="135.4" y1="52.4" x2="151.8" y2="61.9" stroke="currentColor" stroke-width="1.1"/><text x="175.5" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text><text x="175.5" y="34.8" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">Both oxygen atoms are added to the same face of the ring, giving a cis-diol. The ring is no longer aromatic.</div>
+      </td>
+    <td class="small">Both atoms of O2 are added to adjacent ring carbons, giving a cis-diol. This is the reaction the family is named for.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#8c2f22">dioxygenation with substituent release</span></td>
+    <td class="num" data-v="10">10</td><td class="num" data-v="1786">1,786</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-dioxygenation-with-release" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="34.0,27.0 17.5,36.5 17.5,55.5 34.0,65.0 50.5,55.5 50.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="34" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="34.0" y="20.0" font-size="10" text-anchor="middle" fill="currentColor">X</text><line x1="62" y1="46" x2="120" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-dioxygenation-with-release)"/><text x="91.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="91.0" y="59" font-size="9" text-anchor="middle" fill="currentColor">− X</text><polygon points="150.0,27.0 133.5,36.5 133.5,55.5 150.0,65.0 166.5,55.5 166.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="150" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="150.0" y="20.0" font-size="10" text-anchor="middle" fill="currentColor">OH</text><text x="124.5" y="34.8" font-size="10" text-anchor="end" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">The substituent leaves during the reaction, as nitrite, a halide, sulfite, ammonia or carbon dioxide.</div>
+      </td>
+    <td class="small">Dihydroxylation at a substituted carbon, so the substituent leaves as nitrite, halide, sulfite, ammonia or carbon dioxide.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#2a8f87">angular dioxygenation</span></td>
+    <td class="num" data-v="6">6</td><td class="num" data-v="337">337</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-angular-dioxygenation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="30.0,27.0 13.5,36.5 13.5,55.5 30.0,65.0 46.5,55.5 46.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="30" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><polygon points="62.9,27.0 46.4,36.5 46.4,55.5 62.9,65.0 79.3,55.5 79.3,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="62.87" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="46.5" cy="46" r="3" fill="#8c2f22"/><line x1="96" y1="46" x2="148" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-angular-dioxygenation)"/><text x="122.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="176.0,27.0 159.5,36.5 159.5,55.5 176.0,65.0 192.5,55.5 192.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="176" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="150.5" y="34.8" font-size="10" text-anchor="end" fill="currentColor">OH</text><polygon points="212.1,27.0 195.6,36.5 195.6,55.5 212.1,65.0 228.6,55.5 228.6,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="212.1" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="237.6" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">The attack is at the ring junction, so the fused ring system comes apart rather than simply gaining hydroxyls.</div>
+      </td>
+    <td class="small">Attack at the carbon that joins two rings. The product is unstable and the ring system opens without further enzymes.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#1f7a4d">hydroxylation</span></td>
+    <td class="num" data-v="9">9</td><td class="num" data-v="3921">3,921</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-hydroxylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><text x="22" y="52" font-size="13" fill="currentColor">R–CH</text><line x1="74" y1="46" x2="128" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-hydroxylation)"/><text x="101.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="101.0" y="59" font-size="9" text-anchor="middle" fill="currentColor">+ H₂O</text><text x="138" y="52" font-size="13" fill="currentColor">R–C–OH</text></svg>
+      
+      <div class="rxnote">One oxygen atom is inserted into the substrate; the other is reduced to water.</div>
+      </td>
+    <td class="small">A single oxygen atom is inserted at one carbon; the second is reduced to water.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#6d4c9a">N-demethylation</span></td>
+    <td class="num" data-v="7">7</td><td class="num" data-v="3819">3,819</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-N-demethylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><text x="18" y="52" font-size="13" fill="currentColor">R₂N–CH₃</text><line x1="86" y1="46" x2="140" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-N-demethylation)"/><text x="113.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="113.0" y="59" font-size="9" text-anchor="middle" fill="currentColor">− HCHO</text><text x="150" y="52" font-size="13" fill="currentColor">R₂N–H</text></svg>
+      
+      <div class="rxnote">One methyl group is removed per catalytic cycle and released as formaldehyde.</div>
+      </td>
+    <td class="small">A methyl group on nitrogen is oxidised and released as formaldehyde.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#b5731f">O-demethylation</span></td>
+    <td class="num" data-v="4">4</td><td class="num" data-v="2300">2,300</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-O-demethylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="34.0,27.0 17.5,36.5 17.5,55.5 34.0,65.0 50.5,55.5 50.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="34" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="34.0" y="20.0" font-size="10" text-anchor="middle" fill="currentColor">OCH₃</text><line x1="76" y1="46" x2="130" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-O-demethylation)"/><text x="103.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="103.0" y="59" font-size="9" text-anchor="middle" fill="currentColor">− HCHO</text><polygon points="164.0,27.0 147.5,36.5 147.5,55.5 164.0,65.0 180.5,55.5 180.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="164" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="164.0" y="20.0" font-size="10" text-anchor="middle" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">The methyl group is released as formaldehyde, leaving a free phenol.</div>
+      </td>
+    <td class="small">One oxygen atom is used to oxidise an aryl methyl ether, releasing formaldehyde and the free phenol.</td></tr>
+
+<tr><td><span class="chip chip--data" style="--chip:#b03a6e">carbon-nitrogen bond cleavage</span></td>
+    <td class="num" data-v="2">2</td><td class="num" data-v="2035">2,035</td>
+    <td class="rxcell"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-C-N-cleavage" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><text x="12" y="52" font-size="13" fill="currentColor">R–CH₂–N⁺(CH₃)₃</text><line x1="116" y1="46" x2="166" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-C-N-cleavage)"/><text x="141.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><text x="172" y="46" font-size="11" fill="currentColor">R–CHO</text><text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text></svg>
+      
+      <div class="rxnote">The carbon-nitrogen bond is broken, releasing the amine and leaving an aldehyde.</div>
+      </td>
+    <td class="small">Oxygenation at the carbon next to a quaternary nitrogen, cleaving the carbon-nitrogen bond.</td></tr>
+
+</tbody></table></div>
+<figcaption>The schemes are generic: they show what each reaction class does to any substrate,
+because drawing a product for every type would mean assuming which ring position is attacked.
+Reaction assignments come from the literature on each type's reference enzyme and are
+curated in <code>chemistry.csv</code>. They describe the characterised enzyme; whether a given
+member performs the same reaction depends on how close it is to that reference, which every entry
+page states. <a href="/pro-sim-blast/atlas/evidence.html">Evidence levels</a></figcaption>
+</figure>
+
+<h2>3 · Enzymes grouped by the chemicals they act on</h2>
+<p class="note">Each card is one characterised enzyme type with its reference substrate drawn from
+SMILES, the reaction it performs, and the number of confirmed entries assigned to it. Use the
+filter to find a type by name, substrate or product.</p>
+
+<div data-cardfilter="Find a type by name, substrate or product…"
+     data-card-facets="reaction:Reaction,sclass:Substrate class,group:RO group">
+
+<section class="chemfam" data-cardsection>
+  <h3>Benzene and alkylbenzenes <span class="note">· 6 types · 92 entries</span></h3>
+  <p class="note">Fuel components and industrial solvents. These are the substrates on which the chemistry of the family was first described, and toluene dioxygenase remains its structural prototype.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_202_EdoA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="EdoA1 2_202_EdoA1 ethylbenzene cis-dihydrodiol alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CCc1ccccc1" aria-label="ethylbenzene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">EdoA1</div>
+  <div class="structcard__sub">ethylbenzene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">47 entries · → cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_212_BedC1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BedC1 2_212_BedC1 benzene cis-benzene dihydrodiol alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccccc1" aria-label="benzene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BedC1</div>
+  <div class="structcard__sub">benzene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">31 entries · → cis-benzene dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_203_cumA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="cumA1 2_203_cumA1 cumene cis-dihydrodiol alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)c1ccccc1" aria-label="cumene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">cumA1 <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 1WQL">3D</span></div>
+  <div class="structcard__sub">cumene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">8 entries · → cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_209_TDO.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="TDO 2_209_TDO toluene cis-2,3-dihydroxy-2,3-dihydrotoluene alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1ccccc1" aria-label="toluene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 3EN1">3D</span></div>
+  <div class="structcard__sub">toluene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">6 entries · → cis-2,3-dihydroxy-2,3-dihydrotoluene</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/2_206_IpBAa.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="IpBAa 2_206_IpBAa isopropylbenzene cis-dihydrodiol alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)c1ccccc1" aria-label="isopropylbenzene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">IpBAa</div>
+  <div class="structcard__sub">isopropylbenzene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">no confirmed entries · → cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/2_210_XylC1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="XylC1 2_210_XylC1 xylene dimethyl cis-dihydrodiol alkylbenzenes cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1ccccc1C" aria-label="xylene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">XylC1</div>
+  <div class="structcard__sub">xylene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">no confirmed entries · → dimethyl cis-dihydrodiol</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Polycyclic aromatic hydrocarbons <span class="note">· 8 types · 463 entries</span></h3>
+  <p class="note">Combustion and tar residues, several of them priority pollutants. Their fused rings resist attack until two hydroxyls are installed on adjacent carbons.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_301_PhnA1a.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="PhnA1a 3_301_PhnA1a phenanthrene cis-3,4-dihydroxy-3,4-dihydrophenanthrene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2c(c1)ccc1ccccc21" aria-label="phenanthrene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PhnA1a <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 2CKF">3D</span></div>
+  <div class="structcard__sub">phenanthrene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">146 entries · → cis-3,4-dihydroxy-3,4-dihydrophenanthrene</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_319_PhdA.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="PhdA 3_319_PhdA phenanthrene cis-3,4-dihydroxy-3,4-dihydrophenanthrene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2c(c1)ccc1ccccc21" aria-label="phenanthrene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PhdA</div>
+  <div class="structcard__sub">phenanthrene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">140 entries · → cis-3,4-dihydroxy-3,4-dihydrophenanthrene</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_317_NidA.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NidA (317) 3_317_NidA pyrene cis-4,5-dihydroxy-4,5-dihydropyrene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1cc2ccc3cccc4ccc(c1)c2c34" aria-label="pyrene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NidA (317)</div>
+  <div class="structcard__sub">pyrene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">64 entries · → cis-4,5-dihydroxy-4,5-dihydropyrene</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_316_NarAa.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NarAa 3_316_NarAa naphthalene cis-1,2-dihydroxy-1,2-dihydronaphthalene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2ccccc2c1" aria-label="naphthalene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NarAa <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 2B1X">3D</span></div>
+  <div class="structcard__sub">naphthalene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">48 entries · → cis-1,2-dihydroxy-1,2-dihydronaphthalene</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_305_ArhA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="ArhA1 3_305_ArhA1 polycyclic aromatic hydrocarbons cis-dihydrodiol pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2cc3ccccc3cc2c1" aria-label="polycyclic aromatic hydrocarbons"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">ArhA1</div>
+  <div class="structcard__sub">polycyclic aromatic hydrocarbons</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">24 entries · → cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_320_NidA3.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NidA3 3_320_NidA3 polycyclic aromatic hydrocarbons cis-dihydrodiol pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1cc2ccc3cccc4ccc(c1)c2c34" aria-label="polycyclic aromatic hydrocarbons"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NidA3</div>
+  <div class="structcard__sub">polycyclic aromatic hydrocarbons</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">22 entries · → cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_318_NidA.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NidA (318) 3_318_NidA pyrene cis-4,5-dihydroxy-4,5-dihydropyrene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1cc2ccc3cccc4ccc(c1)c2c34" aria-label="pyrene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NidA (318)</div>
+  <div class="structcard__sub">pyrene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">19 entries · → cis-4,5-dihydroxy-4,5-dihydropyrene</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/3_309_NahAc.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NahAc 3_309_NahAc naphthalene cis-1,2-dihydroxy-1,2-dihydronaphthalene pah cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2ccccc2c1" aria-label="naphthalene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NahAc <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 1NDO">3D</span></div>
+  <div class="structcard__sub">naphthalene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">no confirmed entries · → cis-1,2-dihydroxy-1,2-dihydronaphthalene</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Biaryls, diaryl ethers and heterocycles <span class="note">· 13 types · 654 entries</span></h3>
+  <p class="note">Biphenyls, dioxins, carbazole and lignin-derived biaryls. Some of these are attacked at the carbon joining the two rings rather than on a ring edge, which is what makes the skeleton fall apart.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_108_PobA.html" data-card data-reaction="angular dioxygenation" data-sclass="natural_aromatic"
+data-group="1"
+data-k="PobA 1_108_PobA 4-carboxydiphenyl ether (phenoxybenzoate) a hemiacetal that spontaneously hydrolyses to phenol and protocatechuate biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C1=CC=C(C=C1)OC2=CC=C(C=C2)C(=O)O" aria-label="4-carboxydiphenyl ether (phenoxybenzoate)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PobA</div>
+  <div class="structcard__sub">4-carboxydiphenyl ether (phenoxybenzoate)</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">170 entries · → a hemiacetal that spontaneously hydrolyses to phenol and protocatechuate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_218_BphA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BphA1 (218) 2_218_BphA1 biphenyl cis-2,3-dihydro-2,3-dihydroxybiphenyl biaryls_ethers cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BphA1 (218)</div>
+  <div class="structcard__sub">biphenyl</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">122 entries · → cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_102_CARDO.html" data-card data-reaction="angular dioxygenation" data-sclass="xenobiotic"
+data-group="1"
+data-k="CARDO 1_102_CARDO carbazole 2&#39;-aminobiphenyl-2,3-diol biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2c(c1)[nH]c1ccccc12" aria-label="carbazole"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CARDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 1WW9">3D</span></div>
+  <div class="structcard__sub">carbazole</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">111 entries · → 2&#39;-aminobiphenyl-2,3-diol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_109_LigX.html" data-card data-reaction="O-demethylation" data-sclass="natural_aromatic"
+data-group="1"
+data-k="LigX 1_109_LigX 5,5&#39;-dehydrodivanillate demethylated biaryl diacid biaryls_ethers O-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1cc(-c2cc(C(=O)O)cc(OC)c2O)cc(OC)c1O" aria-label="5,5&#39;-dehydrodivanillate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">LigX</div>
+  <div class="structcard__sub">5,5&#39;-dehydrodivanillate</div>
+  <div class="structcard__rx"><i style="background:#b5731f"></i>O-demethylation</div>
+  <div class="structcard__n">87 entries · → demethylated biaryl diacid</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_116_GdmA.html" data-card data-reaction="O-demethylation" data-sclass="natural_aromatic"
+data-group="1"
+data-k="GdmA 1_116_GdmA guaiacol (2-methoxyphenol) catechol and formaldehyde biaryls_ethers O-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="COc1ccccc1O" aria-label="guaiacol (2-methoxyphenol)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">GdmA <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 7QWT">3D</span></div>
+  <div class="structcard__sub">guaiacol (2-methoxyphenol)</div>
+  <div class="structcard__rx"><i style="background:#b5731f"></i>O-demethylation</div>
+  <div class="structcard__n">57 entries · → catechol and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_204_Dpe.html" data-card data-reaction="angular dioxygenation" data-sclass="xenobiotic"
+data-group="2"
+data-k="Dpe 2_204_Dpe diphenyl ether phenol and catechol biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(Oc2ccccc2)cc1" aria-label="diphenyl ether"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">Dpe</div>
+  <div class="structcard__sub">diphenyl ether</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">54 entries · → phenol and catechol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_216_BPDO.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BPDO 2_216_BPDO biphenyl cis-2,3-dihydro-2,3-dihydroxybiphenyl biaryls_ethers cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BPDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 2GBW">3D</span></div>
+  <div class="structcard__sub">biphenyl</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">29 entries · → cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_213_BphA1A2.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BphA1A2 2_213_BphA1A2 biphenyl cis-2,3-dihydro-2,3-dihydroxybiphenyl biaryls_ethers cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BphA1A2 <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 1ULI">3D</span></div>
+  <div class="structcard__sub">biphenyl</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">21 entries · → cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_308_DxnA1.html" data-card data-reaction="angular dioxygenation" data-sclass="xenobiotic"
+data-group="3"
+data-k="DxnA1 3_308_DxnA1 dibenzo-p-dioxin 2,2&#39;,3-trihydroxydiphenyl ether biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="O1c2ccccc2Oc2ccccc21" aria-label="dibenzo-p-dioxin"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">DxnA1</div>
+  <div class="structcard__sub">dibenzo-p-dioxin</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">2 entries · → 2,2&#39;,3-trihydroxydiphenyl ether</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_201_BphA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BphA1 (201) 2_201_BphA1 biphenyl cis-2,3-dihydro-2,3-dihydroxybiphenyl biaryls_ethers cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BphA1 (201)</div>
+  <div class="structcard__sub">biphenyl</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">1 entries · → cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/1_103_CarAa.html" data-card data-reaction="angular dioxygenation" data-sclass="xenobiotic"
+data-group="1"
+data-k="CarAa 1_103_CarAa carbazole 2&#39;-aminobiphenyl-2,3-diol biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc2c(c1)[nH]c1ccccc12" aria-label="carbazole"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CarAa</div>
+  <div class="structcard__sub">carbazole</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">no confirmed entries · → 2&#39;-aminobiphenyl-2,3-diol</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/2_207_BpdC1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="BpdC1 2_207_BpdC1 biphenyl cis-2,3-dihydro-2,3-dihydroxybiphenyl biaryls_ethers cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BpdC1</div>
+  <div class="structcard__sub">biphenyl</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">no confirmed entries · → cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/4_407_PbaA1.html" data-card data-reaction="angular dioxygenation" data-sclass="xenobiotic"
+data-group="4"
+data-k="PbaA1 4_407_PbaA1 3-phenoxybenzoate protocatechuate and phenol biaryls_ethers angular dioxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1cccc(Oc2ccccc2)c1" aria-label="3-phenoxybenzoate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PbaA1</div>
+  <div class="structcard__sub">3-phenoxybenzoate</div>
+  <div class="structcard__rx"><i style="background:#2a8f87"></i>angular dioxygenation</div>
+  <div class="structcard__n">no confirmed entries · → protocatechuate and phenol</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Nitroaromatics <span class="note">· 4 types · 26 entries</span></h3>
+  <p class="note">Explosives and dye intermediates. The oxygenase installs the diol and the nitro group leaves as nitrite, so one step both activates and detoxifies.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_303_NBDO.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="3"
+data-k="NBDO 3_303_NBDO nitrobenzene catechol and nitrite nitroaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="O=[N+]([O-])c1ccccc1" aria-label="nitrobenzene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NBDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 2BMO">3D</span></div>
+  <div class="structcard__sub">nitrobenzene</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">24 entries · → catechol and nitrite</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_306_3NTDO.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="3"
+data-k="3NTDO 3_306_3NTDO 3-nitrotoluene methylcatechol and nitrite nitroaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1cccc(c1)[N+](=O)[O-]" aria-label="3-nitrotoluene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">3NTDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 5XBP">3D</span></div>
+  <div class="structcard__sub">3-nitrotoluene</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">2 entries · → methylcatechol and nitrite</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/3_310_DntAc.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="3"
+data-k="DntAc 3_310_DntAc 2,4-dinitrotoluene 4-methyl-5-nitrocatechol and nitrite nitroaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1ccc([N+](=O)[O-])cc1[N+](=O)[O-]" aria-label="2,4-dinitrotoluene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">DntAc</div>
+  <div class="structcard__sub">2,4-dinitrotoluene</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">no confirmed entries · → 4-methyl-5-nitrocatechol and nitrite</div>
+</div></a>
+  
+    
+    <a class="structcard structcard--empty"
+       href="/pro-sim-blast/cluster/3_312_NinA.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="3"
+data-k="NinA 3_312_NinA 1-nitronaphthalene 1,2-dihydroxynaphthalene and nitrite nitroaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="C1=CC=C2C(=C1)C=CC=C2[N+](=O)[O-]" aria-label="1-nitronaphthalene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NinA</div>
+  <div class="structcard__sub">1-nitronaphthalene</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">no confirmed entries · → 1,2-dihydroxynaphthalene and nitrite</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Halogenated aromatics <span class="note">· 7 types · 1,146 entries</span></h3>
+  <p class="note">Herbicides, solvents and their residues. The halogen departs as halide, which is the step that makes these compounds biodegradable at all.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_410_CbdC.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="4"
+data-k="CbdC 4_410_CbdC 2-halobenzoate catechol, halide and carbon dioxide haloaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccccc1Cl" aria-label="2-halobenzoate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CbdC</div>
+  <div class="structcard__sub">2-halobenzoate</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">424 entries · → catechol, halide and carbon dioxide</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_105_DdmC.html" data-card data-reaction="O-demethylation" data-sclass="xenobiotic"
+data-group="1"
+data-k="DdmC 1_105_DdmC dicamba 3,6-dichlorosalicylate and formaldehyde haloaromatics O-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1c(OC)c(Cl)ccc1Cl" aria-label="dicamba"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">DdmC <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 3GKE">3D</span></div>
+  <div class="structcard__sub">dicamba</div>
+  <div class="structcard__rx"><i style="background:#b5731f"></i>O-demethylation</div>
+  <div class="structcard__n">401 entries · → 3,6-dichlorosalicylate and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_117_PrnD.html" data-card data-reaction="N_oxygenation" data-sclass="natural_specialized"
+data-group="1"
+data-k="PrnD 1_117_PrnD aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole) pyrrolnitrin haloaromatics N_oxygenation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C1=CC(=C(C(=C1)Cl)N)C2=CNC=C2Cl" aria-label="aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PrnD</div>
+  <div class="structcard__sub">aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)</div>
+  <div class="structcard__rx"><i style="background:#8a8a8a"></i>N_oxygenation</div>
+  <div class="structcard__n">160 entries · → pyrrolnitrin</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_107_CndA.html" data-card data-reaction="N-demethylation" data-sclass="xenobiotic"
+data-group="1"
+data-k="CndA 1_107_CndA chloroacetanilide herbicides (alachlor, acetochlor, butachlor) N-dealkylated chloroacetanilide and the corresponding alkyl formate haloaromatics N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CCc1cccc(CC)c1N(COC)C(=O)CCl" aria-label="chloroacetanilide herbicides (alachlor, acetochlor, butachlor)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CndA</div>
+  <div class="structcard__sub">chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">73 entries · → N-dealkylated chloroacetanilide and the corresponding alkyl formate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_214_TftA.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="2"
+data-k="TftA 2_214_TftA 2,4,5-trichlorophenoxyacetate 2,4,5-trichlorophenol and glyoxylate haloaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)COc1cc(Cl)c(Cl)cc1Cl" aria-label="2,4,5-trichlorophenoxyacetate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TftA</div>
+  <div class="structcard__sub">2,4,5-trichlorophenoxyacetate</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">55 entries · → 2,4,5-trichlorophenol and glyoxylate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_208_TecA1.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="TecA1 2_208_TecA1 1,2,4,5-tetrachlorobenzene chlorinated cis-dihydrodiol haloaromatics cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Clc1cc(Cl)c(Cl)cc1Cl" aria-label="1,2,4,5-tetrachlorobenzene"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TecA1</div>
+  <div class="structcard__sub">1,2,4,5-tetrachlorobenzene</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">19 entries · → chlorinated cis-dihydrodiol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_215_cadA.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="2"
+data-k="cadA 2_215_cadA 2,4-dichlorophenoxyacetate (2,4-D) 2,4-dichlorophenol and glyoxylate haloaromatics dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)COc1ccc(Cl)cc1Cl" aria-label="2,4-dichlorophenoxyacetate (2,4-D)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">cadA</div>
+  <div class="structcard__sub">2,4-dichlorophenoxyacetate (2,4-D)</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">14 entries · → 2,4-dichlorophenol and glyoxylate</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Sulfonated aromatics <span class="note">· 1 types · 1,066 entries</span></h3>
+  <p class="note">Surfactant and dye intermediates. The sulfonate leaves as sulfite during dihydroxylation.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_106_TsaM.html" data-card data-reaction="hydroxylation" data-sclass="xenobiotic"
+data-group="1"
+data-k="TsaM 1_106_TsaM 4-toluenesulfonate 4-sulfobenzyl alcohol sulfoaromatics hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1ccc(cc1)S(=O)(=O)O" aria-label="4-toluenesulfonate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TsaM</div>
+  <div class="structcard__sub">4-toluenesulfonate</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">1,066 entries · → 4-sulfobenzyl alcohol</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Aromatic acids and lignin-derived compounds <span class="note">· 11 types · 4,927 entries</span></h3>
+  <p class="note">Carboxylated aromatics from plants and from industry, including the polyethylene terephthalate monomer. Most funnel into the beta-ketoadipate pathway and then into central metabolism.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_104_VanA.html" data-card data-reaction="O-demethylation" data-sclass="natural_aromatic"
+data-group="1"
+data-k="VanA 1_104_VanA vanillate protocatechuate and formaldehyde aromatic_acids O-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="COc1cc(ccc1O)C(=O)O" aria-label="vanillate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">VanA</div>
+  <div class="structcard__sub">vanillate</div>
+  <div class="structcard__rx"><i style="background:#b5731f"></i>O-demethylation</div>
+  <div class="structcard__n">1,755 entries · → protocatechuate and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_411_XylX.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="XylX 4_411_XylX toluate and benzoate methyl-cis-dihydroxycyclohexadiene carboxylate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cc1cccc(c1)C(=O)O" aria-label="toluate and benzoate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">XylX</div>
+  <div class="structcard__sub">toluate and benzoate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">731 entries · → methyl-cis-dihydroxycyclohexadiene carboxylate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_409_TPDO.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="TPDO 4_409_TPDO terephthalate 1,2-dihydroxy-3,5-cyclohexadiene-1,4-dicarboxylate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccc(cc1)C(=O)O" aria-label="terephthalate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TPDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 7VJU">3D</span></div>
+  <div class="structcard__sub">terephthalate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">466 entries · → 1,2-dihydroxy-3,5-cyclohexadiene-1,4-dicarboxylate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_405_ROCH34.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="ROCH34 4_405_ROCH34 phthalate cis-4,5-dihydroxy-4,5-dihydrophthalate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccccc1C(=O)O" aria-label="phthalate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">ROCH34 <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 7FHR">3D</span></div>
+  <div class="structcard__sub">phthalate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">364 entries · → cis-4,5-dihydroxy-4,5-dihydrophthalate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_307_NagGH.html" data-card data-reaction="hydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="NagGH 3_307_NagGH salicylate (2-hydroxybenzoate) gentisate (2,5-dihydroxybenzoate) aromatic_acids hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccccc1O" aria-label="salicylate (2-hydroxybenzoate)"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NagGH <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 7C8Z">3D</span></div>
+  <div class="structcard__sub">salicylate (2-hydroxybenzoate)</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">332 entries · → gentisate (2,5-dihydroxybenzoate)</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_408_AntA.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="natural_aromatic"
+data-group="4"
+data-k="AntA 4_408_AntA anthranilate catechol, ammonia and carbon dioxide aromatic_acids dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="Nc1ccccc1C(=O)O" aria-label="anthranilate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">AntA</div>
+  <div class="structcard__sub">anthranilate</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">304 entries · → catechol, ammonia and carbon dioxide</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_406_PDO.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="PDO 4_406_PDO phthalate cis-3,4-dihydroxy-3,4-dihydrophthalate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccccc1C(=O)O" aria-label="phthalate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PDO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 7FJL">3D</span></div>
+  <div class="structcard__sub">phthalate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">281 entries · → cis-3,4-dihydroxy-3,4-dihydrophthalate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_217_HcaE.html" data-card data-reaction="cis-dihydroxylation" data-sclass="natural_aromatic"
+data-group="2"
+data-k="HcaE 2_217_HcaE 3-phenylpropionate 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate (the cis-dihydrodiol) aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)CCc1ccccc1" aria-label="3-phenylpropionate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">HcaE <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 8K0A">3D</span></div>
+  <div class="structcard__sub">3-phenylpropionate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">259 entries · → 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate (the cis-dihydrodiol)</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_401_CmtAb.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="CmtAb 4_401_CmtAb p-cumate cis-2,3-dihydroxy-2,3-dihydro-p-cumate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)c1ccc(cc1)C(=O)O" aria-label="p-cumate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CmtAb</div>
+  <div class="structcard__sub">p-cumate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">223 entries · → cis-2,3-dihydroxy-2,3-dihydro-p-cumate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_311_PhtAa.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="3"
+data-k="PhtAa 3_311_PhtAa phthalate cis-4,5-dihydroxy-4,5-dihydrophthalate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="OC(=O)c1ccccc1C(=O)O" aria-label="phthalate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PhtAa</div>
+  <div class="structcard__sub">phthalate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">184 entries · → cis-4,5-dihydroxy-4,5-dihydrophthalate</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_402_PsbAb.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="4"
+data-k="PsbAb 4_402_PsbAb p-cumate cis-2,3-dihydroxy-2,3-dihydro-p-cumate aromatic_acids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)c1ccc(cc1)C(=O)O" aria-label="p-cumate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">PsbAb</div>
+  <div class="structcard__sub">p-cumate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">28 entries · → cis-2,3-dihydroxy-2,3-dihydro-p-cumate</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Anilines <span class="note">· 3 types · 1,056 entries</span></h3>
+  <p class="note">Dye and pesticide feedstocks. The amino group leaves as ammonia, giving catechol.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_404_TdnA1.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="4"
+data-k="TdnA1 4_404_TdnA1 aniline catechol and ammonia anilines dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="Nc1ccccc1" aria-label="aniline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">TdnA1</div>
+  <div class="structcard__sub">aniline</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">781 entries · → catechol and ammonia</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/4_403_AtdA.html" data-card data-reaction="dioxygenation with substituent release" data-sclass="xenobiotic"
+data-group="4"
+data-k="AtdA 4_403_AtdA aniline catechol and ammonia anilines dioxygenation with substituent release"><div class="structcard__img">
+  <svg class="struct" data-smiles="Nc1ccccc1" aria-label="aniline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">AtdA</div>
+  <div class="structcard__sub">aniline</div>
+  <div class="structcard__rx"><i style="background:#8c2f22"></i>dioxygenation with substituent release</div>
+  <div class="structcard__n">182 entries · → catechol and ammonia</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/2_211_bfzA.html" data-card data-reaction="cis-dihydroxylation" data-sclass="xenobiotic"
+data-group="2"
+data-k="bfzA 2_211_bfzA buprofezin buprofezin cis-dihydrodiol (benzene ring dihydroxylated) anilines cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)N1C(=NC(C)(C)C)SCN(C1=O)C2=CC=CC=C2" aria-label="buprofezin"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">bfzA</div>
+  <div class="structcard__sub">buprofezin</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">93 entries · → buprofezin cis-dihydrodiol (benzene ring dihydroxylated)</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Quaternary amines and osmolytes <span class="note">· 8 types · 5,545 entries</span></h3>
+  <p class="note">Choline, the betaines and carnitine. These enzymes carry the same two metal centres as the ring-hydroxylating ones but act on open-chain substrates with no aromatic ring at all, which is the clearest evidence that the family is defined by its chemistry rather than by its substrate.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_504_CntA.html" data-card data-reaction="carbon-nitrogen bond cleavage" data-sclass="natural_specialized"
+data-group="5"
+data-k="CntA 5_504_CntA L-carnitine trimethylamine and malic semialdehyde quaternary_amines carbon-nitrogen bond cleavage"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CC(O)CC(=O)[O-]" aria-label="L-carnitine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CntA <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 6Y9C">3D</span></div>
+  <div class="structcard__sub">L-carnitine</div>
+  <div class="structcard__rx"><i style="background:#b03a6e"></i>carbon-nitrogen bond cleavage</div>
+  <div class="structcard__n">1,871 entries · → trimethylamine and malic semialdehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_506_Stc2.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="Stc2 5_506_Stc2 stachydrine N-methyl-L-proline and formaldehyde quaternary_amines N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+]1(C)CCCC1C(=O)[O-]" aria-label="stachydrine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">Stc2 <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 3VCA">3D</span></div>
+  <div class="structcard__sub">stachydrine</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">1,460 entries · → N-methyl-L-proline and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_507_BmoA.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="BmoA 5_507_BmoA glycine betaine dimethylglycine and formaldehyde quaternary_amines N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CC(=O)[O-]" aria-label="glycine betaine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">BmoA</div>
+  <div class="structcard__sub">glycine betaine</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">1,045 entries · → dimethylglycine and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_508_GbcA.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="GbcA 5_508_GbcA glycine betaine dimethylglycine and formaldehyde quaternary_amines N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CC(=O)[O-]" aria-label="glycine betaine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">GbcA</div>
+  <div class="structcard__sub">glycine betaine</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">504 entries · → dimethylglycine and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_501_CmoS.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="CmoS 5_501_CmoS choline betaine aldehyde hydrate (in equilibrium with betaine aldehyde) quaternary_amines hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CCO" aria-label="choline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CmoS</div>
+  <div class="structcard__sub">choline</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">456 entries · → betaine aldehyde hydrate (in equilibrium with betaine aldehyde)</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_505_qxyA.html" data-card data-reaction="carbon-nitrogen bond cleavage" data-sclass="xenobiotic"
+data-group="5"
+data-k="qxyA 5_505_qxyA benzalkonium chloride and other quaternary ammonium compounds benzyldimethylamine and an alkanoic acid quaternary_amines carbon-nitrogen bond cleavage"><div class="structcard__img">
+  <svg class="struct" data-smiles="CCCCCCCCCCCC[N+](C)(C)Cc1ccccc1" aria-label="benzalkonium chloride and other quaternary ammonium compounds"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">qxyA</div>
+  <div class="structcard__sub">benzalkonium chloride and other quaternary ammonium compounds</div>
+  <div class="structcard__rx"><i style="background:#b03a6e"></i>carbon-nitrogen bond cleavage</div>
+  <div class="structcard__n">164 entries · → benzyldimethylamine and an alkanoic acid</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_502_CmoB.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="CmoB 5_502_CmoB choline betaine aldehyde hydrate (in equilibrium with betaine aldehyde) quaternary_amines hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CCO" aria-label="choline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CmoB</div>
+  <div class="structcard__sub">choline</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">33 entries · → betaine aldehyde hydrate (in equilibrium with betaine aldehyde)</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/5_503_CmoA.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="5"
+data-k="CmoA 5_503_CmoA choline betaine aldehyde hydrate (in equilibrium with betaine aldehyde) quaternary_amines hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[N+](C)(C)CCO" aria-label="choline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CmoA</div>
+  <div class="structcard__sub">choline</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">12 entries · → betaine aldehyde hydrate (in equilibrium with betaine aldehyde)</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Alkaloids and purines <span class="note">· 8 types · 1,231 entries</span></h3>
+  <p class="note">Caffeine and intermediates of saxitoxin biosynthesis. Here the enzymes strip methyl groups from nitrogen or install single hydroxyls on complex scaffolds.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_113_CdnA.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="1"
+data-k="CdnA 1_113_CdnA caffeine and methylxanthines demethylated xanthine alkaloids N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cn1cnc2c1c(=O)n(C)c(=O)n2C" aria-label="caffeine and methylxanthines"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">CdnA</div>
+  <div class="structcard__sub">caffeine and methylxanthines</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">670 entries · → demethylated xanthine</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_110_SxtT.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="1"
+data-k="SxtT 1_110_SxtT beta-saxitoxinol saxitoxin alkaloids hydroxylation"><div class="structcard__img">
+  <div class="struct struct--none">structure<br>not drawn</div>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">SxtT <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 6WN3">3D</span></div>
+  <div class="structcard__sub">beta-saxitoxinol</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">216 entries · → saxitoxin</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_111_GxtA.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="1"
+data-k="GxtA 1_111_GxtA saxitoxin (also accepts beta-saxitoxinol) 11-beta-hydroxysaxitoxin alkaloids hydroxylation"><div class="structcard__img">
+  <div class="struct struct--none">structure<br>not drawn</div>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">GxtA <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 6WNC">3D</span></div>
+  <div class="structcard__sub">saxitoxin (also accepts beta-saxitoxinol)</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">171 entries · → 11-beta-hydroxysaxitoxin</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_118_RedG.html" data-card data-reaction="C_C_bond_formation" data-sclass="natural_specialized"
+data-group="1"
+data-k="RedG 1_118_RedG undecylprodigiosin streptorubrin B alkaloids C_C_bond_formation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CCCCCCCCCCCC1=CC=C(N1)/C=C\2/C(=CC(=N2)C3=CC=CN3)OC" aria-label="undecylprodigiosin"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">RedG</div>
+  <div class="structcard__sub">undecylprodigiosin</div>
+  <div class="structcard__rx"><i style="background:#8a8a8a"></i>C_C_bond_formation</div>
+  <div class="structcard__n">64 entries · → streptorubrin B</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_112_NdmA.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="1"
+data-k="NdmA 1_112_NdmA caffeine theobromine and formaldehyde alkaloids N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cn1cnc2c1c(=O)n(C)c(=O)n2C" aria-label="caffeine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NdmA <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 6ICK">3D</span></div>
+  <div class="structcard__sub">caffeine</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">41 entries · → theobromine and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_101_OxoO.html" data-card data-reaction="hydroxylation" data-sclass="natural_aromatic"
+data-group="1"
+data-k="OxoO 1_101_OxoO 2-oxo-1,2-dihydroquinoline 8-hydroxy-2-oxo-1,2-dihydroquinoline alkaloids hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="O=c1ccc2ccccc2[nH]1" aria-label="2-oxo-1,2-dihydroquinoline"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">OxoO <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 1Z03">3D</span></div>
+  <div class="structcard__sub">2-oxo-1,2-dihydroquinoline</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">36 entries · → 8-hydroxy-2-oxo-1,2-dihydroquinoline</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/1_114_NdmB.html" data-card data-reaction="N-demethylation" data-sclass="natural_specialized"
+data-group="1"
+data-k="NdmB 1_114_NdmB caffeine paraxanthine and formaldehyde alkaloids N-demethylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="Cn1cnc2c1c(=O)n(C)c(=O)n2C" aria-label="caffeine"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">NdmB <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 6ICL">3D</span></div>
+  <div class="structcard__sub">caffeine</div>
+  <div class="structcard__rx"><i style="background:#6d4c9a"></i>N-demethylation</div>
+  <div class="structcard__n">26 entries · → paraxanthine and formaldehyde</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/7_701_AerC.html" data-card data-reaction="C_C_cleavage" data-sclass="natural_specialized"
+data-group="7"
+data-k="AerC 7_701_AerC N4-isopentenylagmatine 1-amino-2-(N-amidino-3-Delta3-pyrrolinyl)ethane (Aeap) alkaloids C_C_cleavage"><div class="structcard__img">
+  <div class="struct struct--none">structure<br>not drawn</div>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">AerC</div>
+  <div class="structcard__sub">N4-isopentenylagmatine</div>
+  <div class="structcard__rx"><i style="background:#8a8a8a"></i>C_C_cleavage</div>
+  <div class="structcard__n">7 entries · → 1-amino-2-(N-amidino-3-Delta3-pyrrolinyl)ethane (Aeap)</div>
+</div></a>
+  
+  </div>
+</section>
+
+<section class="chemfam" data-cardsection>
+  <h3>Terpenoids and steroids <span class="note">· 4 types · 2,302 entries</span></h3>
+  <p class="note">Conifer resin acids and 3-ketosteroids. Hydroxylation at a specific ring position opens polycyclic skeletons that are otherwise inert.</p>
+  <div class="structgrid">
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_313_KshA15.html" data-card data-reaction="hydroxylation" data-sclass="natural_specialized"
+data-group="3"
+data-k="KshA15 3_313_KshA15 3-ketosteroid 9-alpha-hydroxy-3-ketosteroid terpenoids_steroids hydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="O=C1CCC2(C)C3CCC4(C)C(=O)CCC4C3CCC2=C1" aria-label="3-ketosteroid"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">KshA15 <span class="chip chip--ok" title="Structure of the reference enzyme: PDB 2ZYL">3D</span></div>
+  <div class="structcard__sub">3-ketosteroid</div>
+  <div class="structcard__rx"><i style="background:#1f7a4d"></i>hydroxylation</div>
+  <div class="structcard__n">1,599 entries · → 9-alpha-hydroxy-3-ketosteroid</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_322_DAF36.html" data-card data-reaction="desaturation" data-sclass="natural_specialized"
+data-group="3"
+data-k="DAF36 3_322_DAF36 cholesterol 7-dehydrocholesterol terpenoids_steroids desaturation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C" aria-label="cholesterol"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">DAF36</div>
+  <div class="structcard__sub">cholesterol</div>
+  <div class="structcard__rx"><i style="background:#8a8a8a"></i>desaturation</div>
+  <div class="structcard__n">319 entries · → 7-dehydrocholesterol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_321_Nvd.html" data-card data-reaction="desaturation" data-sclass="natural_specialized"
+data-group="3"
+data-k="Nvd 3_321_Nvd cholesterol 7-dehydrocholesterol terpenoids_steroids desaturation"><div class="structcard__img">
+  <svg class="struct" data-smiles="C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C" aria-label="cholesterol"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">Nvd</div>
+  <div class="structcard__sub">cholesterol</div>
+  <div class="structcard__rx"><i style="background:#8a8a8a"></i>desaturation</div>
+  <div class="structcard__n">273 entries · → 7-dehydrocholesterol</div>
+</div></a>
+  
+    
+    <a class="structcard"
+       href="/pro-sim-blast/cluster/3_302_DitA.html" data-card data-reaction="cis-dihydroxylation" data-sclass="natural_specialized"
+data-group="3"
+data-k="DitA 3_302_DitA dehydroabietate diterpenoid diol terpenoids_steroids cis-dihydroxylation"><div class="structcard__img">
+  <svg class="struct" data-smiles="CC(C)c1ccc2c(c1)CCC1C2(C)CCCC1(C)C(=O)O" aria-label="dehydroabietate"></svg>
+</div>
+<div class="structcard__body">
+  <div class="structcard__gene">DitA</div>
+  <div class="structcard__sub">dehydroabietate</div>
+  <div class="structcard__rx"><i style="background:#1f4e79"></i>cis-dihydroxylation</div>
+  <div class="structcard__n">111 entries · → diterpenoid diol</div>
+</div></a>
+  
+  </div>
+</section>
+
+</div>
+<p class="note">Cards drawn with a dashed border are curated types for which this build found no
+confirmed alpha subunit. They still open, showing what the literature records about the reference
+enzyme, because the enzyme is real: the absence is a property of this build's search, and of the
+duplicate entries in the reference set, rather than of the literature.
+<a href="/pro-sim-blast/atlas/quality.html">Why some references recruit nothing</a></p>
+
+<h2>4 · Explore further</h2>
+<div class="cards">
+  <a class="card" href="/pro-sim-blast/atlas.html"><h3>Atlas</h3>
+    <p>Phylogeny, sequence space, taxonomy, operons, regulation, ecology, evidence levels and the
+    statistical tests behind every claim.</p></a>
+  <a class="card" href="/pro-sim-blast/clusters.html"><h3>All enzyme types</h3>
+    <p>Sortable, filterable table of the 68 types with members, genera, variants,
+    plasmid rates and operon composition.</p></a>
+  
+  <a class="card" href="/pro-sim-blast/about.html"><h3>Methods</h3>
+    <p>How entries are selected, where every threshold comes from, and what this database does not
+    claim.</p></a>
+</div>
+
+<h2>5 · Downloads</h2>
+<ul>
+  <li><a href="/pro-sim-blast/download/all_confirmed.fasta">All confirmed alpha subunit sequences (FASTA)</a></li>
+  <li><a href="/pro-sim-blast/download/all_confirmed.csv">All entries with annotation, type, variant and operon summary (CSV)</a></li>
+  <li><a href="/pro-sim-blast/download/operons.csv">Operon gene tables for every entry (CSV)</a></li>
+  <li><a href="/pro-sim-blast/download/tree_all.nwk">Phylogenetic tree (Newick)</a></li>
+</ul>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+</body>
+</html>

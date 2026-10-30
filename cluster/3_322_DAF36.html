@@ -1,0 +1,3524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAF36 · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 3_322_DAF36</nav>
+
+<h1>DAF36 <span class="note">· type 3_322_DAF36 · RO group 3</span></h1>
+<div class="numbered">
+
+
+
+
+
+
+
+
+
+
+
+<div class="caveat">
+  <b>cholesterol</b>
+  <span class="chip chip--natural_specialized">natural_specialized</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  Of the 319 members assigned here,
+  <b>1.3%</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  
+  <br><span class="note">The same C7-C8 desaturation as Neverland, in Caenorhabditis elegans, where it commits cholesterol to dafachronic acid and so to the dauer-formation decision.</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt Q17938 (DAF36_CAEEL, reviewed), Caenorhabditis elegans cholesterol 7-desaturase daf-36, EC 1.14.19.21; the organism named by analysis_out/literature_harvest.json finding NT-09 ·
+      no individual citation was recorded for this type
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C" aria-label="cholesterol"></svg>
+      
+      <div class="rxn__label">cholesterol</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">desaturation of the C7-C8 bond of cholesterol, the first step of dafachronic acid biosynthesis and of dauer-formation control</div>
+    </div>
+    <div class="rxn__scheme">
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">7-dehydrocholesterol</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> not incorporated.
+    
+    
+    O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
+    mechanistically an oxidase rather than an oxygenase. It is in this database
+    because it carries the Rieske cluster and the mononuclear iron site: the
+    name is a statement of family membership, not of mechanism.
+    
+    <br><span class="small">cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  <br><b>Note.</b> The nematode/vertebrate arm of the same family as 3_321_Nvd. Proposed separately because the two are 36.8% identical over 82% of their length, and the database entries the audit found are split across both arms (one Drosophila mauritiana &#34;cholesterol 7-desaturase isoform X9&#34; against daf-36-like proteins from Notothenia coriiceps, Nothobranchius furzeri, Carassius auratus and Geotrypetes seraphini). A single reference at 37% identity would not read the other arm. If the curator wants only one, keep 3_321_Nvd, which the thesis names, and drop this one. reaction_class &#34;desaturation&#34; is NEW vocabulary. SMILES as in NT-09. OXYGEN IS NOT INCORPORATED (recorded 2026-10-28). The formulae show a net loss of two hydrogens and no gain of oxygen: cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O (PubChem CID 5997 -&gt; 439423). O2 is the oxidant here, not an oxygen donor, so this enzyme is mechanistically an oxidase/desaturase. Calling it a Rieske OXYGENASE is a statement of family membership -- it carries the Rieske cluster and the mononuclear iron site -- and must not be read as a claim that oxygen is transferred to the product.</figcaption>
+</figure>
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>319 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>65 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>293 replicons, 98 genera</dd>
+      <dt>On plasmids</dt><dd>0.9% (3)</dd>
+      <dt>Transposase within 10 kb</dt><dd>4.1%</dd>
+      <dt>Profile match</dt><dd>mean score 193 bits, mean coverage 0.63</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 286</span></dt>
+      <dd><b>Asp branch.</b> Aspartate in 319 of 319 members
+          (100.0%), as in the ring-hydroxylating majority.</dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">column 431</span></dt>
+      <dd>Asp in 139 of
+          319 members (43.6%);
+          173 have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site. This site is aspartate across the whole family.</dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 218 · Eukaryota / animal 95 · Eukaryota / other eukaryote 4 · Eukaryota / SAR 2</dd>
+      <dt>Phyla</dt><dd class="small">Actinomycetota 172, Metazoa 95, Pseudomonadota 43, Myxococcota 2, Filasterea 2, Sar 2, Cyanobacteriota 1, Amoebozoa 1</dd>
+      <dt>Top genera</dt><dd><span class="chip">Mycobacterium 100</span> <span class="chip">Mycolicibacterium 34</span> <span class="chip">Sphingomonas 10</span> <span class="chip">Streptomyces 10</span> <span class="chip">Frankia 8</span> <span class="chip">Novosphingobium 8</span> <span class="chip">Branchiostoma 6</span> <span class="chip">Crassostrea 5</span> <span class="chip">Mycolicibacter 5</span> <span class="chip">Pseudomonas 5</span> <span class="chip">Geotrypetes 4</span> <span class="chip">Acanthaster 4</span> </dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/3_322_DAF36.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/3_322_DAF36.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#1f7a4d;width:0.31%" title="characterized: 1"></i><i style="background:#7fb069;width:0.94%" title="close_homolog: 3"></i><i style="background:#f2c14e;width:26.65%" title="family_member: 85"></i><i style="background:#f78154;width:70.53%" title="distant: 225"></i><i style="background:#8e44ad;width:1.57%" title="novel: 5"></i></span>
+    <table class="data compact">
+      <tbody>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+          <td class="small">characterized reference (≥95 % identity)</td>
+          <td class="num">1</td><td class="num">0.3%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+          <td class="small">close homolog (≥60 %)</td>
+          <td class="num">3</td><td class="num">0.9%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">85</td><td class="num">26.6%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">225</td><td class="num">70.5%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+          <td class="small">novel (&lt;25 %): no close reference</td>
+          <td class="num">5</td><td class="num">1.6%</td></tr>
+      
+      </tbody>
+    </table>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">3_313_KshA15</a></td><td class="num">96.5 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">3_321_Nvd</a></td><td class="num">81.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td><td class="num">43.6 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a></td><td class="num">35.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">1_110_SxtT</a></td><td class="num">34.4 %</td></tr>
+      
+    </tbody></table>
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">0.9%</td><td class="num">1.6%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">0.3%</td><td class="num">9.4%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">286</td></tr><tr><td class="mono small">α3 · Fd:none · Red:GR</td><td class="num">20</td></tr><tr><td class="mono small">α3 · Fd:none · Red:FNR</td><td class="num">8</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:none</td><td class="num">2</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:GR</td><td class="num">2</td></tr><tr><td class="mono small">α3 · Fd:rieske · Red:none</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
+    are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
+    describe this enzyme.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">4</td></tr>
+      
+    </tbody></table>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (231 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">124</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text></svg><div class="note mono">[alpha] &gt; reductase</div></td><td class="num">33</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text></svg><div class="note mono">[alpha] &gt; dehydrogenase</div></td><td class="num">19</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 34" height="34" width="304" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">[alpha] &gt; other &gt; other &gt; other &gt; other &gt; other</div></td><td class="num">18</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text></svg><div class="note mono">[alpha] &gt; regulator</div></td><td class="num">15</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 255 34" height="34" width="255" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">[alpha] &gt; other &gt; other &gt; other &gt; other</div></td><td class="num">14</td></tr>
+        
+      </tbody></table>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 72" height="72" width="118" class="oplayout"><rect x="6" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="33.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">145 bp</text><polygon points="63,18 100,18 109,32.0 100,46 63,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="81.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text></svg>
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference
+&mdash; 99 %
+(88 of 89).</b>
+
+Members are assigned by profile score, and most of them are distant: counting all of them would
+describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+family-member level are counted here.
+
+
+
+The commonest order holds the alpha subunit alone, which means that in most members no other gene
+lies on the same strand within 150 base pairs &mdash; not that this enzyme has no partners
+anywhere. Genes beyond that distance, and genes on the opposite strand such as a divergent
+regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
+pages and in the sections above.
+
+Preceded by the architecture seen in most of its members
+(unknown) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>no upstream gene in the window</td>
+        <td class="num">107</td><td class="num">33.5%</td></tr>
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">101</td><td class="num">31.7%</td></tr>
+      
+      <tr><td><b>regulator, divergent</b> (shared promoter region)
+          </td>
+        <td class="num">78</td><td class="num">24.5%</td></tr>
+      
+      <tr><td>non-regulator, co-directional
+          </td>
+        <td class="num">30</td><td class="num">9.4%</td></tr>
+      
+      <tr><td>regulator, co-directional
+          </td>
+        <td class="num">3</td><td class="num">0.9%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  <div>
+    
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      <tr><td>TetR</td><td class="num">77</td></tr><tr><td>GntR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+    
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      <tr><td>TetR</td><td class="num">144</td></tr><tr><td>GntR</td><td class="num">55</td></tr><tr><td>regulator_unclassified</td><td class="num">33</td></tr><tr><td>sigma_factor</td><td class="num">6</td></tr><tr><td>MarR</td><td class="num">5</td></tr><tr><td>LysR</td><td class="num">5</td></tr><tr><td>AraC</td><td class="num">2</td></tr>
+    </tbody></table>
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>other</td><td class="num">68.0%</td><td class="num">791</td></tr><tr><td>regulator</td><td class="num">55.2%</td><td class="num">250</td></tr><tr><td>reductase</td><td class="num">41.7%</td><td class="num">221</td></tr><tr><td>hypothetical</td><td class="num">33.9%</td><td class="num">134</td></tr><tr><td>hydrolase</td><td class="num">27.9%</td><td class="num">126</td></tr><tr><td>dehydrogenase</td><td class="num">19.1%</td><td class="num">78</td></tr><tr><td>ferredoxin</td><td class="num">17.6%</td><td class="num">63</td></tr><tr><td>transporter</td><td class="num">9.4%</td><td class="num">45</td></tr><tr><td>ring_cleavage</td><td class="num">1.6%</td><td class="num">5</td></tr><tr><td>ro_alpha</td><td class="num">0.9%</td><td class="num">3</td></tr><tr><td>transposon</td><td class="num">0.3%</td><td class="num">1</td></tr></tbody>
+</table></div>
+
+
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  <th class="num" title="score 1.4011 · linker domain">170</th><th class="num" title="score 1.3958 · catalytic domain">290</th><th class="num" title="score 1.3842 · catalytic domain">280</th><th class="num" title="score 1.3806 · catalytic domain">191</th><th class="num" title="score 1.377 · catalytic domain">194</th><th class="num" title="score 1.3624 · catalytic domain">285</th><th class="num" title="score 1.3118 · linker domain">150</th><th class="num" title="score 1.3005 · linker domain">157</th><th class="num" title="score 1.2927 · catalytic domain">197</th><th class="num" title="score 1.2829 · linker domain">148</th><th class="num" title="score 1.2509 · catalytic domain">293</th><th class="num" title="score 1.2264 · catalytic domain">234</th>
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  <th class="num note">H</th><th class="num note">F</th><th class="num note">I</th><th class="num note">F</th><th class="num note">D</th><th class="num note">A</th><th class="num note">F</th><th class="num note">V</th><th class="num note">C</th><th class="num note">V</th><th class="num note">V</th><th class="num note">H</th><th></th></tr>
+</thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-0.html">0</a></td>
+  <td class="num">74</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+  <td class="num">46</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-2.html">2</a></td>
+  <td class="num">41</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-3.html">3</a></td>
+  <td class="num">18</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-4.html">4</a></td>
+  <td class="num">11</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-6.html">6</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-8.html">8</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-10.html">10</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">12</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">13</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-14.html">14</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-15.html">15</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-16.html">16</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  <td class="num">7</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-17.html">17</a></td>
+  <td class="num">4</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-18.html">18</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-19.html">19</a></td>
+  <td class="num">3</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">D</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">C</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">H</td>
+  
+  <td class="num">3</td></tr>
+
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="/pro-sim-blast/download/analysis/variant_signatures.csv">Download signatures</a></p>
+
+
+
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 594" width="100%" class="tree" style="height:auto"><path d="M20.0,112.9 V34.5 H29.3" fill="none" stroke="#777" stroke-width="1"/><path d="M29.3,34.5 V21.0 H50.5" fill="none" stroke="#777" stroke-width="1"/><path d="M50.5,21.0 V15.0 H117.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="117.5" cy="15.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#5 | 7 members | median identity 0.63 | representative Lottia gigantea</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html"><text x="124.5" y="18.5" font-size="9" fill="currentColor">DAF36#5 · Lottia gigantea (n=7)<title>variant 3_322_DAF36#5 | 7 members | median identity 0.63 | representative Lottia gigantea</title></text></a><path d="M50.5,21.0 V27.0 H114.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="114.2" cy="27.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#9 | 5 members | median identity 0.63 | representative Helobdella robusta</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html"><text x="121.2" y="30.5" font-size="9" fill="currentColor">DAF36#9 · Helobdella robusta (n=5)<title>variant 3_322_DAF36#9 | 5 members | median identity 0.63 | representative Helobdella robusta</title></text></a><path d="M29.3,34.5 V48.0 H42.4" fill="none" stroke="#777" stroke-width="1"/><path d="M42.4,48.0 V39.0 H128.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="128.0" cy="39.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#32 | 1 members | median identity 1.00 | representative Acanthaster planci</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-32.html"><text x="135.0" y="42.5" font-size="9" fill="currentColor">DAF36#32 · Acanthaster planci (n=1)<title>variant 3_322_DAF36#32 | 1 members | median identity 1.00 | representative Acanthaster planci</title></text></a><path d="M42.4,48.0 V57.0 H70.8" fill="none" stroke="#777" stroke-width="1"/><path d="M70.8,57.0 V51.0 H129.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="129.5" cy="51.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#31 | 1 members | median identity 1.00 | representative Actinia tenebrosa</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-31.html"><text x="136.5" y="54.5" font-size="9" fill="currentColor">DAF36#31 · Actinia tenebrosa (n=1)<title>variant 3_322_DAF36#31 | 1 members | median identity 1.00 | representative Actinia tenebrosa</title></text></a><path d="M70.8,57.0 V63.0 H127.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="127.7" cy="63.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#62 | 1 members | median identity 1.00 | representative Nematostella vectensis</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-62.html"><text x="134.7" y="66.5" font-size="9" fill="currentColor">DAF36#62 · Nematostella vectensis (n=1)<title>variant 3_322_DAF36#62 | 1 members | median identity 1.00 | representative Nematostella vectensis</title></text></a><path d="M20.0,112.9 V90.0 H32.0" fill="none" stroke="#777" stroke-width="1"/><path d="M32.0,90.0 V75.0 H144.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="144.1" cy="75.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#60 | 1 members | median identity 1.00 | representative Ciona intestinalis</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-60.html"><text x="151.1" y="78.5" font-size="9" fill="currentColor">DAF36#60 · Ciona intestinalis (n=1)<title>variant 3_322_DAF36#60 | 1 members | median identity 1.00 | representative Ciona intestinalis</title></text></a><path d="M32.0,90.0 V105.0 H40.7" fill="none" stroke="#777" stroke-width="1"/><path d="M40.7,105.0 V93.0 H89.3" fill="none" stroke="#777" stroke-width="1"/><path d="M89.3,93.0 V87.0 H123.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="123.4" cy="87.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#1 | 46 members | median identity 0.72 | representative Danio rerio</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html"><text x="130.4" y="90.5" font-size="9" fill="currentColor">DAF36#1 · Danio rerio (n=46)<title>variant 3_322_DAF36#1 | 46 members | median identity 0.72 | representative Danio rerio</title></text></a><path d="M89.3,93.0 V99.0 H131.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="131.9" cy="99.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#11 | 5 members | median identity 0.79 | representative Apteryx mantelli mantelli</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html"><text x="138.9" y="102.5" font-size="9" fill="currentColor">DAF36#11 · Apteryx mantelli mantelli (n=5)<title>variant 3_322_DAF36#11 | 5 members | median identity 0.79 | representative Apteryx mantelli mantelli</title></text></a><path d="M40.7,105.0 V117.0 H64.4" fill="none" stroke="#777" stroke-width="1"/><path d="M64.4,117.0 V111.0 H118.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="118.6" cy="111.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#7 | 6 members | median identity 0.60 | representative Branchiostoma floridae</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html"><text x="125.6" y="114.5" font-size="9" fill="currentColor">DAF36#7 · Branchiostoma floridae (n=6)<title>variant 3_322_DAF36#7 | 6 members | median identity 0.60 | representative Branchiostoma floridae</title></text></a><path d="M64.4,117.0 V123.0 H124.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="124.5" cy="123.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#61 | 1 members | median identity 1.00 | representative Petromyzon marinus</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-61.html"><text x="131.5" y="126.5" font-size="9" fill="currentColor">DAF36#61 · Petromyzon marinus (n=1)<title>variant 3_322_DAF36#61 | 1 members | median identity 1.00 | representative Petromyzon marinus</title></text></a><path d="M20.0,112.9 V191.3 H27.8" fill="none" stroke="#777" stroke-width="1"/><path d="M27.8,191.3 V145.5 H37.7" fill="none" stroke="#777" stroke-width="1"/><path d="M37.7,145.5 V135.0 H123.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="123.4" cy="135.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#59 | 1 members | median identity 1.00 | representative Ciona intestinalis</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-59.html"><text x="130.4" y="138.5" font-size="9" fill="currentColor">DAF36#59 · Ciona intestinalis (n=1)<title>variant 3_322_DAF36#59 | 1 members | median identity 1.00 | representative Ciona intestinalis</title></text></a><path d="M37.7,145.5 V156.0 H61.1" fill="none" stroke="#777" stroke-width="1"/><path d="M61.1,156.0 V147.0 H258.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="258.5" cy="147.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#43 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-43.html"><text x="265.5" y="150.5" font-size="9" fill="currentColor">DAF36#43 · Ixodes scapularis (n=1)<title>variant 3_322_DAF36#43 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></text></a><path d="M61.1,156.0 V165.0 H77.3" fill="none" stroke="#777" stroke-width="1"/><path d="M77.3,165.0 V159.0 H137.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="137.5" cy="159.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#34 | 1 members | median identity 1.00 | representative Hyalella azteca</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-34.html"><text x="144.5" y="162.5" font-size="9" fill="currentColor">DAF36#34 · Hyalella azteca (n=1)<title>variant 3_322_DAF36#34 | 1 members | median identity 1.00 | representative Hyalella azteca</title></text></a><path d="M77.3,165.0 V171.0 H207.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="207.4" cy="171.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#36 | 1 members | median identity 1.00 | representative Tetranychus urticae</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-36.html"><text x="214.4" y="174.5" font-size="9" fill="currentColor">DAF36#36 · Tetranychus urticae (n=1)<title>variant 3_322_DAF36#36 | 1 members | median identity 1.00 | representative Tetranychus urticae</title></text></a><path d="M27.8,191.3 V237.1 H43.2" fill="none" stroke="#777" stroke-width="1"/><path d="M43.2,237.1 V202.5 H46.0" fill="none" stroke="#777" stroke-width="1"/><path d="M46.0,202.5 V189.0 H83.6" fill="none" stroke="#777" stroke-width="1"/><path d="M83.6,189.0 V183.0 H224.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="224.4" cy="183.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#33 | 1 members | median identity 1.00 | representative Acanthaster planci</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-33.html"><text x="231.4" y="186.5" font-size="9" fill="currentColor">DAF36#33 · Acanthaster planci (n=1)<title>variant 3_322_DAF36#33 | 1 members | median identity 1.00 | representative Acanthaster planci</title></text></a><path d="M83.6,189.0 V195.0 H182.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="182.0" cy="195.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#42 | 1 members | median identity 1.00 | representative Amphimedon queenslandica</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-42.html"><text x="189.0" y="198.5" font-size="9" fill="currentColor">DAF36#42 · Amphimedon queenslandica (n=1)<title>variant 3_322_DAF36#42 | 1 members | median identity 1.00 | representative Amphimedon queenslandica</title></text></a><path d="M46.0,202.5 V216.0 H58.6" fill="none" stroke="#777" stroke-width="1"/><path d="M58.6,216.0 V207.0 H143.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="143.7" cy="207.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#38 | 1 members | median identity 1.00 | representative Salpingoeca rosetta</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-38.html"><text x="150.7" y="210.5" font-size="9" fill="currentColor">DAF36#38 · Salpingoeca rosetta (n=1)<title>variant 3_322_DAF36#38 | 1 members | median identity 1.00 | representative Salpingoeca rosetta</title></text></a><path d="M58.6,216.0 V225.0 H77.2" fill="none" stroke="#777" stroke-width="1"/><path d="M77.2,225.0 V219.0 H155.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="155.5" cy="219.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#40 | 1 members | median identity 1.00 | representative Capsaspora owczarzaki ATCC 30864</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-40.html"><text x="162.5" y="222.5" font-size="9" fill="currentColor">DAF36#40 · Capsaspora owczarzaki ATCC 30864 (n=1)<title>variant 3_322_DAF36#40 | 1 members | median identity 1.00 | representative Capsaspora owczarzaki ATCC 30864</title></text></a><path d="M77.2,225.0 V231.0 H176.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="176.0" cy="231.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#41 | 1 members | median identity 1.00 | representative Acanthamoeba castellanii str. Neff</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-41.html"><text x="183.0" y="234.5" font-size="9" fill="currentColor">DAF36#41 · Acanthamoeba castellanii str. Neff (n=1)<title>variant 3_322_DAF36#41 | 1 members | median identity 1.00 | representative Acanthamoeba castellanii str. Neff</title></text></a><path d="M43.2,237.1 V271.8 H64.1" fill="none" stroke="#777" stroke-width="1"/><path d="M64.1,271.8 V243.0 H173.1" fill="none" stroke="#777" stroke-width="1"/><rect x="169.1" y="239.0" width="8" height="8" fill="#2980b9" stroke="#111" stroke-width="1"><title>curated reference enzyme for 3_322_DAF36</title></rect><a href="/pro-sim-blast/cluster/3_322_DAF36.html"><text x="180.1" y="246.5" font-size="9" fill="currentColor" font-weight="700">★ 3_322_DAF36 reference (cholesterol)<title>curated reference enzyme for 3_322_DAF36</title></text></a><path d="M64.1,271.8 V300.6 H103.5" fill="none" stroke="#777" stroke-width="1"/><path d="M103.5,300.6 V261.0 H132.8" fill="none" stroke="#777" stroke-width="1"/><path d="M132.8,261.0 V255.0 H304.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="304.3" cy="255.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#35 | 1 members | median identity 1.00 | representative Tetrahymena thermophila SB210</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-35.html"><text x="311.3" y="258.5" font-size="9" fill="currentColor">DAF36#35 · Tetrahymena thermophila SB210 (n=1)<title>variant 3_322_DAF36#35 | 1 members | median identity 1.00 | representative Tetrahymena thermophila SB210</title></text></a><path d="M132.8,261.0 V267.0 H274.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="274.4" cy="267.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#39 | 1 members | median identity 1.00 | representative Capsaspora owczarzaki ATCC 30864</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-39.html"><text x="281.4" y="270.5" font-size="9" fill="currentColor">DAF36#39 · Capsaspora owczarzaki ATCC 30864 (n=1)<title>variant 3_322_DAF36#39 | 1 members | median identity 1.00 | representative Capsaspora owczarzaki ATCC 30864</title></text></a><path d="M103.5,300.6 V340.2 H136.3" fill="none" stroke="#777" stroke-width="1"/><path d="M136.3,340.2 V285.0 H222.8" fill="none" stroke="#777" stroke-width="1"/><path d="M222.8,285.0 V279.0 H313.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="313.4" cy="279.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#37 | 1 members | median identity 1.00 | representative Aureococcus anophagefferens</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-37.html"><text x="320.4" y="282.5" font-size="9" fill="currentColor">DAF36#37 · Aureococcus anophagefferens (n=1)<title>variant 3_322_DAF36#37 | 1 members | median identity 1.00 | representative Aureococcus anophagefferens</title></text></a><path d="M222.8,285.0 V291.0 H365.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="365.9" cy="291.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#58 | 1 members | median identity 1.00 | representative Plesiocystis pacifica SIR-1</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-58.html"><text x="372.9" y="294.5" font-size="9" fill="currentColor">DAF36#58 · Plesiocystis pacifica SIR-1 (n=1)<title>variant 3_322_DAF36#58 | 1 members | median identity 1.00 | representative Plesiocystis pacifica SIR-1</title></text></a><path d="M136.3,340.2 V395.3 H161.8" fill="none" stroke="#777" stroke-width="1"/><path d="M161.8,395.3 V330.8 H289.1" fill="none" stroke="#777" stroke-width="1"/><path d="M289.1,330.8 V312.0 H303.0" fill="none" stroke="#777" stroke-width="1"/><path d="M303.0,312.0 V303.0 H477.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="477.0" cy="303.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#44 | 1 members | median identity 1.00 | representative Kitasatospora xanthocidica</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-44.html"><text x="484.0" y="306.5" font-size="9" fill="currentColor">DAF36#44 · Kitasatospora xanthocidica (n=1)<title>variant 3_322_DAF36#44 | 1 members | median identity 1.00 | representative Kitasatospora xanthocidica</title></text></a><path d="M303.0,312.0 V321.0 H328.3" fill="none" stroke="#777" stroke-width="1"/><path d="M328.3,321.0 V315.0 H465.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="465.7" cy="315.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#49 | 1 members | median identity 1.00 | representative Streptomyces acidiscabies</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-49.html"><text x="472.7" y="318.5" font-size="9" fill="currentColor">DAF36#49 · Streptomyces acidiscabies (n=1)<title>variant 3_322_DAF36#49 | 1 members | median identity 1.00 | representative Streptomyces acidiscabies</title></text></a><path d="M328.3,321.0 V327.0 H412.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="412.3" cy="327.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#54 | 1 members | median identity 1.00 | representative Streptomyces tsukubensis NRRL18488</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-54.html"><text x="419.3" y="330.5" font-size="9" fill="currentColor">DAF36#54 · Streptomyces tsukubensis NRRL18488 (n=1)<title>variant 3_322_DAF36#54 | 1 members | median identity 1.00 | representative Streptomyces tsukubensis NRRL18488</title></text></a><path d="M289.1,330.8 V349.5 H302.9" fill="none" stroke="#777" stroke-width="1"/><path d="M302.9,349.5 V339.0 H465.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="465.0" cy="339.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#56 | 1 members | median identity 1.00 | representative Sandaracinus amylolyticus</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-56.html"><text x="472.0" y="342.5" font-size="9" fill="currentColor">DAF36#56 · Sandaracinus amylolyticus (n=1)<title>variant 3_322_DAF36#56 | 1 members | median identity 1.00 | representative Sandaracinus amylolyticus</title></text></a><path d="M302.9,349.5 V360.0 H330.2" fill="none" stroke="#777" stroke-width="1"/><path d="M330.2,360.0 V351.0 H474.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="474.8" cy="351.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#51 | 1 members | median identity 1.00 | representative Pseudomonas gingeri</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-51.html"><text x="481.8" y="354.5" font-size="9" fill="currentColor">DAF36#51 · Pseudomonas gingeri (n=1)<title>variant 3_322_DAF36#51 | 1 members | median identity 1.00 | representative Pseudomonas gingeri</title></text></a><path d="M330.2,360.0 V369.0 H348.1" fill="none" stroke="#777" stroke-width="1"/><path d="M348.1,369.0 V363.0 H459.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="459.9" cy="363.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#4 | 11 members | median identity 0.74 | representative Streptomyces sp. SirexAA-E</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-4.html"><text x="466.9" y="366.5" font-size="9" fill="currentColor">DAF36#4 · Streptomyces sp. SirexAA-E (n=11)<title>variant 3_322_DAF36#4 | 11 members | median identity 0.74 | representative Streptomyces sp. SirexAA-E</title></text></a><path d="M348.1,369.0 V375.0 H468.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="468.8" cy="375.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#63 | 1 members | median identity 1.00 | representative Catenulispora acidiphila DSM 44928</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-63.html"><text x="475.8" y="378.5" font-size="9" fill="currentColor">DAF36#63 · Catenulispora acidiphila DSM 44928 (n=1)<title>variant 3_322_DAF36#63 | 1 members | median identity 1.00 | representative Catenulispora acidiphila DSM 44928</title></text></a><path d="M161.8,395.3 V459.9 H199.1" fill="none" stroke="#777" stroke-width="1"/><path d="M199.1,459.9 V418.5 H216.2" fill="none" stroke="#777" stroke-width="1"/><path d="M216.2,418.5 V396.0 H238.1" fill="none" stroke="#777" stroke-width="1"/><path d="M238.1,396.0 V387.0 H385.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="385.5" cy="387.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#53 | 1 members | median identity 1.00 | representative Pseudomonas sp. BIOMIG1BAC</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-53.html"><text x="392.5" y="390.5" font-size="9" fill="currentColor">DAF36#53 · Pseudomonas sp. BIOMIG1BAC (n=1)<title>variant 3_322_DAF36#53 | 1 members | median identity 1.00 | representative Pseudomonas sp. BIOMIG1BAC</title></text></a><path d="M238.1,396.0 V405.0 H250.2" fill="none" stroke="#777" stroke-width="1"/><path d="M250.2,405.0 V399.0 H434.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="434.8" cy="399.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#50 | 1 members | median identity 1.00 | representative Novosphingobium malaysiense</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-50.html"><text x="441.8" y="402.5" font-size="9" fill="currentColor">DAF36#50 · Novosphingobium malaysiense (n=1)<title>variant 3_322_DAF36#50 | 1 members | median identity 1.00 | representative Novosphingobium malaysiense</title></text></a><path d="M250.2,405.0 V411.0 H423.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="423.4" cy="411.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#8 | 6 members | median identity 0.70 | representative Sphingomonas sp. MM-1</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-8.html"><text x="430.4" y="414.5" font-size="9" fill="currentColor">DAF36#8 · Sphingomonas sp. MM-1 (n=6)<title>variant 3_322_DAF36#8 | 6 members | median identity 0.70 | representative Sphingomonas sp. MM-1</title></text></a><path d="M216.2,418.5 V441.0 H236.4" fill="none" stroke="#777" stroke-width="1"/><path d="M236.4,441.0 V429.0 H264.6" fill="none" stroke="#777" stroke-width="1"/><path d="M264.6,429.0 V423.0 H378.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="378.6" cy="423.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#6 | 7 members | median identity 0.79 | representative Novosphingobium aromaticivorans DSM 12444</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-6.html"><text x="385.6" y="426.5" font-size="9" fill="currentColor">DAF36#6 · Novosphingobium aromaticivorans DSM 12444 (n=7)<title>variant 3_322_DAF36#6 | 7 members | median identity 0.79 | representative Novosphingobium aromaticivorans DSM 12444</title></text></a><path d="M264.6,429.0 V435.0 H391.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="391.2" cy="435.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#55 | 1 members | median identity 1.00 | representative Zhongshania aliphaticivorans</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-55.html"><text x="398.2" y="438.5" font-size="9" fill="currentColor">DAF36#55 · Zhongshania aliphaticivorans (n=1)<title>variant 3_322_DAF36#55 | 1 members | median identity 1.00 | representative Zhongshania aliphaticivorans</title></text></a><path d="M236.4,441.0 V453.0 H283.9" fill="none" stroke="#777" stroke-width="1"/><path d="M283.9,453.0 V447.0 H395.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="395.1" cy="447.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#10 | 5 members | median identity 0.76 | representative Parafrankia sp. EUN1f</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-10.html"><text x="402.1" y="450.5" font-size="9" fill="currentColor">DAF36#10 · Parafrankia sp. EUN1f (n=5)<title>variant 3_322_DAF36#10 | 5 members | median identity 0.76 | representative Parafrankia sp. EUN1f</title></text></a><path d="M283.9,453.0 V459.0 H360.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="360.7" cy="459.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#64 | 1 members | median identity 1.00 | representative Thermomonospora curvata DSM 43183</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-64.html"><text x="367.7" y="462.5" font-size="9" fill="currentColor">DAF36#64 · Thermomonospora curvata DSM 43183 (n=1)<title>variant 3_322_DAF36#64 | 1 members | median identity 1.00 | representative Thermomonospora curvata DSM 43183</title></text></a><path d="M199.1,459.9 V501.4 H209.0" fill="none" stroke="#777" stroke-width="1"/><path d="M209.0,501.4 V480.0 H225.5" fill="none" stroke="#777" stroke-width="1"/><path d="M225.5,480.0 V471.0 H375.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="375.2" cy="471.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#45 | 1 members | median identity 1.00 | representative Scytonema sp. HK-05</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-45.html"><text x="382.2" y="474.5" font-size="9" fill="currentColor">DAF36#45 · Scytonema sp. HK-05 (n=1)<title>variant 3_322_DAF36#45 | 1 members | median identity 1.00 | representative Scytonema sp. HK-05</title></text></a><path d="M225.5,480.0 V489.0 H266.0" fill="none" stroke="#777" stroke-width="1"/><path d="M266.0,489.0 V483.0 H373.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="373.8" cy="483.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#47 | 1 members | median identity 1.00 | representative Nocardia terpenica</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-47.html"><text x="380.8" y="486.5" font-size="9" fill="currentColor">DAF36#47 · Nocardia terpenica (n=1)<title>variant 3_322_DAF36#47 | 1 members | median identity 1.00 | representative Nocardia terpenica</title></text></a><path d="M266.0,489.0 V495.0 H520.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="520.0" cy="495.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#48 | 1 members | median identity 1.00 | representative Novosphingobium sp. Fuku2-ISO-50</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-48.html"><text x="527.0" y="498.5" font-size="9" fill="currentColor">DAF36#48 · Novosphingobium sp. Fuku2-ISO-50 (n=1)<title>variant 3_322_DAF36#48 | 1 members | median identity 1.00 | representative Novosphingobium sp. Fuku2-ISO-50</title></text></a><path d="M209.0,501.4 V522.8 H270.9" fill="none" stroke="#777" stroke-width="1"/><path d="M270.9,522.8 V507.0 H438.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="438.1" cy="507.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#57 | 1 members | median identity 1.00 | representative Mycolicibacterium monacense</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-57.html"><text x="445.1" y="510.5" font-size="9" fill="currentColor">DAF36#57 · Mycolicibacterium monacense (n=1)<title>variant 3_322_DAF36#57 | 1 members | median identity 1.00 | representative Mycolicibacterium monacense</title></text></a><path d="M270.9,522.8 V538.5 H300.4" fill="none" stroke="#777" stroke-width="1"/><path d="M300.4,538.5 V525.0 H353.8" fill="none" stroke="#777" stroke-width="1"/><path d="M353.8,525.0 V519.0 H487.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="487.0" cy="519.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#2 | 41 members | median identity 0.92 | representative Mycobacterium avium 104</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-2.html"><text x="494.0" y="522.5" font-size="9" fill="currentColor">DAF36#2 · Mycobacterium avium 104 (n=41)<title>variant 3_322_DAF36#2 | 41 members | median identity 0.92 | representative Mycobacterium avium 104</title></text></a><path d="M353.8,525.0 V531.0 H504.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="504.8" cy="531.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#52 | 1 members | median identity 1.00 | representative Sphingobium sp. V4</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-52.html"><text x="511.8" y="534.5" font-size="9" fill="currentColor">DAF36#52 · Sphingobium sp. V4 (n=1)<title>variant 3_322_DAF36#52 | 1 members | median identity 1.00 | representative Sphingobium sp. V4</title></text></a><path d="M300.4,538.5 V552.0 H341.3" fill="none" stroke="#777" stroke-width="1"/><path d="M341.3,552.0 V543.0 H457.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="457.7" cy="543.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#0 | 74 members | median identity 0.76 | representative Mycolicibacterium smegmatis MC2 155</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-0.html"><text x="464.7" y="546.5" font-size="9" fill="currentColor">DAF36#0 · Mycolicibacterium smegmatis MC2 155 (n=74)<title>variant 3_322_DAF36#0 | 74 members | median identity 0.76 | representative Mycolicibacterium smegmatis MC2 155</title></text></a><path d="M341.3,552.0 V561.0 H374.3" fill="none" stroke="#777" stroke-width="1"/><path d="M374.3,561.0 V555.0 H481.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="481.0" cy="555.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#3 | 18 members | median identity 0.91 | representative Mycobacterium avium 104</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-3.html"><text x="488.0" y="558.5" font-size="9" fill="currentColor">DAF36#3 · Mycobacterium avium 104 (n=18)<title>variant 3_322_DAF36#3 | 18 members | median identity 0.91 | representative Mycobacterium avium 104</title></text></a><path d="M374.3,561.0 V567.0 H473.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="473.1" cy="567.0" r="2.8" fill="#2980b9"><title>variant 3_322_DAF36#46 | 1 members | median identity 1.00 | representative Mycolicibacterium hassiacum DSM 44199</title></circle><a href="/pro-sim-blast/leaf/3_322_DAF36-46.html"><text x="480.1" y="570.5" font-size="9" fill="currentColor">DAF36#46 · Mycolicibacterium hassiacum DSM 44199 (n=1)<title>variant 3_322_DAF36#46 | 1 members | median identity 1.00 | representative Mycolicibacterium hassiacum DSM 44199</title></text></a><line x1="20" y1="586" x2="86.7" y2="586" stroke="currentColor" stroke-width="2"/><text x="91.7" y="589" font-size="9" fill="currentColor">0.5 subst./site</text></svg></div>
+
+
+
+<h2>Where its carriers were isolated from</h2>
+
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+Recorded for 66 of this type's 319 entries
+(20.7%); the rest state no source.
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+
+<tr><td>human clinical</td>
+    <td class="num" data-v="17">17</td>
+    <td class="num" data-v="15">15</td></tr>
+
+<tr><td>marine</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="6">6</td></tr>
+
+<tr><td>animal host</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="2">2</td></tr>
+
+<tr><td>plant tissue and endophytes</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="4">4</td></tr>
+
+<tr><td>laboratory strain</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="2">2</td></tr>
+
+<tr><td>freshwater</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="5">5</td></tr>
+
+<tr><td>soil</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="4">4</td></tr>
+
+<tr><td>water, compartment unstated</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="1">1</td></tr>
+
+</tbody></table></div>
+<p class="note"><a href="/pro-sim-blast/atlas/ecology.html">How the habitat vocabulary is built, and what it
+cannot classify</a> ·
+<a href="/pro-sim-blast/atlas/geography.html#type=3_322_DAF36">where this type has been collected, on a
+map</a></p>
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-0.html">3_322_DAF36#0</a></td>
+    <td class="num" data-v="74">74</td>
+    <td class="num" data-v="0.7552">0.76</td>
+    <td class="small">Mycobacterium:41, Mycolicibacterium:26, Mycolicibacter:5, Gordonia:2</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | NAD(P)H-dependent amine dehydrogenase family protein | 4-hydroxy-tetrahydrodipicolinate reductase | metal-dependent hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">3_322_DAF36#1</a></td>
+    <td class="num" data-v="46">46</td>
+    <td class="num" data-v="0.7167">0.72</td>
+    <td class="small">Xenopus:4, Poecilia:3, Sinocyclocheilus:3, Clupea:2, Lates:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-2.html">3_322_DAF36#2</a></td>
+    <td class="num" data-v="41">41</td>
+    <td class="num" data-v="0.9233">0.92</td>
+    <td class="small">Mycobacterium:41</td>
+    <td class="small">FadR/GntR family transcriptional regulator | aldehyde dehydrogenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-3.html">3_322_DAF36#3</a></td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="0.9052">0.91</td>
+    <td class="small">Mycobacterium:16, Mycolicibacterium:2</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | FadR/GntR family transcriptional regulator | cysteine hydrolase family protein | acyl-CoA thioesterase II</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-4.html">3_322_DAF36#4</a></td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="0.7401">0.74</td>
+    <td class="small">Streptomyces:8, Kitasatospora:3</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | MarR family winged helix-turn-helix transcriptional regulator | glycoside hydrolase family 6 protein | erythromycin esterase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">3_322_DAF36#5</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.63">0.63</td>
+    <td class="small">Crassostrea:5, Lottia:1, Octopus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-6.html">3_322_DAF36#6</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.7865">0.79</td>
+    <td class="small">Novosphingobium:6, Erythrobacter:1</td>
+    <td class="small">Lrp/AsnC family transcriptional regulator | amidohydrolase family protein | amidase | helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="42.86">43</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">3_322_DAF36#7</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.6012">0.60</td>
+    <td class="small">Branchiostoma:3, Notothenia:1, Nothobranchius:1, Petromyzon:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-8.html">3_322_DAF36#8</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.7011">0.70</td>
+    <td class="small">Sphingomonas:4, Candidatus:1, Edaphosphingomonas:1</td>
+    <td class="small">Lrp/AsnC family transcriptional regulator | RNA polymerase sigma factor RpoH | alpha/beta hydrolase | aldehyde dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">3_322_DAF36#9</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.6314">0.63</td>
+    <td class="small">Biomphalaria:3, Helobdella:1, Actinia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-10.html">3_322_DAF36#10</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.7649">0.76</td>
+    <td class="small">Frankia:2, Pseudofrankia:2, Parafrankia:1</td>
+    <td class="small">amidohydrolase family protein | GntR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">3_322_DAF36#11</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.7919">0.79</td>
+    <td class="small">Apteryx:1, Lepidothrix:1, Pogona:1, Pipra:1, Aythya:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">3_322_DAF36#12</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.8727">0.87</td>
+    <td class="small">Caenorhabditis:3, Necator:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">3_322_DAF36#13</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.688">0.69</td>
+    <td class="small">Python:1, Thamnophis:1, Notechis:1, Eublepharis:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-14.html">3_322_DAF36#14</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.9966">1.00</td>
+    <td class="small">Sphingomonas:3, Edaphosphingomonas:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | RBBP9/YdeN family alpha/beta hydrolase | alpha/beta hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-15.html">3_322_DAF36#15</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.6182">0.62</td>
+    <td class="small">Hydrocarboniphaga:4</td>
+    <td class="small">alpha/beta fold hydrolase | fumarylacetoacetate hydrolase family protein | acetaldehyde dehydrogenase (acetylating) | MBL fold metallo-hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-16.html">3_322_DAF36#16</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.5655">0.57</td>
+    <td class="small">Tardibacter:2, Pseudofrankia:1, Spongiibacter:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | TetR/AcrR family transcriptional regulator | MarR family winged helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-17.html">3_322_DAF36#17</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.9535">0.95</td>
+    <td class="small">Frankia:4</td>
+    <td class="small">amidohydrolase family protein | acyl-CoA dehydrogenase family protein | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-18.html">3_322_DAF36#18</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.8299">0.83</td>
+    <td class="small">Branchiostoma:3</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-19.html">3_322_DAF36#19</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.8125">0.81</td>
+    <td class="small">Halioglobus:2, Pseudohalioglobus:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-20.html">3_322_DAF36#20</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9939">0.99</td>
+    <td class="small">Pseudomonas:3</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-21.html">3_322_DAF36#21</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingomonas:2, Edaphosphingomonas:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | amidohydrolase | amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-22.html">3_322_DAF36#22</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Geotrypetes:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-23.html">3_322_DAF36#23</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.7138">0.71</td>
+    <td class="small">Acanthaster:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-24.html">3_322_DAF36#24</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.8868">0.89</td>
+    <td class="small">Mycobacterium:2</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-25.html">3_322_DAF36#25</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9481">0.95</td>
+    <td class="small">Frankia:2</td>
+    <td class="small">amidohydrolase family protein | acyl-CoA dehydrogenase | NDMA-dependent alcohol dehydrogenase | acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-26.html">3_322_DAF36#26</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudonocardia:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-27.html">3_322_DAF36#27</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Mycolicibacterium:2</td>
+    <td class="small">allophanate hydrolase | FadR/GntR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-28.html">3_322_DAF36#28</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Mycolicibacterium:2</td>
+    <td class="small">aldehyde dehydrogenase family protein | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-29.html">3_322_DAF36#29</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Burkholderia:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-30.html">3_322_DAF36#30</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.6258">0.63</td>
+    <td class="small">Candidatus:1, Sphingomonas:1</td>
+    <td class="small">Lrp/AsnC family transcriptional regulator | amidohydrolase family protein | glucose 1-dehydrogenase | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-31.html">3_322_DAF36#31</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Actinia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-32.html">3_322_DAF36#32</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Acanthaster:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-33.html">3_322_DAF36#33</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Acanthaster:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-34.html">3_322_DAF36#34</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Hyalella:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-35.html">3_322_DAF36#35</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Tetrahymena:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-36.html">3_322_DAF36#36</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Tetranychus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-37.html">3_322_DAF36#37</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Aureococcus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-38.html">3_322_DAF36#38</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Salpingoeca:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-39.html">3_322_DAF36#39</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Capsaspora:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-40.html">3_322_DAF36#40</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Capsaspora:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-41.html">3_322_DAF36#41</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Acanthamoeba:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-42.html">3_322_DAF36#42</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Amphimedon:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-43.html">3_322_DAF36#43</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ixodes:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-44.html">3_322_DAF36#44</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Kitasatospora:1</td>
+    <td class="small">RNA polymerase sigma factor | alpha/beta hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-45.html">3_322_DAF36#45</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Scytonema:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-46.html">3_322_DAF36#46</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Mycolicibacterium:1</td>
+    <td class="small">alpha/beta hydrolase | TetR/AcrR family transcriptional regulator | MarR family winged helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-47.html">3_322_DAF36#47</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Nocardia:1</td>
+    <td class="small">aldehyde dehydrogenase | TetR family transcriptional regulator | zinc-binding dehydrogenase | carboxylesterase/lipase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-48.html">3_322_DAF36#48</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Novosphingobium:1</td>
+    <td class="small">amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-49.html">3_322_DAF36#49</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-50.html">3_322_DAF36#50</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Novosphingobium:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | amidohydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-51.html">3_322_DAF36#51</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomonas:1</td>
+    <td class="small">LysR family transcriptional regulator | NAD(P)-dependent alcohol dehydrogenase | alpha/beta hydrolase | MBL fold metallo-hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-52.html">3_322_DAF36#52</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-53.html">3_322_DAF36#53</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomonas:1</td>
+    <td class="small">helix-turn-helix transcriptional regulator | ubiquinone-dependent pyruvate dehydrogenase | acyl-CoA dehydrogenase family protein | TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-54.html">3_322_DAF36#54</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-55.html">3_322_DAF36#55</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Zhongshania:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-56.html">3_322_DAF36#56</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sandaracinus:1</td>
+    <td class="small">HAD family hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-57.html">3_322_DAF36#57</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Mycolicibacterium:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-58.html">3_322_DAF36#58</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Plesiocystis:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-59.html">3_322_DAF36#59</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ciona:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-60.html">3_322_DAF36#60</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ciona:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-61.html">3_322_DAF36#61</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Petromyzon:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-62.html">3_322_DAF36#62</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Nematostella:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-63.html">3_322_DAF36#63</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Catenulispora:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_322_DAF36-64.html">3_322_DAF36#64</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Thermomonospora:1</td>
+    <td class="small">GntR family transcriptional regulator | PaaI family thioesterase | TetR/AcrR family transcriptional regulator | DISARM system phospholipase D-like protein DrmC</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">319</span></h2>
+
+
+
+
+<div class="caveat">
+  
+  <b>4 of 319 members are close enough for the substrate
+  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
+  315 are more distant relatives whose reaction has not been measured and cannot be
+  inferred from membership alone. The table is ordered with the closest first, so the informative
+  members are on this page and the distant ones follow.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_073228.4_0-1287_1">NP_505629.2</a>
+        </td>
+    <td><i>Caenorhabditis elegans</i></td>
+    <td class="small">Cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">100 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="1055.0">1055</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002637011.1_0-1287_1">XP_002637057.1</a>
+        </td>
+    <td><i>Caenorhabditis briggsae</i></td>
+    <td class="small">C. briggsae CBR-DAF-36 protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">91 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="973.4">973</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_003105546.1_0-1287_1">XP_003105594.1</a>
+        </td>
+    <td><i>Caenorhabditis remanei</i></td>
+    <td class="small">CRE-DAF-36 protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">90 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="962.4">962</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013434939.1_0-1254_1">XP_013290393.1</a>
+        </td>
+    <td><i>Necator americanus</i></td>
+    <td class="small">rieske [2Fe-2S] domain protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">65 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-12.html">12</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="666.8">667</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_012830117.3_288-1671_1">XP_012685571.1</a>
+        </td>
+    <td><i>Clupea harengus</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">51 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="394.6">395</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_031578014.2_545-1928_1">XP_031433874.1</a>
+        </td>
+    <td><i>Clupea harengus</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">51 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="394.6">395</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_005725660.1_0-957_1">XP_005725717.1</a>
+        </td>
+    <td><i>Pundamilia nyererei</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">50 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="341.2">341</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_008324668.2_0-1293_1">XP_008322890.1</a>
+        </td>
+    <td><i>Cynoglossus semilaevis</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">48 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="402.2">402</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_031713791.1_353-1442_1">XP_031569651.1</a>
+        </td>
+    <td><i>Actinia tenebrosa</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="366.7">367</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_007900226.1_0-1062_1">XP_007898417.1</a>
+        </td>
+    <td><i>Callorhinchus milii</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="366.3">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018693085.1_2405-3773_1">XP_018548601.1</a>
+        </td>
+    <td><i>Lates calcarifer</i></td>
+    <td class="small">LOW QUALITY PROTEIN: cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="408.1">408</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_051072786.1_2089-3457_1">XP_050928743.1</a>
+        </td>
+    <td><i>Lates calcarifer</i></td>
+    <td class="small">LOW QUALITY PROTEIN: cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="408.1">408</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_020809147.1_0-1086_1">XP_020664806.1</a>
+        </td>
+    <td><i>Pogona vitticeps</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="352.8">353</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_032200531.1_0-1140_1">XP_032056422.1</a>
+        </td>
+    <td><i>Aythya fuligula</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="352.2">352</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_029169137.3_243-1584_1">XP_029024970.1</a>
+        </td>
+    <td><i>Betta splendens</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.0">385</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_010893967.2_237-1620_1">XP_010892269.1</a>
+        </td>
+    <td><i>Esox lucius</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="394.8">395</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_034206353.1_76-1417_1">XP_034062244.1</a>
+        </td>
+    <td><i>Gymnodraco acuticeps</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="387.6">388</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_003440224.4_74-1433_1">XP_003440272.1</a>
+        </td>
+    <td><i>Oreochromis niloticus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="393.0">393</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_028418491.1_0-1365_1">XP_028274292.1</a>
+        </td>
+    <td><i>Parambassis ranga</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="405.4">405</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014002435.1_148-1549_1">XP_013857889.1</a>
+        </td>
+    <td><i>Austrofundulus limnaeus</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.3">385</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025210448.1_0-1071_1">XP_025066233.1</a>
+        </td>
+    <td><i>Alligator sinensis</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">47 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.1">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_005941358.2_92-1451_1">XP_005941420.1</a>
+        </td>
+    <td><i>Haplochromis burtoni</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.2">385</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004538438.2_64-1423_1">XP_004538495.1</a>
+        </td>
+    <td><i>Maylandia zebra</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.0">385</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_006803535.1_0-1359_1">XP_006803598.1</a>
+        </td>
+    <td><i>Neolamprologus brichardi</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.5">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014132683.1_1887-3270_1">XP_013988158.1</a>
+        </td>
+    <td><i>Salmo salar</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="391.8">392</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_038970105.1_0-1383_1">XP_038826033.1</a>
+        </td>
+    <td><i>Salvelinus namaycush</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="392.3">392</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013945702.1_0-1023_1">XP_013801156.1</a>
+        </td>
+    <td><i>Apteryx mantelli mantelli</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.1">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_017493514.3_241-1630_1">XP_017349003.1</a>
+        </td>
+    <td><i>Ictalurus punctatus</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="388.2">388</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_030206313.1_0-1371_1">XP_030062173.1</a>
+        </td>
+    <td><i>Microcaecilia unicolor</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="370.9">371</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_017711327.1_371-1739_1">XP_017566816.1</a>
+        </td>
+    <td><i>Pygocentrus nattereri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.5">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033960572.1_449-1781_1">XP_033816463.1</a>
+        </td>
+    <td><i>Geotrypetes seraphini</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="368.4">368</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026234387.1_138-1518_1">XP_026090172.1</a>
+        </td>
+    <td><i>Carassius auratus</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.6">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_042778743.1_165-1545_1">XP_042634677.1</a>
+        </td>
+    <td><i>Cyprinus carpio</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="386.1">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_016456015.1_329-1709_1">XP_016311501.1</a>
+        </td>
+    <td><i>Sinocyclocheilus anshuiensis</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="386.1">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_016571134.1_268-1648_1">XP_016426620.1</a>
+        </td>
+    <td><i>Sinocyclocheilus rhinocerous</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="386.1">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001142116.1_63-1431_1">NP_001135588.1</a>
+        </td>
+    <td><i>Xenopus tropicalis</i></td>
+    <td class="small">uncharacterized protein LOC100216141</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="373.4">373</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_027727069.2_0-1242_1">XP_027582870.2</a>
+        </td>
+    <td><i>Pipra filicauda</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="339.5">340</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018229344.1_63-1431_1">XP_018084833.1</a>
+        </td>
+    <td><i>Xenopus laevis</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="366.5">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018229344.2_63-1431_1">XP_018084833.1</a>
+        </td>
+    <td><i>Xenopus laevis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="366.5">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_006009267.2_283-1690_1">XP_006009329.1</a>
+        </td>
+    <td><i>Latimeria chalumnae</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="393.1">393</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_017834641.1_0-1401_1">XP_017690130.1</a>
+        </td>
+    <td><i>Lepidothrix coronata</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-11.html">11</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="336.1">336</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_032979577.1_66-1476_1">XP_032835468.1</a>
+        </td>
+    <td><i>Petromyzon marinus</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="383.9">384</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_032979578.1_242-1556_1">XP_032835469.1</a>
+        </td>
+    <td><i>Petromyzon marinus</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-61.html">61</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="384.2">384</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_008291755.1_0-1359_1">XP_008289977.1</a>
+        </td>
+    <td><i>Stegastes partitus</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="385.5">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_029445154.1_0-1371_1">XP_029301014.1</a>
+        </td>
+    <td><i>Cottoperca gobio</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="393.0">393</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015401473.1_182-1520_1">XP_015256959.1</a>
+        </td>
+    <td><i>Cyprinodon variegatus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="386.4">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014066285.1_0-969_1">XP_013921760.1</a>
+        </td>
+    <td><i>Thamnophis sirtalis</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">13</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="301.7">302</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_054997982.1_22-1294_1">XP_054853957.1</a>
+        </td>
+    <td><i>Eublepharis macularius</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">13</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="361.6">362</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_030769782.1_135-1518_1">XP_030625642.1</a>
+        </td>
+    <td><i>Chanos chanos</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="377.1">377</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001002612.1_103-1486_1">NP_001002612.1</a>
+        </td>
+    <td><i>Danio rerio</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="376.9">377</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_017425476.1_937-2230_1">XP_017280965.1</a>
+        </td>
+    <td><i>Kryptolebias marmoratus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="366.4">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_016451936.1_221-1604_1">XP_016307422.1</a>
+        </td>
+    <td><i>Sinocyclocheilus anshuiensis</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="378.5">378</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_005814281.2_0-1323_1">XP_005814338.1</a>
+        </td>
+    <td><i>Xiphophorus maculatus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="386.5">386</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_001635293.1_198-1170_1">XP_001635343.1</a>
+        </td>
+    <td><i>Nematostella vectensis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-62.html">62</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="317.3">317</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001096967.1_41-1406_1">NP_001090436.1</a>
+        </td>
+    <td><i>Xenopus laevis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="365.7">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_031713790.1_146-1526_1">XP_031569650.1</a>
+        </td>
+    <td><i>Actinia tenebrosa</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-31.html">31</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="372.1">372</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_005295633.1_0-1311_1">XP_005295690.1</a>
+        </td>
+    <td><i>Chrysemys picta bellii</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="363.2">363</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033960573.1_453-1698_1">XP_033816464.1</a>
+        </td>
+    <td><i>Geotrypetes seraphini</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="290.2">290</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022471779.1_0-1389_1">XP_022327487.1</a>
+        </td>
+    <td><i>Crassostrea virginica</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="342.8">343</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002609430.1_0-1359_1">XP_002609476.1</a>
+        </td>
+    <td><i>Branchiostoma floridae</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="356.3">356</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_009027187.1_227-1715_1">XP_009025435.1</a>
+        </td>
+    <td><i>Helobdella robusta</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="352.6">353</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033960574.1_452-1664_1">XP_033816465.1</a>
+        </td>
+    <td><i>Geotrypetes seraphini</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X3</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-22.html">22</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="319.9">320</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015943503.1_304-1516_1">XP_015798989.1</a>
+        </td>
+    <td><i>Nothobranchius furzeri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="316.5">316</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_007575653.2_205-1528_1">XP_007575715.1</a>
+        </td>
+    <td><i>Poecilia formosa</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="381.8">382</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015019276.1_210-1533_1">XP_014874762.1</a>
+        </td>
+    <td><i>Poecilia latipinna</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="381.8">382</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014973314.1_200-1523_1">XP_014828800.1</a>
+        </td>
+    <td><i>Poecilia mexicana</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="381.9">382</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_035827769.1_456-1833_1">XP_035683662.1</a>
+        </td>
+    <td><i>Branchiostoma floridae</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="365.1">365</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_019763870.1_379-1756_1">XP_019619429.1</a>
+        </td>
+    <td><i>Branchiostoma belcheri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="366.1">366</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022465569.1_396-1785_1">XP_022321277.1</a>
+        </td>
+    <td><i>Crassostrea virginica</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.9">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_009065176.1_0-1323_1">XP_009063424.1</a>
+        </td>
+    <td><i>Lottia gigantea</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="340.0">340</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022465568.1_0-1416_1">XP_022321276.1</a>
+        </td>
+    <td><i>Crassostrea virginica</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="339.4">339</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_007428969.3_0-1347_1">XP_007429031.2</a>
+        </td>
+    <td><i>Python bivittatus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">13</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="348.8">349</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004333005.1_0-1455_1">XP_004333053.1</a>
+        </td>
+    <td><i>Acanthamoeba castellanii str. Neff</i></td>
+    <td class="small">rieske [2fe2s] domain containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-41.html">41</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="285.0">285</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_010785838.1_0-1044_1">XP_010784140.1</a>
+        </td>
+    <td><i>Notothenia coriiceps</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-7.html">7</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="246.6">247</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026234388.1_141-1386_1">XP_026090173.1</a>
+        </td>
+    <td><i>Carassius auratus</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="300.4">300</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026686565.1_0-1410_1">XP_026542350.1</a>
+        </td>
+    <td><i>Notechis scutatus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-13.html">13</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="349.9">350</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013222498.1_328-1738_1">XP_013077952.1</a>
+        </td>
+    <td><i>Biomphalaria glabrata</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="355.3">355</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_056039971.1_468-1878_1">XP_055895946.1</a>
+        </td>
+    <td><i>Biomphalaria glabrata</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="354.9">355</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_056039972.1_542-1952_1">XP_055895947.1</a>
+        </td>
+    <td><i>Biomphalaria glabrata</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-9.html">9</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="354.9">355</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002610422.1_0-1368_1">XP_002610468.1</a>
+        </td>
+    <td><i>Branchiostoma floridae</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="325.4">325</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_029794501.2_35-1481_1">XP_029650361.1</a>
+        </td>
+    <td><i>Octopus sinensis</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.7">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_019785787.1_112-1354_1">XP_019641346.1</a>
+        </td>
+    <td><i>Branchiostoma belcheri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="330.4">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001278985.1_27-1440_1">NP_001265914.1</a>
+        </td>
+    <td><i>Ciona intestinalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd 1</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-59.html">59</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="331.4">331</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_035819062.1_239-1595_1">XP_035674955.1</a>
+        </td>
+    <td><i>Branchiostoma floridae</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="330.2">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022237369.1_104-1526_1">XP_022093061.1</a>
+        </td>
+    <td><i>Acanthaster planci</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-32.html">32</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="350.0">350</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022472056.1_83-1499_1">XP_022327764.1</a>
+        </td>
+    <td><i>Crassostrea virginica</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="341.3">341</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011447254.2_351-1743_1">XP_011445556.1</a>
+        </td>
+    <td><i>Crassostrea gigas</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-5.html">5</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="341.2">341</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004992398.1_101-1568_1">XP_004992455.1</a>
+        </td>
+    <td><i>Salpingoeca rosetta</i></td>
+    <td class="small">uncharacterized protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-38.html">38</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="317.8">318</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_MBLN01000077.1_26961-28047_-1">WP_071042200.1</a>
+        </td>
+    <td><i>Pseudofrankia sp. EUN1h</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-10.html">10</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="152.7">153</td>
+    <td class="small mono">[alpha] &gt; other &gt; hydrolase &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033960575.1_452-1607_1">XP_033816466.1</a>
+        </td>
+    <td><i>Geotrypetes seraphini</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X4</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-22.html">22</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="301.4">301</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_003385889.3_31-1474_1">XP_003385937.1</a>
+        </td>
+    <td><i>Amphimedon queenslandica</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-42.html">42</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="290.1">290</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004347476.2_70-1564_1">XP_004347526.2</a>
+        </td>
+    <td><i>Capsaspora owczarzaki ATCC 30864</i></td>
+    <td class="small">Rieske domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-40.html">40</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="302.4">302</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015939818.1_230-1508_1">XP_015795304.1</a>
+        </td>
+    <td><i>Tetranychus urticae</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-36.html">36</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="255.9">256</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018161838.2_160-1567_1">XP_018017327.1</a>
+        </td>
+    <td><i>Hyalella azteca</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-34.html">34</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="313.3">313</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001278983.1_61-1420_1">NP_001265912.1</a>
+        </td>
+    <td><i>Ciona intestinalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd 2</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-60.html">60</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="312.6">313</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022231738.1_175-1558_1">XP_022087430.1</a>
+        </td>
+    <td><i>Acanthaster planci</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-23.html">23</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="264.8">265</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022232503.1_0-936_1">XP_022088195.1</a>
+        </td>
+    <td><i>Acanthaster planci</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-33.html">33</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="202.7">203</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004347788.1_0-1227_1">XP_004347838.1</a>
+        </td>
+    <td><i>Capsaspora owczarzaki ATCC 30864</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-39.html">39</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="222.7">223</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022231739.1_48-1425_1">XP_022087431.1</a>
+        </td>
+    <td><i>Acanthaster planci</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-23.html">23</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="247.2">247</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP018221.1_2253514-2254519_1">WP_072597680.1</a>
+        </td>
+    <td><i>Tardibacter chloracetimidivorans</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_322_DAF36-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="73.3">73</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

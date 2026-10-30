@@ -1,0 +1,2075 @@
+{
+ "_generated": "2026-10-30 15:42 UTC",
+ "_about": "Each reference's recorded product against the official reaction equation in UniProt/Rhea. Nothing is corrected here; disagreements are reported.",
+ "_why": "The oxygen fate of choline monooxygenase was recorded wrongly twice, because the balance was computed from the dehydrated equilibrium form instead of the product the enzyme actually releases.",
+ "rows": [
+  {
+   "cluster": "1_101_OxoO",
+   "accession": "O05935",
+   "recorded_substrate": "2-oxo-1,2-dihydroquinoline",
+   "recorded_product": "8-hydroxy-2-oxo-1,2-dihydroquinoline",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "1_102_CARDO",
+   "accession": "1WW9",
+   "recorded_substrate": "carbazole",
+   "recorded_product": "2'-aminobiphenyl-2,3-diol",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_103_CarAa",
+   "accession": "Q8G8B6",
+   "recorded_substrate": "carbazole",
+   "recorded_product": "2'-aminobiphenyl-2,3-diol",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.22"
+   ],
+   "activities": [
+    {
+     "equation": "9H-carbazole + NADH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NAD(+)",
+     "ec": "1.14.12.22",
+     "rhea": "RHEA:27838",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:27543",
+      "CHEBI:29010",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    },
+    {
+     "equation": "9H-carbazole + NADPH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NADP(+)",
+     "ec": "1.14.12.22",
+     "rhea": "RHEA:27842",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:27543",
+      "CHEBI:29010",
+      "CHEBI:57783",
+      "CHEBI:58349"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "9H-carbazole + NADH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NAD(+)",
+     "rhea": "RHEA:27838",
+     "official_products": [
+      "2'-aminobiphenyl-2,3-diol"
+     ],
+     "closest": {
+      "official_product": "2'-aminobiphenyl-2,3-diol",
+      "shared": [
+       "aminobiphenyl",
+       "diol"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "9H-carbazole + NADPH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NADP(+)",
+     "rhea": "RHEA:27842",
+     "official_products": [
+      "2'-aminobiphenyl-2,3-diol"
+     ],
+     "closest": {
+      "official_product": "2'-aminobiphenyl-2,3-diol",
+      "shared": [
+       "aminobiphenyl",
+       "diol"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "1_104_VanA",
+   "accession": "O05616",
+   "recorded_substrate": "vanillate",
+   "recorded_product": "protocatechuate and formaldehyde",
+   "recorded_reaction_class": "O_demethylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.13.82"
+   ],
+   "activities": [
+    {
+     "equation": "vanillate + NADH + O2 + H(+) = 3,4-dihydroxybenzoate + formaldehyde + NAD(+) + H2O",
+     "ec": "1.14.13.82",
+     "rhea": "RHEA:13021",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16632",
+      "CHEBI:16842",
+      "CHEBI:36241",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "vanillate + NADH + O2 + H(+) = 3,4-dihydroxybenzoate + formaldehyde + NAD(+) + H2O",
+     "rhea": "RHEA:13021",
+     "official_products": [
+      "3,4-dihydroxybenzoate",
+      "formaldehyde"
+     ],
+     "closest": {
+      "official_product": "formaldehyde",
+      "shared": [
+       "formaldehyde"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "1_105_DdmC",
+   "accession": "Q5S3I3",
+   "recorded_substrate": "dicamba",
+   "recorded_product": "3,6-dichlorosalicylate and formaldehyde",
+   "recorded_reaction_class": "O_demethylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.15.-"
+   ],
+   "activities": [
+    {
+     "equation": "3,6-dichloro-2-methoxybenzoate + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 3,6-dichlorosalicylate + formaldehyde + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": null,
+     "rhea": "RHEA:57016",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16842",
+      "CHEBI:33737",
+      "CHEBI:33738",
+      "CHEBI:141349",
+      "CHEBI:141350"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "3,6-dichloro-2-methoxybenzoate + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 3,6-dichlorosalicylate + formaldehyde + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:57016",
+     "official_products": [
+      "3,6-dichlorosalicylate",
+      "formaldehyde"
+     ],
+     "closest": {
+      "official_product": "3,6-dichlorosalicylate",
+      "shared": [
+       "dichlorosalicylate"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "1_106_TsaM",
+   "accession": "P94679",
+   "recorded_substrate": "4-toluenesulfonate",
+   "recorded_product": "4-sulfobenzyl alcohol",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.14.-"
+   ],
+   "activities": [
+    {
+     "equation": "toluene-4-sulfonate + NADH + O2 + H(+) = 4-(hydroxymethyl)benzenesulfonate + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:51024",
+     "chebi": [
+      "CHEBI:11944",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:27023",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "toluene-4-sulfonate + NADH + O2 + H(+) = 4-(hydroxymethyl)benzenesulfonate + NAD(+) + H2O",
+     "rhea": "RHEA:51024",
+     "official_products": [
+      "4-(hydroxymethyl)benzenesulfonate"
+     ],
+     "closest": {
+      "official_product": "4-(hydroxymethyl)benzenesulfonate",
+      "shared": [],
+      "missing_from_ours": [
+       "benzenesulfonate"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "1_107_CndA",
+   "accession": "A0A059WLZ7",
+   "recorded_substrate": "chloroacetanilide herbicides (alachlor, acetochlor, butachlor)",
+   "recorded_product": "N-dealkylated chloroacetanilide and the corresponding alkyl formate",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.15.23"
+   ],
+   "activities": [
+    {
+     "equation": "butachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = butyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": "1.14.15.23",
+     "rhea": "RHEA:52204",
+     "chebi": [
+      "CHEBI:3230",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:33737",
+      "CHEBI:33738",
+      "CHEBI:88514",
+      "CHEBI:136492"
+     ]
+    },
+    {
+     "equation": "alachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = methyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": null,
+     "rhea": "RHEA:52208",
+     "chebi": [
+      "CHEBI:2533",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:33737",
+      "CHEBI:33738",
+      "CHEBI:77699",
+      "CHEBI:136492"
+     ]
+    },
+    {
+     "equation": "acetochlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = N-(2-ethyl-6-methylphenyl)-2-chloroacetamide + ethyl formate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": null,
+     "rhea": "RHEA:52212",
+     "chebi": [
+      "CHEBI:2394",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:33737",
+      "CHEBI:33738",
+      "CHEBI:52342",
+      "CHEBI:136494"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "butachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = butyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:52204",
+     "official_products": [
+      "butyl formate",
+      "N-(2,6-diethylphenyl)-2-chloroacetamide"
+     ],
+     "closest": {
+      "official_product": "butyl formate",
+      "shared": [
+       "formate"
+      ],
+      "missing_from_ours": [
+       "butyl"
+      ]
+     }
+    },
+    {
+     "equation": "alachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = methyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:52208",
+     "official_products": [
+      "methyl formate",
+      "N-(2,6-diethylphenyl)-2-chloroacetamide"
+     ],
+     "closest": {
+      "official_product": "methyl formate",
+      "shared": [
+       "formate"
+      ],
+      "missing_from_ours": [
+       "methyl"
+      ]
+     }
+    },
+    {
+     "equation": "acetochlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = N-(2-ethyl-6-methylphenyl)-2-chloroacetamide + ethyl formate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:52212",
+     "official_products": [
+      "N-(2-ethyl-6-methylphenyl)-2-chloroacetamide",
+      "ethyl formate"
+     ],
+     "closest": {
+      "official_product": "ethyl formate",
+      "shared": [
+       "formate"
+      ],
+      "missing_from_ours": [
+       "ethyl"
+      ]
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [
+    "butyl",
+    "ethyl",
+    "methyl"
+   ],
+   "status": "product matches but the official name carries words ours does not: butyl, ethyl, methyl -- REVIEW"
+  },
+  {
+   "cluster": "1_108_PobA",
+   "accession": "Q52185",
+   "recorded_substrate": "4-carboxydiphenyl ether (phenoxybenzoate)",
+   "recorded_product": "a hemiacetal that spontaneously hydrolyses to phenol and protocatechuate",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.-"
+   ],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "1_109_LigX",
+   "accession": "BAA36168.1",
+   "recorded_substrate": "5,5'-dehydrodivanillate",
+   "recorded_product": "demethylated biaryl diacid",
+   "recorded_reaction_class": "O_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_110_SxtT",
+   "accession": "C3RVQ0",
+   "recorded_substrate": "beta-saxitoxinol",
+   "recorded_product": "saxitoxin",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "1_111_GxtA",
+   "accession": "C3RVP5",
+   "recorded_substrate": "saxitoxin (also accepts beta-saxitoxinol)",
+   "recorded_product": "11-beta-hydroxysaxitoxin",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "1_112_NdmA",
+   "accession": "6ICK",
+   "recorded_substrate": "caffeine",
+   "recorded_product": "theobromine and formaldehyde",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_113_CdnA",
+   "accession": "ATC20475.1",
+   "recorded_substrate": "caffeine and methylxanthines",
+   "recorded_product": "demethylated xanthine",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_114_NdmB",
+   "accession": "6ICL",
+   "recorded_substrate": "caffeine",
+   "recorded_product": "paraxanthine and formaldehyde",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_116_GdmA",
+   "accession": "",
+   "recorded_substrate": "guaiacol (2-methoxyphenol)",
+   "recorded_product": "catechol and formaldehyde",
+   "recorded_reaction_class": "O_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_117_PrnD",
+   "accession": "",
+   "recorded_substrate": "aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)",
+   "recorded_product": "pyrrolnitrin",
+   "recorded_reaction_class": "N_oxygenation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "1_118_RedG",
+   "accession": "O54095",
+   "recorded_substrate": "undecylprodigiosin",
+   "recorded_product": "streptorubrin B",
+   "recorded_reaction_class": "C_C_bond_formation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_201_BphA1",
+   "accession": "Q52028",
+   "recorded_substrate": "biphenyl",
+   "recorded_product": "cis-2,3-dihydro-2,3-dihydroxybiphenyl",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.18"
+   ],
+   "activities": [
+    {
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.18",
+     "rhea": "RHEA:18165",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:17097",
+      "CHEBI:32922",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:18165",
+     "official_products": [
+      "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "diene",
+       "diol",
+       "phenylcyclohexa"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "2_202_EdoA1",
+   "accession": "Q9R956",
+   "recorded_substrate": "ethylbenzene",
+   "recorded_product": "cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_203_cumA1",
+   "accession": "Q51743",
+   "recorded_substrate": "cumene",
+   "recorded_product": "cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_204_Dpe",
+   "accession": "ANW37879.1",
+   "recorded_substrate": "diphenyl ether",
+   "recorded_product": "phenol and catechol",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "2_206_IpBAa",
+   "accession": "O51848",
+   "recorded_substrate": "isopropylbenzene",
+   "recorded_product": "cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_207_BpdC1",
+   "accession": "Q53086",
+   "recorded_substrate": "biphenyl",
+   "recorded_product": "cis-2,3-dihydro-2,3-dihydroxybiphenyl",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_208_TecA1",
+   "accession": "O24676",
+   "recorded_substrate": "1,2,4,5-tetrachlorobenzene",
+   "recorded_product": "chlorinated cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.26"
+   ],
+   "activities": [
+    {
+     "equation": "chlorobenzene + NADH + O2 + H(+) = (1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.26",
+     "rhea": "RHEA:57512",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:19981",
+      "CHEBI:28097",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "chlorobenzene + NADH + O2 + H(+) = (1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:57512",
+     "official_products": [
+      "(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "chlorocyclohexa",
+       "diene",
+       "diol"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "2_209_TDO",
+   "accession": "A5W4F2",
+   "recorded_substrate": "toluene",
+   "recorded_product": "cis-2,3-dihydroxy-2,3-dihydrotoluene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.3"
+   ],
+   "activities": [
+    {
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.3",
+     "rhea": "RHEA:13813",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16190",
+      "CHEBI:16716",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    },
+    {
+     "equation": "toluene + NADH + O2 + H(+) = (1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.11",
+     "rhea": "RHEA:16737",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:15565",
+      "CHEBI:17578",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:13813",
+     "official_products": [
+      "cis-1,2-dihydrobenzene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "cis-1,2-dihydrobenzene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "dihydrobenzene",
+       "diol"
+      ]
+     }
+    },
+    {
+     "equation": "toluene + NADH + O2 + H(+) = (1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:16737",
+     "official_products": [
+      "(1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "(1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "diene",
+       "diol",
+       "methylcyclohexa"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "2_210_XylC1",
+   "accession": "Q46155",
+   "recorded_substrate": "xylene",
+   "recorded_product": "dimethyl cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_211_bfzA",
+   "accession": "ASM60826.1",
+   "recorded_substrate": "buprofezin",
+   "recorded_product": "buprofezin cis-dihydrodiol (benzene ring dihydroxylated)",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "2_212_BedC1",
+   "accession": "Q07944",
+   "recorded_substrate": "benzene",
+   "recorded_product": "cis-benzene dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.3"
+   ],
+   "activities": [
+    {
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.3",
+     "rhea": "RHEA:13813",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16190",
+      "CHEBI:16716",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:13813",
+     "official_products": [
+      "cis-1,2-dihydrobenzene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "cis-1,2-dihydrobenzene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "dihydrobenzene",
+       "diol"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "2_213_BphA1A2",
+   "accession": "Q53122",
+   "recorded_substrate": "biphenyl",
+   "recorded_product": "cis-2,3-dihydro-2,3-dihydroxybiphenyl",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.18"
+   ],
+   "activities": [
+    {
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.18",
+     "rhea": "RHEA:18165",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:17097",
+      "CHEBI:32922",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:18165",
+     "official_products": [
+      "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol",
+      "shared": [],
+      "missing_from_ours": [
+       "diene",
+       "diol",
+       "phenylcyclohexa"
+      ]
+     }
+    }
+   ],
+   "product_agrees": false,
+   "qualifiers_missing_from_our_product": [],
+   "status": "PRODUCT DOES NOT MATCH any official equation -- review before trusting the oxygen fate"
+  },
+  {
+   "cluster": "2_214_TftA",
+   "accession": "Q51592",
+   "recorded_substrate": "2,4,5-trichlorophenoxyacetate",
+   "recorded_product": "2,4,5-trichlorophenol and glyoxylate",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "leaving_group",
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_215_cadA",
+   "accession": "AGU69349.1",
+   "recorded_substrate": "2,4-dichlorophenoxyacetate (2,4-D)",
+   "recorded_product": "2,4-dichlorophenol and glyoxylate",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "leaving_group",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "2_216_BPDO",
+   "accession": "A2TC87",
+   "recorded_substrate": "biphenyl",
+   "recorded_product": "cis-2,3-dihydro-2,3-dihydroxybiphenyl",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "2_217_HcaE",
+   "accession": "P0ABR5",
+   "recorded_substrate": "3-phenylpropionate",
+   "recorded_product": "3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate (the cis-dihydrodiol)",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.19"
+   ],
+   "activities": [
+    {
+     "equation": "3-phenylpropanoate + NADH + O2 + H(+) = 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate + NAD(+)",
+     "ec": "1.14.12.19",
+     "rhea": "RHEA:20357",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:51057",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:60087"
+     ]
+    },
+    {
+     "equation": "(E)-cinnamate + NADH + O2 + H(+) = (2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate + NAD(+)",
+     "ec": "1.14.12.19",
+     "rhea": "RHEA:25058",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:15669",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:61451"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "3-phenylpropanoate + NADH + O2 + H(+) = 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate + NAD(+)",
+     "rhea": "RHEA:20357",
+     "official_products": [
+      "3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate"
+     ],
+     "closest": {
+      "official_product": "3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate",
+      "shared": [
+       "propanoate"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "(E)-cinnamate + NADH + O2 + H(+) = (2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate + NAD(+)",
+     "rhea": "RHEA:25058",
+     "official_products": [
+      "(2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate"
+     ],
+     "closest": {
+      "official_product": "(2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate",
+      "shared": [],
+      "missing_from_ours": [
+       "enoate",
+       "prop"
+      ]
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "2_218_BphA1",
+   "accession": "O69363",
+   "recorded_substrate": "biphenyl",
+   "recorded_product": "cis-2,3-dihydro-2,3-dihydroxybiphenyl",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_301_PhnA1a",
+   "accession": "Q65AT1",
+   "recorded_substrate": "phenanthrene",
+   "recorded_product": "cis-3,4-dihydroxy-3,4-dihydrophenanthrene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_302_DitA",
+   "accession": "AAD21063.1",
+   "recorded_substrate": "dehydroabietate",
+   "recorded_product": "diterpenoid diol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_303_NBDO",
+   "accession": "Q8RTL4",
+   "recorded_substrate": "nitrobenzene",
+   "recorded_product": "catechol and nitrite",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_305_ArhA1",
+   "accession": "Q6BDD0",
+   "recorded_substrate": "polycyclic aromatic hydrocarbons",
+   "recorded_product": "cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_306_3NTDO",
+   "accession": "5XBP",
+   "recorded_substrate": "3-nitrotoluene",
+   "recorded_product": "methylcatechol and nitrite",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_307_NagGH",
+   "accession": "",
+   "recorded_substrate": "salicylate (2-hydroxybenzoate)",
+   "recorded_product": "gentisate (2,5-dihydroxybenzoate)",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_308_DxnA1",
+   "accession": "CAA51365.1",
+   "recorded_substrate": "dibenzo-p-dioxin",
+   "recorded_product": "2,2',3-trihydroxydiphenyl ether",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_309_NahAc",
+   "accession": "P0A110",
+   "recorded_substrate": "naphthalene",
+   "recorded_product": "cis-1,2-dihydroxy-1,2-dihydronaphthalene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.12"
+   ],
+   "activities": [
+    {
+     "equation": "naphthalene + NADH + O2 + H(+) = (1R,2S)-1,2-dihydronaphthalene-1,2-diol + NAD(+)",
+     "ec": "1.14.12.12",
+     "rhea": "RHEA:19173",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16482",
+      "CHEBI:44343",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "naphthalene + NADH + O2 + H(+) = (1R,2S)-1,2-dihydronaphthalene-1,2-diol + NAD(+)",
+     "rhea": "RHEA:19173",
+     "official_products": [
+      "(1R,2S)-1,2-dihydronaphthalene-1,2-diol"
+     ],
+     "closest": {
+      "official_product": "(1R,2S)-1,2-dihydronaphthalene-1,2-diol",
+      "shared": [
+       "dihydronaphthalene"
+      ],
+      "missing_from_ours": [
+       "diol"
+      ]
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [
+    "diol"
+   ],
+   "status": "product matches but the official name carries words ours does not: diol -- REVIEW"
+  },
+  {
+   "cluster": "3_310_DntAc",
+   "accession": "Q8VUD4",
+   "recorded_substrate": "2,4-dinitrotoluene",
+   "recorded_product": "4-methyl-5-nitrocatechol and nitrite",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_311_PhtAa",
+   "accession": "",
+   "recorded_substrate": "phthalate",
+   "recorded_product": "cis-4,5-dihydroxy-4,5-dihydrophthalate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_312_NinA",
+   "accession": "UZW58199.1",
+   "recorded_substrate": "1-nitronaphthalene",
+   "recorded_product": "1,2-dihydroxynaphthalene and nitrite",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_313_KshA15",
+   "accession": "P71875",
+   "recorded_substrate": "3-ketosteroid",
+   "recorded_product": "9-alpha-hydroxy-3-ketosteroid",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [
+    {
+     "equation": "androsta-1,4-diene-3,17-dione + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 9alpha-hydroxyandrosta-1,4-diene-3,17-dione + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": "1.14.15.30",
+     "rhea": "RHEA:32199",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:33737",
+      "CHEBI:33738",
+      "CHEBI:40799",
+      "CHEBI:63641"
+     ]
+    },
+    {
+     "equation": "androst-4-ene-3,17-dione + NADH + O2 + H(+) = 9alpha-hydroxy-androst-4-ene-3,17-dione + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:45968",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16422",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:85549"
+     ]
+    },
+    {
+     "equation": "3-oxochol-4-en-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oate + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:45972",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:83777",
+      "CHEBI:85550"
+     ]
+    },
+    {
+     "equation": "3-oxochola-1,4-dien-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oate + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:45976",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:85551",
+      "CHEBI:85553"
+     ]
+    },
+    {
+     "equation": "3-oxochol-4-en-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:45980",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:83792",
+      "CHEBI:85548"
+     ]
+    },
+    {
+     "equation": "3-oxochola-1,4-dien-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA + NAD(+) + H2O",
+     "ec": null,
+     "rhea": "RHEA:45984",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:83793",
+      "CHEBI:85547"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "androsta-1,4-diene-3,17-dione + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 9alpha-hydroxyandrosta-1,4-diene-3,17-dione + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:32199",
+     "official_products": [
+      "9alpha-hydroxyandrosta-1,4-diene-3,17-dione"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxyandrosta-1,4-diene-3,17-dione",
+      "shared": [],
+      "missing_from_ours": [
+       "9alpha",
+       "diene",
+       "dione",
+       "hydroxyandrosta"
+      ]
+     }
+    },
+    {
+     "equation": "androst-4-ene-3,17-dione + NADH + O2 + H(+) = 9alpha-hydroxy-androst-4-ene-3,17-dione + NAD(+) + H2O",
+     "rhea": "RHEA:45968",
+     "official_products": [
+      "9alpha-hydroxy-androst-4-ene-3,17-dione"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxy-androst-4-ene-3,17-dione",
+      "shared": [
+       "hydroxy"
+      ],
+      "missing_from_ours": [
+       "9alpha",
+       "androst",
+       "dione"
+      ]
+     }
+    },
+    {
+     "equation": "3-oxochol-4-en-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oate + NAD(+) + H2O",
+     "rhea": "RHEA:45972",
+     "official_products": [
+      "9alpha-hydroxy-3-oxochol-4-en-22-oate"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxy-3-oxochol-4-en-22-oate",
+      "shared": [
+       "hydroxy"
+      ],
+      "missing_from_ours": [
+       "9alpha",
+       "oate",
+       "oxochol"
+      ]
+     }
+    },
+    {
+     "equation": "3-oxochola-1,4-dien-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oate + NAD(+) + H2O",
+     "rhea": "RHEA:45976",
+     "official_products": [
+      "9alpha-hydroxy-3-oxochola-1,4-dien-22-oate"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxy-3-oxochola-1,4-dien-22-oate",
+      "shared": [
+       "hydroxy"
+      ],
+      "missing_from_ours": [
+       "9alpha",
+       "dien",
+       "oate",
+       "oxochola"
+      ]
+     }
+    },
+    {
+     "equation": "3-oxochol-4-en-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA + NAD(+) + H2O",
+     "rhea": "RHEA:45980",
+     "official_products": [
+      "9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA",
+      "shared": [
+       "hydroxy"
+      ],
+      "missing_from_ours": [
+       "9alpha",
+       "oxochol"
+      ]
+     }
+    },
+    {
+     "equation": "3-oxochola-1,4-dien-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA + NAD(+) + H2O",
+     "rhea": "RHEA:45984",
+     "official_products": [
+      "9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA"
+     ],
+     "closest": {
+      "official_product": "9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA",
+      "shared": [
+       "hydroxy"
+      ],
+      "missing_from_ours": [
+       "9alpha",
+       "dien",
+       "oxochola"
+      ]
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [
+    "9alpha",
+    "androst",
+    "dien",
+    "dione",
+    "oate",
+    "oxochol",
+    "oxochola"
+   ],
+   "status": "product matches but the official name carries words ours does not: 9alpha, androst, dien, dione, oate, oxochol, oxochola -- REVIEW"
+  },
+  {
+   "cluster": "3_316_NarAa",
+   "accession": "Q9X3R9",
+   "recorded_substrate": "naphthalene",
+   "recorded_product": "cis-1,2-dihydroxy-1,2-dihydronaphthalene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_317_NidA",
+   "accession": "Q9X593",
+   "recorded_substrate": "pyrene",
+   "recorded_product": "cis-4,5-dihydroxy-4,5-dihydropyrene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_318_NidA",
+   "accession": "Q9KHU1",
+   "recorded_substrate": "pyrene",
+   "recorded_product": "cis-4,5-dihydroxy-4,5-dihydropyrene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_319_PhdA",
+   "accession": "Q7DJF2",
+   "recorded_substrate": "phenanthrene",
+   "recorded_product": "cis-3,4-dihydroxy-3,4-dihydrophenanthrene",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_320_NidA3",
+   "accession": "Q2FBP3",
+   "recorded_substrate": "polycyclic aromatic hydrocarbons",
+   "recorded_product": "cis-dihydrodiol",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "3_321_Nvd",
+   "accession": "",
+   "recorded_substrate": "cholesterol",
+   "recorded_product": "7-dehydrocholesterol",
+   "recorded_reaction_class": "desaturation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "3_322_DAF36",
+   "accession": "Q17938",
+   "recorded_substrate": "cholesterol",
+   "recorded_product": "7-dehydrocholesterol",
+   "recorded_reaction_class": "desaturation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.19.21"
+   ],
+   "activities": [
+    {
+     "equation": "cholesterol + NADPH + O2 + H(+) = 7-dehydrocholesterol + NADP(+) + 2 H2O",
+     "ec": "1.14.19.21",
+     "rhea": "RHEA:45024",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16113",
+      "CHEBI:17759",
+      "CHEBI:57783",
+      "CHEBI:58349"
+     ]
+    },
+    {
+     "equation": "cholesterol + NADH + O2 + H(+) = 7-dehydrocholesterol + NAD(+) + 2 H2O",
+     "ec": "1.14.19.21",
+     "rhea": "RHEA:51644",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16113",
+      "CHEBI:17759",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "cholesterol + NADPH + O2 + H(+) = 7-dehydrocholesterol + NADP(+) + 2 H2O",
+     "rhea": "RHEA:45024",
+     "official_products": [
+      "7-dehydrocholesterol"
+     ],
+     "closest": {
+      "official_product": "7-dehydrocholesterol",
+      "shared": [
+       "dehydrocholesterol"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "cholesterol + NADH + O2 + H(+) = 7-dehydrocholesterol + NAD(+) + 2 H2O",
+     "rhea": "RHEA:51644",
+     "official_products": [
+      "7-dehydrocholesterol"
+     ],
+     "closest": {
+      "official_product": "7-dehydrocholesterol",
+      "shared": [
+       "dehydrocholesterol"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "4_401_CmtAb",
+   "accession": "Q51974",
+   "recorded_substrate": "p-cumate",
+   "recorded_product": "cis-2,3-dihydroxy-2,3-dihydro-p-cumate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.25"
+   ],
+   "activities": [
+    {
+     "equation": "p-cumate + NADH + O2 + H(+) = (2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate + NAD(+)",
+     "ec": "1.14.12.25",
+     "rhea": "RHEA:42344",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:25822",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:58420"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "p-cumate + NADH + O2 + H(+) = (2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate + NAD(+)",
+     "rhea": "RHEA:42344",
+     "official_products": [
+      "(2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate"
+     ],
+     "closest": {
+      "official_product": "(2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate",
+      "shared": [
+       "cumate",
+       "dihydro",
+       "dihydroxy"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "4_402_PsbAb",
+   "accession": "BAA82116.1",
+   "recorded_substrate": "p-cumate",
+   "recorded_product": "cis-2,3-dihydroxy-2,3-dihydro-p-cumate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": "product",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "4_403_AtdA",
+   "accession": "BAA13012.1",
+   "recorded_substrate": "aniline",
+   "recorded_product": "catechol and ammonia",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "4_404_TdnA1",
+   "accession": "P95531",
+   "recorded_substrate": "aniline",
+   "recorded_product": "catechol and ammonia",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "4_405_ROCH34",
+   "accession": "7FHR",
+   "recorded_substrate": "phthalate",
+   "recorded_product": "cis-4,5-dihydroxy-4,5-dihydrophthalate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "4_406_PDO",
+   "accession": "B7WQT1",
+   "recorded_substrate": "phthalate",
+   "recorded_product": "cis-3,4-dihydroxy-3,4-dihydrophthalate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "4_407_PbaA1",
+   "accession": "A0A059U1S8",
+   "recorded_substrate": "3-phenoxybenzoate",
+   "recorded_product": "protocatechuate and phenol",
+   "recorded_reaction_class": "angular_dioxygenation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "4_408_AntA",
+   "accession": "O85673",
+   "recorded_substrate": "anthranilate",
+   "recorded_product": "catechol, ammonia and carbon dioxide",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.12.1"
+   ],
+   "activities": [
+    {
+     "equation": "anthranilate + NADH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NAD(+)",
+     "ec": "1.14.12.1",
+     "rhea": "RHEA:11076",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16526",
+      "CHEBI:16567",
+      "CHEBI:18135",
+      "CHEBI:28938",
+      "CHEBI:57540",
+      "CHEBI:57945"
+     ]
+    },
+    {
+     "equation": "anthranilate + NADPH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NADP(+)",
+     "ec": "1.14.12.1",
+     "rhea": "RHEA:11072",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16526",
+      "CHEBI:16567",
+      "CHEBI:18135",
+      "CHEBI:28938",
+      "CHEBI:57783",
+      "CHEBI:58349"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "anthranilate + NADH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NAD(+)",
+     "rhea": "RHEA:11076",
+     "official_products": [
+      "catechol",
+      "NH4(+)",
+      "CO2"
+     ],
+     "closest": {
+      "official_product": "catechol",
+      "shared": [
+       "catechol"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "anthranilate + NADPH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NADP(+)",
+     "rhea": "RHEA:11072",
+     "official_products": [
+      "catechol",
+      "NH4(+)",
+      "CO2"
+     ],
+     "closest": {
+      "official_product": "catechol",
+      "shared": [
+       "catechol"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "4_409_TPDO",
+   "accession": "B7WRJ9",
+   "recorded_substrate": "terephthalate",
+   "recorded_product": "1,2-dihydroxy-3,5-cyclohexadiene-1,4-dicarboxylate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "4_410_CbdC",
+   "accession": "Q51601",
+   "recorded_substrate": "2-halobenzoate",
+   "recorded_product": "catechol, halide and carbon dioxide",
+   "recorded_reaction_class": "dioxygenation_with_release",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.12.13"
+   ],
+   "activities": [
+    {
+     "equation": "a 2-halobenzoate + NADH + O2 + H(+) = a halide anion + catechol + CO2 + NAD(+)",
+     "ec": "1.14.12.13",
+     "rhea": "RHEA:53736",
+     "chebi": [
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16042",
+      "CHEBI:16526",
+      "CHEBI:18135",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:70856"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "a 2-halobenzoate + NADH + O2 + H(+) = a halide anion + catechol + CO2 + NAD(+)",
+     "rhea": "RHEA:53736",
+     "official_products": [
+      "a halide anion",
+      "catechol",
+      "CO2"
+     ],
+     "closest": {
+      "official_product": "catechol",
+      "shared": [
+       "catechol"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "4_411_XylX",
+   "accession": "P23099",
+   "recorded_substrate": "toluate and benzoate",
+   "recorded_product": "methyl-cis-dihydroxycyclohexadiene carboxylate",
+   "recorded_reaction_class": "cis_dihydroxylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.12.-"
+   ],
+   "activities": [],
+   "status": "the UniProt entry records no catalytic activity, so there is no official equation to check against"
+  },
+  {
+   "cluster": "5_501_CmoS",
+   "accession": "O04121",
+   "recorded_substrate": "choline",
+   "recorded_product": "betaine aldehyde hydrate (in equilibrium with betaine aldehyde)",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.15.7"
+   ],
+   "activities": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": "1.14.15.7",
+     "rhea": "RHEA:17769",
+     "chebi": [
+      "CHEBI:15354",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:15870",
+      "CHEBI:33737",
+      "CHEBI:33738"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:17769",
+     "official_products": [
+      "betaine aldehyde hydrate"
+     ],
+     "closest": {
+      "official_product": "betaine aldehyde hydrate",
+      "shared": [
+       "aldehyde",
+       "betaine",
+       "hydrate"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "5_502_CmoB",
+   "accession": "O22553",
+   "recorded_substrate": "choline",
+   "recorded_product": "betaine aldehyde hydrate (in equilibrium with betaine aldehyde)",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.15.7"
+   ],
+   "activities": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": "1.14.15.7",
+     "rhea": "RHEA:17769",
+     "chebi": [
+      "CHEBI:15354",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:15870",
+      "CHEBI:33737",
+      "CHEBI:33738"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:17769",
+     "official_products": [
+      "betaine aldehyde hydrate"
+     ],
+     "closest": {
+      "official_product": "betaine aldehyde hydrate",
+      "shared": [
+       "aldehyde",
+       "betaine",
+       "hydrate"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "5_503_CmoA",
+   "accession": "Q93XE1",
+   "recorded_substrate": "choline",
+   "recorded_product": "betaine aldehyde hydrate (in equilibrium with betaine aldehyde)",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.15.7"
+   ],
+   "activities": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "ec": "1.14.15.7",
+     "rhea": "RHEA:17769",
+     "chebi": [
+      "CHEBI:15354",
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:15870",
+      "CHEBI:33737",
+      "CHEBI:33738"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "rhea": "RHEA:17769",
+     "official_products": [
+      "betaine aldehyde hydrate"
+     ],
+     "closest": {
+      "official_product": "betaine aldehyde hydrate",
+      "shared": [
+       "aldehyde",
+       "betaine",
+       "hydrate"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "5_504_CntA",
+   "accession": "D0C9N6",
+   "recorded_substrate": "L-carnitine",
+   "recorded_product": "trimethylamine and malic semialdehyde",
+   "recorded_reaction_class": "C_N_cleavage",
+   "recorded_oxygen_fate": "product",
+   "ec_numbers": [
+    "1.14.13.239"
+   ],
+   "activities": [
+    {
+     "equation": "(R)-carnitine + NADH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NAD(+) + H2O",
+     "ec": "1.14.13.239",
+     "rhea": "RHEA:55396",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16347",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:58389",
+      "CHEBI:138809"
+     ]
+    },
+    {
+     "equation": "(R)-carnitine + NADPH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NADP(+) + H2O",
+     "ec": "1.14.13.239",
+     "rhea": "RHEA:55368",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16347",
+      "CHEBI:57783",
+      "CHEBI:58349",
+      "CHEBI:58389",
+      "CHEBI:138809"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "(R)-carnitine + NADH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NAD(+) + H2O",
+     "rhea": "RHEA:55396",
+     "official_products": [
+      "(3R)-3-hydroxy-4-oxobutanoate",
+      "trimethylamine"
+     ],
+     "closest": {
+      "official_product": "trimethylamine",
+      "shared": [
+       "trimethylamine"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "(R)-carnitine + NADPH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NADP(+) + H2O",
+     "rhea": "RHEA:55368",
+     "official_products": [
+      "(3R)-3-hydroxy-4-oxobutanoate",
+      "trimethylamine"
+     ],
+     "closest": {
+      "official_product": "trimethylamine",
+      "shared": [
+       "trimethylamine"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "5_505_qxyA",
+   "accession": "QIH10984.1",
+   "recorded_substrate": "benzalkonium chloride and other quaternary ammonium compounds",
+   "recorded_product": "benzyldimethylamine and an alkanoic acid",
+   "recorded_reaction_class": "C_N_cleavage",
+   "recorded_oxygen_fate": "product",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "5_506_Stc2",
+   "accession": "Q92ZP9",
+   "recorded_substrate": "stachydrine",
+   "recorded_product": "N-methyl-L-proline and formaldehyde",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.13.247"
+   ],
+   "activities": [
+    {
+     "equation": "L-proline betaine + NADH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NAD(+) + H2O",
+     "ec": "1.14.13.247",
+     "rhea": "RHEA:61616",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16842",
+      "CHEBI:35280",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:133743"
+     ]
+    },
+    {
+     "equation": "L-proline betaine + NADPH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NADP(+) + H2O",
+     "ec": "1.14.13.247",
+     "rhea": "RHEA:19357",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16842",
+      "CHEBI:35280",
+      "CHEBI:57783",
+      "CHEBI:58349",
+      "CHEBI:133743"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "L-proline betaine + NADH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NAD(+) + H2O",
+     "rhea": "RHEA:61616",
+     "official_products": [
+      "N-methyl-L-proline",
+      "formaldehyde"
+     ],
+     "closest": {
+      "official_product": "N-methyl-L-proline",
+      "shared": [
+       "methyl",
+       "proline"
+      ],
+      "missing_from_ours": []
+     }
+    },
+    {
+     "equation": "L-proline betaine + NADPH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NADP(+) + H2O",
+     "rhea": "RHEA:19357",
+     "official_products": [
+      "N-methyl-L-proline",
+      "formaldehyde"
+     ],
+     "closest": {
+      "official_product": "N-methyl-L-proline",
+      "shared": [
+       "methyl",
+       "proline"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "5_507_BmoA",
+   "accession": "WP_043557995.1",
+   "recorded_substrate": "glycine betaine",
+   "recorded_product": "dimethylglycine and formaldehyde",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "5_508_GbcA",
+   "accession": "Q9HTF4",
+   "recorded_substrate": "glycine betaine",
+   "recorded_product": "dimethylglycine and formaldehyde",
+   "recorded_reaction_class": "N_demethylation",
+   "recorded_oxygen_fate": null,
+   "ec_numbers": [
+    "1.14.13.251"
+   ],
+   "activities": [
+    {
+     "equation": "glycine betaine + NADH + O2 + H(+) = N,N-dimethylglycine + formaldehyde + NAD(+) + H2O",
+     "ec": "1.14.13.251",
+     "rhea": "RHEA:45700",
+     "chebi": [
+      "CHEBI:15377",
+      "CHEBI:15378",
+      "CHEBI:15379",
+      "CHEBI:16842",
+      "CHEBI:17750",
+      "CHEBI:57540",
+      "CHEBI:57945",
+      "CHEBI:58251"
+     ]
+    }
+   ],
+   "checked": [
+    {
+     "equation": "glycine betaine + NADH + O2 + H(+) = N,N-dimethylglycine + formaldehyde + NAD(+) + H2O",
+     "rhea": "RHEA:45700",
+     "official_products": [
+      "N,N-dimethylglycine",
+      "formaldehyde"
+     ],
+     "closest": {
+      "official_product": "N,N-dimethylglycine",
+      "shared": [
+       "dimethylglycine"
+      ],
+      "missing_from_ours": []
+     }
+    }
+   ],
+   "product_agrees": true,
+   "qualifiers_missing_from_our_product": [],
+   "status": "product name agrees with an official equation"
+  },
+  {
+   "cluster": "6_601_PAO",
+   "accession": "",
+   "recorded_substrate": "pheophorbide a",
+   "recorded_product": "red chlorophyll catabolite (RCC)",
+   "recorded_reaction_class": "oxygenolytic_ring_opening",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "6_602_CAO",
+   "accession": "",
+   "recorded_substrate": "chlorophyllide a",
+   "recorded_product": "chlorophyllide b",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "6_603_PTC52",
+   "accession": "",
+   "recorded_substrate": "protochlorophyllide a",
+   "recorded_product": "protochlorophyllide b",
+   "recorded_reaction_class": "hydroxylation",
+   "recorded_oxygen_fate": null,
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  },
+  {
+   "cluster": "7_701_AerC",
+   "accession": "",
+   "recorded_substrate": "N4-isopentenylagmatine",
+   "recorded_product": "1-amino-2-(N-amidino-3-Delta3-pyrrolinyl)ethane (Aeap)",
+   "recorded_reaction_class": "C_C_cleavage",
+   "recorded_oxygen_fate": "unknown",
+   "status": "no UniProt accession -- the official reaction cannot be looked up this way"
+  }
+ ]
+}

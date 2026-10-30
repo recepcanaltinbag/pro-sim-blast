@@ -1,0 +1,1514 @@
+/* ============================================================================
+   ROAR-DB stylesheet
+   ----------------------------------------------------------------------------
+   A reference database, not a landing page: the job of this sheet is to make
+   dense tables and measured figures legible, and to keep one vertical rhythm
+   from the home page through to the atlas. Serif headings over a muted paper
+   palette, as before; everything else is rebuilt around a single spacing and
+   colour scale instead of the two overlapping layers this file used to carry.
+
+   Contents
+     1  tokens (colour, type, spacing, figure palette)
+     2  reset, document, focus
+     3  header, navigation
+     4  typography and vertical rhythm
+     5  figures and captions (auto-numbered)
+     6  tables: density, alignment, sticky headers
+     7  table toolbar: filter box and value chips
+     8  tiles, cards, key/value facts
+     9  chips, verdicts, bars
+    10  chemistry: structure cards, reaction schemes, 3D viewer
+    11  hand-written and generated SVGs, including dark mode
+    12  search, taxonomy tree, miscellany
+    13  responsive: 1000px, 860px, 700px, 390px
+    14  print
+   ========================================================================= */
+
+/* ------------------------------------------------------------ 1  tokens  */
+:root {
+  /* paper and ink */
+  /* Yuzeyler NOTR-SERIN. Onceki palet bej kagit (#fbfaf7) ve haki cizgiler
+     (#ddd9d0) kullaniyordu; sarimsi doku sayfayi tozlu ve eski gosteriyordu,
+     ve beyaz paneller o zeminde kirli duruyordu. Yeni zemin hafif serin bir
+     gri, paneller saf beyaz: panel artik zeminden AYRILIYOR, cizgiler net. */
+  --paper:      #f5f7fa;
+  --paper-2:    #eceff4;
+  --panel:      #ffffff;
+  --ink:        #111821;
+  --ink-2:      #39434f;
+  --dim:        #68727e;
+  --rule:       #e2e7ed;
+  --rule-2:     #c4ccd6;
+
+  /* Vurgu rengi tek ve KOYU. Eski #8c2f22 pas rengiydi ve ayni sayfadaki
+     demir kirmizisi figur rengiyle yarisiyordu. Vurgu artik derin bir lacivert
+     -- arayuze ait; pas tonu yalnizca FIGURLERDE, demir icin kaliyor. */
+  --accent-ink: #1b3a6b;
+  --link:       #1b4f8a;
+  --ok:         #176b46;
+  --bad:        #9c2b22;
+  --warn:       #8a5d12;
+  --focus:      #1b4f8a;
+
+  /* legacy aliases: older rules and templates still reference these */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --muted: var(--dim);
+  --line: var(--rule);
+  --card: var(--panel);
+  --accent: var(--accent-ink);
+  --accent-2: var(--link);
+
+  /* type */
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* one spacing scale, used for every margin in the sheet */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+
+  --radius: 8px;
+  --radius-s: 5px;
+  /* Sayfa kenar boslugu EKRANLA birlikte buyur. Sabit 16 pikselik bir pay
+     telefonda sikisik, genis ekranda ise icerigi kenara yapistiriyordu. */
+  --gutter: clamp(14px, 3.2vw, 40px);
+  --measure: 72ch;          /* comfortable reading width for prose */
+  --wide: 1180px;
+
+  /* figure palette: hand-written SVGs reference these instead of hex, so dark
+     mode is one redefinition rather than an attribute-selector per shape */
+  --fig-rieske:   #cfe0ef;   /* Rieske / [2Fe-2S] domain */
+  --fig-cat:      #f2dfc6;   /* catalytic domain */
+  --fig-red:      #fcecd0;   /* reductase */
+  --fig-fd:       #d9eede;   /* ferredoxin */
+  --fig-neutral:  #ffffff;   /* plain box */
+  --fig-stroke:   #6d7681;
+  --fig-iron:     #8c2f22;
+  --fig-sulfur:   #d9a13b;
+  --fig-good:     #1f7a4d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Acik paletle AYNI mantik: zemin en koyu, panel ondan bir basamak acik,
+       boylece panel karanlikta da ayri bir yuzey olarak okunuyor. Eski
+       degerlerde zemin (#12151a) ile panel (#181c22) arasindaki fark goz icin
+       neredeyse yoktu ve tablolar zeminde yuzuyor gibi duruyordu. */
+    --paper:      #0e1319;
+    --paper-2:    #151b23;
+    --panel:      #1a222c;
+    --ink:        #e9edf2;
+    --ink-2:      #c2cad3;
+    --dim:        #8e9aa7;
+    --rule:       #26303b;
+    --rule-2:     #3a4654;
+
+    --accent-ink: #9dc1ea;
+    --link:       #8fbce0;
+    --ok:         #5fbf90;
+    --bad:        #e8897c;
+    --warn:       #d9b263;
+    --focus:      #8fbce0;
+
+    --fig-rieske:  #1e3346;
+    --fig-cat:     #3d3222;
+    --fig-red:     #3a3122;
+    --fig-fd:      #1d3a2b;
+    --fig-neutral: #1f242b;
+    --fig-stroke:  #8b949e;
+    --fig-iron:    #d9705e;
+    --fig-sulfur:  #d9a13b;
+    --fig-good:    #66c295;
+  }
+}
+
+/* -------------------------------------------- 2  reset, document, focus  */
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  text-underline-offset: 2px;
+}
+
+main {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: var(--s5) var(--gutter) var(--s7);
+  counter-reset: fig;            /* figure numbering, see section 5 */
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Keyboard users must always be able to see where they are. The site is mostly
+   tables and links, so this is the single most important accessibility rule
+   here; `:focus-visible` keeps it off mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+table.data th.sortable:focus-visible { outline-offset: -2px; }
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--accent-ink);
+  border-radius: 0 0 var(--radius-s) 0;
+  padding: var(--s2) var(--s3);
+}
+.skip:focus { left: 0; }
+
+/* ------------------------------------------ 3  header and navigation    */
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s5);
+  align-items: center;
+  padding: var(--s2) var(--s4);
+  background: var(--panel);
+  border-bottom: 1px solid var(--rule);
+}
+.brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.brand:hover { text-decoration: none; }
+.brand__mark {
+  display: inline-block;
+  background: var(--accent-ink);
+  color: #fff;
+  border-radius: 6px;
+  padding: 0 6px;
+  margin-right: var(--s1);
+  font-family: var(--sans);
+  font-size: .95rem;
+}
+.top nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  align-items: baseline;
+}
+.top nav a {
+  color: var(--ink-2);
+  font-size: .92rem;
+  padding: 2px 0;
+  border-bottom: 2px solid transparent;
+}
+.top nav a:hover { color: var(--ink); text-decoration: none; border-bottom-color: var(--rule-2); }
+.top nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent-ink); font-weight: 600; }
+
+.qs { margin-left: auto; display: flex; gap: var(--s1); }
+.qs input { width: 250px; }
+
+input[type=search], input[type=text], textarea, select {
+  padding: 6px 10px;
+  border: 1px solid var(--rule-2);
+  border-radius: var(--radius-s);
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+}
+textarea { width: 100%; font-family: var(--mono); font-size: .85rem; }
+
+button, .btn {
+  padding: 6px 12px;
+  border: 1px solid var(--rule-2);
+  border-radius: var(--radius-s);
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  display: inline-block;
+}
+button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: none; }
+.btn.primary, button.primary {
+  background: var(--accent-ink);
+  color: #fff;
+  border-color: var(--accent-ink);
+}
+
+/* Bilinen bir kusuru bildiren uyari kutusu: normal nottan ayrilmasi gerekiyor,
+   cunku burada "dikkat et" degil "bu sayi kismen rastgele" deniyor. Renk tek
+   isaret degil; metin de kendi basina aciklayici. */
+.caveat--warn {
+  border-left-color: #b4612a;
+  background: color-mix(in srgb, #b4612a 7%, var(--panel));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .caveat--warn {
+    background: color-mix(in srgb, #b4612a 16%, var(--panel));
+  }
+}
+:root[data-theme="dark"] .caveat--warn {
+  background: color-mix(in srgb, #b4612a 16%, var(--panel));
+}
+
+/* Reaksiyon semasinin yanindaki aciklama. SVG icinde sabit konuma yazilinca
+   kirpiliyordu; HTML olarak satir kirabiliyor. */
+.rxnote {
+  font-size: .76rem;
+  color: var(--dim);
+  line-height: 1.35;
+  margin-top: 4px;
+  max-width: 34ch;
+}
+.rxcell { min-width: 250px; }
+.rxnscheme { display: block; }
+
+/* Goruntuleyici katman anahtarlari: grafigin ustundeki kontrol seridi.
+   Dugmelerle ayni satirda durur ama onlardan ayirt edilir, cunku biri
+   GORUNUMU secer, otekiler o gorunumun KATMANLARINI acip kapar. */
+.pdbbar__layers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s3);
+  align-items: center;
+  font-size: .8rem;
+  color: var(--dim);
+  padding-left: var(--s3);
+  margin-left: var(--s2);
+  border-left: 1px solid var(--rule);
+}
+.pdbbar__layers label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+@media (max-width: 700px) {
+  .pdbbar__layers { padding-left: 0; margin-left: 0; border-left: 0; width: 100%; }
+}
+
+/* Istatistik karti ve etki cubugu. Sayfa daha once ayni testleri once bir ozet
+   tablosunda sonra ayrintili bolumlerde iki kez gosteriyordu; tekrar kaldirildi
+   ve yerine her soruya bir cubuk konuldu. Cubugun isi tek bir soruyu tabloya
+   bakmadan cevaplamak: "bu etki buyuk mu, yoksa tablo buyudugu icin mi boyle
+   gorunuyor". Isaret, etiketleri karistirarak elde edilen degerde durur. */
+.statcard { margin-bottom: var(--s6); }
+.statcard__head { margin: 0 0 var(--s3); max-width: 62ch; }
+.statcard__verdict { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); align-items: center; margin-bottom: var(--s2); }
+
+.effbar {
+  position: relative;
+  height: 22px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+.effbar__fill {
+  position: absolute; inset: 0 auto 0 0;
+  background: color-mix(in srgb, var(--link) 26%, var(--panel));
+  border-right: 2px solid var(--link);
+}
+/* Sans eseri duzey: ince, koyu ve cubugun USTUNDE. */
+.effbar__null {
+  position: absolute; top: -2px; bottom: -2px; width: 2px;
+  background: var(--accent-ink);
+}
+.effbar__null::after {
+  content: ""; position: absolute; left: -3px; top: -3px;
+  border: 4px solid transparent; border-top-color: var(--accent-ink);
+}
+.effbar__value {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  font-size: .76rem; font-variant-numeric: tabular-nums; color: var(--ink-2);
+}
+.effbar__legend { margin-top: 4px; font-size: .8rem; }
+
+/* ---- sonuc tablolarinin icindeki kucuk figurler ------------------------
+   Iki figur, iki ayri is.
+
+   .pbar  BILESIM. Bir satirin sutunlar arasinda nasil bolundugu. Isi
+          buyukluk oldugu icin TEK hue'nun acik->koyu dizisi kullanilir;
+          kategoriler her tabloda ayni sirada durur, boylece konum kimlik
+          tasir. Segmentler arasina 2px zemin boslugu girer, bitisik iki
+          basamak birbirine karismasin diye. Basamaklar OKLab'de olculerek
+          secildi: komsu basamaklar arasi L farki >= 0,06 ve en acik basamak
+          zemine karsi kontrast >= 2.
+   .dbar  SAPMA. Bir hucrenin genel orandan ne kadar ve NE YONDE ayrildigi.
+          Isi kutupluluk oldugu icu iki hue ve notr bir orta nokta kullanilir:
+          fazla temsil ilik, eksik temsil serin, sifir noktasi gri. Cift
+          OKLab'de dogrulandi: protan/deutan benzetiminde ayrim 18,8 (hedef
+          8), normal gorusde 26,1 (taban 15), iki kutup da zemine karsi
+          kontrast 3'un uzerinde. Tek seri oldugu icin aciklama kutusu
+          gerekmiyor; satirin kendi metni figuru adlandiriyor.          */
+:root {
+  --sq1: #90b4d8;   /* dizisel rampa, en dusuk basamak */
+  --sq2: #7597ba;
+  --sq3: #58799b;
+  --sq4: #395a79;   /* en yuksek basamak */
+  --div-over:  #b5612f;   /* fazla temsil (ilik kutup) */
+  --div-under: #1f5c96;   /* eksik temsil (serin kutup) */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Karanlikta rampa TERS yonde kurulur: dusuk basamak koyu, yuksek acik.
+       Otomatik cevirme degil, ayri olculmus basamaklar. */
+    --sq1: #456687;
+    --sq2: #597b9c;
+    --sq3: #6d90b2;
+    --sq4: #82a5c9;
+    --div-over:  #c07a3e;
+    --div-under: #4a8ac9;
+  }
+}
+
+.pbar {
+  display: flex;
+  gap: 2px;
+  height: 11px;
+  min-width: 90px;
+  border-radius: 2px;
+}
+.pbar__seg { min-width: 2px; border-radius: 1px; }
+.pbar__seg:first-child { border-radius: 2px 1px 1px 2px; }
+.pbar__seg:last-child  { border-radius: 1px 2px 2px 1px; }
+.pbar__key {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-right: var(--s3); font-size: .78rem; color: var(--ink-2);
+  white-space: nowrap;
+}
+.pbar__key i { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+.pbar__keys { margin: 0 0 var(--s2); display: flex; flex-wrap: wrap; row-gap: 4px; }
+
+.dbar {
+  position: relative;
+  display: inline-block;
+  width: 108px; height: 11px;
+  vertical-align: -1px;
+  background: var(--paper-2);
+  border-radius: 2px;
+  flex: none;
+}
+/* Sifir cizgisi: notr, figurun ustunde. */
+.dbar::before {
+  content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px;
+  width: 1px; background: var(--rule-2);
+}
+.dbar__fill { position: absolute; top: 0; bottom: 0; border-radius: 1px; }
+.dbar__fill--over  { background: var(--div-over); }
+.dbar__fill--under { background: var(--div-under); }
+
+/* Sinyal listesi: "iliski tabloda NEREDE". Her satir bir cumle, yaninda o
+   hucrenin sapma cubugu. Metin ink renklerini giyer, rengi yalnizca figur
+   tasir. */
+.signals { margin: var(--s3) 0 0; }
+.signals > summary { cursor: pointer; font-weight: 600; color: var(--ink-2); }
+.signals > summary::marker { color: var(--dim); }
+.siglist { list-style: none; margin: var(--s2) 0 0; padding: 0; }
+.siglist li {
+  display: flex; align-items: baseline; gap: var(--s3);
+  padding: 5px 0; border-top: 1px solid var(--rule);
+  font-size: .86rem; line-height: 1.45;
+}
+.siglist li:first-child { border-top: 0; }
+.siglist b { font-weight: 600; }
+.siglist .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Her cikarimin tek cumlelik duz anlatimi: sayidan once ne demek oldugu. */
+.plain {
+  margin: var(--s2) 0 0;
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+.plain b { color: var(--ink); }
+
+@media (max-width: 700px) {
+  .dbar { width: 72px; }
+  .siglist li { flex-wrap: wrap; gap: var(--s2); }
+}
+
+/* Aktif bolge kalinti listesi: varsayilan olarak KAPALI, cunku sayfanin asil
+   konusu degil, ama goruntuleyici yuklenemezse bilgi yine de burada. */
+.sitelist { margin: var(--s3) 0; }
+.sitelist > summary {
+  cursor: pointer;
+  font-size: .88rem;
+  color: var(--link);
+  padding: 6px 0;
+}
+.sitelist[open] > summary { margin-bottom: var(--s2); }
+
+/* VERIDEN gelen renkli etiketler. Renk sablondan `--chip` olarak geliyor ve
+   bicim BURADA kuruluyor; daha once sablonlar hem arka plani hem metin rengini
+   satir ici yaziyordu ve her yerde elle ayarlanmasi gerekiyordu.
+   Olculdu: dolu renk uzerine metin koymak orta tonlarda calismiyor --
+   "angular dioxygenation" (teal) ve "O demethylation" (turuncu-kahve) beyaz
+   metinle 3,9:1, koyu metinle 4,7:1 veriyordu, ikisi de rahat okunmuyor.
+   Cozum metni rengin UZERINDEN almak: zemin rengin cok acik bir tonu, metin
+   her zaman koyu murekkep (en kotu durumda 13,7:1), kimlik ise kenarlik ve
+   sol taraftaki dolu renk noktasi ile tasiniyor. */
+.chip--data {
+  background: color-mix(in srgb, var(--chip, var(--rule)) 16%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--chip, var(--rule)) 38%, var(--rule));
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip--data::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--chip, var(--rule));
+  flex: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chip--data {
+    background: color-mix(in srgb, var(--chip, var(--rule)) 26%, var(--panel));
+    border-color: color-mix(in srgb, var(--chip, var(--rule)) 46%, var(--rule));
+  }
+}
+:root[data-theme="dark"] .chip--data {
+  background: color-mix(in srgb, var(--chip, var(--rule)) 26%, var(--panel));
+  border-color: color-mix(in srgb, var(--chip, var(--rule)) 46%, var(--rule));
+}
+
+/* Bilgi tasimayan tablo satiri: silinmez, cunku eksikligi de bir bulgudur,
+   ama goz once bilgi tasiyanlari okusun diye soluklastirilir. */
+tr.dim td { opacity: .62; }
+
+/* Grafik ustundeki kucuk kontrol dugmeleri: ayni gorunum, daha az yer. */
+.btn--small, button.btn--small {
+  padding: 2px 8px;
+  font-size: .82rem;
+}
+
+/* Atlas gezintisi IKI KADEMELI. Once on sekiz baglanti tek satirdaydi;
+   gruplandirma eklenmisti ama hepsi ayni anda duruyordu ve dar ekranda grup
+   basliklari gizlenince geriye ayirt edilmemis on sekiz baglanti kaliyordu.
+   Ust satir (.subnav--sections) dort bolum, alt satir (.subnav--pages)
+   yalnizca icinde bulunulan bolumun sayfalari. Iki satir birlikte en fazla
+   on bir baglanti gosterir. */
+.subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: var(--s3) 0 var(--s5);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0;
+}
+.subnav a {
+  padding: 6px 11px;
+  font-size: .88rem;
+  color: var(--dim);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--radius-s) var(--radius-s) 0 0;
+  white-space: nowrap;
+}
+.subnav a:hover { color: var(--ink); background: var(--paper-2); text-decoration: none; }
+.subnav a.on {
+  color: var(--ink);
+  background: var(--panel);
+  border-color: var(--rule);
+  margin-bottom: -1px;
+  font-weight: 600;
+}
+.subnav__sep {
+  width: 1px;
+  align-self: center;
+  height: 1.1em;
+  background: var(--rule);
+  margin: 0 var(--s2);
+}
+.subnav__group {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  align-self: center;
+  padding: 0 var(--s1) 0 var(--s2);
+}
+
+/* Ust kademe: bolumler. Secili bolum sekmesi alt satira baglanir, bu yuzden
+   ikisi arasinda bosluk birakilmaz. */
+.subnav--sections { margin-bottom: 0; }
+.subnav--sections a { font-size: .92rem; }
+.subnav--sections a.on { border-bottom: 1px solid var(--panel); }
+
+/* Alt kademe: o bolumun sayfalari. Daha sakin, cercevesiz, ve seciliyi
+   altindaki ince cizgi isaretler -- ustteki sekme kutusuyla karismasin. */
+.subnav--pages {
+  margin: 0 0 var(--s5);
+  border-bottom: 1px solid var(--rule);
+  padding-top: var(--s2);
+  gap: var(--s1);
+}
+.subnav--pages a {
+  padding: 4px 9px 6px;
+  font-size: .84rem;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.subnav--pages a:hover { background: transparent; border-bottom-color: var(--rule-2); }
+.subnav--pages a.on {
+  background: transparent;
+  border-bottom-color: var(--accent-ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+.subnav--sections + h1, .subnav--pages + h1 { margin-top: var(--s2); }
+
+/* Sankey: sunucuda hesaplanan geometri, duz SVG. Kutuphane YOK -- Plotly'nin
+   sankey izi yalnizca tam pakette (4,5 MB) ve sayfanin geri kalani 1,2 MB'lik
+   parcali paketlerle calisiyor.
+
+   Seritler RENK TASIMAZ. Tek bir akis turu cizildigi icin kategorik palete
+   gerek yok; hepsi ayni mureckeple, dusuk opaklikla. Kimligi ucundaki etiket
+   tasiyor, bu da renk korlugu ve baski sorununu bastan kaldiriyor. Uzerine
+   gelince serit koyulasir, boylece tek bir akis izlenebilir. */
+.sankey { display: block; max-width: 100%; height: auto; overflow: visible; }
+.sankey__flow {
+  fill: var(--accent-ink);
+  fill-opacity: .17;
+  transition: fill-opacity .12s ease;
+}
+.sankey__flow:hover { fill-opacity: .46; }
+.sankey__node { fill: var(--accent-ink); fill-opacity: .8; }
+.sankey__label {
+  font-size: 11.5px;
+  fill: var(--ink-2);
+  font-family: var(--sans);
+}
+@media (max-width: 700px) { .sankey__label { font-size: 13px; } }
+
+
+/* ------------------------------------ 4  typography, vertical rhythm    */
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+h1 { font-size: 1.75rem; line-height: 1.22; margin: var(--s3) 0 var(--s3); max-width: 46ch; }
+h2 {
+  font-size: 1.3rem;
+  line-height: 1.3;
+  margin: var(--s7) 0 var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 2px solid var(--rule-2);
+}
+h3 { font-size: 1.06rem; margin: var(--s5) 0 var(--s2); }
+h4 { font-size: .95rem; margin: var(--s4) 0 var(--s1); }
+
+/* first heading after a page title or sub-nav should not add a second gap */
+.subnav + h1, .crumbs + h1 { margin-top: var(--s2); }
+h1 + h2, .lede + h2 { margin-top: var(--s6); }
+h2 + h3, h2 + p + h3 { margin-top: var(--s4); }
+
+p { margin: 0 0 var(--s3); max-width: var(--measure); }
+ul, ol { margin: 0 0 var(--s3); padding-left: var(--s5); max-width: var(--measure); }
+li { margin-bottom: var(--s1); }
+
+.lede {
+  font-size: 1.06rem;
+  line-height: 1.55;
+  max-width: var(--measure);
+  color: var(--ink-2);
+}
+.muted, .note { color: var(--dim); }
+.note { font-size: .85rem; max-width: var(--measure); }
+.small { font-size: .85em; }
+.mono { font-family: var(--mono); font-size: .85em; }
+code { font-family: var(--mono); font-size: .85em; background: var(--paper-2); padding: 0 4px; border-radius: 3px; }
+
+.findings { max-width: 90ch; }
+.findings li { margin-bottom: var(--s2); }
+
+.crumbs { color: var(--dim); font-size: .85rem; margin-top: var(--s2); }
+.crumbs a { color: var(--dim); }
+
+/* a short, bordered aside that states a limit or a definition */
+.caveat {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent-ink);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+  padding: var(--s3) var(--s4);
+  font-size: .9rem;
+  max-width: 95ch;
+  margin: 0 0 var(--s4);
+}
+.callout {
+  padding: var(--s3) var(--s4);
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  margin: 0 0 var(--s4);
+}
+.callout.warn { border-color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, var(--panel)); }
+
+/* a neutral panel, used to break the atlas pages into visible blocks */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3) var(--s4) var(--s4);
+  margin: 0 0 var(--s5);
+}
+.panel > :last-child { margin-bottom: 0; }
+
+/* Opt-in automatic section numbering. Pages whose sections are conditional
+   (the type page shows regulation, phylogeny or variant signatures only when
+   the data exist) cannot carry hand-written numbers without going wrong, so
+   they wrap their body in .numbered and let the stylesheet count. */
+.numbered { counter-reset: sec; }
+.numbered > h2 { counter-increment: sec; }
+.numbered > h2::before {
+  content: counter(sec) " \00b7\00a0";
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------- 5  figures and captions (numbered)     */
+/* ---------------------------------------------------------------- MODULLER
+   Sayfa, birbirinden bagimsiz bicimlenmis parcalar yerine AYNI dilde kurulmus
+   modullerden olusur. Daha once figur, tablo kutusu ve uyari kutusu ayri ayri
+   bicimlenmisti: her birinin kendi kenarligi, kendi kosesi ve kendi ic paylari
+   vardi, bu yuzden uzun bir sayfa dagilmis gorunuyordu. Uc kural yeterli:
+   (1) her modul AYNI yuzeyi kullanir -- beyaz panel, ayni koselik, ayni ince
+       golge, serin gri zemin uzerinde;
+   (2) bir modul IC ICE kenarlik tasimaz -- figurun icindeki tablo kutusu kendi
+       cercevesini birakir, cerceve figurun olur;
+   (3) altyazi modulun DISINDA degil ICINDE durur, ustten ince bir cizgiyle
+       ayrilir, cunku altyazi burada argumanin parcasi, bir dipnot degil. */
+figure.fig {
+  margin: var(--s4) 0 var(--s6);
+  counter-increment: fig;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 1px 3px rgb(16 24 40 / 6%);
+  overflow: hidden;
+}
+figure.fig > :first-child { margin-top: 0; }
+
+/*  Kural 2: modulun icindeki kutular kendi cercevelerini birakir. */
+figure.fig > .tablewrap,
+figure.fig > .chart {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+figure.fig > .chart { padding: var(--s3) var(--s3) 0; }
+
+/*  Kural 3: altyazi modulun icinde, ustten cizgiyle ayrilmis. */
+figure.fig figcaption {
+  font-size: .86rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-top: 0;
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--rule);
+  background: var(--paper-2);
+  max-width: none;
+}
+/* Captions are numbered by the stylesheet so that templates never have to
+   renumber by hand when a figure is inserted. */
+figure.fig figcaption::before {
+  content: "Figure " counter(fig) " \00b7\00a0";
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
+}
+figure.fig figcaption b, figure.fig figcaption strong { color: var(--ink); }
+figure.fig.nonum { counter-increment: none; }
+figure.fig.nonum figcaption::before { content: none; }
+
+.chart, .treewrap {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+.chart { padding: var(--s2); overflow: hidden; }
+.treewrap { padding: var(--s2); max-height: 78vh; overflow: auto; }
+.treewrap svg.tree text { fill: var(--ink); }
+
+/* ----------------------- 6  tables: density, alignment, sticky headers  */
+.tablewrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--panel);
+  /* Tablo artik sayfadan AYRI bir yuzey: serin gri zemin uzerinde beyaz panel
+     ve cok hafif bir golge. Eskiden hem zemin hem panel kremdi, aradaki fark
+     goz icin yoktu ve tablo sayfada yuzuyor gibi duruyordu. */
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%), 0 1px 3px rgb(16 24 40 / 6%);
+  margin-bottom: var(--s4);
+  /* a hint that there is more table to the right */
+  overscroll-behavior-x: contain;
+}
+
+/* A sticky header only works inside an element that actually scrolls. The
+   wrapper is an overflow container, so when it is as tall as its content the
+   header has nothing to stick to and simply sits at the top. table.js adds
+   this class to long tables, which gives the wrapper a real viewport and makes
+   the header behave as intended. */
+/* TEK BIR SOL KENAR. Onceki denemede tablolar ve figurler metin sutunundan
+   TASIYORDU (bleed) ve sonuc daha kotuydu: metin 1180 pikselik sutunun solunda
+   baslarken genis bloklar ondan da SOLDA basliyordu, yani sayfada iki ayri
+   hizalama vardi ve goz hangisinin dogru oldugunu bilemiyordu. Ayrica dar bir
+   tablo (6 sutun) 1400 piksele yayilinca degerler birbirinden kopuyordu, ve
+   sabit genislikli bir SVG tuvali kutusundan tasip kirpiliyordu.
+
+   Dogru cozum daha sade: metin sutununu GENISLET, ama paragrafi kendi olcusunde
+   tut. Boylece baslik, paragraf, tablo ve figur AYNI sol kenardan baslar;
+   tablolar gereken yeri alir, dar olanlar yayilmaz, ve hicbir sey tasmaz. */
+:root { --wide: 1380px; }
+
+.tablewrap--tall {
+  max-height: min(72vh, 680px);
+  overflow: auto;
+}
+
+table.data {
+  border-collapse: separate;      /* keeps header borders visible when sticky */
+  border-spacing: 0;
+  width: 100%;
+  background: var(--panel);
+  font-size: .9rem;
+  font-variant-numeric: tabular-nums;
+}
+table.data th, table.data td {
+  /* Hucre payi 7/10 pikselken satirlar birbirine yapisiyordu ve goz bir satiri
+     takip edemiyordu; veri tablosunda dikey pay yatay paydan ONEMLIDIR. */
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+/* Son satirin alt cizgisi kutunun kendi kenarligiyla UST USTE biniyordu ve
+   cift cizgi olarak goruluyordu. */
+table.data tbody tr:last-child > * { border-bottom: 0; }
+table.data th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-weight: 600;
+  /* Buyuk harf ve harf araligi: baslik satiri VERIDEN ayrilsin. Ayni punto ve
+     agirlikta yazilinca ilk veri satiriyla karisiyordu. */
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  white-space: nowrap;
+  vertical-align: bottom;
+  border-bottom: 1px solid var(--rule-2);
+}
+/* Satir vurgusu: uzun tablolarda gozun satiri kaybetmemesi icin. Cok hafif,
+   cunku burada vurgulanmasi gereken sey veri, zemin degil. */
+table.data tbody tr:hover > * { background: color-mix(in srgb, var(--link) 5%, transparent); }
+/* second line of a header holding the unit, so individual cells need not */
+table.data th .unit {
+  display: block;
+  font-weight: 400;
+  font-size: .92em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+table.data tbody tr:last-child td { border-bottom: none; }
+table.data tbody tr:hover td { background: color-mix(in srgb, var(--accent-ink) 5%, transparent); }
+
+/* numbers right-aligned with tabular figures, so columns of digits line up */
+table.data .num, table.data th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+table.data td.mono, table.data td .mono { font-family: var(--mono); }
+
+table.data.compact { font-size: .85rem; }
+table.data.compact th, table.data.compact td { padding: 5px 8px; }
+
+/* row emphasis */
+table.data tr.hl td { background: color-mix(in srgb, var(--accent-ink) 9%, transparent); }
+table.data tr.op td { background: color-mix(in srgb, var(--link) 8%, transparent); }
+table.data tr.ok td { background: color-mix(in srgb, var(--ok) 9%, transparent); }
+td.empty { color: var(--dim); text-align: center; font-style: italic; padding: var(--s4); }
+
+/* sortable headers: affordance and state */
+table.data th.sortable { cursor: pointer; user-select: none; padding-right: 20px; position: sticky; }
+table.data th.sortable::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  margin-top: -5px;
+  width: 8px;
+  height: 10px;
+  opacity: .28;
+  background: currentColor;
+  /* two small triangles: the neutral "can be sorted" marker */
+  clip-path: polygon(50% 0, 100% 42%, 0 42%, 50% 100%, 100% 58%, 0 58%);
+}
+table.data th.sortable:hover::after { opacity: .6; }
+table.data th.sorted { color: var(--accent-ink); background: color-mix(in srgb, var(--accent-ink) 8%, var(--paper-2)); }
+table.data th.sorted::after {
+  opacity: 1;
+  height: 6px;
+  margin-top: -3px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+table.data th[aria-sort="descending"]::after { clip-path: polygon(50% 100%, 100% 0, 0 0); }
+
+/* residue-signature tables */
+table.sdp td, table.sdp th { font-family: var(--mono); }
+table.sdp td.diff {
+  background: color-mix(in srgb, var(--accent-ink) 16%, transparent);
+  font-weight: 700;
+  color: var(--accent-ink);
+}
+table.sdp thead tr:nth-child(2) th { border-bottom: 2px solid var(--rule); z-index: 1; }
+table.sdp sup { font-size: .7em; color: var(--accent-ink); }
+
+.pager { display: flex; gap: var(--s4); align-items: center; margin: var(--s3) 0; font-size: .9rem; }
+form.inline { margin: var(--s2) 0; }
+
+/* ----------------------- 7  table toolbar: filter box and value chips   */
+.tbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s4);
+  margin: 0 0 var(--s2);
+  padding: var(--s2) 0;
+}
+.tbar__field { display: flex; align-items: center; gap: var(--s2); }
+.tbar__q { width: 260px; max-width: 100%; font-size: .9rem; }
+.tbar__count {
+  font-size: .82rem;
+  color: var(--dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tbar__count.on { color: var(--accent-ink); font-weight: 600; }
+.tbar__clear { font-size: .8rem; padding: 3px 9px; }
+.tbar__facet { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); }
+.tbar__legend {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  margin-right: var(--s1);
+}
+.tbar__select { font-size: .82rem; padding: 3px 6px; }
+
+.facetchip {
+  font-size: .78rem;
+  line-height: 1.5;
+  padding: 1px 8px;
+  border-radius: 11px;
+  border: 1px solid var(--rule-2);
+  background: var(--panel);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.facetchip:hover { border-color: var(--accent-ink); }
+.facetchip.on {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: #fff;
+  font-weight: 600;
+}
+.facetchip__n {
+  margin-left: 5px;
+  font-size: .9em;
+  opacity: .65;
+  font-variant-numeric: tabular-nums;
+}
+.facetchip.on .facetchip__n { opacity: .8; }
+
+/* set by table.js when a row, card or whole family section is filtered out */
+.is-hidden { display: none !important; }
+
+/* contents strip built by table.js on the long atlas pages */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s3);
+  margin: var(--s4) 0 var(--s5);
+  padding: var(--s2) var(--s3);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: .86rem;
+}
+.toc__legend {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  margin-right: var(--s1);
+}
+.toc a { color: var(--ink-2); }
+.toc a:hover { color: var(--accent-ink); }
+.toc a b {
+  display: inline-block;
+  min-width: 1.1em;
+  margin-right: 4px;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+/* a heading jumped to from the strip gets a little breathing room */
+h2[id] { scroll-margin-top: var(--s3); }
+
+/* -------------------------- 8  tiles, cards, key/value facts           */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s2);
+  margin: var(--s4) 0 var(--s5);
+}
+.tile {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3);
+}
+.tile__n {
+  font-size: 1.45rem;
+  line-height: 1.15;
+  font-weight: 700;
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+.tile__l { color: var(--dim); font-size: .82rem; line-height: 1.35; margin-top: 2px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s3); }
+.card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3) var(--s4);
+  color: var(--ink);
+}
+.card:hover {
+  border-color: var(--accent-ink);
+  text-decoration: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+}
+.card h3 { margin: 0 0 var(--s1); font-size: 1rem; color: var(--accent-ink); }
+.card p { margin: 0; font-size: .88rem; color: var(--dim); line-height: 1.45; max-width: none; }
+
+.kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--s1) var(--s4);
+  margin: var(--s2) 0 var(--s4);
+}
+.kv dt { color: var(--dim); font-size: .85rem; line-height: 1.5; }
+.kv dd { margin: 0; }
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: var(--s5); }
+.cols > div > :first-child { margin-top: 0; }
+
+.bigsearch { display: flex; gap: var(--s2); margin: var(--s3) 0 var(--s5); max-width: 720px; }
+.bigsearch input { flex: 1; font-size: 1.05rem; }
+
+p.dl .btn { margin-right: var(--s1); margin-bottom: var(--s1); }
+
+footer {
+  max-width: var(--wide);
+  margin: var(--s7) auto var(--s5);
+  padding: var(--s3) var(--s4) 0;
+  color: var(--dim);
+  font-size: .8rem;
+  border-top: 1px solid var(--rule);
+}
+footer p { max-width: 95ch; }
+
+/* --------------------------------- 9  chips, verdicts, bars            */
+.chip {
+  display: inline-block;
+  padding: 0 7px;
+  border-radius: 10px;
+  border: 1px solid var(--rule-2);
+  font-size: .78em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.chip--xenobiotic { background: #fde8e4; border-color: #f2b2a8; color: #7a2a1f; }
+.chip--natural_aromatic { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--natural_specialized { background: #e8eef9; border-color: #b4c6ec; color: #23407a; }
+.chip--unknown, .chip--None { color: var(--dim); }
+.chip--plasmid { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--ok { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--bad { background: #fde8e4; border-color: #f2b2a8; color: #7a2a1f; }
+.chip--warn { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--core { background: #e5f1e8; border-color: #a9d3b6; color: #1f5c38; }
+.chip--divergent { background: #fff3cd; border-color: #f0d08a; color: #6b4e00; }
+.chip--novel_candidate { background: #e8eef9; border-color: #b4c6ec; color: #23407a; }
+
+@media (prefers-color-scheme: dark) {
+  .chip--xenobiotic, .chip--bad { background: #3a1f1a; border-color: #6d3328; color: #f0b3a8; }
+  .chip--natural_aromatic, .chip--ok, .chip--core { background: #16301f; border-color: #2c5a3b; color: #9fd9b4; }
+  .chip--natural_specialized, .chip--novel_candidate { background: #1a2638; border-color: #2f4566; color: #b4cdeb; }
+  .chip--plasmid, .chip--warn, .chip--divergent { background: #322814; border-color: #5e4c20; color: #e6c589; }
+}
+
+.verdict {
+  display: inline-block;
+  font-size: .78rem;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.verdict--robust { background: #e3f1e8; color: #19603a; }
+.verdict--weak { background: #fdf0e3; color: #8a5a12; }
+.verdict--none { background: #f1f1f1; color: #5a5a5a; }
+@media (prefers-color-scheme: dark) {
+  .verdict--robust { background: #1b3c2a; color: #9fd9b4; }
+  .verdict--weak { background: #3c2f1b; color: #e6c589; }
+  .verdict--none { background: #2a2e34; color: #b9bfc6; }
+}
+
+.tierbar {
+  display: flex;
+  height: 16px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  min-width: 120px;
+}
+.tierbar i { display: block; height: 100%; }
+
+.legend { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); font-size: .8rem; color: var(--dim); margin: var(--s1) 0 var(--s2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: var(--s1); vertical-align: -1px; }
+.legend i.dash { border: 1px dashed var(--ink); background: none; }
+
+.comp { padding: 0 6px; border-radius: 4px; font-size: .8em; color: #fff; background: #7f8a8c; }
+.comp--alpha { background: #a8352a; } .comp--alpha_other { background: #b4651c; } .comp--beta { background: #23628f; }
+.comp--ferredoxin { background: #1f7a4d; } .comp--reductase { background: #b07d11; } .comp--rieske_other { background: #13796f; }
+.comp--none { background: transparent; color: var(--dim); }
+
+/* statistics blocks: each test is one panel, numbered by its own heading */
+section.stat {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s1) var(--s4) var(--s4);
+  margin: var(--s4) 0 var(--s5);
+}
+section.stat h2 {
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.04rem;
+  margin: var(--s4) 0 var(--s3);
+  max-width: none;
+}
+section.stat > :last-child { margin-bottom: 0; }
+
+/* --------- 10  chemistry: structure cards, reaction schemes, 3D viewer */
+section.chemfam { margin: var(--s6) 0; }
+section.chemfam h3 { margin-bottom: var(--s1); }
+
+.structgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: var(--s2); }
+.structcard {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: var(--ink);
+}
+.structcard:hover {
+  border-color: var(--accent-ink);
+  text-decoration: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .07);
+}
+.structcard__img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+/* Cizim kutusunu DOLDURUR. Eskiden height:auto idi ve SVG'nin piksel
+   nitelikleriyle birlikte orani bozuyordu; artik viewBox var, dolayisiyla
+   kutuyu vermek yeterli ve olcegi tarayici koruyor. */
+.structcard__img svg.struct { width: 100%; height: 100%; display: block; }
+svg.struct { width: 100%; height: auto; max-height: 260px; }
+.struct--none { font-size: .76rem; color: var(--dim); text-align: center; line-height: 1.3; padding: var(--s2); }
+.structcard__body { padding: var(--s2) var(--s3) var(--s3); }
+.structcard__gene { font-weight: 700; font-family: var(--serif); font-size: 1rem; }
+.structcard__sub { font-size: .83rem; margin-top: 1px; }
+.structcard__rx { font-size: .76rem; color: var(--dim); margin-top: var(--s1); }
+.structcard__rx i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+.structcard__n { font-size: .74rem; color: var(--dim); margin-top: 2px; }
+/* a type with no confirmed entries cannot have a page, so its card is inert */
+.structcard--empty { opacity: .72; border-style: dashed; cursor: default; }
+.structcard--empty:hover { border-color: var(--rule); box-shadow: none; }
+
+figure.reaction .rxn {
+  display: flex;
+  align-items: center;
+  gap: var(--s5);
+  flex-wrap: wrap;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s4) var(--s5);
+}
+.rxn__side { text-align: center; min-width: 168px; }
+.rxn__label { font-size: .8rem; color: var(--dim); margin-top: var(--s1); }
+.rxn__product {
+  font-size: .95rem;
+  font-weight: 600;
+  max-width: 230px;
+  margin: 0 auto;
+  padding: var(--s4) var(--s3);
+  border: 1px dashed var(--rule-2);
+  border-radius: 6px;
+}
+.rxn__arrow { text-align: center; color: var(--ink); min-width: 150px; }
+.rxn__above { font-size: .8rem; color: var(--dim); }
+.rxn__below { font-size: .78rem; color: var(--dim); max-width: 220px; margin: 2px auto 0; line-height: 1.3; }
+.rxn__scheme { flex: 1 1 300px; min-width: 260px; border-left: 1px solid var(--rule); padding-left: var(--s4); }
+
+/* 3D structure viewer (3Dmol.js). The box keeps its height whether or not the
+   script loads, so the page never reflows when the CDN is slow or blocked. */
+.pdbfig { margin: var(--s4) 0 var(--s6); }   /* figure.fig already counts it */
+.pdbwrap {
+  position: relative;
+  height: 420px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.pdbviewer { position: absolute; inset: 0; }
+/* 3Dmol positions its own canvas absolutely inside the container */
+.pdbviewer canvas { display: block; }
+.pdbnote {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--s5);
+  font-size: .88rem;
+  color: var(--dim);
+  line-height: 1.5;
+  pointer-events: none;
+}
+.pdbnote a { pointer-events: auto; }
+.pdbbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s4);
+  margin-bottom: var(--s2);
+  font-size: .85rem;
+}
+.pdbbar__id {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: .04em;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-2);
+  border-radius: var(--radius-s);
+  padding: 1px 7px;
+}
+.pdbbar__styles { display: flex; gap: var(--s1); margin-left: auto; }
+.pdbbar__styles button { font-size: .78rem; padding: 2px 9px; }
+.pdbbar__styles button.on { background: var(--accent-ink); border-color: var(--accent-ink); color: #fff; }
+
+/* -------- 11  hand-written and generated SVGs, including dark mode     */
+svg.arch, svg.flowfig {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3);
+  color: var(--ink);
+}
+svg.arch text, svg.flowfig text { fill: currentColor; }
+svg.genes {
+  display: block;
+  height: 130px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+svg.rxnscheme { color: var(--ink); display: block; }
+
+/* the hand-drawn operon-architecture schematic on the regulation page */
+svg.schematic {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3);
+  height: auto;
+  color: var(--ink);
+}
+svg.schematic text { fill: currentColor; }
+
+/* The generated SVGs (operon layouts, reaction schemes, trees) are built in
+   Python with literal colours. They cannot be changed from here, so dark mode
+   corrects them by attribute: black outlines and dark reds are unreadable on a
+   dark panel. */
+@media (prefers-color-scheme: dark) {
+  /* near-black outlines and label text, invisible on a dark panel */
+  svg.oplayout polygon[stroke="#111"] { stroke: #e8e6e1; }
+  svg.oplayout polygon[stroke="#5a5a5a"] { stroke: #9aa4ae; }
+  svg.genes [stroke="#2d3436"] { stroke: var(--ink); }
+  svg.genes [fill="#2d3436"] { fill: var(--ink); }
+  svg.genes [stroke="#999"], svg.genes [stroke="#333"] { stroke: var(--rule-2); }
+  svg.genes [stroke="#777"] { stroke: var(--rule-2); }
+  svg [stroke="#111"]:not(polygon) { stroke: var(--ink); }
+  svg.rxnscheme circle[fill="#8c2f22"] { fill: var(--fig-iron); }
+  svg.rxnscheme [stroke="#8c2f22"] { stroke: var(--accent-ink); }
+  svg.tree line, svg.tree path { stroke: var(--rule-2); }
+  .structcard__img { background: #14181d; }
+}
+svg.oplayout { vertical-align: middle; }
+
+pre.seq {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3);
+  overflow-x: auto;
+  font-size: .8rem;
+  white-space: pre;
+  font-family: var(--mono);
+}
+
+/* ------------------------ 12  search, taxonomy tree, miscellany        */
+.searchlayout { display: grid; grid-template-columns: 236px 1fr; gap: var(--s5); align-items: start; }
+.facets { position: sticky; top: var(--s3); }
+.facet {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s2) var(--s3) var(--s3);
+  margin-bottom: var(--s2);
+}
+.facet h3 {
+  margin: var(--s1) 0 var(--s1);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  font-family: var(--sans);
+  font-weight: 700;
+}
+.facet ul { list-style: none; margin: 0; padding: 0; }
+.facet li { font-size: .86rem; padding: 1px 0; display: flex; justify-content: space-between; gap: var(--s2); }
+.facet li span { color: var(--dim); font-variant-numeric: tabular-nums; }
+
+.taxtree {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s3) var(--s4);
+  max-height: 70vh;
+  overflow: auto;
+  font-size: .9rem;
+}
+details.taxnode > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 1px 0;
+  list-style: none;
+}
+details.taxnode > summary::-webkit-details-marker { display: none; }
+details.taxnode > summary::before { content: "\25b8"; color: var(--dim); font-size: .8em; width: 10px; }
+details.taxnode[open] > summary::before { content: "\25be"; }
+.taxkids { margin-left: var(--s4); border-left: 1px solid var(--rule); padding-left: var(--s3); }
+.taxnode--leaf { display: flex; align-items: center; gap: var(--s2); padding: 1px 0 1px 20px; }
+.taxnode--more { color: var(--dim); font-size: .82rem; padding: 2px 0 var(--s1) 20px; font-style: italic; }
+.taxname { flex: 0 1 auto; }
+.taxbar {
+  flex: 1 1 60px;
+  height: 7px;
+  background: color-mix(in srgb, var(--rule) 60%, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.taxbar i { display: block; height: 100%; background: var(--accent-ink); }
+.taxn { flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--dim); font-size: .85em; }
+
+/* ------------------------------------------------- 13  responsive      */
+
+/* Between 700 and 1000 px the old sheet left two-column grids at awkward
+   widths: `.cols` kept two 330px tracks inside a 700px page, and the search
+   facet rail stayed at 236px until 760px. Both now collapse earlier. */
+/* ---------------------------------------------------------- gezinme, dar ekran
+   Iki menu de SARARAK buyuyordu: atlas cubugunda 13 baglanti arti uc grup
+   basligi var ve telefonda bes satira yayilip ekranin yarisini yiyordu, ust
+   menu de ayni sekilde. Dar ekranda sarmak yerine TEK SATIRDA kaydirmak hem
+   daha az yer kaplar hem de tanidik bir kalip. Dokunma hedefleri de buyutuldu:
+   6 piksellik dikey pay parmakla isabet ettirilemiyordu. */
+@media (max-width: 860px) {
+  .subnav,
+  .top nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .subnav::-webkit-scrollbar,
+  .top nav::-webkit-scrollbar { height: 3px; }
+  .subnav::-webkit-scrollbar-thumb,
+  .top nav::-webkit-scrollbar-thumb { background: var(--rule-2); border-radius: 3px; }
+
+  /* Grup basliklari ve ayiraclar dar ekranda YER TUTUYOR ama yon vermiyor,
+     cunku zaten hepsi gorunmuyor; kaydirmali satirda baglantilar kalir. */
+  .subnav__group,
+  .subnav__sep { display: none; }
+
+  .subnav a,
+  .top nav a {
+    padding: 10px 13px;
+    font-size: .9rem;
+    scroll-snap-align: start;
+  }
+  .top { padding: var(--s2) var(--gutter); gap: var(--s2) var(--s4); }
+  .top nav { scroll-snap-type: x proximity; }
+}
+
+/* Genis ekranda grup basligi kendi satirinda durur: yan yana yazilinca
+   baglanti gibi okunuyor ve hangi basligin hangi baglantilara ait oldugu
+   belirsiz kaliyordu. */
+@media (min-width: 861px) {
+  .subnav { align-items: baseline; }
+  .subnav__group { letter-spacing: .06em; }
+}
+
+@media (max-width: 1000px) {
+  :root { --wide: 100%; }
+  .qs input { width: 190px; }
+  .structgrid { grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .searchlayout { grid-template-columns: 1fr; }
+  .facets { position: static; }
+  .facet { margin-bottom: var(--s2); }
+}
+
+@media (max-width: 860px) {
+  /* one column is better than two cramped ones */
+  .cols { grid-template-columns: 1fr; gap: var(--s4); }
+  figure.reaction .rxn { gap: var(--s4); padding: var(--s3); }
+  .rxn__scheme { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: var(--s3); }
+  .rxn__side, .rxn__arrow { min-width: 140px; }
+}
+
+@media (max-width: 700px) {
+  main { padding: var(--s3) var(--s3) var(--s6); }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.18rem; margin-top: var(--s6); }
+  .top { gap: var(--s2) var(--s4); padding: var(--s2) var(--s3); }
+  .qs { margin-left: 0; width: 100%; }
+  .qs input { width: 100%; }
+  .kv { grid-template-columns: 1fr; gap: 0 0; }
+  .kv dt { margin-top: var(--s2); }
+  .cards { grid-template-columns: 1fr; }
+  footer { padding: var(--s3) var(--s3) 0; }
+  .pdbwrap { height: 320px; }
+}
+
+/* Phone. The target is 390px: nothing may overflow horizontally except the
+   tables, which scroll inside their own wrapper on purpose. */
+@media (max-width: 440px) {
+  body { font-size: 14.5px; }
+  main { padding: var(--s2) var(--s2) var(--s6); }
+  h1 { font-size: 1.35rem; }
+  .lede { font-size: 1rem; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s1); }
+  .tile { padding: var(--s2); }
+  .tile__n { font-size: 1.2rem; }
+  .tile__l { font-size: .74rem; }
+  .structgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s1); }
+  .structcard__img { height: 112px; }
+  .structcard__body { padding: 6px 7px 8px; }
+  .structcard__gene { font-size: .9rem; }
+  .structcard__sub { font-size: .76rem; }
+  .bigsearch { flex-wrap: wrap; }
+  .bigsearch input { min-width: 0; }
+  .subnav { gap: 0; margin-bottom: var(--s4); }
+  .subnav a { padding: 5px 8px; font-size: .82rem; }
+  .subnav__sep, .subnav__group { display: none; }
+  .tbar__q { width: 100%; }
+  .tbar__field { width: 100%; flex-wrap: wrap; }
+  .caveat, .callout, .panel { padding: var(--s2) var(--s3); }
+  table.data, table.data.compact { font-size: .8rem; }
+  table.data th, table.data td { padding: 5px 6px; }
+  figure.reaction .rxn { flex-direction: column; align-items: stretch; }
+  .rxn__side, .rxn__arrow, .rxn__scheme { min-width: 0; }
+  .pdbwrap { height: 280px; }
+  .pdbbar__styles { margin-left: 0; }
+  /* an 8-position schematic cannot stay legible at 390px; it scrolls instead
+     of shrinking its text to four pixels */
+  .archscroll { overflow-x: auto; overscroll-behavior-x: contain; }
+  .archscroll svg.arch,
+  .archscroll svg.flowfig,
+  .archscroll svg.schematic,
+  .archscroll svg.genes { min-width: 620px; max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+
+/* ------------------------------------------------------- 14  print      */
+@media print {
+  :root { --paper: #fff; --panel: #fff; --ink: #000; --dim: #444; --rule: #bbb; }
+  .top, .subnav, .tbar, .qs, .bigsearch, .pdbbar__styles, .skip { display: none !important; }
+  main { max-width: none; padding: 0; }
+  .tablewrap, .tablewrap--tall { max-height: none; overflow: visible; border: none; }
+  table.data th { position: static; }
+  a { color: #000; text-decoration: underline; }
+  figure.fig, section.stat, .panel { break-inside: avoid; }
+}

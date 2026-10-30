@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Co-occurrence · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class="on"
+     aria-current="true">Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Genomic context pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Operons</a>
+  
+  <a href="/pro-sim-blast/atlas/regulation.html" class=""
+     >Regulation</a>
+  
+  <a href="/pro-sim-blast/atlas/control.html" class=""
+     >Regulators and mobility</a>
+  
+  <a href="/pro-sim-blast/atlas/elements.html" class=""
+     >Who sits next to them</a>
+  
+  <a href="/pro-sim-blast/atlas/cooccurrence.html" class="on"
+     aria-current="page">Co-occurrence</a>
+  
+  
+</nav>
+
+
+
+
+
+<h1>Enzymes that occur together</h1>
+<p class="lede">Testing the operon rule turned up something worth following: 1,424
+times, a gene within 10 kb of an alpha subunit is itself a confirmed Rieske oxygenase. That can mean
+two different things, and separating them says something about how these pathways are built.</p>
+
+<h2>1 · Duplication or division of labour?</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Pairs of confirmed oxygenases within 10 kb of each other</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+<tbody>
+
+<tr><td>Same enzyme type: a second copy of the same reference type</td>
+    <td class="num">357</td><td class="num">25.1%</td></tr>
+<tr><td>Different enzyme types: two different reactions side by side</td>
+    <td class="num">1,067</td><td class="num">74.9%</td></tr>
+</tbody></table></div>
+<figcaption>Most neighbouring pairs are of <em>different</em> types, so this is predominantly not
+gene duplication. Note that type assignment is by profile score, so two members assigned to the
+same type may still differ in sequence; the figure is about assignment, not identity.</figcaption>
+</figure>
+
+<h2>2 · Which pairs sit next to each other</h2>
+<p>Strand matters here. Two oxygenases on the <em>same</em> strand with a short gap can belong to one
+transcription unit. Two on opposite strands share a genome and a neighbourhood but are transcribed
+separately, so their association is about gene content rather than regulation.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter pairs by type or substrate…">
+<thead><tr><th>Type A</th><th>Type B</th><th class="num">Pairs within 10 kb</th>
+<th class="num">Of those, same strand</th><th>Substrates</th></tr></thead>
+<tbody>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="num">81</td>
+  <td class="num">67 <span class="note">(82.7%)</span></td>
+  <td class="small">L-carnitine + glycine betaine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td class="num">77</td>
+  <td class="num">72 <span class="note">(93.5%)</span></td>
+  <td class="small">vanillate + 4-toluenesulfonate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num">59</td>
+  <td class="num">7 <span class="note">(11.9%)</span></td>
+  <td class="small">phenanthrene + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="num">52</td>
+  <td class="num">0 <span class="note">(0.0%)</span></td>
+  <td class="small">3-ketosteroid + L-carnitine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td class="num">47</td>
+  <td class="num">25 <span class="note">(53.2%)</span></td>
+  <td class="small">L-carnitine + stachydrine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td class="num">40</td>
+  <td class="num">22 <span class="note">(55.0%)</span></td>
+  <td class="small">terephthalate + toluate and benzoate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_410_CbdC.html">CbdC</a></td>
+  <td class="num">39</td>
+  <td class="num">16 <span class="note">(41.0%)</span></td>
+  <td class="small">terephthalate + 2-halobenzoate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a></td>
+  <td class="num">36</td>
+  <td class="num">0 <span class="note">(0.0%)</span></td>
+  <td class="small">cholesterol + L-carnitine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="num">22</td>
+  <td class="num">3 <span class="note">(13.6%)</span></td>
+  <td class="small">4-toluenesulfonate + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td class="num">21</td>
+  <td class="num">0 <span class="note">(0.0%)</span></td>
+  <td class="small">anthranilate + toluate and benzoate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td class="num">15</td>
+  <td class="num">8 <span class="note">(53.3%)</span></td>
+  <td class="small">aniline + anthranilate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="num">14</td>
+  <td class="num">6 <span class="note">(42.9%)</span></td>
+  <td class="small">stachydrine + glycine betaine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="num">14</td>
+  <td class="num">5 <span class="note">(35.7%)</span></td>
+  <td class="small">phenanthrene + glycine betaine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num">12</td>
+  <td class="num">12 <span class="note">(100.0%)</span></td>
+  <td class="small">pyrene + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="num">12</td>
+  <td class="num">2 <span class="note">(16.7%)</span></td>
+  <td class="small">p-cumate + glycine betaine</td>
+</tr>
+
+</tbody></table></div>
+<figcaption>Two patterns are visible. Pairs with a high same-strand share are candidates for one
+operon: carnitine and glycine betaine oxygenases are the clearest case, and both reactions release a
+methylamine, so a shared transcription unit makes metabolic sense. Pairs with a near-zero same-strand
+share, such as the steroid and carnitine enzymes, co-reside without being co-transcribed, which is
+what one expects of two unrelated capabilities in a large genome.</figcaption>
+</figure>
+
+<h2>3 · Which types share a genome more often than chance allows</h2>
+<p>Co-residence on its own is not informative, because two common enzymes will share a genome
+often simply by being common. The test below shuffles type labels across all
+11,610 replicons that carry an oxygenase, 2,000
+times, while holding two things fixed: how many oxygenases each replicon has, and how many members
+each type has in total. Enrichment above that null is therefore not explained by abundance.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-filter="Filter pairs by type or substrate…">
+<thead><tr><th>Type A</th><th>Type B</th><th class="num">Replicons observed</th>
+<th class="num">Expected</th><th class="num">Ratio</th><th class="num">z</th>
+<th class="num">Also neighbours</th><th>Substrates</th></tr></thead>
+<tbody>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num">0.05</td>
+  <td class="num" data-v="204.08">204.1×</td>
+  <td class="num" data-v="45.61">45.61</td>
+  <td class="num">0</td>
+  <td class="small">pyrene + polycyclic aromatic hydrocarbons</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num">0.06</td>
+  <td class="num" data-v="166.67">166.7×</td>
+  <td class="num" data-v="40.78">40.78</td>
+  <td class="num">6</td>
+  <td class="small">1,2,4,5-tetrachlorobenzene + polycyclic aromatic hydrocarbons</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td class="num" data-v="9">9</td>
+  <td class="num">0.06</td>
+  <td class="num" data-v="163.64">163.6×</td>
+  <td class="num" data-v="38.15">38.15</td>
+  <td class="num">0</td>
+  <td class="small">1,2,4,5-tetrachlorobenzene + pyrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num">0.13</td>
+  <td class="num" data-v="78.43">78.4×</td>
+  <td class="num" data-v="27.9">27.9</td>
+  <td class="num">0</td>
+  <td class="small">diphenyl ether + pyrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num">0.14</td>
+  <td class="num" data-v="72.99">73.0×</td>
+  <td class="num" data-v="26.72">26.72</td>
+  <td class="num">10</td>
+  <td class="small">diphenyl ether + 1,2,4,5-tetrachlorobenzene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td class="num" data-v="11">11</td>
+  <td class="num">0.18</td>
+  <td class="num" data-v="62.15">62.1×</td>
+  <td class="num" data-v="26.51">26.51</td>
+  <td class="num">11</td>
+  <td class="small">diphenyl ether + polycyclic aromatic hydrocarbons</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a></td>
+  <td class="num" data-v="17">17</td>
+  <td class="num">0.55</td>
+  <td class="num" data-v="31.11">31.1×</td>
+  <td class="num" data-v="22.41">22.41</td>
+  <td class="num">0</td>
+  <td class="small">biphenyl + phenanthrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td class="num" data-v="101">101</td>
+  <td class="num">23.77</td>
+  <td class="num" data-v="4.25">4.2×</td>
+  <td class="num" data-v="17.05">17.05</td>
+  <td class="num">0</td>
+  <td class="small">terephthalate + choline</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="22">22</td>
+  <td class="num">1.68</td>
+  <td class="num" data-v="13.09">13.1×</td>
+  <td class="num" data-v="16.47">16.47</td>
+  <td class="num">0</td>
+  <td class="small">biphenyl + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td class="num" data-v="93">93</td>
+  <td class="num">24.41</td>
+  <td class="num" data-v="3.81">3.8×</td>
+  <td class="num" data-v="14.81">14.81</td>
+  <td class="num">21</td>
+  <td class="small">anthranilate + toluate and benzoate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_218_BphA1.html">BphA1 (218)</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a></td>
+  <td class="num" data-v="22">22</td>
+  <td class="num">2.27</td>
+  <td class="num" data-v="9.67">9.7×</td>
+  <td class="num" data-v="13.36">13.36</td>
+  <td class="num">0</td>
+  <td class="small">biphenyl + phenanthrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td class="num" data-v="84">84</td>
+  <td class="num">25.61</td>
+  <td class="num" data-v="3.28">3.3×</td>
+  <td class="num" data-v="12.47">12.47</td>
+  <td class="num">15</td>
+  <td class="small">aniline + anthranilate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">GbcA</a></td>
+  <td class="num" data-v="62">62</td>
+  <td class="num">17.55</td>
+  <td class="num" data-v="3.53">3.5×</td>
+  <td class="num" data-v="11.19">11.19</td>
+  <td class="num">0</td>
+  <td class="small">anthranilate + glycine betaine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td class="num" data-v="8">8</td>
+  <td class="num">0.48</td>
+  <td class="num" data-v="16.67">16.7×</td>
+  <td class="num" data-v="11.13">11.13</td>
+  <td class="num">0</td>
+  <td class="small">1,2,4,5-tetrachlorobenzene + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="12">12</td>
+  <td class="num">1.11</td>
+  <td class="num" data-v="10.8">10.8×</td>
+  <td class="num" data-v="10.74">10.74</td>
+  <td class="num">12</td>
+  <td class="small">pyrene + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a></td>
+  <td class="num" data-v="8">8</td>
+  <td class="num">0.50</td>
+  <td class="num" data-v="16.11">16.1×</td>
+  <td class="num" data-v="10.67">10.67</td>
+  <td class="num">0</td>
+  <td class="small">phthalate + pyrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="36">36</td>
+  <td class="num">8.11</td>
+  <td class="num" data-v="4.44">4.4×</td>
+  <td class="num" data-v="10.35">10.35</td>
+  <td class="num">59</td>
+  <td class="small">phenanthrene + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td class="num" data-v="8">8</td>
+  <td class="num">0.54</td>
+  <td class="num" data-v="14.94">14.9×</td>
+  <td class="num" data-v="10.3">10.3</td>
+  <td class="num">0</td>
+  <td class="small">phthalate + polycyclic aromatic hydrocarbons</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">ArhA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a></td>
+  <td class="num" data-v="7">7</td>
+  <td class="num">0.46</td>
+  <td class="num" data-v="15.33">15.3×</td>
+  <td class="num" data-v="9.89">9.89</td>
+  <td class="num">0</td>
+  <td class="small">polycyclic aromatic hydrocarbons + phenanthrene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_108_PobA.html">PobA</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="num" data-v="34">34</td>
+  <td class="num">7.61</td>
+  <td class="num" data-v="4.47">4.5×</td>
+  <td class="num" data-v="9.87">9.87</td>
+  <td class="num">0</td>
+  <td class="small">4-carboxydiphenyl ether (phenoxybenzoate) + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a></td>
+  <td class="num" data-v="12">12</td>
+  <td class="num">1.30</td>
+  <td class="num" data-v="9.24">9.2×</td>
+  <td class="num" data-v="9.61">9.61</td>
+  <td class="num">0</td>
+  <td class="small">diphenyl ether + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></td>
+  <td><a href="/pro-sim-blast/cluster/7_701_AerC.html">AerC</a></td>
+  <td class="num" data-v="6">6</td>
+  <td class="num">0.38</td>
+  <td class="num" data-v="15.6">15.6×</td>
+  <td class="num" data-v="9.26">9.26</td>
+  <td class="num">0</td>
+  <td class="small">choline + N4-isopentenylagmatine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_108_PobA.html">PobA</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_307_NagGH.html">NagGH</a></td>
+  <td class="num" data-v="30">30</td>
+  <td class="num">7.04</td>
+  <td class="num" data-v="4.26">4.3×</td>
+  <td class="num" data-v="9.03">9.03</td>
+  <td class="num">0</td>
+  <td class="small">4-carboxydiphenyl ether (phenoxybenzoate) + salicylate (2-hydroxybenzoate)</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/7_701_AerC.html">AerC</a></td>
+  <td class="num" data-v="6">6</td>
+  <td class="num">0.42</td>
+  <td class="num" data-v="14.41">14.4×</td>
+  <td class="num" data-v="8.98">8.98</td>
+  <td class="num">0</td>
+  <td class="small">terephthalate + N4-isopentenylagmatine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a></td>
+  <td class="num" data-v="8">8</td>
+  <td class="num">0.69</td>
+  <td class="num" data-v="11.59">11.6×</td>
+  <td class="num" data-v="8.95">8.95</td>
+  <td class="num">0</td>
+  <td class="small">diphenyl ether + buprofezin</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a></td>
+  <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a></td>
+  <td class="num" data-v="7">7</td>
+  <td class="num">0.57</td>
+  <td class="num" data-v="12.31">12.3×</td>
+  <td class="num" data-v="8.94">8.94</td>
+  <td class="num">0</td>
+  <td class="small">buprofezin + naphthalene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a></td>
+  <td><a href="/pro-sim-blast/cluster/1_116_GdmA.html">GdmA</a></td>
+  <td class="num" data-v="7">7</td>
+  <td class="num">0.58</td>
+  <td class="num" data-v="12.03">12.0×</td>
+  <td class="num" data-v="8.69">8.69</td>
+  <td class="num">2</td>
+  <td class="small">chloroacetanilide herbicides (alachlor, acetochlor, butachlor) + guaiacol (2-methoxyphenol)</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="85">85</td>
+  <td class="num">38.02</td>
+  <td class="num" data-v="2.24">2.2×</td>
+  <td class="num" data-v="8.63">8.63</td>
+  <td class="num">6</td>
+  <td class="small">aniline + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a></td>
+  <td class="num" data-v="12">12</td>
+  <td class="num">1.56</td>
+  <td class="num" data-v="7.68">7.7×</td>
+  <td class="num" data-v="8.54">8.54</td>
+  <td class="num">0</td>
+  <td class="small">diphenyl ether + p-cumate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="9">9</td>
+  <td class="num">1.06</td>
+  <td class="num" data-v="8.48">8.5×</td>
+  <td class="num" data-v="8.02">8.02</td>
+  <td class="num">0</td>
+  <td class="small">1,2,4,5-tetrachlorobenzene + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a></td>
+  <td class="num" data-v="10">10</td>
+  <td class="num">1.29</td>
+  <td class="num" data-v="7.76">7.8×</td>
+  <td class="num" data-v="7.99">7.99</td>
+  <td class="num">0</td>
+  <td class="small">polycyclic aromatic hydrocarbons + terephthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a></td>
+  <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+  <td class="num" data-v="6">6</td>
+  <td class="num">0.49</td>
+  <td class="num" data-v="12.12">12.1×</td>
+  <td class="num" data-v="7.93">7.93</td>
+  <td class="num">0</td>
+  <td class="small">carbazole + benzene</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_406_PDO.html">PDO</a></td>
+  <td class="num" data-v="38">38</td>
+  <td class="num">12.06</td>
+  <td class="num" data-v="3.15">3.1×</td>
+  <td class="num" data-v="7.86">7.86</td>
+  <td class="num">6</td>
+  <td class="small">phthalate + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a></td>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></td>
+  <td class="num" data-v="22">22</td>
+  <td class="num">5.43</td>
+  <td class="num" data-v="4.05">4.0×</td>
+  <td class="num" data-v="7.61">7.61</td>
+  <td class="num">7</td>
+  <td class="small">naphthalene + glycine betaine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="num" data-v="14">14</td>
+  <td class="num">2.51</td>
+  <td class="num" data-v="5.58">5.6×</td>
+  <td class="num" data-v="7.52">7.52</td>
+  <td class="num">0</td>
+  <td class="small">diphenyl ether + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td><a href="/pro-sim-blast/cluster/7_701_AerC.html">AerC</a></td>
+  <td class="num" data-v="6">6</td>
+  <td class="num">0.60</td>
+  <td class="num" data-v="10.08">10.1×</td>
+  <td class="num" data-v="7.5">7.5</td>
+  <td class="num">0</td>
+  <td class="small">toluate and benzoate + N4-isopentenylagmatine</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a></td>
+  <td class="num" data-v="105">105</td>
+  <td class="num">56.47</td>
+  <td class="num" data-v="1.86">1.9×</td>
+  <td class="num" data-v="7.47">7.47</td>
+  <td class="num">2</td>
+  <td class="small">aniline + toluate and benzoate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a></td>
+  <td class="num" data-v="182">182</td>
+  <td class="num">115.78</td>
+  <td class="num" data-v="1.57">1.6×</td>
+  <td class="num" data-v="7.32">7.32</td>
+  <td class="num">0</td>
+  <td class="small">vanillate + aniline</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_109_LigX.html">LigX</a></td>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></td>
+  <td class="num" data-v="18">18</td>
+  <td class="num">3.99</td>
+  <td class="num" data-v="4.51">4.5×</td>
+  <td class="num" data-v="7.27">7.27</td>
+  <td class="num">9</td>
+  <td class="small">5,5&#39;-dehydrodivanillate + phthalate</td>
+</tr>
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_116_GdmA.html">GdmA</a></td>
+  <td><a href="/pro-sim-blast/cluster/2_214_TftA.html">TftA</a></td>
+  <td class="num" data-v="5">5</td>
+  <td class="num">0.41</td>
+  <td class="num" data-v="12.11">12.1×</td>
+  <td class="num" data-v="7.26">7.26</td>
+  <td class="num">0</td>
+  <td class="small">guaiacol (2-methoxyphenol) + 2,4,5-trichlorophenoxyacetate</td>
+</tr>
+
+</tbody></table></div>
+<figcaption><b>Reading the result.</b> The strongest associations are between enzymes whose products
+enter the same downstream route. Biphenyl, phenanthrene and terephthalate oxygenases turn up
+together far above chance, and these are the capabilities of the organisms that specialise in
+polycyclic aromatics. Aniline, anthranilate and benzoate oxygenases also cluster, and all three
+yield catechol, the intermediate of the beta-ketoadipate pathway. So the pattern is consistent with
+genomes acquiring whole funnels rather than single enzymes.
+<b>What it is not.</b> Sharing a replicon is not evidence of a shared pathway in any single
+organism: these are counts over sequenced genomes, and the enrichment could also reflect which
+organisms get sequenced together, since PAH-degrading isolates are a well-studied group.
+Pairs with fewer than five observed replicons are not shown.
+<a href="/pro-sim-blast/download/analysis/cooccurrence.json">Download the full test output</a></figcaption>
+</figure>
+
+<p class="note">2,669 of 11,610
+replicons carry more than one type of Rieske oxygenase, so multi-capability genomes are a minority
+but not a rarity.</p>
+
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+</body>
+</html>

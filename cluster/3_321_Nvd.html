@@ -1,0 +1,3620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvd · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 3_321_Nvd</nav>
+
+<h1>Nvd <span class="note">· type 3_321_Nvd · RO group 3</span></h1>
+<div class="numbered">
+
+
+
+
+
+
+
+
+
+
+
+<div class="caveat">
+  <b>cholesterol</b>
+  <span class="chip chip--natural_specialized">natural_specialized</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  Of the 273 members assigned here,
+  <b>4.8%</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  
+  <br><span class="note">Insect host sterol. Neverland performs the C7-C8 desaturation that commits cholesterol to ecdysteroid (moulting hormone) biosynthesis. An animal biosynthetic enzyme; it carries no beta subunit and does not degrade a pollutant.</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt Q1JUZ1 (NVD_DROME, reviewed), Drosophila melanogaster cholesterol 7-desaturase Neverland, EC 1.14.19.21; proposed independently as a new type by analysis_out/literature_harvest.json finding NT-09 (Runda 2024 thesis, <a href="https://doi.org/10.33612/diss.1175898687" rel="noopener noreferrer" target="_blank">doi:10.33612/diss.1175898687</a>) ·
+      no individual citation was recorded for this type
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C" aria-label="cholesterol"></svg>
+      
+      <div class="rxn__label">cholesterol</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">desaturation of the C7-C8 bond of cholesterol, the first committed step of ecdysteroid biosynthesis</div>
+    </div>
+    <div class="rxn__scheme">
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">7-dehydrocholesterol</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> not incorporated.
+    
+    
+    O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
+    mechanistically an oxidase rather than an oxygenase. It is in this database
+    because it carries the Rieske cluster and the mononuclear iron site: the
+    name is a statement of family membership, not of mechanism.
+    
+    <br><span class="small">cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  <br><b>Note.</b> The one candidate both documented gaps point at: the audit names &#34;cholesterol 7-desaturase / DAF-36&#34; among the eukaryotic families with no reference, and harvest NT-09 proposes the same enzyme as Nvd/Neverland. Substrate and product SMILES are the curated ones recorded in literature_harvest.json (PubChem CID 5997 and 439423); only substrate_smiles has a field in this schema, so the product SMILES is not stored. reaction_class &#34;desaturation&#34; is NEW vocabulary -- the existing 67 have no desaturase. Nvd and DAF-36 (3_322_DAF36) are only 36.8% identical, so they are proposed as two references, not one. OXYGEN IS NOT INCORPORATED (recorded 2026-10-28). The formulae show a net loss of two hydrogens and no gain of oxygen: cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O (PubChem CID 5997 -&gt; 439423). O2 is the oxidant here, not an oxygen donor, so this enzyme is mechanistically an oxidase/desaturase. Calling it a Rieske OXYGENASE is a statement of family membership -- it carries the Rieske cluster and the mononuclear iron site -- and must not be read as a claim that oxygen is transferred to the product.</figcaption>
+</figure>
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>273 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>75 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>255 replicons, 75 genera</dd>
+      <dt>On plasmids</dt><dd>0.0% (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>10.6%</dd>
+      <dt>Profile match</dt><dd>mean score 221 bits, mean coverage 0.67</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 286</span></dt>
+      <dd><b>Asp branch.</b> Aspartate in 273 of 273 members
+          (100.0%), as in the ring-hydroxylating majority.</dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">column 431</span></dt>
+      <dd>Asp in 37 of
+          273 members (13.6%);
+          223 have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site. This site is aspartate across the whole family.</dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 168 · Eukaryota / animal 98 · Eukaryota / SAR 6 · Eukaryota / other eukaryote 1</dd>
+      <dt>Phyla</dt><dd class="small">Actinomycetota 98, Metazoa 98, Pseudomonadota 63, Sar 6, Myxococcota 4, Cyanobacteriota 3, Amoebozoa 1</dd>
+      <dt>Top genera</dt><dd><span class="chip">Streptomyces 54</span> <span class="chip">Burkholderia 32</span> <span class="chip">Drosophila 25</span> <span class="chip">Mycobacterium 14</span> <span class="chip">Mycolicibacterium 12</span> <span class="chip">Bombus 7</span> <span class="chip">Paramecium 6</span> <span class="chip">Temnothorax 5</span> <span class="chip">Ixodes 5</span> <span class="chip">Frankliniella 5</span> <span class="chip">Cephus 5</span> <span class="chip">Novosphingobium 5</span> </dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/3_321_Nvd.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/3_321_Nvd.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#1f7a4d;width:0.37%" title="characterized: 1"></i><i style="background:#7fb069;width:4.4%" title="close_homolog: 12"></i><i style="background:#f2c14e;width:18.68%" title="family_member: 51"></i><i style="background:#f78154;width:73.99%" title="distant: 202"></i><i style="background:#8e44ad;width:2.56%" title="novel: 7"></i></span>
+    <table class="data compact">
+      <tbody>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+          <td class="small">characterized reference (≥95 % identity)</td>
+          <td class="num">1</td><td class="num">0.4%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+          <td class="small">close homolog (≥60 %)</td>
+          <td class="num">12</td><td class="num">4.4%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">51</td><td class="num">18.7%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">202</td><td class="num">74.0%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+          <td class="small">novel (&lt;25 %): no close reference</td>
+          <td class="num">7</td><td class="num">2.6%</td></tr>
+      
+      </tbody>
+    </table>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td><td class="num">93.1 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">3_313_KshA15</a></td><td class="num">85.4 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">3_322_DAF36</a></td><td class="num">81.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a></td><td class="num">35.5 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/1_114_NdmB.html">1_114_NdmB</a></td><td class="num">32.8 %</td></tr>
+      
+    </tbody></table>
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">0.7%</td><td class="num">1.8%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">0.4%</td><td class="num">7.0%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">250</td></tr><tr><td class="mono small">α3 · Fd:none · Red:GR</td><td class="num">17</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:none</td><td class="num">3</td></tr><tr><td class="mono small">α3 · Fd:rieske · Red:none</td><td class="num">1</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:GR</td><td class="num">1</td></tr><tr><td class="mono small">α3 · Fd:none · Red:FNR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
+    are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
+    describe this enzyme.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">13</td></tr>
+      
+    </tbody></table>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (166 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 34" height="34" width="59" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">[alpha]</div></td><td class="num">123</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 157 34" height="34" width="157" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="103,4 140,4 149,14.0 140,24 103,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">hydrolase &gt; reductase &gt; [alpha]</div></td><td class="num">15</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="152,4 189,4 198,14.0 189,24 152,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; other &gt; ferredoxin &gt; [alpha]</div></td><td class="num">7</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">[alpha] &gt; other</div></td><td class="num">7</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353 34" height="34" width="353" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#8e44ad" stroke="#5a5a5a" stroke-width="0.7"><title>regulator</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Reg</text><polygon points="299,4 336,4 345,14.0 336,24 299,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text></svg><div class="note mono">other &gt; other &gt; other &gt; other &gt; other &gt; regulator &gt; [alpha]</div></td><td class="num">4</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,4 140,4 149,14.0 140,24 103,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text></svg><div class="note mono">other &gt; other &gt; [alpha] &gt; ferredoxin</div></td><td class="num">4</td></tr>
+        
+      </tbody></table>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 118 72" height="72" width="118" class="oplayout"><rect x="6" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="33.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">260 bp</text><polygon points="63,18 100,18 109,32.0 100,46 63,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="81.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text></svg>
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference
+&mdash; 100 %
+(64 of 64).</b>
+
+Members are assigned by profile score, and most of them are distant: counting all of them would
+describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+family-member level are counted here.
+
+
+
+The commonest order holds the alpha subunit alone, which means that in most members no other gene
+lies on the same strand within 150 base pairs &mdash; not that this enzyme has no partners
+anywhere. Genes beyond that distance, and genes on the opposite strand such as a divergent
+regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
+pages and in the sections above.
+
+Preceded by the architecture seen in most of its members
+(unknown) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>no upstream gene in the window</td>
+        <td class="num">118</td><td class="num">43.2%</td></tr>
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">67</td><td class="num">24.5%</td></tr>
+      
+      <tr><td>non-regulator, co-directional
+          </td>
+        <td class="num">59</td><td class="num">21.6%</td></tr>
+      
+      <tr><td><b>regulator, divergent</b> (shared promoter region)
+          </td>
+        <td class="num">25</td><td class="num">9.2%</td></tr>
+      
+      <tr><td>regulator, co-directional
+          </td>
+        <td class="num">4</td><td class="num">1.5%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  <div>
+    
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      <tr><td>not assignable</td><td class="num">16</td></tr><tr><td>TetR</td><td class="num">7</td></tr><tr><td>MarR</td><td class="num">1</td></tr><tr><td>GntR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+    
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      <tr><td>regulator_unclassified</td><td class="num">51</td></tr><tr><td>TetR</td><td class="num">32</td></tr><tr><td>LysR</td><td class="num">9</td></tr><tr><td>GntR</td><td class="num">9</td></tr><tr><td>MarR</td><td class="num">4</td></tr><tr><td>LuxR</td><td class="num">2</td></tr><tr><td>IclR</td><td class="num">2</td></tr>
+    </tbody></table>
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>other</td><td class="num">60.4%</td><td class="num">540</td></tr><tr><td>reductase</td><td class="num">38.5%</td><td class="num">139</td></tr><tr><td>hypothetical</td><td class="num">32.6%</td><td class="num">168</td></tr><tr><td>regulator</td><td class="num">31.5%</td><td class="num">109</td></tr><tr><td>hydrolase</td><td class="num">29.3%</td><td class="num">95</td></tr><tr><td>transporter</td><td class="num">20.9%</td><td class="num">100</td></tr><tr><td>dehydrogenase</td><td class="num">18.7%</td><td class="num">80</td></tr><tr><td>ferredoxin</td><td class="num">16.8%</td><td class="num">50</td></tr><tr><td>transposon</td><td class="num">8.4%</td><td class="num">37</td></tr><tr><td>ro_alpha</td><td class="num">1.1%</td><td class="num">3</td></tr></tbody>
+</table></div>
+
+
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  <th class="num" title="score 1.7085 · linker domain">143</th><th class="num" title="score 1.4821 · linker domain">125</th><th class="num" title="score 1.3029 · linker domain">148</th><th class="num" title="score 1.2969 · linker domain">182</th><th class="num" title="score 1.2389 · linker domain">189</th><th class="num" title="score 1.221 · catalytic domain">191</th><th class="num" title="score 1.1375 · linker domain">170</th><th class="num" title="score 1.0807 · catalytic domain">290</th><th class="num" title="score 1.0251 · linker domain">162</th><th class="num" title="score 0.9941 · linker domain">171</th><th class="num" title="score 0.9869 · linker domain">150</th><th class="num" title="score 0.9701 · catalytic domain">197</th>
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  <th class="num note">L</th><th class="num note">L</th><th class="num note">V</th><th class="num note">I</th><th class="num note">W</th><th class="num note">F</th><th class="num note">H</th><th class="num note">F</th><th class="num note">A</th><th class="num note">L</th><th class="num note">F</th><th class="num note">C</th><th></th></tr>
+</thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-0.html">0</a></td>
+  <td class="num">34</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+  <td class="num">14</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+  <td class="num">11</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+  <td class="num">9</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-4.html">4</a></td>
+  <td class="num">9</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-5.html">5</a></td>
+  <td class="num">9</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-7.html">7</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-8.html">8</a></td>
+  <td class="num">7</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-10.html">10</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-11.html">11</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-12.html">12</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-13.html">13</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-14.html">14</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-15.html">15</a></td>
+  <td class="num">6</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">4</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">6</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">V</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">3</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num diff">C</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">C</td>
+  
+  <td class="num">5</td></tr>
+
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="/pro-sim-blast/download/analysis/variant_signatures.csv">Download signatures</a></p>
+
+
+
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 630" width="100%" class="tree" style="height:auto"><path d="M20.0,140.7 V15.0 H231.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="231.0" cy="15.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#10 | 6 members | median identity 0.78 | representative Paramecium tetraurelia</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-10.html"><text x="238.0" y="18.5" font-size="9" fill="currentColor">Nvd#10 · Paramecium tetraurelia (n=6)<title>variant 3_321_Nvd#10 | 6 members | median identity 0.78 | representative Paramecium tetraurelia</title></text></a><path d="M20.0,140.7 V55.1 H47.5" fill="none" stroke="#777" stroke-width="1"/><path d="M47.5,55.1 V27.0 H251.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="251.9" cy="27.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#47 | 1 members | median identity 1.00 | representative Acanthamoeba castellanii str. Neff</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-47.html"><text x="258.9" y="30.5" font-size="9" fill="currentColor">Nvd#47 · Acanthamoeba castellanii str. Neff (n=1)<title>variant 3_321_Nvd#47 | 1 members | median identity 1.00 | representative Acanthamoeba castellanii str. Neff</title></text></a><path d="M47.5,55.1 V83.2 H86.2" fill="none" stroke="#777" stroke-width="1"/><path d="M86.2,83.2 V48.0 H166.6" fill="none" stroke="#777" stroke-width="1"/><path d="M166.6,48.0 V39.0 H232.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="232.4" cy="39.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#50 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-50.html"><text x="239.4" y="42.5" font-size="9" fill="currentColor">Nvd#50 · Ixodes scapularis (n=1)<title>variant 3_321_Nvd#50 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></text></a><path d="M166.6,48.0 V57.0 H203.2" fill="none" stroke="#777" stroke-width="1"/><path d="M203.2,57.0 V51.0 H275.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="275.1" cy="51.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#49 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-49.html"><text x="282.1" y="54.5" font-size="9" fill="currentColor">Nvd#49 · Ixodes scapularis (n=1)<title>variant 3_321_Nvd#49 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></text></a><path d="M203.2,57.0 V63.0 H312.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="312.7" cy="63.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#51 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-51.html"><text x="319.7" y="66.5" font-size="9" fill="currentColor">Nvd#51 · Ixodes scapularis (n=1)<title>variant 3_321_Nvd#51 | 1 members | median identity 1.00 | representative Ixodes scapularis</title></text></a><path d="M86.2,83.2 V118.4 H102.2" fill="none" stroke="#777" stroke-width="1"/><path d="M102.2,118.4 V93.0 H162.3" fill="none" stroke="#777" stroke-width="1"/><path d="M162.3,93.0 V81.0 H229.5" fill="none" stroke="#777" stroke-width="1"/><path d="M229.5,81.0 V75.0 H237.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="237.8" cy="75.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#3 | 9 members | median identity 1.00 | representative Drosophila melanogaster</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html"><text x="244.8" y="78.5" font-size="9" fill="currentColor">Nvd#3 · Drosophila melanogaster (n=9)<title>variant 3_321_Nvd#3 | 9 members | median identity 1.00 | representative Drosophila melanogaster</title></text></a><path d="M229.5,81.0 V87.0 H235.6" fill="none" stroke="#777" stroke-width="1"/><rect x="231.6" y="83.0" width="8" height="8" fill="#2980b9" stroke="#111" stroke-width="1"><title>curated reference enzyme for 3_321_Nvd</title></rect><a href="/pro-sim-blast/cluster/3_321_Nvd.html"><text x="242.6" y="90.5" font-size="9" fill="currentColor" font-weight="700">★ 3_321_Nvd reference (cholesterol)<title>curated reference enzyme for 3_321_Nvd</title></text></a><path d="M162.3,93.0 V105.0 H182.0" fill="none" stroke="#777" stroke-width="1"/><path d="M182.0,105.0 V99.0 H257.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="257.2" cy="99.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#16 | 5 members | median identity 0.55 | representative Zeugodacus cucurbitae</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html"><text x="264.2" y="102.5" font-size="9" fill="currentColor">Nvd#16 · Zeugodacus cucurbitae (n=5)<title>variant 3_321_Nvd#16 | 5 members | median identity 0.55 | representative Zeugodacus cucurbitae</title></text></a><path d="M182.0,105.0 V111.0 H227.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="227.7" cy="111.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#18 | 5 members | median identity 0.64 | representative Drosophila willistoni</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html"><text x="234.7" y="114.5" font-size="9" fill="currentColor">Nvd#18 · Drosophila willistoni (n=5)<title>variant 3_321_Nvd#18 | 5 members | median identity 0.64 | representative Drosophila willistoni</title></text></a><path d="M102.2,118.4 V143.8 H115.7" fill="none" stroke="#777" stroke-width="1"/><path d="M115.7,143.8 V129.0 H216.4" fill="none" stroke="#777" stroke-width="1"/><path d="M216.4,129.0 V123.0 H271.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="271.9" cy="123.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#19 | 5 members | median identity 0.75 | representative Bombyx mori</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html"><text x="278.9" y="126.5" font-size="9" fill="currentColor">Nvd#19 · Bombyx mori (n=5)<title>variant 3_321_Nvd#19 | 5 members | median identity 0.75 | representative Bombyx mori</title></text></a><path d="M216.4,129.0 V135.0 H284.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="284.5" cy="135.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#69 | 1 members | median identity 1.00 | representative Papilio xuthus</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-69.html"><text x="291.5" y="138.5" font-size="9" fill="currentColor">Nvd#69 · Papilio xuthus (n=1)<title>variant 3_321_Nvd#69 | 1 members | median identity 1.00 | representative Papilio xuthus</title></text></a><path d="M115.7,143.8 V158.6 H131.8" fill="none" stroke="#777" stroke-width="1"/><path d="M131.8,158.6 V147.0 H200.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="200.3" cy="147.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#17 | 5 members | median identity 0.53 | representative Aedes aegypti</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html"><text x="207.3" y="150.5" font-size="9" fill="currentColor">Nvd#17 · Aedes aegypti (n=5)<title>variant 3_321_Nvd#17 | 5 members | median identity 0.53 | representative Aedes aegypti</title></text></a><path d="M131.8,158.6 V170.2 H164.0" fill="none" stroke="#777" stroke-width="1"/><path d="M164.0,170.2 V159.0 H231.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="231.3" cy="159.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#6 | 7 members | median identity 0.72 | representative Frankliniella occidentalis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html"><text x="238.3" y="162.5" font-size="9" fill="currentColor">Nvd#6 · Frankliniella occidentalis (n=7)<title>variant 3_321_Nvd#6 | 7 members | median identity 0.72 | representative Frankliniella occidentalis</title></text></a><path d="M164.0,170.2 V181.5 H190.4" fill="none" stroke="#777" stroke-width="1"/><path d="M190.4,181.5 V171.0 H300.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="300.2" cy="171.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#48 | 1 members | median identity 1.00 | representative Pediculus humanus corporis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-48.html"><text x="307.2" y="174.5" font-size="9" fill="currentColor">Nvd#48 · Pediculus humanus corporis (n=1)<title>variant 3_321_Nvd#48 | 1 members | median identity 1.00 | representative Pediculus humanus corporis</title></text></a><path d="M190.4,181.5 V192.0 H235.0" fill="none" stroke="#777" stroke-width="1"/><path d="M235.0,192.0 V183.0 H274.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="274.4" cy="183.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#9 | 6 members | median identity 1.00 | representative Dinoponera quadriceps</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html"><text x="281.4" y="186.5" font-size="9" fill="currentColor">Nvd#9 · Dinoponera quadriceps (n=6)<title>variant 3_321_Nvd#9 | 6 members | median identity 1.00 | representative Dinoponera quadriceps</title></text></a><path d="M235.0,192.0 V201.0 H256.4" fill="none" stroke="#777" stroke-width="1"/><path d="M256.4,201.0 V195.0 H296.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="296.7" cy="195.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#1 | 14 members | median identity 0.74 | representative Harpegnathos saltator</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html"><text x="303.7" y="198.5" font-size="9" fill="currentColor">Nvd#1 · Harpegnathos saltator (n=14)<title>variant 3_321_Nvd#1 | 14 members | median identity 0.74 | representative Harpegnathos saltator</title></text></a><path d="M256.4,201.0 V207.0 H314.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="314.6" cy="207.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#2 | 11 members | median identity 0.88 | representative Bombus terrestris</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html"><text x="321.6" y="210.5" font-size="9" fill="currentColor">Nvd#2 · Bombus terrestris (n=11)<title>variant 3_321_Nvd#2 | 11 members | median identity 0.88 | representative Bombus terrestris</title></text></a><path d="M20.0,140.7 V266.4 H64.6" fill="none" stroke="#777" stroke-width="1"/><path d="M64.6,266.4 V219.0 H327.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="327.5" cy="219.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#5 | 9 members | median identity 0.77 | representative Streptomyces scabiei 87.22</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-5.html"><text x="334.5" y="222.5" font-size="9" fill="currentColor">Nvd#5 · Streptomyces scabiei 87.22 (n=9)<title>variant 3_321_Nvd#5 | 9 members | median identity 0.77 | representative Streptomyces scabiei 87.22</title></text></a><path d="M64.6,266.4 V313.9 H87.9" fill="none" stroke="#777" stroke-width="1"/><path d="M87.9,313.9 V251.2 H102.6" fill="none" stroke="#777" stroke-width="1"/><path d="M102.6,251.2 V237.0 H176.5" fill="none" stroke="#777" stroke-width="1"/><path d="M176.5,237.0 V231.0 H327.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="327.7" cy="231.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#56 | 1 members | median identity 1.00 | representative Phenylobacterium sp. Root700</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-56.html"><text x="334.7" y="234.5" font-size="9" fill="currentColor">Nvd#56 · Phenylobacterium sp. Root700 (n=1)<title>variant 3_321_Nvd#56 | 1 members | median identity 1.00 | representative Phenylobacterium sp. Root700</title></text></a><path d="M176.5,237.0 V243.0 H382.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="382.8" cy="243.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#67 | 1 members | median identity 1.00 | representative Pseudomonas mandelii PD30</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-67.html"><text x="389.8" y="246.5" font-size="9" fill="currentColor">Nvd#67 · Pseudomonas mandelii PD30 (n=1)<title>variant 3_321_Nvd#67 | 1 members | median identity 1.00 | representative Pseudomonas mandelii PD30</title></text></a><path d="M102.6,251.2 V265.5 H125.6" fill="none" stroke="#777" stroke-width="1"/><path d="M125.6,265.5 V255.0 H327.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="327.1" cy="255.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#59 | 1 members | median identity 1.00 | representative Novosphingobium barchaimii LL02</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-59.html"><text x="334.1" y="258.5" font-size="9" fill="currentColor">Nvd#59 · Novosphingobium barchaimii LL02 (n=1)<title>variant 3_321_Nvd#59 | 1 members | median identity 1.00 | representative Novosphingobium barchaimii LL02</title></text></a><path d="M125.6,265.5 V276.0 H182.2" fill="none" stroke="#777" stroke-width="1"/><path d="M182.2,276.0 V267.0 H321.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="321.1" cy="267.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#11 | 6 members | median identity 0.79 | representative Novosphingobium sp. KN65.2</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-11.html"><text x="328.1" y="270.5" font-size="9" fill="currentColor">Nvd#11 · Novosphingobium sp. KN65.2 (n=6)<title>variant 3_321_Nvd#11 | 6 members | median identity 0.79 | representative Novosphingobium sp. KN65.2</title></text></a><path d="M182.2,276.0 V285.0 H217.2" fill="none" stroke="#777" stroke-width="1"/><path d="M217.2,285.0 V279.0 H434.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="434.3" cy="279.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#71 | 1 members | median identity 1.00 | representative Frateuria aurantia DSM 6220</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-71.html"><text x="441.3" y="282.5" font-size="9" fill="currentColor">Nvd#71 · Frateuria aurantia DSM 6220 (n=1)<title>variant 3_321_Nvd#71 | 1 members | median identity 1.00 | representative Frateuria aurantia DSM 6220</title></text></a><path d="M217.2,285.0 V291.0 H332.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="332.5" cy="291.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#13 | 6 members | median identity 0.70 | representative Sphingomonas sp. MM-1</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-13.html"><text x="339.5" y="294.5" font-size="9" fill="currentColor">Nvd#13 · Sphingomonas sp. MM-1 (n=6)<title>variant 3_321_Nvd#13 | 6 members | median identity 0.70 | representative Sphingomonas sp. MM-1</title></text></a><path d="M87.9,313.9 V376.5 H103.5" fill="none" stroke="#777" stroke-width="1"/><path d="M103.5,376.5 V337.5 H120.0" fill="none" stroke="#777" stroke-width="1"/><path d="M120.0,337.5 V313.5 H161.9" fill="none" stroke="#777" stroke-width="1"/><path d="M161.9,313.5 V303.0 H338.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="338.9" cy="303.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#70 | 1 members | median identity 1.00 | representative Ilumatobacter coccineus YM16-304</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-70.html"><text x="345.9" y="306.5" font-size="9" fill="currentColor">Nvd#70 · Ilumatobacter coccineus YM16-304 (n=1)<title>variant 3_321_Nvd#70 | 1 members | median identity 1.00 | representative Ilumatobacter coccineus YM16-304</title></text></a><path d="M161.9,313.5 V324.0 H174.1" fill="none" stroke="#777" stroke-width="1"/><path d="M174.1,324.0 V315.0 H369.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="369.0" cy="315.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#52 | 1 members | median identity 1.00 | representative Actinophytocola xinjiangensis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-52.html"><text x="376.0" y="318.5" font-size="9" fill="currentColor">Nvd#52 · Actinophytocola xinjiangensis (n=1)<title>variant 3_321_Nvd#52 | 1 members | median identity 1.00 | representative Actinophytocola xinjiangensis</title></text></a><path d="M174.1,324.0 V333.0 H211.7" fill="none" stroke="#777" stroke-width="1"/><path d="M211.7,333.0 V327.0 H322.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="322.1" cy="327.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#20 | 5 members | median identity 0.73 | representative Mycobacterium sp. JS623</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-20.html"><text x="329.1" y="330.5" font-size="9" fill="currentColor">Nvd#20 · Mycobacterium sp. JS623 (n=5)<title>variant 3_321_Nvd#20 | 5 members | median identity 0.73 | representative Mycobacterium sp. JS623</title></text></a><path d="M211.7,333.0 V339.0 H372.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="372.5" cy="339.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#62 | 1 members | median identity 1.00 | representative Rhodococcus koreensis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-62.html"><text x="379.5" y="342.5" font-size="9" fill="currentColor">Nvd#62 · Rhodococcus koreensis (n=1)<title>variant 3_321_Nvd#62 | 1 members | median identity 1.00 | representative Rhodococcus koreensis</title></text></a><path d="M120.0,337.5 V361.5 H211.9" fill="none" stroke="#777" stroke-width="1"/><path d="M211.9,361.5 V351.0 H375.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="375.2" cy="351.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#74 | 1 members | median identity 1.00 | representative Janibacter indicus</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-74.html"><text x="382.2" y="354.5" font-size="9" fill="currentColor">Nvd#74 · Janibacter indicus (n=1)<title>variant 3_321_Nvd#74 | 1 members | median identity 1.00 | representative Janibacter indicus</title></text></a><path d="M211.9,361.5 V372.0 H249.1" fill="none" stroke="#777" stroke-width="1"/><path d="M249.1,372.0 V363.0 H401.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="401.8" cy="363.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#72 | 1 members | median identity 1.00 | representative Gordonia bronchialis DSM 43247</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-72.html"><text x="408.8" y="366.5" font-size="9" fill="currentColor">Nvd#72 · Gordonia bronchialis DSM 43247 (n=1)<title>variant 3_321_Nvd#72 | 1 members | median identity 1.00 | representative Gordonia bronchialis DSM 43247</title></text></a><path d="M249.1,372.0 V381.0 H293.6" fill="none" stroke="#777" stroke-width="1"/><path d="M293.6,381.0 V375.0 H428.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="428.0" cy="375.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#7 | 7 members | median identity 0.68 | representative Mycolicibacterium chubuense NBB4</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-7.html"><text x="435.0" y="378.5" font-size="9" fill="currentColor">Nvd#7 · Mycolicibacterium chubuense NBB4 (n=7)<title>variant 3_321_Nvd#7 | 7 members | median identity 0.68 | representative Mycolicibacterium chubuense NBB4</title></text></a><path d="M293.6,381.0 V387.0 H417.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="417.5" cy="387.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#12 | 6 members | median identity 0.67 | representative Metapseudomonas resinovorans NBRC 106553</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-12.html"><text x="424.5" y="390.5" font-size="9" fill="currentColor">Nvd#12 · Metapseudomonas resinovorans NBRC 106553 (n=6)<title>variant 3_321_Nvd#12 | 6 members | median identity 0.67 | representative Metapseudomonas resinovorans NBRC 106553</title></text></a><path d="M103.5,376.5 V415.6 H132.0" fill="none" stroke="#777" stroke-width="1"/><path d="M132.0,415.6 V399.0 H314.3" fill="none" stroke="#777" stroke-width="1"/><circle cx="314.3" cy="399.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#66 | 1 members | median identity 1.00 | representative Pseudomyxococcus hansupus</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-66.html"><text x="321.3" y="402.5" font-size="9" fill="currentColor">Nvd#66 · Pseudomyxococcus hansupus (n=1)<title>variant 3_321_Nvd#66 | 1 members | median identity 1.00 | representative Pseudomyxococcus hansupus</title></text></a><path d="M132.0,415.6 V432.1 H158.8" fill="none" stroke="#777" stroke-width="1"/><path d="M158.8,432.1 V411.0 H520.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="520.0" cy="411.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#53 | 1 members | median identity 1.00 | representative Pseudoalteromonas amylolytica</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-53.html"><text x="527.0" y="414.5" font-size="9" fill="currentColor">Nvd#53 · Pseudoalteromonas amylolytica (n=1)<title>variant 3_321_Nvd#53 | 1 members | median identity 1.00 | representative Pseudoalteromonas amylolytica</title></text></a><path d="M158.8,432.1 V453.3 H197.4" fill="none" stroke="#777" stroke-width="1"/><path d="M197.4,453.3 V429.0 H216.7" fill="none" stroke="#777" stroke-width="1"/><path d="M216.7,429.0 V423.0 H359.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="359.9" cy="423.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#57 | 1 members | median identity 1.00 | representative Streptomyces curacoi</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-57.html"><text x="366.9" y="426.5" font-size="9" fill="currentColor">Nvd#57 · Streptomyces curacoi (n=1)<title>variant 3_321_Nvd#57 | 1 members | median identity 1.00 | representative Streptomyces curacoi</title></text></a><path d="M216.7,429.0 V435.0 H338.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="338.5" cy="435.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#61 | 1 members | median identity 1.00 | representative Nocardia flavorosea</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-61.html"><text x="345.5" y="438.5" font-size="9" fill="currentColor">Nvd#61 · Nocardia flavorosea (n=1)<title>variant 3_321_Nvd#61 | 1 members | median identity 1.00 | representative Nocardia flavorosea</title></text></a><path d="M197.4,453.3 V477.6 H220.1" fill="none" stroke="#777" stroke-width="1"/><path d="M220.1,477.6 V453.0 H241.7" fill="none" stroke="#777" stroke-width="1"/><path d="M241.7,453.0 V447.0 H402.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="402.8" cy="447.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#64 | 1 members | median identity 1.00 | representative Streptomyces tsukubensis NRRL18488</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-64.html"><text x="409.8" y="450.5" font-size="9" fill="currentColor">Nvd#64 · Streptomyces tsukubensis NRRL18488 (n=1)<title>variant 3_321_Nvd#64 | 1 members | median identity 1.00 | representative Streptomyces tsukubensis NRRL18488</title></text></a><path d="M241.7,453.0 V459.0 H354.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="354.8" cy="459.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#54 | 1 members | median identity 1.00 | representative Streptomyces leeuwenhoekii</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-54.html"><text x="361.8" y="462.5" font-size="9" fill="currentColor">Nvd#54 · Streptomyces leeuwenhoekii (n=1)<title>variant 3_321_Nvd#54 | 1 members | median identity 1.00 | representative Streptomyces leeuwenhoekii</title></text></a><path d="M220.1,477.6 V502.1 H248.0" fill="none" stroke="#777" stroke-width="1"/><path d="M248.0,502.1 V477.0 H322.7" fill="none" stroke="#777" stroke-width="1"/><path d="M322.7,477.0 V471.0 H495.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="495.6" cy="471.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#58 | 1 members | median identity 1.00 | representative Streptomyces curacoi</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-58.html"><text x="502.6" y="474.5" font-size="9" fill="currentColor">Nvd#58 · Streptomyces curacoi (n=1)<title>variant 3_321_Nvd#58 | 1 members | median identity 1.00 | representative Streptomyces curacoi</title></text></a><path d="M322.7,477.0 V483.0 H417.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="417.2" cy="483.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#60 | 1 members | median identity 1.00 | representative Streptomyces sp. 150FB</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-60.html"><text x="424.2" y="486.5" font-size="9" fill="currentColor">Nvd#60 · Streptomyces sp. 150FB (n=1)<title>variant 3_321_Nvd#60 | 1 members | median identity 1.00 | representative Streptomyces sp. 150FB</title></text></a><path d="M248.0,502.1 V527.2 H269.3" fill="none" stroke="#777" stroke-width="1"/><path d="M269.3,527.2 V501.0 H305.6" fill="none" stroke="#777" stroke-width="1"/><path d="M305.6,501.0 V495.0 H384.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="384.1" cy="495.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#0 | 34 members | median identity 0.74 | representative Streptomyces griseus subsp. griseus NBRC 13350</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-0.html"><text x="391.1" y="498.5" font-size="9" fill="currentColor">Nvd#0 · Streptomyces griseus subsp. griseus NBRC 13350 (n=34<title>variant 3_321_Nvd#0 | 34 members | median identity 0.74 | representative Streptomyces griseus subsp. griseus NBRC 13350</title></text></a><path d="M305.6,501.0 V507.0 H389.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="389.4" cy="507.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#4 | 9 members | median identity 0.77 | representative Streptomyces violaceusniger Tu 4113</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-4.html"><text x="396.4" y="510.5" font-size="9" fill="currentColor">Nvd#4 · Streptomyces violaceusniger Tu 4113 (n=9)<title>variant 3_321_Nvd#4 | 9 members | median identity 0.77 | representative Streptomyces violaceusniger Tu 4113</title></text></a><path d="M269.3,527.2 V553.5 H306.1" fill="none" stroke="#777" stroke-width="1"/><path d="M306.1,553.5 V529.5 H361.0" fill="none" stroke="#777" stroke-width="1"/><path d="M361.0,529.5 V519.0 H457.7" fill="none" stroke="#777" stroke-width="1"/><circle cx="457.7" cy="519.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#63 | 1 members | median identity 1.00 | representative Variovorax paradoxus</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-63.html"><text x="464.7" y="522.5" font-size="9" fill="currentColor">Nvd#63 · Variovorax paradoxus (n=1)<title>variant 3_321_Nvd#63 | 1 members | median identity 1.00 | representative Variovorax paradoxus</title></text></a><path d="M361.0,529.5 V540.0 H391.8" fill="none" stroke="#777" stroke-width="1"/><path d="M391.8,540.0 V531.0 H473.2" fill="none" stroke="#777" stroke-width="1"/><circle cx="473.2" cy="531.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#65 | 1 members | median identity 1.00 | representative Burkholderia mayonis</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-65.html"><text x="480.2" y="534.5" font-size="9" fill="currentColor">Nvd#65 · Burkholderia mayonis (n=1)<title>variant 3_321_Nvd#65 | 1 members | median identity 1.00 | representative Burkholderia mayonis</title></text></a><path d="M391.8,540.0 V549.0 H409.5" fill="none" stroke="#777" stroke-width="1"/><path d="M409.5,549.0 V543.0 H485.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="485.0" cy="543.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#14 | 6 members | median identity 0.75 | representative Burkholderia multivorans ATCC 17616</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-14.html"><text x="492.0" y="546.5" font-size="9" fill="currentColor">Nvd#14 · Burkholderia multivorans ATCC 17616 (n=6)<title>variant 3_321_Nvd#14 | 6 members | median identity 0.75 | representative Burkholderia multivorans ATCC 17616</title></text></a><path d="M409.5,549.0 V555.0 H488.4" fill="none" stroke="#777" stroke-width="1"/><circle cx="488.4" cy="555.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#73 | 1 members | median identity 1.00 | representative Variovorax sp. 54</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-73.html"><text x="495.4" y="558.5" font-size="9" fill="currentColor">Nvd#73 · Variovorax sp. 54 (n=1)<title>variant 3_321_Nvd#73 | 1 members | median identity 1.00 | representative Variovorax sp. 54</title></text></a><path d="M306.1,553.5 V577.5 H342.5" fill="none" stroke="#777" stroke-width="1"/><path d="M342.5,577.5 V567.0 H448.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="448.0" cy="567.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#68 | 1 members | median identity 1.00 | representative Pseudomonas sp. GM50</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-68.html"><text x="455.0" y="570.5" font-size="9" fill="currentColor">Nvd#68 · Pseudomonas sp. GM50 (n=1)<title>variant 3_321_Nvd#68 | 1 members | median identity 1.00 | representative Pseudomonas sp. GM50</title></text></a><path d="M342.5,577.5 V588.0 H356.0" fill="none" stroke="#777" stroke-width="1"/><path d="M356.0,588.0 V579.0 H507.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="507.8" cy="579.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#55 | 1 members | median identity 1.00 | representative Achromobacter sp. Root83</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-55.html"><text x="514.8" y="582.5" font-size="9" fill="currentColor">Nvd#55 · Achromobacter sp. Root83 (n=1)<title>variant 3_321_Nvd#55 | 1 members | median identity 1.00 | representative Achromobacter sp. Root83</title></text></a><path d="M356.0,588.0 V597.0 H373.3" fill="none" stroke="#777" stroke-width="1"/><path d="M373.3,597.0 V591.0 H460.6" fill="none" stroke="#777" stroke-width="1"/><circle cx="460.6" cy="591.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#8 | 7 members | median identity 0.91 | representative Burkholderia orbicola MC0-3</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-8.html"><text x="467.6" y="594.5" font-size="9" fill="currentColor">Nvd#8 · Burkholderia orbicola MC0-3 (n=7)<title>variant 3_321_Nvd#8 | 7 members | median identity 0.91 | representative Burkholderia orbicola MC0-3</title></text></a><path d="M373.3,597.0 V603.0 H436.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="436.1" cy="603.0" r="2.8" fill="#2980b9"><title>variant 3_321_Nvd#15 | 6 members | median identity 0.93 | representative Burkholderia orbicola MC0-3</title></circle><a href="/pro-sim-blast/leaf/3_321_Nvd-15.html"><text x="443.1" y="606.5" font-size="9" fill="currentColor">Nvd#15 · Burkholderia orbicola MC0-3 (n=6)<title>variant 3_321_Nvd#15 | 6 members | median identity 0.93 | representative Burkholderia orbicola MC0-3</title></text></a><line x1="20" y1="622" x2="95.4" y2="622" stroke="currentColor" stroke-width="2"/><text x="100.4" y="625" font-size="9" fill="currentColor">0.5 subst./site</text></svg></div>
+
+
+
+<h2>Where its carriers were isolated from</h2>
+
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+Recorded for 72 of this type's 273 entries
+(26.4%); the rest state no source.
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+
+<tr><td>not classifiable</td>
+    <td class="num" data-v="15">15</td>
+    <td class="num" data-v="8">8</td></tr>
+
+<tr><td>soil</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="10">10</td></tr>
+
+<tr><td>animal host</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="5">5</td></tr>
+
+<tr><td>water, compartment unstated</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>human clinical</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="6">6</td></tr>
+
+<tr><td>rhizosphere soil</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="5">5</td></tr>
+
+<tr><td>marine</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>laboratory strain</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="4">4</td></tr>
+
+</tbody></table></div>
+<p class="note"><a href="/pro-sim-blast/atlas/ecology.html">How the habitat vocabulary is built, and what it
+cannot classify</a> ·
+<a href="/pro-sim-blast/atlas/geography.html#type=3_321_Nvd">where this type has been collected, on a
+map</a></p>
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-0.html">3_321_Nvd#0</a></td>
+    <td class="num" data-v="34">34</td>
+    <td class="num" data-v="0.7396">0.74</td>
+    <td class="small">Streptomyces:33, Kitasatospora:1</td>
+    <td class="small">TioE family transcriptional regulator | erythromycin esterase family protein | acyl-CoA dehydrogenase family protein | helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">3_321_Nvd#1</a></td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="0.7372">0.74</td>
+    <td class="small">Temnothorax:5, Atta:2, Neodiprion:2, Harpegnathos:1, Camponotus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">3_321_Nvd#2</a></td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="0.8832">0.88</td>
+    <td class="small">Bombus:7, Fopius:1, Ceratosolen:1, Ceratina:1, Apis:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3_321_Nvd#3</a></td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Drosophila:9</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-4.html">3_321_Nvd#4</a></td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="0.7682">0.77</td>
+    <td class="small">Streptomyces:5, Pseudonocardia:3, Micromonospora:1</td>
+    <td class="small">3-hydroxyacyl-CoA dehydrogenase family protein | acyl-CoA dehydrogenase family protein | HAD family hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-5.html">3_321_Nvd#5</a></td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="0.7719">0.77</td>
+    <td class="small">Streptomyces:8, Segniliparus:1</td>
+    <td class="small">recombinase RecA | regulatory protein RecX | serine hydrolase | GntR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">3_321_Nvd#6</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.7228">0.72</td>
+    <td class="small">Frankliniella:5, Thrips:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-7.html">3_321_Nvd#7</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.683">0.68</td>
+    <td class="small">Mycolicibacterium:4, Nocardia:1, Mycobacterium:1, Pseudofrankia:1</td>
+    <td class="small">aldehyde dehydrogenase family protein | cysteine hydrolase family protein | alpha/beta fold hydrolase | alpha/beta hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-8.html">3_321_Nvd#8</a></td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.9119">0.91</td>
+    <td class="small">Burkholderia:7</td>
+    <td class="small">HAD family hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">3_321_Nvd#9</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Cephus:5, Dinoponera:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-10.html">3_321_Nvd#10</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.7806">0.78</td>
+    <td class="small">Paramecium:6</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-11.html">3_321_Nvd#11</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.7931">0.79</td>
+    <td class="small">Novosphingobium:4, Sphingobium:2</td>
+    <td class="small">Lrp/AsnC family transcriptional regulator | amidase | amidohydrolase family protein | helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-12.html">3_321_Nvd#12</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.668">0.67</td>
+    <td class="small">Pseudomonas:2, Metapseudomonas:1, Ectopseudomonas:1, Sphingomonas:1, Stutzerimonas:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | acyl-CoA dehydrogenase | TetR/AcrR family transcriptional regulator | limonene-1,2-epoxide hydrolase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-13.html">3_321_Nvd#13</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.7026">0.70</td>
+    <td class="small">Sphingomonas:3, Caenibius:1, Sphingopyxis:1, Edaphosphingomonas:1</td>
+    <td class="small">LysR family transcriptional regulator | amidohydrolase family protein | aldehyde dehydrogenase family protein | helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-14.html">3_321_Nvd#14</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.7484">0.75</td>
+    <td class="small">Burkholderia:6</td>
+    <td class="small">IS3 family transposase | DNA-binding transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-15.html">3_321_Nvd#15</a></td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="0.9313">0.93</td>
+    <td class="small">Burkholderia:6</td>
+    <td class="small">HAD family hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">3_321_Nvd#16</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.5524">0.55</td>
+    <td class="small">Drosophila:3, Zeugodacus:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">3_321_Nvd#17</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.5326">0.53</td>
+    <td class="small">Drosophila:2, Aedes:1, Culex:1, Anopheles:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">3_321_Nvd#18</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.6404">0.64</td>
+    <td class="small">Drosophila:4, Scaptodrosophila:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">3_321_Nvd#19</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.7518">0.75</td>
+    <td class="small">Bombyx:3, Spodoptera:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-20.html">3_321_Nvd#20</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.7292">0.73</td>
+    <td class="small">Mycobacterium:4, Mycolicibacterium:1</td>
+    <td class="small">aldehyde dehydrogenase | amidohydrolase family protein | esterase family protein | NAD(P)H-dependent amine dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-21.html">3_321_Nvd#21</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sipha:3, Acyrthosiphon:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-22.html">3_321_Nvd#22</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.5788">0.58</td>
+    <td class="small">Glossina:2, Stomoxys:1, Drosophila:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-23.html">3_321_Nvd#23</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.9103">0.91</td>
+    <td class="small">Mycolicibacterium:3, Mycobacterium:1</td>
+    <td class="small">FadR/GntR family transcriptional regulator | allophanate hydrolase | xanthine dehydrogenase family protein subunit M | xanthine dehydrogenase family protein molybdopterin-binding subunit</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-24.html">3_321_Nvd#24</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Burkholderia:4</td>
+    <td class="small">tetratricopeptide repeat protein | helix-turn-helix transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-25.html">3_321_Nvd#25</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.7151">0.72</td>
+    <td class="small">Mycobacterium:3, Mycolicibacterium:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | FadR/GntR family transcriptional regulator | tyrosine-type recombinase/integrase | IS3 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-26.html">3_321_Nvd#26</a></td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.7737">0.77</td>
+    <td class="small">Mycolicibacterium:3, Mycobacterium:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | amidohydrolase family protein | IS256-like element IS1245 family transposase | IS481-like element ISMav3 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-27.html">3_321_Nvd#27</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Lingula:3</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-28.html">3_321_Nvd#28</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9901">0.99</td>
+    <td class="small">Burkholderia:3</td>
+    <td class="small">IS3 family transposase | IS30 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-29.html">3_321_Nvd#29</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9944">0.99</td>
+    <td class="small">Burkholderia:3</td>
+    <td class="small">IS3 family transposase | IS30 family transposase | IS481 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-30.html">3_321_Nvd#30</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.7422">0.74</td>
+    <td class="small">Streptomyces:3</td>
+    <td class="small">glycoside hydrolase family 2 TIM barrel-domain containing protein | TetR/AcrR family transcriptional regulator | alpha/beta fold hydrolase | recombinase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-31.html">3_321_Nvd#31</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.9103">0.91</td>
+    <td class="small">Lyngbya:2, Limnoraphis:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-32.html">3_321_Nvd#32</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.7385">0.74</td>
+    <td class="small">Drosophila:3</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-33.html">3_321_Nvd#33</a></td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.8776">0.88</td>
+    <td class="small">Sorangium:3</td>
+    <td class="small">alpha/beta fold hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-34.html">3_321_Nvd#34</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9944">0.99</td>
+    <td class="small">Diaphorina:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-35.html">3_321_Nvd#35</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.572">0.57</td>
+    <td class="small">Drosophila:1, Scaptodrosophila:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-36.html">3_321_Nvd#36</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.583">0.58</td>
+    <td class="small">Ixodes:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-37.html">3_321_Nvd#37</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9128">0.91</td>
+    <td class="small">Saccharopolyspora:2</td>
+    <td class="small">IS30 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-38.html">3_321_Nvd#38</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.8876">0.89</td>
+    <td class="small">Mycobacterium:2</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-39.html">3_321_Nvd#39</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.7908">0.79</td>
+    <td class="small">Variovorax:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-40.html">3_321_Nvd#40</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.6007">0.60</td>
+    <td class="small">Endozoicomonas:2</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | alpha/beta fold hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-41.html">3_321_Nvd#41</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Drosophila:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-42.html">3_321_Nvd#42</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Trichoplusia:2</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-43.html">3_321_Nvd#43</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.6837">0.68</td>
+    <td class="small">Bicyclus:1, Vanessa:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because fewer than 8 members, so the homogeneity target was never applied.">heterogeneous</span>
+      <span class="note">too small to split</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-44.html">3_321_Nvd#44</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.7438">0.74</td>
+    <td class="small">Burkholderia:2</td>
+    <td class="small">IS21-like element ISRme20 family helper ATPase IstB | IS110 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-45.html">3_321_Nvd#45</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.7907">0.79</td>
+    <td class="small">Mycobacterium:2</td>
+    <td class="small">GntR family transcriptional regulator | acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-46.html">3_321_Nvd#46</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9098">0.91</td>
+    <td class="small">Nocardia:2</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | LysR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-47.html">3_321_Nvd#47</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Acanthamoeba:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-48.html">3_321_Nvd#48</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pediculus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-49.html">3_321_Nvd#49</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ixodes:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-50.html">3_321_Nvd#50</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ixodes:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-51.html">3_321_Nvd#51</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ixodes:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-52.html">3_321_Nvd#52</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Actinophytocola:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-53.html">3_321_Nvd#53</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudoalteromonas:1</td>
+    <td class="small">patatin-like phospholipase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-54.html">3_321_Nvd#54</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-55.html">3_321_Nvd#55</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Achromobacter:1</td>
+    <td class="small">shikimate dehydrogenase | symmetrical bis(5&#39;-nucleosyl)-tetraphosphatase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-56.html">3_321_Nvd#56</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Phenylobacterium:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | alpha/beta fold hydrolase | MarR family winged helix-turn-helix transcriptional regulator | IS481 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-57.html">3_321_Nvd#57</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-58.html">3_321_Nvd#58</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-59.html">3_321_Nvd#59</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Novosphingobium:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-60.html">3_321_Nvd#60</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">LuxR C-terminal-related transcriptional regulator | AfsR/SARP family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-61.html">3_321_Nvd#61</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Nocardia:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-62.html">3_321_Nvd#62</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Rhodococcus:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-63.html">3_321_Nvd#63</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Variovorax:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-64.html">3_321_Nvd#64</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-65.html">3_321_Nvd#65</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Burkholderia:1</td>
+    <td class="small">IS5 family transposase | phage integrase family protein | Lrp/AsnC family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-66.html">3_321_Nvd#66</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomyxococcus:1</td>
+    <td class="small">prodigiosin MBC biosynthesis dehydrogenase PigA</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-67.html">3_321_Nvd#67</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomonas:1</td>
+    <td class="small">alpha/beta hydrolase | metal-dependent hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-68.html">3_321_Nvd#68</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Pseudomonas:1</td>
+    <td class="small">glycoside hydrolase family 15 protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-69.html">3_321_Nvd#69</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Papilio:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-70.html">3_321_Nvd#70</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Ilumatobacter:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-71.html">3_321_Nvd#71</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Frateuria:1</td>
+    <td class="small">PQQ-dependent sugar dehydrogenase | transposase | glycoside hydrolase family 32 protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-72.html">3_321_Nvd#72</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Gordonia:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | NAD(P)H-dependent amine dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-73.html">3_321_Nvd#73</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Variovorax:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/3_321_Nvd-74.html">3_321_Nvd#74</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Janibacter:1</td>
+    <td class="small">IS256 family transposase | amidohydrolase family protein | acyl-CoA dehydrogenase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">273</span></h2>
+
+
+
+
+<div class="caveat">
+  
+  <b>13 of 273 members are close enough for the substrate
+  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
+  260 are more distant relatives whose reaction has not been measured and cannot be
+  inferred from membership alone. The table is ordered with the closest first, so the informative
+  members are on this page and the distant ones follow.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001104200.3_190-1480_1">NP_001097670.1</a>
+        </td>
+    <td><i>Drosophila melanogaster</i></td>
+    <td class="small">neverland</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized reference (≥95 % identity)</span>
+        <div class="note">100 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="995.9">996</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302541.1_259-1609_1">XP_033158432.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X5</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="946.6">947</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302543.1_11-1352_1">XP_033158434.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X7</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="968.8">969</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302544.1_15-1320_1">XP_033158435.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X8</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="963.3">963</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302545.1_73-1078_1">XP_033158436.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X9</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="699.3">699</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302537.1_68-1457_1">XP_033158428.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="1020.7">1021</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302538.1_68-1448_1">XP_033158429.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="1020.7">1021</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302539.1_67-1360_1">XP_033158430.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X3</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="1019.4">1019</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033302540.1_66-1356_1">XP_033158431.1</a>
+        </td>
+    <td><i>Drosophila mauritiana</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X4</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">94 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="1019.1">1019</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033377100.1_216-1239_1">XP_033232991.1</a>
+        </td>
+    <td><i>Drosophila pseudoobscura</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X3</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">66 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="547.4">547</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033377097.1_175-1471_1">XP_033232988.1</a>
+        </td>
+    <td><i>Drosophila pseudoobscura</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">63 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="599.1">599</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033377098.1_110-1406_1">XP_033232989.1</a>
+        </td>
+    <td><i>Drosophila pseudoobscura</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">63 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="599.1">599</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033377099.1_15-1158_1">XP_033232990.1</a>
+        </td>
+    <td><i>Drosophila pseudoobscura</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">63 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="574.4">574</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_030524064.1_208-1525_1">XP_030379924.1</a>
+        </td>
+    <td><i>Scaptodrosophila lebanonensis</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">59 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="557.8">558</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002070189.2_0-1275_1">XP_002070225.2</a>
+        </td>
+    <td><i>Drosophila willistoni</i></td>
+    <td class="small">neverland</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">58 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="573.5">574</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_023313783.2_0-1314_1">XP_023169551.2</a>
+        </td>
+    <td><i>Drosophila hydei</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">58 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-32.html">32</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="538.2">538</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015169318.1_184-1405_1">XP_015024804.1</a>
+        </td>
+    <td><i>Drosophila virilis</i></td>
+    <td class="small">uncharacterized protein, isoform A</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">56 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-32.html">32</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="503.1">503</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015166316.1_237-1536_1">XP_015021802.1</a>
+        </td>
+    <td><i>Drosophila mojavensis</i></td>
+    <td class="small">uncharacterized protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">56 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-32.html">32</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="518.2">518</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015169320.1_10-1165_1">XP_015024806.1</a>
+        </td>
+    <td><i>Drosophila virilis</i></td>
+    <td class="small">uncharacterized protein, isoform B</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">56 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-18.html">18</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="505.2">505</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_034256098.2_128-1199_1">XP_034111989.2</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X6</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">54 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="455.2">455</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014904693.1_57-1245_1">XP_014760179.1</a>
+        </td>
+    <td><i>Drosophila ananassae</i></td>
+    <td class="small">uncharacterized protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">54 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-35.html">35</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="489.8">490</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052007677.1_110-1367_1">XP_051863637.1</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">53 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-41.html">41</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="461.0">461</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052007678.1_26-1277_1">XP_051863638.1</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">53 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-41.html">41</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="460.5">460</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052007679.1_11-1226_1">XP_051863639.1</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X3</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">53 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-22.html">22</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="462.5">462</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052007680.1_37-1207_1">XP_051863640.1</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X4</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">53 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="461.9">462</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052007681.1_15-1167_1">XP_051863641.1</a>
+        </td>
+    <td><i>Drosophila albomicans</i></td>
+    <td class="small">cholesterol 7-desaturase nvd isoform X5</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">53 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="462.6">463</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_030524065.1_203-1403_1">XP_030379925.1</a>
+        </td>
+    <td><i>Scaptodrosophila lebanonensis</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">52 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-35.html">35</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="468.4">468</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_038029723.1_559-1891_1">XP_037885651.1</a>
+        </td>
+    <td><i>Glossina fuscipes</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">52 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-22.html">22</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="497.3">497</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_038029724.1_204-1536_1">XP_037885652.1</a>
+        </td>
+    <td><i>Glossina fuscipes</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">52 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-22.html">22</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="497.3">497</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013247789.1_93-1380_1">XP_013103243.1</a>
+        </td>
+    <td><i>Stomoxys calcitrans</i></td>
+    <td class="small">cholesterol desaturase daf-36 isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">51 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-22.html">22</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="463.2">463</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011195859.1_200-1451_1">XP_011194161.1</a>
+        </td>
+    <td><i>Zeugodacus cucurbitae</i></td>
+    <td class="small">cholesterol desaturase daf-36</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">48 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="423.4">423</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011195860.1_126-1377_1">XP_011194162.1</a>
+        </td>
+    <td><i>Zeugodacus cucurbitae</i></td>
+    <td class="small">cholesterol desaturase daf-36</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">48 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-16.html">16</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="423.4">423</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_309236.5_0-1326_1">XP_309236.5</a>
+        </td>
+    <td><i>Anopheles gambiae str. PEST</i></td>
+    <td class="small">AGAP001038-PA</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">48 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="410.8">411</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026821579.1_0-1314_1">XP_026677380.1</a>
+        </td>
+    <td><i>Diaphorina citri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-34.html">34</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="378.7">379</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_001655121.1_0-1245_1">XP_001655171.1</a>
+        </td>
+    <td><i>Aedes aegypti</i></td>
+    <td class="small">AAEL011203-PA</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">46 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="388.7">389</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_001847974.1_0-1446_1">XP_001848026.1</a>
+        </td>
+    <td><i>Culex quinquefasciatus</i></td>
+    <td class="small">rieske-domain protein Neverland</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">45 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-17.html">17</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="396.1">396</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011298712.1_365-1532_1">XP_011297014.1</a>
+        </td>
+    <td><i>Fopius arisanus</i></td>
+    <td class="small">cholesterol desaturase daf-36</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">44 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="321.1">321</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_050700955.1_200-1556_1">XP_050556912.1</a>
+        </td>
+    <td><i>Spodoptera frugiperda</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="287.9">288</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_022976444.1_154-1510_1">XP_022832212.1</a>
+        </td>
+    <td><i>Spodoptera litura</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="285.1">285</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_034378148.1_2-1253_1">XP_034234039.1</a>
+        </td>
+    <td><i>Thrips palmi</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">43 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="351.2">351</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026821580.1_0-999_1">XP_026677381.1</a>
+        </td>
+    <td><i>Diaphorina citri</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-34.html">34</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="232.3">232</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011506647.1_0-1197_1">XP_011504949.1</a>
+        </td>
+    <td><i>Ceratosolen solmsi marchali</i></td>
+    <td class="small">cholesterol desaturase daf-36</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="332.5">332</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025563493.1_315-1383_1">XP_025419278.1</a>
+        </td>
+    <td><i>Sipha flava</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-21.html">21</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.9">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026892269.1_133-1453_1">XP_026748070.1</a>
+        </td>
+    <td><i>Trichoplusia ni</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-42.html">42</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="264.4">264</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026892270.1_1114-2434_1">XP_026748071.1</a>
+        </td>
+    <td><i>Trichoplusia ni</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-42.html">42</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="264.4">264</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_034378147.1_2-1283_1">XP_034234038.1</a>
+        </td>
+    <td><i>Thrips palmi</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.7">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026419621.2_225-1458_1">XP_026275406.2</a>
+        </td>
+    <td><i>Frankliniella occidentalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.5">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052263820.1_242-1475_1">XP_052119780.1</a>
+        </td>
+    <td><i>Frankliniella occidentalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.5">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052263824.1_82-1315_1">XP_052119784.1</a>
+        </td>
+    <td><i>Frankliniella occidentalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.5">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052263826.1_192-1425_1">XP_052119786.1</a>
+        </td>
+    <td><i>Frankliniella occidentalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.5">338</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025563491.1_239-1562_1">XP_025419276.1</a>
+        </td>
+    <td><i>Sipha flava</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-21.html">21</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.7">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025563492.1_103-1426_1">XP_025419277.1</a>
+        </td>
+    <td><i>Sipha flava</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-21.html">21</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.7">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026627359.1_3-1326_1">XP_026483144.1</a>
+        </td>
+    <td><i>Vanessa tameamea</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-43.html">43</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="307.3">307</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002429949.1_0-1359_1">XP_002429994.1</a>
+        </td>
+    <td><i>Pediculus humanus corporis</i></td>
+    <td class="small">uncharacterized protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-48.html">48</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="320.6">321</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015745482.1_1068-2340_1">XP_015600968.1</a>
+        </td>
+    <td><i>Cephus cinctus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.0">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015745483.2_414-1686_1">XP_015600969.1</a>
+        </td>
+    <td><i>Cephus cinctus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.0">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025087801.1_2164-3436_1">XP_024943569.1</a>
+        </td>
+    <td><i>Cephus cinctus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.0">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025087802.1_2050-3322_1">XP_024943570.1</a>
+        </td>
+    <td><i>Cephus cinctus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.0">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025087803.1_385-1657_1">XP_024943571.1</a>
+        </td>
+    <td><i>Cephus cinctus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.0">330</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_052273009.1_556-1762_1">XP_052128969.1</a>
+        </td>
+    <td><i>Frankliniella occidentalis</i></td>
+    <td class="small">cholesterol 7-desaturase nvd-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="328.1">328</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_024086461.1_161-1484_1">XP_023942229.1</a>
+        </td>
+    <td><i>Bicyclus anynana</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-43.html">43</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="325.6">326</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011147908.2_3109-4420_1">XP_011146210.1</a>
+        </td>
+    <td><i>Harpegnathos saltator</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">41 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="331.7">332</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018035868.2_149-1391_1">XP_017891357.1</a>
+        </td>
+    <td><i>Ceratina calcarata</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.0">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011258379.2_680-1997_1">XP_011256681.1</a>
+        </td>
+    <td><i>Camponotus floridanus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="346.4">346</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_012691890.1_106-1468_1">XP_012547344.1</a>
+        </td>
+    <td><i>Bombyx mori</i></td>
+    <td class="small">neverland isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="275.8">276</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033442349.1_193-1432_1">XP_033298240.1</a>
+        </td>
+    <td><i>Bombus bifarius</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.0">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033442441.1_283-1522_1">XP_033298332.1</a>
+        </td>
+    <td><i>Bombus bifarius</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.0">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_003488656.4_561-1800_1">XP_003488704.1</a>
+        </td>
+    <td><i>Bombus impatiens</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="314.7">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_003402343.2_1912-3151_1">XP_003402391.2</a>
+        </td>
+    <td><i>Bombus terrestris</i></td>
+    <td class="small">cholesterol desaturase daf-36</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.3">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_048405997.1_759-1998_1">XP_048261954.1</a>
+        </td>
+    <td><i>Bombus terrestris</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.3">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033492030.1_194-1433_1">XP_033347921.1</a>
+        </td>
+    <td><i>Bombus vosnesenskii</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.0">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_033492031.1_286-1525_1">XP_033347922.1</a>
+        </td>
+    <td><i>Bombus vosnesenskii</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="315.0">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NM_001044161.1_39-1401_1">NP_001037626.1</a>
+        </td>
+    <td><i>Bombyx mori</i></td>
+    <td class="small">cholesterol 7-desaturase nvd</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="276.8">277</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013542815.1_168-1560_1">XP_013398269.1</a>
+        </td>
+    <td><i>Lingula anatina</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-27.html">27</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.8">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013560785.1_168-1560_1">XP_013416239.1</a>
+        </td>
+    <td><i>Lingula anatina</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X1</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-27.html">27</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.8">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013560792.2_168-1560_1">XP_013416246.1</a>
+        </td>
+    <td><i>Lingula anatina</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">40 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-27.html">27</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="314.8">315</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_026440700.1_162-1401_1">XP_026296485.1</a>
+        </td>
+    <td><i>Apis mellifera</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-2.html">2</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="321.3">321</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_028185795.1_0-1362_1">XP_028041596.1</a>
+        </td>
+    <td><i>Bombyx mandarina</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-19.html">19</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="274.7">275</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_013323528.1_96-1467_1">XP_013178982.1</a>
+        </td>
+    <td><i>Papilio xuthus</i></td>
+    <td class="small">3-ketosteroid-9-alpha-monooxygenase oxygenase subunit</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-69.html">69</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="275.1">275</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_011644526.1_206-1529_1">XP_011642828.1</a>
+        </td>
+    <td><i>Pogonomyrmex barbatus</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="330.7">331</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025028047.1_3179-4505_1">XP_024883815.1</a>
+        </td>
+    <td><i>Temnothorax curvispinosus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.5">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025028048.1_3075-4401_1">XP_024883816.1</a>
+        </td>
+    <td><i>Temnothorax curvispinosus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.5">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025028049.1_3166-4492_1">XP_024883817.1</a>
+        </td>
+    <td><i>Temnothorax curvispinosus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.5">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025028050.1_3128-4454_1">XP_024883818.1</a>
+        </td>
+    <td><i>Temnothorax curvispinosus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.5">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_025037423.1_619-1945_1">XP_024893191.1</a>
+        </td>
+    <td><i>Temnothorax curvispinosus</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="324.5">324</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002409680.1_6-1236_1">XP_002409724.1</a>
+        </td>
+    <td><i>Ixodes scapularis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-50.html">50</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="260.3">260</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_014614255.1_1922-3218_1">XP_014469741.1</a>
+        </td>
+    <td><i>Dinoponera quadriceps</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-9.html">9</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="331.9">332</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018522911.1_85-1399_1">XP_018378413.1</a>
+        </td>
+    <td><i>Trachymyrmex cornetzi</i></td>
+    <td class="small">cholesterol 7-desaturase-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="326.4">326</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_012202582.1_0-1305_1">XP_012057972.1</a>
+        </td>
+    <td><i>Atta cephalotes</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">39 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="331.2">331</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_012202584.1_0-1302_1">XP_012057974.1</a>
+        </td>
+    <td><i>Atta cephalotes</i></td>
+    <td class="small">cholesterol desaturase daf-36-like</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="323.0">323</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002409682.1_104-1391_1">XP_002409726.1</a>
+        </td>
+    <td><i>Ixodes scapularis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-49.html">49</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="247.8">248</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015665731.1_127-1519_1">XP_015521217.1</a>
+        </td>
+    <td><i>Neodiprion lecontei</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.1">337</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_015665732.1_98-1490_1">XP_015521218.1</a>
+        </td>
+    <td><i>Neodiprion lecontei</i></td>
+    <td class="small">cholesterol 7-desaturase</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">38 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="337.1">337</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_018548524.1_82-1390_1">XP_018404026.1</a>
+        </td>
+    <td><i>Cyphomyrmex costatus</i></td>
+    <td class="small">cholesterol 7-desaturase-like isoform X2</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-1.html">1</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="304.7">305</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002403297.1_0-1131_1">XP_002403341.1</a>
+        </td>
+    <td><i>Ixodes scapularis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-51.html">51</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="220.6">221</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002403299.1_0-1995_1">XP_002403343.1</a>
+        </td>
+    <td><i>Ixodes scapularis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-36.html">36</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="429.3">429</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_002403298.1_0-1077_1">XP_002403342.1</a>
+        </td>
+    <td><i>Ixodes scapularis</i></td>
+    <td class="small">hypothetical protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">36 % to Nvd</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-36.html">36</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="252.3">252</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP013290.1_2828501-2829476_1">WP_072625584.1</a>
+        </td>
+    <td><i>Janibacter indicus</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-74.html">74</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="83.8">84</td>
+    <td class="small mono">hydrolase &gt; other &gt; [alpha] &gt; ferredoxin &gt; other &gt; other &gt; dehydrogenase &gt; dehydrogenase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_004337533.1_0-1224_1">XP_004337581.1</a>
+        </td>
+    <td><i>Acanthamoeba castellanii str. Neff</i></td>
+    <td class="small">rieske [2fe2s] domain containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-47.html">47</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="176.7">177</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=XM_016804977.1_136-1282_1">XP_016660466.1</a>
+        </td>
+    <td><i>Acyrthosiphon pisum</i></td>
+    <td class="small">cholesterol 7-desaturase isoform X3</td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to DAF36</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/3_321_Nvd-21.html">21</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="248.0">248</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

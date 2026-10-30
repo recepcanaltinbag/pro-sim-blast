@@ -1,0 +1,1641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BedC1 · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 2_212_BedC1</nav>
+
+<h1>BedC1 <span class="note">· type 2_212_BedC1 · RO group 2</span></h1>
+<div class="numbered">
+
+
+
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>Most members of this type are closer to a different reference enzyme.</b>
+  Membership is decided by profile score, while "nearest reference" is measured by sequence
+  identity, and the two are different questions. Here they disagree: of
+  31 members, only 0
+  (0 %) are in fact most similar to this type's own
+  reference, and the average identity to the nearest reference is
+  36.7 %.
+  
+  At that identity no profile can separate the neighbouring types reliably, so read this as a
+  region of sequence space rather than as a set of proteins like the reference.
+  
+  <br><span class="note">Measured for every type on the
+  <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</span>
+</div>
+
+
+
+
+
+<div class="caveat">
+  <b>benzene</b>
+  <span class="chip chip--xenobiotic">xenobiotic</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  This substrate was determined experimentally for the curated reference enzyme of this type.
+  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
+  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
+  against only a few.
+  Of the 31 members assigned here,
+  <b>6.5%</b> are at least 60 % identical to that reference, so the label is
+  informative for them; the rest are more distant relatives whose function is unknown.
+  
+  <br><span class="note">BTEX compound</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt Q07944 (BEDC1_PSEPU, reviewed), Pseudomonas putida (Arthro; stored sequence verified byte-identical to that entry (450 aa) on 2026-10-28. Identified by gene name, not from a recorded citation -- the enzyme&#x27;s primary paper is still unlinked ·
+      from a published paper
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="c1ccccc1" aria-label="benzene"></svg>
+      
+      <div class="rxn__label">benzene</div>
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">cis-dihydroxylation</div>
+    </div>
+    <div class="rxn__scheme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-cis-dihydroxylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="34.0,27.0 17.5,36.5 17.5,55.5 34.0,65.0 50.5,55.5 50.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="34" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="62" y1="46" x2="120" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-cis-dihydroxylation)"/><text x="91.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="150.0,27.0 133.5,36.5 133.5,55.5 150.0,65.0 166.5,55.5 166.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="151.8" y1="30.1" x2="135.4" y2="39.6" stroke="currentColor" stroke-width="1.1"/><line x1="135.4" y1="52.4" x2="151.8" y2="61.9" stroke="currentColor" stroke-width="1.1"/><text x="175.5" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text><text x="175.5" y="34.8" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">Both oxygen atoms are added to the same face of the ring, giving a cis-diol. The ring is no longer aromatic.</div>
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+    <div class="rxn__side">
+      <div class="rxn__product">cis-benzene dihydrodiol</div>
+      <div class="rxn__label">product</div>
+    </div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> into the product.
+    
+    
+    <br><span class="small">naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. The substrate is drawn from its SMILES string; products are given by name because
+  drawing them would require assuming which ring positions are attacked in every member.
+  Whether a given member catalyses this reaction depends on its evidence level.
+  </figcaption>
+</figure>
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>31 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>13 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>31 replicons, 13 genera</dd>
+      <dt>On plasmids</dt><dd>6.5% (2)</dd>
+      <dt>Transposase within 10 kb</dt><dd>32.3%</dd>
+      <dt>Profile match</dt><dd>mean score 245 bits, mean coverage 0.66</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 286</span></dt>
+      <dd><b>Glu branch.</b> Glutamate in 16 of
+          31 members (51.6%), aspartate in
+          15. Glutamate here marks the quaternary-amine enzymes.
+          </dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">column 431</span></dt>
+      <dd>Asp in 24 of
+          31 members (77.4%);
+          6 have no carboxylate within two columns, which is alignment shift in that
+          loop rather than a missing site. This site is aspartate across the whole family.</dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 31</dd>
+      <dt>Phyla</dt><dd class="small">Actinomycetota 16, Pseudomonadota 14, Bacillota 1</dd>
+      <dt>Top genera</dt><dd><span class="chip">Streptomyces 14</span> <span class="chip">Cycloclasticus 4</span> <span class="chip">Novosphingobium 2</span> <span class="chip">Mycobacterium 2</span> <span class="chip">Sphingobium 1</span> <span class="chip">Salipiger 1</span> <span class="chip">Rugositalea 1</span> <span class="chip">Puniceibacterium 1</span> <span class="chip">Luminiphilus 1</span> <span class="chip">Kyrpidia 1</span> <span class="chip">Glaciecola 1</span> <span class="chip">Croceicoccus 1</span> </dd>
+    </dl>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/2_212_BedC1.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/2_212_BedC1.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#7fb069;width:6.45%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:19.35%" title="family_member: 6"></i><i style="background:#f78154;width:74.19%" title="distant: 23"></i></span>
+    <table class="data compact">
+      <tbody>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+          <td class="small">close homolog (≥60 %)</td>
+          <td class="num">2</td><td class="num">6.5%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">6</td><td class="num">19.4%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">23</td><td class="num">74.2%</td></tr>
+      
+      </tbody>
+    </table>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Highest identity between a representative of this type and of another. Above
+      roughly 40 % the two are not reliably separable by sequence.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_209_TDO.html">2_209_TDO</a></td><td class="num">92.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">5_505_qxyA</a></td><td class="num">91.4 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">5_504_CntA</a></td><td class="num">89.7 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">2_208_TecA1</a></td><td class="num">84.0 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">2_213_BphA1A2</a></td><td class="num">76.5 %</td></tr>
+      
+    </tbody></table>
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">25.8%</td><td class="num">25.8%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">45.2%</td><td class="num">45.2%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">3.2%</td><td class="num">6.5%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    
+    <h3>Electron-transport configurations</h3>
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">13</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:none</td><td class="num">9</td></tr><tr><td class="mono small">α3β3 · Fd:none · Red:none</td><td class="num">4</td></tr><tr><td class="mono small">α3β3 · Fd:rieske · Red:none</td><td class="num">2</td></tr><tr><td class="mono small">α3β3 · Fd:plant+rieske · Red:none</td><td class="num">1</td></tr><tr><td class="mono small">α3β3 · Fd:plant+rieske · Red:GR</td><td class="num">1</td></tr><tr><td class="mono small">α3 · Fd:plant · Red:GR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
+    are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
+    describe this enzyme.</p>
+    <table class="data compact"><tbody>
+      
+      <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 549 34" height="34" width="549" class="oplayout"><polygon points="5,7 42,7 51,14.0 42,21 5,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="103,4 140,4 149,14.0 140,24 103,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#2980b9" stroke="#5a5a5a" stroke-width="0.7"><title>beta</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">β</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text><polygon points="299,7 336,7 345,14.0 336,21 299,21" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text><polygon points="348,7 385,7 394,14.0 385,21 348,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="397,7 434,7 443,14.0 434,21 397,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="415.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="446,7 483,7 492,14.0 483,21 446,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="464.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="495,7 532,7 541,14.0 532,21 495,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="513.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">ferredoxin &gt; other &gt; [alpha] &gt; beta &gt; ferredoxin &gt; dehydrogenase &gt; dehydrogenase &gt; other &gt; hydrolase &gt; other &gt; other</div></td><td class="num">2</td></tr>
+      
+    </tbody></table>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (23 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text></svg><div class="note mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</div></td><td class="num">9</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>ro_beta</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">ro_</text></svg><div class="note mono">[alpha] &gt; ro_beta</div></td><td class="num">3</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206 34" height="34" width="206" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#2c3e50" stroke="#5a5a5a" stroke-width="0.7"><title>transposon</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">IS</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text></svg><div class="note mono">[alpha] &gt; ferredoxin &gt; transposon &gt; reductase</div></td><td class="num">3</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 402 34" height="34" width="402" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#2980b9" stroke="#5a5a5a" stroke-width="0.7"><title>beta</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">β</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="152,7 189,7 198,14.0 189,21 152,21" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="170.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="201,7 238,7 247,14.0 238,21 201,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="219.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><polygon points="250,7 287,7 296,14.0 287,21 250,21" fill="#f39c12" stroke="#5a5a5a" stroke-width="0.7"><title>reductase</title></polygon><text x="268.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Red</text><polygon points="299,7 336,7 345,14.0 336,21 299,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="317.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="348,7 385,7 394,14.0 385,21 348,21" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="366.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text></svg><div class="note mono">[alpha] &gt; beta &gt; hydrolase &gt; ferredoxin &gt; hypothetical &gt; reductase &gt; other &gt; other</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 157 34" height="34" width="157" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#2980b9" stroke="#5a5a5a" stroke-width="0.7"><title>beta</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">β</text><polygon points="103,7 140,7 149,14.0 140,21 103,21" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="121.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text></svg><div class="note mono">[alpha] &gt; beta &gt; hydrolase</div></td><td class="num">2</td></tr>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#2980b9" stroke="#5a5a5a" stroke-width="0.7"><title>beta</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">β</text></svg><div class="note mono">[alpha] &gt; beta</div></td><td class="num">2</td></tr>
+        
+      </tbody></table>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 608 72" height="72" width="608" class="oplayout"><rect x="6" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="33.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">361 bp</text><polygon points="63,20 100,20 109,32.0 100,44 63,44" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="81.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="112,20 149,20 158,32.0 149,44 112,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="130.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="161,18 198,18 207,32.0 198,46 161,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="179.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="210,20 247,20 256,32.0 247,44 210,44" fill="#2980b9" stroke="#5a5a5a" stroke-width="0.7"><title>beta</title></polygon><text x="228.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">β</text><polygon points="259,20 296,20 305,32.0 296,44 259,44" fill="#27ae60" stroke="#5a5a5a" stroke-width="0.7"><title>ferredoxin</title></polygon><text x="277.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">Fd</text><polygon points="308,20 345,20 354,32.0 345,44 308,44" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="326.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text><polygon points="357,20 394,20 403,32.0 394,44 357,44" fill="#95a5a6" stroke="#5a5a5a" stroke-width="0.7"><title>dehydrogenase</title></polygon><text x="375.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">dh</text><polygon points="406,20 443,20 452,32.0 443,44 406,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="424.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="455,20 492,20 501,32.0 492,44 455,44" fill="#9aa5a8" stroke="#5a5a5a" stroke-width="0.7"><title>hydrolase</title></polygon><text x="473.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">hyd</text><polygon points="504,20 541,20 550,32.0 541,44 504,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="522.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><polygon points="553,20 590,20 599,32.0 590,44 553,44" fill="#b2bec3" stroke="#5a5a5a" stroke-width="0.7"><title>other</title></polygon><text x="571.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">·</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text></svg>
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference
+&mdash; 25 %
+(2 of 8).</b>
+
+Members are assigned by profile score, and most of them are distant: counting all of them would
+describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+family-member level are counted here.
+
+
+<b>This is a plurality, not a typical case:</b> the other
+75 % are spread over
+4 further arrangements, so the figure shows the commonest order rather
+than the order of this type.
+
+
+Preceded by the architecture seen in most of its members
+(divergent other) and the median length of the intergenic region in which
+the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+one regulatory site can control both.</figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">22</td><td class="num">71.0%</td></tr>
+      
+      <tr><td>non-regulator, co-directional
+          </td>
+        <td class="num">6</td><td class="num">19.4%</td></tr>
+      
+      <tr><td><b>regulator, divergent</b> (shared promoter region)
+          </td>
+        <td class="num">2</td><td class="num">6.5%</td></tr>
+      
+      <tr><td>no upstream gene in the window</td>
+        <td class="num">1</td><td class="num">3.2%</td></tr>
+      
+      </tbody>
+    </table>
+  </div>
+  <div>
+    
+    <h3>Regulator families in the divergent position</h3>
+    <table class="data compact"><tbody>
+      <tr><td>TetR</td><td class="num">1</td></tr><tr><td>GntR</td><td class="num">1</td></tr>
+    </tbody></table>
+    
+    
+    <h3>Any regulator within four genes</h3>
+    <table class="data compact"><tbody>
+      <tr><td>regulator_unclassified</td><td class="num">2</td></tr><tr><td>TetR</td><td class="num">2</td></tr><tr><td>GntR</td><td class="num">2</td></tr>
+    </tbody></table>
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>other</td><td class="num">87.1%</td><td class="num">67</td></tr><tr><td>reductase</td><td class="num">74.2%</td><td class="num">29</td></tr><tr><td>hypothetical</td><td class="num">64.5%</td><td class="num">30</td></tr><tr><td>transporter</td><td class="num">58.1%</td><td class="num">36</td></tr><tr><td>ferredoxin</td><td class="num">54.8%</td><td class="num">19</td></tr><tr><td>ro_beta</td><td class="num">45.2%</td><td class="num">14</td></tr><tr><td>dehydrogenase</td><td class="num">45.2%</td><td class="num">18</td></tr><tr><td>hydrolase</td><td class="num">41.9%</td><td class="num">16</td></tr><tr><td>transposon</td><td class="num">19.4%</td><td class="num">7</td></tr><tr><td>regulator</td><td class="num">12.9%</td><td class="num">6</td></tr><tr><td>ring_cleavage</td><td class="num">3.2%</td><td class="num">2</td></tr></tbody>
+</table></div>
+
+
+<h2>Positions that separate the variants</h2>
+<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
+overall similarity: among the characterised references, pairs acting on different compounds reach
+99 % identity. The table below therefore asks a sharper question than "how similar are these
+proteins". For each alignment column it compares variation <em>within</em> each variant against
+variation <em>between</em> variants, and keeps the columns where variants are internally consistent
+but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<div class="tablewrap"><table class="data compact sdp">
+<thead>
+<tr><th>Variant</th><th class="num">Members</th>
+  <th class="num" title="score 1.0 · catalytic domain">297</th><th class="num" title="score 1.0 · catalytic domain">292</th><th class="num" title="score 1.0 · catalytic domain · metal ligand">286<sup>L</sup></th><th class="num" title="score 1.0 · catalytic domain">285</th><th class="num" title="score 1.0 · catalytic domain">283</th><th class="num" title="score 1.0 · catalytic domain">281</th><th class="num" title="score 1.0 · catalytic domain">274</th><th class="num" title="score 1.0 · catalytic domain">267</th><th class="num" title="score 1.0 · catalytic domain">261</th><th class="num" title="score 1.0 · catalytic domain">252</th><th class="num" title="score 1.0 · catalytic domain">251</th><th class="num" title="score 1.0 · catalytic domain">249</th>
+  <th class="num">Differs</th></tr>
+<tr><th class="note">type majority</th><th></th>
+  <th class="num note">M</th><th class="num note">A</th><th class="num note">E</th><th class="num note">I</th><th class="num note">A</th><th class="num note">Q</th><th class="num note">P</th><th class="num note">H</th><th class="num note">L</th><th class="num note">W</th><th class="num note">I</th><th class="num note">Y</th><th></th></tr>
+</thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+  <td class="num">12</td>
+  
+  
+  <td class="num ">M</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">Q</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num ">L</td>
+  
+  
+  <td class="num ">W</td>
+  
+  
+  <td class="num ">I</td>
+  
+  
+  <td class="num ">Y</td>
+  
+  <td class="num">0</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+  <td class="num">5</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  <td class="num">12</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-2.html">2</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  <td class="num">12</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-3.html">3</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  <td class="num">11</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-4.html">4</a></td>
+  <td class="num">2</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  <td class="num">11</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-5.html">5</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-6.html">6</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num ">H</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">F</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  <td class="num">8</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-7.html">7</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">K</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">Q</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-8.html">8</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  <td class="num">11</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-9.html">9</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  
+  <td class="num ">A</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-10.html">10</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">I</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num ">E</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num ">P</td>
+  
+  
+  <td class="num diff">-</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">E</td>
+  
+  
+  <td class="num diff">L</td>
+  
+  
+  <td class="num diff">V</td>
+  
+  <td class="num">10</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-11.html">11</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">S</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num ">Y</td>
+  
+  <td class="num">11</td></tr>
+
+<tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-12.html">12</a></td>
+  <td class="num">1</td>
+  
+  
+  <td class="num diff">A</td>
+  
+  
+  <td class="num diff">Y</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">G</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">T</td>
+  
+  
+  <td class="num diff">R</td>
+  
+  
+  <td class="num diff">P</td>
+  
+  
+  <td class="num diff">N</td>
+  
+  
+  <td class="num diff">D</td>
+  
+  
+  <td class="num diff">M</td>
+  
+  
+  <td class="num diff">W</td>
+  
+  <td class="num">12</td></tr>
+
+</tbody></table></div>
+<p class="note">Columns are positions in the profile, not residue numbers in any one protein.
+A column qualifies only if it is filled in at least 90 % of members, takes at most four different
+residues across variants, is dominated by its two commonest residues, and is conserved inside each
+variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
+a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
+can still vary here without the centre being incomplete. These are statistically discriminating
+positions, not structurally verified binding residues, because no structure is used anywhere in this
+database. <a href="/pro-sim-blast/download/analysis/variant_signatures.csv">Download signatures</a></p>
+
+
+
+<h2>Phylogeny within this type</h2>
+<p class="note">Variant representatives of this type with its curated reference, aligned on the
+catalytic core. A reference on a long branch means the type's members are only distant relatives of
+the characterised enzyme.</p>
+<div class="treewrap"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 162" width="100%" class="tree" style="height:auto"><path d="M20.0,48.8 V15.0 H166.8" fill="none" stroke="#777" stroke-width="1"/><circle cx="166.8" cy="15.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#12 | 1 members | median identity 1.00 | representative Kyrpidia tusciae DSM 2912</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-12.html"><text x="173.8" y="18.5" font-size="9" fill="currentColor">BedC1#12 · Kyrpidia tusciae DSM 2912 (n=1)<title>variant 2_212_BedC1#12 | 1 members | median identity 1.00 | representative Kyrpidia tusciae DSM 2912</title></text></a><path d="M20.0,48.8 V36.0 H37.8" fill="none" stroke="#777" stroke-width="1"/><path d="M37.8,36.0 V27.0 H143.1" fill="none" stroke="#777" stroke-width="1"/><rect x="139.1" y="23.0" width="8" height="8" fill="#8e44ad" stroke="#111" stroke-width="1"><title>curated reference enzyme for 2_212_BedC1</title></rect><a href="/pro-sim-blast/cluster/2_212_BedC1.html"><text x="150.1" y="30.5" font-size="9" fill="currentColor" font-weight="700">★ 2_212_BedC1 reference (benzene)<title>curated reference enzyme for 2_212_BedC1</title></text></a><path d="M37.8,36.0 V45.0 H73.3" fill="none" stroke="#777" stroke-width="1"/><path d="M73.3,45.0 V39.0 H170.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="170.9" cy="39.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#1 | 5 members | median identity 1.00 | representative Cycloclasticus sp. P1</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html"><text x="177.9" y="42.5" font-size="9" fill="currentColor">BedC1#1 · Cycloclasticus sp. P1 (n=5)<title>variant 2_212_BedC1#1 | 5 members | median identity 1.00 | representative Cycloclasticus sp. P1</title></text></a><path d="M73.3,45.0 V51.0 H207.9" fill="none" stroke="#777" stroke-width="1"/><circle cx="207.9" cy="51.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#11 | 1 members | median identity 1.00 | representative Streptomyces bingchenggensis BCW-1</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-11.html"><text x="214.9" y="54.5" font-size="9" fill="currentColor">BedC1#11 · Streptomyces bingchenggensis BCW-1 (n=1)<title>variant 2_212_BedC1#11 | 1 members | median identity 1.00 | representative Streptomyces bingchenggensis BCW-1</title></text></a><path d="M20.0,48.8 V82.5 H50.5" fill="none" stroke="#777" stroke-width="1"/><path d="M50.5,82.5 V63.0 H180.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="180.0" cy="63.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#9 | 1 members | median identity 1.00 | representative Rugositalea oryzae</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-9.html"><text x="187.0" y="66.5" font-size="9" fill="currentColor">BedC1#9 · Rugositalea oryzae (n=1)<title>variant 2_212_BedC1#9 | 1 members | median identity 1.00 | representative Rugositalea oryzae</title></text></a><path d="M50.5,82.5 V102.0 H151.7" fill="none" stroke="#777" stroke-width="1"/><path d="M151.7,102.0 V84.0 H220.4" fill="none" stroke="#777" stroke-width="1"/><path d="M220.4,84.0 V75.0 H508.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="508.1" cy="75.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#10 | 1 members | median identity 1.00 | representative Sphingobium indicum BiD32</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-10.html"><text x="515.1" y="78.5" font-size="9" fill="currentColor">BedC1#10 · Sphingobium indicum BiD32 (n=1)<title>variant 2_212_BedC1#10 | 1 members | median identity 1.00 | representative Sphingobium indicum BiD32</title></text></a><path d="M220.4,84.0 V93.0 H318.6" fill="none" stroke="#777" stroke-width="1"/><path d="M318.6,93.0 V87.0 H431.5" fill="none" stroke="#777" stroke-width="1"/><circle cx="431.5" cy="87.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#0 | 12 members | median identity 0.90 | representative Streptomyces scabiei</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html"><text x="438.5" y="90.5" font-size="9" fill="currentColor">BedC1#0 · Streptomyces scabiei (n=12)<title>variant 2_212_BedC1#0 | 12 members | median identity 0.90 | representative Streptomyces scabiei</title></text></a><path d="M318.6,93.0 V99.0 H429.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="429.1" cy="99.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#6 | 1 members | median identity 1.00 | representative Glaciecola pallidula DSM 14239 = ACAM 615</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-6.html"><text x="436.1" y="102.5" font-size="9" fill="currentColor">BedC1#6 · Glaciecola pallidula DSM 14239 = ACAM 615 (n=1)<title>variant 2_212_BedC1#6 | 1 members | median identity 1.00 | representative Glaciecola pallidula DSM 14239 = ACAM 615</title></text></a><path d="M151.7,102.0 V120.0 H205.2" fill="none" stroke="#777" stroke-width="1"/><path d="M205.2,120.0 V111.0 H379.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="379.1" cy="111.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#7 | 1 members | median identity 1.00 | representative Luminiphilus syltensis NOR5-1B</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-7.html"><text x="386.1" y="114.5" font-size="9" fill="currentColor">BedC1#7 · Luminiphilus syltensis NOR5-1B (n=1)<title>variant 2_212_BedC1#7 | 1 members | median identity 1.00 | representative Luminiphilus syltensis NOR5-1B</title></text></a><path d="M205.2,120.0 V129.0 H255.9" fill="none" stroke="#777" stroke-width="1"/><path d="M255.9,129.0 V123.0 H515.1" fill="none" stroke="#777" stroke-width="1"/><circle cx="515.1" cy="123.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#5 | 1 members | median identity 1.00 | representative Streptomyces silvensis</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-5.html"><text x="522.1" y="126.5" font-size="9" fill="currentColor">BedC1#5 · Streptomyces silvensis (n=1)<title>variant 2_212_BedC1#5 | 1 members | median identity 1.00 | representative Streptomyces silvensis</title></text></a><path d="M255.9,129.0 V135.0 H520.0" fill="none" stroke="#777" stroke-width="1"/><circle cx="520.0" cy="135.0" r="2.8" fill="#8e44ad"><title>variant 2_212_BedC1#8 | 1 members | median identity 1.00 | representative Candidatus Viadribacter manganicus</title></circle><a href="/pro-sim-blast/leaf/2_212_BedC1-8.html"><text x="527.0" y="138.5" font-size="9" fill="currentColor">BedC1#8 · Candidatus Viadribacter manganicus (n=1)<title>variant 2_212_BedC1#8 | 1 members | median identity 1.00 | representative Candidatus Viadribacter manganicus</title></text></a><line x1="20" y1="154" x2="108.6" y2="154" stroke="currentColor" stroke-width="2"/><text x="113.6" y="157" font-size="9" fill="currentColor">0.5 subst./site</text></svg></div>
+
+
+
+<h2>Where its carriers were isolated from</h2>
+
+<p class="note">Habitat of the genome record, normalised from its free-text isolation source.
+Recorded for 7 of this type's 31 entries
+(22.6%); the rest state no source.
+Species counts are given beside entry counts because a habitat that attracts heavy sequencing
+accumulates entries without accumulating ecology.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
+<tbody>
+
+<tr><td>soil</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="3">3</td></tr>
+
+<tr><td>water, compartment unstated</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+<tr><td>marine sediment</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+<tr><td>marine</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+<tr><td>animal host</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td></tr>
+
+</tbody></table></div>
+<p class="note"><a href="/pro-sim-blast/atlas/ecology.html">How the habitat vocabulary is built, and what it
+cannot classify</a> ·
+<a href="/pro-sim-blast/atlas/geography.html#type=2_212_BedC1">where this type has been collected, on a
+map</a></p>
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">2_212_BedC1#0</a></td>
+    <td class="num" data-v="12">12</td>
+    <td class="num" data-v="0.9038">0.90</td>
+    <td class="small">Streptomyces:12</td>
+    <td class="small">NAD(P)-dependent alcohol dehydrogenase | transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">2_212_BedC1#1</a></td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Cycloclasticus:4, Croceicoccus:1</td>
+    <td class="small">alpha/beta fold hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-2.html">2_212_BedC1#2</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9066">0.91</td>
+    <td class="small">Mycobacterium:2</td>
+    <td class="small">alpha/beta fold hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-3.html">2_212_BedC1#3</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="0.9976">1.00</td>
+    <td class="small">Puniceibacterium:1, Salipiger:1</td>
+    <td class="small">aldehyde dehydrogenase | 3-(cis-5,6-dihydroxycyclohexa-1, 3-dien-1-yl)propanoate dehydrogenase | IS6 family transposase | dihydrolipoyl dehydrogenase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-4.html">2_212_BedC1#4</a></td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Novosphingobium:2</td>
+    <td class="small">alpha/beta fold hydrolase</td>
+    <td class="num" data-v="100.0">100</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-5.html">2_212_BedC1#5</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">glycoside hydrolase family 3 protein | family 16 glycoside hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-6.html">2_212_BedC1#6</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Glaciecola:1</td>
+    <td class="small">acyl-CoA dehydrogenase family protein | TetR/AcrR family transcriptional regulator | IS3 family transposase | IS256 family transposase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-7.html">2_212_BedC1#7</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Luminiphilus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-8.html">2_212_BedC1#8</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Candidatus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-9.html">2_212_BedC1#9</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Rugositalea:1</td>
+    <td class="small">GntR family transcriptional regulator | amidase family protein</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-10.html">2_212_BedC1#10</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Sphingobium:1</td>
+    <td class="small">TetR/AcrR family transcriptional regulator | trifunctional transcriptional regulator/proline dehydrogenase/L-glutamate gamma-semialdehyde dehydrogenase | Lrp/AsnC family transcriptional regulator</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-11.html">2_212_BedC1#11</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Streptomyces:1</td>
+    <td class="small">carboxylesterase/lipase family protein | MBL fold metallo-hydrolase</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_212_BedC1-12.html">2_212_BedC1#12</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1.0">1.00</td>
+    <td class="small">Kyrpidia:1</td>
+    <td class="small">IS110 family RNA-guided transposase | GntR family transcriptional regulator | DODA-type extradiol aromatic ring-opening family dioxygenase | extradiol ring-cleavage dioxygenase LigAB LigA subunit</td>
+    <td class="num" data-v="0">0</td>
+    <td><span class="chip chip--ok">homogeneous</span>
+      </td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">31</span></h2>
+
+
+
+
+<div class="caveat">
+  
+  <b>2 of 31 members are close enough for the substrate
+  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
+  29 are more distant relatives whose reaction has not been measured and cannot be
+  inferred from membership alone. The table is ordered with the closest first, so the informative
+  members are on this page and the distant ones follow.
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_QLMG01000012.1_18311-19667_-1">WP_009505788.1</a>
+        </td>
+    <td><i>Salipiger aestuarii</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">60 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="763.4">763</td>
+    <td class="small mono">ferredoxin &gt; other &gt; [alpha] &gt; beta &gt; ferredoxin &gt; dehydrogenase &gt; dehydrogenase &gt; other &gt; hydrolase &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LDPY01000005.1_74380-75736_-1">WP_047998183.1</a>
+        </td>
+    <td><i>Puniceibacterium sp. IMCC21224</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#7fb069">close homolog (≥60 %)</span>
+        <div class="note">60 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-3.html">3</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="762.0">762</td>
+    <td class="small mono">ferredoxin &gt; other &gt; [alpha] &gt; beta &gt; ferredoxin &gt; dehydrogenase &gt; dehydrogenase &gt; other &gt; hydrolase &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_016582.1_9059649-9060612_1">WP_086013769.1</a>
+        </td>
+    <td><i>Streptomyces bingchenggensis BCW-1</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">52 % to HcaE</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-11.html">11</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="249.8">250</td>
+    <td class="small mono">[alpha] &gt; other &gt; ro_beta &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_FQZJ01000002.1_374841-376149_-1">WP_073023790.1</a>
+        </td>
+    <td><i>Cycloclasticus pugetii</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to TDO</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="431.0">431</td>
+    <td class="small mono">[alpha] &gt; beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KE646805.1_252108-253416_1">WP_015005573.1</a>
+        </td>
+    <td><i>Cycloclasticus pugetii</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to TDO</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="431.2">431</td>
+    <td class="small mono">[alpha] &gt; beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_018697.1_794006-795314_-1">WP_015005573.1</a>
+        </td>
+    <td><i>Cycloclasticus sp. P1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to TDO</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="431.2">431</td>
+    <td class="small mono">[alpha] &gt; ro_beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_021917.1_1844963-1846271_1">WP_015005573.1</a>
+        </td>
+    <td><i>Cycloclasticus zancles 78-ME</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">42 % to TDO</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="431.2">431</td>
+    <td class="small mono">[alpha] &gt; ro_beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP019602.1_169466-170786_1">WP_066842185.1</a>
+        </td>
+    <td><i>Croceicoccus marinus</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f2c14e">family member (40–60 %)</span>
+        <div class="note">40 % to BpdC1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-1.html">1</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="404.2">404</td>
+    <td class="small mono">[alpha] &gt; ro_beta &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP007440.1_3279628-3280978_1">WP_068031241.1</a>
+        </td>
+    <td><i>Rugositalea oryzae</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">37 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-9.html">9</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="318.9">319</td>
+    <td class="small mono">[alpha] &gt; ro_beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LZKK01000379.1_32769-34101_-1">WP_068140560.1</a>
+        </td>
+    <td><i>Mycobacterium sp. E796</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="319.4">319</td>
+    <td class="small mono">[alpha] &gt; beta &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LIQS01000301.1_17831-19241_1">WP_055635715.1</a>
+        </td>
+    <td><i>Streptomyces griseoruber</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="102.2">102</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_BCMM01000001.1_30445-31855_1">WP_059077895.1</a>
+        </td>
+    <td><i>Streptomyces scabiei</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="106.4">106</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_OCNG01000001.1_686722-688132_-1">WP_046916816.1</a>
+        </td>
+    <td><i>Streptomyces sp. 1222.2</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="109.5">110</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KQ257868.1_53506-54916_1">WP_046916816.1</a>
+        </td>
+    <td><i>Streptomyces stelliscabiei</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="109.5">110</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LBNW01000291.1_146-1556_1">WP_046916816.1</a>
+        </td>
+    <td><i>Streptomyces stelliscabiei</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">35 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="109.5">110</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_014098.1_2344874-2346170_-1">WP_013076269.1</a>
+        </td>
+    <td><i>Kyrpidia tusciae DSM 2912</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to PhdA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-12.html">12</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="343.4">343</td>
+    <td class="small mono">hydrolase &gt; ring_cleavage &gt; ring_cleavage &gt; [alpha] &gt; ro_beta</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LZJI01000163.1_31112-32402_1">WP_156749683.1</a>
+        </td>
+    <td><i>Mycobacterium sp. E1747</i></td>
+    <td class="small">Rieske 2Fe-2S domain-containing protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-2.html">2</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="317.7">318</td>
+    <td class="small mono">[alpha] &gt; beta &gt; hydrolase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LT963352.1_411126-412533_-1">WP_231911089.1</a>
+        </td>
+    <td><i>Streptomyces chartreusis NRRL 3882</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="105.1">105</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_WWIQ01000021.1_182138-183545_1">WP_231911089.1</a>
+        </td>
+    <td><i>Streptomyces sp. SID5464</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="105.1">105</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KE386817.1_42810-44205_1">WP_006011579.1</a>
+        </td>
+    <td><i>Glaciecola pallidula DSM 14239 = ACAM 615</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to CntA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-6.html">6</a></td>
+    <td><span class="chip chip--divergent">divergent</span></td>
+    <td class="num" data-v="125.0">125</td>
+    <td class="small mono">dehydrogenase &gt; dehydrogenase &gt; [alpha] &gt; reductase &gt; ferredoxin</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP122458.1_9443802-9445212_1">WP_316730601.1</a>
+        </td>
+    <td><i>Streptomyces sp. 11x1</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="103.1">103</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; transposon &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CAVK010000195.1_16962-18276_1">WP_006963309.1</a>
+        </td>
+    <td><i>Sphingobium indicum BiD32</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to ArhA1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-10.html">10</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="105.6">106</td>
+    <td class="small mono">[alpha] &gt; other &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KQ949085.1_79362-80769_1">WP_234382529.1</a>
+        </td>
+    <td><i>Streptomyces dysideae</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">33 % to PhtAa</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="103.9">104</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; transposon &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NC_008308.1_231343-232705_1">WP_011608136.1</a>
+        <span class="chip chip--plasmid">plasmid</span></td>
+    <td><i>Novosphingobium sp. KA1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to TecA1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="275.7">276</td>
+    <td class="small mono">[alpha] &gt; beta &gt; hydrolase &gt; ferredoxin &gt; hypothetical &gt; reductase &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP021249.1_231343-232705_1">WP_011608136.1</a>
+        <span class="chip chip--plasmid">plasmid</span></td>
+    <td><i>Novosphingobium sp. KA1</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to TecA1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-4.html">4</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="275.7">276</td>
+    <td class="small mono">[alpha] &gt; beta &gt; hydrolase &gt; ferredoxin &gt; hypothetical &gt; reductase &gt; other &gt; other</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LGDG01000272.1_66003-67410_-1">WP_053755025.1</a>
+        </td>
+    <td><i>Streptomyces sp. MMG1533</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to BphA1A2</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.3">104</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_CP013244.1_2480477-2481665_-1">WP_228126606.1</a>
+        </td>
+    <td><i>Candidatus Viadribacter manganicus</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">32 % to BmoA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-8.html">8</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="106.1">106</td>
+    <td class="small mono">other &gt; transporter &gt; other &gt; [alpha] &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KQ949030.1_342798-344205_-1">WP_234360292.1</a>
+        </td>
+    <td><i>Streptomyces sp. DSM 15324</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">31 % to BpdC1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="104.4">104</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; transposon &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_KQ948737.1_231873-233280_-1">WP_063806440.1</a>
+        </td>
+    <td><i>Streptomyces griseorubiginosus</i></td>
+    <td class="small">SRPBCC family protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">31 % to BpdC1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="106.0">106</td>
+    <td class="small mono">[alpha] &gt; ferredoxin &gt; hypothetical &gt; reductase</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_DS999411.1_573505-574747_1">WP_009019376.1</a>
+        </td>
+    <td><i>Luminiphilus syltensis NOR5-1B</i></td>
+    <td class="small">aromatic ring-hydroxylating oxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">29 % to TdnA1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-7.html">7</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="130.3">130</td>
+    <td class="small mono">reductase &gt; [alpha]</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=NZ_LOCL01000032.1_96673-98044_1">WP_058847780.1</a>
+        </td>
+    <td><i>Streptomyces silvensis</i></td>
+    <td class="small">aromatic ring-hydroxylating dioxygenase subunit alpha</td>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">28 % to qxyA</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_212_BedC1-5.html">5</a></td>
+    <td><span class="chip chip--novel_candidate">novel_candidate</span></td>
+    <td class="num" data-v="114.4">114</td>
+    <td class="small mono">[alpha]</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-10-30 · pipeline revision
+  <code>350acd9f99</code> of 2026-10-30 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and this revision, because type assignments and
+  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>
