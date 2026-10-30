@@ -146,6 +146,15 @@ STRUCTURAL_ANCHOR = {
                       "baslar (ham 359 = PDB Asp362)",
 }
 
+# Kapi kosusu "3_309_NahAc sifir onaylanmis uye topluyor" diye UYARIR. Bu
+# yukaridaki capayi ZAYIFLATMAZ ve karistirilmamali: capa, NahAc referans
+# DIZISININ referans hizalamasindaki kendi pozisyonundan gelir, uye
+# toplamasindan degil. Sifir uyenin sebebi olculdu (2026-10-30): NahAc'in
+# dort kardesi %82-86 kimlikte (NinA 85,7 / DntAc 83,5 / 3NTDO 82,4 /
+# NBDO 82,0) ve atama BIT SKORUNA gore yapildigi icin uyeler onlara gidiyor.
+# 20 giriste NahAc yine de EN YAKIN REFERANS (ro_evidence), yani dizi orada
+# ve capalanabilir durumda.
+
 
 def anchor_carboxylate_column(sto_path, anchor=None):
     """Capa referansinin BILINEN demir ligandinin match kolonunu dondur.
