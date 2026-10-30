@@ -1879,8 +1879,13 @@ def download_table(analysis_dir):
     """Her indirilebilir dosya: ne oldugu, hangi scriptin urettigi, kac satir."""
     rows = []
     for name, kind, description, script in PROVENANCE:
+        # superseded = diskte duruyor ama YAYINLANMIYOR. Tabloda kalir
+        # (aciklamasi neyin gecersiz oldugunu soyluyor) ama BAGLANTI
+        # VERILMEZ: /download/analysis/... o dosyaya 404 doner ve kirik
+        # baglanti olusur.
         entry = {"name": name, "kind": kind, "description": description, "script": script,
-                 "size": None, "rows": None, "exists": kind == "route"}
+                 "size": None, "rows": None, "exists": kind == "route",
+                 "superseded": name in SUPERSEDED_FILES}
         if kind == "file":
             path = os.path.join(analysis_dir, name)
             if os.path.exists(path):

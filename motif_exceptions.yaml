@@ -25,7 +25,7 @@ exceptions:
       Rieske alani kalinti 146-171'de, mononukleer merkez 513-518'de; arada
       buyuk bir insersiyon var. hmmalign tam boy denendiginde modelin yalnizca
       %18,9'unu kapliyor ve kolon 231'de duruyor -- katalitik kolonlar
-      289/294/471'e hic varmiyor. Olculen 0/3 bu yuzden bir ARTEFAKTTIR,
+      289/294/431'e hic varmiyor. Olculen 0/3 bu yuzden bir ARTEFAKTTIR,
       yoklugun kaniti degildir.
     how_the_ligands_were_verified:
       - "PARCA HIZALAMASI: dizi parcalara bolunup her parca modele ayri
@@ -58,3 +58,111 @@ exceptions:
       hale gelirse (ornegin yerel/domain bazli hizalama ya da madde 64'teki
       geometrik capa) istisnaya gerek kalmaz. Bu, dogru cozumdur; istisna
       gecici bir kayittir.
+
+# ---------------------------------------------------------------------------
+# UYE DUZEYINDE TRIAD YOKLUKLARI -- 3/3 kapisi acildiginda ELENECEK girisler.
+#
+# NEDEN AYRI BIR BOLUM. Yukaridaki `exceptions` KURATORLU REFERANSLARI
+# kapsar ve validate_curation onlari referans listesine karsi kontrol eder.
+# Burasi ise onaylanmis UYELERI kapsar: tip-ici capali okumadan sonra da
+# triad'i tamamlanmayan 51 giris (ro_triad, 2026-10-30). Kapi 3/3'e
+# sikilastirildiginda bu girisler duser, ve DUSMEDEN ONCE neyin kaybedildigi
+# yazili olmali -- aksi halde bir sayinin degismesi aciklamasiz kalir.
+#
+# HICBIRI "RO DEGIL" DEMEK DEGIL. Hepsinde Rieske ligandlarinin 4/4'u tam ve
+# coguna kopru karboksilati da yerinde. Eksik olan tek sey mononukleer
+# merkezin uc liganddan biri.
+#
+# OKUMA SU UC YOLDAN YAPILDI, bu sirayla:
+#   1. sabit kolon +-2                      (ROmotif71: 289 / 294 / 431)
+#   2. tip-ici capali okuma                 (carboxylate_audit.py adim 6,
+#                                            triad_anchor_his.py)
+#   3. kuratorlu referansa capalama          (pozitifi olmayan tipler icin)
+# Asagidakiler UCUNDEN DE gecemeyenlerdir.
+
+member_level_triad_absences:
+  measured_on: 2026-10-30
+  source_table: ro_triad
+  source_files:
+    - analysis_out/triad_gate.json
+    - analysis_out/triad_anchor_his.json
+    - analysis_out/carboxylate_audit.json
+  confirmed_entries: 19114
+  triad_complete: 19063
+  total_incomplete: 51
+
+  categories:
+
+    - status: carboxylate_absent
+      n: 24
+      what_it_means: >
+        Karboksilat ne sabit kolonda ne de tipin kendi capali kolonunda var.
+        23'unde capa kolonu BOS (hizalamada gap), 1'inde (CAO) yerinde N var.
+        Iki His her birinde tam.
+      why_it_is_not_a_reading_artefact: >
+        Tipin AYNI kolonu, ayni tipin karboksilati bilinen uyelerinde
+        oylanarak bulundu ve yontem o pozitiflerde %99-100 geri okunuyor;
+        tutulan yari testinde kolon 10/10 tipte ayni cikti. Yani kolon
+        dogru, oradaki kalinti yok.
+      distribution: >
+        6_603_PTC52 5, 6_602_CAO 5, 3_322_DAF36 4, 3_321_Nvd 3,
+        1_106_TsaM 1, 1_107_CndA 1, 3_305_ArhA1 1, 3_319_PhdA 1,
+        5_501_CmoS 1, 5_506_Stc2 1, 5_507_BmoA 1
+      concentrated_in: >
+        20/24 Eukaryota, ve 17/24 bitki/hayvan plastid-tipi tiplerde
+        (PTC52, CAO, DAF36, Nvd, CmoS). Bu tiplerin hizalanabilirligi en
+        zayif olan tipler oldugu BAGIMSIZ olarak biliniyor (grup 6 zaten
+        hizalanabilirlige gore ayrildi).
+      what_would_change_this: >
+        Bu tiplerin kendi profil modelleri (tip-basina HMM) kurulup
+        karboksilat kolonu o modelde capalanirsa. Simdiki capa tipin
+        uyelerinden geliyor; tipin uyelerinin COGU ayni bolgede
+        hizalanamiyorsa capa da zayif kalir.
+
+    - status: his_absent
+      n: 20
+      what_it_means: >
+        Iki histidinden biri tipin kendi capa kolonunda YOK ve yerinde baska
+        bir kalinti OTURUYOR -- gap degil, ikame. Karboksilat bu girislerin
+        19'unda yerinde (18 D, 1 E).
+      the_substitutions:
+        - "1_106_TsaM  His-1 -> D (5), N (3), N + His-2 -> Y (2), R (1), Y (1)"
+        - "1_104_VanA  His-1 -> Y (2)"
+        - "1_113_CdnA  His-2 -> R (1)"
+        - "4_404_TdnA1 His-2 -> R (1)"
+        - "3_321_Nvd   His-2 -> Y (1)"
+        - "5_504_CntA  His-1 -> R (1)"
+        - "6_601_PAO   His-1 -> R (1)"
+        - "5_506_Stc2  His-1 -> gap (1)"
+      why_it_is_not_a_reading_artefact: >
+        Capa kolonlari tipin pozitiflerinin 120/120'sinde His tasiyor; ayni
+        kolonda bu girislerde D/N/Y/R var. Pencereyi genisletmek bir His
+        "buluyor" ama bulunan cift literaturun H-x(3-5)-H araligini
+        tutmuyor (ara 0 ya da 1), yani yanlis His'tir.
+      biological_reading: >
+        His -> Arg ve His -> Asp bir demir ligandinda rastgele bir ikame
+        degil; bu girisler aktif olmayan ya da metal bagi degismis
+        varyantlar olabilir. BU BIR HIPOTEZDIR, olculmus degil: ne
+        mutagenez ne metal icerigi verisi var. Burada kaydedilmesinin tek
+        sebebi 3/3 kapisi acildiginda neyin elendiginin bilinmesi.
+
+    - status: carboxylate_untested
+      n: 7
+      cluster: 7_701_AerC
+      what_it_means: >
+        "Yok" DEGIL, "okunamadi". AerC'nin kendi kuratorlu referansinda da
+        kolon 431'de karboksilat yok, hatta katalitik His kolonlarinda Q ve
+        D var -- cunku modelin 429-570 bolgesinin AerC'de HIC KARSILIGI YOK
+        (bkz yukaridaki 7_701_AerC istisnasi ve aerc_resolution.json).
+        Referansa capalama da bu yuzden kurulamadi.
+      why_they_must_not_be_dropped: >
+        Okunamayan bir kolonda "ligand yok" demek olcum degil kurgudur.
+        AerC'nin triad'i BASKA bir yolla dogrulandi (parca hizalamasi +
+        hmmsearch + ortolog + geometri + deneysel 3,00 Fe/monomer), ve
+        karboksilat Asp667 olarak tahmin edildi. Dolayisiyla 3/3 kurali
+        "triad 3/3, YA DA triad'in sabit kolonda okunamadigi BELGELENMIS
+        mimari" olarak yazilmalidir.
+      what_would_change_this: >
+        AerC icin tip-basina yerel hizalama (parca bazli) kurulup
+        karboksilat kolonu o hizalamada capalanirsa 7 girisin hepsi
+        okunabilir hale gelir.

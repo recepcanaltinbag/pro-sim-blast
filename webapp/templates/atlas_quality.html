@@ -278,7 +278,8 @@ with <code>bash run_all.sh</code>.</p>
       directory, but it is not in the allow-list of /download/analysis/{name};
       it is served by its own route. Sending it to the generic analysis URL
       produced the only broken link on the site.                            #}
-  <td>{% if d.kind == 'route' or d.name == 'tree_all.nwk' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
+  <td>{% if d.superseded %}{{ d.name }} <span class="note">(superseded, not published)</span>
+      {% elif d.kind == 'route' or d.name == 'tree_all.nwk' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
       {% else %}<a href="{{ u('/download/analysis/' ~ d.name) }}">{{ d.name }}</a>{% endif %}</td>
   <td class="num">{{ d.rows|fmt if d.rows is not none else '–' }}</td>
   <td class="mono small">{{ d.script }}</td>
