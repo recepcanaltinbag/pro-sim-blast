@@ -1738,6 +1738,66 @@ Rapor: RAPOR_karboksilat_kolonu_2026-10-30.md
 Atif eklendi: barry2013_mechanism (10.1021/cs400087p, Crossref ile dogrulandi;
 119/119 atif cozuluyor).
 
+## 91. Kapsama: DB, kendi ilk adiminin buldugu RO alpha'larin %21'ini tutuyor (2026-10-30)
+
+Kullanici sordu: "ilk adimda NCBI'daki tum proteinler yok gibi". DOGRU, ve
+olculdu. Huni:
+
+    189.657  PF00355 Rieske proteini -- UNIPROT anlik goruntusu (11 Ara 2024),
+             NCBI nr/RefSeq DEGIL
+    115.864  71 profil kutuphanesine herhangi bir domain isabeti olan
+             (geri kalan 73.793 hic isabet vermedi; ro_domtbl.out ile dogrulandi)
+     73.699  RO alpha (68.747 tekil dizi)   | 40.687 alpha degil | 1.478 parca
+     26.693  genomik baglami cikarilabilen aday (GenBank gbk gerekiyor)
+     19.114  onaylanmis giris (15.953 tekil dizi)
+
+Ortusme olcumu (birebir dizi karsilastirmasi):
+    14.449  DB dizisi protein-duzeyi sette de var
+    54.298  protein-duzeyi RO alpha dizisi DB'DE YOK  <-- kapsama acigi
+     1.504  DB'de olup UniProt anlik goruntusunde olmayan (genom taramasindan)
+
+Yani yayinlanan DB, kendi ilk adiminin RO alpha dedigi tekil dizilerin
+%21'ini (14.449/68.747) tutuyor. Sebep yontemsel: DB genom kayitlarindan
+kuruluyor, bir protein ancak annotasyonlu bir GenBank kaydina baglanabildiyse
+girebiliyor. Ayrica evren UniProt anlik goruntusu oldugu icin yalnizca NCBI'da
+olan proteinler hic aday olmadi.
+
+SORUN: about.html bunu SOYLEMIYOR. Akis semasi "Genome records 17.074
+annotated replicons from GenBank" ile basliyor; yukari akistaki UniProt
+PF00355 adimi, tarih (Ara 2024) ve 73.699 -> 19.114 kaybi yayinlanmis
+metinde yok. Bu bir kapsama iddiasi degil ama kapsama IZLENIMI veriyor.
+
+YAPILACAK:
+  (a) about.html'e gercek huniyi ve tarihi yaz (ucuz, zorunlu).
+  (b) Kapsama genisletmesi (pahali, kullanici karari): ya protein-duzeyi
+      54.298 diziyi genom baglami OLMADAN ikinci sinif kayit olarak al, ya da
+      NCBI nr/RefSeq uzerinden yeni bir tarama yap. Ikisi de DB'nin butun
+      istatistiklerini degistirir.
+
+## 92. Karboksilat kapida ZORUNLU DEGIL -- ama literature gore kritik (2026-10-30)
+
+Kullanici sordu: "Fe karboksilat kritik, dikkate aliyoruz di mi". Cevap:
+okunuyor ve raporlaniyor, ama kapi triad'in >=2/3'unu istedigi icin
+ZORUNLU DEGIL -- bir giris iki His ile, karboksilatsiz gecebiliyor.
+
+Literatur: NDO'da Asp362'nin alanine mutasyonu (D362A) enzimi TAMAMEN
+INAKTIF yapiyor (oksijen tuketimi ve 14C-naftalin urun olusumu, ikisi de
+sifir), ve yapida Asp362 demiri bidentat baglar. Yani kalinti katalitik
+olarak kritik; "2/3 yeterli" biyokimyasal bir tolerans DEGIL, olcum
+araciyla ilgili bir tolerans.
+
+Duzeltilmis kolon 431'de +-2 pencereyle 19.114 onaylanmis giris:
+    16.726  karboksilat VAR (%87,5)
+     1.947  pencere tamamen bosluk    -> hizalama siteye ULASMIYOR (artefakt)
+       220  merkez bosluk, komsular dolu
+       221  gercek kalinti var ama D/E degil (N 76, T 41, A 29, G 16, S 16...)
+             -> tek BIYOLOJIK iddia bu kucuk kume
+
+Yani 3/3 zorunlu olsa 2.388 giris duserdi, ama bunun ~2.167'si hizalama
+erisimi sorunu; gercek ikame ~221. Dogru sira: capali okumayi (metot
+dogrulandi, 490/490) kolon 431'de kos, kalan gercek yokluklari belgele,
+SONRA 3/3'u zorunlu yapmayi tart. Once rebuild gerekiyor.
+
 ## Yeniden uretim
 
 ```
