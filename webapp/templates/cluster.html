@@ -418,6 +418,28 @@
 
 {% if x.regulation %}
 <h2>Regulation and promoter region</h2>
+{% if x.ref_arch %}
+<figure class="fig">
+{{ x.ref_arch_svg|safe }}
+<figcaption><b>The characterised reference's own arrangement &mdash; what the paper describes,
+not a property of the type.</b>
+{% if x.ref_arch.architecture == 'divergent_regulator' %}
+A <b>{{ x.ref_arch.family or 'regulator' }}</b>-family regulator sits on the <b>opposite
+strand</b>{% if x.ref_arch.intergenic_bp %}, {{ x.ref_arch.intergenic_bp }} bp away{% endif %}. It
+cannot be in one transcript with the operon, which is why it does not appear in the gene order
+above; it lies between the operon and its promoter, so a single regulatory region can control
+both.
+{% elif x.ref_arch.architecture == 'codirectional_regulator' %}
+A <b>{{ x.ref_arch.family or 'regulator' }}</b>-family regulator lies upstream on the <b>same
+strand</b>{% if x.ref_arch.intergenic_bp %}, {{ x.ref_arch.intergenic_bp }} bp away{% endif %}.
+{% else %}
+The gene upstream of the operon is not a recognised regulator
+{% if x.ref_arch.product %}({{ x.ref_arch.product }}){% endif %}.
+{% endif %}
+This is one entry, so it carries no statistics; the figures below count members.
+<a href="{{ entry_href(x.ref_arch.cid) }}">See the entry</a>.</figcaption>
+</figure>
+{% endif %}
 {% if x.canonical_svg %}
 <figure class="fig">
 {{ x.canonical_svg|safe }}
@@ -445,8 +467,9 @@ regulator, cannot be in one transcript with it and so are not drawn here; they a
 pages and in the sections above.
 {% endif %}
 Preceded by the architecture seen in most of its members
-({{ x.canonical_arch.replace('_', ' ') }}) and the median length of the intergenic region in which
-the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
+({{ x.canonical_arch.replace('_', ' ') }}{% if x.canonical_reg_total %},
+{{ x.canonical_reg_n }} of {{ x.canonical_reg_total }} counted on the same basis as the gene order
+above{% endif %}) and the median length of the intergenic region in which the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
 one regulatory site can control both.</figcaption>
 </figure>
 {% endif %}

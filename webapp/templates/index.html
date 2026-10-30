@@ -225,46 +225,76 @@ metal, the other carries electrons to it. They are listed together below only be
 carboxylates read from an alignment column — and the audit of those columns came out differently
 for the two, which is the point of the table.</p>
 
-<div class="tablewrap"><table class="data compact">
-<thead><tr>
-  <th>Carboxylate</th>
-  <th class="num">Profile<span class="unit">column</span></th>
-  <th class="num">Asp<span class="unit">entries</span></th>
-  <th class="num">Glu<span class="unit">entries</span></th>
-  <th class="num">Asp : Glu</th>
-  <th class="num">Carboxylate in window<span class="unit">of {{ motif.n|fmt }}</span></th>
-  <th>In the reference set</th>
-</tr></thead>
-<tbody>
-{#  KATALITIK SATIRIN SAYILARI KALDIRILDI. Kolon {{ cat.column }} ligandi
-    OKUMUYOR: 27 kuratorlu referansin kristal yapisina karsi sinandi ve
-    cagirdigi kalinti 26/26'sinda demirden 10,9-14,7 A uzakta cikti. Test
+{#  TABLO TRANSPOZE EDILDI (2026-10-31). Onceki bicimde basliklar 7 kolon
+    vaat ediyordu ama katalitik satir bunlarin DORDUNU colspan ile duzyaziyla
+    doldurmak zorundaydi, cunku o dort olcum katalitik karboksilat icin YOK.
+    Sonuc: basligin satirlardan birini tanimlamadigi bir tablo, ve dar
+    ekranda sayisal kolonlarin duzyaziyla gerilmesi. Transpoze haliyle her
+    satir bir OZELLIK, her kolon bir karboksilat; iki satirin ortak
+    doldurabildigi hucre kalmadigi icin colspan'a gerek yok.
+
+    KATALITIK KOLONUN SAYILARI HALA YAYIMLANMIYOR. Kolon {{ cat.column }}
+    ligandi OKUMUYOR: 27 kuratorlu referansin kristal yapisina karsi sinandi
+    ve cagirdigi kalinti 26/26'sinda demirden 10,9-14,7 A uzakta cikti. Test
     geciyordu cunku o kolonda gercekten bir D/E var -- test "kolonda asidik
     kalinti var mi" diye soruyor, "metali koordine ediyor mu" diye SORMUYOR.
-    Sayilari burada yayimlamak, olculmeyen bir seyi olculmus gibi gostermek
-    olurdu.                                                                #}
+    Sayilari yayimlamak, olculmeyen bir seyi olculmus gibi gostermek olurdu.
+    Bu yuzden o dort hucre tek bir rowspan ile TEK bir ifade tasiyor.      #}
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th></th>
+  <th><b>Catalytic</b><span class="unit">first-shell ligand</span></th>
+  <th><b>Bridging</b><span class="unit">second-shell relay</span></th>
+</tr></thead>
+<tbody>
 <tr>
-  <td><b>Catalytic</b> — a first-shell <b>ligand</b>: it coordinates the mononuclear iron
-  directly, at 2.27 Å in naphthalene dioxygenase (Asp362)</td>
-  <td class="num">–</td>
-  <td class="num" colspan="4"><b>not readable from a fixed column.</b> Tested against the crystal
-  structures of 27 curated references: the residue column {{ cat.column }} calls is 10.9–14.7 Å
-  from the iron in <b>26 of 26</b> testable structures, so it is not the ligand. The column test
-  passed only because an acidic residue does sit there — it asks whether the column holds a D or
-  an E, not whether that residue coordinates the metal.</td>
-  <td class="small">the iron-coordinating carboxylate is <b>aspartate in 26 of 26</b> structures.
-  It lands on column 431 in 18 of them and on 432 in 2 more, with the remaining 6 spread over
-  407–411 and 449–451, so no single column holds them all.</td>
+  <th scope="row">What it does</th>
+  <td>Coordinates the mononuclear iron directly, at 2.27 Å in naphthalene dioxygenase
+  (<b>Asp362</b>)</td>
+  <td>Coordinates no metal. It sits 6.95 Å from the iron (<b>Asp205</b>) and hydrogen-bonds the
+  Rieske centre of one subunit to the iron ligand of the next</td>
 </tr>
 <tr>
-  <td><b>Bridging</b> — a second-shell <b>relay</b>: it coordinates no metal, sitting 6.95 Å from
-  the iron (Asp205), and hydrogen-bonds the Rieske centre of one subunit to the iron ligand of the
-  next</td>
+  <th scope="row">Profile column</th>
+  <td class="num">–</td>
   <td class="num">{{ brg.column }}</td>
+</tr>
+<tr>
+  <th scope="row">Readable from a fixed column?</th>
+  <td><b>No.</b> Tested against the crystal structures of 27 curated references: the residue
+  column {{ cat.column }} calls is 10.9–14.7 Å from the iron in <b>26 of 26</b> testable
+  structures, so it is not the ligand. The column test passed only because an acidic residue does
+  sit there — it asks whether the column holds a D or an E, not whether that residue coordinates
+  the metal.</td>
+  <td><b>Yes.</b> In the 9 structures that contain the neighbouring subunit, the residue this
+  column calls sits 5.9–7.2 Å from that neighbour's Rieske cluster — the geometry of a bridge and
+  nothing else.</td>
+</tr>
+<tr>
+  <th scope="row">Asp<span class="unit">entries</span></th>
+  <td class="small" rowspan="4">Not measurable from a column. The four counts opposite exist only
+  because the bridging column reads the residue it claims to read; for the catalytic carboxylate
+  there is no column that does, so there is nothing to count.</td>
   <td class="num" data-v="{{ brg.asp }}">{{ brg.asp|fmt }}</td>
+</tr>
+<tr>
+  <th scope="row">Glu<span class="unit">entries</span></th>
   <td class="num" data-v="{{ brg.glu }}">{{ brg.glu|fmt }}</td>
+</tr>
+<tr>
+  <th scope="row">Asp : Glu</th>
   <td class="num" data-v="{{ brg.asp_to_glu }}">{{ '%.1f' % brg.asp_to_glu }} : 1</td>
-  <td class="num" data-v="{{ brg.with_carboxylate }}">{{ brg.with_carboxylate|fmt }} <span class="note">({{ pct(brg.with_carboxylate, motif.n) }})</span></td>
+</tr>
+<tr>
+  <th scope="row">Carboxylate in window<span class="unit">of {{ motif.n|fmt }}</span></th>
+  <td class="num" data-v="{{ brg.with_carboxylate }}">{{ brg.with_carboxylate|fmt }}
+  <span class="note">({{ pct(brg.with_carboxylate, motif.n) }})</span></td>
+</tr>
+<tr>
+  <th scope="row">In the reference set</th>
+  <td class="small">The iron-coordinating carboxylate is <b>aspartate in 26 of 26</b> structures.
+  It lands on column 431 in 18 of them and on 432 in 2 more, with the remaining 6 spread over
+  407–411 and 449–451, so no single column holds them all.</td>
   <td class="small">{% set br = brg.references %}{% if br %}{{ br.asp }} Asp, {{ br.glu }} Glu{% if br.other %}, {{ br.other }} neither (Cys or Ser){% endif %} <span class="note">of {{ br.n }}</span>{% else %}–{% endif %}</td>
 </tr>
 </tbody></table></div>

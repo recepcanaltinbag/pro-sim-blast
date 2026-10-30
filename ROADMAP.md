@@ -2036,6 +2036,58 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 101. Kapi betikleri zincire girdi; duzenleyici ve 1.2 tablosu duzeltildi (2026-10-31)
+
+(a) TAZELIK IZLEYICISINDEKI BOSLUK KAPATILDI (madde 100b). `carboxylate_audit`,
+`triad_gate`, `protein_entries` artik ARTEFACTS adimi; sira
+`... learning -> carboxylate_audit -> triad_gate -> protein_entries ->
+phylogeny -> ... -> validation_gate`. Boylece yazdiklari tablolar onceki
+adimlarin `ignore` kumesine giriyor ve 45 adimin SAHTE bayatligi bitiyor.
+Tazelik kontrolu ZAYIFLATILMADI; ro_triad hala izleniyor.
+
+Sabit nokta icin yeni surucu `triad_converge.py`: gate -> say ->
+his_needs_anchoring 0 degilse anchor -> basa don. Gerekcesi dosyanin basinda.
+`SCRATCH` sabiti eklendi (varsayilan /media/lin-bio/back2): bu iki betik
+--work almazsa 19.125 dizinin hizalamasini /tmp'ye yaziyordu.
+
+NOT: `db_writes` ancak adim rebuild.py uzerinden bir kez KOSTUKTAN sonra
+olculup kaydediliyor, yani duzeltme ilk kosudan sonra etkili.
+
+(b) DUZENLEYICI BOLUMU IKI AYRI PAYDAYI KARISTIRIYORDU. Kume sayfasindaki
+sekil layout'u YAKIN uyelerden (characterized/close/family) aliyor, mimariyi
+ise regulation_by_cluster.csv'den yani TUM uyelerden aliyordu. qxyA'da
+olculdu: 164 uyede divergent_regulator 14, yakin 53 uyede YALNIZCA 1. Ustelik
+tum uyelerde en sik aile "regulator_unclassified" oldugu icin sekil TetR'i
+HIC YAZAMIYORDU. Artik mimari de yakin temelde sayiliyor ve kac/kac oldugu
+yaziliyor.
+
+Ayrica referansin KENDI mimarisi ayri bir sekil olarak eklendi. Gerekce: tip
+geneli sayi ile literaturun tarif ettigi yapi ayni sey degil. qxyA'da tip
+geneli korunmus bir duzenleyici BILDIRMIYOR (1/53), ama qxyAR operonu
+referansta gercek ve belgeli (PMID:27792326): ters iplikteki TetR, operonla
+promoter bolgesi arasinda 78 bp'de duruyor, yani tek bir duzenleyici bolge
+ikisini birlikte kontrol edebiliyor. Ters iplikteki gen ayni transkriptte
+olamadigi icin gen sirasi sekline GIRMEZ -- bu dogru davranis, ve sayfa artik
+nedenini yaziyor. Iki iddia ayri gosteriliyor.
+
+DUZELTME: bu oturumda once "operon siniflandiricisi bozuk" dedim, YANLISTI.
+`same_strand=0` olan TetR layout'tan dogru dislaniyor, MFS'ler de 718/1973
+bp ile 150 bp'lik operon penceresinin disinda. Sistem dogru calisiyordu;
+eksik olan sey sayfanin bunu SOYLEMEMESIYDI.
+
+(c) ANA SAYFA 1.2 TABLOSU TRANSPOZE EDILDI. Baslik 7 kolon vaat ediyordu ama
+katalitik satir bunlarin dordunu colspan ile duzyaziyla dolduruyordu, cunku o
+dort olcum katalitik karboksilat icin YOK (kolon 431 ligandi okumuyor: 26/26
+yapida demirden 10,9-14,7 A uzakta). Sonuc: basligin satirlardan birini
+tanimlamadigi bir tablo. Artik satirlar OZELLIK, kolonlar iki karboksilat;
+colspan kalmadi, dort olculemeyen hucre tek bir rowspan ile tek ifade
+tasiyor. Hicbir sayi ve hicbir cekince kaldirilmadi.
+
+(d) OLCULDU, SIKAYET DOGRULANMADI: "sitenin cogu guncel degil". Yayindaki
+qxyA sayfasi DB ile birebir ayni (characterized 1, family member 52, distant
+104, novel 7) ve TetR sayfada mevcut. Muhtemel sebep: 3.241 dosyalik dagitim
+yayilirken tarayici onbellegi.
+
 ## 100. Kapi zinciri kostu; tazelik izleyicisinde yapisal bosluk (2026-10-30)
 
 MADDE 98'DEKI SIRA KOSTU, KAPI YESIL: 113 kontrol, 109 PASS, 0 FAIL, 4 WARN.

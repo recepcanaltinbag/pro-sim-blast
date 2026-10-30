@@ -40,6 +40,10 @@ import time
 
 STATE = "analysis_out/.rebuild_state.json"
 OUT = "analysis_out"
+# Yer isteyen ara dosyalar sistem diskine DEGIL buraya yazilir (proje kurali).
+# Yoksa carboxylate_audit ve His capalamasi tempfile.mkdtemp ile /tmp'ye
+# gider; ikisi de 19.125 dizinin tip-ici hizalamalarini uretiyor.
+SCRATCH = os.environ.get("ROAR_SCRATCH", "/media/lin-bio/back2")
 
 # Cekirdek girdiler. Bunlardan biri degisirse asagidaki her sey bayatlar.
 DB = "roar.sqlite"
@@ -243,6 +247,37 @@ ARTEFACTS = [
     ("learning", [f"{OUT}/learning.json"],
      ["python3", "learn_from_data.py", "--db", DB, "--out-dir", OUT],
      ["learn_from_data.py", DB, CHEM, ECO], True),
+
+    # --- triad kapisi: uyelik kesinlestikten SONRA, ozetlerden ONCE ---------
+    # Bu uc adim eskiden ELLE kosturuluyordu ve zincirde yoktu. Sonucu:
+    # yazdiklari tablolar (ro_triad, ro_triad_meta, ro_protein) hicbir adimin
+    # `db_writes` kumesinde olmadigi icin hicbirinin `ignore`una girmiyor, ve
+    # `roar.sqlite`i girdi sayan HER adim onlari "degismis ust girdi"
+    # saniyordu. 2026-10-30'da olculdu: 51 artefaktin 45'i bu yuzden sahte
+    # BAYAT gorunuyordu, oysa 52 adim betiginden yalnizca validate_curation.py
+    # bu tablolari OKUYOR. Boylece `rebuild.py --check` yayin oncesi kapi
+    # olarak ise yaramaz hale geliyordu: 45 adim her zaman bayat diyorsa
+    # gercek bayatligi sahtesinden ayirt edemezsin, ve zincir 42/47'de
+    # validation_gate'te duruyordu.
+    #
+    # Sira onemli: kapi onaylanmis kumeyi okur, yani uyeligi belirleyen
+    # adimlardan (annotate ve sonrasi) SONRA gelmeli; validation_gate ise bu
+    # tablolari okudugu icin BUNLARDAN sonra gelmeli -- zaten oyle.
+    ("carboxylate_audit", [f"{OUT}/carboxylate_audit.json"],
+     ["python3", "carboxylate_audit.py", "--db", DB, "--out",
+      f"{OUT}/carboxylate_audit.json", "--work", f"{SCRATCH}/roar_carbox_work"],
+     ["carboxylate_audit.py", DB, MOTIF_HMM], True),
+    # Tek gecis yetmez: anchor ro_triad'i OKUR, gate onu YAZAR. Sabit noktaya
+    # kadar donen surucu triad_converge.py; gerekcesi o dosyanin basinda.
+    ("triad_gate", [f"{OUT}/triad_gate.json", f"{OUT}/triad_anchor_his.json"],
+     ["python3", "triad_converge.py", "--db", DB,
+      "--work", f"{SCRATCH}/roar_triad_anchor"],
+     ["triad_converge.py", "triad_gate.py", "triad_anchor_his.py", DB,
+      f"{OUT}/carboxylate_audit.json"], True),
+    ("protein_entries", [],
+     ["python3", "ingest_protein_entries.py", "--db", DB,
+      "--work", f"{SCRATCH}/roar_protein"],
+     ["ingest_protein_entries.py", DB, MOTIF_HMM], True),
 
     # --- ozet katmani: HER SEYDEN sonra
     ("phylogeny", [],

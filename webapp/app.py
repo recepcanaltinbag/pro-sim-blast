@@ -1825,17 +1825,73 @@ def cluster_extras(con, cluster):
         x["layout_n"] = top_layout["n"]
         x["layout_share"] = 100.0 * top_layout["n"] / total if total else 0
         x["layout_alpha_only"] = top_layout["layout"] == "[alpha]"
-    if top_layout and x["reg_row"]:
-        row = x["reg_row"]
-        dominant = max(("divergent_regulator", "codirectional_regulator", "divergent_other",
-                        "codirectional_other", "unknown"),
-                       key=lambda k: int(row.get(k) or 0))
+    # Tip geneli sekil, LAYOUT ile AYNI TEMELDE hesaplanir.
+    #
+    # NEDEN. Eskiden layout yakin uyelerden (characterized/close/family),
+    # mimari ise regulation_by_cluster.csv'den yani TUM uyelerden geliyordu ve
+    # sekil ikisini birlestiriyordu -- iki ayri paydadan bir resim. qxyA'da
+    # olculdu (2026-10-30): 164 uyede divergent_regulator 14, ama yakin 53
+    # uyede YALNIZCA 1. Ustelik tum uyelerde en sik aile
+    # "regulator_unclassified" oldugu icin sekil TetR'i hic YAZAMIYORDU,
+    # oysa yakin uyedeki tek duzenleyici tam olarak TetR (78 bp).
+    reg_basis = con.execute(
+        "SELECT g.architecture a, g.upstream_family f, g.intergenic_bp bp "
+        "FROM ro_regulation g JOIN ro r USING(candidate_id) "
+        "JOIN ro_evidence e USING(candidate_id) "
+        "WHERE r.is_confirmed=1 AND r.ro_cluster=? "
+        "AND e.tier IN ('characterized','close_homolog','family_member')",
+        (cluster,)).fetchall() if x["layout_basis"] == "close" else []
+    if not reg_basis:
+        reg_basis = con.execute(
+            "SELECT g.architecture a, g.upstream_family f, g.intergenic_bp bp "
+            "FROM ro_regulation g JOIN ro r USING(candidate_id) "
+            "WHERE r.is_confirmed=1 AND r.ro_cluster=?", (cluster,)).fetchall()
+    if top_layout and reg_basis:
+        arch_n = Counter(r["a"] for r in reg_basis if r["a"])
+        dominant = arch_n.most_common(1)[0][0] if arch_n else "unknown"
+        fam_n = Counter(r["f"] for r in reg_basis
+                        if r["a"] == dominant and r["f"]
+                        and r["f"] != "regulator_unclassified")
+        bps = sorted(r["bp"] for r in reg_basis
+                     if r["a"] == dominant and r["bp"] is not None)
         x["canonical_arch"] = dominant
+        x["canonical_reg_n"] = arch_n.get(dominant, 0)
+        x["canonical_reg_total"] = sum(arch_n.values())
         x["canonical_svg"] = atlas.operon_regulator_svg(top_layout["layout"], {
             "architecture": dominant,
-            "upstream_family": row.get("top_regulator_family") or "",
-            "intergenic_bp": int(row["median_intergenic_bp"]) if row.get("median_intergenic_bp") else None,
+            "upstream_family": fam_n.most_common(1)[0][0] if fam_n else "",
+            "intergenic_bp": bps[len(bps) // 2] if bps else None,
             "upstream_product": "typical upstream regulator of this type"})
+
+    # --- Referansin KENDI mimarisi, tip geneli istatistikten AYRI ----------
+    #
+    # NEDEN AYRI. Tip geneli sayi ile literaturun tarif ettigi yapi ayni sey
+    # DEGIL. qxyA'da yakin 53 uyenin yalnizca 1'inde divergent duzenleyici var
+    # -- karakterize girisin kendisi, TetR, 78 bp -- yani tip geneli hicbir
+    # korunmus duzenleyici BILDIRMIYOR. Buna karsin qxyAR operonu referansta
+    # gercek ve belgeli (PMID:27792326): ters iplikteki TetR, operonla
+    # promoter bolgesi arasinda duruyor, yani tek bir duzenleyici bolge ikisini
+    # birlikte kontrol edebiliyor. Bu iki IDDIA ayri, o yuzden ayri gosterilir;
+    # birini otekinin yerine koymak ya referansi silmek ya da tipe ait olmayan
+    # bir korunmusluk iddia etmek olurdu.
+    ref = con.execute("""
+        SELECT r.candidate_id cid, e.tier tier, g.architecture a,
+               g.upstream_family f, g.upstream_product prod, g.intergenic_bp bp,
+               o.layout layout
+        FROM ro r JOIN ro_evidence e USING(candidate_id)
+        LEFT JOIN ro_regulation g USING(candidate_id)
+        LEFT JOIN operon o USING(candidate_id)
+        WHERE r.is_confirmed=1 AND r.ro_cluster=? AND e.tier='characterized'
+        ORDER BY r.candidate_id LIMIT 1""", (cluster,)).fetchone()
+    if ref and ref["a"]:
+        x["ref_arch"] = {
+            "cid": ref["cid"], "tier": ref["tier"], "architecture": ref["a"],
+            "family": ref["f"] or "", "product": ref["prod"] or "",
+            "intergenic_bp": ref["bp"], "layout": ref["layout"] or "[alpha]"}
+        x["ref_arch_svg"] = atlas.operon_regulator_svg(
+            ref["layout"] or "[alpha]",
+            {"architecture": ref["a"], "upstream_family": ref["f"] or "",
+             "intergenic_bp": ref["bp"], "upstream_product": ref["prod"] or ""})
     if atlas.table_exists(con, "cluster_sdp"):
         row = con.execute("SELECT columns FROM cluster_sdp WHERE cluster=?", (cluster,)).fetchone()
         if row:
