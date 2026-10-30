@@ -997,6 +997,19 @@ def assignment_conflicts(path, cluster, k=5, min_identity=70.0):
     return rows[:k]
 
 
+def species_of(organism):
+    """Organizma adinin ilk iki kelimesi -- isolation_source.species_of ile
+    AYNI tanim, webapp tarafindan da kullanilabilsin diye burada.
+
+    Tur tanimi DEGIL: GenBank organizma dizgisi sus adini da tasir, ve suslari
+    saymak ayni turun on izolatini on "organizma" gosterir.
+    """
+    if not organism:
+        return None
+    parts = organism.split()
+    return " ".join(parts[:2]) if parts else None
+
+
 def nearest_types(matrix, cluster, k=5):
     if not matrix or cluster not in matrix["clusters"]:
         return []

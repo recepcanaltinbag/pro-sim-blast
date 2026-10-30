@@ -334,6 +334,13 @@ def totals(con):
              "SELECT COUNT(*) FROM ro_triad WHERE triad_complete=0"),
             ("ro_triad", "triad_absent",
              "SELECT COUNT(*) FROM ro_triad WHERE triad_status='carboxylate_absent'"),
+            # His'i okunamayan girisler. BU SAYI ELLE YAZILIYDU (about.html'de
+            # "20"), ve 2026-10-31'de yanlis cikti: capalama yeniden kostuktan
+            # sonra 31 oldu, cumle de 19.114'e toplaniyordu ama 19.125'ten
+            # soz ediyordu. Bu yuzden buraya alindi -- triad cumlesindeki bes
+            # sayinin dordu zaten canliydi, elle yazilan tek sayi bu idi.
+            ("ro_triad", "triad_his_absent",
+             "SELECT COUNT(*) FROM ro_triad WHERE triad_status='his_absent'"),
             ("ro_triad", "triad_undecided",
              "SELECT COUNT(*) FROM ro_triad WHERE triad_status IN "
              "('his_needs_anchoring','carboxylate_untested')")]:
@@ -1780,12 +1787,32 @@ def cluster_extras(con, cluster):
     x["conflicts"] = atlas.assignment_conflicts(
         apath("cluster_assignment_conflicts.csv"), cluster)
     if atlas.table_exists(con, "replicon_source"):
-        x["habitats"] = con.execute("""
-            SELECT s.habitat h, COUNT(*) n, COUNT(DISTINCT p.organism) species
+        # "Distinct organisms" kolonu TUR sayisi diye sunuluyor ve basligi
+        # "yogun dizilenen bir habitat ekoloji biriktirmeden giris biriktirir"
+        # diyerek tam bu artefakti onledigini soyluyor. Ama COUNT(DISTINCT
+        # p.organism) GenBank organizma dizgisini sayiyordu, yani SUSLARI:
+        # ayni turun on izolati on "organizma" olarak gorunuyordu -- onledigini
+        # soyledigi artefaktin kendisi. 2026-10-31'de olculdu, 4_411_XylX
+        # rizosfer topragi: 28 yayimlanmis, gercek tur 8; 1_113_CdnA insan
+        # klinik: 60'a karsi 32. Projenin kendi tur tanimi
+        # isolation_source.species_of() (ilk iki kelime) ve her atlas sayfasi
+        # onu dogru kullaniyor; burada da o kullaniliyor.
+        hab_rows = con.execute("""
+            SELECT s.habitat h, p.organism org
             FROM ro r JOIN replicon p USING(nucleotide_id)
             JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
             WHERE r.is_confirmed=1 AND r.ro_cluster=? AND s.habitat != 'unknown'
-            GROUP BY 1 ORDER BY n DESC LIMIT 8""", (cluster,)).fetchall()
+            """, (cluster,)).fetchall()
+        agg = {}
+        for r in hab_rows:
+            cell = agg.setdefault(r["h"], {"h": r["h"], "n": 0, "_sp": set()})
+            cell["n"] += 1
+            sp = atlas.species_of(r["org"])
+            if sp:
+                cell["_sp"].add(sp)
+        x["habitats"] = sorted(
+            ({"h": c["h"], "n": c["n"], "species": len(c["_sp"])}
+             for c in agg.values()), key=lambda c: -c["n"])[:8]
         x["habitat_coverage"] = con.execute("""
             SELECT SUM(CASE WHEN s.habitat != 'unknown' THEN 1 ELSE 0 END), COUNT(*)
             FROM ro r LEFT JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id

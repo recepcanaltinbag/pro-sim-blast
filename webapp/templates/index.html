@@ -132,7 +132,19 @@ is derived from a structure.</figcaption>
 <tr>
   <td class="num">{{ s.column }}</td>
   <td>{{ s.label }}</td>
-  <td>{% if s.column in [85, 87, 105, 108] %}Rieske [2Fe-2S]{% elif s.column == 209 %}subunit bridge{% else %}mononuclear Fe(II){% endif %}</td>
+  {#  MERKEZ ARTIK ETIKETTEN TURETILIYOR, KOLON NUMARASINDAN DEGIL.
+      Eskiden burada [85, 87, 105, 108] ve 209 sabit yaziliydi. O numaralar
+      426 kolonluk ESKI bir profilden kalmaydi; model 603 kolona gecince
+      HICBIRI eslesemez oldu ve sekiz satirin HEPSI else dalina dusup
+      "mononuclear Fe(II)" basmaya basladi -- yani sayfa Rieske
+      sisteinlerinin mononukleer demiri koordine ettigini soyluyordu.
+      Bu literaturle celisir: 1NDO'da [2Fe-2S] kumesini Cys81/His83/
+      Cys101/His104 tutar, mononukleer demiri ise His208/His213/Asp362.
+      motif_stats.json'daki `label` alani merkezi ZATEN tasiyor, o yuzden
+      burada tek kaynak odur; kolon numaralari degisse de dogru kalir.   #}
+  <td>{% if 'Rieske' in s.label %}Rieske [2Fe-2S]
+      {%- elif 'bridging' in s.label %}subunit bridge
+      {%- else %}mononuclear Fe(II){% endif %}</td>
   <td class="num">{{ s.expected }}</td>
   <td class="num" data-v="{{ s.found }}">{{ s.found|fmt }}</td>
   <td class="num" data-v="{{ s.fraction }}">{{ '%.2f' % (100 * s.fraction) }}</td>

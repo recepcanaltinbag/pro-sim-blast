@@ -64,9 +64,20 @@ that is, there is no experimental evidence anywhere in this set.</p>
 
 <dl class="kv">
   <dt>Phyla</dt><dd>{% for k, v in pr.archaea.phyla.items() %}{% if not loop.first %} · {% endif %}{{ k }} <b>{{ v }}</b>{% endfor %}</dd>
+  {#  BURADA BOS RENDER VARDI. Sablon tek bir median/min/max bekliyordu ama
+      identity_to_curated_refs FILUMA gore anahtarli; ustunde yalnizca ge70,
+      ge50 ve lt40 toplamlari var. Sonuc, yayimlanan sayfada harfiyen
+      "median  %, range – %" yaziyordu. Filum basina basiliyor, ve esik
+      sayilari da yaziliyor cunku bilimsel ifade onlarda: hicbiri %50'nin
+      uzerinde degil, yani hicbiri bir kuratorlu enzime yakin.            #}
   <dt>Identity to the curated references</dt>
-  <dd>median {{ pr.archaea.identity_to_curated_refs.median }} %, range
-      {{ pr.archaea.identity_to_curated_refs.min }}&ndash;{{ pr.archaea.identity_to_curated_refs.max }} %</dd>
+  <dd>{% for ph, v in pr.archaea.identity_to_curated_refs.items() %}{% if v is mapping %}
+      {%- if not loop.first %}<br>{% endif %}{{ ph }}: median <b>{{ v.median }} %</b>,
+      range {{ v.min }}&ndash;{{ v.max }} %
+      {%- endif %}{% endfor %}
+      <br><span class="note">{{ pr.archaea.identity_to_curated_refs.ge50 }} above 50 %,
+      {{ pr.archaea.identity_to_curated_refs.lt40 }} below 40 % &mdash; none of these sequences is
+      close enough to a characterised enzyme for its substrate to carry over.</span></dd>
   <dt>Nearest reference by group</dt>
   <dd>{% for g, n in pr.archaea.nearest_refs.by_group.items() %}{% if not loop.first %} · {% endif %}group {{ g }}: <b>{{ n }}</b>{% endfor %}
       <span class="note">{{ pr.archaea.nearest_refs.summary }}</span></dd>

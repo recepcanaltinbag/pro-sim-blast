@@ -136,7 +136,7 @@ Rieske-domain annotation, and the present criterion cannot see them.</p>
     every Rieske oxygenase without exception, so entries that fail to complete it are flagged here
     rather than discarded: some of them may be real exceptions. The
     reason the rule asks for two of three is that a <em>fixed</em> column cannot read the third in
-    every sub-family &mdash; for 2,388 entries that column and its neighbours are empty in the
+    every sub-family &mdash; for 2,387 entries that column and its neighbours are empty in the
     alignment, and the same is true of six of the curated references. Reading each ligand at the
     column its own type conserves instead, {{ totals.triad_complete|fmt }} of
     {{ totals.confirmed|fmt }} entries carry the complete triad &mdash; though
@@ -146,7 +146,7 @@ Rieske-domain annotation, and the present criterion cannot see them.</p>
     naphthalene 1,2-dioxygenase and of carnitine monooxygenase are four apart),
     which says the ligands are present but not that the longer loop still
     assembles the iron site; {{ totals.triad_absent|fmt }} lack
-    a carboxylate, 20 lack a histidine, and {{ totals.triad_undecided|fmt }} belong to an
+    a carboxylate, {{ totals.triad_his_absent|fmt }} lack a histidine, and {{ totals.triad_undecided|fmt }} belong to an
     architecture where the column has no counterpart at all and cannot be read either way. Every
     entry's three ligands and the reading each one came from are published in the
     <code>ro_triad</code> table. Membership still follows the two-of-three rule, so these counts
@@ -182,9 +182,9 @@ level.</p>
 <tr><td>Rieske ligands required</td><td class="num">4 of 4</td>
     <td>conserved in every curated reference</td><td>relaxing it admits ferredoxins and bc<sub>1</sub> iron-sulfur proteins</td></tr>
 <tr><td>Catalytic triad required</td><td class="num">2 of 3</td>
-    <td>a fixed column cannot read the carboxylate in every sub-family: for 2,388 entries that
+    <td>a fixed column cannot read the carboxylate in every sub-family: for 2,387 entries that
         column and its neighbours are empty, and six of the curated references fail there too</td>
-    <td>3 of 3 at the fixed column would discard 2,388 entries across 45 types, almost all of them
+    <td>3 of 3 at the fixed column would discard 2,387 entries across 45 types, almost all of them
         wrongly; read at each type's own column the cost is {{ totals.triad_incomplete|fmt }}
         entries, which is why 3 of 3 is the right definition and the fixed-column reading was the
         real problem</td></tr>

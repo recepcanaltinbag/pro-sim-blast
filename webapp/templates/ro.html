@@ -65,7 +65,18 @@ and is shown for completeness only.</div>
       <span class="note">{{ 'a partner is inside the operon' if x.ro_etc.in_operon else 'partners only outside the operon' }}</span></dd>
     {% endif %}
     <dt>Assignment class</dt><dd><span class="chip chip--{{ ro.assignment_class }}">{{ ro.assignment_class or '–' }}</span>
-      {% if ro.core_identity is not none %}<span class="note">alignment identity to nearest reference {{ '%.2f' % ro.core_identity }}</span>{% endif %}</dd>
+      {#  BU SAYI "EN YAKIN REFERANSA KIMLIK" DEGIL, oyle etiketliydi.
+          discover_subfamilies.py onu kumenin KENDI alt ailelerinin kolon
+          uzlasilarina karsi hesapliyor; hicbir kuratorlu referans diziye
+          dokunmuyor. Fark buyuk: bir CntA girisi burada 0,99 gosterirken
+          en yakin kuratorlu referansa gercek kimligi %24,4 (kademe `novel`).
+          Veritabani genelinde ortalama %72,9'a karsi gercek ortalama %46,7.
+          Ustelik GERCEK sayi bu sayfada yukarida ZATEN var (ev.ref_identity),
+          yani ayni sayfada ayni adi tasiyan iki sayi 70 puan ayriliyordu.  #}
+      {% if ro.core_identity is not none %}<span class="note">identity to its
+      subfamily consensus {{ '%.2f' % ro.core_identity }} &mdash; how typical this
+      member is inside its own type, not its distance to a curated reference
+      (that is given above)</span>{% endif %}</dd>
   </dl>
 </div>
 

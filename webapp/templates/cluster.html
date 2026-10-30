@@ -142,8 +142,10 @@
   Rieske oxygenase commonly turns over several related compounds, and most have been assayed
   against only a few.
   {% if tier_total %}Of the {{ c.n|fmt }} members assigned here,
-  <b>{{ pct(near, tier_total) }}</b> are at least 60 % identical to that reference, so the label is
-  informative for them; the rest are more distant relatives whose function is unknown.
+  <b>{{ pct(near, tier_total) }}</b> are at least 60 % identical to <b>some</b> characterised
+  reference enzyme &mdash; usually this type's, but the evidence level records the best match
+  across all 76 references, not a match to this one specifically. For those members the substrate
+  label carries over; the rest are more distant relatives whose function is unknown.
   {% endif %}
   {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
   {% if chem and chem.source %}

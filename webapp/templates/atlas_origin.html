@@ -77,10 +77,10 @@ organism happens to carry the gene.</figcaption>
 <tr><td>Enzyme types present</td><td class="num">{{ eco.wastewater.types_present }}</td></tr>
 <tr><td>Share that are close to a curated enzyme</td>
     <td class="num">{{ '%.0f %%' % (100 * eco.wastewater.close_share_in_wastewater) }}
-    <span class="unit">against {{ '%.0f %%' % (100 * eco.wastewater.close_share_in_all_classified) }} overall</span></td></tr>
+    <span class="unit">against {{ '%.0f %%' % (100 * eco.wastewater.close_share_in_all_classified) }} across all habitat-classified entries</span></td></tr>
 <tr><td>Median identity to the nearest reference</td>
     <td class="num">{{ '%.1f %%' % eco.wastewater.median_identity_to_nearest_reference.wastewater }}
-    <span class="unit">against {{ '%.1f %%' % eco.wastewater.median_identity_to_nearest_reference.all_classified }} overall</span></td></tr>
+    <span class="unit">against {{ '%.1f %%' % eco.wastewater.median_identity_to_nearest_reference.all_classified }} across all habitat-classified entries</span></td></tr>
 <tr><td>Variants dominated by wastewater members</td>
     <td class="num">{{ eco.wastewater.wastewater_dominated_variant_count }}</td></tr>
 </tbody></table></div>

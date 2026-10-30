@@ -76,7 +76,8 @@ operon, and the organisms that carry it.</p>
   <li><b>Substrate labels transfer to a minority of members.</b>
     {{ '%.0f' % (100 * stats.evidence.fraction_substrate_transferable) }} % of members are at least
     60 % identical to a characterised enzyme;
-    {{ stats.evidence.clusters_mostly_distant|length }} types consist mostly of distant relatives.
+    in {{ stats.evidence.clusters_mostly_distant|length }} of the larger types (20 members or
+    more) at least 80 % of members are distant or novel.
     <a href="{{ u('/atlas/evidence') }}">Evidence</a></li>
   {% for t in stats.tests if t.id == 'beta_by_group' %}
   <li><b>The beta subunit is a property of the RO group, not of the substrate</b>

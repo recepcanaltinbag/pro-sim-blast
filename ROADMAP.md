@@ -2036,6 +2036,95 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 103. Bug avi: yayimlanan sayi ile basliginin uyusmadigi 10 yer (2026-10-31)
+
+Madde 102(a)'daki hata bicimi -- "yayimlanan bir sayi, onu ureten hesabi degil
+BASKA bir hesabi tarif eden bir baslik altinda duruyor" -- sistematik olarak
+tarandi. 10 vaka bulundu, 9'u duzeltildi. Her biri bagimsiz yeniden hesapla
+dogrulandi.
+
+DUZELTILDI:
+
+1. ENTRY SAYFALARINDA EN AGIR VAKA. `ro.html` `core_identity`'yi "alignment
+   identity to nearest reference" diye etiketliyordu, ama
+   discover_subfamilies.py onu kumenin KENDI alt ailelerinin kolon
+   uzlasilarina karsi hesapliyor -- hicbir kuratorlu referansa dokunmuyor.
+   Bir CntA girisi 0,99 gosterirken en yakin referansa gercek kimligi %24,4.
+   DB genelinde ortalama %72,9'a karsi gercek %46,7 (n=19.125). Ustelik
+   GERCEK sayi ayni sayfada yukarida zaten vardi (ev.ref_identity), yani ayni
+   adi tasiyan iki sayi 70 puan ayriliyordu. Etiket duzeltildi: "identity to
+   its subfamily consensus", ve ne OLMADIGI yaziliyor.
+
+2. ANA SAYFA TABLO 1'DE BILIMSEL OLARAK YANLIS IFADE. "Centre" kolonu
+   [85, 87, 105, 108] ve 209 kolonlarini SABIT yaziyordu; o numaralar 426
+   kolonluk ESKI profilden kalmaydi, model 603 kolona gecince hicbiri
+   eslesemez oldu ve SEKIZ SATIRIN HEPSI else dalina dusup "mononuclear
+   Fe(II)" basmaya basladi. Yani sayfa Rieske sisteinlerinin mononukleer
+   demiri koordine ettigini soyluyordu. Literaturle celisir: 1NDO'da [2Fe-2S]
+   kumesini Cys81/His83/Cys101/His104, mononukleer demiri His208/His213/
+   Asp362 tutar. Merkez artik motif_stats.json'daki `label` alanindan
+   turetiliyor (orada ZATEN dogru duruyordu), kolon numarasindan degil.
+   Dogrulandi: 164/166/184/187 -> Rieske, 286 -> subunit bridge,
+   289/294/431 -> mononuclear Fe(II).
+
+3. "20 lack a histidine" ELLE YAZILIYDU ve yanlisti. Gercek 31 (madde 100'de
+   capalama yeniden kostuktan sonra). Cumle 19.063+24+20+7 = 19.114'e
+   toplaniyordu ama 19.125'ten soz ediyordu; 31 ile tam kapaniyor. totals()'a
+   `triad_his_absent` eklendi -- bes sayinin dordu zaten canliydi.
+
+4. "DISTINCT ORGANISMS" TUR DEGIL SUS SAYIYORDU. COUNT(DISTINCT p.organism)
+   GenBank organizma dizgisini sayiyor, yani ayni turun on izolati on
+   "organizma". Ustelik kolonun kendi basligi "yogun dizilenen bir habitat
+   ekoloji biriktirmeden giris biriktirir" diyerek tam bu artefakti
+   onledigini soyluyordu. Olculdu: 4_411_XylX rizosfer topragi 28 -> 8 tur,
+   insan klinik 66 -> 26, toprak 71 -> 37. Projenin kendi tanimi
+   species_of() (ilk iki kelime) kullaniliyor; atlas.species_of eklendi ve
+   isolation_source'takiyle ayni sonucu verdigi test edildi.
+
+5. PROMOTER ARALIGI, BASLIGIN DISLADIGI YONELIMLERI DE SAYIYORDU.
+   control_elements.py mimariyi hic filtrelemiyordu, oysa baslik "the median
+   length of THAT intergenic region" (divergent olani) diyor; yanindaki
+   kolon divergent PAYINI gosterdigi icin komsu iki hucre farkli paydadan
+   okunuyordu. Olculdu: AraC 277,5 -> 310,0 (314 girisin 174'u divergent),
+   IclR 220,5 -> 178,5, TetR 146,0 -> 129,5, LysR 144,0 -> 138,0.
+   NOT: etkili olmasi icin control_elements adiminin yeniden kosmasi gerek.
+
+6. "N types consist mostly of distant relatives" = 14, ama kod kurali
+   ">=%80 distant/novel VE >=20 uye". Basligin kendi tanimiyla (uyelerin
+   cogunlugu, boyut suzgeci yok) 68 tipin 36'si. Baslik gercek kurali
+   soyleyecek sekilde duzeltildi.
+
+7. "are at least 60 % identical to THAT reference" -- kademe aslinda 76
+   referansin TUMUNE karsi en iyi vurus (evidence_tiers.py, diamond -k 1),
+   bu tipin referansina degil. Kucuk tiplerde hata 2 kat: 3_306_3NTDO
+   %100 (2/2) yayimlanmis, kendi referansina gore %50 (1/2). Baslik
+   "some characterised reference enzyme" olarak duzeltildi.
+
+8. WASTEWATER TABLOSUNDA IKI "overall" aslinda yalnizca habitat-
+   siniflandirilmis girisler uzerinden (6.434/19.125). Yakinlik payi %27,7
+   yayimlanmis, tum DB'de %26,0; medyan kimlik %38,0'a karsi %37,2. Baslik
+   "across all habitat-classified entries" oldu.
+
+9. "2,388 entries" (3 yerde) artik uremiyor; olculen deger 2.387
+   (carboxylate_audit.json gate_cost, motif_stats.json offset_distribution ve
+   19.125-16.738 ucu de 2.387 diyor). "45 types" dogruydu, dokunulmadi.
+
+10. TAHMINLER SAYFASINDA BOS RENDER. `identity_to_curated_refs` FILUMA gore
+    anahtarli ama sablon tek bir median/min/max bekliyordu; yayimlanan sayfa
+    harfiyen "median  %, range – %" yaziyordu. Filum basina basiliyor
+    (Halobacteria 28,4 / 23,5-43,7, Thermoproteota 37,0 / 29,9-40,5,
+    Thermoplasmata 40,2) ve esik sayilari da yaziliyor, cunku bilimsel ifade
+    onlarda: %50 uzerinde 0, %40 altinda 85.
+
+AJANIN DOGRULADIGI VE DOGRU CIKAN SAYILAR (kisa liste, tamami raporda):
+atlas_network heatmap basligi (hala max-over-representatives diyor, dogru),
+gen sirasi bloklarinin kademe suzgeci, kanonik operon seklinin tek paydasi
+(madde 101b'nin sonucu), habitat kapsami paydasi, operon ortak paylari,
+atlas_home'un "a characterised enzyme" ifadesi, atlas_closeness satir
+etiketleri, about'taki %99,8 / %32,4 referans cifti ucleri, ana sayfa
+koprulu karboksilat tablosunun paydalari, tip basi karboksilat paylari,
+atlas_predictions arkea/mantar sayilari, atlas_ecology tur kolonlari.
+
 ## 102. "En yakin tipler" yanlis sayiyi yayimliyordu; tazelik izleyicisinde iki sessiz hata (2026-10-31)
 
 ### (a) BENZERLIK TABLOSU IKI TIPIN BENZERLIGINI OLCMUYORDU

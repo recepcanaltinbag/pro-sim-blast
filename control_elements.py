@@ -211,8 +211,18 @@ def family_profile(rows, all_rows, label, kind):
         item["flagged"] = bool(q < 0.05 and abs(item["lift"]) >= 0.05)
     enriched = sorted(order, key=lambda r: (0 if r["flagged"] else 1, -abs(r["lift"])))
 
+    # ARALIK YALNIZCA DIVERGENT GIRISLERDE OLCULUR. Sayfa basligi bunu
+    # soyluyor: "'Divergent' means the regulator is on the opposite strand, so
+    # it and the operon share an intergenic region... The promoter gap is the
+    # median length of THAT intergenic region". Ama eski hesap mimariyi hic
+    # filtrelemiyordu, yani ayni iplikteki duzenleyicilerin araliklari da
+    # medyana giriyordu -- ve yanindaki kolon divergent PAYINI gosterdigi icin
+    # komsu iki hucre farkli paydadan okunuyordu. 2026-10-31'de olculdu:
+    # AraC 277,5 -> 310,0 (314 girisin yalnizca 174'u divergent),
+    # IclR 220,5 -> 178,5, TetR 146,0 -> 129,5, LysR 144,0 -> 138,0.
     inter = [d["intergenic_bp"] for d in rows
-             if d["intergenic_bp"] is not None and 0 <= d["intergenic_bp"] <= 2000]
+             if d.get("architecture") == "divergent_regulator"
+             and d["intergenic_bp"] is not None and 0 <= d["intergenic_bp"] <= 2000]
     return {
         "family": label, "kind": kind,
         "entries": len(rows),
