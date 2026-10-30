@@ -183,12 +183,14 @@ def main():
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     json.dump({"_generated": time.strftime("%Y-%m-%d %H:%M UTC",
                                            time.gmtime()),
-               "_about": "Her referansin kayitli urunu, UniProt/Rhea'nin "
-                         "resmi reaksiyon denklemine karsi. Duzeltme "
-                         "YAPILMAZ.",
-               "_why": "Kolin monooksijenazin oksijen kaderi iki kez yanlis "
-                       "kaydedildi cunku denge, enzimin biraktigi urun yerine "
-                       "dehidratlanmis denge formundan hesaplandi.",
+               "_about": "Each reference's recorded product against the "
+                         "official reaction equation in UniProt/Rhea. "
+                         "Nothing is corrected here; disagreements are "
+                         "reported.",
+               "_why": "The oxygen fate of choline monooxygenase was recorded "
+                       "wrongly twice, because the balance was computed from "
+                       "the dehydrated equilibrium form instead of the product "
+                       "the enzyme actually releases.",
                "rows": rows}, open(a.out, "w"), indent=1, ensure_ascii=False)
     clean = [r["cluster"] for r in rows if r.get("product_agrees")
              and not r.get("qualifiers_missing_from_our_product")]

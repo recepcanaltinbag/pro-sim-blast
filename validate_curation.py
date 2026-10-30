@@ -1357,7 +1357,11 @@ def check_published_files(rep, out_dir):
     # degil uyaridir, cunku ara ciktilar yayinlanmak zorunda degil.
     on_disk = {f for f in os.listdir(out_dir)
                if f.endswith((".csv", ".json"))} if os.path.isdir(out_dir) else set()
-    undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES))
+    # SUPERSEDED_FILES de BELGELENMIS sayilir: yayinlanmiyorlar ama provenance
+    # tablosunda neden yayinlanmadiklari yaziyor. Burada sayilmasalar bu
+    # uyari "belgesiz" diyerek yanlis bir sey soylerdi.
+    undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES)
+                          - set(getattr(_atlas, "SUPERSEDED_FILES", ())))
     rep.check("analysis files that exist but are not documented",
               not undocumented, len(undocumented), first(undocumented, 6),
               severity="WARN")

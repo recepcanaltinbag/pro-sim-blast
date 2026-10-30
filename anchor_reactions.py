@@ -108,8 +108,9 @@ def main():
         print(f"[{mark}] {cl}" + (f" <- {row['anchor']}" if row["found"]
                                   else ""), file=sys.stderr)
         time.sleep(0.2)
-    json.dump({"_about": "curated tipler icin resmi reaksiyon capasi aramasi. "
-                         "Capa uydurulmaz; bulunamayan tip curated kalir.",
+    json.dump({"_about": "A search for an official reaction anchor for each "
+                         "curated type. An anchor is never invented: a type "
+                         "with no anchor found stays curated.",
                "rows": rows},
               open("analysis_out/reaction_anchors.json", "w"), indent=1,
               ensure_ascii=False)

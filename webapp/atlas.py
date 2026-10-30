@@ -1701,14 +1701,14 @@ PROVENANCE = [
      "numbers in the saved copy predate the 2026-10-30 column correction and "
      "must be regenerated after the rebuild.",
      "carboxylate_method_card.py"),
-    ("gate_impact_reanchoring.json", "file", "What reading the catalytic "
+    ("gate_impact_reanchoring.json", "file", "SUPERSEDED, not published: measured at the wrong carboxylate column (471), so every figure in it is invalid; the re-anchored cost of a 3-of-3 rule is now in triad_gate.json. What reading the catalytic "
      "carboxylate by per-type re-anchoring would do to membership. Almost "
      "nothing: the 2,700 candidates that currently fail the catalytic test "
      "average 0.25 model coverage against 0.83 for those that pass, so they "
      "are fragments rather than full enzymes with a shifted column; only 99 "
      "of them even reach 0.45 coverage. What changes is the statistic, not "
      "who is in the database.", "hand-run gate impact measurement"),
-    ("carboxylate_clade_shift.json", "file", "Whether the catalytic "
+    ("carboxylate_clade_shift.json", "file", "SUPERSEDED, not published: the numbers in this file were measured at the wrong carboxylate column (471) and are invalid; regenerate at column 431. Whether the catalytic "
      "carboxylate column has shifted along the family's evolution, and "
      "whether cutting the profile into a few sub-models would fix it. The "
      "shift is real and clade-structured — the 26 structurally known "
@@ -1761,7 +1761,7 @@ PROVENANCE = [
     ("curation_claims_ncbi.json", "file", "The same check for the references "
      "whose accession is GenBank or RefSeq rather than UniProt.",
      "verify_curation_claims.py (NCBI efetch pass)"),
-    ("motif_site_audit.json", "file", "Which catalytic columns each confirmed "
+    ("motif_site_audit.json", "file", "SUPERSEDED, not published: the carboxylate column it audits was wrong (471); regenerate at column 431. Which catalytic columns each confirmed "
      "member actually hits. The database stores only a boolean, so 2/3 and "
      "3/3 are indistinguishable in it; this records the pattern, including "
      "the 55 members whose second hit is the carboxylate column that the "
@@ -1860,8 +1860,19 @@ PROVENANCE = [
 # yeni bir dosya eklenince biri guncellenip oteki unutuluyordu ve dosya
 # indirme tablosunda GORUNUP indirilemiyordu. PROVENANCE zaten her dosyayi
 # ureticisiyle birlikte sayiyor, dolayisiyla dogru kaynak odur.
+# 2026-10-30: karboksilat kolonu 471'den 431'e duzeltildi ve bu uc dosyanin
+# SAYILARI o duzeltmeden ONCE, yanlis kolonda uretildi. Kaynak olarak
+# belgelenmeye devam ediyorlar (asagidaki aciklamalarda neyin gecersiz oldugu
+# yaziyor) ama YAYINLANMIYORLAR: yanlis bir sayiyi indirilebilir tutmak, onu
+# yayinlamaktir. Yeniden uretildiklerinde bu kumeden cikarilmalari gerekir.
+SUPERSEDED_FILES = frozenset({
+    "carboxylate_clade_shift.json",
+    "gate_impact_reanchoring.json",
+    "motif_site_audit.json",
+})
+
 ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE
-                           if kind == "file")
+                           if kind == "file") - SUPERSEDED_FILES
 
 
 def download_table(analysis_dir):

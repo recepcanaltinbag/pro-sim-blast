@@ -54,10 +54,10 @@ def main():
     amb = [r for r in rows if r["computed"] == ["ambiguous"]]
     agree = [r for r in decided if r["resolved_in_db"] in r["computed"]]
     dis = [r for r in decided if r["resolved_in_db"] not in r["computed"]]
-    json.dump({"_about": "Manifestodaki rhea capasindan HESAPLANAN oksijen "
-                         "kaderi, veritabaninda cozulmus degerle "
-                         "karsilastirmali. Sayimin atom izleyemedigi "
-                         "reaksiyonlar ambiguous dondurulur.",
+    json.dump({"_about": "The fate of the two oxygen atoms COMPUTED from the "
+                         "Rhea anchor in the manifest, set against the value "
+                         "resolved in the database. A reaction whose atoms the "
+                         "count cannot follow is returned as ambiguous.",
                "_counts": {"anchored": len(rows), "computed": len(decided),
                            "agree": len(agree), "disagree": len(dis),
                            "ambiguous": len(amb)},
