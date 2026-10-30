@@ -932,6 +932,73 @@ def check_reference_motifs(rep, root, refs_aln=None):
               not thin, len(thin), "; ".join(thin[:6]))
 
 
+def check_motif_columns_anchored(rep, root, refs_aln=None):
+    """Katalitik karboksilat kolonu YAPISAL CAPAYA uyuyor mu?
+
+    NEDEN. 2026-10-30'da olculdu: build_reference_models.py kolonu D/E
+    korunmasini maksimize ederek seciyordu ve 603 kolonluk modelde kolon 471'i
+    secti (korunma %93,4). Dogru kolon 431'dir (%89,5) -- naftalin
+    1,2-dioksijenazin yapidan bilinen demir ligandi Asp362 oraya dusuyor.
+    Yanlis kolon hic hata vermedi: aktif-bolge tablosu doldu, istatistikler
+    uretildi ve "uyelerin %12'sinde karboksilat yok" gibi bir bulgu dogdu.
+    Sessiz yanlislik en pahali yanlislik oldugu icin kolon artik her kapi
+    kosusunda yapisal capaya karsi yeniden dogrulanir.
+    """
+    try:
+        sys.path.insert(0, root)
+        import ro_motif                              # noqa: PLC0415
+        import build_reference_models as BRM          # noqa: PLC0415,N817
+    except Exception as exc:                          # noqa: BLE001
+        rep.check("motif columns: carboxylate column verified against the "
+                  "structural anchor", True, 0,
+                  f"modules not importable ({exc})", severity="WARN")
+        return
+
+    aln = refs_aln
+    if not aln:
+        for name in ("refs71_hmmaln.sto", "ROmotif71_hmmaln.sto"):
+            cand = os.path.join(root, "ROs_71_Clean", name)
+            if os.path.exists(cand):
+                aln = cand
+                break
+    if not aln or not os.path.exists(aln):
+        rep.check("motif columns: carboxylate column verified against the "
+                  "structural anchor", True, 0,
+                  "reference alignment missing", severity="WARN")
+        return
+
+    try:
+        anchor_col, _ = BRM.anchor_carboxylate_column(aln)
+    except SystemExit as exc:                         # noqa: BLE001
+        rep.check("motif columns: carboxylate column verified against the "
+                  "structural anchor", False, 1, str(exc))
+        return
+
+    in_use = ro_motif.CATALYTIC_SITES[2][0]
+    rep.check("motif columns: carboxylate column verified against the "
+              "structural anchor (1NDO Asp362)",
+              in_use == anchor_col, 0 if in_use == anchor_col else 1,
+              "" if in_use == anchor_col else
+              f"ro_motif reads column {in_use} but the anchor residue sits in "
+              f"column {anchor_col}; every active-site statistic is measured "
+              f"at the wrong position until this agrees")
+
+    path = os.path.join(root, "ROs_71_Clean", "motif_columns.json")
+    if os.path.exists(path):
+        try:
+            doc = json.load(open(path, encoding="utf-8"))
+        except Exception:                             # noqa: BLE001
+            doc = {}
+        entry = (doc.get("ROmotif71") or {})
+        src = (entry.get("carboxylate_source") or {}).get("chosen_by")
+        rep.check("motif columns: the stored carboxylate column was chosen by "
+                  "the structural anchor, not by conservation",
+                  src == "structural_anchor", 0 if src == "structural_anchor" else 1,
+                  "" if src == "structural_anchor" else
+                  f"carboxylate_source.chosen_by = {src!r}; regenerate with "
+                  f"build_reference_models.py --derive-only")
+
+
 def check_vocabulary_drift(rep):
     """add_reference.py yazarken BU dosyanin dogrularken kullandigi listeler ayni mi?
 
@@ -1623,6 +1690,7 @@ def main():
 
     check_vocabulary_drift(rep)
     check_reference_motifs(rep, ROOT)
+    check_motif_columns_anchored(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)

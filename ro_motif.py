@@ -45,6 +45,12 @@ from collections import Counter
 #   katalitik His-2        214  (%93)               217  (%94)
 #   katalitik karboksilat  345  (%97)               355  (%99)
 #
+# DIKKAT: yukaridaki ROmotif71 kolonu (355) 71 referansli, 426 kolonluk
+# hizalamaya aittir ve GUNCEL DEGILDIR. Guncel model 76 referans / 603 kolon;
+# dogrulanmis kolonlar 164/166/184/187, 289/294, karboksilat 431, kopru 286.
+# Guncel sayilar ROs_71_Clean/motif_columns.json icindedir ve karboksilat
+# kolonu artik korunmayla DEGIL yapisal capayla (1NDO Asp362) belirleniyor.
+#
 # Temiz modelde korunma oranlari her kolonda daha yuksek -- IsoMO ve CdnD
 # cikinca hizalama kesinlesti. Bagil yapi ayni: C-x-H ... C-x-x-H, iki
 # katalitik His arasi 5 kalinti, karboksilat C-terminalde.
@@ -54,14 +60,26 @@ from collections import Counter
 #   ardindan match-state kolonlarinda korunum sayimi (bkz. modul sonundaki
 #   derive_motif_columns fonksiyonu).
 
+# 2026-10-30 DUZELTME. Asagidaki gomulu ROmotif71 sayilari 71 referansli,
+# 426 kolonluk ESKI hizalamaya aitti. Model o zamandan beri 76 referansa ve
+# 603 kolona buyudu; eski sayilar yeni hizalamada BASKA pozisyonlara dusuyor
+# (kolon 355 artik cogunlukla bosluk). motif_columns.json varken bu sozluk
+# zaten eziliyordu, ama dosya silinseydi script sessizce yanlis kolon okurdu.
+# Bu yuzden gomulu degerler de olculmus, dogrulanmis kolonlarla degistirildi:
+#   Rieske 164/166/184/187, katalitik His 289/294, karboksilat 431, kopru 286
+# Karboksilat kolonu yapidan dogrulandi: naftalin 1,2-dioksijenaz (1NDO)
+# demir ligandlari His208/His213/Asp362; refs71'deki NahAc dizisi PDB
+# numaralandirmasindan 3 kalinti geride basliyor, ham 359 -> kolon 431.
+# Kolon 471 (eski derive heuristiginin sectigi, D/E korunmasi daha yuksek
+# olan kolon) facial triad karboksilati DEGIL.
 MODEL_COLUMNS = {
-    "ROmotif71": {   # temiz 71-referans modeli -- varsayilan
-        "rieske":    [(85, "C", "Rieske Cys-1"), (87, "H", "Rieske His-1"),
-                      (105, "C", "Rieske Cys-2"), (108, "H", "Rieske His-2")],
-        "catalytic": [(212, "H", "mononukleer Fe His-1"),
-                      (217, "H", "mononukleer Fe His-2"),
-                      (355, "DE", "mononukleer Fe karboksilat")],
-        "bridging":  (209, "DE", "alt-birimler arasi elektron transfer Asp"),
+    "ROmotif71": {   # 76 referansli temiz model, 603 kolon -- varsayilan
+        "rieske":    [(164, "C", "Rieske Cys-1"), (166, "H", "Rieske His-1"),
+                      (184, "C", "Rieske Cys-2"), (187, "H", "Rieske His-2")],
+        "catalytic": [(289, "H", "mononukleer Fe His-1"),
+                      (294, "H", "mononukleer Fe His-2"),
+                      (431, "DE", "mononukleer Fe karboksilat")],
+        "bridging":  (286, "DE", "alt-birimler arasi elektron transfer Asp"),
     },
     "ROmotif": {     # orijinal 73-referans modeli
         "rieske":    [(80, "C", "Rieske Cys-1"), (82, "H", "Rieske His-1"),

@@ -92,7 +92,7 @@
     "mononukleer Fe His-2"
    ],
    [
-    471,
+    431,
     "DE",
     "mononukleer Fe karboksilat"
    ]
@@ -104,6 +104,22 @@
   ],
   "model_length": 603,
   "n_references": 76,
+  "carboxylate_source": {
+   "chosen_by": "structural_anchor",
+   "anchor": {
+    "reference_contains": "3_309_NahAc",
+    "raw_position": 359,
+    "residue": "D",
+    "pdb": "1NDO",
+    "pdb_residue": "Asp362",
+    "numbering_note": "refs71 dizisi PDB numaralandirmasindan 3 kalinti geride baslar (ham 359 = PDB Asp362)",
+    "column": 431,
+    "residue_at_column": "D"
+   },
+   "most_conserved_DE_column": 471,
+   "most_conserved_DE_fraction": 0.9342,
+   "why": "konservasyon en yuksek D/E kolonu facial triad'in karboksilati OLMAK ZORUNDA DEGIL; 2026-10-30'da bu iki kolon farkli cikti ve korunmaya dayanan secim yanlisti."
+  },
   "conservation": {
    "164": 1.0,
    "166": 1.0,
@@ -111,7 +127,7 @@
    "187": 1.0,
    "289": 0.9868,
    "294": 0.9474,
-   "471": 0.9342,
+   "431": 0.8947,
    "286": 0.9079
   }
  }

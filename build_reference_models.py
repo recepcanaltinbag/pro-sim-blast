@@ -117,6 +117,85 @@ def pick_catalytic(his, acid, rieske_end):
     return best, best_score
 
 
+# --- YAPISAL CAPA: karboksilat kolonu KORUNMAYLA SECILEMEZ ---
+#
+# 2026-10-30'da olculdu: pick_catalytic skoru his[h1]+his[h2]+acid[d] ile
+# maksimize ediyordu ve 603 kolonluk ROmotif71'de kolon 471'i secti (D/E
+# korunmasi %93,4). Dogru kolon 431'dir (%89,5) -- yani HEURISTIK, dogru
+# kolonu 3 referans farkla KAYBEDIYOR. Kolon 471 facial triad'in karboksilati
+# degil, daha C-terminalde duran baska bir korunmus D/E kolonudur.
+#
+# Kanit: naftalin 1,2-dioksijenaz (1NDO) demir ligandlari His208, His213,
+# Asp362'dir (yapidan olculdu: Asp362 demirden 2,27 A; ayrica KF707 bifenil
+# dioksijenazi icin literaturde ayni numaralandirma raporlanir). refs71
+# icindeki 3_309_NahAc dizisi PDB numaralandirmasindan 3 kalinti geride
+# baslar: ham 202/205/210/359 = PDB 205/208/213/362. Ham 359 match kolonu
+# 431'e dusuyor (76 referansin 68'inde D), ham 407 ise 471'e.
+#
+# Bu yuzden karboksilat kolonu artik SECILMIYOR, yapidan OKUNUYOR; korunma
+# yalnizca saglama olarak raporlanir. Capa dogrulanamazsa script SESSIZCE
+# devam etmez, hata verir -- yanlis kolon butun aktif-bolge istatistiklerini
+# sessizce bozar, ki bir kez oldu.
+STRUCTURAL_ANCHOR = {
+    "reference_contains": "3_309_NahAc",
+    "raw_position": 359,
+    "residue": "D",
+    "pdb": "1NDO",
+    "pdb_residue": "Asp362",
+    "numbering_note": "refs71 dizisi PDB numaralandirmasindan 3 kalinti geride "
+                      "baslar (ham 359 = PDB Asp362)",
+}
+
+
+def anchor_carboxylate_column(sto_path, anchor=None):
+    """Capa referansinin BILINEN demir ligandinin match kolonunu dondur.
+
+    Stockholm satirini insert kolonlariyla birlikte okur, cunku ham kalinti
+    numarasi yalnizca insertlerle birlikte sayilabilir;
+    read_stockholm_matchcols insertleri atar ve bu esleme orada YAPILAMAZ.
+    Donen: (match_kolonu_1_tabanli, kolondaki_kalinti).
+    """
+    anchor = anchor or STRUCTURAL_ANCHOR
+    rows, rf = {}, []
+    with open(sto_path) as handle:
+        for line in handle:
+            line = line.rstrip("\n")
+            if line.startswith("#=GC RF"):
+                rf.append(line.split()[-1])
+            elif line and not line.startswith("#") and line != "//":
+                name, _, seq = line.partition(" ")
+                rows.setdefault(name, []).append(line.split()[-1])
+    reference = "".join(rf)
+    match_idx = [i for i, ch in enumerate(reference) if ch != "."]
+    hits = [k for k in rows if anchor["reference_contains"] in k]
+    if len(hits) != 1:
+        raise SystemExit("yapisal capa referansi bulunamadi ya da tek degil: %s "
+                         "-- %d eslesme" % (anchor["reference_contains"], len(hits)))
+    row = "".join(rows[hits[0]])
+    seen, column = 0, None
+    for i, ch in enumerate(row):
+        if ch.isalpha():
+            seen += 1
+            if seen == anchor["raw_position"]:
+                if i not in set(match_idx):
+                    raise SystemExit("capa kalintisi bir INSERT kolonunda "
+                                     "duruyor; model yeniden kurulmali")
+                column = match_idx.index(i) + 1
+                break
+    if column is None:
+        raise SystemExit("capa referansi %s kalintidan kisa" % anchor["raw_position"])
+    residue = row[match_idx[column - 1]].upper()
+    if residue != anchor["residue"]:
+        raise SystemExit(
+            "YAPISAL CAPA DOGRULANAMADI: %s ham %d -> kolon %d kalinti %s, "
+            "beklenen %s (%s %s). Referans dizisi degistiyse capanin ham "
+            "pozisyonu guncellenmeli; kolonu korunmayla secmek bir kez yanlis "
+            "kolona yol acti."
+            % (hits[0], anchor["raw_position"], column, residue,
+               anchor["residue"], anchor["pdb"], anchor["pdb_residue"]))
+    return column, residue
+
+
 def derive_columns(sto_path):
     """hmmalign ciktisindan motif kolonlarini cikar. Donen: dict."""
     aligned = read_stockholm_matchcols(sto_path)
@@ -133,6 +212,16 @@ def derive_columns(sto_path):
     if catalytic is None:
         raise SystemExit("katalitik triad bulunamadi")
 
+    # Karboksilat: YAPIDAN okunur, korunmayla secilmez (bkz. STRUCTURAL_ANCHOR).
+    anchor_col, anchor_res = anchor_carboxylate_column(sto_path)
+    conservation_pick = catalytic[2] + 1
+    catalytic = (catalytic[0], catalytic[1], anchor_col - 1)
+    if conservation_pick != anchor_col:
+        print("[UYARI] korunma en cok kolon %d'i isaret ediyor (D/E %.4f) ama "
+              "yapisal capa kolon %d (D/E %.4f). CAPA KAZANIR: kolon %d."
+              % (conservation_pick, acid[conservation_pick - 1],
+                 anchor_col, acid[anchor_col - 1], anchor_col))
+
     # Kopru D/E: ilk katalitik His'ten hemen once, en korunmus asidik kolon
     window = range(max(0, catalytic[0] - 6), catalytic[0])
     bridging = max(window, key=lambda i: acid[i]) if window else catalytic[0] - 3
@@ -147,6 +236,16 @@ def derive_columns(sto_path):
         "bridging": [one(bridging), "DE", "alt-birimler arasi elektron transfer Asp"],
         "model_length": len(next(iter(aligned.values()))),
         "n_references": len(aligned),
+        "carboxylate_source": {
+            "chosen_by": "structural_anchor",
+            "anchor": dict(STRUCTURAL_ANCHOR, column=anchor_col,
+                           residue_at_column=anchor_res),
+            "most_conserved_DE_column": conservation_pick,
+            "most_conserved_DE_fraction": round(acid[conservation_pick - 1], 4),
+            "why": "konservasyon en yuksek D/E kolonu facial triad'in "
+                   "karboksilati OLMAK ZORUNDA DEGIL; 2026-10-30'da bu iki "
+                   "kolon farkli cikti ve korunmaya dayanan secim yanlisti.",
+        },
         "conservation": {
             str(one(rieske[0])): round(cys[rieske[0]], 4),
             str(one(rieske[1])): round(his[rieske[1]], 4),

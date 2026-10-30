@@ -1658,6 +1658,21 @@ PROVENANCE = [
     # 2026-10-28 oturumunun olcumleri. Hepsi analysis_out/ icinde ve o dizin
     # .gitignore'da: burada BELGELENMEZLERSE depoda hicbir izi kalmaz ve
     # dogrulama "belgelenmemis analiz dosyasi" diye uyarir.
+    ("carboxylate_anchor_holdout.json", "file", "Whether the per-type "
+     "carboxylate anchoring is circular. The column is voted by a type's own "
+     "positives and the method was then scored on those same positives, so "
+     "this splits them: half vote, the other half is held out. Pooled "
+     "held-out recovery 490/490, and the half-data column is the full-vote "
+     "column in 10 of 10 types -- the machinery reads correctly. (It does "
+     "NOT validate the column it was pointed at; see the method card.)",
+     "carboxylate_anchor_holdout.py"),
+    ("carboxylate_method_card.txt", "file", "The carboxylate reading method "
+     "printed step by step with the number each step produced -- what is "
+     "looked at, in what order, and each step's own accuracy. Generated from "
+     "carboxylate_audit.json, so it is only as current as that audit: the "
+     "numbers in the saved copy predate the 2026-10-30 column correction and "
+     "must be regenerated after the rebuild.",
+     "carboxylate_method_card.py"),
     ("gate_impact_reanchoring.json", "file", "What reading the catalytic "
      "carboxylate by per-type re-anchoring would do to membership. Almost "
      "nothing: the 2,700 candidates that currently fail the catalytic test "

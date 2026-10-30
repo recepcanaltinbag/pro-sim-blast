@@ -1698,6 +1698,46 @@ Acik isler. Numaralar kalicidir, commit mesajlari onlara atif yapiyor.
   sayilar degisir.
 - Site Ingilizce; Turkce surum de istenir mi?
 
+## 90. Katalitik karboksilat YANLIS KOLONDAN okunuyordu (2026-10-30)
+
+Olculen: kolon 431 dogru, kolon 471 (kullanimdaki) ve 355 (eski gomulu sabit)
+yanlis. Kanit: 1NDO demir ligandlari His208/His213/Asp362; refs71'deki NahAc
+dizisi PDB numaralandirmasindan 3 kalinti geride basliyor (ham 202/205/210 =
+PDB 205/208/213) ve ham 359 = PDB Asp362 match kolonu 431'e dusuyor. 76
+referansta kolon 431'de D 68; 19.114 onaylanmis giriste +-2 pencereyle %87,5
+D/E (kolon 471'de %71,1, ve E/D karisimi literaturun "genellikle Asp"
+tarifine uymuyor).
+
+Kok neden: build_reference_models.py kolonu D/E korunmasini maksimize ederek
+seciyordu ve dogru kolonu 3 referans farkla kaybediyordu (471 %93,4 vs 431
+%89,5). "En korunmus D/E kolonu" ile "demiri baglayan kolon" ayni sey degil.
+
+Duzeltildi: kolon artik yapisal capadan (STRUCTURAL_ANCHOR) okunuyor, capa
+dogrulanamazsa betik duruyor; motif_columns.json yeniden uretildi ve
+carboxylate_source ile kolonun neyle secildigini kaydediyor; ro_motif.py'deki
+eski gomulu sabitler duzeltildi; validate_curation.py'ye iki kontrol eklendi
+(107 kontrol, 102 PASS / 1 FAIL / 4 WARN -- FAIL bilinen bayat ro_search).
+
+Metot kendisi dogrulandi: carboxylate_anchor_holdout.py, disarida birakilan
+pozitiflerde 490/490 geri kazanim, 10/10 tipte ayni kolon. Yani metot saglam,
+HEDEFI yanlisti.
+
+GECERSIZ: carboxylate_audit.json'un butun sayilari (1.414 / 1.388 / 26,
+%12,4), ona dayanan klad kaymasi ve pencere genisletme karsilastirmalari,
+kapinin "triad 3/3" istatistigi (13.543) ve ilgili site metni.
+GECERLI KALAN: kopru karboksilat (kolon 286 dogrulandi, 8/9 yapisal olcum),
+ligand/role ayrimi, oksijen kaderi ve metabolik rol.
+
+SIRADA: (a) rebuild.py --run --include-heavy ile ro_carboxylate ve
+catalytic_intact'i kolon 431 ile yeniden uret, (b) carboxylate_audit.py'yi
+yeniden kosup metot kartini yeniden uret, (c) kalan gercek yokluklari incele
+(referans PobA kolon 431'de K, KshA15 boskuk, 3_309_NahAc hic uye toplamiyor),
+(d) site metnini guncelle, (e) yayinla.
+
+Rapor: RAPOR_karboksilat_kolonu_2026-10-30.md
+Atif eklendi: barry2013_mechanism (10.1021/cs400087p, Crossref ile dogrulandi;
+119/119 atif cozuluyor).
+
 ## Yeniden uretim
 
 ```
