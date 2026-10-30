@@ -66,6 +66,8 @@ def main():
     ap.add_argument("--reps", default="analysis_out/representatives_by_leaf.fasta")
     ap.add_argument("--motif-hmm", default="ROs_71_Clean/ROmotif71.hmm")
     ap.add_argument("--out-dir", default="analysis_out")
+    ap.add_argument("--ref-alignment", default="ROs_71_Clean/refs71_hmmaln.sto",
+                    help="referans-referans kimligi bu hizalamadan okunur")
     ap.add_argument("--ssn-min", type=float, default=30.0)
     ap.add_argument("--threads", type=int, default=8)
     ap.add_argument("--fasttree", default="FastTree")
@@ -162,7 +164,7 @@ def main():
              "-k", "2000", "--max-hsps", "1", "--sensitive", "-e", "1e-5",
              "--outfmt", "6", "qseqid", "sseqid", "pident", "qcovhsp", "bitscore"])
         edges = {}
-        best_pair = defaultdict(float)
+        best_pair = defaultdict(lambda: (0.0, "", "", "", ""))
         with open(hits) as fh:
             for line in fh:
                 a, b, pid, qcov, bits = line.rstrip("\n").split("\t")
@@ -177,7 +179,18 @@ def main():
                 ca, cb = cluster_of_name(a), cluster_of_name(b)
                 if ca != cb:
                     k2 = tuple(sorted((ca, cb)))
-                    best_pair[k2] = max(best_pair[k2], pid)
+                    # DIKKAT: bu bir BENZERLIK olcusu DEGIL. Iki tipe atanmis
+                    # herhangi iki temsilci arasindaki EN YUKSEK kimlik, yani
+                    # atama sinirinda bir CATISMA sinyali. 2026-10-31'de
+                    # olculdu: qxyA-BedC1 icin 91,4 cikiyor, oysa iki tipin
+                    # KURATORLU REFERANSI birbirine %23-27 benzer. 91,4'u
+                    # ureten cift iki TEK UYELI yaprak ve ikisi de `distant`
+                    # kademesinde -- yani birbirine neredeyse ayni iki dizi
+                    # farkli tiplere dagilmis. Sayfada "en yakin tipler" diye
+                    # yayimlanmasi tam bu yuzden yaniltiyordu.
+                    if pid > best_pair[k2][0]:
+                        best_pair[k2] = (pid, a, cluster_of_name(a),
+                                         b, cluster_of_name(b))
 
     nodes_path = os.path.join(args.out_dir, "ssn_nodes.csv")
     with open(nodes_path, "w", newline="") as fh:
@@ -201,14 +214,102 @@ def main():
     print(f"[yazildi] {nodes_path} ({len(allseq)} dugum), {edges_path} ({kept} kenar >= {args.ssn_min}%)")
 
     clusters = sorted({c for c in cluster_of.values()})
+
+    def pair_best(a, b):
+        return best_pair.get(tuple(sorted((a, b))), (0.0, "", "", "", ""))
+
+    # --- 1. ATAMA CATISMASI matrisi (eski cluster_identity_matrix.csv) ------
+    # ADI YANILTICIYDI, ANLAMI DEGISMEDI. Bu sayi iki tipin benzerligi DEGIL:
+    # iki tipe atanmis herhangi iki temsilci arasindaki EN YUKSEK kimlik.
+    # Yuksek bir deger, iki tipin benzer oldugunu degil, SINIRIN SIZDIGINI
+    # soyler. Sayfada "en yakin tipler" olarak yayimlanmasi bu yuzden
+    # yanlisti; o tablo artik cluster_reference_identity.csv'den besleniyor.
     mat_path = os.path.join(args.out_dir, "cluster_identity_matrix.csv")
     with open(mat_path, "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["cluster"] + clusters)
         for a in clusters:
-            w.writerow([a] + [100.0 if a == b else round(best_pair.get(tuple(sorted((a, b))), 0.0), 1)
+            w.writerow([a] + [100.0 if a == b else round(pair_best(a, b)[0], 1)
                               for b in clusters])
-    print(f"[yazildi] {mat_path} (kumeler arasi en yuksek temsilci kimligi)")
+    print(f"[yazildi] {mat_path} (atama catismasi: en yuksek temsilci kimligi)")
+
+    # --- 2. Catismalarin KIMLIGI: hangi iki dizi, hangi kademede -----------
+    # Sadece sayiyi yayimlamak yetmez: yuksek bir deger ya gercek bir
+    # kuratorluk hatasi (iki tipe dagilmis neredeyse ayni dizi) ya da iki
+    # tipin gercekten yakin olmasidir, ve ikisini AYIRMAK icin ciftin kendisi
+    # ile kademesi gerekir. qxyA-BedC1'de cift iki tek-uyeli `distant` yaprak.
+    conf_path = os.path.join(args.out_dir, "cluster_assignment_conflicts.csv")
+    tier_of = {}
+    for k in allseq:
+        if not k.startswith("REF|"):
+            tier_of[k] = tier.get(leaf_rep.get(k, ""), "")
+    with open(conf_path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["cluster_a", "cluster_b", "identity", "node_a", "tier_a",
+                    "node_b", "tier_b"])
+        for (ca, cb), (pid, na, _ca2, nb, _cb2) in sorted(
+                best_pair.items(), key=lambda kv: -kv[1][0]):
+            w.writerow([ca, cb, round(pid, 1), na, tier_of.get(na, ""),
+                        nb, tier_of.get(nb, "")])
+    print(f"[yazildi] {conf_path} ({len(best_pair)} tip cifti)")
+
+    # --- 3. REFERANS-REFERANS kimligi: "bu iki tip ne kadar benzer" ---------
+    # YONTEM. Kuratorlu 76 referansin ORTAK HMM hizalamasindaki match
+    # kolonlari uzerinden ikili kimlik; iki dizinin ikisinde de kalinti olan
+    # kolonlar sayilir, bosluklu kolonlar atlanir.
+    #
+    # NEDEN SSN KENARLARINDAN DEGIL. diamond'in qcov>=70 ve e<=1e-5 filtresi
+    # uzak referans ciftlerini TAMAMEN atiyor: 2026-10-31'de olculdu,
+    # qxyA-BedC1, qxyA-bfzA, qxyA-CntA ciftlerinin hicbiri icin REF-REF kenari
+    # YOK. Yani SSN bu sayiyi yapisal olarak bildiremez.
+    #
+    # NEDEN IKILI MAFFT DEGIL. 76x76 = 2850 ikili hizalama bir boru hatti
+    # adimi icin fazla yavas. Ortak hizalama deterministik ve zaten izlenen
+    # bir girdi. Bedeli: coklu hizalamadan okunan ikili kimlik, en iyi ikili
+    # hizalamadan sistematik olarak DUSUK cikiyor -- olculdu, ~5 puan
+    # (qxyA-BedC1 %23,0 vs mafft %27,4). Yanilma yonu guvenli taraf: tipler
+    # arasi benzerligi AZ gosteriyor, cok degil.
+    ref_path = os.path.join(args.out_dir, "cluster_reference_identity.csv")
+    aln = read_stockholm_matchcols(args.ref_alignment)
+    if isinstance(aln, tuple):
+        aln = aln[0]
+    # Referans adi "5_505_qxyA_qxyA_pro" bicimindedir; kume adi ilk uc parca.
+    ref_row = {}
+    for name, row in aln.items():
+        parts = name.split("_")
+        cl = "_".join(parts[:3]) if len(parts) >= 3 else name
+        ref_row[cl] = row
+
+    def ref_identity(a, b):
+        ra, rb = ref_row.get(a), ref_row.get(b)
+        if ra is None or rb is None:
+            return None
+        same = tot = 0
+        for c1, c2 in zip(ra, rb):
+            if c1 in "-." or c2 in "-.":
+                continue
+            tot += 1
+            same += (c1.upper() == c2.upper())
+        return round(100.0 * same / tot, 1) if tot else None
+
+    missing = [c for c in clusters if c not in ref_row]
+    with open(ref_path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["cluster"] + clusters)
+        for a in clusters:
+            row = [a]
+            for b in clusters:
+                if a == b:
+                    row.append(100.0)
+                else:
+                    v = ref_identity(a, b)
+                    row.append("" if v is None else v)
+            w.writerow(row)
+    print(f"[yazildi] {ref_path} (referans-referans kimligi, "
+          f"{len(clusters) - len(missing)}/{len(clusters)} tipin referansi var)")
+    if missing:
+        print(f"  [dikkat] referansi hizalamada bulunmayan tip: "
+              f"{', '.join(missing[:5])}")
 
 
 if __name__ == "__main__":

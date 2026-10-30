@@ -363,8 +363,21 @@ FILE_PROVENANCE = {
                        "leaf annotation."),
     "cluster_identity_matrix.csv": P("build_phylogeny.py",
                                      ["analysis_out/representatives_by_leaf.fasta"],
-                                     "Highest representative-to-representative "
-                                     "identity for every pair of RO types."),
+                                     "Assignment-boundary signal, NOT a similarity "
+                                     "measure: the highest identity between any "
+                                     "two leaf representatives assigned to "
+                                     "different types."),
+    "cluster_assignment_conflicts.csv": P("build_phylogeny.py",
+                                          ["analysis_out/representatives_by_leaf.fasta"],
+                                          "Each type pair's colliding sequences "
+                                          "with their evidence levels, so a "
+                                          "collision between two distant members "
+                                          "can be told from a real one."),
+    "cluster_reference_identity.csv": P("build_phylogeny.py",
+                                        ["ROs_71_Clean/refs71_hmmaln.sto"],
+                                        "Identity between the curated reference "
+                                        "sequences of each pair of types, over "
+                                        "the columns where both carry a residue."),
     # Bu iki FASTA'yi HICBIR mevcut script yazmiyor (olculdu). Haritada
     # tutuluyorlar ki uretici dogrulamasi onlari her kosuda isaretlesin;
     # Her ikisi de ARTIK evidence_tiers.py tarafindan uretiliyor. Onceden

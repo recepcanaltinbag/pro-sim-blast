@@ -1765,8 +1765,20 @@ def cluster_extras(con, cluster):
         JOIN gene_category c ON c.neighbor_id=nb.neighbor_id AND c.method='regex_v1'
              AND c.category='transposon'
         WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()[0]
+    # "En yakin tipler" REFERANS-REFERANS kimliginden gelir.
+    #
+    # NEDEN DEGISTI. Eskiden cluster_identity_matrix.csv'den geliyordu, ama o
+    # dosya iki tipin benzerligini DEGIL, iki tipe atanmis herhangi iki
+    # temsilci arasindaki EN YUKSEK kimligi tasiyor. 2026-10-31'de olculdu:
+    # qxyA sayfasi BedC1'e %91,4 benzer diyordu, oysa iki kuratorlu referans
+    # birbirine %23 (ortak hizalama) / %27,4 (ikili mafft) benzer. 91,4'u
+    # ureten cift iki TEK UYELI yaprak ve ikisi de `distant` kademesinde.
+    # O sayi bir benzerlik olcusu degil, atama sinirinda bir CATISMA sinyali;
+    # ayri dosyada, ayri adla ve ciftin kademesiyle birlikte yayimlaniyor.
     x["nearest"] = atlas.nearest_types(
-        atlas.identity_matrix(apath("cluster_identity_matrix.csv")), cluster)
+        atlas.identity_matrix(apath("cluster_reference_identity.csv")), cluster)
+    x["conflicts"] = atlas.assignment_conflicts(
+        apath("cluster_assignment_conflicts.csv"), cluster)
     if atlas.table_exists(con, "replicon_source"):
         x["habitats"] = con.execute("""
             SELECT s.habitat h, COUNT(*) n, COUNT(DISTINCT p.organism) species

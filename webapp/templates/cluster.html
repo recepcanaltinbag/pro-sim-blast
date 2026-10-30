@@ -350,13 +350,39 @@
 
     {% if x.nearest %}
     <h3>Nearest other types</h3>
-    <p class="note">Highest identity between a representative of this type and of another. Above
-      roughly 40 % the two are not reliably separable by sequence.</p>
+    <p class="note">Identity between <b>this type's curated reference sequence and another's</b>,
+      read over the columns where both carry a residue in the common alignment of the 76
+      references. Pairwise identity taken from a multiple alignment runs a few points below what
+      an optimal alignment of the two sequences alone would give, so these values understate
+      rather than overstate. Above roughly 40 % two types are not reliably separable by
+      sequence.</p>
     <table class="data compact"><tbody>
       {% for name, ident in x.nearest %}
       <tr><td><a href="{{ u('/cluster/' ~ name) }}">{{ name }}</a></td><td class="num">{{ '%.1f %%' % ident }}</td></tr>
       {% endfor %}
     </tbody></table>
+    {% if x.conflicts %}
+    <h3>Members that collide with another type</h3>
+    <p class="note"><b>This is not a similarity measure.</b> Each row is one sequence assigned to
+      this type that is nearly identical to a sequence assigned to a different type &mdash; so one
+      of the two assignments is probably wrong, or the two types overlap at their boundary. Read
+      the evidence level with it: a collision between two <i>distant</i> members, each only
+      distantly related to its own reference, says far less than one between two characterised
+      entries.</p>
+    <div class="tablewrap"><table class="data compact">
+      <thead><tr><th>Other type</th><th class="num">Identity</th>
+        <th>This type's sequence</th><th>Its level</th>
+        <th>The other sequence</th><th>Its level</th></tr></thead>
+      <tbody>
+      {% for c in x.conflicts %}
+      <tr><td><a href="{{ u('/cluster/' ~ c.other) }}">{{ c.other }}</a></td>
+        <td class="num">{{ '%.1f %%' % c.identity }}</td>
+        <td class="small">{{ c.node }}</td><td class="small">{{ (c.tier or '?').replace('_', ' ') }}</td>
+        <td class="small">{{ c.other_node }}</td><td class="small">{{ (c.other_tier or '?').replace('_', ' ') }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+    {% endif %}
     {% endif %}
   </div>
 </div>

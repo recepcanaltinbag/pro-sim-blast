@@ -965,6 +965,38 @@ def identity_matrix(path):
     return {"clusters": clusters, "matrix": mat}
 
 
+def assignment_conflicts(path, cluster, k=5, min_identity=70.0):
+    """Bu tipe atanmis bir dizinin BASKA bir tipe atanmis bir diziyle en
+    yuksek kimligi -- benzerlik olcusu DEGIL, sinir catismasi sinyali.
+
+    Yuksek bir deger iki tipin yakin oldugunu degil, neredeyse ayni iki
+    dizinin farkli tiplere dagildigini soyler. Ciftin kademesi birlikte
+    donuyor, cunku iki `distant` yaprak arasindaki %91 ile iki
+    `characterized` arasindaki %91 ayni sey degildir.
+    """
+    rows = []
+    for r in read_csv(path):
+        a, b = r.get("cluster_a"), r.get("cluster_b")
+        if cluster not in (a, b):
+            continue
+        try:
+            ident = float(r.get("identity") or 0)
+        except ValueError:
+            continue
+        if ident < min_identity:
+            continue
+        mine, theirs = (a, b) if a == cluster else (b, a)
+        node_mine = r.get("node_a") if a == cluster else r.get("node_b")
+        node_theirs = r.get("node_b") if a == cluster else r.get("node_a")
+        tier_mine = r.get("tier_a") if a == cluster else r.get("tier_b")
+        tier_theirs = r.get("tier_b") if a == cluster else r.get("tier_a")
+        rows.append({"other": theirs, "identity": ident,
+                     "node": node_mine, "tier": tier_mine,
+                     "other_node": node_theirs, "other_tier": tier_theirs})
+    rows.sort(key=lambda r: -r["identity"])
+    return rows[:k]
+
+
 def nearest_types(matrix, cluster, k=5):
     if not matrix or cluster not in matrix["clusters"]:
         return []
@@ -1887,8 +1919,14 @@ PROVENANCE = [
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
-    ("cluster_identity_matrix.csv", "file", "Highest identity between representatives of each "
-     "pair of types.", "build_phylogeny.py"),
+    ("cluster_identity_matrix.csv", "file", "Assignment-boundary signal, not a similarity "
+     "measure: the highest identity between any two leaf representatives assigned to different "
+     "types.", "build_phylogeny.py"),
+    ("cluster_assignment_conflicts.csv", "file", "The colliding sequences behind that signal, "
+     "with the evidence level of each.", "build_phylogeny.py"),
+    ("cluster_reference_identity.csv", "file", "Identity between the curated reference sequences "
+     "of each pair of types \u2014 what \u201chow similar are these two types\u201d means.",
+     "build_phylogeny.py"),
     ("leaf_profiles.csv", "file", "Variant profiles: genus composition, plasmid rate, "
      "distinguishing neighbours.", "characterize_leaves.py"),
     ("cluster_ecology_stats.csv", "file", "Ecology and mobility per type.", "analyze_ecology.py"),

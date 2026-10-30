@@ -388,6 +388,30 @@ _WRITE_RX = _re.compile(
 _SQL_WORDS = {"set", "or", "if", "into", "from", "table", "where", "select"}
 
 
+# Bir adimin yazdigi tablolar normalde IKI yoldan ogreniliyor: betigin
+# kaynagini tarayarak (static_writes) ve adim kostuktan sonra tablo
+# sayimlarini karsilastirarak (db_writes). 2026-10-31'de olculdu: bu uc adimda
+# IKISI DE SESSIZCE BASARISIZ OLUYOR.
+#
+#   - Kaynak taramasi: `triad_gate` adiminin komutu triad_converge.py, ve o
+#     surucu tabloyu KENDISI yazmiyor, triad_gate.py'yi cagiriyor. Tarayici
+#     surucunun icinden gecemiyor.
+#   - Sayim karsilastirmasi: iki betik de idempotent. triad_gate ro_triad'i
+#     ayni 19.125 satirla, ingest_protein_entries ro_protein'i ayni 73.699
+#     satirla yeniden yaziyor. Satir sayisi degismedigi icin "yazma
+#     gozlemlenmedi" deniyor ve db_writes BOS kaliyor.
+#
+# Sonucu agir: bu tablolar hicbir adimin ignore kumesine girmiyor, ve
+# roar.sqlite'i girdi sayan HER onceki adim onlari "degismis ust girdi"
+# saniyor -- 48 artefaktin bayat gorunmesinin sebebi bu. Tazelik kapisi
+# boylece ise yaramaz hale geliyor. O yuzden burada BEYAN ediliyorlar.
+# Beyan, gozlemin yerine gecmez; gozlemle BIRLESTIRILIR (writes[name]).
+DECLARED_WRITES = {
+    "triad_gate": {"ro_triad", "ro_triad_meta"},
+    "protein_entries": {"ro_protein"},
+}
+
+
 def static_writes(script):
     """Betigin kaynaginda yazdigi gorulen tablo adlari."""
     try:
@@ -481,15 +505,34 @@ def staleness(name, outputs, inputs, state, ignore=None, counts=None):
     missing_in = [p for p in inputs if not os.path.exists(p)]
     if missing_in:
         return f"girdi yok: {', '.join(missing_in)}"
+    prev = (state.get(name) or {}).get("inputs") or {}
     if outputs:
         oldest_out = min(os.path.getmtime(p) for p in outputs)
         # Veritabani mtime karsilastirmasinin DISINDA; yukaridaki nota bak.
-        newer = [p for p in inputs
-                 if not p.endswith(".sqlite")
-                 and os.path.getmtime(p) > oldest_out]
+        #
+        # MTIME TETIKLER, OZET KARAR VERIR. Eskiden bu dal mtime'a bakip
+        # DONUYORDU, yani asagidaki icerik karsilastirmasina hic varilmiyordu.
+        # Oysa bu dosyanin kendi basligi ucuncu kurali tam bu durum icin
+        # koymus: "git checkout ve kopyalama mtime'i ileri atar ama icerik
+        # ayni olabilir". 2026-10-31'de olculdu: ROs_71_Clean/ROmotif71.hmm
+        # bir cikti dosyasindan yeni gorunuyor ama ozeti annotate'in
+        # kaydettiginin AYNISI (6fc01b561ae6cb7e), ve bu tek sahte kok
+        # annotate'ten baslayip 48 artefakti bayat gosteriyordu -- saatlerce
+        # yeniden hesap, birebir ayni cikti.
+        #
+        # Kural ZAYIFLATILMADI: taban kaydi olmayan ya da ozeti DEGISEN bir
+        # girdi hala bayatlik sayilir. Yalnizca "yeni ama icerigi kanitlanmis
+        # sekilde ayni" durumu disari alindi.
+        newer = []
+        for p in inputs:
+            if p.endswith(".sqlite") or os.path.getmtime(p) <= oldest_out:
+                continue
+            baseline = prev.get(p)
+            if baseline and baseline == digest(p):
+                continue        # mtime ileri atmis, icerik ayni
+            newer.append(p)
         if newer:
             return f"girdi daha yeni: {', '.join(sorted(newer)[:3])}"
-    prev = (state.get(name) or {}).get("inputs") or {}
     changed = []
     for p in inputs:
         if not prev.get(p):
@@ -532,6 +575,7 @@ def main():
     writes = {}
     for name, outputs, cmd, inputs, heavy in ARTEFACTS:
         w = static_writes(cmd[1]) if len(cmd) > 1 else set()
+        w |= DECLARED_WRITES.get(name, set())
         w |= set((state.get(name) or {}).get("db_writes") or [])
         writes[name] = w
     # Adim i'nin DB girdisi = kendisinden ONCEKILERIN yazdiklari. Yani i ve

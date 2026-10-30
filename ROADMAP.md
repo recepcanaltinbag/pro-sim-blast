@@ -2036,6 +2036,95 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 102. "En yakin tipler" yanlis sayiyi yayimliyordu; tazelik izleyicisinde iki sessiz hata (2026-10-31)
+
+### (a) BENZERLIK TABLOSU IKI TIPIN BENZERLIGINI OLCMUYORDU
+
+qxyA sayfasi BedC1'e %91,4 benzer diyordu. Yer gercegine karsi olculdu:
+
+    cift            sayfa    ikili mafft   ortak hizalama
+    qxyA-BedC1      91,4     27,4          23,0
+    qxyA-bfzA       90,2     28,2          21,9
+    qxyA-CntA       84,7     30,1          24,8
+
+Sebep hesap hatasi DEGIL, anlam hatasi. build_phylogeny.py'de
+`best_pair[k2] = max(best_pair[k2], pid)`: deger iki tipin referanslari
+arasindaki kimlik degil, IKI TIPE ATANMIS HERHANGI IKI TEMSILCI arasindaki en
+yuksek kimlik. %91,4'u ureten cift bulundu: 2_212_BedC1#5 ile 5_505_qxyA#21,
+ikisi de TEK UYELI yaprak, ikisi de `distant`.
+
+YAPILDI:
+  - yeni `cluster_reference_identity.csv`: 76 referansin ortak HMM
+    hizalamasindan referans-referans kimligi. Sayfadaki "Nearest other types"
+    artik buradan. qxyA icin sonuc biyolojik olarak anlamli: Stc2 %32,0,
+    BmoA %28,6, GbcA %26,2, CntA %24,8, CmoA %24,1 -- hepsi grup 5, yani
+    qxyA'nin kendi kuaterner amin kolu.
+  - NEDEN SSN KENARLARINDAN DEGIL: diamond'in qcov>=70 / e<=1e-5 filtresi uzak
+    referans ciftlerini TAMAMEN atiyor; qxyA-BedC1, qxyA-bfzA, qxyA-CntA icin
+    REF-REF kenari YOK. SSN bu sayiyi yapisal olarak bildiremez.
+  - NEDEN IKILI MAFFT DEGIL: 76x76=2850 hizalama bir adim icin fazla yavas.
+    Bedeli olculdu: coklu hizalamadan okunan ikili kimlik ~5 puan DUSUK
+    cikiyor. Yanilma yonu guvenli taraf (az gosteriyor, cok degil) ve bu
+    basliga yazildi.
+  - eski sayi SILINMEDI, adi ve anlami duzeltildi: `cluster_assignment_
+    conflicts.csv` + sayfada "Members that collide with another type", her
+    satirda iki dizinin kimligi VE KADEMELERI.
+
+OLCUM, esik karari icin belirleyici: tum DB'de >=%70 tip-arasi catisma 131.
+Bunlarin %93,1'inde (122) iki taraf da distant/novel/family; 8'inde biri
+saglam; ve YALNIZCA 1'inde (%0,8) iki taraf da characterized/close_homolog --
+o da BmoA(close) / GbcA(characterized) %71,2, gercekten yakin akraba iki
+kuaterner amin oksijenazi, hata degil. SONUC: tip sinirlari iyi kanitlanmis
+uyeler duzeyinde SAGLAM; catismalar neredeyse tamamen `distant` uyeleri kabul
+etmenin yan urunu.
+
+### (b) TAZELIK IZLEYICISINDE IKI SESSIZ HATA (madde 101a'nin devami)
+
+Madde 101'deki duzeltme ISE YARAMADI; sebebi iki ayri sessiz basarisizlik:
+
+  1. `db_writes` GOZLEMLE ogrenilmiyordu. Tablo yazmalari satir sayisi
+     degisiminden tespit ediliyor; triad_gate ro_triad'i ayni 19.125 satirla,
+     ingest_protein_entries ro_protein'i ayni 73.699 satirla yeniden yaziyor,
+     yani sayim degismiyor ve "yazma gozlemlenmedi" deniyor. Statik kaynak
+     taramasi da goremedi, cunku triad_converge.py surucusu yazmalari kendi
+     icine sakliyor (cmd[1] surucuyu gosteriyor). Cozum: `DECLARED_WRITES`.
+  2. MTIME, KENDISINDEN USTUN OLAN OZETI EZIYORDU. `staleness()` mtime
+     dalinda DONUYORDU, icerik karsilastirmasina hic varilmiyordu -- oysa
+     rebuild.py'nin kendi basligi ucuncu kurali tam bu durum icin koymus.
+     Olculdu: ROmotif71.hmm bir ciktidan yeni gorunuyor ama ozeti annotate'in
+     kaydettiginin AYNISI (6fc01b561ae6cb7e). Bu tek sahte kok 48 artefakti
+     bayat gosteriyordu. Kural ZAYIFLATILMADI: taban kaydi olmayan ya da ozeti
+     DEGISEN girdi hala bayat.
+
+SONUC: 6 guncel -> 16 guncel. Kalan 38 bayatligin tek GERCEK koku var:
+recursive_homogenize.py'nin icerigi degisti (madde 99'daki olcum oraya
+yazildi). Ozet yorumu koddan ayirt edemez; bu dogru muhafazakar davranis ve
+kurcalanmadi.
+
+### (c) ACIK KARAR: %70 atama esigi (kullanici onerdi)
+
+    esik          kalan onayli giris    kalan tip
+    simdi                    19.125           68
+    >=%40                     8.451            -
+    >=%60                     4.970            -
+    >=%70                     3.486           51
+
+%70 uygulanirsa 17 tip TAMAMEN bosalir ve hicbiri marjinal degil: CmoS 456
+uye (en iyi %57,1), CbdC 424 (%69,4 -- kil payi), DdmC 401 (%61,7), AtdA 182,
+PhnA1a 146, PhdA 140. Toplam 2.051 uye ve 17 tip haritadan siliniyor;
+genelde 19.125 -> 3.486, yani %82 kayip.
+
+ONERI (uygulanmadi, karar kullanicinin): uyeleri UYELIKTEN atmak yerine
+`distant`i TURETILMIS ISTATISTIKLERDEN cikarmak -- bugun duzenleyici ve gen
+sirasi icin yapilan sey. (a)'daki olcum bunu destekliyor: sinirlar saglam
+uyeler duzeyinde zaten saglam, bozulan sey yalnizca distant uyelerden
+hesaplanan sayilar. Boylece tip haritasi kaybolmaz ama hicbir yayimlanan sayi
+"bu enzim olmayan" dizilerden gelmez.
+
+KUCUK NOT: build_phylogeny.py diamond all-vs-all icin hala tempfile ile
+/tmp kullaniyor (1.944 dizi, kendini temizliyor). Proje kurali geregi
+SCRATCH'e tasinmali; buyuk degil, aciklikta tutuluyor.
+
 ## 101. Kapi betikleri zincire girdi; duzenleyici ve 1.2 tablosu duzeltildi (2026-10-31)
 
 (a) TAZELIK IZLEYICISINDEKI BOSLUK KAPATILDI (madde 100b). `carboxylate_audit`,
