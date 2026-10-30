@@ -128,21 +128,34 @@ from ro_motif import (BRIDGING_SITE, CATALYTIC_SITES, RIESKE_SITES,
                       DEFAULT_MODEL, MODEL_COLUMNS)
 from stats_overview import bh_adjust, cramers_v, signal_map
 
-HIS1_COL = CATALYTIC_SITES[0][0]        # 212
-HIS2_COL = CATALYTIC_SITES[1][0]        # 217
-CARBOX_COL = CATALYTIC_SITES[2][0]      # 355
-BRIDGE_COL = BRIDGING_SITE[0]           # 209
+HIS1_COL = CATALYTIC_SITES[0][0]        # 289 (ROmotif71, 603 kolon)
+HIS2_COL = CATALYTIC_SITES[1][0]        # 294
+CARBOX_COL = CATALYTIC_SITES[2][0]      # 431 -- yapisal capa (1NDO Asp362)
+BRIDGE_COL = BRIDGING_SITE[0]           # 286
 CARBOX_OK = "DE"
 
 # Referans hizalamasindan kesilecek alt-modeller: (ad, ilk kolon, son kolon, nicin)
-SUBMODELS = [
-    ("RORieske", 60, 140,
-     "Rieske [2Fe-2S] alani -- POZITIF KONTROL, her sette tutmali"),
-    ("ROcatC", 260, 426,
-     "C-terminal katalitik lob -- karboksilat kolonunun icinde oldugu bolge"),
-    ("ROcarbox", 330, 380,
-     "yalnizca karboksilat cevresi -- dar ve hassas yerel sonda"),
-]
+#
+# 2026-10-30 DUZELTME. Bu pencereler (60-140, 260-426, 330-380) SABIT
+# yaziliydi ve 426 kolonluk ESKI modele aitti. Model 603 kolona buyuyunce
+# hepsi kaydi: Rieske ligandlari artik 164-187'de (60-140 penceresinin
+# DISINDA), karboksilat 431'de, yani "karboksilat bolgesi" diye kesilen
+# 330-380 penceresi karboksilati HIC icermiyordu ve "katalitik lob" diye
+# kesilen 260-426 da. Pencereler artik etkin kolonlardan TURETILIYOR; ayni
+# bagil genislikler korunuyor ki olcumun anlami degismesin.
+def _submodel_windows():
+    r_first, r_last = RIESKE_SITES[0][0], RIESKE_SITES[3][0]
+    return [
+        ("RORieske", max(1, r_first - 25), r_last + 32,
+         "Rieske [2Fe-2S] alani -- POZITIF KONTROL, her sette tutmali"),
+        ("ROcatC", max(1, HIS1_COL - 48), CARBOX_COL + 71,
+         "C-terminal katalitik lob -- karboksilat kolonunun icinde oldugu bolge"),
+        ("ROcarbox", max(1, CARBOX_COL - 25), CARBOX_COL + 25,
+         "yalnizca karboksilat cevresi -- dar ve hassas yerel sonda"),
+    ]
+
+
+SUBMODELS = _submodel_windows()
 
 
 # --------------------------------------------------------------------------

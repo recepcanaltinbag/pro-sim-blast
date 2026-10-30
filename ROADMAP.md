@@ -1798,6 +1798,39 @@ erisimi sorunu; gercek ikame ~221. Dogru sira: capali okumayi (metot
 dogrulandi, 490/490) kolon 431'de kos, kalan gercek yokluklari belgele,
 SONRA 3/3'u zorunlu yapmayi tart. Once rebuild gerekiyor.
 
+## 93. "Literaturde bes grup var" -- hangi bes, ve bizdeki yedi ile iliskisi (2026-10-30)
+
+Kullanici: "bence 5 RO grubu var, literatur de oyle diyor". Olculdu ve
+kaynaklandi: literaturde IKI ayri bes-katli sema var ve ikisi de ELEKTRON
+ZINCIRININ mimarisine gore:
+  Batie ve ark.        bes sinif (IA, IB, IIA, IIB, III)
+  Kweon ve ark. 2008   bes tip   (Tip I-V), doi:10.1186/1471-2091-9-11
+Kweon semasi Batie'nin yerine onerildi ([3Fe-4S] Fd'yi Batie aciklayamiyor).
+
+Bu veritabaninin `ro_group` alani (1-7) BU EKSEN DEGIL: alfa alt biriminin
+dizi/hizalanabilirlik kumelenmesi. Kanit zaten batie_classes.yaml'da yaziliydi
+-- Batie IB'nin iki ornegi bizde grup 1 ve grup 4'te (OMO -> 1_101_OxoO,
+BZDO -> 4_411_XylX), ve CARDO Batie tablosunda uc ayri sinifta geciyor (sus
+bazli). Yani yedi grubu bese indirmek literature yaklasmak degil, iki ekseni
+birbirine karistirmak olur.
+
+YAPILABILECEK SEY: Kweon tipini AYRI bir alan olarak eklemek. ro_etc tablosu
+zaten reduktaz (FNR/GR) ve ferredoksin (rieske/plant) tipini tasiyor. Ama
+atanabilirlik olculdu (19.114 giris):
+    %73,5  atanamaz -- reduktaz operonda yok
+    %19,6  Tip I veya II (FNR_C / FNR_N ayrimi KURULU DEGIL)
+    % 5,4  Tip IV veya V ([2Fe-2S] / [3Fe-4S] ayrimi KURULU DEGIL)
+    % 0,8  Tip III -- tek basina cozulebilen tip
+    % 0,5  belirsiz (FNR+GR)
+Yani once component_hmms'e iki yeni ayrim gerekiyor: FNR_C vs FNR_N reduktaz
+ve [2Fe-2S] vs [3Fe-4S] ferredoksin. O ikisi kurulsa bile alanin %73'u bos
+kalir, cunku operon ortaklari cogu girişte yok. Eklenirse "olculemedi" ile
+"yok" ayri ayri yazilmak zorunda.
+
+Atif eklendi: kweon2008_classification (Crossref ile dogrulandi).
+Guncellendi: batie_classes.yaml -- iki bes-katli sema, Kweon tip tanimlari ve
+atanabilirlik olcumu; ayrica "ro_group 1-5" ifadesi bayatti (artik 1-7).
+
 ## Yeniden uretim
 
 ```

@@ -1,10 +1,40 @@
 # Batie siniflandirmasi -- LITERATURDEN, bu veritabaninin kendi gruplariyla
 # KARISTIRILMAMAK icin ayri tutuluyor.
 #
-# NEDEN AYRI BIR DOSYA. Bu veritabaninin kendi `ro_group` alani 1-5 arasinda
-# deger aliyor ve Batie siniflandirmasi da bes sinif tasiyor. Bu bir TESADUF
-# ve tehlikeli bir tesadUf: bir okuyucu "grup 1" ile "Sinif I"i ayni sey
-# sanabilir. Degiller, ve bu sayfada kanitiyla yaziyor.
+# NEDEN AYRI BIR DOSYA. Bu veritabaninin kendi `ro_group` alani bir zamanlar
+# 1-5 arasinda deger aliyordu ve Batie siniflandirmasi da bes sinif tasiyor.
+# Bu bir TESADUFtu ve tehlikeli bir tesadUf: bir okuyucu "grup 1" ile
+# "Sinif I"i ayni sey sanabilir. Degiller, ve bu sayfada kanitiyla yaziyor.
+# (2026-10-30 notu: ro_group artik 1-7; grup 6 ve 7 hizalanabilirlige gore
+# eklendi. Yani sayilarin ortusmesi tamamen ortadan kalkti, ama karistirma
+# riski kalkmadi -- asagidaki iki kanit hala gecerli.)
+#
+# LITERATURDE IKI AYRI "BES" VAR, ve ikisi de bu dosyanin konusu:
+#   Batie ve ark.          : bes sinif  (IA, IB, IIA, IIB, III)
+#   Kweon ve ark. 2008     : bes tip    (Tip I-V), doi:10.1186/1471-2091-9-11
+# Kweon semasi Batie'nin YERINE onerildi, cunku Batie [3Fe-4S] ferredoksinini
+# ve ETC bilesenlerinin genetik ayrikligini aciklayamiyor. Ikisi de elektron
+# zincirinin mimarisine bakar; hicbiri alfa alt biriminin dizisine bakmaz.
+# Dolayisiyla "literaturde bes grup var" dogrudur ama o bes, buradaki
+# gruplarin AZALTILMIS hali degil: farkli bir eksen.
+#
+# KWEON TIPLERI (tanimlar makaleden):
+#   Tip I    iki bilesenli: oksijenaz + FNR_C tipi reduktaz
+#   Tip II   iki bilesenli: oksijenaz + FNR_N tipi reduktaz
+#   Tip III  uc bilesenli : oksijenaz + [2Fe-2S] Fd + FNR_N reduktaz
+#   Tip IV   uc bilesenli : oksijenaz + [2Fe-2S] Fd + GR reduktaz
+#   Tip V    uc bilesenli : oksijenaz + [3Fe-4S] Fd + GR reduktaz
+#
+# BU VERITABANINDA NE KADARI ATANABILIR (2026-10-30 olcumu, 19.114 giris):
+#   %73,5  atanamaz -- reduktaz operonda yok, yani ETC bilesenleri bilinmiyor
+#   %19,6  Tip I veya II (iki bilesenli; FNR_C/FNR_N ayrimi kurulu DEGIL)
+#   % 5,4  Tip IV veya V (Fd + GR; [2Fe-2S]/[3Fe-4S] ayrimi kurulu DEGIL)
+#   % 0,8  Tip III (Fd + FNR) -- tek basina cozulebilen tip
+#   % 0,5  belirsiz (FNR+GR birlikte)
+# Yani Kweon tipini bir sutun olarak yayinlamak icin iki yeni ayrim gerekiyor
+# (FNR_C/FNR_N ve [2Fe-2S]/[3Fe-4S]); ve o ayrimlar kurulsa bile uclu
+# sistemlerin cogunda operon ortaklari eksik oldugu icin alan buyuk olcude
+# bos kalir. Olcum yapilmadan "DB'de bes tip var" denemez.
 #
 # IKISI FARKLI SEYLERI BOLER
 #   Batie      : elektron zincirinin mimarisi -- reduktazin ve ferredoksinin
