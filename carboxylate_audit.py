@@ -1529,8 +1529,8 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
                   "OZGU bir konumda korunmus bir karboksilat tasiyor (%s); "
                   "yani onlarda da karboksilat VAR, sadece 71 bakteriyel "
                   "referansin ulasamadigi bir yerde. Geri kalan %d giris tek "
-                  "ya da ikili temsil edilen, kuratorlu sette KARSILIGI "
-                  "OLMAYAN okaryotik Rieske oksijenaz alt aileleri "
+                  "ya da ikili temsil edilen okaryotik Rieske oksijenaz "
+                  "alt aileleri "
                   "(feoforbid a oksijenaz, klorofillid a oksijenaz, "
                   "PTC52/TIC55, kolesterol 7-desaturaz/daf-36) oldugu icin bu "
                   "yontemle cozulemiyor: kalan artik bir YANLIS POZITIF "
@@ -1585,10 +1585,14 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
             "okundugunu tasimali: NULL offset 'yok' degil 'pencerede "
             "okunamadi' demektir ve bugun bu ayrim tabloda YOK. (2) Kapsami "
             "dusuk girisler icin karboksilat tip ici capali okumayla "
-            "yazilmali. (3) Referans setinde okaryotik Rieske oksijenaz "
-            "(PAO/TIC55/CAO/kolesterol 7-desaturaz) tipi YOK; bu bosluk "
-            "doldurulmadikca o girislerin katalitik lobu hicbir sabit kolonla "
-            "okunamaz."),
+            "yazilmali. (3) 2026-10-30 GUNCELLEMESI: bu maddede eskiden "
+            "'referans setinde okaryotik RO tipi YOK' yaziyordu. ARTIK VAR -- "
+            "6_601_PAO, 6_602_CAO, 6_603_PTC52 14 Ekim 2026'da eklendi ve "
+            "617 uye topluyor; Nvd ve DAF-36 de sette. Buna RAGMEN kalan "
+            "gercek yokluklarin cogu hala bu tiplerde (PTC52, CAO, DAF36, "
+            "Nvd), yani sorun referansin YOKLUGU degil, bu alt ailelerin "
+            "katalitik lobunun bakteriyel profille hizalanmamasi: cozum "
+            "referans eklemek degil, kolonu tip icinde capalamak."),
     }
 
 

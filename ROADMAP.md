@@ -1831,6 +1831,62 @@ Atif eklendi: kweon2008_classification (Crossref ile dogrulandi).
 Guncellendi: batie_classes.yaml -- iki bes-katli sema, Kweon tip tanimlari ve
 atanabilirlik olcumu; ayrica "ro_group 1-5" ifadesi bayatti (artik 1-7).
 
+## 94. 3/3'un gercek bedeli olculdu: 31 giris (2026-10-30)
+
+Denetim DUZELTILMIS kolonda (431) yeniden kosuldu. Sonuc:
+
+  sabit kolon (431, +-2) ile 3/3 kurali : 2388 giris (%12,49), 45 tip
+  tip ici CAPALI okuma ile 3/3 kurali   :   31 giris (%0,16),  12 tip
+  capalamadan sonra GERCEK yokluk       :   24 giris, 11 tip
+        oturan kalinti: 23 bosluk + 1 N
+        tip: PTC52 5, CAO 5, DAF36 4, Nvd 3, TsaM 1, BmoA 1, CmoS 1, Stc2 1
+        taksonomik alan: Okaryot 20, Bakteri 4
+
+Yani sabit kolonda 3/3 uygulamak, karboksilati FIILEN OLAN 2357 gercek
+RO'yu atardi; en sert vurdugu tipler de kuratorlu referansa en uzak
+olanlar (AerC %100, Nvd %82, DAF36 %54, PobA %48, PrnD %45, DdmC %41).
+
+KARAR: 3/3 kanonik tanim olarak DOGRU, ama SABIT KOLON okumasiyla
+uygulanamaz. Sira: (a) ro_carboxylate'i tip ici capali okumayla yaz,
+(b) sonra MIN_CATALYTIC_SITES=3 yap, (c) 24 gercek yoklugu motif
+istisnasi olarak tek tek belgele. Bu haliyle hem kanonik tanimla
+ortusur hem gercek RO atmaz.
+
+Not: denetimin verdict metninde "referans setinde okaryotik RO tipi YOK"
+yaziyordu -- BAYATTI, 6_601_PAO / 6_602_CAO / 6_603_PTC52 14 Ekim'de
+eklendi ve 617 uye topluyor. Metin duzeltildi; kalan yokluklarin hala o
+tiplerde olmasi referans yoklugu degil, o alt ailelerin katalitik lobunun
+bakteriyel profille hizalanmamasidir.
+
+## 95. Protein evreninin kaynagi: UniProt, NCBI DEGIL (2026-10-30)
+
+Kullanici sordu: "protein dizilerini tum NCBI'dan mi aldin, nasil yaptin".
+Cevap: NCBI'dan HICBIR SEY indirilmedi. Evren depodaki combined_pfam.fasta:
+189.657 dizi, 189.397 TrEMBL + 260 Swiss-Prot basligi, indirme tarihi
+11 Ara 2024. Olculdu (4.000 dizilik ornek): 3.999'u PF00355'i kendi GA
+esigiyle tutuyor, yani dosya gercekten bir PF00355 setidir.
+
+Kapsami artirmak icin olculenler:
+  1. GIRIS KAPISI DARBOGAZ DEGIL. Dongusel olmayan test: UniProt setinde
+     OLMAYAN, genom taramasindan gelen 1.504 onaylanmis dizinin 1.504'u de
+     PF00355 ile kendi esiginde toplaniyor.
+  2. UNIPROT'U TAZELEMEK KAYBETTIRIR. Bugun PF00355 = 100.453 protein
+     (InterPro) / 101.576 (UniProt API) -- bizim 2024 anlik goruntusu
+     189.657. UniProtKB aradan fazla kayitlari sildi. Yani yeni cekim
+     ESKISININ YERINE DEGIL, BIRLESIMI olarak kullanilmali.
+  3. IKINCI GIRIS KAPISI AZ AMA GERCEK KAZANC. PF00848 (Ring_hydroxyl_A,
+     katalitik alan) = 22.162 protein; 20.909'u PF00355 de tasiyor. Yani
+     1.253 protein katalitik alani tasidigi halde Rieske anotasyonu YOK --
+     mevcut giris kapisi onlari hic goremiyor.
+  4. NCBI. UniProtKB zaten INSDC/RefSeq cevirilerini aliyor, ortusme buyuk.
+     Gercekten fazla olan kisim: NCBI'da olup UniProtKB'de olmayan (ya da
+     silinmis) proteinler. Tam nr taramasi yuzlerce GB; pratik yol alan
+     kisitli bir NCBI sorgusu (CDD/PF00848) + ayni kapi.
+
+Oncelik sirasi: (a) elimizdeki 54.298 baglamsiz protein girisini al (kosuyor),
+(b) PF00848'i ikinci giris kapisi yap (+1.253 aday, ucuz), (c) yeni UniProt
+cekimini BIRLESIM olarak ekle, (d) NCBI taramasi -- disk ve karar gerektirir.
+
 ## Yeniden uretim
 
 ```
