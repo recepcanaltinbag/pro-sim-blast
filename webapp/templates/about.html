@@ -95,6 +95,24 @@ threshold cannot separate them, because their Rieske domains are genuinely homol
 just as well. We measured this: in a test set of several hundred proteins of each kind, every
 member of both groups passed a 10<sup>−10</sup> cut-off. What distinguishes an oxygenase is not the
 Rieske domain but the mononuclear Fe(II) catalytic site that accompanies it.</p>
+<p>Two protein sets enter this database, and they are not the same set. Genomic entries come from
+scanning annotated genome records directly, which is what makes every positional statement in the
+database possible. The alpha-subunit filter itself was built and run against a snapshot of all
+PF00355 proteins in UniProtKB taken on 11 December 2024 &mdash; 189,657 sequences, 189,397 of them
+from TrEMBL and 260 from Swiss-Prot. Nothing was retrieved from NCBI's protein database. We checked
+that the snapshot is what it claims to be: in a sample of 4,000 of its sequences, 3,999 are
+recruited by PF00355 at Pfam's own gathering threshold. 73,699 of the 189,657 pass the
+alpha-subunit test below, and {{ totals.confirmed|fmt }} of those that also have a genome record
+became entries. The remaining 54,298 protein-level alpha subunits have no genomic context, so no
+operon, neighbour or replicon statement can be made about them and they are not entries; they are
+held separately rather than mixed into counts that assume a genome position.</p>
+<p>Two measurements bound what this misses. Of the {{ totals.confirmed|fmt }} entries, 1,504 were
+found by genome scanning and are absent from the snapshot altogether; all 1,504 are recruited by
+PF00355 at its own threshold, so the entry criterion is not the limiting step. And PF00355 in
+UniProtKB today holds roughly 100,500 proteins, fewer than our snapshot, because redundant entries
+were deleted in between: a refresh has to be a union with the snapshot, not a replacement. A second
+entry point does add reach &mdash; 1,253 proteins carry PF00848, the catalytic domain, without a
+Rieske-domain annotation, and the present criterion cannot see them.</p>
 <p>Two independent criteria are therefore required.</p>
 <ol>
   <li><b>Profile coverage.</b> Each of the {{ N_REFS }} curated references seeds a profile hidden Markov model
@@ -107,7 +125,22 @@ Rieske domain but the mononuclear Fe(II) catalytic site that accompanies it.</p>
     references, and specific match-state columns are checked directly: the four Rieske ligands
     Cys-X-His and Cys-X-X-His, all four required, and the 2-His-1-carboxylate triad of the
     mononuclear iron site, at least two of three within a two-column window. The window tolerates
-    sub-family alignment shifts, which otherwise reject five of the curated references themselves.</li>
+    sub-family alignment shifts, which otherwise reject five of the curated references themselves.
+    <br><b>This is weaker than the literature's definition, and the gap is now measured.</b> The
+    mononuclear site is a 2-His-1-carboxylate triad without known exception, and the carboxylate is
+    not decorative: the D362A mutant of naphthalene 1,2-dioxygenase is completely inactive. The
+    reason the rule asks for two of three is that a <em>fixed</em> column cannot read the third in
+    every sub-family &mdash; for 2,388 entries that column and its neighbours are empty in the
+    alignment, and the same is true of six of the curated references. Reading each ligand at the
+    column its own type conserves instead, {{ totals.triad_complete|fmt }} of
+    {{ totals.confirmed|fmt }} entries carry the complete triad; {{ totals.triad_absent|fmt }} lack
+    a carboxylate, 20 lack a histidine, and {{ totals.triad_undecided|fmt }} belong to an
+    architecture where the column has no counterpart at all and cannot be read either way. Every
+    entry's three ligands and the reading each one came from are published in the
+    <code>ro_triad</code> table. Membership still follows the two-of-three rule, so these counts
+    describe entries the database currently admits; tightening admission to three of three is the
+    next step and will change every denominator, so it is done in one pass with a full rebuild
+    rather than silently.</li>
 </ol>
 <p>Two sequences originally in the reference set were removed during this work: one lacks a Rieske
 centre altogether and belongs to the soluble di-iron monooxygenase family, the other has the Rieske
@@ -137,8 +170,12 @@ level.</p>
 <tr><td>Rieske ligands required</td><td class="num">4 of 4</td>
     <td>conserved in every curated reference</td><td>relaxing it admits ferredoxins and bc<sub>1</sub> iron-sulfur proteins</td></tr>
 <tr><td>Catalytic triad required</td><td class="num">2 of 3</td>
-    <td>five curated references fail a strict 3 of 3 through alignment shift alone</td>
-    <td>3 of 3 would discard genuine enzymes, including CARDO and PobA</td></tr>
+    <td>a fixed column cannot read the carboxylate in every sub-family: for 2,388 entries that
+        column and its neighbours are empty, and six of the curated references fail there too</td>
+    <td>3 of 3 at the fixed column would discard 2,388 entries across 45 types, almost all of them
+        wrongly; read at each type's own column the cost is {{ totals.triad_incomplete|fmt }}
+        entries, which is why 3 of 3 is the right definition and the fixed-column reading was the
+        real problem</td></tr>
 <tr><td>Column search window</td><td class="num">&#177;2</td><td>sub-family alignment shifts</td>
     <td>a window of zero rejects references that are known to be active</td></tr>
 <tr><td>Minimum length</td><td class="num">300 aa</td><td>shortest curated alpha subunit</td>
@@ -233,6 +270,11 @@ only when both agree. Effect sizes accompany every p value.
     taxonomic and ecological figure in this database.</li>
   <li>Several types have no substrate recorded because the original publications were not
     available; they are shown as unknown rather than guessed.</li>
+  <li>Membership requires two of the three mononuclear-iron ligands, while the literature's
+    definition requires all three. The {{ totals.triad_incomplete|fmt }} entries that do not
+    complete the triad under a per-type reading are flagged in <code>ro_triad</code> rather than
+    removed, and the seven whose architecture leaves the column unreadable are marked untested
+    rather than absent.</li>
 </ul>
 
 <h2>11 · Programmatic access</h2>

@@ -1922,19 +1922,53 @@ DOKUNULMADI: 62 giris (55 His + 7 AerC) henuz capalanmamis bir okumaya
 dayaniyor ve hicbiri "triad yok" diye yayinlanamaz. Kapi kontrolu bunu WARN
 olarak acik tutuyor (`validate_curation.py: check_triad_gate`).
 
+### 96a. His okumasi da capalandi -- `triad_anchor_his.py`
+
+His-1 ve His-2 artik karboksilattakiyle AYNI metotla okunuyor: tip-ici mafft,
+kolonu tipin kendi pozitifleri oyluyor, yontem tutulan yarida dogrulaniyor
+(9 tipin 9'unda tutulan yari 1.0, pozitif geri okuma %99,2-100).
+
+55 kararsiz girisin sonucu: 35'inde iki His de tipin kendi kolonlarinda VAR,
+20'sinde o kolonlarda YOK. Yani +-5 pencerenin "55/55 His buldum" demesi
+tamamen yanlisti.
+
+KURALI BELIRLEYEN VAKA -- 5_504_CntA. 28 girisin 27'sinde iki His de capa
+kolonlarinda (371 ve 379) oturuyor; o kolonlar 120 pozitifin 120'sinde His.
+Ama aradaki ara 7 kalinti, 3-5 degil: bu alt-varyantta demir baglayan ilmekte
+UC KALINTILIK BIR INSERSIYON var (GYH-FSLSGP-CH, pozitiflerde CYH---CGPAH).
+Aralik sarti KARAR verseydi 27 gercek enzim "triad eksik" diye atilacakti.
+Literatur iki His'in demiri baglamasini ister, ilmek uzunlugunu sarta
+baglamaz. Karar bu yuzden KOLON HOMOLOJISI: His TAM capa kolonunda olmali;
+kaymis bir okuma ancak H-x(3-5)-H araligi destekliyorsa cagri uretir. Bu ek
+sart olmadan TsaM'in 2 ve PAO'nun 1 girisinde pencere yine bitisik His'i
+kabul ediyordu (capa kolonunda N/D/R var).
+
+AerC (7 giris) BILEREK test edilmemis kaliyor. Referansa capalama denendi ve
+yapilamadi: `7_701_AerC_AerC_pro` referansinin KENDISINDE de kolon 431'de
+karboksilat yok, hatta katalitik His kolonlarinda Q ve D var. Sebep 2026-10-14'te
+cozulmus (`aerc_resolution.json`): AerC 717 aa, Rieske ile katalitik lob
+arasinda buyuk bir insersiyon var ve MODELIN 429-570 BOLGESININ AerC'DE HIC
+KARSILIGI YOK. Okunamayan bir kolonda "yok" demek olcum degil, kurgu olur.
+
+Ayni olcum referans setinin kendisini de vuruyor: 76 referansin 6'sinda
+(PobA, LigX, KshA15, Nvd, DAF36, AerC) sabit kolonda karboksilat YOK. Yani
+sabit-kolon okumasi uyelerde degil, KURATORLU REFERANSLARDA bile basarisiz.
+
+ro_triad'in son hali: tam 19.063 | karboksilat yok 24 | His yok 20 |
+test edilemedi 7 (AerC).
+
 Siradaki (bu sirayla):
-  1. His okumasini da capalamak -- karboksilattakiyle AYNI metot, ayni
-     tutulan-yari dogrulamasi. 55 girisin kaderi buna bagli.
-  2. AerC'nin karboksilatini KURATORLU REFERANSA capalamak: tipin kendi
-     pozitifi yok ama `7_701_AerC_AerC_pro` refs71.fasta'da duruyor.
-     `stage_anchored_reread` <5 pozitifte tipi atliyor ve referansi hic
-     denemiyor -- duzeltilebilir bir bosluk.
-  3. Ikisi bittikten sonra `annotate_ro.py`'de MIN_CATALYTIC_SITES = 3 ve
-     `rebuild.py --run --include-heavy`; o noktada is_confirmed duser ve
-     TUM denominatorler degisir, yani ayni kosuda site yeniden donmali.
-  4. Geriye kalan gercek yokluklari (su an 24) tek tek motif ISTISNASI
-     olarak belgelemek: hicbiri "RO degil" demek degil, Rieske 4/4 hepsinde
-     tam ve kopru karboksilati 23/24'unde yerinde.
+  1. `annotate_ro.py`'de MIN_CATALYTIC_SITES = 3 ve `rebuild.py --run
+     --include-heavy`. O noktada is_confirmed 19.114'ten dusecek ve TUM
+     denominatorler degisir, yani ayni kosuda site yeniden donmeli.
+     KARAR GEREKTIREN NOKTA: 7 AerC girisi okunamiyor; "yok" degil
+     "okunamadi" oldugu icin atilmamalari gerekir, yani kural "triad 3/3,
+     ya da triad'in okunamadigi BELGELENMIS mimari" olmali.
+  2. Geriye kalan 44 gercek yoklugu (24 karboksilat + 20 His) tek tek motif
+     ISTISNASI olarak belgelemek: hicbiri "RO degil" demek degil, Rieske 4/4
+     hepsinde tam.
+  3. `ingest_protein_entries.py`: hizalama hazir (657 MB, tamamlanmis),
+     ro_protein tablosu kurulacak.
 
 Yeni hata, ayni sinifin dordunculusu: `has_carbox = (carbox or "") in "DE"`
 Python'da BOS okumayi "var" sayar (`"" in "DE"` True'dur) ve AerC'nin 7

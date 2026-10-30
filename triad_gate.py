@@ -66,7 +66,9 @@ TRIAD_CONSENSUS = re.compile(r"[DE].{2}H.{3,5}H")
 
 # Denetimin capali okuma cagrilari. "present_*" = karboksilat bulundu.
 PRESENT_CALLS = ("present_at_homologous_column",
-                 "present_at_group_conserved_column")
+                 "present_at_group_conserved_column",
+                 "present_at_shifted_column",
+                 "present_at_reference_anchored_column")
 
 
 def read_site(row, column, accepted, window=2):
@@ -144,6 +146,10 @@ def main():
     ap.add_argument("--db", default="roar.sqlite")
     ap.add_argument("--alignment", default="genomic_context/cand_aln.sto")
     ap.add_argument("--audit", default="analysis_out/carboxylate_audit.json")
+    ap.add_argument("--his-anchor", default="analysis_out/triad_anchor_his.json",
+                    help="triad_anchor_his.py ciktisi; yoksa His SADECE sabit "
+                         "kolondan okunur ve karari verilemeyenler "
+                         "'his_needs_anchoring' kalir")
     ap.add_argument("--out", default="analysis_out/triad_gate.json")
     ap.add_argument("--apply", action="store_true",
                     help="ro_triad tablosunu yaz (verilmezse sadece bildirir)")
@@ -184,6 +190,27 @@ def main():
     aligned = read_stockholm_matchcols(args.alignment)
     print("[bilgi] hizalamada %d dizi" % len(aligned))
 
+    # His'in capali okumasi. Yoksa His sabit kolonda kalir ve karari
+    # verilemeyen girisler "his_needs_anchoring" olarak isaretlenir --
+    # hicbir durumda "His yok" diye yayinlanmaz.
+    his_anchor, his_anchor_stamp = {}, None
+    if os.path.exists(args.his_anchor):
+        with open(args.his_anchor) as handle:
+            doc = json.load(handle)
+        want = {"his1": his1_col, "his2": his2_col, "carboxylate": carbox_col}
+        if doc.get("inputs", {}).get("columns") != want:
+            print("[HATA] %s baska kolonlar icin uretilmis: %s"
+                  % (args.his_anchor, doc.get("inputs", {}).get("columns")))
+            return 2
+        his_anchor = doc["per_entry_calls"]["histidine"]
+        his_anchor.update(doc["per_entry_calls"].get("carboxylate_his") or {})
+        his_anchor_stamp = doc["generated"]
+        print("[His capasi] %s, %d giris icin cagri var"
+              % (his_anchor_stamp, len(his_anchor)))
+    else:
+        print("[His capasi] yok (%s); His sadece sabit kolondan okunacak"
+              % args.his_anchor)
+
     calls = audit["per_entry_calls"]
     out_rows = []
     tally = Counter()
@@ -210,13 +237,36 @@ def main():
             # bulunan cift literaturun aralik sartini tutmuyor (asagida olculur),
             # bu yuzden burada YOKLUK DA ILAN EDILMEZ: giris capali okumaya
             # devredilir. Karboksilatta yapilan hatanin ayni sinifi.
-            his_source = "needs_anchoring"
             spacing = his_pair_spacing(row, his1_col, his2_col, HIS_WIDE_WINDOW)
-            his_note = ("no histidine at the fixed column; the pair found "
-                        "within +-%d columns is separated by %s residues "
-                        "(literature: 3-5), so no call was made"
-                        % (HIS_WIDE_WINDOW, spacing))
             his_spacing_seen[spacing] += 1
+            anchored = his_anchor.get(cid)
+            if anchored is None:
+                his_source = "needs_anchoring"
+                his_note = ("no histidine at the fixed column; the pair found "
+                            "within +-%d columns is separated by %s residues "
+                            "(literature: 3-5), so no call was made"
+                            % (HIS_WIDE_WINDOW, spacing))
+            elif anchored["call"] in PRESENT_CALLS:
+                his_source = "anchored"
+                h1, h2 = anchored["his1"], anchored["his2"]
+                h1_off = h2_off = anchored.get("offset", (0, 0))[0]
+                his_note = ("both histidines read at this type's own anchored "
+                            "columns; the pair is separated by %s residues"
+                            % anchored.get("spacing"))
+                if not anchored.get("canonical_spacing", True):
+                    his_note += (" -- longer than the usual 3-5, an insertion "
+                                 "in the iron-binding loop, and the two columns "
+                                 "carry a histidine in %s of this type's "
+                                 "members with a fixed-column reading"
+                                 % anchored.get("anchor_column_his_fraction"))
+            else:
+                his_source = "anchored"
+                h1_off = h2_off = None
+                h1, h2 = anchored["his1"], anchored["his2"]
+                his_note = ("no histidine at this type's own anchored columns "
+                            "(the type's positives carry one in %s of cases), "
+                            "so the site is genuinely incomplete"
+                            % anchored.get("anchor_column_his_fraction"))
 
         if his_source == "fixed_column":
             canonical_spacing[his_pair_spacing(row, his1_col, his2_col, 2)] += 1
@@ -232,8 +282,10 @@ def main():
                 note = ""
             elif call["anchored_call"] == "untested":
                 carbox, source, offset = call["anchored_residue"], "untested", None
-                note = ("fewer than 5 anchor positives in this type: the "
-                        "absence is NOT established")
+                note = ("fewer than 5 anchor positives in this type, and the "
+                        "type's curated reference carries no carboxylate at "
+                        "this column either, so the column is not homologous "
+                        "here: the absence is NOT established")
             else:
                 carbox, source, offset = call["anchored_residue"], "absent", None
                 note = "not found even after the anchored re-reading"
@@ -248,7 +300,8 @@ def main():
         if complete:
             status = "complete"
         elif not his_ok:
-            status = "his_needs_anchoring"
+            status = ("his_absent" if his_source == "anchored"
+                      else "his_needs_anchoring")
         elif source == "untested":
             status = "carboxylate_untested"
         else:
@@ -267,18 +320,19 @@ def main():
     print("[His1->His2 kalinti arasi, sabit kolonda okunanlar] %s"
           % dict(canonical_spacing.most_common(5)))
     print("[His1->His2 kalinti arasi, genis pencerede bulunanlar] %s   "
-          "<- literatur 3-5 diyor; bu yuzden cagri yapilmadi"
-          % dict(his_spacing_seen.most_common()))
+          "<- literatur 3-5 diyor, yani genis pencere YANLIS His'i buluyor; "
+          "karar capali okumadan geliyor" % dict(his_spacing_seen.most_common()))
     print("\n3/3'u tamamlamayan tipler (durumuna gore):")
     for status in sorted(status_by_type, key=lambda s: -sum(status_by_type[s].values())):
         print("   %s  (%d giris)" % (status, sum(status_by_type[status].values())))
         for cluster, count in status_by_type[status].most_common():
             print("      %-16s %d" % (cluster, count))
 
-    print("\n[dikkat] %d giriste karboksilatin yoklugu KANITLANMADI (tipte 5'ten "
-          "az capa pozitifi); %d giriste ise His okumasi capalanmadan "
-          "karara baglanamaz. Hicbiri 'triad yok' diye yayinlanamaz."
-          % (tally["carboxylate_untested"], tally["his_needs_anchoring"]))
+    print("\n[dikkat] karboksilatin yoklugu %d giriste KANITLANMADI, His okumasi "
+          "%d giriste hala capalanmamis. Bu %d girisin hicbiri 'triad yok' diye "
+          "yayinlanamaz; kapi siki tutulmadan once cozulmeleri gerekir."
+          % (tally["carboxylate_untested"], tally["his_needs_anchoring"],
+             tally["carboxylate_untested"] + tally["his_needs_anchoring"]))
 
     summary = {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -286,9 +340,14 @@ def main():
         "rule": "Rieske 4/4 (annotate_ro) + mononuclear Fe triad 3/3",
         "carboxylate_reading": "fixed column +-2; if not found there, the "
                                "within-type anchored re-reading",
-        "his_reading": "fixed column +-2 only; the anchored reading is NOT yet "
-                       "implemented for the two histidines",
+        "his_reading": "fixed column +-2; if no histidine is there, the "
+                       "within-type anchored reading, where the call needs "
+                       "the exact anchored column (a shifted hit must also "
+                       "match the literature's H-x(3-5)-H spacing)",
         "audit_used": {"path": args.audit, "generated": audit["generated"]},
+        "his_anchor_used": ({"path": args.his_anchor,
+                             "generated": his_anchor_stamp}
+                            if his_anchor_stamp else None),
         "columns": {"his1": his1_col, "his2": his2_col, "carboxylate": carbox_col},
         "confirmed_entries": len(rows),
         "triad_complete": tally["complete"],
@@ -309,6 +368,7 @@ def main():
             "same within-type anchored reading the carboxylate got."
             % HIS_WIDE_WINDOW,
         "absence_not_proven": tally["carboxylate_untested"],
+        "his_absent": tally["his_absent"],
         "his_undecided": tally["his_needs_anchoring"],
         "applied": bool(args.apply),
     }

@@ -1666,21 +1666,33 @@ PROVENANCE = [
      "column in 10 of 10 types -- the machinery reads correctly. (It does "
      "NOT validate the column it was pointed at; see the method card.)",
      "carboxylate_anchor_holdout.py"),
+    ("triad_anchor_his.json", "file", "The two histidines and the "
+     "anchor-poor types read by the same per-type anchoring the carboxylate "
+     "uses. It also shows why widening a fixed window is not a substitute: "
+     "of the 55 entries with no histidine at the fixed column, the anchored "
+     "reading finds both ligands at the type's own columns in 35 and finds "
+     "nothing there in 20, while a +-5 window had appeared to find a "
+     "histidine in all 55. One case decided the rule: 27 CntA entries carry "
+     "both histidines at columns that 120 of 120 of that type's members also "
+     "carry a histidine at, but separated by 7 residues instead of the usual "
+     "3-5, because that sub-variant has a three-residue insertion in the "
+     "iron-binding loop. Requiring the spacing would have discarded 27 "
+     "genuine enzymes, so column homology decides and the spacing is "
+     "reported. The seven AerC entries stay untested on purpose: that "
+     "architecture has no counterpart for the model region the carboxylate "
+     "column sits in (see aerc_resolution.json).",
+     "triad_anchor_his.py"),
     ("triad_gate.json", "file", "The 2-His-1-carboxylate triad called with "
      "all three ligands required -- the definition the literature uses, and "
      "the one the admission rule did not use. Each ligand is read the way "
      "that ligand can be read: the carboxylate at the fixed column and, "
      "where that column is empty, by the within-type anchored re-reading; "
      "the two histidines at the fixed column only, because their anchored "
-     "reading is not built yet. 19,028 of 19,114 confirmed entries are "
-     "complete; 24 lack a carboxylate after anchoring, 7 could not be tested "
-     "(AerC has no anchor positives of its own), and 55 cannot be decided "
-     "until the histidine reading is anchored too -- widening the window "
-     "finds a histidine in all 55, but one separated by 0 or 7 residues "
-     "instead of the 3-5 the literature requires, so it is the wrong "
-     "histidine. Written to the ro_triad table, which leaves is_confirmed "
-     "untouched so no published denominator moves until the reading is "
-     "finished.",
+     "reading is not built yet. 19,063 of 19,114 confirmed entries are "
+     "complete; 24 lack a carboxylate after anchoring, 20 lack a "
+     "histidine after anchoring, and 7 could not be tested at all. Written "
+     "to the ro_triad table, which leaves is_confirmed untouched so no "
+     "published denominator moves until the remaining seven are resolved.",
      "triad_gate.py"),
     ("carboxylate_method_card.txt", "file", "The carboxylate reading method "
      "printed step by step with the number each step produced -- what is "

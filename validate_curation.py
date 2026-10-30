@@ -1019,11 +1019,11 @@ def check_triad_gate(rep, root):
     rep.check("triad gate: every triad call rests on an anchored reading",
               not undecided, undecided,
               "" if not undecided else
-              f"{undecided} entries are still decided on an unanchored reading "
-              f"({meta.get('his_undecided')} histidine, "
+              f"{undecided} entries are still decided on an unanchored "
+              f"reading ({meta.get('his_undecided')} histidine, "
               f"{meta.get('absence_not_proven')} carboxylate); ro_triad does "
-              f"NOT call them absent, but the histidine reading must be "
-              f"anchored before is_confirmed is tightened to 3/3",
+              f"NOT call them absent, and they must be resolved before "
+              f"is_confirmed is tightened to 3/3",
               severity="WARN")
 
 

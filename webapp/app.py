@@ -317,7 +317,20 @@ def totals(con):
             ("operon", "operon_complete", "SELECT COUNT(*) FROM operon WHERE completeness=3"),
             ("operon", "operon_any", "SELECT COUNT(*) FROM operon WHERE completeness>0"),
             ("ro_subfamily", "novel", "SELECT COUNT(*) FROM ro_subfamily WHERE assignment_class='novel_candidate'"),
-            ("ro_domain", "eukaryote", "SELECT COUNT(*) FROM ro_domain WHERE domain='Eukaryota'")]:
+            ("ro_domain", "eukaryote", "SELECT COUNT(*) FROM ro_domain WHERE domain='Eukaryota'"),
+            # 2026-10-30, 3/3 triad kapisi (ro_triad). Bu sayilar about.html'de
+            # gosteriliyor ve ELLE YAZILMAMALI: triad okumasi hala degisiyor
+            # (His capalamasi yeni), elle yazilan bir sayi bu projede zaten
+            # bir kere sessizce bayatladi.
+            ("ro_triad", "triad_complete",
+             "SELECT COUNT(*) FROM ro_triad WHERE triad_complete=1"),
+            ("ro_triad", "triad_incomplete",
+             "SELECT COUNT(*) FROM ro_triad WHERE triad_complete=0"),
+            ("ro_triad", "triad_absent",
+             "SELECT COUNT(*) FROM ro_triad WHERE triad_status='carboxylate_absent'"),
+            ("ro_triad", "triad_undecided",
+             "SELECT COUNT(*) FROM ro_triad WHERE triad_status IN "
+             "('his_needs_anchoring','carboxylate_untested')")]:
         if con.execute("SELECT name FROM sqlite_master WHERE name=?", (table,)).fetchone():
             t[key] = s(q)
     return t
