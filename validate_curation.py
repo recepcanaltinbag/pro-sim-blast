@@ -950,6 +950,39 @@ def check_reference_motifs(rep, root, refs_aln=None):
               not thin, len(thin), "; ".join(thin[:6]))
 
 
+def check_literature_motif_spacing(rep, root):
+    """Kolon ucluleri literaturun DXXHXXXXH imzasini tutuyor mu?
+
+    NEDEN. Derlemeler mononukleer merkezin dizi imzasini DXXHXXXXH, yani
+    D-x(2)-H-x(4)-H olarak veriyor. Kullanilan kolonlar (286 / 289 / 294)
+    bunun birebir kendisi ve bu, kolonlarin dogru yerde oldugunun YAPIDAN
+    BAGIMSIZ ikinci kanitidir (birincisi 1NDO Asp362 -> kolon 431 capasi).
+    Kolonlardan biri sessizce kayarsa iki kanittan biri duser; bu kontrol
+    o dusmeyi gurultulu yapar. Karboksilat kolonunun yanlis olmasi bu
+    projede zaten bir kere sessiz kaldi.
+    """
+    label = ("motif columns: the bridge and the two histidines keep the "
+             "literature's D-x(2)-H-x(4)-H spacing")
+    try:
+        sys.path.insert(0, root)
+        import ro_motif                              # noqa: PLC0415
+    except Exception as exc:                          # noqa: BLE001
+        rep.check(label, True, 0, f"ro_motif not importable ({exc})",
+                  severity="WARN")
+        return
+    bridge = ro_motif.BRIDGING_SITE[0]
+    his1 = ro_motif.CATALYTIC_SITES[0][0]
+    his2 = ro_motif.CATALYTIC_SITES[1][0]
+    gap1, gap2 = his1 - bridge - 1, his2 - his1 - 1
+    ok = gap1 == 2 and gap2 == 4
+    rep.check(label, ok, 0 if ok else 1,
+              "" if ok else
+              f"columns {bridge}/{his1}/{his2} give D-x({gap1})-H-x({gap2})-H, "
+              f"but the literature's signature is D-x(2)-H-x(4)-H "
+              f"(naphthalene 1,2-dioxygenase Asp205/His208/His213); one of "
+              f"these columns has moved")
+
+
 def check_triad_gate(rep, root):
     """Yayinlanan triad tanimi 3/3 mu, ve bu karar TAZE mi?
 
@@ -1799,6 +1832,7 @@ def main():
     check_vocabulary_drift(rep)
     check_reference_motifs(rep, ROOT)
     check_motif_columns_anchored(rep, ROOT)
+    check_literature_motif_spacing(rep, ROOT)
     check_triad_gate(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")

@@ -131,6 +131,19 @@ def _load_derived_columns(path=_COLUMNS_JSON):
 DERIVED_COLUMNS = _load_derived_columns()
 MODEL_COLUMNS.update(DERIVED_COLUMNS)
 
+# KOLON UCLUSUNUN LITERATURLE BAGIMSIZ DOGRULAMASI (2026-10-30).
+# Derlemeler mononukleer merkezin dizi imzasini DXXHXXXXH olarak veriyor,
+# yani D-x(2)-H-x(4)-H: koprü karboksilati, iki kalinti, His-1, dort kalinti,
+# His-2. Burada kullanilan kolonlar bunun BIREBIR kendisi:
+#     kopru 286 -> His-1 289   arada 2 kalinti
+#     His-1 289 -> His-2 294   arada 4 kalinti
+# Bu, kolonlarin yalnizca karboksilati degil UCUNU DE dogru yerde okudugunun
+# dizi-bagimsiz kanitidir; yapisal capa (1NDO Asp362 -> kolon 431) ile ayni
+# sonuca iki ayri yoldan varilmis olur. Yapidan gelen sayilar da ortusuyor:
+# NDO'da His208 2,04 A, His213 2,15 A, Asp362 2,27 A (birinci kabuk ligandlar),
+# koprü Asp205 ise ayni demirden 6,95 A (ikinci kabuk role, hicbir seyi
+# koordine etmiyor). Kolonlardan biri degistirilirse bu kontrol de
+# guncellenmeli -- aksi halde yorum kanit olmaktan cikar.
 RIESKE_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["rieske"]
 CATALYTIC_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["catalytic"]
 BRIDGING_SITE = MODEL_COLUMNS[DEFAULT_MODEL]["bridging"]
