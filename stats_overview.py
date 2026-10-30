@@ -888,10 +888,18 @@ def main():
     # 5b. Kopru karboksilati Asp mi Glu mu -- grup ve reaksiyon sinifiyla iliskisi
     #
     # Olculen sey: iki karboksilatin DAVRANISI farkli. Katalitik demir
-    # karboksilati neredeyse istisnasiz Asp (476:1), yani bu pozisyon ailenin
-    # degismeyen parcasi. Kopru karboksilati ise 2,5:1 bolunuyor ve Glu dagilimi
-    # rastgele degil: kuaterner amin dalini isaretliyor. Test bu izlenimi
-    # olcuye donusturur.
+    # karboksilati agirlikla Asp, kopru karboksilati ise bolunuyor ve Glu
+    # dagilimi rastgele degil: kuaterner amin dalini isaretliyor. Test bu
+    # izlenimi olcuye donusturur.
+    #
+    # BURAYA ORAN YAZMA. Onceki hali "neredeyse istisnasiz Asp (476:1)"
+    # diyordu; o oran karboksilat KOLONU 471'ken olculmustu ve kolon
+    # 2026-10-30'da 431'e duzeltilince gecersiz kaldi. Kolon 431'de olculen
+    # (ayni gun): katalitik D 16.299 / E 439 = 37:1, kopru D 13.964 /
+    # E 5.156 = 2,7:1. Oran yorumun degil bu fonksiyonun ciktisinin isidir;
+    # asagidaki test sayilari zaten uretiyor. Sabit yazilan her oran bir
+    # sonraki kolon/esik degisikliginde sessizce yanlisa duser -- bu projede
+    # tam olarak bu oldu.
     carbox = con.execute("""
         SELECT c.bridging_residue, c.catalytic_residue, r.ro_group, r.ro_cluster,
                p.organism
