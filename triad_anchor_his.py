@@ -345,10 +345,25 @@ def main():
     con.close()
     log("[DB] onaylanmis giris %d, ro_triad satiri %d" % (len(entries), len(triad)))
 
+    # ro_triad BAYAT olabilir, ve bu betik tam da oyleyken kosar: onaylanmis
+    # kume yeniden kurulumla degisir, ro_triad ise bu betik + triad_gate.py
+    # kosana kadar eski kumeyi tasir. O yuzden ro_triad'da olup ARTIK onayli
+    # olmayan girisler cikar. Onlara karar YAZILMAZ: veritabaninda uye olmayan
+    # bir dizi icin triad cagrisi uretmek, olcmedigimiz seyi yayimlamak olur.
+    # (2026-10-30: bu kontrol yoktu ve betik entries[cid] uzerinde KeyError
+    # ile dustu -- XM_009028827.1:0-1056:1, eski kurulumda onayli, simdi degil.)
     his_undecided = sorted(c for c, (_s, _c, hs) in triad.items()
                            if hs and hs != "fixed_column")
     carbox_untested = sorted(c for c, (_s, cs, _hs) in triad.items()
                              if cs == "untested")
+    dropped = sorted({c for c in his_undecided + carbox_untested
+                      if c not in entries})
+    if dropped:
+        log("[bilgi] ro_triad'da olup artik onayli OLMAYAN %d giris atlandi: %s"
+            % (len(dropped), ", ".join(dropped[:5])
+               + (" ..." if len(dropped) > 5 else "")))
+        his_undecided = [c for c in his_undecided if c in entries]
+        carbox_untested = [c for c in carbox_untested if c in entries]
     log("[is] His karari verilemeyen %d giris, karboksilati test edilemeyen %d"
         % (len(his_undecided), len(carbox_untested)))
     if not his_undecided and not carbox_untested:

@@ -2036,6 +2036,50 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 100. Kapi zinciri kostu; tazelik izleyicisinde yapisal bosluk (2026-10-30)
+
+MADDE 98'DEKI SIRA KOSTU, KAPI YESIL: 113 kontrol, 109 PASS, 0 FAIL, 4 WARN.
+`ro_triad` 19.125 satir; complete 19.063, his_absent 31, carboxylate_absent 24,
+carboxylate_untested (AerC) 7. `ro_protein` 73.699 satir.
+
+IKI SEY OGRENILDI.
+
+(a) CAPALAMA IKI TUR DONUYOR, ve bu tasarimdan. Birinci turdan sonra
+`his_needs_anchoring` 12 cikti: tam olarak yeni onaylanan +12 giris, cunku
+`triad_anchor_his.py` isini BAYAT `ro_triad`'dan okudugu icin onlari gormemisti.
+Ikinci tur 0'a indirdi. Secimin `his_source` uzerinden yapilmasi (triad_status
+uzerinden DEGIL) bu yakinsamayi mumkun kiliyor; durum uzerinden secilse ikinci
+tur bos kume donerdi. KURAL: madde 98'in 2-3. adimlari, his_needs_anchoring 0
+olana kadar TEKRARLANIR.
+
+Ayrica `triad_anchor_his.py` KeyError ile dusuyordu: `entries` guncel onayli
+kumeden, `triad` bayat `ro_triad`'dan okunuyor, ve eski kurulumda onayli olup
+artik olmayan bir giris (XM_009028827.1:0-1056:1) ikincisinde var birincisinde
+yok. Artik atlaniyor ve kac tane atlandigi yaziliyor -- DB'de uye olmayan bir
+dizi icin triad cagrisi yazmak, olcmedigimiz seyi yayimlamak olurdu.
+
+(b) TAZELIK IZLEYICISI 45 ADIMI SAHTE BAYAT GOSTERIYOR. `rebuild.py --check`
+51 artefaktin 45'ini BAYAT dedi, sebep olarak `roar.sqlite[ro_triad,
+ro_triad_meta]` gosterdi. OLCUM: 52 adim betiginden YALNIZCA
+`validate_curation.py` bu tablolari okuyor (o da validation_gate adimi, yani
+onun bayat olmasi DOGRU). Diger 45 adim bu tablolari HIC okumuyor.
+
+Neden: bu tablolari yazan `triad_gate.py` ve `ingest_protein_entries.py`
+ARTEFACTS listesinde YOK, elle kosuyoruz. Dolayisiyla hicbir adimin `writes`
+kumesinde degiller, hicbirinin `ignore` kumesine girmiyorlar, ve `roar.sqlite`i
+girdi sayan her adim onlari "degismis ust girdi" saniyor. Zincirin 42/47'de
+dusmesinin koku de bu. Bu kosuda 45 adim KOSTURULMADI (saatler surer, ciktiyi
+degistirmezdi); yalnizca gercekten hic kosmamis 5 adim kosturuldu
+(provenance, disagreements, report_html, explorer_html, hub_html; toplam 9 s).
+
+ACIK KARAR (kullaniciya): dogru duzeltme bu betikleri zincire adim olarak
+eklemek, ama arada GERCEK bir sabit nokta var: `triad_anchor_his.py`
+`ro_triad`i OKUYOR, `triad_gate.py` onun JSON'undan `ro_triad`i YAZIYOR. Yani
+dogrusal sirada gate -> anchor -> gate olmak zorunda, (a)'da elle yapilan tur.
+Bunu pipeline'a gommek yanlis sirayi kalici hale getirebilir, o yuzden
+DEGISTIRILMEDI. Tazelik kontrolu ZAYIFLATILMAMALI: cozum bu uc betigin
+sirasini dogru yazmak, ro_triad'i izlemekten cikarmak degil.
+
 ## 99. Heterojen yapraklarda karari veren kural yayimlandi (2026-10-30)
 
 `recursive_homogenize.py` yapraklari medyan ikili kimlik 0,70'e (HOMOGENEITY_TARGET)
