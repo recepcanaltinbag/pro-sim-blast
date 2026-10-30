@@ -1999,6 +1999,43 @@ Python'da BOS okumayi "var" sayar (`"" in "DE"` True'dur) ve AerC'nin 7
 girisini "3/3 tam" isaretledi. Kume tipine cevrildi; uyelik testleri artik
 `frozenset` uzerinden.
 
+## 98. AGIR YENIDEN KURULUM KOSUYOR -- 2026-10-30 18:40
+
+NEDEN. `rebuild.py --check`: 51 artefaktin 47'si BAYAT, ve en onemlisi
+`annotate` bayat -- cunku `ro_motif.py` 2026-10-30'da degisti (karboksilat
+kolonu 471 -> 431). Yani `ro.is_confirmed` ve `ro.catalytic_intact` hala
+2026-10-22'de, YANLIS KOLONDA uretilmis degerler. Olculen etki +12 / -1
+giris. Site'i bu haliyle dagitmak 13 girisi yanlis yayinlamak olurdu.
+
+    nohup python3 rebuild.py --run --include-heavy --cpu 16
+    log: /media/lin-bio/back2/roar_rebuild_2026-10-30.log
+
+BITTIKTEN SONRA SIRAYLA YAPILMASI GEREKENLER. is_confirmed degisince
+ro_triad'in dayandigi kume de degisir, yani triad kapisi yeniden
+kurulmalidir -- ve kendi tazelik kontrolu bunu zaten FAIL olarak yakalar
+(`check_triad_gate`: denetim kac giris gormus vs DB'de kac var):
+
+  1. python3 carboxylate_audit.py --work /media/lin-bio/back2/roar_carbox_work
+     (yeni onaylanmis kume uzerinde; tip basina mafft, uzun surer)
+  2. python3 triad_anchor_his.py --work /media/lin-bio/back2/roar_triad_anchor
+     (--reuse-alignments KULLANMA: girdi degisti, yeniden hizalanmali)
+  3. python3 triad_gate.py --apply
+  4. python3 ingest_protein_entries.py --work /media/lin-bio/back2/roar_protein
+     (linked_candidate_id yeni kumeye gore yeniden kurulmali; hizalama
+     yeniden kullanilir, hmmalign tekrar kosmaz)
+  5. python3 validate_curation.py    -> 0 FAIL olmali
+  6. python3 check_site.py           -> "Ready to deploy" olmali
+  7. cd webapp && python3 freeze.py --out site --base /pro-sim-blast
+     && bash deploy_pages.sh git@github-prosimblast:recepcanaltinbag/pro-sim-blast.git
+
+KAPI 3/3'E BU KOSUDA SIKILASTIRILMADI. Sebep: kuralin dogru yazimi
+"triad 3/3, YA DA triad'in sabit kolonda okunamadigi BELGELENMIS mimari"
+ve `annotate_ro.py` bu ikinci sarti goremez (capali okuma ondan SONRA
+kuruluyor, dongusel). Duz `MIN_CATALYTIC_SITES = 3` yazilirsa AerC'nin 7
+girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
+FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
+verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
+
 ## Yeniden uretim
 
 ```
