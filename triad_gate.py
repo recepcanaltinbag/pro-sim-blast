@@ -3,11 +3,22 @@
 
 NEDEN BU DOSYA VAR
 ------------------
-Mononukleer Fe(II) merkezi literaturde istisnasiz "2-His-1-karboksilat facial
-triad" olarak tanimlanir (Barry & Challis 2013, ACS Catal 3:2362; Ferraro 2005,
-Biochem Biophys Res Commun 338:175). Karboksilat sus degil: NDO'da D362A mutanti
-TAMAMEN inaktiftir. Yani uc liganddan ikisini isteyen bir kabul kurali
-(MIN_CATALYTIC_SITES = 2) literaturle uyumlu DEGILDIR.
+Mononukleer Fe(II) merkezi literaturde KANONIK olarak "2-His-1-karboksilat
+facial triad" tanimlanir: iki histidin, ve bir Asp ya da Glu'nun yan zincir
+karboksilati (Barry & Challis 2013, ACS Catal 3:2362; Ferraro 2005, Biochem
+Biophys Res Commun 338:175). Karboksilat sus degil: NDO'da D362A mutanti
+naftalinden HIC urun vermiyor ve ham ekstraktta ne oksijen tuketimi ne urun
+olculuyor, protein tam boy uretildigi halde (Parales ve ark. 2000, J Bacteriol
+182:1641; citations.yaml: parales2000_ndo_active_site). CntA'da karsilik gelen koprü glutamati E205 degistirildiginde
+(E205D, E205A) TMA uretimi tamamen duruyor (Zhu ve ark. 2014, PNAS 111:4268; citations.yaml: zhu2014_CntA).
+Yani uc liganddan ikisini isteyen bir kabul kurali (MIN_CATALYTIC_SITES = 2)
+literaturun tanimiyla uyumlu DEGILDIR.
+
+DIKKAT -- IDDIANIN SINIRI. "Her Rieske oksijenazda triad vardir" diyen bir
+kaynak BULUNAMADI (arandi, 2026-10-30). Derlemeler "kanonik" ve "korunmus"
+diyor, "istisnasiz" demiyor. Bu fark pratik: bu yuzden triad'i tamamlanmayan
+girisler SILINMEZ, isaretlenir (motif_exceptions.yaml,
+member_level_triad_absences) -- gercek bir istisna olabilirler.
 
 Buna ragmen kapi uzun sure 2/3'te kaldi, cunku 3/3'u SABIT kolonda uygulamak
 2388 giris (%12.5) ve 45 tip kaybettiriyordu. 2026-10-30 denetimi
@@ -63,6 +74,13 @@ HIS_WIDE_WINDOW = 5
 # bulunamayan girislerde pencereyi genisletmek His'i "buluyor" ama BULDUGU
 # His yanlis olanidir -- bkz. asagidaki olcum.
 TRIAD_CONSENSUS = re.compile(r"[DE].{2}H.{3,5}H")
+
+# Literaturun kanonik araligi: iki demir-baglayan His arasinda 3-5 kalinti.
+# NDO'da His208/His213 (ara 4, Kauppi 1998 / Parales 2000); CntA'da
+# His208/His213 (ara 4, Zhu 2014 PNAS 111:4268 ve CntA yapi calismasi).
+# Olculen dagilim da bunu veriyor: sabit kolonda okunan girislerde ara
+# 4 (18.445) ya da 3 (607).
+HIS_SPACING_CANONICAL = range(3, 6)
 
 # Denetimin capali okuma cagrilari. "present_*" = karboksilat bulundu.
 PRESENT_CALLS = ("present_at_homologous_column",
@@ -232,6 +250,7 @@ def main():
         h2, h2_off = read_site(row, his2_col, his2_ok)
         his_source = "fixed_column"
         his_note = ""
+        his_canonical = True
         if h1_off is None or h2_off is None:
             # Sabit kolonda His yok. Pencereyi genisletmek His'i "buluyor" ama
             # bulunan cift literaturun aralik sartini tutmuyor (asagida olculur),
@@ -253,7 +272,8 @@ def main():
                 his_note = ("both histidines read at this type's own anchored "
                             "columns; the pair is separated by %s residues"
                             % anchored.get("spacing"))
-                if not anchored.get("canonical_spacing", True):
+                his_canonical = bool(anchored.get("canonical_spacing", True))
+                if not his_canonical:
                     his_note += (" -- longer than the usual 3-5, an insertion "
                                  "in the iron-binding loop, and the two columns "
                                  "carry a histidine in %s of this type's "
@@ -272,7 +292,9 @@ def main():
                             % anchored.get("anchor_column_his_fraction"))
 
         if his_source == "fixed_column":
-            canonical_spacing[his_pair_spacing(row, his1_col, his2_col, 2)] += 1
+            spacing_here = his_pair_spacing(row, his1_col, his2_col, 2)
+            canonical_spacing[spacing_here] += 1
+            his_canonical = spacing_here in HIS_SPACING_CANONICAL
 
         if cid in fixed_negatives:
             call = calls[cid]
@@ -301,7 +323,16 @@ def main():
         complete = int(his_ok and has_carbox)
 
         if complete:
-            status = "complete"
+            # Kanonik olmayan His-His araligi AYRI bir durum olarak kaydedilir.
+            # NEDEN: 2026-10-30'da 5_504_CntA'nin 27 girisinde iki His de tipin
+            # homolog kolonlarinda cikti ama aralari 7 kalinti, literaturun
+            # H-x(3-5)-H'si degil (NDO His208/His213 arasi 4; CntA referansinda
+            # da 4). Kolon homolojisi LIGANDIN ORADA OLDUGUNU soyler; 3 kalinti
+            # uzun bir ilmegin yuzeysel triad'i hala kurup kurmadigini SOYLEMEZ.
+            # Bunlari duz "complete" saymak o kaydi bir sayinin icinde
+            # gorunmez kilardi.
+            status = ("complete" if his_canonical
+                      else "complete_non_canonical_his_spacing")
         elif not his_ok:
             status = ("his_absent" if his_source == "anchored"
                       else "his_needs_anchoring")
@@ -353,8 +384,21 @@ def main():
                             if his_anchor_stamp else None),
         "columns": {"his1": his1_col, "his2": his2_col, "carboxylate": carbox_col},
         "confirmed_entries": len(rows),
-        "triad_complete": tally["complete"],
-        "triad_incomplete": sum(v for k, v in tally.items() if k != "complete"),
+        "triad_complete": tally["complete"]
+                          + tally["complete_non_canonical_his_spacing"],
+        "triad_complete_canonical_his_spacing": tally["complete"],
+        "triad_complete_non_canonical_his_spacing":
+            tally["complete_non_canonical_his_spacing"],
+        "non_canonical_spacing_note":
+            "Both iron-binding histidines sit at the type's own homologous "
+            "columns, but are separated by more or fewer residues than the "
+            "3-5 the literature reports (NDO His208/His213 are 4 apart, and "
+            "so are CntA's). Column homology says the ligand is there; it "
+            "does not say that a longer loop still assembles the facial "
+            "triad. These entries are counted as complete and kept "
+            "separately visible so that claim is never made silently.",
+        "triad_incomplete": sum(v for k, v in tally.items()
+                                if not k.startswith("complete")),
         "status_counts": dict(tally.most_common()),
         "carboxylate_source_counts": dict(source_tally.most_common()),
         "incomplete_by_type": dict(by_type_incomplete.most_common()),
@@ -397,7 +441,9 @@ def main():
             carboxylate_offset  INTEGER,
             his_source          TEXT,  -- fixed_column | needs_anchoring
             triad_complete      INTEGER,
-            triad_status        TEXT,  -- complete | carboxylate_absent |
+            triad_status        TEXT,  -- complete |
+                                       -- complete_non_canonical_his_spacing |
+                                       -- carboxylate_absent | his_absent |
                                        -- carboxylate_untested | his_needs_anchoring
             note                TEXT
         );

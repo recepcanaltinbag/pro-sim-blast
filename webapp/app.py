@@ -324,6 +324,12 @@ def totals(con):
             # bir kere sessizce bayatladi.
             ("ro_triad", "triad_complete",
              "SELECT COUNT(*) FROM ro_triad WHERE triad_complete=1"),
+            # Kanonik olmayan His-His araligi: ligandlar homolog kolonlarda
+            # ama ara literaturun 3-5'i degil. "Tam" sayiliyorlar; sayinin
+            # icinde KAYBOLMAMALARI icin ayrica sayiliyor.
+            ("ro_triad", "triad_non_canonical_spacing",
+             "SELECT COUNT(*) FROM ro_triad WHERE "
+             "triad_status='complete_non_canonical_his_spacing'"),
             ("ro_triad", "triad_incomplete",
              "SELECT COUNT(*) FROM ro_triad WHERE triad_complete=0"),
             ("ro_triad", "triad_absent",

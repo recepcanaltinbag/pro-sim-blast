@@ -953,9 +953,11 @@ def check_reference_motifs(rep, root, refs_aln=None):
 def check_triad_gate(rep, root):
     """Yayinlanan triad tanimi 3/3 mu, ve bu karar TAZE mi?
 
-    NEDEN. Literatur mononukleer Fe merkezini istisnasiz 2-His-1-karboksilat
-    olarak tanimlar ve karboksilat sus degildir: NDO'da D362A tamamen
-    inaktiftir (Barry & Challis 2013). Buna karsin kabul kurali uzun sure
+    NEDEN. Literatur mononukleer Fe merkezini KANONIK olarak 2-His-1-karboksilat
+    tanimlar (iki His + Asp ya da Glu) ve karboksilat sus degildir: NDO'da D362A
+    naftalinden hic urun vermiyor (Parales 2000, J Bacteriol 182:1641), CntA'da
+    E205A/E205D TMA uretimini durduruyor (Zhu 2014, PNAS 111:4268). "Istisnasiz"
+    diyen bir kaynak YOK, bu yuzden triad'i eksik girisler silinmez isaretlenir. Buna karsin kabul kurali uzun sure
     >=2/3'te kaldi, cunku 3/3'u SABIT kolonda uygulamak 2388 girisi
     kaybettiriyordu -- oysa o girislerin 2357'sinde karboksilat FIILEN vardi,
     sadece kolon hizalamada bostu. Karar artik ro_triad'da durur ve tabloyu

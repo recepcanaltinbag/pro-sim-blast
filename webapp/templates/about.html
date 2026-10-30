@@ -127,13 +127,25 @@ Rieske-domain annotation, and the present criterion cannot see them.</p>
     mononuclear iron site, at least two of three within a two-column window. The window tolerates
     sub-family alignment shifts, which otherwise reject five of the curated references themselves.
     <br><b>This is weaker than the literature's definition, and the gap is now measured.</b> The
-    mononuclear site is a 2-His-1-carboxylate triad without known exception, and the carboxylate is
-    not decorative: the D362A mutant of naphthalene 1,2-dioxygenase is completely inactive. The
+    mononuclear site is canonically a 2-His-1-carboxylate triad &mdash; two histidines and the side
+    chain carboxylate of an aspartate or a glutamate &mdash; and the carboxylate is not decorative:
+    the D362A mutant of naphthalene 1,2-dioxygenase forms no product from naphthalene and shows
+    neither oxygen uptake nor product formation in crude extract, although the full-length subunit
+    is made. In carnitine monooxygenase, replacing the corresponding glutamate (E205A or E205D)
+    abolishes trimethylamine production. We did not find a source stating that the triad holds in
+    every Rieske oxygenase without exception, so entries that fail to complete it are flagged here
+    rather than discarded: some of them may be real exceptions. The
     reason the rule asks for two of three is that a <em>fixed</em> column cannot read the third in
     every sub-family &mdash; for 2,388 entries that column and its neighbours are empty in the
     alignment, and the same is true of six of the curated references. Reading each ligand at the
     column its own type conserves instead, {{ totals.triad_complete|fmt }} of
-    {{ totals.confirmed|fmt }} entries carry the complete triad; {{ totals.triad_absent|fmt }} lack
+    {{ totals.confirmed|fmt }} entries carry the complete triad &mdash; though
+    in {{ totals.triad_non_canonical_spacing|fmt }} of them the two histidines
+    sit at their type's homologous columns while being separated by more
+    residues than the three to five the literature reports (both histidines of
+    naphthalene 1,2-dioxygenase and of carnitine monooxygenase are four apart),
+    which says the ligands are present but not that the longer loop still
+    assembles the iron site; {{ totals.triad_absent|fmt }} lack
     a carboxylate, 20 lack a histidine, and {{ totals.triad_undecided|fmt }} belong to an
     architecture where the column has no counterpart at all and cannot be read either way. Every
     entry's three ligands and the reading each one came from are published in the
