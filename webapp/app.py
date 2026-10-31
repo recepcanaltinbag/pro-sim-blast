@@ -1336,6 +1336,7 @@ templates.env.globals.update(
     element_slug=atlas.element_slug,
     hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
+    dominant_arch=atlas.dominant_arch,
     reaction_scheme_svg=atlas.reaction_scheme_svg,
     chip_text=atlas.chip_text,
     # Sema aciklamalari SVG'nin icinde degil: orada sabit x konumlarina
@@ -1958,7 +1959,13 @@ def cluster_extras(con, cluster):
             "architecture": dominant,
             "upstream_family": fam_n.most_common(1)[0][0] if fam_n else "",
             "intergenic_bp": bps[len(bps) // 2] if bps else None,
-            "upstream_product": "typical upstream regulator of this type"})
+            # Bos birakilir: basligi SVG mimariye gore secer, cunku *_other
+            # mimaride "regulator" demek olcumun kurmadigi bir iddia olurdu.
+            "upstream_product": ""})
+        x["canonical_arch_text"] = atlas.ARCH_TEXT.get(
+            dominant, dominant.replace("_", " "))
+        x["canonical_has_regulator"] = dominant in (
+            "divergent_regulator", "codirectional_regulator")
 
     # --- Referansin KENDI mimarisi, tip geneli istatistikten AYRI ----------
     #
@@ -1985,10 +1992,18 @@ def cluster_extras(con, cluster):
             "cid": ref["cid"], "tier": ref["tier"], "architecture": ref["a"],
             "family": ref["f"] or "", "product": ref["prod"] or "",
             "intergenic_bp": ref["bp"], "layout": ref["layout"] or "[alpha]"}
+        # Referans sekli TEK bir girisin sekli oldugu icin komsu genlerin
+        # gercek urun adlari BILINIYOR; oklara baslik olarak onlar baglanir.
+        # Oncesinde SCP2 gibi bir gen ekranda yalnizca "other" diye goruluyordu.
+        ref_titles = [r[0] for r in con.execute(
+            "SELECT COALESCE(NULLIF(product,''), category, component) "
+            "FROM operon_gene WHERE candidate_id=? ORDER BY position",
+            (ref["cid"],))]
         x["ref_arch_svg"] = atlas.operon_regulator_svg(
             ref["layout"] or "[alpha]",
             {"architecture": ref["a"], "upstream_family": ref["f"] or "",
-             "intergenic_bp": ref["bp"], "upstream_product": ref["prod"] or ""})
+             "intergenic_bp": ref["bp"], "upstream_product": ref["prod"] or ""},
+            titles=ref_titles)
     if atlas.table_exists(con, "cluster_sdp"):
         row = con.execute("SELECT columns FROM cluster_sdp WHERE cluster=?", (cluster,)).fetchone()
         if row:

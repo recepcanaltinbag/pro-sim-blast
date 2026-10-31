@@ -2036,6 +2036,80 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 106. Operon sekli, DUZENLEYICI BULUNMADAN "promoter bolgesi" ciziyordu (2026-10-31)
+
+Kullanici bildirimi: "qxyA sayfasindaki gene order bence yanlis, bunu
+hazirlamada bi bug var gibi" ve ardindan "qxyA operonu icin bence
+TetR --- promoter ---- a - scp2 gibi bisi olmali ama yok iste".
+
+### Gen SIRASI dogruydu; yanlis olan onun yanina cizilen sey
+
+Once sira olcumle aklandi. `build_operons.walk()` supheliydi, cunku eksi
+iplikte bir ters cevirme yapiyor; `gene_offset`'in GENOMIK mi iplik-goreli mi
+oldugu olculdu (19.125 girisin ±3 komsulari): her iki iplikte de negatif offset
+genomik olarak SOLDA (26.621/26.624 ve 27.104/27.119). Yani yurume ve boslugun
+aritmetigi tutarli. Ardindan asil test: `[alpha]` tek basina cikan 51 yakin
+qxyA uyesinde, ayni iplikte 150 bp icinde komsu var mi -- **0**. Sira dogru.
+
+### Asil hata: sekil, olcumun kurmadigi bir iddiayi ciziyordu
+
+`operon_regulator_svg` duzenleyici okunu yalnizca `*_regulator` mimarilerinde
+ciziyordu, AMA kesik promoter kutusu `bp is not None` oldugu an ciziliyordu ve
+SVG'nin alt yazisi ona "dashed box is the intergenic promoter region" diyordu.
+Tip sayfasinin alt yazisi da enum'u oldugu gibi basiyor ("divergent other") ve
+sonunda kosulsuz olarak "where the regulator is divergent, it and the operon
+share that single region" diyordu.
+
+Sonuc: duzenleyici BULUNAMAMIS tiplerde, yalniz bir alfanin yanina isimsiz bir
+"promoter bolgesi" kutusu konuyor ve alt yazi duzenleyiciden bahsediyordu.
+
+Olculdu (2026-10-31): mimari verisi olan 68 tipin **40'inda** baskin mimari
+`*_other`, yani cizilen promoter kutusunun yaninda tanimli hicbir duzenleyici
+yok. Baskin mimari dagilimi: divergent_other 32, divergent_regulator 17,
+codirectional_other 8, unknown 7, codirectional_regulator 4.
+
+qxyA en yanilticisiydi: 53 yakin uyenin **52'si** `divergent_other`; sayfa
+"[alpha] + 138 bp promoter" gosteriyordu. Literaturun qxyAR operonu
+(PMID:27792326) gercek, ama TetR yalnizca KARAKTERIZE girisin kendisinde var
+(1/53, 78 bp).
+
+### Atlas tablosunda ayni kusurun daha serti
+
+`atlas_operons.html` mimariyi SABIT `'divergent_regulator'` yaziyordu ve
+`divergent_regulator_rate >= 0.2` oldugu an ok ciziyordu; okun basligi da
+"typical upstream regulator of this type" idi. Yani uyelerinin %80'inde
+duzenleyici olmayan bir tipe "kanonik duzenleyici" atfediliyordu. Olculdu:
+eski kuralla 30 tipe ok cizilirdi, bunlarin **15'inde** baskin mimari
+`*_other`. Artik mimari sayilardan secilir (`atlas.dominant_arch`), ok 17
+tipte cizilir.
+
+### Yapilanlar
+
+- `atlas.operon_regulator_svg`: yukari komsu BILINIYORSA her zaman cizilir --
+  duzenleyiciyse mor + aile adi, degilse notr gri + "not a regulator"
+  etiketi. Kutu ancak duzenleyici varken "promoter" diye adlandirilir; alt
+  yazi uc duruma gore ayrisir.
+- `atlas.ARCH_TEXT`: bes mimarinin insan dilindeki karsiligi, TEK kaynak.
+- `atlas.dominant_arch`: `regulation_by_cluster.csv` satirindan baskin mimari.
+- `cluster.html`: enum sizmasi kalkti; duzenleyici yokken alt yazi kutunun
+  "olculmus mesafe, kanitlanmis promoter DEGIL" oldugunu soyluyor.
+- `atlas_operons.html`: sabit mimari kalkti, aciklama paydasini soyluyor.
+- `SHORT["other"/"none"]`: `"·"` -> `"gene"`. Nokta ekranda HICBIR SEY gibi
+  okunuyordu; anlami "gen var, annotasyonu kategoriye uymadi".
+- `operon_regulator_svg(..., titles=)`: tek-giris sekillerinde oklara GERCEK
+  urun adlari baslik olarak baglanir. qxyA referans sekli artik
+  **TetR -[78 bp]- alpha - SCP2 - HNH** okunuyor; kullanicinin bekledigi sekil
+  buydu ve ZATEN hesaplaniyordu, yalnizca canli derlemede yoktu.
+  `build_entry_data.py` bunu KULLANMAZ: dedup anahtari sekle dayanir, urun adi
+  girise ozgu oldugu icin her girise ayri SVG uretirdi.
+
+### Yol ustunde cikan gerileme
+
+`atlas.tip_info_from_db`, yaprak medyanini `f"{ident:.2f}"` ile biciml[e]ndiriyordu;
+madde 104'te medyan tek uyeli yaprakta `None` yapilinca filogeni atlas sayfasi
+`TypeError` veriyordu. Artik "not defined (single sequence)" yaziyor.
+
+
 ## 105. Karboksilat penceresi, ve indirmelerin derleme kimligi (2026-10-31)
 
 Iki dis bildirim, ikisi de yerinde cikti -- ama ikisi de tahmin edilenden

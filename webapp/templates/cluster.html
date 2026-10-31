@@ -521,11 +521,18 @@ anywhere. Genes beyond that distance, and genes on the opposite strand such as a
 regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
 pages and in the sections above.
 {% endif %}
-Preceded by the architecture seen in most of its members
-({{ x.canonical_arch.replace('_', ' ') }}{% if x.canonical_reg_total %},
-{{ x.canonical_reg_n }} of {{ x.canonical_reg_total }} counted on the same basis as the gene order
-above{% endif %}) and the median length of the intergenic region in which the promoter lies. Where the regulator is divergent, it and the operon share that single region, so
-one regulatory site can control both.</figcaption>
+Preceded by what lies 5&prime; of the operon in most of its members{% if x.canonical_reg_total %}
+({{ x.canonical_reg_n }} of {{ x.canonical_reg_total }}, counted on the same basis as the gene
+order above){% endif %}: {{ x.canonical_arch_text }}.
+{% if x.canonical_has_regulator %}
+The dashed box is the median length of that intergenic region; where the regulator is divergent it
+and the operon share the region, so one regulatory site can control both.
+{% else %}
+The dashed box is the median length of that intergenic region. <b>It is a measured distance, not a
+demonstrated promoter:</b> no regulator was identified next to the operon in most members, so the
+figure must not be read as showing one. A regulator described for the characterised reference, if
+there is one, is shown in its own figure above and belongs to that entry, not to the type.
+{% endif %}</figcaption>
 </figure>
 {% endif %}
 <div class="cols">

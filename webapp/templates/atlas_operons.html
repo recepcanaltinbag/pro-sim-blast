@@ -131,10 +131,14 @@ partners encoded elsewhere in the genome.</figcaption>
 </figure>
 
 <h2>5 · Canonical gene order, with the regulator that faces it</h2>
-<p class="note">For each type: the most frequent operon gene order, preceded by the regulatory
-architecture of most of its members and the median intergenic region in which the promoter must lie.
-Boxes marked a, b, Fd and Red are sequence-verified components, Reg is the upstream regulator with
-its family; other boxes are annotation categories.</p>
+<p class="note">For each type: the most frequent operon gene order, preceded by whatever lies
+5&prime; of the operon in <b>most</b> of its members, and the median intergenic distance. Boxes
+marked a, b, Fd and Red are sequence-verified components; Reg is an upstream gene annotated as a
+regulator, shown with its family. A grey box marked <b>gene</b> means the commonest upstream
+neighbour is <b>not</b> a recognised regulator, so the dashed region is a measured distance and not
+a demonstrated promoter. Other boxes are annotation categories. Counted over <b>all</b> members of
+the type, which is a wider basis than the per-type pages use; the rightmost column gives the
+divergent-regulator rate on the same basis.</p>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Type</th><th class="num">Members</th>
 <th>Canonical regulator, promoter region and operon</th>
@@ -147,7 +151,14 @@ its family; other boxes are annotation categories.</p>
 <tr>
   <td><a href="{{ u('/cluster/' ~ d.cluster) }}"><b>{{ d.gene }}</b></a><br><span class="note">{{ d.substrate or '-' }}</span></td>
   <td class="num">{{ d.n|fmt }}</td>
-  <td>{% if rr and (rr.divergent_regulator_rate|float) >= 0.2 %}{{ operon_regulator_svg(rows[0][0], {'architecture': 'divergent_regulator', 'upstream_family': rr.top_regulator_family, 'intergenic_bp': (rr.median_intergenic_bp|int) if rr.median_intergenic_bp else None, 'upstream_product': 'typical upstream regulator of this type'})|safe }}{% else %}{{ layout_svg(rows[0][0])|safe }}{% endif %}
+  {# Mimari artik SAYILARDAN secilir. Eskiden 'divergent_regulator' SABIT
+     yaziliydi ve divergent_regulator_rate >= 0.2 oldugu an cizilirdi: yani
+     uyelerin %80'inde duzenleyici olmayan bir tipe 'kanonik duzenleyici'
+     oku konuyordu ve okun basligi 'typical upstream regulator of this type'
+     diyordu. 2026-10-31'de sayildi: 68 tipin 40'inda baskin mimari
+     *_other. #}
+  {% set dom = dominant_arch(rr) if rr else none %}
+  <td>{% if dom and dom != 'unknown' %}{{ operon_regulator_svg(rows[0][0], {'architecture': dom, 'upstream_family': rr.top_regulator_family, 'intergenic_bp': (rr.median_intergenic_bp|int) if rr.median_intergenic_bp else None, 'upstream_product': ''})|safe }}{% else %}{{ layout_svg(rows[0][0])|safe }}{% endif %}
       <div class="note mono">{{ rows[0][0] }}</div></td>
   <td class="num">{{ rows[0][1] }}</td>
   <td class="num">{% if rr %}{{ '%.0f %%' % (100 * (rr.divergent_regulator_rate|float)) }}{% if rr.top_regulator_family %}<br><span class="note">{{ rr.top_regulator_family }}</span>{% endif %}{% else %}-{% endif %}</td>
@@ -155,8 +166,10 @@ its family; other boxes are annotation categories.</p>
 {% endif %}
 {% endfor %}
 </tbody></table></div>
-<p class="note">A regulator is drawn when at least one member in five has one facing the operon start.
-Per-type detail is on the <a href="{{ u('/atlas/regulation') }}">regulation page</a>.</p>
+<p class="note">The upstream box shows the <b>commonest</b> arrangement, not any arrangement that
+occurs: a type can reach a high divergent-regulator rate in the last column and still be drawn with
+a grey <b>gene</b> box, because the regulator is the minority case. Per-type detail is on the
+<a href="{{ u('/atlas/regulation') }}">regulation page</a>.</p>
 
 <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.35.2/dist/plotly-cartesian.min.js"></script>
 <script>

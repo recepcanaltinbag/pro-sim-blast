@@ -1285,8 +1285,13 @@ def tip_info_from_db(con, url, ecology=None, names=None):
             "label": f"{gene(cluster)}#{leaf_id.split('#')[-1]} · {org or ''} (n={size})",
             "color": GROUP_COLORS.get(group_of(cluster), "#95a5a6"),
             "href": url("/leaf/" + leaf_id.replace("#", "-")),
+            # median_identity tek uyeli yaprakta NULL'dur: olculecek cift yok.
+            # Eskiden 1.0 yazilirdi ve 1.179 yaprak "medyan 1.00" diye
+            # yayinlaniyordu; NULL'a cevrilince bu bicimlendirme kalmisti.
             "title": f"variant {leaf_id} | {size} members | median identity "
-                     f"{ident:.2f} | representative {org}"}
+                     + ("not defined (single sequence)" if ident is None
+                        else f"{ident:.2f}")
+                     + f" | representative {org}"}
     for (cluster,) in con.execute("SELECT DISTINCT ro_cluster FROM ro WHERE is_confirmed=1"):
         name = "REF|" + cluster
         sub = (ecology or {}).get(cluster, {}).get("substrate", "")
@@ -1309,7 +1314,9 @@ COMPONENT_FILL = {
 SHORT = {"[alpha]": "α", "alpha": "α", "alpha_other": "α′", "beta": "β", "ferredoxin": "Fd",
          "reductase": "Red", "rieske_other": "Rsk", "regulator": "Reg", "transposon": "IS",
          "ring_cleavage": "ring", "transporter": "tra", "dehydrogenase": "dh",
-         "hydrolase": "hyd", "hypothetical": "?", "other": "·", "none": "·"}
+         "hydrolase": "hyd", "hypothetical": "?", "other": "gene", "none": "gene"}
+# "other"/"none" eskiden "·" diye cizilirdi ve ekranda HICBIR SEY gibi
+# okunuyordu; oysa anlami "gen var, annotasyonu bir kategoriye uymadi".
 
 
 def layout_svg(layout, height=34, gene_w=46, gap=3):
@@ -1374,7 +1381,50 @@ REG_SHORT = {"LysR": "LysR", "TetR": "TetR", "AraC": "AraC", "MarR": "MarR", "Ic
              "two_component": "2comp", "sigma_factor": "sig", "regulator_unclassified": "Reg"}
 
 
-def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
+def dominant_arch(row):
+    """regulation_by_cluster.csv satirindan en sik mimari.
+
+    Sayilar sutun olarak duruyor; sablon bunlari kendisi karsilastiramadigi
+    icin secim burada yapilir. Hepsi sifir/eksikse None doner, cagiran taraf o
+    zaman duzenleyici katmanini hic cizmez.
+    """
+    best, best_n = None, 0
+    for key in ("divergent_regulator", "codirectional_regulator",
+                "divergent_other", "codirectional_other", "unknown"):
+        try:
+            n = int(row.get(key) or 0)
+        except (TypeError, ValueError):
+            n = 0
+        if n > best_n:
+            best, best_n = key, n
+    return best
+
+
+ARCH_TEXT = {
+    # Tek kaynak: hem tip sayfasinin alt yazisi hem SVG bunu okur. Eskiden alt
+    # yazi enum'u oldugu gibi basiyordu ("divergent other"), yani okuyucuya
+    # hicbir sey soylemiyordu.
+    "divergent_regulator":
+        "the gene immediately 5\u2032 of the operon is a recognised regulator on the "
+        "opposite strand, so a single intergenic region can carry both promoters",
+    "codirectional_regulator":
+        "the gene immediately 5\u2032 of the operon is a recognised regulator on the "
+        "same strand",
+    "divergent_other":
+        "the gene immediately 5\u2032 of the operon lies on the opposite strand but is "
+        "not a recognised regulator \u2014 the intergenic region is measured, not shown "
+        "to be regulatory",
+    "codirectional_other":
+        "the gene immediately 5\u2032 of the operon lies on the same strand and is not a "
+        "recognised regulator, so the measured gap is the distance to the next gene in "
+        "the same direction, not a divergent promoter region",
+    "unknown":
+        "no gene was found 5\u2032 of the operon on this contig, so no intergenic region "
+        "could be measured",
+}
+
+
+def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
     """Operon arrows preceded by the upstream regulator and the promoter region.
 
     The regulator is drawn pointing away from the operon when the architecture is
@@ -1383,11 +1433,39 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
     tokens = [t.strip() for t in (layout or "").split(">") if t.strip()]
     if not tokens:
         return ""
+    # titles: token sirasiyla GERCEK urun adlari. Verilirse <title> olarak
+    # gecer, yani fare ustune gelince "other" degil "SCP2 sterol-binding
+    # domain-containing protein" yazar. Yalnizca urunlerin bilindigi tek-giris
+    # sekillerinde kullanilir; tip geneli sekilde tek bir urun adi YOKTUR.
+    #
+    # build_entry_data.py bunu KULLANMAZ: oradaki dedup anahtari sekle
+    # dayanir ve urun adi girise ozgu oldugu icin her girise ayri SVG
+    # uretirdi (olculmustu: 5.000 giris -> 4.987 SVG).
+    titles = list(titles or [])
     arch = _field(reg, "architecture", "") if reg is not None else ""
     family = _field(reg, "upstream_family", "") if reg is not None else ""
     bp = _field(reg, "intergenic_bp", None) if reg is not None else None
-    show_reg = arch in ("divergent_regulator", "codirectional_regulator")
-    divergent = arch == "divergent_regulator"
+    # DUZENLEYICI VAR MI ile YUKARI KOMSU VAR MI ayri sorulardir.
+    #
+    # NEDEN. Eskiden yalnizca *_regulator mimarilerinde komsu cizilirdi, ama
+    # kesik kutu `bp is not None` oldugu an ciziliyor ve SVG'nin kendi alt
+    # yazisi ona "intergenic promoter region" diyordu. Sonuc: duzenleyici
+    # BULUNMAYAN tipte, yalniz bir alfanin yanina isimsiz bir "promoter
+    # bolgesi" kutusu konuyordu -- olcumun kurmadigi bir iddia. 2026-10-31'de
+    # sayildi: 68 tipin 40'inda baskin mimari *_other, yani sayfanin cizdigi
+    # promoter kutusunun yaninda tanimli hicbir duzenleyici yok. qxyA bunun en
+    # yanilticisiyidi: 53 yakin uyenin 52'si divergent_other, sayfa "[alpha] +
+    # 138 bp promoter" gosteriyor, alt yazi da divergent duzenleyiciden
+    # bahsediyordu; oysa TetR yalnizca KARAKTERIZE girisin kendisinde var.
+    #
+    # Artik yukari komsu biliniyorsa HER ZAMAN cizilir, ama duzenleyici
+    # degilse notr renkte ve "not a regulator" etiketiyle; kutu da ancak
+    # duzenleyici varken "promoter" diye adlandirilir.
+    has_reg = arch in ("divergent_regulator", "codirectional_regulator")
+    known_up = arch in ("divergent_regulator", "codirectional_regulator",
+                        "divergent_other", "codirectional_other")
+    show_reg = known_up
+    divergent = arch.startswith("divergent")
 
     pad, prom_w, row_h, height = 6, 54, 24, 72
     y0 = 20
@@ -1401,23 +1479,33 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
     head = 9
 
     if show_reg:
-        label = REG_SHORT.get(family, "Reg")
+        label = REG_SHORT.get(family, "Reg") if has_reg else "gene"
         if divergent:
             pts = f"{x + gene_w},{y0} {x + head},{y0} {x},{mid:.1f} {x + head},{y1} {x + gene_w},{y1}"
         else:
             pts = f"{x},{y0} {x + gene_w - head},{y0} {x + gene_w},{mid:.1f} {x + gene_w - head},{y1} {x},{y1}"
-        product = html.escape(str(_field(reg, "upstream_product", "regulator")))
+        product = _field(reg, "upstream_product", "") or (
+            "typical upstream regulator of this type" if has_reg else
+            "typical upstream gene of this type; not a recognised regulator")
+        product = html.escape(str(product))
+        fill_up = "#8e44ad" if has_reg else "#9aa0a6"
+        stroke_up = "#4a235a" if has_reg else "#5f6368"
         parts.append(
-            f'<polygon points="{pts}" fill="#8e44ad" stroke="#4a235a" stroke-width="0.9">'
+            f'<polygon points="{pts}" fill="{fill_up}" stroke="{stroke_up}" stroke-width="0.9">'
             f'<title>{product}</title></polygon>'
             f'<text x="{x + gene_w / 2:.1f}" y="{mid + 3.5:.1f}" font-size="9" text-anchor="middle" '
             f'fill="#fff" font-weight="600">{html.escape(label)}</text>'
             f'<text x="{x + gene_w / 2:.1f}" y="{y0 - 6:.1f}" font-size="9" text-anchor="middle" '
             f'fill="currentColor">{"divergent" if divergent else "same strand"}</text>')
+        if not has_reg:
+            parts.append(
+                f'<text x="{x + gene_w / 2:.1f}" y="{y1 + 14:.1f}" font-size="8" '
+                f'text-anchor="middle" fill="currentColor">not a regulator</text>')
         x += gene_w + gap
 
     if show_reg or bp:
-        gap_label = (str(int(bp)) + " bp") if bp is not None else "promoter"
+        gap_label = (str(int(bp)) + " bp") if bp is not None else (
+            "promoter" if has_reg else "intergenic")
         parts.append(
             f'<rect x="{x}" y="{y0 - 2}" width="{prom_w}" height="{row_h + 4}" fill="none" '
             f'stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/>'
@@ -1425,7 +1513,7 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
             f'fill="currentColor">{gap_label}</text>')
         x += prom_w + gap
 
-    for token in tokens:
+    for ti, token in enumerate(tokens):
         fill = COMPONENT_FILL.get(token, "#b2bec3")
         is_alpha = token in ("[alpha]", "alpha")
         ay0, ay1 = (y0 - 2, y1 + 2) if is_alpha else (y0, y1)
@@ -1436,14 +1524,22 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3):
             f'<polygon points="{pts}" fill="{fill}" '
             f'stroke="{"#111" if is_alpha else "#5a5a5a"}" '
             f'stroke-width="{1.4 if is_alpha else 0.7}">'
-            f'<title>{html.escape(token)}</title></polygon>'
+            f'<title>{html.escape(titles[ti] if ti < len(titles) and titles[ti] else token)}</title></polygon>'
             f'<text x="{x + (gene_w - head) / 2:.1f}" y="{amid + 3.5:.1f}" font-size="10" '
             f'text-anchor="middle" fill="#fff" font-weight="600">'
             f'{html.escape(SHORT.get(token, token[:3]))}</text>')
         x += gene_w + gap
 
+    if has_reg:
+        foot = ("operon drawn 5′ to 3′; dashed box is the intergenic region "
+                "in which the promoter lies")
+    elif known_up:
+        foot = ("operon drawn 5′ to 3′; dashed box is the measured intergenic "
+                "region — no regulator was identified in it")
+    else:
+        foot = "operon drawn 5′ to 3′"
     parts.append(f'<text x="{pad}" y="{height - 4}" font-size="9" fill="currentColor">'
-                 f'operon drawn 5′ to 3′; dashed box is the intergenic promoter region</text>')
+                 f'{html.escape(foot)}</text>')
     parts.append("</svg>")
     return "".join(parts)
 

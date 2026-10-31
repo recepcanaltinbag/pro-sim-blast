@@ -106,6 +106,42 @@ def main():
         index = column - 1
         return (seq[index].upper() if 0 <= index < len(seq) else "-"), None
 
+    def exact_only(seq, column):
+        index = column - 1
+        return (seq[index].upper() if 0 <= index < len(seq) else "-"), None
+
+    def carboxylate_checked(seq, column, cluster, ref_at_column, window=2):
+        """Katalitik kolonda KAYMIS cagriyi referansla dogrula.
+
+        NEDEN. column 431 global profil kolonudur. Kolonda kalinti yoksa +-2
+        pencere taranir; 2026-10-31'de olculdu ki bu pencere kimligi kirletiyor:
+        tam kolonda Asp 15.902 : Glu 122 (130:1), kaymis pencerede 397 : 317
+        (1,25:1). Basa bas oran, pencerenin ligand yerine yakindaki herhangi bir
+        karboksilati topladiginin imzasidir. En buyuk tek kaynak 3_313_KshA15
+        (194 kaymis Glu); o tipin referansi kolon 431'de BOSLUKLU, +-4'te hic
+        karboksilat yok, referans PDB 2ZYL ile %100 ayni ve yapidaki ligand Asp.
+        Yani o 194 Glu ligand degil.
+
+        KURAL. Kaymis cagri ancak tipin kuratorlu referansi ayni kolonda AYNI
+        karboksilati tasiyorsa kabul edilir. Aksi halde giris, tam kolonun
+        kendisiyle (karboksilat olmayan kalinti ya da bosluk) ve offset NULL ile
+        yazilir: NULL 'yok' degil 'bu konumdan okunamadi' demektir, karari
+        tip-ici capali okuma (carboxylate_audit) verir.
+
+        Ayni kural carboxylate_audit.offset_call_is_supported'da olcum tarafinda
+        duruyor. IKISI AYNI KALMALI: triad_gate'in tazelik kapisi denetimin
+        negatif kumesini bu tablonun negatifiyle karsilastirir, ayrilirlarsa
+        hicbir sey yazmaz. 2026-10-31'de kural once yalniz olcume konuldu ve
+        kapi zinciri 620 giriste hakli olarak durdurdu.
+        """
+        residue, offset = carboxylate(seq, column, window)
+        if offset in (0, None):
+            return residue, offset
+        ref = ref_at_column.get(cluster)
+        if ref and ref in "DE" and residue == ref:
+            return residue, offset
+        return exact_only(seq, column)
+
     cluster_of = {}
     con2 = sqlite3.connect(args.db)
     for cid, cluster in con2.execute(
@@ -115,8 +151,17 @@ def main():
 
     # Kuratorlu referanslarin kendi dagilimi (ayri hizalama dosyasi).
     ref_dist = {}
+    ref_at_carbox = {}
     if args.ref_alignment and os.path.exists(args.ref_alignment):
         ref_seqs = read_stockholm_matchcols(args.ref_alignment)
+        if isinstance(ref_seqs, tuple):
+            ref_seqs = ref_seqs[0]
+        _cc = CATALYTIC_SITES[-1][0]
+        for _name, _row in ref_seqs.items():
+            _parts = _name.split("_")
+            _cl = "_".join(_parts[:3]) if len(_parts) >= 3 else _name
+            ref_at_carbox[_cl] = (_row[_cc - 1] if len(_row) >= _cc
+                                  else "-").upper()
         for label, column in (("catalytic_iron", CATALYTIC_SITES[-1][0]),
                               ("bridging", BRIDGING_SITE[0])):
             c = Counter()
@@ -128,15 +173,25 @@ def main():
                                "gap": c["-"],
                                "other": len(ref_seqs) - c["D"] - c["E"] - c["-"]}
     else:
-        print(f"[uyari] referans hizalamasi yok: {args.ref_alignment}")
+        # Referans yoksa kaymis cagrilar dogrulanamaz; sessizce yayinlamak
+        # carboxylate_audit ile ayrisir ve triad_gate'in kapisini kirar.
+        raise SystemExit(
+            "[HATA] referans hizalamasi yok: %s -- katalitik karboksilatin "
+            "kaymis cagrilari dogrulanamaz, ro_carboxylate yazilmadi."
+            % args.ref_alignment)
 
     carbox = {}
     for label, column in (("catalytic_iron", CATALYTIC_SITES[-1][0]),
                           ("bridging", BRIDGING_SITE[0])):
         residues, offsets = Counter(), Counter()
         per_cluster = defaultdict(Counter)
+        checked = (label == "catalytic_iron")
         for name, seq in seqs.items():
-            residue, offset = carboxylate(seq, column)
+            if checked:
+                residue, offset = carboxylate_checked(
+                    seq, column, cluster_of.get(name, "?"), ref_at_carbox)
+            else:
+                residue, offset = carboxylate(seq, column)
             residues[residue] += 1
             offsets[str(offset) if offset is not None else "none"] += 1
             per_cluster[cluster_of.get(name, "?")][residue] += 1
@@ -183,7 +238,8 @@ def main():
     bri_col = BRIDGING_SITE[0]
     per_entry = []
     for name, seq in seqs.items():
-        cr, co = carboxylate(seq, cat_col)
+        cr, co = carboxylate_checked(seq, cat_col,
+                                     cluster_of.get(name, "?"), ref_at_carbox)
         br, bo = carboxylate(seq, bri_col)
         per_entry.append((name, cr, co, br, bo))
     con3.executemany("INSERT INTO ro_carboxylate VALUES (?,?,?,?,?)", per_entry)
