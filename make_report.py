@@ -950,7 +950,9 @@ def variants_section(path="analysis_out/cluster_variance.csv",
         return "".join(
             "<tr><td class=\"mono\">" + esc(row.cluster) + "</td>"
             '<td class="num">' + f"{int(row.n):,}" + "</td>"
-            '<td class="num">%' + f"{100*row.median_identity:.1f}" + "</td>"
+            '<td class="num">'
+            + ("&ndash;" if pd.isna(row.median_identity)
+               else "%" + f"{100*row.median_identity:.1f}") + "</td>"
             '<td class="num">' + (str(int(row.subfamilies)) if pd.notna(row.subfamilies) else "&ndash;") + "</td>"
             '<td class="num">' + f"{int(row.sampled)}" + "</td></tr>"
             for row in sub.itertuples())

@@ -30,7 +30,20 @@ and is shown for completeness only.</div>
   <b>{{ eco.substrate }}</b>. Whether this protein shares that substrate follows from the evidence
   level above, not from the type name.{% endif %}
   {% else %}
-  This protein carries an intact Rieske centre and catalytic triad. Its assigned type is the profile
+  {#  KOSULSUZ IDDIA KALDIRILDI. Burada "carries an intact Rieske centre and
+      catalytic triad" yaziyordu, her giris icin; oysa ro_triad'a gore bir
+      kisminda ligand gercekten eksik. Cumle artik o girisin kendi okumasindan
+      kuruluyor, tablo yoksa hic kurulmuyor.                                 #}
+  This protein carries an intact Rieske centre{% if membership and membership.basis == 'triad_complete' %}
+  and a complete 2-His-1-carboxylate triad, all three ligands read at the columns its own type
+  conserves{% elif membership and membership.basis == 'documented_exception' %}; its catalytic
+  triad <b>cannot be read</b> from the reference alignment, for a reason that is measured and
+  written down rather than assumed, and its ligands were verified by another method{%
+  elif membership and membership.basis == 'triad_incomplete_retained' %}, but <b>not</b> a
+  complete catalytic triad: {{ (triad.triad_status or '').replace('_', ' ') }} at the homologous
+  column. It is retained because no source states the triad is exceptionless, so a missing ligand
+  is not evidence that this protein is not an oxygenase &mdash; but nothing here should be read as
+  a working active site{% endif %}. Its assigned type is the profile
   it scores highest against, which names its closest characterised relative rather than its
   function.
   {% endif %}

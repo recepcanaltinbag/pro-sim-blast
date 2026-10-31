@@ -282,7 +282,7 @@ ARTEFACTS = [
     # --- ozet katmani: HER SEYDEN sonra
     ("phylogeny", [],
      ["python3", "build_phylogeny.py", "--db", DB, "--out-dir", OUT,
-      "--fasttree", "FastTree"],
+      "--fasttree", "FastTree", "--work", f"{SCRATCH}/roar_phylo_work"],
      ["build_phylogeny.py", DB, MOTIF_HMM], False),
     ("stats", [f"{OUT}/stats.json"],
      ["python3", "stats_overview.py", "--db", DB, "--out", f"{OUT}/stats.json"],
@@ -407,7 +407,7 @@ _SQL_WORDS = {"set", "or", "if", "into", "from", "table", "where", "select"}
 # boylece ise yaramaz hale geliyor. O yuzden burada BEYAN ediliyorlar.
 # Beyan, gozlemin yerine gecmez; gozlemle BIRLESTIRILIR (writes[name]).
 DECLARED_WRITES = {
-    "triad_gate": {"ro_triad", "ro_triad_meta"},
+    "triad_gate": {"ro_triad", "ro_triad_meta", "ro_membership"},
     "protein_entries": {"ro_protein"},
 }
 

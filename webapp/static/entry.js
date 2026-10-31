@@ -135,7 +135,26 @@
           'above, not from the type name.');
       }
     } else {
-      h.push('This protein carries an intact Rieske centre and catalytic triad. Its assigned ' +
+      // KOSULSUZ IDDIA KALDIRILDI: triad cumlesi girisin kendi okumasindan
+      // kuruluyor (e.mb = [uyelik temeli, triad durumu]). Veri yoksa cumle
+      // triad'dan hic soz etmez -- varsayilan iddia etmek degil.
+      var mb = rec.mb || [], basis = mb[0], tstat = mb[1];
+      var t = 'This protein carries an intact Rieske centre';
+      if (basis === 'triad_complete') {
+        t += ' and a complete 2-His-1-carboxylate triad, all three ligands read at the ' +
+          'columns its own type conserves';
+      } else if (basis === 'documented_exception') {
+        t += '; its catalytic triad <b>cannot be read</b> from the reference alignment, for a ' +
+          'reason that is measured and written down rather than assumed, and its ligands were ' +
+          'verified by another method';
+      } else if (basis === 'triad_incomplete_retained') {
+        t += ', but <b>not</b> a complete catalytic triad: ' +
+          esc(String(tstat || '').replace(/_/g, ' ')) + ' at the homologous column. It is ' +
+          'retained because no source states the triad is exceptionless, so a missing ligand ' +
+          'is not evidence that this protein is not an oxygenase \u2014 but nothing here ' +
+          'should be read as a working active site';
+      }
+      h.push(t + '. Its assigned ' +
         'type is the profile it scores highest against, which names its closest characterised ' +
         'relative rather than its function.');
     }

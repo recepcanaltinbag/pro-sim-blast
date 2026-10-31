@@ -40,7 +40,11 @@ from ro_motif import read_stockholm_matchcols
 
 # Bir dugumun "homojen yaprak" sayilmasi icin gereken medyan ikili kimlik
 HOMOGENEITY_TARGET = 0.70
-# Bundan kucuk dugumler bolunmez (asiri parcalanmayi onler).
+# Bundan kucuk dugumler bolunmez. TABAN 4: bir yaprak VARYANT GRUBUDUR, ve
+# bir grubun ic kimligi olabilmesi icin en az iki uyesi gerekir. 4'un altinda
+# bolme en az bir TEK UYELI cocuk uretmek zorundadir (2->1+1, 3->1+2), ve tek
+# uyeli bir dugumde ikili kimlik diye bir sey yoktur. Yani taban artik asiri
+# parcalanmayi onlemekle kalmiyor, OLCULEBILIRLIGIN sinirini soyluyor.
 #
 # AMA BU TABAN SANILDIGINDAN COK DAHA FAZLA KARAR VERIYOR. 2026-10-30'da
 # olculdu: is_homogeneous=0 olan 420 yapragin 420'si (1.460 uye) BURADA durdu;
@@ -52,12 +56,20 @@ HOMOGENEITY_TARGET = 0.70
 #
 # Bu, bu projenin tekrar eden hata bicimi: karar veren kural, karar verdigini
 # soyledigimiz kural degil (bkz. triad aralik sarti, kolon 471/431 vakasi).
-# Tabani dusurmek homojenligi gercekten karar verici yapar, ama tum
-# yapraklari yeniden kurar -- leaf_id'ler degisir, yani agac, leaf_profile,
-# leaf_sdp ve kalici sayfa baglantilari da degisir. O yuzden sabit DEGISMEDI;
-# bunun yerine durma nedeni yayimlaniyor (webapp/atlas.py leaf_stop_reason)
+#
+# 2026-10-31'de taban 8'den 4'e INDIRILDI. Olculen etki: 420 heterojen
+# yapragin boy dagilimi 2:154, 3:104, 4-5:100, 6-7:62 -- yani 162 yaprak
+# (840 uye) 4 ve ustu, bunlarda homojenlik hedefi artik gercekten sorulur.
+# Kalan 258 yaprak (620 uye) 2-3 uyeli: onlarda "too_small_to_split" ARTIK
+# DOGRU bir gerekce, cunku bolunmeleri tek uyeli cocuk uretmek zorundadir.
+# Taban 2'ye indirilmedi: o, 308 uyeyi tekil yapraga cevirip olculemez bir
+# medyan yayinlamaya geri donus olurdu (bkz. median_identity).
+#
+# Bedeli bilerek odeniyor: tum yapraklar yeniden kurulur, leaf_id'ler degisir,
+# yani agac, leaf_profile, leaf_sdp ve kalici /leaf/ baglantilari da degisir.
+# Durma nedeni yayinlanmaya devam ediyor (webapp/atlas.py leaf_stop_reason)
 # ve validate_curation.py check_leaf_stop_reason sabitlerin ayrismasini tutuyor.
-MIN_SPLIT_SIZE = 8
+MIN_SPLIT_SIZE = 4
 # Artan CD-HIT esikleri -- her derinlikte bir sonraki kullanilir
 THRESHOLDS = [0.50, 0.60, 0.70, 0.80, 0.90]
 # Medyan kimlik hesabinda ornek buyuklugu
@@ -77,9 +89,22 @@ def identity(a, b):
 
 
 def median_identity(sequences, rng):
-    """Ornekten medyan ikili kimlik."""
+    """Ornekten medyan ikili kimlik. Cift yoksa None -- 1.0 DEGIL.
+
+    NEDEN None. Tek uyeli bir dugumde ikili kimlik diye bir sey yoktur: hic
+    cift yoktur. Eskiden burada 1.0 donuyordu ve o deger tabloya yaziliyordu;
+    2026-10-31'de olculdu: 1.179 yaprak sayfasi (toplam 2.789'un %42,3'u)
+    "Median identity 1.000" basiyordu, yani OLCULMEMIS bir buyuklugu mukemmel
+    olcum gibi yayinliyordu. Ustelik 1.0 en yuksek olasi deger oldugu icin bu
+    yapraklar "en homojen" siralamasinin tepesine cikiyordu (bkz. satir 380
+    siralamasi) -- yanlis yonde en kotu hata.
+
+    None donmek tabloya NULL yazar; sayfa o zaman sayinin yerine neden
+    olmadigini soyler (webapp/templates/leaf.html). Bolme karari bundan
+    ETKILENMEZ: len(node) < MIN_SPLIT_SIZE kosulu None'dan ONCE bakilir ve
+    tek uyeli dugum her halukarda bolunemez."""
     if len(sequences) < 2:
-        return 1.0
+        return None
     sample = (rng.sample(sequences, SAMPLE) if len(sequences) > SAMPLE else sequences)
     values = []
     for i in range(len(sample)):
@@ -153,8 +178,8 @@ def homogenize(members, aligned, raw, rng):
         median = median_identity(sequences, rng)
 
         # Durma kosullari: kucuk, homojen, ya da esikler bitti
-        if (len(node) < MIN_SPLIT_SIZE or median >= HOMOGENEITY_TARGET
-                or depth >= len(THRESHOLDS)):
+        if (len(node) < MIN_SPLIT_SIZE or median is None
+                or median >= HOMOGENEITY_TARGET or depth >= len(THRESHOLDS)):
             leaves.append((node, depth, median))
             continue
 
@@ -319,8 +344,10 @@ def main():
             leaf_rows.append(LeafRow(
                 leaf_id=leaf_id, variant_id=vid, nearest_type=cluster,
                 label_kind=kind, cluster=cluster, size=len(leaf_members),
-                depth=depth, median_identity=round(median, 4),
-                is_homogeneous=1 if median >= HOMOGENEITY_TARGET else 0,
+                depth=depth,
+                median_identity=None if median is None else round(median, 4),
+                is_homogeneous=1 if (median is not None
+                                     and median >= HOMOGENEITY_TARGET) else 0,
                 representative=leaf_members[0],
                 top_genera=";".join(f"{g}:{n}" for g, n in genera.most_common(5))))
             for candidate_id in leaf_members:
@@ -377,7 +404,8 @@ def main():
     print(f"\n[yazildi] {path}  ({total_leaves} yaprak)")
 
     print("\n  En homojen buyuk yapraklar (temiz enzim tipleri):")
-    for r in sorted(big_leaves, key=lambda x: -x.median_identity)[:10]:
+    ranked = [r for r in big_leaves if r.median_identity is not None]
+    for r in sorted(ranked, key=lambda x: -x.median_identity)[:10]:
         genera = r.top_genera.split(";")[0] if r.top_genera else "?"
         print(f"    {r.variant_id:16s} {r.label_kind:11s} n={r.size:>4d}  kimlik={r.median_identity:.2f}  {genera}")
     connection.close()

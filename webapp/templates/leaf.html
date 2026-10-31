@@ -7,13 +7,22 @@
   <dt>Reference type</dt><dd><a href="{{ u('/cluster/' ~ leaf.cluster) }}">{{ leaf.cluster }}</a></dd>
   <dt>Label</dt><dd>{{ leaf.label or '–' }}</dd>
   <dt>Size</dt><dd>{{ leaf.size }} members, {{ leaf.genus_n or '?' }} genera · split depth {{ leaf.depth }}</dd>
-  <dt>Median identity</dt><dd>{{ '%.3f' % leaf.median_identity }}
+  {#  TEK UYELI YAPRAKTA BU SAYI YOKTUR. Eskiden burada 1.000 basiliyordu
+      (2.789 yapragin 1.179'u), yani hic cift olmayan bir dugumde "medyan
+      ikili kimlik" mukemmel olcum gibi yayinlaniyordu. Simdi NULL ve sayinin
+      yerine neden olmadigi yaziliyor.                                      #}
+  <dt>Median identity</dt><dd>{% if leaf.median_identity is none %}
+    <span class="note">not defined &mdash; a single sequence has no pair to measure over</span>
+    {% else %}{{ '%.3f' % leaf.median_identity }}{% endif %}
     {% if not leaf.is_homogeneous %}
       {% set stop = leaf_stop_reason(leaf.size, leaf.depth, leaf.is_homogeneous) %}
+      {% if stop != 'single_member' %}
       <span class="chip chip--warn">below the 0.70 homogeneity target</span>
+      {% endif %}
       <div class="note">Splitting stopped because {{ LEAF_STOP_REASONS[stop] }}.
-      The representative sequence therefore stands for members that differ from one
-      another; read this leaf as an operational grouping, not as a variant.</div>
+      {% if stop != 'single_member' %}The representative sequence therefore stands for members
+      that differ from one another; read this leaf as an operational grouping, not as a
+      variant.{% else %}The representative sequence is the member.{% endif %}</div>
     {% endif %}</dd>
   <dt>Top genera</dt><dd>{{ (leaf.top_genera or '').replace(';', ', ') }}</dd>
   <dt>Signature neighbours</dt><dd>{{ leaf.neighbor_signature or '–' }}</dd>

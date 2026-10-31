@@ -983,6 +983,69 @@ def check_literature_motif_spacing(rep, root):
               f"these columns has moved")
 
 
+
+def check_membership_basis(rep, root):
+    """Her onayli girisin bir uyelik temeli var mi, ve temel okumayla tutuyor mu?
+
+    NEDEN. 3/3 kapisi uyelikte karar veriyor ama SILME olarak degil: triad'in
+    istisnasiz oldugunu yazan bir kaynak bulunamadi, o yuzden ligandi eksik
+    giris atilmaz, hangi temelle uye oldugu yayinlanir (ro_membership). Boyle
+    bir tasarimin sessiz bozulma yolu belli: tablo bayatlar ya da bir temel
+    kendi okumasindan AYRISIR -- ornegin triad_status 'his_absent' olan bir
+    giris 'triad_complete' temeliyle yayinlanir. Sayfa o cumleyi temelden
+    kuruyor, yani ayrisma dogrudan yanlis bir iddiaya cevrilir.
+    """
+    label = "membership basis: every confirmed entry has one and it matches its triad reading"
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    import triad_gate                                      # noqa: PLC0415
+    db = os.path.join(root, "roar.sqlite")
+    if not os.path.exists(db):
+        rep.check(label, False, 0, "roar.sqlite yok", severity="WARN")
+        return
+    con = sqlite3.connect("file:%s?mode=ro" % db, uri=True)
+    try:
+        have = {r[0] for r in con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'")}
+        if "ro_membership" not in have:
+            rep.check(label, False, 0,
+                      "ro_membership yok; triad_gate.py --apply kosulmali",
+                      severity="WARN")
+            return
+        confirmed = con.execute(
+            "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
+        n_rows = con.execute("SELECT COUNT(*) FROM ro_membership").fetchone()[0]
+        tally = dict(con.execute(
+            "SELECT basis, COUNT(*) FROM ro_membership GROUP BY 1"))
+        # Temel ile okumanin ayrismasi: 'triad_complete' diyen ama triad'i
+        # tamamlanmayan, ya da tersi.
+        mismatched = con.execute("""
+            SELECT COUNT(*) FROM ro_membership m JOIN ro_triad t USING(candidate_id)
+            WHERE (m.basis = 'triad_complete') != (t.triad_status LIKE 'complete%')
+            """).fetchone()[0]
+        orphan = con.execute(
+            "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1 AND candidate_id NOT IN "
+            "(SELECT candidate_id FROM ro_membership)").fetchone()[0]
+    finally:
+        con.close()
+
+    problems = []
+    if n_rows != confirmed:
+        problems.append("ro_membership %d satir, onaylanmis giris %d"
+                        % (n_rows, confirmed))
+    if orphan:
+        problems.append("%d onayli girisin uyelik temeli yok" % orphan)
+    if mismatched:
+        problems.append("%d giriste temel ile triad okumasi ayrisiyor" % mismatched)
+    unknown = set(tally) - set(triad_gate.MEMBERSHIP_BASES)
+    if unknown:
+        problems.append("aciklamasi olmayan temel: %s" % ", ".join(sorted(unknown)))
+
+    detail = ", ".join("%s=%d" % kv for kv in sorted(tally.items())) or "-"
+    rep.check(label, not problems, len(problems),
+              "; ".join(problems) if problems else detail)
+
+
 def check_leaf_stop_reason(rep, root):
     """Heterojen bir yapragin NEDEN bolunmeyi biraktigi kayitli mi?
 
@@ -1915,6 +1978,7 @@ def main():
     check_literature_motif_spacing(rep, ROOT)
     check_triad_gate(rep, ROOT)
     check_leaf_stop_reason(rep, ROOT)
+    check_membership_basis(rep, ROOT)
     _, eco = read_csv_strict(args.ecology, rep, "cluster_ecology.csv")
     _, chem = read_csv_strict(args.chemistry, rep, "chemistry.csv")
     check_oxygen_fate(rep, ROOT, chem)

@@ -132,7 +132,9 @@ def main():
         m = meta.get(rep_id, {})
         rows.append({
             "leaf_id": leaf_id, "cluster": info["cluster"], "size": info["size"],
-            "leaf_identity": round(info["identity"], 3),
+            # Tek uyeli yaprakta medyan ikili kimlik NULL'dur (cift yok).
+            "leaf_identity": (None if info["identity"] is None
+                              else round(info["identity"], 3)),
             "rep_protein_id": (m["protein_id"] if m else "") or "",
             "rep_candidate_id": rep_id,
             "organism": (m["organism"] if m else "") or "",

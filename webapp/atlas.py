@@ -108,6 +108,38 @@ def empty_type_view(cluster, path=None):
     return _empty_types_raw(path).get(cluster)
 
 
+def absorbs_view(cluster, path=None):
+    """Bu tipin ALTINDA sayilan, kendi uyesi olmayan kuratorlu adlar.
+
+    NEDEN. empty_types.json tek yonlu okunuyordu: uyesi olmayan tipin sayfasi
+    "counted under X" diyor, ama X'in sayfasi hicbir sey demiyordu. 2026-10-31'de
+    olculdu: 8 uyesiz tipin 6'si uyesi olan bir tipe atfediliyor, ve iki vakada
+    iki kuratorlu referans match-state kolonlarinda neredeyse AYNI -- NahAc ile
+    NBDO %100,0, CarAa ile CARDO %99,7. Yani CARDO sayfasini acan okuyucu, ayri
+    yayinlanmis bir karbazol dioksijenazin o 111 uyenin icinde sayildigini
+    gormuyordu. Atama rekabetli oldugu icin bu bir hata degil, ama SOYLENMESI
+    gerekir: aksi halde tipin uye sayisi, tek bir kuratorlu enzime ait gibi
+    okunur.
+
+    Donen: [{cluster, gene, substrate, identity, case}] -- yoksa bos liste.
+    """
+    if not cluster:
+        return []
+    if path is None:
+        path = os.path.join(_DEFAULT_ANALYSIS_DIR, "empty_types.json")
+    out = []
+    for key, rec in (_empty_types_raw(path) or {}).items():
+        if (rec or {}).get("absorbed_by") != cluster:
+            continue
+        sib = ((rec.get("evidence") or {}).get("nearest_reference_sibling") or {})
+        out.append({"cluster": key, "gene": rec.get("gene") or key,
+                    "substrate": rec.get("substrate"),
+                    "identity": sib.get("identity") if sib.get("type") == cluster else None,
+                    "case": rec.get("case")})
+    out.sort(key=lambda r: -(r["identity"] or 0))
+    return out
+
+
 def operon_relations_view(path):
     """Operon iliskileri raporunu sayfanin ihtiyaci kadarina indirir."""
     raw = read_json(path)
@@ -925,14 +957,23 @@ def table_exists(con, name):
 # Yani heterojen yapraklarda KARAR VEREN kural homojenlik hedefi degil, boyut
 # tabani. Sayfada yalin "heterogeneous" etiketi bunu gizliyordu: okuyucu
 # "homojenlik hedefi tutturulamadi" sanirken aslinda hedef hic SORULMAMIS.
-# Bu yuzden neden de yayimlaniyor.
-HOMOGENEITY_MIN_SPLIT_SIZE = 8
+#
+# 2026-10-31'de taban 8'den 4'e indirildi; o 420 yapragin 162'sinde (840 uye)
+# homojenlik artik gercekten karar veriyor. Kalan 2-3 uyeli yapraklarda taban
+# hala karar verir -- ama orada gerekce OLCULEBILIRLIK: 4'un altinda bolme en
+# az bir tek uyeli cocuk uretmek zorundadir ve tek uyeli dugumun ikili kimligi
+# diye bir sey yoktur. Neden yayimlanmaya devam ediyor, cunku sayfada yalin
+# "heterogeneous" etiketi hala hangi kuralin karar verdigini soylemiyor.
+HOMOGENEITY_MIN_SPLIT_SIZE = 4
 HOMOGENEITY_MAX_DEPTH = 5
 
 LEAF_STOP_REASONS = {
+    "single_member":
+        "a single sequence, so there is no pair to measure an identity over",
     "too_small_to_split":
-        "fewer than %d members, so the homogeneity target was never applied"
-        % HOMOGENEITY_MIN_SPLIT_SIZE,
+        "fewer than %d members: splitting could only produce a single-sequence "
+        "group, which has no internal identity, so the homogeneity target was "
+        "never applied" % HOMOGENEITY_MIN_SPLIT_SIZE,
     "identity_thresholds_exhausted":
         "the identity threshold ladder ran out before the target was reached",
     "unexplained":
@@ -946,9 +987,14 @@ def leaf_stop_reason(size, depth, is_homogeneous):
     Homojen yaprak icin None. Donen anahtar LEAF_STOP_REASONS'ta aciklanir.
     "unexplained" bir hata isaretidir: homojenizasyonun belgelenmemis bir
     yoldan cikmasi demektir, o yuzden kapi onu FAIL sayar.
+
+    Tek uyeli yaprak AYRI bir nedendir: is_homogeneous=0 olmasi hedefin
+    tutturulamadigi anlamina gelmez, hedefin SORULAMADIGI anlamina gelir.
     """
     if is_homogeneous:
         return None
+    if (size or 0) < 2:
+        return "single_member"
     if (size or 0) < HOMOGENEITY_MIN_SPLIT_SIZE:
         return "too_small_to_split"
     if (depth or 0) >= HOMOGENEITY_MAX_DEPTH:

@@ -149,10 +149,18 @@ Rieske-domain annotation, and the present criterion cannot see them.</p>
     a carboxylate, {{ totals.triad_his_absent|fmt }} lack a histidine, and {{ totals.triad_undecided|fmt }} belong to an
     architecture where the column has no counterpart at all and cannot be read either way. Every
     entry's three ligands and the reading each one came from are published in the
-    <code>ro_triad</code> table. Membership still follows the two-of-three rule, so these counts
-    describe entries the database currently admits; tightening admission to three of three is the
-    next step and will change every denominator, so it is done in one pass with a full rebuild
-    rather than silently.</li>
+    <code>ro_triad</code> table, and every entry's <b>membership basis</b> &mdash; the ground on
+    which it is admitted &mdash; in <code>ro_membership</code>:
+    {{ totals.basis_triad_complete|fmt }} on the complete triad,
+    {{ totals.basis_documented_exception|fmt }} on a documented exception where the alignment
+    cannot reach the catalytic lobe and the ligands were verified by another method, and
+    {{ totals.basis_triad_incomplete|fmt }} retained with a ligand genuinely missing.
+    Those last entries are <b>not</b> removed, and the reason is a limit of the literature rather
+    than of this database: no source states that the triad is exceptionless. Reviews call it
+    canonical and conserved, not invariant. Dropping an entry for lacking a ligand would therefore
+    assert something the literature does not support, so the three-of-three rule decides what is
+    <i>published beside</i> each entry rather than what is deleted, and any statistic that depends
+    on the triad names this basis as its denominator.</li>
 </ol>
 <p>Two sequences originally in the reference set were removed during this work: one lacks a Rieske
 centre altogether and belongs to the soluble di-iron monooxygenase family, the other has the Rieske
@@ -282,11 +290,16 @@ only when both agree. Effect sizes accompany every p value.
     taxonomic and ecological figure in this database.</li>
   <li>Several types have no substrate recorded because the original publications were not
     available; they are shown as unknown rather than guessed.</li>
-  <li>Membership requires two of the three mononuclear-iron ligands, while the literature's
-    definition requires all three. The {{ totals.triad_incomplete|fmt }} entries that do not
-    complete the triad under a per-type reading are flagged in <code>ro_triad</code> rather than
-    removed, and the seven whose architecture leaves the column unreadable are marked untested
-    rather than absent.</li>
+  <li>The pre-filter that admits a sequence still asks for two of the three mononuclear-iron
+    ligands at fixed model columns, because that step runs before any per-type reading exists.
+    The literature's definition requires all three, and that reading is applied afterwards: the
+    {{ totals.triad_incomplete|fmt }} entries that do not complete the triad under a per-type
+    reading carry <code>basis = triad_incomplete_retained</code> in <code>ro_membership</code>
+    rather than being removed, and the {{ totals.basis_documented_exception|fmt }} whose
+    architecture leaves the column unreadable are marked untested rather than absent. So the
+    admitted set is wider than the literature's definition by
+    {{ totals.triad_incomplete|fmt }} of {{ totals.confirmed|fmt }} entries, and which ones they
+    are is published rather than inferred.</li>
 </ul>
 
 <h2>11 · Programmatic access</h2>

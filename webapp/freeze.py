@@ -15,6 +15,7 @@ slowly, so file count is worth spending carefully.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -22,9 +23,107 @@ import csv
 import sqlite3
 import subprocess
 import sys
+from datetime import datetime, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+
+
+def write_download_manifest(out, con):
+    """Her indirme dosyasinin KAYIT SAYISI, sha256'si ve derleme damgasi.
+
+    NEDEN BU DOSYA VAR. 2026-10-31'de bir okuyucu, FASTA'da 19.125 kayit
+    gorup CSV'de 12'sinin eksik, 1 kaydin da fazla oldugunu bildirdi.
+    Yayindaki iki dosya olculdu: ikisi de 19.125, sifir fark, MD5'leri yerel
+    kopyayla ayni. Fark, iki dosyanin AYRI DERLEMELERDEN gelmesindendi --
+    19.114 (eski) - 1 dusen + 12 eklenen = 19.125 (guncel). Aritmetik tam
+    oturuyor ve dusen giris de bulundu (XM_009028827.1:0-1056:1, artik
+    is_confirmed=0).
+
+    Yani dosyalar dogruydu; eksik olan sey, indirilen bir dosyanin HANGI
+    DERLEMEDEN geldigini soyleyebilmekti. Okuyucunun bunu bulmak icin
+    aritmetik yapmasi gerekti. Bir veri tabani, kendi dosyalarinin kimligini
+    okuyucuya yukletmemeli.
+
+    Manifest her dosya icin: bayt, sha256, ve kayit sayisi (FASTA'da '>' ile
+    baslayan satir, CSV'de basliktan sonraki satir). Ustte derlemenin kendi
+    damgasi: onaylanmis giris sayisi ve veri tabaninin sha256'si -- yani iki
+    dosyanin ayni derlemeden olup olmadigi TEK bir satirla kontrol edilebilir.
+    """
+    root = os.path.join(out, "download")
+    if not os.path.isdir(root):
+        return
+    confirmed = con.execute(
+        "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
+
+    def digest(path, chunk=1 << 20):
+        h = hashlib.sha256()
+        with open(path, "rb") as fh:
+            for block in iter(lambda: fh.read(chunk), b""):
+                h.update(block)
+        return h.hexdigest()
+
+    def records(path):
+        """FASTA'da kayit, CSV'de veri satiri; digerlerinde None."""
+        low = path.lower()
+        try:
+            if low.endswith((".fasta", ".fa", ".faa")):
+                with open(path, encoding="utf-8", errors="replace") as fh:
+                    return sum(1 for line in fh if line.startswith(">"))
+            if low.endswith(".csv"):
+                with open(path, encoding="utf-8", errors="replace",
+                          newline="") as fh:
+                    n = sum(1 for _ in csv.reader(fh))
+                return max(0, n - 1)        # baslik satiri dusulur
+        except OSError:
+            return None
+        return None
+
+    files = []
+    for dirpath, _dirs, names in os.walk(root):
+        for name in sorted(names):
+            if name in ("MANIFEST.txt", "index.html"):
+                continue
+            full = os.path.join(dirpath, name)
+            files.append((os.path.relpath(full, root), full))
+    files.sort()
+
+    lines = [
+        "ROAR-DB download manifest",
+        "",
+        "Every file below was written in one export from one database. If two",
+        "files you hold disagree, compare the build stamp in this manifest with",
+        "the one shipped beside the files you downloaded: a mismatch means the",
+        "files came from different builds and the difference is not a defect in",
+        "either file.",
+        "",
+        "build_utc            %s" % datetime.now(timezone.utc)
+                                     .strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "confirmed_entries    %d" % confirmed,
+        "database_sha256      %s" % digest(con_path_of(con)),
+        "",
+        "%-52s %12s %10s  %s" % ("file", "bytes", "records", "sha256"),
+    ]
+    for rel, full in files:
+        n = records(full)
+        lines.append("%-52s %12d %10s  %s"
+                     % (rel, os.path.getsize(full),
+                        "-" if n is None else n, digest(full)))
+    lines.append("")
+    lines.append("records = FASTA entries ('>' lines) or CSV data rows "
+                 "(header excluded); '-' where the format has no record count.")
+    with open(os.path.join(root, "MANIFEST.txt"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print("[downloads] manifest: %d dosya, onaylanmis giris %d"
+          % (len(files), confirmed))
+
+
+def con_path_of(con):
+    """Bagli veri tabaninin dosya yolu (PRAGMA database_list)."""
+    for _seq, name, path in con.execute("PRAGMA database_list"):
+        if name == "main" and path:
+            return path
+    raise RuntimeError("ana veri tabaninin yolu okunamadi")
 
 
 def main():
@@ -153,6 +252,7 @@ def main():
     save("/download/all_confirmed.fasta", "download/all_confirmed.fasta")
     save("/download/all_confirmed.csv", "download/all_confirmed.csv")
     save("/download/operons.csv", "download/operons.csv")
+    write_download_manifest(out, con)
 
     # client-side search index
     print("[search] index")

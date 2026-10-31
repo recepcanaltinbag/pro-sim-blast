@@ -113,7 +113,9 @@ def load_leaf_profiles(db_path, reps):
                                   ORDER BY cluster, size DESC"""):
             idx = row["leaf_id"].split("#")[-1]
             out.setdefault(row["cluster"], []).append([
-                idx, row["size"], round(row["median_identity"], 2),
+                idx, row["size"],
+                None if row["median_identity"] is None
+                else round(row["median_identity"], 2),
                 row["label"] or "", row["neighbor_signature"] or "",
                 round(row["plasmid_rate"], 2), round(row["transposon_rate"], 2),
                 row["genus_n"], row["enriched_categories"] or "",
@@ -138,7 +140,10 @@ def load_leaves(db_path):
                                                biggest=row["biggest"], depth=row["depth"])
         for row in con.execute("SELECT candidate_id, leaf_id, median_identity "
                                "FROM ro_leaf JOIN leaf USING(leaf_id)"):
-            member_leaf[row["candidate_id"]] = (row["leaf_id"], round(row["median_identity"], 2))
+            member_leaf[row["candidate_id"]] = (
+                row["leaf_id"],
+                None if row["median_identity"] is None
+                else round(row["median_identity"], 2))
     con.close()
     return per_cluster, member_leaf
 

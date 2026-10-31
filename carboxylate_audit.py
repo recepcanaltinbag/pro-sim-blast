@@ -125,7 +125,8 @@ import numpy as np
 from scipy import stats as sps
 
 from ro_motif import (BRIDGING_SITE, CATALYTIC_SITES, RIESKE_SITES,
-                      DEFAULT_MODEL, MODEL_COLUMNS)
+                      DEFAULT_MODEL, MODEL_COLUMNS,
+                      read_stockholm_matchcols)
 from stats_overview import bh_adjust, cramers_v, signal_map
 
 HIS1_COL = CATALYTIC_SITES[0][0]        # 289 (ROmotif71, 603 kolon)
@@ -313,11 +314,72 @@ def load_rieske_only_controls(con):
 # Adim 1-2: temel okuma ve mekanizma
 # --------------------------------------------------------------------------
 
-def stage_baseline(entries, index, window):
-    """ro_carboxylate'i yeniden uret, eksik cagriyi gap/ikame olarak parcala."""
+def reference_residue_at_carbox_column(ref_alignment_path):
+    """Her tipin kuratorlu referansinin CARBOX_COL'daki kalintisi.
+
+    NEDEN BU GEREKIYOR. CARBOX_COL (431) GLOBAL profil kolonudur, yapisal
+    capasi 1NDO Asp362. Kolonda kalinti bulunamazsa +-2 pencere taranir -- ve
+    2026-10-31'de olculdu ki bu pencere, kimligi yanlis yonde kirleten bir
+    kaynak:
+
+        tam kolonda (offset 0)   Asp 15.902 : Glu   122   = 130 : 1
+        kaymis pencerede         Asp   397 : Glu   317   = 1,25 : 1
+
+    Kaymis okumalarda oranin basa bas gelmesi beklenen imzadir: pencere, ligand
+    yerine YAKINDAKI herhangi bir karboksilati topluyor. En buyuk tek kaynak
+    3_313_KshA15: 194 kaymis Glu. O tipin kuratorlu referansi kolon 431'de
+    BOSLUKLU ve +-4 penceresinde hic karboksilat yok ('--------T'); en yakini
+    bes pozisyon uzakta bir Glu. KshA'nin referansi PDB 2ZYL ile %100 ayni ve
+    yapidaki mononukleer demir ligandi Asp'dir. Yani o 194 Glu, ligand degil.
+
+    KURAL. Kaymis bir cagri ancak tipin referansi model kolonunda AYNI
+    karboksilati tasiyorsa kabul edilir -- o zaman kayma uyeye ozgu gercek bir
+    register oynamasidir ve kalinti kimligi referansla dogrulanmistir. Aksi
+    halde cagri reddedilir ve karari tip-ici CAPALI okuma verir. Olculen etki:
+    620 cagri (16.738'in %3,7'si) reddedilir, 94'u kabul edilir.
+
+    Tam kolondaki cagrilar HER ZAMAN kabul edilir, referans orada bosluklu olsa
+    bile: 76 referansin 68'i orada Asp tasiyor, yani kolonun kendisi iyi
+    desteklenmis bir capadir; eksik olan o TIPTE dogrulanmasidir.
+
+    Donen: {tip: kalinti} -- bosluk ya da karboksilat olmayan kalinti dahil.
+    """
+    aln = read_stockholm_matchcols(ref_alignment_path)
+    if isinstance(aln, tuple):
+        aln = aln[0]
+    out = {}
+    for name, row in aln.items():
+        parts = name.split("_")
+        cluster = "_".join(parts[:3]) if len(parts) >= 3 else name
+        out[cluster] = (row[CARBOX_COL - 1] if len(row) >= CARBOX_COL
+                        else "-").upper()
+    return out
+
+
+def offset_call_is_supported(cluster, residue, offset, ref_at_column):
+    """Kaymis bir pencere cagrisi referans tarafindan destekleniyor mu?
+
+    Gerekcesi reference_residue_at_carbox_column'da olcumle yazili.
+    """
+    if offset in (0, None):
+        return True
+    ref = ref_at_column.get(cluster)
+    return bool(ref and ref in CARBOX_OK and residue == ref)
+
+
+def stage_baseline(entries, index, window, ref_at_column=None):
+    """ro_carboxylate'i yeniden uret, eksik cagriyi gap/ikame olarak parcala.
+
+    ref_at_column: tip -> kuratorlu referansin CARBOX_COL'daki kalintisi.
+    Verilirse, KAYMIS cagrilar referansla dogrulanir; dogrulanmayan cagri
+    reddedilir ve giris capali okumaya dusurulur (gerekce:
+    reference_residue_at_carbox_column).
+    """
+    ref_at_column = ref_at_column or {}
     stored = Counter()
     recomputed = Counter()
     missing_kind = Counter()
+    refused = Counter()
     mismatch = 0
     for cid, rec in entries.items():
         stored[rec["stored_residue"] or "?"] += 1
@@ -326,6 +388,20 @@ def stage_baseline(entries, index, window):
             recomputed["not_aligned"] += 1
             continue
         hit, delta = idx.find(rec["sequence"], CARBOX_COL, CARBOX_OK, window)
+        if hit is not None and not offset_call_is_supported(
+                rec["cluster"], rec["sequence"][hit].upper(), delta,
+                ref_at_column):
+            # Kaymis, ve referans bu kalintiyi o kolonda DOGRULAMIYOR.
+            ref = ref_at_column.get(rec["cluster"]) or "?"
+            rec["fixed_residue"] = None
+            rec["fixed_offset"] = None
+            rec["missing_kind"] = "offset_call_unsupported_by_reference"
+            missing_kind["offset_call_unsupported_by_reference"] += 1
+            recomputed["refused_offset_call"] += 1
+            refused["%s %s@%+d vs ref %s"
+                    % (rec["cluster"], rec["sequence"][hit].upper(),
+                       delta, ref)] += 1
+            continue
         if hit is not None:
             rec["fixed_residue"] = rec["sequence"][hit].upper()
             rec["fixed_offset"] = delta
@@ -357,10 +433,23 @@ def stage_baseline(entries, index, window):
         "fixed_column": CARBOX_COL,
         "fixed_window": window,
         "missing_call_breakdown": dict(missing_kind.most_common()),
+        "refused_offset_calls": {
+            "entries_total": sum(refused.values()),
+            "by_type_residue_offset": dict(refused.most_common(30)),
+            "rule": ("kaymis bir pencere cagrisi ancak tipin kuratorlu "
+                     "referansi kolon %d'da AYNI karboksilati tasiyorsa kabul "
+                     "edilir" % CARBOX_COL),
+            "why": ("olculdu: tam kolonda Asp:Glu 130:1, kaymis pencerede "
+                    "1,25:1 -- kaymis okuma ligand yerine yakindaki herhangi "
+                    "bir karboksilati topluyor"),
+        },
         "note": ("window_entirely_gapped = kolon ve komsulari HIZALAMADA BOS; "
                  "orada okunacak kalinti YOK, yani bu bir hizalama olayi. "
                  "substituted_residue_in_place = kolonda gercek bir kalinti "
-                 "var ama karboksilat degil; bu biyolojik bir iddia."),
+                 "var ama karboksilat degil; bu biyolojik bir iddia. "
+                 "offset_call_unsupported_by_reference = pencere kaymis bir "
+                 "karboksilat buldu ama referans onu dogrulamiyor; okuma "
+                 "reddedildi, capali okumaya dusuruldu."),
     }
 
 
@@ -1816,15 +1905,33 @@ def main():
         index[cid] = idx
     log("[bilgi] ham diziye eslenen: %d  eslenmeyen: %d" % (len(index), unmapped))
 
-    negatives = sorted(c for c, r in entries.items()
-                       if (r["stored_residue"] or "") not in CARBOX_OK)
-    positives = sorted(c for c, r in entries.items()
-                       if (r["stored_residue"] or "") in CARBOX_OK)
-    log("[bilgi] sabit kolonda karboksilat YOK: %d   VAR: %d"
-        % (len(negatives), len(positives)))
+    ref_at_column = reference_residue_at_carbox_column(args.ref_alignment)
+    no_ref = sorted(c for c, r in ref_at_column.items() if r not in CARBOX_OK)
+    log("[kontrol] kolon %d: referansi karboksilat tasimayan %d tip -- %s"
+        % (CARBOX_COL, len(no_ref), ", ".join(no_ref)))
+
+    # Pozitif sayilmak icin cagrinin DOGRULANMIS olmasi gerekir: tam kolonda,
+    # ya da kaymissa referansin ayni karboksilatini tasiyan bir tipte.
+    # Dogrulanmayanlar negatife alinir, yani karari capali okuma verir --
+    # yoksa capali asama onlari hic gormez (bu liste stage_baseline'dan
+    # ONCE kurulur).
+    def _supported_positive(rec):
+        if (rec["stored_residue"] or "") not in CARBOX_OK:
+            return False
+        return offset_call_is_supported(rec["cluster"], rec["stored_residue"],
+                                        rec["stored_offset"], ref_at_column)
+
+    negatives = sorted(c for c, r in entries.items() if not _supported_positive(r))
+    positives = sorted(c for c, r in entries.items() if _supported_positive(r))
+    moved = sum(1 for c, r in entries.items()
+                if (r["stored_residue"] or "") in CARBOX_OK
+                and not _supported_positive(r))
+    log("[bilgi] sabit kolonda DOGRULANMIS karboksilat VAR: %d   YOK: %d   "
+        "(kaymis ve referansca desteklenmedigi icin negatife alinan: %d)"
+        % (len(positives), len(negatives), moved))
 
     log("\n[adim 1] temel okuma")
-    baseline = stage_baseline(entries, index, 2)
+    baseline = stage_baseline(entries, index, 2, ref_at_column)
     log("   %s" % baseline["missing_call_breakdown"])
 
     log("[adim 2] mekanizma: hizalama kapsami")

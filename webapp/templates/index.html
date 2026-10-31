@@ -475,6 +475,22 @@ duplicate entries in the reference set, rather than of the literature.
   <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
   <li><a href="{{ u('/download/tree_all.nwk') }}">Phylogenetic tree (Newick)</a></li>
 </ul>
+{#  Bir okuyucu, FASTA ile CSV'yi karsilastirip 12 kaydin eksik oldugunu
+    bildirdi. Iki dosya olculdu: ikisi de {{ totals.confirmed|fmt }} kayit,
+    sifir fark. Fark, iki dosyanin AYRI DERLEMELERDEN indirilmis olmasindandi,
+    ve okuyucunun bunu anlamasi icin aritmetik yapmasi gerekti. Dosyalarin
+    kimligini okuyucuya yuklemek yanlis; manifest o yuzden var.          #}
+<p class="note">Every file above carries the same build, currently
+{{ totals.confirmed|fmt }} confirmed entries.
+{% if static_mode %}Each export writes a
+<a href="{{ u('/download/MANIFEST.txt') }}">manifest</a> giving each file's record count
+and SHA-256 beside that number and the database's own digest. If two files you hold
+disagree with each other, compare their manifests first: a different build stamp means
+they came from different exports, which is not a defect in either file. Re-download both
+from one visit and they will agree.{% else %}On this server each file is generated from
+the live database at the moment you request it, so files downloaded in one visit are
+necessarily from one build; the static export ships a manifest of record counts and
+SHA-256 digests for the same purpose.{% endif %}</p>
 {% endblock %}
 
 {% block scripts %}

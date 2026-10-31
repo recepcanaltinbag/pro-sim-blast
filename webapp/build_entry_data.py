@@ -218,6 +218,12 @@ def main():
             "opg": [pack(g, OPGENE_FIELDS, intern, OPGENE_INTERNED) for g in opgenes],
             "nb": rows,
             "opsvg": key,
+            # Uyelik temeli + triad durumu. Istemci "intact catalytic triad"
+            # cumlesini bunlardan kuruyor; eskiden KOSULSUZ basiliyordu, yani
+            # ligandi gercekten eksik olan girislerde yanlis bir iddiaydi.
+            # Tek harfli degil ama giris basina ~40 B: dogru cumle bedava degil.
+            "mb": ((d["membership"]["basis"] if d["membership"] else None),
+                   (d["triad"]["triad_status"] if d["triad"] else None)),
         }
         if n % 2000 == 0:
             print(f"   {n}/{len(ids)}")

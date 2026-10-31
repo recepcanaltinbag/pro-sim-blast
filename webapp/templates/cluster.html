@@ -75,6 +75,27 @@
 </div>
 {% endif %}
 
+{#  TERS YON. Yukaridaki kutu uyesi OLMAYAN tipin sayfasinda cikiyor. Yutan
+    tipin sayfasinda hicbir sey yoktu: CARDO'yu acan okuyucu, ayri yayinlanmis
+    bir karbazol dioksijenazin (CarAa) o uyelerin icinde sayildigini
+    gormuyordu. Atama rekabetli oldugu icin bu bir hata degil, ama uye sayisi
+    tek bir kuratorlu enzime aitmis gibi okunmasin.                          #}
+{% if c.n and x.absorbs %}
+<div class="caveat">
+  <b>{{ x.absorbs|length }} further curated name{{ '' if x.absorbs|length == 1 else 's' }}
+  {{ 'is' if x.absorbs|length == 1 else 'are' }} counted under this type</b>, having won no
+  member of their own. Every confirmed protein is filed under the single reference profile it
+  scores highest on, so a profile with a near-identical sibling can recruit nothing at all.
+  The {{ c.n|fmt }} members below therefore stand for this reference enzyme <i>and</i>
+  {% for a in x.absorbs %}<a href="{{ u('/cluster/' ~ a.cluster) }}">{{ a.gene }}</a>{% if a.substrate %}
+  ({{ a.substrate }}){% endif %}{% if a.identity %} &mdash; {{ '%.1f %%' % a.identity }}
+  identical to this type's reference{% endif %}{% if not loop.last %}; {% endif %}{% endfor %}.
+  <br><span class="note">Which name to keep is a nomenclature decision and is not made here;
+  the competition behind each empty type is measured by <code>empty_types.py</code> and
+  reported on the <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+</div>
+{% endif %}
+
 {% if x.redundancy %}
 {% set rr = x.redundancy %}
 <div class="caveat caveat--warn">
@@ -340,11 +361,17 @@
     <span class="tierbar" style="width:100%">{% for t in TIERS %}{% if tiers[t] %}<i style="background:{{ TIER_COLORS[t] }};width:{{ (100 * tiers[t] / tier_total)|round(2) }}%" title="{{ t }}: {{ tiers[t] }}"></i>{% endif %}{% endfor %}</span>
     <table class="data compact">
       <tbody>
-      {% for t in TIERS %}{% if tiers[t] %}
-      <tr><td><span class="chip chip--data" style="--chip:{{ TIER_COLORS[t] }}">{{ t.replace('_',' ') }}</span></td>
+      {# BOS SEVIYE DE BASILIR. Satir gizlenirse okuyucu 0 ile "olculmedi"yi
+         ayirt edemez: qxyA sayfasinda characterized=1 gorunup close_homolog
+         satiri hic cikmiyordu, yani "bu tipin yakin homologu yok" olcumu
+         eksik veri gibi okunuyordu. Cubukta 0 segmenti yok, cunku genisligi
+         olmayan bir dilim anlamsiz; tabloda var, cunku sayinin kendisi bir
+         bulgudur. #}
+      {% for t in TIERS %}
+      <tr{% if not tiers[t] %} class="muted"{% endif %}><td><span class="chip chip--data" style="--chip:{{ TIER_COLORS[t] }}">{{ t.replace('_',' ') }}</span></td>
           <td class="small">{{ TIER_LABEL[t] }}</td>
           <td class="num">{{ tiers[t]|fmt }}</td><td class="num">{{ pct(tiers[t], tier_total) }}</td></tr>
-      {% endif %}{% endfor %}
+      {% endfor %}
       </tbody>
     </table>
     <p class="note"><a href="{{ u('/atlas/evidence') }}">How these levels are defined</a></p>
@@ -626,7 +653,9 @@ target. A variant is the finest unit at which a distinct function can reasonably
   {% for l in c.leaves %}
   <tr><td><a href="{{ u('/leaf/' ~ leaf_slug(l.leaf_id)) }}">{{ l.leaf_id }}</a></td>
     <td class="num" data-v="{{ l.size }}">{{ l.size|fmt }}</td>
-    <td class="num" data-v="{{ l.median_identity }}">{{ '%.2f' % l.median_identity }}</td>
+    <td class="num" data-v="{{ l.median_identity if l.median_identity is not none else '' }}">{%
+      if l.median_identity is none %}<span class="note" title="a single sequence has no pair to measure an identity over">&ndash;</span>{%
+      else %}{{ '%.2f' % l.median_identity }}{% endif %}</td>
     <td class="small">{{ (l.top_genera or '').replace(';', ', ') }}</td>
     <td class="small">{{ l.neighbor_signature or '–' }}</td>
     <td class="num" data-v="{{ 100 * (l.plasmid_rate or 0) }}">{{ '%.0f' % (100 * (l.plasmid_rate or 0)) }}</td>

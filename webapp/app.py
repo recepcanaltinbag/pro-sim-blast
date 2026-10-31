@@ -343,7 +343,19 @@ def totals(con):
              "SELECT COUNT(*) FROM ro_triad WHERE triad_status='his_absent'"),
             ("ro_triad", "triad_undecided",
              "SELECT COUNT(*) FROM ro_triad WHERE triad_status IN "
-             "('his_needs_anchoring','carboxylate_untested')")]:
+             "('his_needs_anchoring','carboxylate_untested')"),
+            # 2026-10-31, uyelik TEMELI (ro_membership). 3/3 kapisi artik
+            # uyelikte karar veriyor -- ama silme olarak degil, temel olarak:
+            # triad'in istisnasiz oldugunu yazan bir kaynak bulunamadi, o
+            # yuzden eksik triad'li giris atilmaz, hangi temelle uye oldugu
+            # yayinlanir. Paydalar bu tablodan okunur.
+            ("ro_membership", "basis_triad_complete",
+             "SELECT COUNT(*) FROM ro_membership WHERE basis='triad_complete'"),
+            ("ro_membership", "basis_documented_exception",
+             "SELECT COUNT(*) FROM ro_membership WHERE basis='documented_exception'"),
+            ("ro_membership", "basis_triad_incomplete",
+             "SELECT COUNT(*) FROM ro_membership "
+             "WHERE basis='triad_incomplete_retained'")]:
         if con.execute("SELECT name FROM sqlite_master WHERE name=?", (table,)).fetchone():
             t[key] = s(q)
     return t
@@ -742,10 +754,24 @@ def ro_detail(con, candidate_id):
     operon_genes = con.execute(
         "SELECT * FROM operon_gene WHERE candidate_id=? ORDER BY position", (candidate_id,)).fetchall()
     operon_ids = {g["neighbor_id"] for g in operon_genes if g["neighbor_id"] is not None}
+    # Triad okumasi ve UYELIK TEMELI. Sayfa eskiden kosulsuz "carries an intact
+    # Rieske centre and catalytic triad" diyordu; ro_triad'a gore bu, ligandi
+    # gercekten eksik olan girislerde YANLIS bir iddiaydi. Tablolar yoksa None
+    # doner ve sayfa cumleyi hic kurmaz -- varsayilan iddia etmek degil.
+    triad = membership = None
+    if con.execute("SELECT name FROM sqlite_master "
+                   "WHERE name='ro_triad'").fetchone():
+        triad = con.execute("SELECT * FROM ro_triad WHERE candidate_id=?",
+                            (candidate_id,)).fetchone()
+    if con.execute("SELECT name FROM sqlite_master "
+                   "WHERE name='ro_membership'").fetchone():
+        membership = con.execute("SELECT * FROM ro_membership WHERE candidate_id=?",
+                                 (candidate_id,)).fetchone()
     # motif residues on the stored sequence are not persisted; report flags only
     return {"ro": ro, "neighbors": neighbors, "operon": operon, "operon_genes": operon_genes,
             "svg": neighborhood_svg(ro, neighbors, operon_ids), "operon_ids": operon_ids,
             "cluster": cluster_parts(ro["ro_cluster"]),
+            "triad": triad, "membership": membership,
             "eco": ECOLOGY.get(ro["ro_cluster"], {})}
 
 
@@ -1049,15 +1075,40 @@ def fasta_response(rows, filename):
         "Content-Disposition": f'attachment; filename="{filename}"'})
 
 
-def csv_response(rows, filename):
+def csv_response(rows, filename, fieldnames=None):
+    """Satir yoksa BILE baslik satiri yazilir.
+
+    NEDEN. Eskiden `if rows:` korumasi yuzunden bos sonuc BOS BIR DOSYA
+    uretiyordu. 2026-10-31'de olculdu: uyesi olmayan 8 tipin CSV'si
+    (CarAa, IpBAa, BpdC1, XylC1, NahAc, DntAc, NinA, PbaA1) hic baslik
+    tasimiyordu, yani indiren kisi sifir bayt bir dosya aliyor ve bunun
+    "uye yok" mu yoksa "indirme bozuldu" mu oldugunu ayirt edemiyordu.
+    Bos bir tablo bir SONUCTUR; bos bir dosya bir ARIZA gibi okunur.
+
+    fieldnames verilmezse ilk satirdan turetilir; satir da yoksa
+    ValueError yerine bos dosya doner (cagiran taraf kolon adlarini
+    bilmiyorsa yapilabilecek baska bir sey yok).
+    """
     buf = io.StringIO()
-    if rows:
-        w = csv.DictWriter(buf, fieldnames=list(rows[0].keys()))
+    names = fieldnames or (list(rows[0].keys()) if rows else None)
+    if names:
+        w = csv.DictWriter(buf, fieldnames=names)
         w.writeheader()
         for r in rows:
             w.writerow(dict(r))
     return Response(buf.getvalue(), media_type="text/csv", headers={
         "Content-Disposition": f'attachment; filename="{filename}"'})
+
+
+def query_csv(con, sql, params=(), filename="rows.csv"):
+    """Sorguyu kosar ve kolon adlarini CURSOR'DAN alir.
+
+    Boylece sonuc bos olsa bile baslik satiri yazilabilir -- satirin
+    kendisinden turetilen bir kolon listesi bos sonucta yoktur.
+    """
+    cur = con.execute(sql, params)
+    names = [d[0] for d in cur.description]
+    return csv_response(cur.fetchall(), filename, fieldnames=names)
 
 
 MEMBER_COLS = """r.candidate_id, r.protein_id, r.locus_tag, r.gene, r.product, r.ro_cluster, r.ro_group,
@@ -1086,9 +1137,11 @@ def dl_cluster_fasta(cluster: str):
 def dl_cluster_csv(cluster: str):
     con = connect()
     try:
-        rows = con.execute(f"SELECT {MEMBER_COLS} {MEMBER_FROM} WHERE r.is_confirmed=1 AND r.ro_cluster=?",
-                           (cluster,)).fetchall()
-        return csv_response(rows, f"{cluster}.csv")
+        return query_csv(
+            con,
+            f"SELECT {MEMBER_COLS} {MEMBER_FROM} "
+            f"WHERE r.is_confirmed=1 AND r.ro_cluster=?",
+            (cluster,), f"{cluster}.csv")
     finally:
         con.close()
 
@@ -1272,11 +1325,14 @@ async def api_classify(request: Request):
 
 # ===================================================================== ATLAS
 import atlas  # noqa: E402
+# Uyelik temeli aciklamalari KAYNAGINDA duruyor; sayfa kopyalamaz.
+import triad_gate  # noqa: E402
 
 ANALYSIS_DIR = os.environ.get("ROAR_ANALYSIS", os.path.join(PARENT, "analysis_out"))
 templates.env.globals.update(
     leaf_stop_reason=atlas.leaf_stop_reason,
     LEAF_STOP_REASONS=atlas.LEAF_STOP_REASONS,
+    MEMBERSHIP_BASES=triad_gate.MEMBERSHIP_BASES,
     element_slug=atlas.element_slug,
     hab_label=atlas.HABITAT_LABEL,
     layout_svg=atlas.layout_svg, operon_regulator_svg=atlas.operon_regulator_svg,
@@ -1741,6 +1797,8 @@ def cluster_extras(con, cluster):
     # olan sayfa degil, uye. empty_types.py bu kaydi uretiyor, dosya yoksa
     # None gelir ve sayfa eskisi gibi calisir.
     x["empty_type"] = atlas.empty_type_view(cluster, apath("empty_types.json"))
+    # Ters yon: bu tipin altinda sayilan, kendi uyesi olmayan kuratorlu adlar.
+    x["absorbs"] = atlas.absorbs_view(cluster, apath("empty_types.json"))
     # Atama ile dizi kimliginin UYUSUP uyusmadigi: tip sayfasindaki uye sayisi
     # bu baglam olmadan yaniltici olabiliyor.
     x["agreement"] = atlas.assignment_agreement(con).get(cluster)

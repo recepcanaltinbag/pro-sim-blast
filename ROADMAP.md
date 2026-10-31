@@ -2036,6 +2036,214 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 105. Karboksilat penceresi, ve indirmelerin derleme kimligi (2026-10-31)
+
+Iki dis bildirim, ikisi de yerinde cikti -- ama ikisi de tahmin edilenden
+BASKA bir yerde.
+
+### (a) Pencere, yayimlanan Asp:Glu oranini kirletiyordu  [DUZELTILDI]
+
+Bildirim: "kolon 471'de 6.008 Asp'ye karsi 7.583 Glu; literaturde bu ligand
+neredeyse her zaman Asp; pencere yandaki bir Glu'yu yakaliyor olabilir."
+
+Iki tashih: kolon 471 EMEKLI (30 Ekim'de 431'e duzeltildi; atlas.py uc dosyayi
+"measured at the wrong carboxylate column (471)" diye SUPERSEDED isaretliyor)
+ve 6.008/7.583 guncel hicbir sayiya denk gelmiyor. Ustelik %71, KATALITIK
+ligandin degil KOPRU karboksilatinin orani:
+
+    katalitik Fe ligandi (431)   Asp 16.299 : Glu   439   Asp %97,4   ref 68D/0E
+    kopru (286)                  Asp 13.964 : Glu 5.156   Asp %73,0   ref 66D/3E
+
+Koprude Glu GERCEK: grup 5'in tamami Glu baskin, CntA'nin kopru glutamati
+E205 ve E205A/E205D TMA uretimini tamamen durduruyor (Zhu 2014, PNAS 111:4268;
+citations.yaml: zhu2014_CntA). Koprudeki offset -1 kaymasi YALNIZCA grup 5'te
+var (1.940/1.940); diger bes grup tamamen offset 0'da. Yani artefakt degil,
+gruba ozgu gercek bir indel.
+
+AMA KATALITIK LIGANDDA BILDIRIM DOGRU. Olculdu:
+
+    tam kolon (offset 0)   Asp 15.902 : Glu 122   = 130 : 1
+    kaymis pencere         Asp   397 : Glu 317   = 1,25 : 1
+
+Kaymis okumada oranin basa bas gelmesi, pencerenin ligand yerine yakindaki
+herhangi bir karboksilati topladiginin imzasidir. En buyuk tek kaynak
+3_313_KshA15: 194 kaymis Glu. Sebebi bulundu: o tipin kuratorlu referansi kolon
+431'de BOSLUKLU ve +-4 penceresinde hic karboksilat yok ('--------T'), en
+yakini bes pozisyon uzakta bir Glu. KshA15'in referansi PDB 2ZYL ile %100 ayni
+ve yapidaki mononukleer demir ligandi Asp'dir.
+
+Kolon 431'de karboksilat TASIMAYAN sekiz referans: LigX, KshA15, Nvd, DAF-36,
+AerC (bosluk) + PobA 'K', ROCH34 'Q', CAO 'L'. Son ucu ayrica kayda deger:
+referansta ligand kolonunda karboksilat olmayan bir kalinti oturuyor.
+
+ILK YAMA GERI ALINDI, cunku fazla genisti. "Referansi bosluklu tipte pencereyi
+tamamen reddet" diyordu; ama capali okumanin o 240 Glu'yu Asp cagiracagi
+OLCULMUS degildi -- "492 D / 0 E" rakami pencerenin BASARISIZ oldugu baska 492
+girisi kapsiyor. Olcerek daraltilan kural:
+
+    Kaymis bir pencere cagrisi ancak tipin kuratorlu referansi model kolonunda
+    AYNI karboksilati tasiyorsa kabul edilir. Aksi halde reddedilir ve karari
+    tip-ici capali okuma verir. Tam kolondaki cagrilar her zaman kabul edilir
+    (76 referansin 68'i orada Asp: kolonun kendisi iyi desteklenmis bir capa).
+
+Olculen etki: 16.024 tam kolon kabul; 558 kaymis + referansta karboksilat yok
+REDDET; 62 kaymis + referansla farkli kalinti REDDET; 94 kaymis + referansla
+ayni kalinti KABUL (gercek register kaymasi). Toplam 620 cagri (%3,7) capali
+okumaya dusuyor. Yayimlanan oran 37:1 -> ~125:1.
+
+Uygulama: carboxylate_audit.py'de reference_residue_at_carbox_column +
+offset_call_is_supported. Dikkat edilen nokta: capali asama `negatives`
+listesinden beslenir ve o liste stage_baseline'dan ONCE kurulur, o yuzden kural
+IKI yerde de uygulanmak zorunda -- yalnizca stage_baseline'da reddetmek girisi
+capali asamaya DUSURMEZDI.
+
+### (b) Indirmeler dogruydu; eksik olan derleme kimligiydi  [DUZELTILDI]
+
+Bildirim: "FASTA'da 19.125 kayit var; 12'si CSV'de yok, CSV'deki 1 kayit da
+FASTA'da yok."
+
+Olculdu -- yerel dondurulmus dosyalar VE canlidan indirilenler:
+
+    FASTA 19.125   CSV 19.125   yalnizFASTA 0   yalnizCSV 0   yinelenen 0
+    MD5'ler yerel kopyayla ayni; CSV'de gomulu satir sonu yok (19.126
+    fiziksel satir = 19.126 kayit); protein_id uzerinden de 0/0.
+
+Yayindaki 97 indirme dosyasinin hepsi FASTA'ya karsi tarandi: hicbirinde 12/1
+imzasi yok. Ama ARITMETIK bir sey soyluyor:
+
+    19.125 - 12 + 1 = 19.114
+
+19.114, yeniden kurulumdan ONCEKI onayli giris sayisi. Ve dusen giris de
+bulundu: XM_009028827.1:0-1056:1, su an is_confirmed=0, iki guncel dosyanin
+ikisinde de yok. Yani bildiren kisinin CSV'si eski derlemeden, FASTA'si
+yenisinden. Dosyalar tutarliydi.
+
+BUNA RAGMEN BU BIR KUSURDUR: indirilen bir dosyanin hangi derlemeden geldigini
+anlamanin yolu yoktu, ve okuyucunun bunu bulmak icin aritmetik yapmasi gerekti.
+Bir veri tabani kendi dosyalarinin kimligini okuyucuya yukleyemez. Eklendi:
+webapp/freeze.py write_download_manifest -> download/MANIFEST.txt; her dosya
+icin bayt, sha256 ve KAYIT SAYISI (FASTA'da '>' satiri, CSV'de baslik dusulmus
+satir), ustte derleme damgasi (onaylanmis giris sayisi + veri tabaninin
+sha256'si). Ana sayfadan baglandi; sunucu modunda baglanti verilmez, cunku
+orada dosyalar her istekte canli DB'den uretilir.
+
+### (c) Sekiz bos tipin CSV'si BASLIKSIZ iniyordu  [DUZELTILDI]
+
+(b)'yi arastirirken bulundu. csv_response'taki `if rows:` korumasi, sonuc bos
+oldugunda SIFIR BAYT dosya uretiyordu: CarAa, IpBAa, BpdC1, XylC1, NahAc,
+DntAc, NinA, PbaA1. Indiren kisi bunun "uye yok" mu "indirme bozuldu" mu
+oldugunu ayirt edemiyor. Bos bir tablo bir SONUCTUR; bos bir dosya ARIZA gibi
+okunur. Kolon adlari artik cursor.description'dan aliniyor (query_csv), yani
+satir olmasa da baslik yazilir.
+
+## 104. Uyelik temeli, tekil yaprak medyani, yutan tip (2026-10-31)
+
+Madde 103'ten sonra kalan ucu acik kararlar kapatildi, ve kapatirken ayni hata
+biciminin uc yeni ornegi bulundu. Hepsi TEK yeniden kurulumda uygulandi.
+
+### (a) Tek uyeli yaprak "Median identity 1.000" yayinliyordu  [DUZELTILDI]
+
+`recursive_homogenize.median_identity` cift yoksa 1.0 donuyordu ve bu deger
+tabloya yaziliyordu. Olculdu: 2.789 yapragin **1.179'u** (%42,3) tek uyeli, yani
+sitenin bu sayfalarinin hepsi hic var olmayan bir ciftin medyanini mukemmel
+olcum gibi basiyordu. Ustelik 1.0 en yuksek olasi deger oldugu icin o yapraklar
+"en homojen" siralamasinin TEPESINE cikiyordu -- yanlis yonde en kotu hata.
+
+Artik None/NULL doner, sayfa sayinin yerine nedenini yazar
+("not defined -- a single sequence has no pair to measure over"), ve
+`leaf_stop_reason` ayri bir `single_member` nedeni dondurur: `is_homogeneous=0`
+olmasi hedefin tutturulamadigi degil, hedefin SORULAMADIGI anlamina gelir.
+NULL'a karsi korunan tuketiciler: characterize_leaves, make_explorer,
+make_report, extract_representatives.
+
+### (b) MIN_SPLIT_SIZE 8 -> 4, gerekcesi olculebilirlik  [DUZELTILDI]
+
+Madde 99'da olculmustu: heterojen 420 yapragin 420'si boyut tabaninda durdu,
+hicbiri esik listesini tuketmedi. Boy dagilimi olculdu: 2 uyeli 154, 3 uyeli
+104, 4-5 uyeli 100, 6-7 uyeli 62. Taban 4'e indirildi, yani **162 yaprak
+(840 uye)** artik homojenlik hedefiyle karar aliyor.
+
+Taban 2'ye INDIRILMEDI, ve sebebi (a): 4'un altinda bolme en az bir tek uyeli
+cocuk uretmek zorundadir (2->1+1, 3->1+2) ve tek uyeli dugumun ikili kimligi
+yoktur. Yani kalan 258 yaprakta "too_small_to_split" artik DOGRU bir gerekce --
+asiri parcalanma kaygisi degil, olculebilirligin siniri.
+
+### (c) 3/3 kapisi uyelikte karar veriyor -- silme olarak DEGIL  [DUZELTILDI]
+
+about.html soz vermisti: "tightening admission to three of three is the next
+step and will change every denominator". Soz TUTULDU ama farkli bir sekilde, ve
+sebep literaturun kendi sinirinda:
+
+  triad_gate.py basligi: "Her Rieske oksijenazda triad vardir diyen bir kaynak
+  BULUNAMADI (arandi, 2026-10-30). Derlemeler kanonik ve korunmus diyor,
+  istisnasiz demiyor."
+
+Eksik ligandli 55 girisi `is_confirmed=0` yapmak "bunlar RO degil" demek olurdu
+-- literaturun desteklemedigi bir iddia. O yuzden 3/3 karari uyelige TEMEL
+olarak girdi: yeni `ro_membership(candidate_id, ro_cluster, basis, detail)`,
+uc temel ve her birinin kaynagindaki aciklamasi (`MEMBERSHIP_BASES`):
+
+  triad_complete              uc ligand da tipin korudugu kolonlarda okundu
+  documented_exception        hizalama katalitik loba varamiyor, ligandlar
+                              baska yontemle dogrulandi (motif_exceptions.yaml)
+  triad_incomplete_retained   ligand gercekten eksik; giris ATILMAZ, cunku
+                              yokluk "oksijenaz degil" kaniti degildir
+
+Yayina giren yerler: entry sayfasindaki KOSULSUZ iddia kaldirildi -- orada her
+giris icin "carries an intact Rieske centre and catalytic triad" yaziyordu,
+oysa ro_triad'a gore bu 55 giriste YANLIS. Cumle artik girisin kendi okumasindan
+kuruluyor, hem `ro.html`'de hem statik yoldaki `entry.js`'te (shard'a `mb`
+alani eklendi). about.html'in iki paragrafi yeniden yazildi. Kapiya
+`check_membership_basis` eklendi: satir sayisi, yetim giris, ve temelin kendi
+triad okumasindan AYRISMASI kontrol edilir.
+
+### (d) empty_types tek yonlu okunuyordu  [DUZELTILDI]
+
+`empty_types.json` 8 uyesiz tipi tam cozumlemis ve sayfalarinda yayinliyordu
+("counted under CARDO"). Ama TERS yon hic yoktu: CARDO sayfasini acan okuyucu,
+ayri yayinlanmis bir karbazol dioksijenazin (CarAa) o 111 uyenin icinde
+sayildigini gormuyordu. `atlas.absorbs_view` + cluster.html blogu eklendi.
+
+Olculen tablo (uyesiz tip -> yutan tip, referans kimligi, o tipin uye sayisi):
+NahAc -> NBDO %100,0 / 24;  CarAa -> CARDO %99,7 / 111;  IpBAa -> cumA1 %90,8 / 8;
+BpdC1 -> BphA1A2 %79,2 / 21;  XylC1 -> BphA1 %67,0 / 1;  PbaA1 -> DxnA1 %65,6 / 2.
+(DntAc ve NinA ikisi de uyesiz, birbirine %93,1.)
+
+NAFTALIN DIOKSIJENAZIN bu veritabaninda sifir uyesi var ve sebebi budur:
+atama rekabetli, ve NBDO profili her yarismayi kazaniyor.
+
+### (e) Kendi dun yazdigim ref_identity kimligi SISIRIYORDU  [DUZELTILDI]
+
+Madde 102'de `cluster_reference_identity.csv` eklendi ve yalnizca iki tarafin
+da kalinti tasidigi kolonlari sayiyordu -- yani ciftin FARKLI oldugu indel
+kolonlarini paydadan da paydan da atiyordu. Olculdu: CARDO/CarAa %98,8 yerine
+**%95,5**, qxyA/BedC1 %23,0 yerine **%19,3**. Etki buyuk degil ama tek yonlu.
+Payda artik "en az birinde kalinti olan kolonlar", bosluk uyusmazlik sayilir.
+
+### (f) Sifir sayili kanit duzeyi satiri gizleniyordu  [DUZELTILDI]
+
+cluster.html `{% if tiers[t] %}` ile satiri atliyordu, yani okuyucu 0 ile
+"olculmedi"yi ayirt edemiyordu: qxyA sayfasinda characterized=1 gorunup
+close_homolog satiri hic cikmiyordu. Cubukta 0 segmenti YOK (genisligi olmayan
+dilim anlamsiz), tabloda VAR (sayinin kendisi bir bulgu).
+
+### (g) Ev odevi: diamond ara dosyalari /tmp'den cikti  [DUZELTILDI]
+
+build_phylogeny.py 1944 dizi icin all-vs-all yapiyor ve `tempfile` varsayilani
+/tmp idi -- projenin duran kuralina aykiri. `--work` eklendi, zincirde
+`$ROAR_SCRATCH/roar_phylo_work`.
+
+### Kapatilmadi
+
+- Domain-farkinda hizalama. AerC'de olculdu: tam boy hmmalign modelin %18,9'unu
+  kapliyor ve kolon 231'de duruyor, katalitik kolonlar 289/294/431'e hic
+  varmiyor. Dogru cozum bu (motif_exceptions.yaml de boyle yaziyor), ama
+  hizalama adimi degisirse motif modelinin ciktisi, dolayisiyla DB'deki her
+  sayi yeniden kurulur. Bu zincire karistirilmadi: ayni kosuda iki kok degisim
+  olursa hangi degisimin hangi sayiyi oynattigi ayirt edilemez.
+- Adlandirma: NahAc/NBDO ve CarAa/CARDO ayri tip mi, tek tip mi. Olcum yapildi,
+  karar literatur/adlandirma karari ve burada verilmiyor.
+
 ## 103. Bug avi: yayimlanan sayi ile basliginin uyusmadigi 10 yer (2026-10-31)
 
 Madde 102(a)'daki hata bicimi -- "yayimlanan bir sayi, onu ureten hesabi degil

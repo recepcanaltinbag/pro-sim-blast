@@ -158,6 +158,72 @@ def check_audit_freshness(audit, confirmed_ids, fixed_negatives):
     return problems
 
 
+# ---------------------------------------------------------------- uyelik temeli
+
+MEMBERSHIP_BASES = {
+    "triad_complete":
+        "all three mononuclear-iron ligands read at the columns this entry's "
+        "own type conserves",
+    "documented_exception":
+        "the triad cannot be read from the reference alignment for a measured "
+        "reason, and the ligands were verified by another method -- the reason, "
+        "the evidence and the limits are written in motif_exceptions.yaml",
+    "triad_incomplete_retained":
+        "a ligand is genuinely missing at the homologous column; the entry is "
+        "retained because no source states the triad is exceptionless, so "
+        "absence here is not evidence that the protein is not an oxygenase",
+}
+
+
+def load_documented_exceptions(root="."):
+    """motif_exceptions.yaml'daki tipler. Dosya yoksa BOS kume donmez -- hata.
+
+    Bos kume donmek, istisnalari sessizce "triad eksik" kovasina dusururdu;
+    yani belgelenmis bir gerekce belgesizmis gibi yayinlanirdi. Dosya
+    okunamiyorsa cagiran taraf bunu gormek zorunda.
+    """
+    path = os.path.join(root, "motif_exceptions.yaml")
+    with open(path, encoding="utf-8") as handle:
+        text = handle.read()
+    # Minik ayristirici: "  - cluster: X" satirlari. yaml bagimliligi eklemeden,
+    # ve bicim degisirse SESSIZCE bos donmemesi icin sonuc bos olursa patlar.
+    found = re.findall(r"^\s*-\s*cluster:\s*(\S+)\s*$", text, re.M)
+    if not found:
+        raise RuntimeError(
+            "motif_exceptions.yaml'da 'cluster:' satiri bulunamadi (%s). "
+            "Bicim degismis olabilir; sessizce bos kume donmek istisnalari "
+            "belgesiz gibi yayinlardi." % path)
+    return set(found)
+
+
+def membership_rows(out_rows, exceptions):
+    """Her girisin UYELIK TEMELINI dondurur: (candidate_id, basis, detail).
+
+    NEDEN AYRI BIR TABLO. Kapi 3/3'e cikti, ama "3/3'u gecemeyeni uyelikten
+    at" demek literaturun soylemedigi bir sey iddia etmek olurdu: triad'in
+    ISTISNASIZ oldugunu yazan bir kaynak bulunamadi (bkz. dosya basligi). O
+    yuzden 3/3 karari uyelige SILME olarak degil TEMEL olarak giriyor: her
+    girisin yaninda hangi temelle uye oldugu okunur halde yayinlanir, ve
+    triad'a bagli her istatistik kendi paydasini bu tablodan alir.
+
+    Boylece kural gercekten karar verir (bu projenin tekrar eden hatasinin
+    tersi), ama 19.125 -> 19.070 gibi literaturun desteklemedigi bir daraltma
+    yapilmaz.
+    """
+    rows = []
+    for r in out_rows:
+        cid, cluster, status = r[0], r[1], r[9]
+        if status.startswith("complete"):
+            basis, detail = "triad_complete", status
+        elif cluster in exceptions:
+            basis = "documented_exception"
+            detail = "%s; motif_exceptions.yaml" % status
+        else:
+            basis, detail = "triad_incomplete_retained", status
+        rows.append((cid, cluster, basis, detail))
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -454,11 +520,32 @@ def main():
     con.execute("CREATE INDEX idx_triad_complete ON ro_triad(triad_complete)")
     con.execute("CREATE INDEX idx_triad_source ON ro_triad(carboxylate_source)")
     con.execute("CREATE INDEX idx_triad_status ON ro_triad(triad_status)")
+
+    exceptions = load_documented_exceptions(os.path.dirname(args.db) or ".")
+    mrows = membership_rows(out_rows, exceptions)
+    con.executescript("""
+        DROP TABLE IF EXISTS ro_membership;
+        CREATE TABLE ro_membership (
+            candidate_id TEXT PRIMARY KEY,
+            ro_cluster   TEXT,
+            basis        TEXT,  -- triad_complete | documented_exception |
+                                -- triad_incomplete_retained
+            detail       TEXT
+        );
+    """)
+    con.executemany("INSERT INTO ro_membership VALUES (?,?,?,?)", mrows)
+    con.execute("CREATE INDEX idx_membership_basis ON ro_membership(basis)")
+    tally = Counter(r[2] for r in mrows)
+    summary["membership_basis"] = dict(tally)
+    summary["documented_exception_types"] = sorted(exceptions)
+
     con.executemany("INSERT INTO ro_triad_meta VALUES (?,?)",
                     [(k, json.dumps(v)) for k, v in summary.items()])
     con.commit()
     con.close()
     print("[yazildi] ro_triad (%d satir) + ro_triad_meta" % len(out_rows))
+    print("[yazildi] ro_membership: " + ", ".join(
+        "%s=%d" % kv for kv in sorted(tally.items())))
     return 0
 
 

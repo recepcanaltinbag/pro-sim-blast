@@ -185,7 +185,9 @@ def main():
 
         label = label_leaf(top_genus, genus_n, plasmid_rate, tn_rate, signature)
         rows_out.append((
-            leaf_id, cluster, n, round(info["median_identity"], 4), info["depth"],
+            leaf_id, cluster, n,
+            None if info["median_identity"] is None
+            else round(info["median_identity"], 4), info["depth"],
             genus_n, ";".join(f"{g}:{c}" for g, c in top_genera),
             round(plasmid_rate, 4), round(tn_rate, 4),
             " | ".join(signature[:4]), "; ".join(enriched[:4]), label))

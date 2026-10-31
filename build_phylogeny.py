@@ -68,6 +68,12 @@ def main():
     ap.add_argument("--out-dir", default="analysis_out")
     ap.add_argument("--ref-alignment", default="ROs_71_Clean/refs71_hmmaln.sto",
                     help="referans-referans kimligi bu hizalamadan okunur")
+    # diamond all-vs-all 1944 dizi icin birkac GB ara dosya yazar. Varsayilan
+    # /tmp degil: bu makinede /tmp kucuk ve projenin duran kurali agir
+    # analizleri /media/lin-bio/back2'ye koymak (ROAR_SCRATCH ile degistirilir).
+    ap.add_argument("--work", default=os.environ.get("ROAR_SCRATCH",
+                                                     "/media/lin-bio/back2"),
+                    help="diamond ara dosyalarinin yazilacagi kok dizin")
     ap.add_argument("--ssn-min", type=float, default=30.0)
     ap.add_argument("--threads", type=int, default=8)
     ap.add_argument("--fasttree", default="FastTree")
@@ -93,7 +99,8 @@ def main():
 
     os.makedirs(os.path.join(args.out_dir, "trees"), exist_ok=True)
 
-    with tempfile.TemporaryDirectory() as tmp:
+    os.makedirs(args.work, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=args.work) as tmp:
         fa = os.path.join(tmp, "all.fa")
         with open(fa, "w") as fh:
             for k, v in allseq.items():
@@ -281,15 +288,31 @@ def main():
         ref_row[cl] = row
 
     def ref_identity(a, b):
+        """Iki referansin match-state hizalamasi uzerinden kimligi.
+
+        PAYDA: iki referanstan EN AZ BIRININ kalinti tasidigi kolonlar; bir
+        tarafta bosluk varsa o kolon UYUSMAZLIK sayilir. Iki tarafin da bos
+        oldugu kolonlar hic sayilmaz, cunku o kolon bu cift hakkinda bir sey
+        soylemez.
+
+        NEDEN BOYLE. Once yalnizca iki tarafin da kalinti tasidigi kolonlar
+        sayiliyordu, yani ciftin FARKLI oldugu indel kolonlari paydadan da
+        paydan da atiliyordu -- kimligi sistematik olarak sisiren bir olcu.
+        2026-10-31'de olculdu: CARDO/CarAa %98,8 yerine %95,5, qxyA/BedC1
+        %23,0 yerine %19,3. Etki buyuk degil ama tek yonlu, ve "kimlik"
+        nitelenmeden kullanildiginda hizalama boyunca karsilastirilan
+        pozisyonlari kasteder.
+        """
         ra, rb = ref_row.get(a), ref_row.get(b)
         if ra is None or rb is None:
             return None
         same = tot = 0
         for c1, c2 in zip(ra, rb):
-            if c1 in "-." or c2 in "-.":
+            g1, g2 = c1 in "-.", c2 in "-."
+            if g1 and g2:
                 continue
             tot += 1
-            same += (c1.upper() == c2.upper())
+            same += (not g1 and not g2 and c1.upper() == c2.upper())
         return round(100.0 * same / tot, 1) if tot else None
 
     missing = [c for c in clusters if c not in ref_row]
