@@ -155,6 +155,10 @@ USER_FACING_DB_FIELDS = [
     # 2026-10-30: triad kapisinin "neden cagri yapilmadi" gerekcesi. Proza,
     # giris sayfasinda gosterilebilir, bu yuzden Ingilizce olmak zorunda.
     ("ro_triad", "candidate_id", "note"),
+    # 2026-10-31: uyelik temeli ve gerekcesi. Giris sayfasi bunlari OKUYUP
+    # cumle kuruyor, dolayisiyla Ingilizce olmak zorunda.
+    ("ro_membership", "candidate_id", "basis"),
+    ("ro_membership", "candidate_id", "detail"),
     ("operon", "candidate_id", "layout"),
     # Proje tarafindan URETILEN habitat etiketi (serbest metin degil, sozluk).
     # isolation_source.py'nin HABITAT_RULES sonucu; web'de gosteriliyor.
@@ -215,6 +219,7 @@ IDENTIFIER_TEXT_FIELDS = {
     ("leaf_profile", "top_genera"), ("leaf_profile", "neighbor_signature"),
     ("leaf_sdp", "leaf_id"), ("leaf_sdp", "cluster"), ("leaf_sdp", "residues"),
     ("leaf_sdp", "signature"),
+    ("ro_membership", "candidate_id"), ("ro_membership", "ro_cluster"),
     ("neighbor", "candidate_id"), ("neighbor", "nucleotide_id"),
     ("neighbor", "protein_id"),
     ("neighbor_component", "protein_key"), ("neighbor_component", "component"),
