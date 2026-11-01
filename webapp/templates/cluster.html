@@ -337,13 +337,23 @@
           ({{ pct(bg.asp, bg.n) }}){% if bg.glu %}, glutamate in {{ bg.glu|fmt }}
           ({{ pct(bg.glu, bg.n) }}){% endif %}, as in the ring-hydroxylating majority.{% endif %}</dd>
       {% endif %}
+      {#  KATALITIK KARBOKSILATIN UYE SAYILARI KALDIRILDI (2026-11-01).
+          Burasi "kolon 431: Asp N/M uye, bu bolge tum ailede
+          aspartat" diyordu. Ana sayfanin 1.2 bolumu ayni kolonu 27 kuratorlu
+          referansin kristal yapisina karsi sinadi ve cagirdigi kalinti
+          26/26'sinda demirden 10,9-14,7 A uzakta cikti -- yani o kolon ligandi
+          OKUMUYOR. Geri cekme index.html'e islenmisti ama 76 tip sayfasina ve
+          Atlas ozetine TASINMAMISTI; kullanici celiskiyi Atlas'ta gordu.
+          Sayi yerine artik yapinin soyledigi sey yaziyor, uye basina sayim
+          yok. check_retracted_column_claim() bunun geri kaymasini engeller. #}
       {% if x.carboxylate and x.carboxylate.catalytic_iron %}
-      {% set ci = x.carboxylate.catalytic_iron %}
-      <dt>Catalytic carboxylate <span class="note">column {{ ci.column }}</span></dt>
-      <dd>{{ ci.dominant }} in {{ (ci.asp if ci.dominant == 'Asp' else ci.glu)|fmt }} of
-          {{ ci.n|fmt }} members ({{ pct(ci.asp if ci.dominant == 'Asp' else ci.glu, ci.n) }}){% if ci.other %};
-          {{ ci.other|fmt }} have no carboxylate within two columns, which is alignment shift in that
-          loop rather than a missing site{% endif %}. This site is aspartate across the whole family.</dd>
+      <dt>Catalytic carboxylate <span class="note">first-shell ligand</span></dt>
+      <dd><b>Not readable from a fixed column.</b> The carboxylate that coordinates the
+          mononuclear iron is aspartate in 26 of 26 curated structures, but no single profile
+          column holds it, and the residue column
+          {{ x.carboxylate.catalytic_iron.column }} calls sits 10.9–14.7 Å from the iron in every
+          one of those structures. No per-member count is reported for this site.
+          <a href="{{ u('/') }}#main">How the two columns were tested</a></dd>
       {% endif %}
       <dt>Domains of life</dt><dd>{% for d in c.domains %}{{ d.domain }}{% if d.euk_group %} / {{ d.euk_group }}{% endif %} {{ d.n }}{% if not loop.last %} · {% endif %}{% endfor %}</dd>
       <dt>Phyla</dt><dd class="small">{% for p, n in x.phyla %}{{ p }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</dd>

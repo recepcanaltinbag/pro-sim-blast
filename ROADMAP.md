@@ -2036,6 +2036,102 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 109. Protein-genomik bosluk TUM tiplerde; genomik taraf GERCEKTEN buyutulebilir,
+ama protein tablosunun %63'u SILINMIS UniProt kaydi (2026-11-01)
+
+Kullanici: "bundan boyleyse diger enzimler icin de boyle olabilir, bence genomik
+anlamda da daha fazla var gibi". Iki iddia da olculdu; ikisi de DOGRU cikti, ve
+olcum ucuncu bir seyi ortaya cikardi.
+
+(a) BOSLUK QXYA'YA OZGU DEGIL, KURAL. Her iki tabloda da uyesi olan 68 tipin
+    **67'sinde** protein sayisi genomik sayidan buyuk. 63 tipte >=2 kat, 20
+    tipte >=5 kat. En buyukler: BphA1(2_201) 12,0x, LigX 10,5x, ArhA1 9,8x,
+    CmoB 9,4x, qxyA 8,2x, PTC52 6,6x, Dpe 6,5x, ROCH34 6,3x. Toplam: genomik
+    19.125, protein (kapiyi gecen) 72.586, link'i olmayan 55.122.
+
+(b) DORT TIP YALNIZCA PROTEIN TARAFINDA VAR: BpdC1 13, XylC1 3, NahAc 1,
+    NinA 1. Bunlar duran "sifir uyeli 8 referans" WARN'inin icinden geliyor --
+    yani o referanslar bos DEGIL, uyeleri genomik tabloya hic girmemis.
+
+(c) "GENOMIK ANLAMDA DA DAHA FAZLA VAR" DOGRULANDI. 55.122 linksiz girisden
+    300'luk rastgele ornek UniProt REST'e soruldu. Halen aktif olan kayitlarin
+    **%99,1'inde** EMBL nukleotit capraz-referansi var, yani genomik baglam
+    KURULABILIR. Olcek: ornekte 110/300 = %36,7 -> **~20.200 giris**
+    (%95 GA 17.200-23.200). Bu, genomik tabloyu 19.125'ten ~39.300'e cikarir,
+    yani iki katina.
+
+(d) AMA PROTEIN TABLOSU BAYAT BIR INDIRMEYE DAYANIYOR. Ayni ornekte
+    **189/300 = %63,0** kaydin entryType'i `Inactive`, ve sebebi sorulan 38
+    kaydin 38'i `DELETED` (birlestirme DEGIL -- yani yeni bir accession altinda
+    yasamiyorlar). Olcek: linksiz 55.122 girisin **~34.700'u** (%95 GA
+    31.700-37.700) bugun UniProt'ta artik yok. Madde 95'teki indirme tarihi
+    o zaman dogruydu; aradan gecen surede UniProt gereksiz proteomlari
+    buyuk olcude sildi. Site bu girisleri hala yayinda tutuyor.
+
+(e) BEDAVA KAZANC YOK. Kurtarilabilir kayitlarin replikonlari bizde zaten
+    duruyor mu diye bakildi: ornekte 3/110. Olcek ~550 giris. Yani is gercek
+    bir indirme isi.
+
+    ILK OLCUM YANLISTI VE KENDI KONTROLUM YAKALADI: ilk karsilastirma %0,0
+    dedi. Sebep, kimligi belirleyen kuralin karsilastirdigim kural OLMAMASIYDI
+    -- bizim `replicon.nucleotide_id` tamami RefSeq (NZ_ 14.449, XM_ 1.859,
+    NC_ 727), UniProt ise INSDC/ENA birincil accession veriyor
+    (JACHOA010000004, CP026258, FOYL01000002). `NZ_JACHOA010000004` ile
+    `JACHOA010000004` AYNI kayittir. On-ek soyulunca ortusme %2,7'ye cikti.
+    Projenin tekrar eden hata sinifinin bir ornegi daha, bu kez yayina
+    girmeden yakalandi.
+
+SIRADAKI IS (yapilmadi, karar kullanicinin):
+  1. `ro_protein`'i bugunun UniProt'una karsi tazele ve silinmis accession'lari
+     isaretle. Bunlar SESSIZCE silinmemeli: "silinmis kayit" ile "veri yok"
+     ayri seylerdir, ve 34.700 satir sessizce yok olursa yayimlanmis her
+     protein-duzeyi sayi aciklamasiz degisir.
+  2. Aktif + EMBL capraz-referansi olan ~20.200 girisin nukleotit kayitlarini
+     indir, anotasyonlu olanlardan operon/komsuluk kur, `ro`'ya ekle.
+     Once (b)'deki 18 proteinle basla: 9'unun genomik bagi kurulabilir ve
+     BpdC1/XylC1/NinA boylece gercek genomik uye kazanir.
+  3. Oncelik sirasi (d) yuzunden 1 -> 2 olmali: bayat kumeden indirme listesi
+     cikarmak, silinmis kayitlar icin bos sorgu atmak demektir.
+
+## 108. Geri cekilmis kolon iddiasi 1 + 68 sayfada YAYINDA KALMISTI (2026-11-01)
+
+Kullanici bildirdi: "Atlas sayfasi hala 'kolon 431 aspartattir, 15.996 Asp'ye
+karsi 122 Glu, yani Fe uclusu Asp kullanir' diyor. Oysa ana sayfanin 1.2
+bolumu, kolon 431'in ligand olmadigini yapilarla gosteriyor."
+
+DOGRU. Kolon 431'in demir ligandini okumadigi 2026-10-31'de olculmustu: 27
+kuratorlu referansin kristal yapisina karsi sinandi ve cagirdigi kalinti
+**26/26'sinda demirden 10,9-14,7 A** uzakta cikti. Kolon testi geciyordu cunku
+o civarda gercekten bir D/E var -- test "kolonda asidik kalinti var mi" diye
+soruyor, "metali koordine ediyor mu" diye SORMUYOR.
+
+KOK SEBEP: GERI CEKME, KESFEDILDIGI YERE UYGULANDI; YAYIMLANDIGI HER YERE
+UYGULANMADI. index.html'in 1.2 bolumu uzun bir yorumla duzeltilmisti, ama ayni
+iddia iki yerde daha yayindaydi:
+  - `atlas_home.html`: "...is aspartate and effectively nothing else, 15.996 Asp
+    against 122 Glu, so the facial triad uses Asp specifically" -- kullanicinin
+    gordugu cumle. Sayiyi yayimlamakla kalmiyor, ondan LIGAND SONUCU cikariyor.
+  - `cluster.html`: "Catalytic carboxylate (column 431) -- Asp in N of M
+    members ... This site is aspartate across the whole family." Render edilince
+    **68 tip sayfasinda** goruluyordu.
+Hicbir sayi kontrolu yakalamadi, cunku celiski DUZYAZIDA yasiyordu.
+
+YAPILAN:
+  - `atlas_home.html`: katalitik cumle, yapinin soyledigi seyle degistirildi --
+    referans setinde 26/26 aspartat, AMA tek bir kolon hepsini tutmuyor (431'de
+    18, 432'de 2, kalan 6'si 407-411 ve 449-451'e dagilmis), ve kolonun
+    Asp/Glu orani ligandin olcumu DEGIL, o yuzden yayimlanmiyor. Koprulesen
+    kolonun (286) ayni yapisal testi GECTIGI ayrica yazildi, cunku eski son
+    cumle ("bunlar yapidan degil kolondan okunan kalintilar") artik koprulesen
+    kolon icin eksik bir beyandi.
+  - `cluster.html`: uye-basi sayim kaldirildi, yerine "sabit bir kolondan
+    okunamaz" + yapisal gerekce + 1.2'ye baglanti kondu.
+  - `validate_curation.py`: `check_retracted_column_claim()` eklendi. Sablonlari
+    tarar ve (i) katalitik kolonun asp/glu/dominant degerlerini basan her Jinja
+    ifadesini -- takma adla (`{% set ci = ... %}`) basilani da -- ve (ii) uc
+    geri cekilmis duzyazi kalibini FAIL eder. Jinja yorumlari haric tutulur.
+    Eski metne karsi sinandi: 5 bulgu yakaliyor. Repo bugun temiz.
+
 ## 107. Iki SIRA listesi SUZGEC gibi davraniyordu; agacin yontem beyani yanlisti (2026-11-01)
 
 Kullanici dort sey sordu: "2 - What the reaction actually is" bolumunde tum

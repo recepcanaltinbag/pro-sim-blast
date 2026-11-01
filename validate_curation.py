@@ -1360,6 +1360,80 @@ def check_motif_columns_anchored(rep, root, refs_aln=None):
                   f"build_reference_models.py --derive-only")
 
 
+def check_retracted_column_claim(rep, root):
+    """Katalitik karboksilat kolonunun uye sayilari HICBIR sayfada yayinda mi?
+
+    NEDEN. Kolon 431 bir zamanlar "demir ligandi" diye yayimlaniyordu. 27
+    kuratorlu referansin kristal yapisina karsi sinandi ve cagirdigi kalinti
+    26/26'sinda demirden 10,9-14,7 A uzakta cikti: kolon ligandi okumuyor,
+    yalnizca o civarda asidik bir kalinti bulunduguna bakiyor. Iddia
+    2026-10-31'de index.html'in 1.2 bolumunde geri cekildi.
+
+    AMA GERI CEKME TEK SAYFAYA ISLENDI. Atlas ozeti "kolon 431 aspartattir,
+    15.996 Asp'ye karsi 122 Glu, yani cephe uclusu Asp kullanir" demeye devam
+    etti ve her tip sayfasi "bu bolge tum ailede aspartattir" dedi -- yani ayni
+    geri cekilmis iddia 1 + 76 sayfada yayinda kaldi ve kullanici celiskiyi
+    Atlas'ta buldu (2026-11-01).
+
+    Bu, projenin tekrar eden hata sinifinin yeni bir ornegi: DUZELTME
+    KESFEDILDIGI YERE UYGULANIR, YAYIMLANDIGI HER YERE UYGULANMAZ. Duzyazi
+    oldugu icin hicbir sayi kontrolu yakalamiyordu. Bu kontrol, sayilarin
+    sablonlara geri sizmasini mekanik olarak engeller.
+    """
+    tpl_dir = os.path.join(root, "webapp", "templates")
+    if not os.path.isdir(tpl_dir):
+        rep.check("retracted claim: the catalytic-column residue counts are "
+                  "not published anywhere", True, 0,
+                  "template directory missing", severity="WARN")
+        return
+
+    # Yayina sizmis sayim ifadeleri: katalitik kolonun asp/glu/dominant
+    # degerlerini DOGRUDAN basan her sablon ifadesi.
+    count_expr = re.compile(
+        r"\{\{[^}]*\bcatalytic_iron\b[^}]*\.(?:asp|glu|dominant|asp_to_glu|"
+        r"asp_fraction|with_carboxylate)\b[^}]*\}\}")
+    # `{% set ci = ... %}` ile takma ad verip sonra ci.asp basan bicim.
+    alias_expr = re.compile(
+        r"\{%\s*set\s+(\w+)\s*=\s*[^%]*\bcatalytic_iron\b[^%]*%\}")
+
+    # Geri cekilmis duzyazi: kolon sayimindan ligand sonucu cikaran cumleler.
+    phrases = (
+        "aspartate across the whole family",
+        "facial triad uses Asp",
+        "is aspartate and effectively nothing else",
+    )
+
+    offenders = []
+    for name in sorted(os.listdir(tpl_dir)):
+        if not name.endswith(".html"):
+            continue
+        path = os.path.join(tpl_dir, name)
+        try:
+            text = open(path, encoding="utf-8").read()
+        except Exception:                             # noqa: BLE001
+            continue
+        body = re.sub(r"\{#.*?#\}", "", text, flags=re.S)   # yorumlar hesaba katilmaz
+        for match in count_expr.finditer(body):
+            offenders.append(f"{name}: {match.group(0).strip()}")
+        for alias in alias_expr.findall(body):
+            hits = re.findall(
+                r"\{\{[^}]*\b" + re.escape(alias)
+                + r"\.(?:asp|glu|dominant|asp_to_glu|asp_fraction|"
+                  r"with_carboxylate)\b[^}]*\}\}", body)
+            offenders.extend(f"{name}: {h.strip()}" for h in hits)
+        for phrase in phrases:
+            if phrase in body:
+                offenders.append(f"{name}: \u201c{phrase}\u201d")
+
+    rep.check("retracted claim: no page publishes the catalytic-column "
+              "residue counts or calls that column the iron ligand",
+              not offenders, len(offenders),
+              "" if not offenders else
+              "column 431 does not read the iron ligand (26/26 structures put "
+              "its residue 10.9-14.7 A from the iron); these renders revive a "
+              "retracted claim: " + "; ".join(offenders[:6]))
+
+
 def check_vocabulary_drift(rep):
     """add_reference.py yazarken BU dosyanin dogrularken kullandigi listeler ayni mi?
 
@@ -2056,6 +2130,7 @@ def main():
     check_vocabulary_drift(rep)
     check_reference_motifs(rep, ROOT)
     check_motif_columns_anchored(rep, ROOT)
+    check_retracted_column_claim(rep, ROOT)
     check_literature_motif_spacing(rep, ROOT)
     check_triad_gate(rep, ROOT)
     check_leaf_stop_reason(rep, ROOT)
