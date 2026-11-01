@@ -281,30 +281,6 @@ ARTEFACTS = [
      ["python3", "ingest_protein_entries.py", "--db", DB,
       "--work", f"{SCRATCH}/roar_protein"],
      ["ingest_protein_entries.py", DB, MOTIF_HMM], True),
-    # RefSeq'in TUM protein uzayi. AGIR: 871 dosya indirilir (~36 GB akitarak,
-    # diskte birikmez) ve ~143 milyon protein taranir. Madde 95'in yazdigi
-    # boslugu kapatir -- protein evrenimiz UniProt'tan gelmisti, NCBI'dan
-    # DEGIL. Ciktisi slot durum dosyalari; kesilirse kaldigi yerden devam
-    # eder, surum degisirse kendini sifirlar.
-    ("ncbi_scan", [f"{NCBI}/hits_slot0.faa"],
-     ["python3", "scan_ncbi_proteins.py", "--work", NCBI, "--parallel", "6"],
-     ["scan_ncbi_proteins.py", MOTIF_HMM], True),
-    # Taramanin adaylarini KARARA baglar. Tip atamasi ro_filter ile (UniProt
-    # tarafiyla ayni kural), triad kapisi ingest_protein_entries'in okumasiyla.
-    # Kendi kaynak tablosunu yazar; birlesimi build_union.py kurar.
-    ("ncbi_hits", [],
-     ["python3", "ingest_ncbi_hits.py", "--db", DB, "--scan-dir", NCBI],
-     ["ingest_ncbi_hits.py", "ro_filter.py", "ingest_protein_entries.py",
-      MOTIF_HMM, f"{NCBI}/hits_slot0.faa"], True),
-    # Birlesim: her kaynaktan gelen adaylarin tek tabloda toplanmasi. ro ve
-    # ro_protein'den SONRA gelmek zorunda, cunku ikisini de okur. Anasayfa
-    # kesisim/birlesim ayrimini bu tablodan yaziyor; bayat kalirsa iki sayi
-    # sessizce ayrisir ve validate_curation check_union_denominator FAIL
-    # verir -- ama once burada tazelenmesi gerekir.
-    ("union", [],
-     ["python3", "build_union.py", "--db", DB, "--fasta", "ro_alpha.fasta"],
-     ["build_union.py", DB, "ro_alpha.fasta"], False),
-
     # --- ozet katmani: HER SEYDEN sonra
     # tree_meta.json BEYAN EDILIR: sayfanin altyazisi kullanilan modeli ve
     # destek turunu buradan okuyor, yani dosya tazelik takibine girmek
@@ -339,6 +315,34 @@ ARTEFACTS = [
      ["python3", "bootstrap_tree.py", "--set", "confident",
       "--replicates", "100", "--db", DB, "--out-dir", OUT],
      ["bootstrap_tree.py", DB, MOTIF_HMM], True),
+    # SIRALAMA ONEMLI: bu uc adim phylogeny'den SONRA gelir. Once oncesine
+    # konmuslardi ve tazelik izleyicisi haklı olarak agaci BAYAT saydi --
+    # "adim i'nin DB girdisi, kendisinden oncekilerin yazdiklaridir" kurali
+    # geregi. Oysa phylogeny ro_union'i hic okumuyor; sonuc iki saatlik bir
+    # agac isinin bosuna tetiklenmesi olacakti.
+    # RefSeq'in TUM protein uzayi. AGIR: 871 dosya indirilir (~36 GB akitarak,
+    # diskte birikmez) ve ~143 milyon protein taranir. Madde 95'in yazdigi
+    # boslugu kapatir -- protein evrenimiz UniProt'tan gelmisti, NCBI'dan
+    # DEGIL. Ciktisi slot durum dosyalari; kesilirse kaldigi yerden devam
+    # eder, surum degisirse kendini sifirlar.
+    ("ncbi_scan", [f"{NCBI}/hits_slot0.faa"],
+     ["python3", "scan_ncbi_proteins.py", "--work", NCBI, "--parallel", "6"],
+     ["scan_ncbi_proteins.py", MOTIF_HMM], True),
+    # Taramanin adaylarini KARARA baglar. Tip atamasi ro_filter ile (UniProt
+    # tarafiyla ayni kural), triad kapisi ingest_protein_entries'in okumasiyla.
+    # Kendi kaynak tablosunu yazar; birlesimi build_union.py kurar.
+    ("ncbi_hits", [],
+     ["python3", "ingest_ncbi_hits.py", "--db", DB, "--scan-dir", NCBI],
+     ["ingest_ncbi_hits.py", "ro_filter.py", "ingest_protein_entries.py",
+      MOTIF_HMM, f"{NCBI}/hits_slot0.faa"], True),
+    # Birlesim: her kaynaktan gelen adaylarin tek tabloda toplanmasi. ro ve
+    # ro_protein'den SONRA gelmek zorunda, cunku ikisini de okur. Anasayfa
+    # kesisim/birlesim ayrimini bu tablodan yaziyor; bayat kalirsa iki sayi
+    # sessizce ayrisir ve validate_curation check_union_denominator FAIL
+    # verir -- ama once burada tazelenmesi gerekir.
+    ("union", [],
+     ["python3", "build_union.py", "--db", DB, "--fasta", "ro_alpha.fasta"],
+     ["build_union.py", DB, "ro_alpha.fasta"], False),
     ("stats", [f"{OUT}/stats.json"],
      ["python3", "stats_overview.py", "--db", DB, "--out", f"{OUT}/stats.json"],
      ["stats_overview.py", DB, CHEM, ECO], False),

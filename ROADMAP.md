@@ -88,7 +88,18 @@ ayni molekulun her yerdeki adini bir arada tutmaktir.
 - `/clusters` tablo tasmasi ve tip sayfasi carpisma tablosu 1440 px'te.
 - Arama sayfasinin bos baslangic durumu.
 - Mobilde Plotly kirpilmasi.
-- `1_118_RedG` Sekil 1 altyazisina kacan gelistirme notu.
+- ~~`1_118_RedG` Sekil 1 altyazisina kacan gelistirme notu~~ **YAPILDI
+  (2026-11-01) ve BIR TIP DEGIL ALTI TIPMIS.** Kullanici RedG'yi
+  bildirdi; olcum `1_117_PrnD`, `1_118_RedG`, `3_321_Nvd`,
+  `3_322_DAF36`, `6_601_PAO`, `7_701_AerC`'i buldu. Ikisi `notes`
+  (Sekil 1 altyazisinin "Note." kismi), digerleri `source`
+  ("Curated from:") alanindaydi -- yani altyazi tek sizinti yeri degildi.
+  Icerdikleri `analysis_out/...` dosyalarinin HICBIRI indirilebilir
+  degil, yani okuyucuya acamayacagi bir referans veriliyordu. Birinde
+  de birinci tekil sahis kalmisti ("The family members I retrieved").
+  Olgular korundu, referanslar okunabilir ifadeye cevrildi, ve
+  `check_no_internal_refs_published` kuratorlu bes alanda yol / .json /
+  birinci tekil sahis / TODO gorurse FAIL veriyor.
 
 
 89. **ADIM 2 OLCULDU: TIP ICI CAPALAMA UYELIGI DEGISTIRMIYOR -- kendi

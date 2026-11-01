@@ -1542,6 +1542,37 @@ def check_group_monophyly(rep, root, out_dir):
               "clade; the page text says they do not and must be updated")
 
 
+def check_no_internal_refs_published(rep, chem, root):
+    """Yayinlanan proza ic dosya yolu ya da birinci tekil sahis tasiyamaz.
+
+    2026-11-01'de olculdu: alti tipin `notes` ve `source` alanlari tip
+    sayfasinda yayinlaniyor ("Curated from:" ve Sekil 1 altyazisinin
+    "Note." kismi) ve iclerinde analysis_out/... yollari vardi. O
+    dosyalarin HICBIRI indirilebilir degil, yani okuyucuya acamayacagi
+    bir referans veriliyordu. Bir tanesinde de birinci tekil sahis
+    ("The family members I retrieved") kalmisti -- kuratorun not
+    defterinden sayfaya gecmis bir cumle.
+
+    Bu kontrol kuratorlu alanlara bakar, kodun kendi yorumlarina DEGIL:
+    kaynak dosyalarda yol yazmak dogrudur, yayinlanan metinde degil.
+    """
+    pat = re.compile(
+        r"analysis_out/\S+"
+        r"|\b[\w./-]+\.json\b"
+        r"|\b(?:I|my)\s+(?:retrieved|chose|found|own|measurement)\b"
+        r"|\bTODO\b|\bFIXME\b")
+    bad = []
+    for r in chem:
+        for field in ("notes", "source", "reaction", "substrate_en",
+                      "product_en"):
+            text = (r.get(field) or "")
+            for m in pat.finditer(text):
+                bad.append(f"{r['cluster']}.{field}: {m.group(0)}")
+    rep.check("published prose carries no internal file path or first person",
+              not bad, len(bad),
+              f"{len(chem)} rows checked" if not bad else first(bad, 5))
+
+
 def check_groups_published(rep, con, root):
     """Grup numarasi yayinlaniyorsa ne oldugu da yayinlanmak ZORUNDA.
 
@@ -2477,6 +2508,7 @@ def main():
     check_reaction_names(rep, ROOT)
     check_computed_oxygen_fate(rep, ROOT)
     check_metabolic_role(rep, ROOT)
+    check_no_internal_refs_published(rep, chem, ROOT)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
     con.text_factory = str
