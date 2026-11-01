@@ -563,6 +563,17 @@ def staleness(name, outputs, inputs, state, ignore=None, counts=None):
     missing_out = [p for p in outputs if not os.path.exists(p)]
     if missing_out:
         return f"cikti yok: {', '.join(missing_out)}"
+    # BOS CIKTI "GUNCEL" SAYILAMAZ. 2026-11-01: `phylogeny` adimi FastTree'yi
+    # kosarken dis bir timeout tarafindan oldurüldu ve `tree_all.nwk` 0 bayt
+    # kaldi. Dosya VARDI ve mtime'i TAZEYDI, yani bu islev adimi guncel
+    # sayiyor; zincir ilerliyor ve bir sonraki adim (group_monophyly) bos
+    # dosyayi ayristirmaya calisip IndexError ile patliyor. Kirilan yerde
+    # sebebi gorunmuyor, cunku hata agaci URETEN adimda degil OKUYAN adimda
+    # cikiyor. Beyan edilen bir cikti 0 bayt ise URETILMEMIS sayilir.
+    empty_out = [p for p in outputs
+                 if not os.path.isdir(p) and os.path.getsize(p) == 0]
+    if empty_out:
+        return f"cikti BOS (0 bayt, yarim kalmis uretim): {', '.join(empty_out)}"
     missing_in = [p for p in inputs if not os.path.exists(p)]
     if missing_in:
         return f"girdi yok: {', '.join(missing_in)}"
