@@ -198,6 +198,7 @@ EXTERNAL_TEXT_FIELDS = {
     ("operon_gene", "product"), ("ro_regulation", "upstream_product"),
     ("ro_search", "organism"), ("ro_search", "genus"), ("ro_search", "product"),
     ("ro_search", "doc"),
+    ("ro_protein_status", "organism"), ("ro_union", "organism"),
 }
 
 # Kimlik, kod ve olcum sutunlari: serbest metin tasimadiklari icin dil
@@ -219,6 +220,21 @@ IDENTIFIER_TEXT_FIELDS = {
     ("leaf_profile", "top_genera"), ("leaf_profile", "neighbor_signature"),
     ("leaf_sdp", "leaf_id"), ("leaf_sdp", "cluster"), ("leaf_sdp", "residues"),
     ("leaf_sdp", "signature"),
+    # 2026-11-01, protein_freshness.py'nin yazdigi tazelik tablosu. Hepsi
+    # UniProt'un kendi kodlari ya da capraz-referans kimlikleri; cevrilecek
+    # proza yok. organism serbest metin oldugu icin EXTERNAL listesinde.
+    ("ro_protein_status", "accession"), ("ro_protein_status", "entry_type"),
+    ("ro_protein_status", "inactive_reason"), ("ro_protein_status", "merged_into"),
+    ("ro_protein_status", "embl_nuc"), ("ro_protein_status", "refseq"),
+    ("ro_protein_status", "ec"),
+    # 2026-11-01, build_union.py'nin yazdigi birlesim tablosu. Birim DIZI,
+    # accession kaynak kimligi; hepsi kimlik/kod, cevrilecek proza yok.
+    # organism serbest metin oldugu icin EXTERNAL listesinde.
+    ("ro_union", "seq_md5"), ("ro_union", "sequence"),
+    ("ro_union", "ro_cluster"), ("ro_union", "ro_group"),
+    ("ro_union", "genomic_candidate_id"), ("ro_union", "first_source"),
+    ("ro_union_source", "seq_md5"), ("ro_union_source", "source"),
+    ("ro_union_source", "accession"), ("ro_union_source", "status"),
     ("ro_membership", "candidate_id"), ("ro_membership", "ro_cluster"),
     ("neighbor", "candidate_id"), ("neighbor", "nucleotide_id"),
     ("neighbor", "protein_id"),
@@ -277,6 +293,8 @@ PUBLISHED_TEXT_FILES = [
     "substrate_predictability.json",
     "stratified_stats.json", "ecological_origin.json", "threshold_sensitivity.json",
     "reference_redundancy.json", "group_monophyly.json",
+    "protein_freshness.json", "bootstrap_references.json",
+    "bootstrap_confident.json",
 ]
 
 # --- Uyesiz referans tipleri -------------------------------------------------

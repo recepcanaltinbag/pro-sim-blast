@@ -113,6 +113,33 @@ UniProtKB today holds roughly 100,500 proteins, fewer than our snapshot, because
 were deleted in between: a refresh has to be a union with the snapshot, not a replacement. A second
 entry point does add reach &mdash; 1,253 proteins carry PF00848, the catalytic domain, without a
 Rieske-domain annotation, and the present criterion cannot see them.</p>
+
+{% if fresh %}
+<p><b>How much of the snapshot still exists.</b> &ldquo;Deleted in between&rdquo; was an inference
+until it was counted. All {{ fresh.n_queried|fmt }} accessions were queried against UniProtKB:
+<b>{{ fresh.by_entry_type['Inactive']|fmt }}</b>
+({{ pct(fresh.by_entry_type['Inactive'], fresh.n_queried) }}) are now inactive, and
+{{ fresh.inactive_by_reason['DELETED']|fmt }} of those are <i>deleted</i> rather than merged into a
+new accession &mdash; they do not live on under another identifier.
+{{ fresh.alive|fmt }} are still live. Nothing failed to measure.</p>
+
+{% if freshlink %}
+<p><b>This does not touch the entries.</b> Of the deleted proteins,
+{{ freshlink.get('dead_linked', 0)|fmt }} correspond to an entry in this database and
+{{ freshlink.get('dead_unlinked', 0)|fmt }} do not. The first group costs nothing: those entries
+were built from annotated genome records at NCBI, not from the UniProt snapshot, so a UniProt
+deletion removes a duplicate identifier and not the evidence. The second group is the real loss
+&mdash; protein-level alpha subunits that can no longer be retrieved from the source they came
+from. What remains recoverable is <b>{{ fresh.recoverable_genomic_context|fmt }}</b> proteins: still
+live, carrying an EMBL nucleotide cross-reference, passing the motif gate, and not already linked
+to an entry. Those are the ones for which a genome record could be fetched and an operon built,
+which is why a refresh is worth doing before any download, not after.</p>
+{% endif %}
+
+<p>The same query returned an EC number for {{ fresh.ec_present|fmt }} of the live proteins. The
+database does not yet carry EC as a field, which is a gap: it is the identifier the enzymology
+literature uses, and without it this resource cannot be joined to any of it.</p>
+{% endif %}
 <p>Two independent criteria are therefore required.</p>
 <ol>
   <li><b>Profile coverage.</b> Each of the {{ N_REFS }} curated references seeds a profile hidden Markov model

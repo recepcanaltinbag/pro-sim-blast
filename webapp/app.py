@@ -1060,7 +1060,28 @@ def classify_submit(request: Request, sequences: str = Form("")):
 def about(request: Request):
     con = connect()
     try:
-        return render(request, "about.html", totals=totals(con))
+        # Anlik goruntunun BUGUNKU durumu olcumden gelir. Metin "redundant
+        # entries were deleted in between" diyordu ama kac tanesinin
+        # silindigini soylemiyordu; 2026-11-01'de 73.699 accession'in
+        # tamami UniProt'a soruldu.
+        import json as _json                           # noqa: PLC0415
+        fresh_path = apath("protein_freshness.json")
+        fresh = (_json.load(open(fresh_path))
+                 if os.path.exists(fresh_path) else None)
+        link = None
+        if fresh:
+            link = dict(con.execute(
+                """SELECT CASE WHEN s.entry_type = 'Inactive' THEN 'dead'
+                                ELSE 'alive' END || '_' ||
+                          CASE WHEN p.linked_candidate_id IS NULL
+                                 OR p.linked_candidate_id = '' THEN 'unlinked'
+                               ELSE 'linked' END,
+                          COUNT(*)
+                     FROM ro_protein p
+                     JOIN ro_protein_status s USING(accession)
+                    GROUP BY 1"""))
+        return render(request, "about.html", totals=totals(con),
+                      fresh=fresh, freshlink=link)
     finally:
         con.close()
 
@@ -1403,7 +1424,16 @@ def atlas_phylogeny(request: Request):
         # dogruladi, grup 1-4 hicbir kesimde dal olusturmuyor.
         mono_path = apath("group_monophyly.json")
         mono = (_json.load(open(mono_path)) if os.path.exists(mono_path) else None)
+        # BOOTSTRAP ayri bir olcumdur: SH-benzeri yerel destek hizalama
+        # kolonlarini yeniden orneklemez, bootstrap orneklier. Bir grubun
+        # klad OLUP OLMADIGI sorusu ancak bununla yanitlanir.
+        boot = {}
+        for which in ("references", "confident"):
+            path = apath(f"bootstrap_{which}.json")
+            if os.path.exists(path):
+                boot[which] = _json.load(open(path))
         return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n,
+                      boot=boot or None,
                       cover=atlas.representative_coverage(con),
                       tree_meta=tree_meta, mono=mono,
                       mono_sum=atlas.monophyly_summary(mono),

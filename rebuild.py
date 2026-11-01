@@ -295,6 +295,24 @@ ARTEFACTS = [
     ("group_monophyly", [f"{OUT}/group_monophyly.json"],
      ["python3", "group_monophyly.py", "--db", DB, "--out-dir", OUT],
      ["group_monophyly.py", DB, f"{OUT}/tree_all.nwk"], False),
+    # UniProt anlik goruntusunun BUGUNKU durumu. AGIR cunku 737 ag sorgusu.
+    # Silinmis kayitlar atilmaz, ayri tabloya durum yazilir -- "silinmis
+    # kayit" ile "veri yok" ayri seylerdir.
+    ("protein_freshness", [f"{OUT}/protein_freshness.json"],
+     ["python3", "protein_freshness.py", "--db", DB, "--out-dir", OUT],
+     ["protein_freshness.py", DB], True),
+    # Bootstrap destegi: SH-benzeri yerel destegin tasiyamadigi klad
+    # iddialarini sinar. AGIR cunku her tekrar icin agac yeniden cikarilir.
+    ("bootstrap_references", [f"{OUT}/bootstrap_references.json",
+                              f"{OUT}/bootstrap_references.nwk"],
+     ["python3", "bootstrap_tree.py", "--set", "references",
+      "--replicates", "200", "--db", DB, "--out-dir", OUT],
+     ["bootstrap_tree.py", DB, MOTIF_HMM], True),
+    ("bootstrap_confident", [f"{OUT}/bootstrap_confident.json",
+                             f"{OUT}/bootstrap_confident.nwk"],
+     ["python3", "bootstrap_tree.py", "--set", "confident",
+      "--replicates", "100", "--db", DB, "--out-dir", OUT],
+     ["bootstrap_tree.py", DB, MOTIF_HMM], True),
     ("stats", [f"{OUT}/stats.json"],
      ["python3", "stats_overview.py", "--db", DB, "--out", f"{OUT}/stats.json"],
      ["stats_overview.py", DB, CHEM, ECO], False),

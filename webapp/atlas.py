@@ -2375,6 +2375,16 @@ PROVENANCE = [
      "model FastTree fell through to, the aligner, and the support measure with its "
      "distribution. Recorded because the page caption named a model the run had not used.",
      "build_phylogeny.py"),
+    ("protein_freshness.json", "file", "Whether each protein in the UniProt snapshot still "
+     "exists in UniProtKB today, with the reason for every inactive accession, and how many of "
+     "the survivors could still be given a genomic context. Recorded because the snapshot is "
+     "dated and the published count was taken at download time.", "protein_freshness.py"),
+    ("bootstrap_references.json", "file", "Nonparametric bootstrap on the curated reference set: "
+     "alignment columns resampled with replacement and the tree re-inferred per replicate. "
+     "Recorded because the published tree carries SH-like local support, which is not bootstrap "
+     "and cannot support a claim that a group is a clade.", "bootstrap_tree.py"),
+    ("bootstrap_confident.json", "file", "The same bootstrap on the references plus every leaf "
+     "whose assignment is neither distant nor novel.", "bootstrap_tree.py"),
     ("group_monophyly.json", "file", "Whether each historical RO group is a single clade of the "
      "published tree, measured on three sequence sets: every tip, the curated references alone, "
      "and the leaves whose assignment is neither distant nor novel. Recorded because the page "

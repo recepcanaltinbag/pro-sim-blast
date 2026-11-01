@@ -5,6 +5,74 @@ Durum: `main` dalinda pipeline + web uygulamasi + Atlas yayinda,
 
 ## Sirada
 
+### 0. HEDEF (kullanici, 2026-11-01): "NCBI'daki, ordaki, burdaki TUM RO olabilecek her sey bu DB'den toparlanabilsin"
+
+Bu, DB'nin biriminim degistiriyor. Bugun yayinladigimiz sayi (19.125) bir
+KAPSAM degil, bir KESISIM: hem genomik baglami olan, hem kapiyi gecen
+girisler. Hedef, DB'yi her kaynaktan gelen RO adaylarinin BIRLESIMI yapmak
+ve her adayin hangi kaynaktan, hangi kanitla geldigini yaninda tasimak.
+
+Kaynak envanteri (2026-11-01 itibariyla elimizde olan ve OLMAYAN):
+
+| kaynak | durum | sayi |
+|---|---|---|
+| NCBI GenBank/RefSeq genom kayitlari (anotasyonlu) | TARANDI | 19.125 giris |
+| UniProtKB anlik goruntu (canli) | INDIRILDI | 25.706 |
+| UniProtKB anlik goruntu (silinmis, yalnizca bizde) | INDIRILDI | 47.993 |
+| NCBI `nr` / RefSeq protein uzayi | **HIC TARANMADI** | ? |
+| NCBI anotasyonu OLMAYAN genomlar (ORF cagrisi gerekir) | **HIC TARANMADI** | ? |
+| MGnify / JGI metagenom protein katalogu | **HIC TARANMADI** | ? |
+
+Madde 95 bunu zaten yazmisti: protein evreni UniProt'tan geldi, NCBI'DAN
+DEGIL. Yani kullanicinin sordugu seyin en buyuk parcasi hic aranmamis.
+
+Sira (yukaridan asagiya, her adim kostururak dogrulanir):
+
+**A1. `ro_union`: tek satir = tek DIZI, yaninda tum kaynak kimlikleri.**
+Bugun ayni alpha alt birimi uc tabloda uc kere sayiliyor (`ro`,
+`ro_protein`, `ro_protein_status`) ve hangi sayinin ne oldugu sayfadan
+okunamiyor. Birim DIZI olmali; accession kaynak kimligidir, birim degil.
+Cikti: `ro_union(seq_md5, length, n_sources, has_genomic_context,
+best_evidence_tier, ro_cluster, ro_group, triad_state)` +
+`ro_union_source(seq_md5, source, accession, url)`.
+
+**A2. Protein-duzeyi girisler BIRINCI SINIF.** Manset birimi "RO alpha alt
+birimi" olur. Silinmis girisler SAKLANIR ve ayri sayilir -- 34.442 tekil
+dizi icin elimizdeki kopya tek kopyadir (madde 112).
+
+**A3. PAYDA MUHAFIZI.** Konuma bagli bir tablodan gelen her yuzde, paydasini
+"genomik baglami olan kume" olarak beyan etmek ZORUNDA; etmezse FAIL.
+Yoksa A1/A2'den sonra her yuzde sessizce yanlis paydaya oturur.
+
+**A4. NCBI PROTEIN UZAYINI TARA (en buyuk acik is).** ROmotif71 +
+Rieske/Ring_hydroxyl_A ile RefSeq tekrarsiz protein setinde hmmsearch.
+Burasi "NCBI'daki her sey"in asil karsiligi.
+
+**A5. 18.076 kurtarilabilir protein icin genom kaydini indir**, operon ve
+komsuluk kur. Bunlar bugun protein-duzeyinde duruyor ama genomik baglami
+KURULABILIR; kurulunca kesisime girerler.
+
+**A6. CAPRAZ REFERANSLAR alan olur:** EC (3.853 tanesi `ro_protein_status`'ta
+hazir), UniProt, InterPro, KEGG, MetaCyc. Bir toparlama veritabaninin isi
+ayni molekulun her yerdeki adini bir arada tutmaktir.
+
+### 1. Literaturle uyum (acik maddeler)
+
+- Batie sinifi tip sayfalarinda bizim grubun yaninda gosterilmeli
+  (`batie_classes.yaml` var, yalnizca iki atlas sayfasinda gorunuyor).
+- 1-5 grup numaralari `groups.yaml` etiketleriyle degistirilmeli; bugun
+  Batie'nin bes sinifiyla karistirilabiliyorlar.
+- Sekiz uyesiz referans: ucu (BpdC1, XylC1, NinA) gercek uye kazanabilir.
+- Adlandirma karari: NahAc/NBDO ve CarAa/CARDO (%99,7-100 ayni).
+
+### 2. Kalan gorsel denetim bulgulari
+
+- `/clusters` tablo tasmasi ve tip sayfasi carpisma tablosu 1440 px'te.
+- Arama sayfasinin bos baslangic durumu.
+- Mobilde Plotly kirpilmasi.
+- `1_118_RedG` Sekil 1 altyazisina kacan gelistirme notu.
+
+
 89. **ADIM 2 OLCULDU: TIP ICI CAPALAMA UYELIGI DEGISTIRMIYOR -- kendi
     uyarimi curuttum (2026-10-28).** Kullanici "literatur acisindan hangisini
     onerirsen oyle devam edelim" dedi; onerim "once olc, sonra uygula"ydi ve
@@ -2035,6 +2103,60 @@ kuruluyor, dongusel). Duz `MIN_CATALYTIC_SITES = 3` yazilirsa AerC'nin 7
 girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
+
+## 113. BIRLESIM KURULDU: 70.252 tekil dizi; NCBI protein uzayi ilk kez taraniyor (2026-11-01)
+
+Kullanici: "NCBI'daki ordaki burdaki tum RO olabilecek her sey bu DB'den
+toparlanabilsin". Bu, yayinladigimiz 19.125'in ne oldugunu yeniden
+tanimliyor: o sayi bir KAPSAM degil, bir KESISIM -- hem genomik baglami
+olan, hem kapiyi gecen girisler.
+
+**`ro_union` (build_union.py).** Birim ACCESSION DEGIL, DIZI. Gerekce
+olculmustu: UniProt accession'larinin %65,1'i artik silinmis; accession'i
+birim saymak UniProt'un temizlik kararlarini bizim biyolojik sayimimiz
+gibi gostermek olur. Accession artik `ro_union_source`'ta, kaynagi ve
+durumuyla birlikte duruyor.
+
+```
+NCBI genom (anotasyonlu, onayli) : 19.125 giris ->  15.960 tekil dizi
+UniProt anlik goruntusu          : 73.699 giris ->  54.292 YENI tekil dizi
+-----------------------------------------------------------------------
+BIRLESIM                                            70.252 tekil dizi
+  genomik baglami olan                              15.960
+  genomik baglami OLMAYAN                           54.292
+  kapiyi gecen                                      69.180
+  kapiyi GECMEYEN (tabloda KALIR, aday olarak)       1.072
+ro_union_source                                     92.824 kaynak kimligi
+  uniprot/deleted 47.988 | uniprot/live 25.706
+  ncbi_genome/confirmed 16.044 | merged 3 | demerged 2
+```
+
+Yani ayni dizi ortalama 1,3 kaynak kimligi tasiyor; 13.984 dizi iki,
+2.070 dizi uc veya daha fazla kimlikle geliyor. Kapiyi gecmeyen 1.072
+satir SILINMEDI -- "RO olabilecek her sey" ancak boyle toparlanir, hangi
+tiere bakacagina kullanici karar verir.
+
+**NCBI protein uzayi (scan_ncbi_proteins.py).** Madde 95 bunu zaten
+yazmisti: protein evreni UniProt'tan geldi, NCBI'DAN DEGIL. Yani
+kullanicinin sordugu seyin en buyuk parcasi bugune kadar HIC aranmamisti.
+RefSeq release 237, 871 protein parcasi, ~143 milyon protein, ~36 GB
+sikistirilmis. Akitarak calisiyor (indir -> tara -> eslesenlerin dizisini
+al -> sil), hicbiri diskte birikmiyor, durum dosyasiyla kesildigi yerden
+devam ediyor.
+
+ESIK KEYFI DEGIL, OLCULDU. Onaylanmis 19.125 girisin TAMAMI ROmotif71'e
+E <= 5,6e-15 ile eslesiyor; en kotu bit skoru 55,5, medyan 189,4. On
+suzgec bu yuzden E <= 1e-3'te: en kotu gercek girisin on kat mertebe
+altinda, yani hicbir gercek RO on suzgecte dusmez. Suzgec KARAR VERMEZ --
+karari kapi (Rieske 4/4 + triad >=2/3) verir; burada toplanan sey ADAY.
+
+Deneme parcasinda 164.200 proteinde E<=1e-3'te 36 aday, skor araligi
+22,8-198,9; bunlarin 18'i onaylilarin en kotu skorunun uzerinde. Bu
+oranla tum surumde ~31.000 aday bekleniyor.
+
+DIKKAT, bir sayim tuzagi: `hmmsearch --tblout /dev/stdout` kullanirsan
+insan-okunur cikti ayni akisa yazilir ve `grep -vc "^#"` 31 yerine 244
+sayar. tblout DAIMA bir dosyaya yazilmali.
 
 ## 111. Statik arama sayfasinda facet baglantilarinin HICBIRI calismiyordu (2026-11-01)
 

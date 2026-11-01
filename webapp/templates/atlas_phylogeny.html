@@ -68,6 +68,34 @@ Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic c
   reproduces the group scheme. <a href="{{ u('/download/analysis/group_monophyly.json') }}">The measurement</a>
   is downloadable, and the three sequence sets it uses are defined inside it.
 {% endif %}
+
+{% if boot %}
+{% set br = boot.references %}{% set bc = boot.confident %}
+  <b>Tested again with bootstrap, because local support cannot answer this.</b> The support values
+  on the tree above are SH-like local support, which does not resample the alignment. A claim that
+  a group <i>is</i> a clade needs the alignment columns resampled and the tree re-inferred, so that
+  was done separately: {% if br %}{{ br.replicates }} replicates on the {{ br.n_sequences }} curated
+  references{% endif %}{% if br and bc %}, and {{ bc.replicates }} on the {{ bc.n_sequences }}
+  sequences whose assignment is neither distant nor novel{% endif %}.
+  {% if br and br.group_as_a_clade.get('5') %}
+  Only one group survives as a clade among the references, and it survives convincingly: group 5 at
+  <b>{{ '%.2f' % br.group_as_a_clade['5'].bootstrap }}</b>.
+  {% endif %}
+  {% if bc and bc.group_as_a_clade.get('5') and bc.group_as_a_clade['5'].bootstrap is not none %}
+  In the larger set group 5 is still the only group that forms a clade, but its support falls to
+  <b>{{ '%.2f' % bc.group_as_a_clade['5'].bootstrap }}</b> &mdash; the branch holds its shape while
+  the evidence for it does not, which is exactly the distinction local support was hiding.
+  {% endif %}
+  {% if br and br.group_as_a_clade.get('6') %}
+  The plant chlorophyll branch, the obvious candidate for a new group, is <b>not</b> a clade even
+  among its own {{ br.group_as_a_clade['6'].n }} references
+  ({{ br.group_as_a_clade['6'].largest_pure_clade }} of {{ br.group_as_a_clade['6'].n }} in the
+  largest single-group clade). Calling it a proposed group is not something this data supports.
+  {% endif %}
+  {% if br %}
+  <a href="{{ u('/download/analysis/bootstrap_references.json') }}">References bootstrap</a>{% endif %}{% if bc %} ·
+  <a href="{{ u('/download/analysis/bootstrap_confident.json') }}">Larger-set bootstrap</a>{% endif %}
+{% endif %}
 </div>
 
 <figure class="fig">
