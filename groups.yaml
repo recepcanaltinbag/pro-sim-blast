@@ -42,14 +42,19 @@
 # (CmoS, CmoB, CmoA) okaryottur ve grup 5'tedir. Grup 6 "okaryot grubu"
 # degildir; hizalanabilirlige gore ayrilmistir -- asagida yaziyor.
 
+# UYE VE TIP SAYILARI BU DOSYADA TUTULMAZ (2026-11-01). Tutuluyordu ve
+# BAYATLAMISLARDI: grup 1 icin "members: 5746, types: 14" yaziyordu, olcum
+# 5104 uye / 16 tip; grup 6 icin "0 / 0" yaziyordu, olcum 617 uye / 3 tip.
+# Ayni sayinin iki yerde durmasi bu projede tekrar eden hata sinifinin ta
+# kendisi. Sayilar artik yalnizca veritabanindan OLCULUR; bu dosya grubun
+# NE OLDUGUNU (etiket, mimari, gerekce, literaturle iliskisi) tasir.
+
 groups:
   - id: 1
     is_literature_group: true
     label: "Alkaloid and aryl-ether monooxygenases"
     architecture: "alpha3"
     beta_rate: 0.01
-    members: 5746
-    types: 14
     dominant_reactions: [hydroxylation, N_demethylation]
     dominant_families: [alkaloids, biaryls_ethers]
 
@@ -58,8 +63,6 @@ groups:
     label: "Biphenyl and alkylbenzene dioxygenases"
     architecture: "alpha3beta3"
     beta_rate: 0.80
-    members: 759
-    types: 17
     dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
     dominant_families: [biaryls_ethers, alkylbenzenes]
 
@@ -68,8 +71,6 @@ groups:
     label: "Polycyclic aromatic and nitroarene dioxygenases"
     architecture: "mixed"
     beta_rate: 0.27
-    members: 3238
-    types: 17
     dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
     dominant_families: [pah, nitroaromatics]
 
@@ -78,8 +79,6 @@ groups:
     label: "Aromatic acid and aniline dioxygenases"
     architecture: "alpha3beta3"
     beta_rate: 0.76
-    members: 3784
-    types: 11
     dominant_reactions: [cis_dihydroxylation, dioxygenation_with_release]
     dominant_families: [aromatic_acids, anilines]
 
@@ -88,8 +87,6 @@ groups:
     label: "Quaternary amine oxygenases"
     architecture: "alpha3"
     beta_rate: 0.00
-    members: 5547
-    types: 8
     dominant_reactions: [hydroxylation, N_demethylation, C_N_cleavage]
     dominant_families: [quaternary_amines]
     note: >
@@ -104,8 +101,6 @@ groups:
     is_literature_group: false
     architecture: "alpha3"
     beta_rate: null
-    members: 0
-    types: 0
     dominant_reactions: [oxygenolytic_ring_opening, hydroxylation]
     dominant_families: [chlorophyll_pathway]
     added_on: 2026-10-14
@@ -138,8 +133,6 @@ groups:
     is_literature_group: false
     architecture: "unknown"
     beta_rate: null
-    members: null
-    types: 1
     dominant_reactions: [C_C_cleavage, C_C_bond_formation]
     dominant_families: [alkaloids]
     added_on: 2026-10-21

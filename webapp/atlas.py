@@ -1230,6 +1230,52 @@ def layout(root, row_h):
 SUPPORT_WEAK = 0.70   # bu esigin altindaki bolunme COZULMEMIS sayilir
 
 
+def group_view(con, groups_yaml):
+    """Grup sayfasinin verisi: NE OLDUGU dosyadan, KAC TANE OLDUGU olcumden.
+
+    groups.yaml bir zamanlar `members` ve `types` sayilarini da tasiyordu ve
+    BAYATLAMISLARDI (grup 1 icin 5746 uye / 14 tip yaziyordu; olcum 5104 /
+    16). Ayni sayinin iki yerde durmasi bu projenin tekrar eden hata sinifi.
+    O alanlar 2026-11-01'de dosyadan silindi; burada yalnizca olculuyorlar.
+    """
+    import yaml as _yaml
+    try:
+        doc = _yaml.safe_load(open(groups_yaml, encoding="utf-8")) or {}
+    except OSError:
+        return None
+    measured = {}
+    for g, n, t in con.execute(
+            "SELECT ro_group, COUNT(*), COUNT(DISTINCT ro_cluster) FROM ro "
+            "WHERE is_confirmed=1 GROUP BY ro_group"):
+        measured[str(g)] = (n, t)
+    beta = {}
+    have_beta = con.execute("SELECT name FROM sqlite_master "
+                            "WHERE name='ro_subunit'").fetchone()
+    rows = []
+    for g in doc.get("groups") or []:
+        key = str(g.get("id"))
+        n, t = measured.get(key, (0, 0))
+        rows.append({
+            "id": key,
+            "label": g.get("label"),
+            "is_literature_group": bool(g.get("is_literature_group")),
+            "published_as": g.get("published_as"),
+            "architecture": g.get("architecture"),
+            "beta_rate": g.get("beta_rate"),
+            "reactions": g.get("dominant_reactions") or [],
+            "families": g.get("dominant_families") or [],
+            "added_on": g.get("added_on"),
+            "note": (g.get("note") or "").strip(),
+            "members": n,
+            "types": t,
+        })
+    # Dosyada olmayan bir grup veritabaninda duruyorsa SESSIZCE dusmemeli.
+    orphan = sorted(set(measured) - {r["id"] for r in rows})
+    return {"groups": rows, "orphan": orphan,
+            "total": sum(r["members"] for r in rows),
+            "source": doc.get("source") or {}}
+
+
 def monophyly_summary(mono):
     """group_monophyly.json -> sayfanin cumlesini kuracak alanlar.
 

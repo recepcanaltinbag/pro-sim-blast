@@ -640,6 +640,24 @@ p { margin: 0 0 var(--s3); max-width: var(--measure); }
 ul, ol { margin: 0 0 var(--s3); padding-left: var(--s5); max-width: var(--measure); }
 li { margin-bottom: var(--s1); }
 
+/*  Ikinci lede: anasayfada kesisim/birlesim ayrimini yazan paragraf.
+    Birincisi kadar one cikmamali -- o GIRIS, bu bir TANIM duzeltmesi --
+    ama govde metninden ayri durmali ki okuyucu atlamasin.              */
+.lede--second {
+  font-size: 1rem;
+  border-left: 3px solid var(--rule);
+  padding-left: var(--s4);
+}
+
+/*  Grup sayfasinin gerekce bloklari. Her biri groups.yaml'daki `note`
+    alanindan geliyor ve uzun; okunabilir bir olcude tutuluyor.         */
+.groupnote {
+  margin: var(--s6) 0;
+  max-width: 76ch;
+}
+.groupnote h3 { margin-bottom: var(--s2); }
+.groupnote p  { margin: var(--s3) 0; }
+
 .lede {
   font-size: 1.06rem;
   line-height: 1.55;

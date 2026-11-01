@@ -1496,6 +1496,25 @@ def atlas_home(request: Request):
         con.close()
 
 
+@app.get("/atlas/groups", response_class=HTMLResponse)
+def atlas_groups(request: Request):
+    """Grup numaralarinin NE OLDUGUNU soyleyen sayfa.
+
+    Bu sayfa 2026-11-01'de eklendi, cunku site "group 3" yaziyor ve grup 3'un
+    ne oldugunu soyleyen hicbir sayfa YOKTU -- groups.yaml hic yayinlanmiyordu.
+    Batie'nin bes sinifiyla karistirilma riski tam buradan doguyor: tanimsiz
+    bir numara, okuyucunun bildigi baska bir bes'li semaya yapisir.
+    """
+    con = connect()
+    try:
+        gv = atlas.group_view(con, os.path.join(PARENT, "groups.yaml"))
+        if not gv:
+            raise HTTPException(404, "groups.yaml not readable")
+        return render(request, "atlas_groups.html", gv=gv, page_id="groups")
+    finally:
+        con.close()
+
+
 @app.get("/atlas/phylogeny", response_class=HTMLResponse)
 def atlas_phylogeny(request: Request):
     if not os.path.exists(apath("tree_all.nwk")):

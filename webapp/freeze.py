@@ -187,7 +187,7 @@ def main():
     print("[pages] fixed")
     save("/", "index.html"); save("/clusters", "clusters.html"); save("/about", "about.html")
     print("[pages] atlas")
-    for p in ("atlas", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
+    for p in ("atlas", "atlas/groups", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
               "atlas/cooccurrence", "atlas/statistics", "atlas/quality",
               "atlas/closeness", "atlas/structure", "atlas/control", "atlas/origin", "atlas/learning",

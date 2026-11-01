@@ -58,10 +58,28 @@ ayni molekulun her yerdeki adini bir arada tutmaktir.
 
 ### 1. Literaturle uyum (acik maddeler)
 
-- Batie sinifi tip sayfalarinda bizim grubun yaninda gosterilmeli
-  (`batie_classes.yaml` var, yalnizca iki atlas sayfasinda gorunuyor).
-- 1-5 grup numaralari `groups.yaml` etiketleriyle degistirilmeli; bugun
-  Batie'nin bes sinifiyla karistirilabiliyorlar.
+- ~~Batie sinifi tip sayfalarinda gosterilmeli~~ **IPTAL (2026-11-01),
+  kendi veri dosyam bu maddeyi curuttu.** `batie_classes.yaml` zaten
+  "A batie_class column cannot be keyed on enzyme type" diyor ve
+  gerekcesini veriyor: CARDO tabloda UC ayri sinifta geciyor (KA1 susu
+  IIA, IC177 IIB, CA10 ve J3 III), cunku Batie sinifi enzimin degil
+  SUSUN -- daha dogrusu elektron zincirinin -- ozelligi. Tip sayfasina
+  bir Batie sutunu koymak, dosyanin tam da uyardigi karistirmayi
+  uretirdi. Literaturle uyumsuzluk Batie'nin EKSIK olmasi degil; onu
+  tip duzeyinde yayinlamak olurdu.
+- ~~1-5 grup numaralari etiketlerle degistirilmeli~~ **YAPILDI ama baska
+  sekilde (2026-11-01).** Asil sorun numaranin kendisi degildi: numara
+  TANIMSIZDI. `groups.yaml` hic yayinlanmiyordu, yani site her yerde
+  "group 3" yaziyor ve grup 3'un ne oldugunu soyleyen tek bir sayfa yoktu.
+  Tanimsiz bir numara okuyucunun bildigi baska bir bes'li semaya yapisir.
+  `/atlas/groups` eklendi; tip sayfasi ve giris sayfasi numarayi oraya
+  BAGLIYOR. Numarayi etiketle degistirmek yerine numaraya tanim verildi --
+  kalici baglantilar ve `ro_group` degerleri boylece bozulmadi.
+  Ayrica: groups.yaml'in `members`/`types` alanlari BAYATTI (grup 1 icin
+  5746 uye / 14 tip yaziyordu, olcum 5104 / 16; grup 6 icin 0 / 0
+  yaziyordu, olcum 617 / 3). Alanlar dosyadan silindi, sayfa olcumden
+  yaziyor, ve `check_groups_published` dosyaya sayi geri konursa FAIL
+  veriyor.
 - Sekiz uyesiz referans: ucu (BpdC1, XylC1, NinA) gercek uye kazanabilir.
 - Adlandirma karari: NahAc/NBDO ve CarAa/CARDO (%99,7-100 ayni).
 

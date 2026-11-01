@@ -3,7 +3,8 @@
 {% block body %}
 <nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/clusters') }}">Types</a> › {{ c.cluster }}</nav>
 
-<h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · {{ group_label(c.group) }}</span></h1>
+<h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} ·
+  <a href="{{ u('/atlas/groups') }}">{{ group_label(c.group) }}</a></span></h1>
 <div class="numbered">
 
 {#  Uyesi olmayan tip: sayfa onceden SESSIZCE bos kaliyordu. Aciklama en uste

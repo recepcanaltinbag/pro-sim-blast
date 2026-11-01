@@ -1542,6 +1542,74 @@ def check_group_monophyly(rep, root, out_dir):
               "clade; the page text says they do not and must be updated")
 
 
+def check_groups_published(rep, con, root):
+    """Grup numarasi yayinlaniyorsa ne oldugu da yayinlanmak ZORUNDA.
+
+    2026-11-01'de olculdu: site her yerde "group 3" yaziyordu ve grup 3'un
+    ne oldugunu soyleyen hicbir sayfa YOKTU -- groups.yaml hic
+    yayinlanmiyordu. Batie'nin bes sinifiyla karistirilma riski tam
+    buradan doguyor; tanimsiz bir numara okuyucunun bildigi baska bir
+    bes'li semaya yapisir.
+
+    Ayrica groups.yaml'in UYE SAYISI TASIMADIGINI zorunlu kilar. Tasiyordu
+    ve bayatlamisti (grup 1 icin 5746 uye / 14 tip; olcum 5104 / 16).
+    Ayni sayinin iki yerde durmasi bu projenin tekrar eden hata sinifi.
+    """
+    path = os.path.join(root, "groups.yaml")
+    try:
+        import yaml as _yaml
+        doc = _yaml.safe_load(open(path, encoding="utf-8")) or {}
+    except Exception as exc:
+        rep.check("groups: groups.yaml is readable", False, 1, str(exc))
+        return
+    entries = doc.get("groups") or []
+    declared = {str(g.get("id")) for g in entries}
+
+    measured = {str(r[0]) for r in con.execute(
+        "SELECT DISTINCT ro_group FROM ro WHERE is_confirmed=1")}
+    orphan = sorted(measured - declared)
+    rep.check("groups: every group in the database is defined in groups.yaml",
+              not orphan, len(orphan),
+              f"{len(declared)} defined, {len(measured)} in use"
+              if not orphan else "tanimsiz: " + ", ".join(orphan))
+
+    # Sayi dosyada DURMAMALI.
+    stale = sorted(str(g.get("id")) for g in entries
+                   if "members" in g or "types" in g)
+    rep.check("groups: groups.yaml carries no member or type counts",
+              not stale, len(stale),
+              "sayi yok, olcumden geliyor" if not stale
+              else "sayi tasiyan grup: " + ", ".join(stale))
+
+    # Sayfa VAR mi, ve numara bir tanima BAGLI mi?
+    tpl = os.path.join(root, "webapp", "templates", "atlas_groups.html")
+    nav = os.path.join(root, "webapp", "templates", "_atlas_nav.html")
+    missing = []
+    if not os.path.exists(tpl):
+        missing.append("atlas_groups.html")
+    elif "Batie" not in open(tpl, encoding="utf-8").read():
+        missing.append("atlas_groups.html'de Batie ayrimi yok")
+    if os.path.exists(nav) and "/atlas/groups" not in open(
+            nav, encoding="utf-8").read():
+        missing.append("gezinmede /atlas/groups yok")
+    frz = os.path.join(root, "webapp", "freeze.py")
+    if os.path.exists(frz) and '"atlas/groups"' not in open(
+            frz, encoding="utf-8").read():
+        missing.append("freeze.py statik yayina almiyor")
+    rep.check("groups: the page that defines the numbers is published",
+              not missing, len(missing),
+              "yayinda" if not missing else "; ".join(missing))
+
+    # Her grup bir ETIKET tasimak zorunda: etiketi olmayan bir grup sayfada
+    # bos bir satir olarak gorunur ve numara yine tanimsiz kalir.
+    nolabel = sorted(str(g.get("id")) for g in entries
+                     if not (g.get("label") or "").strip())
+    rep.check("groups: every group carries a label",
+              not nolabel, len(nolabel),
+              f"{len(entries)} grup etiketli" if not nolabel
+              else "etiketsiz: " + ", ".join(nolabel))
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -2418,6 +2486,7 @@ def main():
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
         check_union_denominator(rep, con, ROOT)
+        check_groups_published(rep, con, ROOT)
         check_cluster_coverage(con, rep, eco, chem)
         check_ecology_csv(rep, eco)
         check_chemistry_csv(rep, chem)

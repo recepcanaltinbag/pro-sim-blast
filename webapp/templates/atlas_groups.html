@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Groups{% endblock %}
+{% set page_id = 'groups' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+{#  Bu sayfa 2026-11-01'de eklendi. Site her yerde "group 3" yaziyordu ve
+    grup 3'un ne oldugunu soyleyen hicbir sayfa YOKTU: groups.yaml hic
+    yayinlanmiyordu. Batie'nin bes sinifiyla karistirilma riski tam buradan
+    doguyor -- tanimsiz bir numara, okuyucunun bildigi baska bir bes'li
+    semaya yapisir.
+
+    Sayilar DOSYADAN DEGIL olcumden geliyor. groups.yaml bir zamanlar
+    `members`/`types` tasiyordu ve bayatlamislardi (grup 1 icin 5746 / 14
+    yaziyordu, olcum 5104 / 16; grup 6 icin 0 / 0 yaziyordu, olcum 617 / 3).
+    O alanlar dosyadan silindi.                                             #}
+
+<h1>What the group numbers mean</h1>
+<p class="lede">A group here is a <strong>clustering of alpha subunit sequences</strong> in this set, and
+nothing else. It is not a classification of the enzyme system, it says nothing about the domain of
+life, and it is not a reduced form of any scheme in the literature. The numbers are internal
+identifiers: this page exists so that a number on another page can be read as a definition rather
+than guessed at.</p>
+
+<div class="caveat">
+  <b>These are not Batie's five classes, and the shared count of five is a coincidence.</b>
+  Batie's scheme partitions the <em>electron transport chain</em> &mdash; the type of the reductase
+  and of the ferredoxin &mdash; so it is a property of the whole multi-component system in a given
+  strain, not of the alpha subunit. The two schemes cut the space differently, and the clearest
+  demonstration is in the data: Batie class IB contains both OMO and BZDO, which here are
+  <a href="{{ u('/cluster/1_101_OxoO') }}">1_101_OxoO</a> in group 1 and
+  <a href="{{ u('/cluster/4_411_XylX') }}">4_411_XylX</a> in group 4. One class, two groups.
+  A Batie class is also not a property of the enzyme: CARDO appears in three different classes
+  depending on the strain, which is why no Batie column is published on the type pages of this site.
+  Kweon's five types (2008) are a third, separate axis, again built on electron transport components.
+  This database assigns neither, and claims nothing about either.
+</div>
+
+<p class="note">{{ gv.total|fmt }} entries are distributed over {{ gv.groups|length }} groups.
+Two of them are not literature groups and are never published as numbers &mdash; they are shown as
+<em>ungrouped</em> everywhere on the site, and they appear here with their reason, because a reader
+who meets the word "ungrouped" is owed the measurement that put them there.</p>
+
+{% if gv.orphan %}
+<div class="caveat"><b>A group exists in the database but not in groups.yaml:</b>
+{{ gv.orphan|join(', ') }}. That is a curation gap, not a new group: nothing on this site can say
+what it is.</div>
+{% endif %}
+
+<table class="data">
+  <caption>Groups, measured against the confirmed set. Label, architecture and reasoning come from
+  <code>groups.yaml</code>; member and type counts are measured from the database on every build.</caption>
+  <thead><tr>
+    <th>Published as</th><th>What it is</th><th>Architecture</th>
+    <th class="num">Beta</th><th class="num">Types</th><th class="num">Entries</th>
+  </tr></thead>
+  <tbody>
+  {% for g in gv.groups %}
+  <tr>
+    <td><b>{{ group_label(g.id) }}</b>
+      {% if not g.is_literature_group %}<br><span class="note">internally {{ g.id }};
+      not published as a number</span>{% endif %}</td>
+    <td>{{ g.label }}
+      {% if g.reactions %}<br><span class="note">{{ g.reactions|join(', ')|replace('_', ' ') }}</span>{% endif %}
+      {% if g.families %}<br><span class="note">{{ g.families|join(', ')|replace('_', ' ') }}</span>{% endif %}</td>
+    <td>{{ g.architecture or 'unknown' }}</td>
+    <td class="num">{% if g.beta_rate is none %}&mdash;{% else %}{{ '%.0f %%' % (100 * g.beta_rate) }}{% endif %}</td>
+    <td class="num">{{ g.types|fmt }}</td>
+    <td class="num">{{ g.members|fmt }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Why each group is a group</h2>
+{% for g in gv.groups %}
+{% if g.note %}
+<section class="groupnote">
+  <h3>{{ group_label(g.id) }} &mdash; {{ g.label }}</h3>
+  {% if g.added_on %}<p class="note">Added {{ g.added_on }}.{% if g.published_as %}
+    Published as &ldquo;{{ g.published_as }}&rdquo;.{% endif %}</p>{% endif %}
+  {% for para in g.note.split('\n\n') %}<p>{{ para }}</p>{% endfor %}
+</section>
+{% endif %}
+{% endfor %}
+
+<p class="note">Whether these groups are recovered as clades is a different question, and it is
+measured rather than asserted: see <a href="{{ u('/atlas/phylogeny') }}">Phylogeny</a>, where only
+group 5 forms a single clade and its bootstrap support falls from 0.995 among the references to 0.49
+in the larger set.</p>
+{% endblock %}
