@@ -614,16 +614,42 @@ function renderFacets() {
     }
     const items = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
     if (!items.length) continue;
+    /*  SATIR ICI onclick KULLANILMIYOR. Eskiden soyleydi:
+          onclick="setFilter('${key}', ${JSON.stringify(v)});return false"
+        JSON.stringify CIFT TIRNAKLI bir deger uretir ve bu, CIFT TIRNAKLI
+        bir HTML niteliginin icine giriyordu:
+          onclick="setFilter('tier', "characterized");return false"
+        Nitelik ilk ic tirnakta KAPANIYOR, geri kalani baska nitelik
+        sanilıyor ve onclick yarim bir ifade olarak sozdizimi hatasi
+        veriyordu. Sonuc: sol sutundaki butun facet baglantilari
+        tiklandiginda HICBIR SEY yapmiyordu (2026-11-01, kullanici
+        bildirdi). "Genomic context" baglantilari calisiyordu, cunku
+        onlarin degeri tirnak icermiyor -- hatayi gizleyen de buydu.
+
+        Deger artik bir data- niteliginde tasiniyor ve esc() ile
+        kacirilıyor; tiklama tek bir dinleyiciyle yakalaniyor. Boylece
+        degerin icinde tirnak, apostrof ya da < olmasi hicbir sey
+        bozmaz.                                                        */
     html += `<div class="facet"><h3>${label}</h3><ul>` + items.map(([v, n]) =>
-      `<li><a href="#" onclick="setFilter('${key}', ${JSON.stringify(v)});return false">` +
+      `<li><a href="#" data-facet="${esc(key)}" data-value="${esc(v)}">` +
       (F[key] === v ? `<b>${esc(v)}</b>` : esc(v)) + `</a><span class="note">${n.toLocaleString()}</span></li>`).join('') + '</ul></div>';
   }
   html += '<div class="facet"><h3>Genomic context</h3><ul>' +
     [['plasmid', 'on a plasmid'], ['partner', 'verified operon partner'], ['regulator', 'divergent regulator']]
-      .map(([k, l]) => `<li><a href="#" onclick="toggle('${k}');return false">${F[k] ? '<b>' + l + '</b>' : l}</a></li>`).join('') +
+      .map(([k, l]) => `<li><a href="#" data-toggle="${esc(k)}">${F[k] ? '<b>' + l + '</b>' : l}</a></li>`).join('') +
     '</ul></div>';
   document.getElementById('facets').innerHTML = html;
 }
+
+/*  Tek dinleyici: facet listesi her render'da yeniden yazildigi icin
+    baglantilara tek tek dinleyici baglamak her seferinde tekrar
+    gerekirdi; delegasyon bunu gereksiz kilar.                         */
+document.getElementById('facets').addEventListener('click', function (ev) {
+  const a = ev.target.closest('a');
+  if (!a) return;
+  if (a.dataset.facet) { ev.preventDefault(); setFilter(a.dataset.facet, a.dataset.value); return; }
+  if (a.dataset.toggle) { ev.preventDefault(); toggle(a.dataset.toggle); }
+});
 document.getElementById('q').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 </script></body></html>"""
 

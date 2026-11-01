@@ -65,7 +65,7 @@ and is shown for completeness only.</div>
   </dl>
   <dl class="kv">
     <dt>Assigned type</dt><dd><a href="{{ u('/cluster/' ~ ro.ro_cluster) }}"><b>{{ cluster.gene }}</b></a>
-      <span class="note">{{ ro.ro_cluster }}, RO group {{ ro.ro_group }}</span></dd>
+      <span class="note">{{ ro.ro_cluster }}, {{ group_label(ro.ro_group) }}</span></dd>
     <dt>Variant</dt><dd>{% if ro.leaf_id %}<a href="{{ u('/leaf/' ~ leaf_slug(ro.leaf_id)) }}">{{ ro.leaf_id }}</a>
       <span class="note">{{ ro.leaf_size }} members</span>{% else %}–{% endif %}</dd>
     <dt>Profile evidence</dt><dd>{{ '%.1f' % (ro.hmm_score or 0) }} bits · E = {{ '%.1e' % (ro.hmm_evalue or 0) }}

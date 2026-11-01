@@ -265,7 +265,7 @@ Plotly.newPlot('eco', classes.map(c => {
     customdata:d.map(o=>[o.cluster, o.substrate || 'unknown', o.n, o.genera_n]),
     hovertemplate:'%{customdata[0]}<br>substrate: %{customdata[1]}<br>%{customdata[2]} members, %{customdata[3]} genera<br>plasmid %{x:.1f} %, transposon %{y:.1f} %<extra></extra>'};
 }), {xaxis:{title:'members on plasmids (%)'}, yaxis:{title:'members with a transposase within 10 kb (%)'},
-     margin:{l:60,r:10,t:10,b:50}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
+     margin:{l:60,r:24,t:10,b:72}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
      paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
 Plotly.newPlot('spread', classes.map(c => {
   const d = OVER.filter(o => o.sclass === c && o.n >= 10);
@@ -274,7 +274,7 @@ Plotly.newPlot('spread', classes.map(c => {
     x:d.map(o=>o.n), y:d.map(o=>o.genera_n), marker:{size:11, color:CC[c], opacity:0.8, line:{color:'#333', width:0.6}},
     hovertemplate:d.map(o=>o.cluster + ': ' + o.n + ' members, ' + o.genera_n + ' genera<extra></extra>')};
 }), {xaxis:{title:'members (log scale)', type:'log'}, yaxis:{title:'distinct genera (log scale)', type:'log'},
-     margin:{l:60,r:10,t:10,b:50}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
+     margin:{l:60,r:24,t:10,b:72}, legend:{orientation:'h', y:1.02, font:{size:10}}, font,
      paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
 </script>
 {% endblock %}

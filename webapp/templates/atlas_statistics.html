@@ -246,7 +246,7 @@ Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types exc
 {% if drawbar %}<th>Composition</th>{% endif %}</tr></thead>
 <tbody>
 {% for row in t.table %}
-<tr><td>{{ t.row_prefix|default('group ') }}{{ t.rows[loop.index0].replace('_', ' ') }}</td>
+<tr><td>{{ row_label(t.rows[loop.index0], t.row_prefix|default('group ')) }}</td>
 {% for value in row %}<td class="num">{{ value|fmt }}</td>{% endfor %}
 {% if drawbar %}<td>{{ pbar(row, t.cols) }}</td>{% endif %}</tr>
 {% endfor %}

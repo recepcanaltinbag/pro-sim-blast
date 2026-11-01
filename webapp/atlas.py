@@ -14,6 +14,71 @@ from collections import Counter, defaultdict
 
 GROUP_COLORS = {"1": "#c0392b", "2": "#8e44ad", "3": "#2980b9", "4": "#27ae60",
                 "5": "#f39c12", "?": "#95a5a6"}
+
+# LITERATURDE BES GRUP VAR. Bizim ic kimliklerimiz 1-7'ye kadar gidiyor ama
+# 6 ve 7, literaturde karsiligi OLMAYAN kovalardir: "6" bitki klorofil
+# RO'lari (PAO, CAO, PTC52), "7" tek bir dizi (AerC). Bunlari "group 6" /
+# "group 7" diye yayimlamak, olmayan bir siniflandirmayi varmis gibi
+# gostermekti -- numara, yayinlanmis bir grup semasina atifta bulunur.
+#
+# Yeni bir grup ONERMEK ayri bir istir ve bu verinin tasiyabileceginden
+# fazlasini gerektirir: "proposed group VI (this study)" demek icin
+# BOOTSTRAP destekli bir agac lazim. Bizim destek degerleri FastTree'nin
+# SH-benzeri YEREL destegi, bootstrap DEGIL (tree_meta.json:
+# support_is_bootstrap=false) -- hizalama kolonlari yeniden orneklenmiyor.
+# Olcum "6"nin agacta tek dal oldugunu soyluyor (guvenli kesimde 26/26,
+# referanslarda 3/3) ve tam bu yuzden cazip; ama tek dal olmak bir grup
+# onerisinin kanitlanmasi DEGILDIR.
+#
+# `ro_group` sutunu 6/7 degerlerini tutmaya devam eder: o bir KIMLIK, bu ise
+# ETIKET. Projenin ayni ayrimi (leaf.nearest_type "etiket, kimlik degil")
+# burada da gecerli.
+LITERATURE_GROUPS = ("1", "2", "3", "4", "5")
+
+UNGROUPED_NAMES = {
+    "6": "plant chlorophyll ROs: PAO, CAO, PTC52",
+    "7": "AerC",
+}
+
+
+def group_label(group, full=True):
+    """Kullaniciya gosterilecek grup etiketi.
+
+    Literatur grubu ise "group 3". Degilse "ungrouped", ve `full` ise
+    icerigini adiyla soyler: "ungrouped (plant chlorophyll ROs: PAO, CAO,
+    PTC52)". Numara ASLA tek basina yayimlanmaz.
+    """
+    key = str(group or "").strip()
+    if key in LITERATURE_GROUPS:
+        return f"group {key}"
+    name = UNGROUPED_NAMES.get(key)
+    if name and full:
+        return f"ungrouped ({name})"
+    return "ungrouped"
+
+
+def is_literature_group(group):
+    return str(group or "").strip() in LITERATURE_GROUPS
+
+
+# Istatistik tablolarinin satirlari her zaman grup DEGIL: substrat sinifi,
+# habitat, filum da olabiliyor. Ilk denemede "on-ek verilmemisse gruptur"
+# kurali kullanildi ve grup olmayan 305 satir "ungrouped" diye yazildi --
+# karari veren kural, karari vermesi gereken kural degildi. Dogru kural
+# DEGERE bakar: satir degeri bildigimiz bir grup anahtari mi?
+GROUP_KEYS = frozenset(LITERATURE_GROUPS) | frozenset(UNGROUPED_NAMES)
+
+
+def row_label(value, prefix=""):
+    """Istatistik tablosunun satir etiketi.
+
+    Deger bir grup anahtari ise grup etiketi dondurur ("group 3",
+    "ungrouped"); degilse eski davranis: on-ek + alt cizgiler bosluk.
+    """
+    key = str(value or "").strip()
+    if key in GROUP_KEYS:
+        return group_label(key, full=False)
+    return f"{prefix}{key.replace('_', ' ')}"
 def _relative_luminance(colour):
     """WCAG bagil parlaklik. Girdi "#rrggbb"."""
     value = colour.lstrip("#")
@@ -1165,6 +1230,38 @@ def layout(root, row_h):
 SUPPORT_WEAK = 0.70   # bu esigin altindaki bolunme COZULMEMIS sayilir
 
 
+def monophyly_summary(mono):
+    """group_monophyly.json -> sayfanin cumlesini kuracak alanlar.
+
+    Tek yapragi olan gruplar (grup 7, bir referans) her kesimde "dal"dir ve
+    bunu bir sonuc gibi yazmak yaniltici olur; o yuzden ozetten DISLANIR ama
+    sayilari `groups` icinde durur.
+    """
+    if not mono:
+        return None
+    out = {}
+    for cut, block in (mono.get("cuts") or {}).items():
+        groups = block.get("groups") or {}
+        real = {g: v for g, v in groups.items() if v.get("n_leaves", 0) > 1}
+        single = sorted(g for g, v in real.items() if v.get("is_single_clade"))
+        scattered = sorted(g for g, v in real.items()
+                           if not v.get("is_single_clade"))
+        fracs = [real[g].get("largest_pure_fraction") or 0 for g in scattered]
+        out[cut] = {
+            "n_pool": block.get("n_pool"),
+            "single": single,
+            "scattered": scattered,
+            "whole_pool": sorted(g for g in scattered
+                                 if real[g].get("mrca_is_whole_pool")),
+            "scatter_min_pct": int(round(100 * min(fracs))) if fracs else None,
+            "scatter_max_pct": int(round(100 * max(fracs))) if fracs else None,
+            "groups": groups,
+            "trivial": sorted(g for g, v in groups.items()
+                              if v.get("n_leaves", 0) <= 1),
+        }
+    return out
+
+
 def newick_support_summary(newick):
     """FastTree SH-benzeri yerel destek degerlerinin dagilimi.
 
@@ -1245,7 +1342,7 @@ def render_tree_svg(newick, tip_info, width=900, row_h=11, label_w=330):
         if not node.children:
             info = tip_info.get(node.name, {})
             color = info.get("color", "#95a5a6")
-            label = html.escape(info.get("label", node.name)[:60])
+            label = html.escape(clip_label(info.get("label", node.name)))
             title = html.escape(info.get("title", node.name))
             y = node.y + 15
             marker = info.get("marker")
@@ -1483,6 +1580,54 @@ ARCH_TEXT = {
 }
 
 
+def clip_label(text, limit=60):
+    """Etiketi kelime sinirinda kirp ve kirpildigini GOSTER.
+
+    NEDEN. Eskiden `text[:limit]` yapiliyordu. Sonuc, uretilen SVG'nin
+    ICINDE kesik bir metindi -- tarayici kirpmasi degil, veri kaybi:
+    "reference (benzalkonium chloride and other quat" gibi, parantez
+    kapanmamis ve kelime yarida. 2026-11-01 gorsel denetiminde 15 tip
+    sayfasinda 22 boyle etiket sayildi, en gozealicisi kalin yazilan
+    referans etiketleri.
+
+    Kirpma kacinilmaz (etiket sutunu sabit genislikte), ama iki sey
+    duzeltilebilir: kelime sinirinda kesmek, ve kesildigini bir ellipsis
+    ile soylemek. Acik kalan parantez de kapatilir, cunku kapanmamis
+    parantez metni bozuk gosterir; tam metin zaten <title> icinde duruyor.
+    """
+    text = text or ""
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    space = cut.rfind(" ")
+    if space >= limit // 2:                  # yarisindan sonrasi: kelime sinirina cek
+        cut = cut[:space]
+    cut = cut.rstrip(" ,;:(-")
+    # Ellipsis parantezin ICINE girer: ")\u2026" bitmis bir parantez izlenimi
+    # verirken "\u2026)" kesilmis olanin kendisini isaret eder.
+    if cut.count("(") > cut.count(")"):
+        return cut + "\u2026)"
+    return cut + "\u2026"
+
+
+def text_width(text, font_size):
+    """SVG metninin yaklasik genisligi, piksel.
+
+    NEDEN TAHMIN. SVG uretirken metni olcebilecek bir yazitipi motoru yok.
+    Alternatif, metni genislik hesabina HIC katmamakti -- ve tam bu
+    yapiliyordu: operon sekillerinin genisligi yalnizca kutulardan
+    hesaplaniyordu, alt yazi ise onlardan uzundu. 2026-11-01 gorsel
+    denetiminde olculdu: 2.855 metin viewBox'in sagindan tasiyor, en
+    kotusu 321 px. Operon kisaldikca daha cok kayboluyordu, yani tek
+    alfali tipler -- aciklamayi en cok gereken sekiller -- en cok zarar
+    goruyordu.
+
+    Sans-serif ortalama ilerleme genisligi ~0,52em. USTTEN tahmin edilir
+    (0,54), cunku fazla genislik zararsiz, eksik genislik metni keser.
+    """
+    return len(text) * font_size * 0.54
+
+
 def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
     """Operon arrows preceded by the upstream regulator and the promoter region.
 
@@ -1530,10 +1675,22 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
     y0 = 20
     y1 = y0 + row_h
     mid = (y0 + y1) / 2.0
+    # Alt yazi, GENISLIK HESABINA GIRDIGI icin burada kurulur: daha once
+    # fonksiyonun sonunda kuruluyordu ve genislik yalnizca kutulardan
+    # hesaplandigi icin metnin %62'si kirpiliyordu (bkz. text_width).
+    if has_reg:
+        foot = ("operon drawn 5′ to 3′; dashed box is the intergenic region "
+                "in which the promoter lies")
+    elif known_up:
+        foot = ("operon drawn 5′ to 3′; dashed box is the measured intergenic "
+                "region — no regulator was identified in it")
+    else:
+        foot = "operon drawn 5′ to 3′"
     width = pad * 2 + ((prom_w + gap) if (show_reg or bp) else 0) \
         + ((gene_w + gap) if show_reg else 0) + len(tokens) * (gene_w + gap)
-    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
-             f'height="{height}" width="{min(width, 980)}" class="oplayout">']
+    width = max(width, pad * 2 + text_width(foot, 9))
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width:.0f} {height}" '
+             f'height="{height}" width="{min(width, 980):.0f}" class="oplayout">']
     x = pad
     head = 9
 
@@ -1557,9 +1714,17 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
             f'<text x="{x + gene_w / 2:.1f}" y="{y0 - 6:.1f}" font-size="9" text-anchor="middle" '
             f'fill="currentColor">{"divergent" if divergent else "same strand"}</text>')
         if not has_reg:
+            # Etiket kutunun ORTASINA hizali ama kutudan GENIS: 15 karakter
+            # 8 px'te ~65 px, kutu 46 px. Ortalanmis hali x=-2'den
+            # basliyordu, yani ilk harf viewBox'in disinda kaliyordu
+            # (2.995 yerde, 2026-11-01 gorsel denetimi). Capa, metin
+            # pad'in solunda baslamayacak sekilde kaydirilir.
+            label = "not a regulator"
+            half = text_width(label, 8) / 2.0
+            cx = max(x + gene_w / 2.0, pad + half)
             parts.append(
-                f'<text x="{x + gene_w / 2:.1f}" y="{y1 + 14:.1f}" font-size="8" '
-                f'text-anchor="middle" fill="currentColor">not a regulator</text>')
+                f'<text x="{cx:.1f}" y="{y1 + 14:.1f}" font-size="8" '
+                f'text-anchor="middle" fill="currentColor">{label}</text>')
         x += gene_w + gap
 
     if show_reg or bp:
@@ -1589,14 +1754,6 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
             f'{html.escape(SHORT.get(token, token[:3]))}</text>')
         x += gene_w + gap
 
-    if has_reg:
-        foot = ("operon drawn 5′ to 3′; dashed box is the intergenic region "
-                "in which the promoter lies")
-    elif known_up:
-        foot = ("operon drawn 5′ to 3′; dashed box is the measured intergenic "
-                "region — no regulator was identified in it")
-    else:
-        foot = "operon drawn 5′ to 3′"
     parts.append(f'<text x="{pad}" y="{height - 4}" font-size="9" fill="currentColor">'
                  f'{html.escape(foot)}</text>')
     parts.append("</svg>")
@@ -2218,6 +2375,11 @@ PROVENANCE = [
      "model FastTree fell through to, the aligner, and the support measure with its "
      "distribution. Recorded because the page caption named a model the run had not used.",
      "build_phylogeny.py"),
+    ("group_monophyly.json", "file", "Whether each historical RO group is a single clade of the "
+     "published tree, measured on three sequence sets: every tip, the curated references alone, "
+     "and the leaves whose assignment is neither distant nor novel. Recorded because the page "
+     "claimed the tree recovered the groups, which holds only for groups 5 and 6.",
+     "group_monophyly.py"),
     ("cluster_identity_matrix.csv", "file", "Assignment-boundary signal, not a similarity "
      "measure: the highest identity between any two leaf representatives assigned to different "
      "types.", "build_phylogeny.py"),

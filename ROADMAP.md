@@ -2036,6 +2036,109 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 111. Statik arama sayfasinda facet baglantilarinin HICBIRI calismiyordu (2026-11-01)
+
+Kullanici bildirdi: "search kisminda sol sekmelere tikliyorum bir sey olmuyor".
+DOGRU, ve sebep tek satirlik bir kacis hatasiydi.
+
+freeze.py facet baglantisini soyle uretiyordu:
+
+    onclick="setFilter('${key}', ${JSON.stringify(v)});return false"
+
+`JSON.stringify` CIFT TIRNAKLI bir deger dondurur ve bu deger CIFT TIRNAKLI
+bir HTML niteliginin icine giriyordu:
+
+    onclick="setFilter('tier', "characterized");return false"
+
+Nitelik ilk IC tirnakta kapanir. Tarayici `onclick` olarak yalnizca
+`setFilter('tier', ` goruyor -- yarim bir ifade, sozdizimi hatasi -- ve geri
+kalani baska nitelik saniyor. Tiklama hicbir sey yapmiyordu. Node ile
+sinandi: dort ornek degerin DORDUNDE de onclick bozuk.
+
+NEDEN BU KADAR UZUN GOZDEN KACTI. Ayni blokta "Genomic context" baglantilari
+VARDI ve CALISIYORDU, cunku onlarin degeri (`plasmid`, `partner`,
+`regulator`) sabit bir tanimlayici ve tirnak icermiyor. Yani sayfanin yarisi
+calisiyordu; bozuk olan yarisi, degeri veriden GELEN yariydi. Bir kontrol
+"facet baglantilari var mi" diye baksaydi gecerdi -- baglantilar vardi.
+
+YAPILAN. Satir ici onclick birakildi. Deger artik `data-facet` /
+`data-value` niteliklerinde tasiniyor, `esc()` ile kaciriliyor, ve tiklama
+`#facets` uzerindeki TEK bir dinleyiciyle yakalaniyor (facet listesi her
+render'da yeniden yazildigi icin delegasyon dogru bicim). Degerin icinde
+tirnak, apostrof veya `<` olmasi artik hicbir seyi bozmaz.
+
+DOGRULAMA, SADECE KOD OKUYARAK DEGIL. Firefox headless ile iframe'li bir
+kosum sayfasi yazildi; sayfa gercekten yuklendi, ilk facet baglantisina
+GERCEKTEN tiklandi:
+
+    durum: 19,125 entries indexed.
+    facet baglantisi sayisi: 33
+    tiklanacak: "distant"  (facet=tier, value="distant")
+    tiklamadan once: "19,125"  ->  sonra: "10,385"
+    secili isaretlenen: "distant"
+    SONUC: GECTI
+
+10.385, veritabanindaki `distant` sayisiyla birebir ayni -- yani yalnizca
+"bir sey oldu" degil, DOGRU sey oldu.
+
+## 110. Gorsel denetim: olculmeyen sey kirpiliyordu (2026-11-01)
+
+Kullanici bir ajanin siteyi gorsel olarak kontrol etmesini istedi. Firefox
+headless ile gercek ekran goruntuleri alindi (1440 masaustu, 390 mobil,
+karanlik mod) ve uretilmis butun SVG'lerde metin genisligi <-> viewBox
+karsilastirmasi yapildi. Bulunan 14 sorunun yedisi bu turda duzeltildi.
+
+(a) OPERON ALT YAZISI 2.855 YERDE KIRPIKTI. Sekil genisligi yalnizca
+    KUTULARDAN hesaplaniyordu; alt yazi onlardan uzundu ve hesaba HIC
+    girmiyordu. En kotu tasma 321 px. Operon kisaldikca kayip buyuyordu,
+    yani tek alfali tipler -- aciklamayi en cok gereken sekiller -- en cok
+    zarar goruyordu. `text_width()` eklendi (sans-serif ~0,54em, USTTEN
+    tahmin: fazla genislik zararsiz, eksik genislik keser) ve genislik artik
+    `max(kutular, alt yazi)`. Olcum sonrasi tasma 0.
+
+(b) "not a regulator" ETIKETI 2.995 YERDE SOL KENARDAN KESIKTI. Kutu 46 px,
+    etiket ~65 px, ortalanmis capa x=-2'den basliyordu. BU TURDA EKLENEN bir
+    seydi, yani hic test edilmemisti. Capa artik pad'in solunda baslamayacak
+    sekilde kaydiriliyor.
+
+(c) AGAC ETIKETLERI KELIME ORTASINDAN KESILIYORDU. `text[:60]` uretilen
+    SVG'nin ICINDE veri kaybi yapiyordu: "reference (benzalkonium chloride
+    and other quat" -- parantez acik, kelime yarim. 15 tip sayfasinda 22
+    tane. `clip_label()` kelime sinirinda keser ve `…)` ile kesildigini
+    soyler; tam metin zaten <title>'da.
+
+(d) BOS KARTLARDA KONTRAST WCAG AA'YI GECMIYORDU. `.structcard--empty`
+    uzerindeki `opacity:.72`, zaten `--dim` olan ~12 px metni acik modda
+    2,86 ve karanlik modda 3,59 kontrasta dusuruyordu (esik 4,5). Tokenlar
+    tek baslarina sorunsuzdu; carpan sorunluydu. Opaklik kaldirildi; "inert"
+    oldugunu kesikli cerceve zaten soyluyor.
+
+(e) `.rxnote--fate` 34ch'e SIKISIYORDU. 34ch bir SEMA KOLONUNUN altindaki
+    kucuk not icin dogru; bu ise seklin tamami genisligindeki bir paragraf
+    ve ayni siniri devraliyordu. 1300 px panelde metin ~200 px'lik seride
+    5-8 satira sariyordu. 78ch yapildi.
+
+(f) PLOTLY EKSEN BASLIGI KIRPIKTI. Eksen basligi tik etiketlerinin ALTINA
+    yazilir, yani alt marj iki satir tasir; b:50 ile baslik kabin altindan
+    tasiyordu. b:50->72, b:45->64, ve dondurulmus etiketler icin r:10->24.
+
+(g) URUN KUTUSU OKUNDAN KOPUYORDU. DOM sirasi substrat - ok - SEMA - urun
+    idi: genel reaksiyon semasi okla urunun ARASINA giriyordu ve substrat
+    SVG'si genis oldugunda urun alt satira sariyordu (qxyA'da sagda ~280 px
+    bosluk). Substrat+ok+urun tek bir `.rxn__eq` kapsayicisinda toplandi,
+    sema sona alindi ve dar ekranda kendi satirina iniyor.
+
+ANA SAYFA. Alti ayri istatistik kutusu TEK SERIDE birlestirildi (ortak
+cerceve, ince ayirici, tabular rakam, versal etiket): alti kutu yan yana
+gelince sayfa bir gosterge paneli gibi okunuyordu, bir veri kaynaginin
+kunyesi gibi degil. Giris paragrafi 72ch'ten 88ch'e cikti -- govde olcusunu
+devraliyordu ve 1180 px'lik kolonun sol yarisinda asili duruyordu. Masaustu,
+390 px mobil ve karanlik modda ekran goruntusuyle dogrulandi.
+
+KALAN (yapilmadi): tablo tasmalari (/clusters ve tip sayfasindaki carpisma
+tablosu 1440 px'te sagdan kesik), arama sayfasinin bos acilisi, mobilde
+Plotly kirpilmasi, RedG aciklamasindaki ic gelistirme notlari.
+
 ## 109. Protein-genomik bosluk TUM tiplerde; genomik taraf GERCEKTEN buyutulebilir,
 ama protein tablosunun %63'u SILINMIS UniProt kaydi (2026-11-01)
 

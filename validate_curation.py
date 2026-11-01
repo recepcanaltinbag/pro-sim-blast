@@ -276,7 +276,7 @@ PUBLISHED_TEXT_FILES = [
     "cooccurrence.json", "operon_validation.json",
     "substrate_predictability.json",
     "stratified_stats.json", "ecological_origin.json", "threshold_sensitivity.json",
-    "reference_redundancy.json",
+    "reference_redundancy.json", "group_monophyly.json",
 ]
 
 # --- Uyesiz referans tipleri -------------------------------------------------
@@ -1434,6 +1434,166 @@ def check_retracted_column_claim(rep, root):
               "retracted claim: " + "; ".join(offenders[:6]))
 
 
+def check_group_monophyly(rep, root, out_dir):
+    """Filogeni sayfasinin grup beyani OLCUMLE ayni mi?
+
+    NEDEN. Sayfa "Deep nodes separating the colour blocks correspond to the
+    historical RO groups, which this tree recovers from sequence alone" diye
+    yaziyordu. Bu olculmemis bir SONUC beyaniydi; kullanici 2026-11-01'de
+    "bizim olcumumuz bunu desteklemiyor" dedi ve olcum kullaniciyi dogruladi:
+    grup 1-4 hicbir kesimde dal olusturmuyor.
+
+    Iki sey ayri ayri korunur. Birincisi, geri cekilmis cumle sablonlara geri
+    donmemeli. Ikincisi -- ve asil onemlisi -- sayfa sayilari artik
+    group_monophyly.json'dan okuyor, o halde dosya VAR olmali ve icinde
+    sayfanin dayandigi sey, yani "dal olusturan gruplar" kumesi, bulunmali.
+    Dosya kaybolursa sayfa sessizce cumleyi dusurur ve okuyucu hicbir sey
+    gormez; bu kontrol o sessizligi bir FAIL'e cevirir.
+    """
+    tpl = os.path.join(root, "webapp", "templates", "atlas_phylogeny.html")
+    retracted = "which this tree recovers from sequence alone"
+    if os.path.exists(tpl):
+        text = open(tpl, encoding="utf-8").read()
+        rep.check("phylogeny page: the retracted \u201crecovers the historical "
+                  "groups\u201d claim is gone",
+                  retracted not in text, 1 if retracted in text else 0,
+                  "" if retracted not in text else
+                  "groups 1-4 are not clades on this tree in any of the three "
+                  "measured sequence sets; see group_monophyly.json")
+
+    path = os.path.join(out_dir, "group_monophyly.json")
+    if not os.path.exists(path):
+        rep.check("phylogeny page: the group-monophyly measurement it cites "
+                  "exists", False, 1,
+                  f"{path} missing; the page would silently drop the claim "
+                  f"instead of stating it")
+        return
+    try:
+        doc = json.load(open(path, encoding="utf-8"))
+    except Exception as exc:                          # noqa: BLE001
+        rep.check("phylogeny page: the group-monophyly measurement it cites "
+                  "is readable", False, 1, str(exc))
+        return
+
+    cuts = doc.get("cuts") or {}
+    needed = ("all_tips", "references_only", "confident")
+    absent = [c for c in needed if c not in cuts]
+    rep.check("phylogeny page: the measurement covers all three sequence sets",
+              not absent, len(absent),
+              "" if not absent else "missing: " + ", ".join(absent))
+
+    # Sayfa "yalnizca su gruplar dal" diyor; o kume dosyadan gelmeli ve BOS
+    # OLMAMALI, yoksa cumle anlamsiz bir listeye duser.
+    bad = []
+    for cut in needed:
+        block = cuts.get(cut) or {}
+        groups = block.get("groups") or {}
+        if not groups:
+            bad.append(f"{cut}: no groups measured")
+            continue
+        real = {g: v for g, v in groups.items() if (v.get("n_leaves") or 0) > 1}
+        if not real:
+            bad.append(f"{cut}: every group has a single leaf")
+            continue
+        for g, v in real.items():
+            for key in ("is_single_clade", "largest_pure_clade",
+                        "largest_pure_fraction", "mrca_purity"):
+                if v.get(key) is None:
+                    bad.append(f"{cut}/group {g}: {key} missing")
+    rep.check("phylogeny page: every measured group carries the fields the "
+              "page renders", not bad, len(bad), first(bad, 4))
+
+    # Geri cekilmenin SEBEBI kayitli kalmali: grup 1-4 dal DEGIL. Eger bir gun
+    # olcum bunun tersini soylerse cumle de degismeli -- o zaman bu kontrol
+    # duser ve kimse eski metni yeniden yazmak zorunda kalmaz, ama kimse de
+    # olcumle celisen bir metni fark etmeden yayinda tutamaz.
+    conf = (cuts.get("confident") or {}).get("groups") or {}
+    ring = [g for g in ("1", "2", "3", "4") if g in conf]
+    still = [g for g in ring if conf[g].get("is_single_clade")]
+    rep.check("phylogeny page: the softened wording still matches the "
+              "measurement (groups 1-4 are not clades)",
+              not still, len(still),
+              "" if not still else
+              "group(s) " + ", ".join(still) + " now measure as a single "
+              "clade; the page text says they do not and must be updated")
+
+
+def check_group_numbers_not_published(rep, root, out_dir):
+    """Literaturde olmayan grup NUMARALARI yayinda mi?
+
+    NEDEN. Literaturde bes RO grubu var. Bizim ic kimliklerimiz 7'ye kadar
+    gidiyor ve 6 ile 7, karsiligi olmayan kovalar: "6" bitki klorofil
+    RO'lari (PAO, CAO, PTC52), "7" tek bir dizi (AerC). Kullanici 2026-11-01'de
+    uyardi: bunlari "group 6" / "group 7" diye yayimlamak, olmayan bir
+    siniflandirmayi varmis gibi gosteriyor, cunku NUMARA yayimlanmis bir
+    semaya atifta bulunur.
+
+    Bu kontrol iki sey yapar. (i) Render edilmis sayfalarda ve kuratorlu
+    duzyazida "group 6"/"group 7"/"group VI" gecmemeli. (ii) groups.yaml bu
+    ayrimi acikca tasimali: her grubun `is_literature_group` degeri olmali ve
+    literatur disi olanlar `published_as` ile adlandirilmali. Boylece etiket
+    sablonlardan degil VERIDEN gelir.
+    """
+    import re as _re                                  # noqa: PLC0415
+
+    bad_text = _re.compile(r"\bgroup\s+(?:6|7|VI|VII)\b")
+    offenders = []
+
+    # (i-a) Kuratorlu duzyazi.
+    for name in ("chemistry.csv", "metabolic_role.csv", "cluster_ecology.csv"):
+        path = os.path.join(root, name)
+        if not os.path.exists(path):
+            continue
+        for lineno, line in enumerate(open(path, encoding="utf-8"), 1):
+            if bad_text.search(line):
+                offenders.append(f"{name}:{lineno}")
+
+    # (i-b) Sablonlar. groups.yaml'in kendisi haric: orada numara KIMLIKTIR.
+    tpl_dir = os.path.join(root, "webapp", "templates")
+    if os.path.isdir(tpl_dir):
+        for name in sorted(os.listdir(tpl_dir)):
+            if not name.endswith(".html"):
+                continue
+            text = open(os.path.join(tpl_dir, name), encoding="utf-8").read()
+            body = _re.sub(r"\{#.*?#\}", "", text, flags=_re.S)
+            if bad_text.search(body):
+                offenders.append(f"templates/{name}")
+
+    rep.check("group labels: the non-literature groups are never published as "
+              "a number",
+              not offenders, len(offenders),
+              "" if not offenders else
+              "the published scheme has five groups; 6 and 7 are internal "
+              "identifiers and must read \u201cungrouped\u201d with their "
+              "names: " + ", ".join(sorted(set(offenders))[:6]))
+
+    # (ii) groups.yaml bu ayrimi tasiyor mu?
+    path = os.path.join(root, "groups.yaml")
+    if not os.path.exists(path):
+        rep.check("group labels: groups.yaml records which groups are from "
+                  "the literature", True, 0, "groups.yaml missing",
+                  severity="WARN")
+        return
+    try:
+        import yaml                                   # noqa: PLC0415
+        doc = yaml.safe_load(open(path, encoding="utf-8").read()) or {}
+    except Exception as exc:                          # noqa: BLE001
+        rep.check("group labels: groups.yaml is readable", False, 1, str(exc))
+        return
+
+    missing = []
+    for entry in doc.get("groups") or []:
+        gid = str(entry.get("id"))
+        if "is_literature_group" not in entry:
+            missing.append(f"group {gid}: is_literature_group not declared")
+        elif not entry["is_literature_group"] and not entry.get("published_as"):
+            missing.append(f"group {gid}: not a literature group but has no "
+                           f"published_as label")
+    rep.check("group labels: groups.yaml declares each group's standing and "
+              "names the ungrouped ones",
+              not missing, len(missing), first(missing, 4))
+
+
 def check_vocabulary_drift(rep):
     """add_reference.py yazarken BU dosyanin dogrularken kullandigi listeler ayni mi?
 
@@ -2131,6 +2291,8 @@ def main():
     check_reference_motifs(rep, ROOT)
     check_motif_columns_anchored(rep, ROOT)
     check_retracted_column_claim(rep, ROOT)
+    check_group_monophyly(rep, ROOT, args.out_dir)
+    check_group_numbers_not_published(rep, ROOT, args.out_dir)
     check_literature_motif_spacing(rep, ROOT)
     check_triad_gate(rep, ROOT)
     check_leaf_stop_reason(rep, ROOT)

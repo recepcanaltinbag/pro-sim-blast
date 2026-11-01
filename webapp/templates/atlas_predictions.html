@@ -79,7 +79,7 @@ that is, there is no experimental evidence anywhere in this set.</p>
       {{ pr.archaea.identity_to_curated_refs.lt40 }} below 40 % &mdash; none of these sequences is
       close enough to a characterised enzyme for its substrate to carry over.</span></dd>
   <dt>Nearest reference by group</dt>
-  <dd>{% for g, n in pr.archaea.nearest_refs.by_group.items() %}{% if not loop.first %} · {% endif %}group {{ g }}: <b>{{ n }}</b>{% endfor %}
+  <dd>{% for g, n in pr.archaea.nearest_refs.by_group.items() %}{% if not loop.first %} · {% endif %}{{ group_label(g, full=False) }}: <b>{{ n }}</b>{% endfor %}
       <span class="note">{{ pr.archaea.nearest_refs.summary }}</span></dd>
 </dl>
 

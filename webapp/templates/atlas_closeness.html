@@ -53,7 +53,7 @@ members. Reading along a row shows where the assignment is doing something quest
 <thead><tr><th>RO group</th>{% for t in strat.method.tiers %}<th class="num">{{ t.replace('_', ' ') }}</th>{% endfor %}</tr></thead>
 <tbody>
 {% for g, tiers in strat.glu_share_within_group_by_tier.items() %}
-<tr><td>group {{ g }}</td>
+<tr><td>{{ group_label(g, full=False) }}</td>
 {% for t in strat.method.tiers %}
   {% set cell = tiers.get(t) %}
   <td class="num" data-v="{{ cell.glu_share if cell else -1 }}">
@@ -77,10 +77,10 @@ unreliable.</p>
 <th class="num">Median identity to it</th></tr></thead>
 <tbody>
 {% for s in strat.misassignment_suspects %}
-<tr><td>group {{ s.group }}</td>
+<tr><td>{{ group_label(s.group, full=False) }}</td>
   <td class="num" data-v="{{ s.entries }}">{{ s.entries }}</td>
   <td class="num">{{ '%.0f %%' % (100 * s.close_glu_share) }}</td>
-  <td class="small">{% for g, n in s.nearest_reference_group %}group {{ g }}: {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}</td>
+  <td class="small">{% for g, n in s.nearest_reference_group %}{{ group_label(g, full=False) }}: {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}</td>
   <td class="num">{{ '%.1f %%' % s.median_identity_to_nearest }}</td></tr>
 {% endfor %}
 </tbody></table></div>

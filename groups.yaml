@@ -21,12 +21,30 @@
 # III), yani Batie sinifi enzimin degil SUSUN ozelligi. Ayrintisi ve kaynagi:
 # batie_classes.yaml. Altinci grup eklemek Batie'nin besine dokunmaz.
 #
+# 6 VE 7 NUMARA OLARAK YAYIMLANMAZ (2026-11-01). Kullanici uyardi: "group 6"
+# / "group 7" yazmak, literaturde karsiligi olmayan bir grup numarasi
+# cagristiriyor -- numara yayimlanmis bir semaya atiftir ve literaturde BES
+# grup var. Sitede bu ikisi artik "ungrouped" diye gecer ve adlariyla
+# soylenir: "plant chlorophyll ROs (PAO, CAO, PTC52)" ve "AerC". Numaralar
+# `ro_group` sutununda KIMLIK olarak kalir; degisen sey ETIKET.
+#
+# YENI GRUP ONERMEK ICIN NE GEREKIR. "proposed group VI (this study)" demek
+# bootstrap destekli bir agac gerektirir. Elimizdeki destek degerleri
+# FastTree'nin SH-BENZERI YEREL destegi, bootstrap DEGIL -- hizalama
+# kolonlari yeniden orneklenmiyor (tree_meta.json: support_is_bootstrap
+# false). Olcum id 6'nin agacta tek dal oldugunu soyluyor (guvenle atanmis
+# kesimde 26/26, kuratorlu referanslarda 3/3; analysis_out/
+# group_monophyly.json) ve tam bu yuzden cazip. Ama tek dal olmak bir grup
+# onerisinin kaniti DEGILDIR; dalin ne kadar saglam oldugunu soyleyen sey
+# destek, ve bizim destegimiz o iddiayi tasimaz.
+#
 # ONEMLI: grup, canlI alemine gore DEGIL. Bitki kolin monooksijenazlari
 # (CmoS, CmoB, CmoA) okaryottur ve grup 5'tedir. Grup 6 "okaryot grubu"
 # degildir; hizalanabilirlige gore ayrilmistir -- asagida yaziyor.
 
 groups:
   - id: 1
+    is_literature_group: true
     label: "Alkaloid and aryl-ether monooxygenases"
     architecture: "alpha3"
     beta_rate: 0.01
@@ -36,6 +54,7 @@ groups:
     dominant_families: [alkaloids, biaryls_ethers]
 
   - id: 2
+    is_literature_group: true
     label: "Biphenyl and alkylbenzene dioxygenases"
     architecture: "alpha3beta3"
     beta_rate: 0.80
@@ -45,6 +64,7 @@ groups:
     dominant_families: [biaryls_ethers, alkylbenzenes]
 
   - id: 3
+    is_literature_group: true
     label: "Polycyclic aromatic and nitroarene dioxygenases"
     architecture: "mixed"
     beta_rate: 0.27
@@ -54,6 +74,7 @@ groups:
     dominant_families: [pah, nitroaromatics]
 
   - id: 4
+    is_literature_group: true
     label: "Aromatic acid and aniline dioxygenases"
     architecture: "alpha3beta3"
     beta_rate: 0.76
@@ -63,6 +84,7 @@ groups:
     dominant_families: [aromatic_acids, anilines]
 
   - id: 5
+    is_literature_group: true
     label: "Quaternary amine oxygenases"
     architecture: "alpha3"
     beta_rate: 0.00
@@ -78,6 +100,8 @@ groups:
 
   - id: 6
     label: "Plastid chlorophyll-pathway oxygenases"
+    published_as: "ungrouped (plant chlorophyll ROs: PAO, CAO, PTC52)"
+    is_literature_group: false
     architecture: "alpha3"
     beta_rate: null
     members: 0
@@ -110,6 +134,8 @@ groups:
 
   - id: 7
     label: "Long Rieske oxygenases with an inserted catalytic lobe"
+    published_as: "ungrouped (AerC)"
+    is_literature_group: false
     architecture: "unknown"
     beta_rate: null
     members: null

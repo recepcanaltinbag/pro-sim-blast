@@ -29,6 +29,7 @@ Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic c
 
 <div class="legend">
   {% for g, col in GROUP_COLORS.items() if g != '?' %}<span><i style="background:{{ col }}"></i>group {{ g }}</span>{% endfor %}
+  <span><i style="background:{{ GROUP_COLORS['?'] }}"></i>ungrouped</span>
   <span><i style="background:#8a8a8a;border:1px solid currentColor"></i>curated reference</span>
 </div>
 
@@ -38,8 +39,35 @@ Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic c
   close relatives, and its substrate label is informative for that clade. A reference on a long
   branch, or a clade whose tips are coloured for a different type than the nearest reference, marks
   a region where profile assignment and phylogeny disagree; there, type membership carries no
-  functional claim. Deep nodes separating the colour blocks correspond to the historical RO groups,
-  which this tree recovers from sequence alone.
+  functional claim.
+{% if mono_sum %}
+{% set cf = mono_sum.confident %}
+{% set rf = mono_sum.references_only %}
+{% set at = mono_sum.all_tips %}
+  <b>The colour blocks are not the historical RO groups, and this page used to claim they were.</b>
+  Whether each group forms a single clade is now measured on this tree rather than asserted. Among
+  the {{ cf.n_pool|fmt }} sequences whose assignment is neither distant nor novel, only
+  {{ cf.single|length }} come out as single clades:
+  {% for g in cf.single %}{{ group_label(g) }}, with
+  {{ cf.groups[g].largest_pure_clade }} of {{ cf.groups[g].n_leaves }}
+  leaves{% if loop.revindex == 2 %}, and {% elif not loop.last %}, {% endif %}{% endfor %}.
+  The first is the branch that cleaves carbon&ndash;nitrogen bonds; the second has no counterpart
+  in the published five-group scheme at all. Groups
+  {% for g in cf.scattered %}{{ g }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}
+  do not: their largest single-group clade holds only
+  {{ cf.scatter_min_pct }}&ndash;{{ cf.scatter_max_pct }} % of their members. The curated
+  references alone behave the same way, so this is not an artefact of how variants were assigned
+  &mdash; of those, the largest single-group clade holds
+  {% for g in rf.scattered %}{{ rf.groups[g].largest_pure_clade }} of
+  {{ rf.groups[g].n_leaves }} for group {{ g }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}.
+  Across all {{ at.n_pool|fmt }} tips not even those
+  {{ cf.single|length }} survive as clades{% if at.whole_pool %}, and for group{{ '' if at.whole_pool|length == 1 else 's' }}
+  {% for g in at.whole_pool %}{{ g }}{% if loop.revindex == 2 %} and {% elif not loop.last %}, {% endif %}{% endfor %}
+  the smallest clade containing every member is the whole tree{% endif %}.
+  So read the colours as profile assignments that happen to cluster, not as a phylogeny that
+  reproduces the group scheme. <a href="{{ u('/data/group_monophyly.json') }}">The measurement</a>
+  is downloadable, and the three sequence sets it uses are defined inside it.
+{% endif %}
 </div>
 
 <figure class="fig">

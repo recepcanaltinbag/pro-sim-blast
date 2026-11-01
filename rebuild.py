@@ -287,6 +287,14 @@ ARTEFACTS = [
      ["python3", "build_phylogeny.py", "--db", DB, "--out-dir", OUT,
       "--fasttree", "FastTree", "--work", f"{SCRATCH}/roar_phylo_work"],
      ["build_phylogeny.py", DB, MOTIF_HMM], False),
+    # Gruplarin agacta dal olusturup olusturmadigi OLCULUR. Filogeni sayfasi
+    # "this tree recovers the historical RO groups from sequence alone" diye
+    # olculmemis bir sonuc yayimliyordu; 2026-11-01'de olculdu ve iddia
+    # yalnizca grup 5 ve 6 icin dogru cikti. Ciktisi tazelik takibinde, cunku
+    # sayfanin cumlesi artik bu dosyadan okunuyor.
+    ("group_monophyly", [f"{OUT}/group_monophyly.json"],
+     ["python3", "group_monophyly.py", "--db", DB, "--out-dir", OUT],
+     ["group_monophyly.py", DB, f"{OUT}/tree_all.nwk"], False),
     ("stats", [f"{OUT}/stats.json"],
      ["python3", "stats_overview.py", "--db", DB, "--out", f"{OUT}/stats.json"],
      ["stats_overview.py", DB, CHEM, ECO], False),

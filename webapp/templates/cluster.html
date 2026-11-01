@@ -3,7 +3,7 @@
 {% block body %}
 <nav class="crumbs"><a href="{{ u('/') }}">Home</a> › <a href="{{ u('/clusters') }}">Types</a> › {{ c.cluster }}</nav>
 
-<h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · RO group {{ c.group }}</span></h1>
+<h1>{{ c.gene }} <span class="note">· type {{ c.cluster }} · {{ group_label(c.group) }}</span></h1>
 <div class="numbered">
 
 {#  Uyesi olmayan tip: sayfa onceden SESSIZCE bos kaliyordu. Aciklama en uste
@@ -190,6 +190,13 @@
 {% if chem and chem.reaction_class != 'unknown' %}
 <figure class="fig reaction">
   <div class="rxn">
+    {#  DENKLEM TEK PARCA. Eskiden sira substrat - ok - SEMA - urun idi:
+        genel reaksiyon semasi okla urunun ARASINA giriyordu, ve substrat
+        SVG'si genis oldugunda urun kutusu alt satira sarip oktan kopuyordu
+        (2026-11-01 gorsel denetimi, qxyA'da belirgin: sagda ~280 px bosluk).
+        Simdi substrat, ok ve urun tek bir kapsayicida; sema kendi blogu
+        olarak sona gecti ve yer kalmazsa kendi satirina iner.          #}
+    <div class="rxn__eq">
     <div class="rxn__side">
       {% if chem.substrate_smiles %}
       <svg class="struct" data-smiles="{{ chem.substrate_smiles }}" aria-label="{{ chem.substrate_en }}"></svg>
@@ -205,15 +212,16 @@
       </svg>
       <div class="rxn__below">{{ chem.reaction }}</div>
     </div>
+    <div class="rxn__side">
+      <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
+      <div class="rxn__label">product</div>
+    </div>
+    </div>{#  /.rxn__eq -- denklem burada biter  #}
     <div class="rxn__scheme">{{ reaction_scheme_svg(chem.reaction_class)|safe }}
       {% if REACTION_SCHEME_NOTE.get(chem.reaction_class) %}
       <div class="rxnote">{{ REACTION_SCHEME_NOTE[chem.reaction_class] }}</div>
       {% endif %}
       <div class="rxn__label">how this reaction class works, in general</div></div>
-    <div class="rxn__side">
-      <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
-      <div class="rxn__label">product</div>
-    </div>
   </div>
   {#  OKSIJENIN KADERI. Aile adi "oksijenaz" ama ailede urune hic oksijen
       sokmayan uyeler var; o yuzden bu, sayfanin soylemesi gereken bir sey. #}

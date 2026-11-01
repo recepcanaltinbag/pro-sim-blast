@@ -1343,6 +1343,11 @@ templates.env.globals.update(
     # yazilinca kirpiliyorlardi. Sayfada HTML olarak yaziliyorlar.
     REACTION_SCHEME_NOTE=atlas.REACTION_SCHEME_NOTE,
     gap_histogram=atlas.gap_histogram,
+    # Grup ETIKETI tek yerden gelir: 6 ve 7 literaturde yok, numara olarak
+    # yayimlanmazlar (bkz. atlas.group_label).
+    group_label=atlas.group_label, is_literature_group=atlas.is_literature_group,
+    row_label=atlas.row_label,
+    LITERATURE_GROUPS=atlas.LITERATURE_GROUPS,
     amedian=atlas.median, GROUP_COLORS=atlas.GROUP_COLORS, TIER_COLORS=atlas.TIER_COLORS, TIERS=atlas.TIERS,
     TIER_LABEL=atlas.TIER_LABEL, TIER_MEANING=atlas.TIER_MEANING,
     COMPONENT_COLORS=COMPONENT_COLORS,
@@ -1392,9 +1397,16 @@ def atlas_phylogeny(request: Request):
         meta_path = apath("tree_meta.json")
         import json as _json
         tree_meta = (_json.load(open(meta_path)) if os.path.exists(meta_path) else None)
+        # Gruplarin dal olusturup olusturmadigi da OLCUMDEN gelir. Sayfa bir
+        # donem "this tree recovers the historical RO groups from sequence
+        # alone" diye yaziyordu; olcum bunu yalnizca grup 5 ve 6 icin
+        # dogruladi, grup 1-4 hicbir kesimde dal olusturmuyor.
+        mono_path = apath("group_monophyly.json")
+        mono = (_json.load(open(mono_path)) if os.path.exists(mono_path) else None)
         return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n,
                       cover=atlas.representative_coverage(con),
-                      tree_meta=tree_meta,
+                      tree_meta=tree_meta, mono=mono,
+                      mono_sum=atlas.monophyly_summary(mono),
                       support=atlas.newick_support_summary(newick))
     finally:
         con.close()
