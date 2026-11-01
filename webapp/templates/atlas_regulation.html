@@ -141,7 +141,27 @@ unassignable and the counts are conservative.</figcaption>
   <td class="num" data-v="{{ r.median_intergenic_bp or 0 }}">{{ (r.median_intergenic_bp ~ ' bp') if r.median_intergenic_bp else '–' }}</td>
   <td>{{ r.top_regulator_family or '–' }}</td></tr>
 {% endfor %}
-</tbody></table></div>
+</tbody>
+{% if reg_totals %}
+<tfoot><tr><th scope="row">All {{ per_cluster|length }} types</th>
+  <th class="num">{{ reg_totals.n|fmt }}</th>
+  <th class="num">{{ '%.0f %%' % (100 * reg_totals.divergent_regulator / reg_totals.n) }}
+    <span class="note">({{ reg_totals.divergent_regulator|fmt }})</span></th>
+  <th class="num">&mdash;</th><th></th></tr></tfoot>
+{% endif %}
+</table></div>
+{% if reg_totals %}
+<p class="note"><b>This column adds up to the architecture table above.</b> The
+{{ reg_totals.divergent_regulator|fmt }} divergent regulators counted here, one type at a time, are
+the same {{ reg_totals.db_divergent_regulator|fmt }} rows that section 2 counts in one query, and
+the Members column adds up to the {{ reg_totals.n|fmt }} confirmed entries. Nothing is
+double-counted and nothing is left out: each entry has exactly one upstream architecture, so the
+five architecture counts are a partition of the same {{ reg_totals.n|fmt }} entries
+({{ reg_totals.divergent_regulator|fmt }} + {{ reg_totals.codirectional_regulator|fmt }} +
+{{ reg_totals.divergent_other|fmt }} + {{ reg_totals.codirectional_other|fmt }} +
+{{ reg_totals.unknown|fmt }}). The equality is checked mechanically on every build rather than
+asserted here.</p>
+{% endif %}
 <p class="note"><a href="{{ u('/download/analysis/regulation_by_cluster.csv') }}">Download this table</a></p>
 
 <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.35.2/dist/plotly-cartesian.min.js"></script>

@@ -1670,6 +1670,78 @@ def check_groups_published(rep, con, root):
               else "etiketsiz: " + ", ".join(nolabel))
 
 
+def check_types_are_single_source(rep, root):
+    """`types/` tek kaynaksa chemistry.csv ONDAN uretilebilmek ZORUNDA.
+
+    NEDEN. types_build.py'ye gore bir tipin tek tanimi `types/<kume>.yaml`
+    ve chemistry.csv o dizinden URETILIR. Ama bu kuralı hicbir sey
+    zorlamiyordu: chemistry.csv elle duzeltilebiliyor, site duzelmis halini
+    gosteriyor ve her sey dogru gorunuyor -- ta ki biri `types_build.py
+    --write` kosana kadar; o an uretilen dosya elle yapilan duzeltmeyi
+    SESSIZCE geri aliyor. 2026-11-01'de tam bu oldu: onceki oturumda
+    chemistry.csv'ye islenen 10 hucrelik dus-notu temizligi manifestolara
+    islenmemisti ve bir sonraki --write'ta kaybolacakti.
+
+    Kontrol gidis-donus testidir: manifestolardan uretilen chemistry.csv ile
+    diskteki dosya hucre hucre karsilastirilir.
+    """
+    sys.path.insert(0, root)
+    try:
+        import types_build
+    except Exception as exc:                                  # pragma: no cover
+        rep.check("types/: chemistry.csv is reproducible from the manifests",
+                  False, 1, f"types_build.py yuklenemedi: {exc}")
+        return
+    mans = types_build.read_all(os.path.join(root, "types"))
+    diffs, _ = types_build.roundtrip(mans, os.path.join(root, "chemistry.csv"))
+    rep.check("types/: chemistry.csv is reproducible from the manifests",
+              not diffs, len(diffs),
+              "gidis-donus birebir" if not diffs else
+              f"{len(diffs)} hucre ayrisik, ilki {diffs[0][0]}/{diffs[0][1]} -- "
+              "chemistry.csv elle duzenlenmis; duzeltmeyi types/'a tasi ve "
+              "types_build.py --write kos")
+
+
+def check_regulation_totals_agree(rep, con, root):
+    """Ayni sayiyi veren iki tablo AYRISAMAZ.
+
+    NEDEN. /atlas/regulation iki yerde ayni buyuklugu yayinliyor: 2. bolumun
+    mimari tablosu `ro_regulation`i tek sorguda sayiyor, 5. bolumun tip
+    tablosu ise `analysis_out/regulation_by_cluster.csv`den geliyor. Ikisi
+    farkli zincirlerden uretiliyor, yani CSV bayatladigi an sayfa iki farkli
+    sayiyi ayni iddia icin gosterir ve bunu kimse soylemez -- okuyucu 68
+    satiri toplayip ucuncu bir sayi bulur. Bu kontrol esitligi zorunlu kilar.
+
+    Mimarilerin TOPLAMI da onaylanan giris sayisina esit olmak zorunda:
+    her girisin tam bir yukari-akim mimarisi var, yani bes sayi ayni kumenin
+    parcalanisi. Esit degilse ya bir giris iki kez sayildi ya biri dustu.
+    """
+    import csv as _csv
+    path = os.path.join(root, "analysis_out", "regulation_by_cluster.csv")
+    if not con.execute("SELECT name FROM sqlite_master WHERE name='ro_regulation'"
+                       ).fetchone() or not os.path.exists(path):
+        return
+    rows = list(_csv.DictReader(open(path)))
+    cols = ("divergent_regulator", "codirectional_regulator",
+            "divergent_other", "codirectional_other", "unknown")
+    csv_sum = {c: sum(int(r.get(c) or 0) for r in rows) for c in cols}
+    db_sum = dict(con.execute(
+        "SELECT architecture, COUNT(*) FROM ro_regulation GROUP BY 1"))
+    for c in cols:
+        a, b = csv_sum[c], db_sum.get(c, 0)
+        rep.check(f"regulation: per-type {c} sums to the architecture count",
+                  a == b, 0 if a == b else abs(a - b),
+                  f"{a} = {b}" if a == b else
+                  f"tip tablosu {a}, mimari tablosu {b} -- "
+                  "regulation_by_cluster.csv bayat (analyze_regulation.py)")
+    n_csv = sum(int(r.get("n") or 0) for r in rows)
+    n_db = con.execute("SELECT COUNT(*) FROM ro_regulation").fetchone()[0]
+    rep.check("regulation: the five architectures partition the entries",
+              n_csv == n_db == sum(csv_sum.values()),
+              0 if n_csv == n_db == sum(csv_sum.values()) else 1,
+              f"{n_csv} giris, mimari toplami {sum(csv_sum.values())}, tablo {n_db}")
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -2548,6 +2620,8 @@ def main():
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
         check_union_denominator(rep, con, ROOT)
+        check_regulation_totals_agree(rep, con, ROOT)
+        check_types_are_single_source(rep, ROOT)
         check_groups_published(rep, con, ROOT)
         check_cluster_coverage(con, rep, eco, chem)
         check_ecology_csv(rep, eco)

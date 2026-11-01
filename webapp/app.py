@@ -1653,8 +1653,19 @@ def atlas_regulation(request: Request):
         products = con.execute(
             "SELECT upstream_product p, COUNT(*) n FROM ro_regulation "
             "WHERE architecture='divergent_regulator' GROUP BY 1 ORDER BY n DESC LIMIT 15").fetchall()
+        per_cluster = atlas.read_csv(apath("regulation_by_cluster.csv"))
+        # UZLASMA OLCULUR, ANLATILMAZ. Sayfada iki tablo ayni sayiyi veriyor:
+        # mimari tablosu ro_regulation'i dogrudan sayiyor, tip tablosu ise
+        # regulation_by_cluster.csv'den geliyor. Okuyucu 68 satiri toplamadan
+        # ikisinin ayni oldugunu goremiyordu ve toplamayi kendi yapmak zorunda
+        # kaliyordu -- yanlis bir ucuncu sayi tam boyle dogar. Toplam satiri
+        # artik basiliyor ve validate_curation.py esitligi zorluyor.
+        reg_totals = {k: sum(int(r.get(k) or 0) for r in per_cluster) for k in
+                      ("n", "divergent_regulator", "codirectional_regulator",
+                       "divergent_other", "codirectional_other", "unknown")}
+        reg_totals["db_divergent_regulator"] = dict(arch).get("divergent_regulator", 0)
         return render(request, "atlas_regulation.html", arch=arch, fams=fams, gaps=gaps,
-                      products=products, per_cluster=atlas.read_csv(apath("regulation_by_cluster.csv")),
+                      products=products, per_cluster=per_cluster, reg_totals=reg_totals,
                       over=_overview(con))
     finally:
         con.close()
