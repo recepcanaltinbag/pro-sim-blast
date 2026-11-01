@@ -2158,6 +2158,71 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 114. PDO/PhtAa urunleri TERSTI; ve `types/` tek kaynak olmayi BIRAKMISTI (2026-11-01)
+
+Kullanici bildirdi: "PDO ve PhtAa urunleri hala ters."
+
+**Dogru.** Ve bu bir yazim karismasi degil, iki ayri metabolik yol.
+Gram-negatif bakteriler ftalati **4,5**'ten, Gram-pozitifler (aktinobakteri)
+**3,4**'ten acar; her iki yol da protokatekuata iner. Kayitta tam tersi
+yaziyordu:
+
+| tip | organizma | eski urun | duzeltilmis |
+|---|---|---|---|
+| `4_406_PDO` | *Comamonas testosteroni* KF1 (Gram-negatif, PDB 7FJL) | cis-3,4-diol | **cis-4,5-diol** |
+| `3_311_PhtAa` | *M. vanbaalenii* PYR-1 (aktinobakteri) | cis-4,5-diol | **cis-3,4-diol** |
+
+Dayanak: Stingley ve ark. 2004 (doi:10.1099/mic.0.27263-0) bu operonu tasiyan
+6,7 kb parcanin ftalati 3,4-dihidroksiftalata cevirdigini yaziyor; KF1'in
+PhtA/PhtB (= PDO/PDR) cifti 4,5-dihidroksilasyon yapiyor.
+
+**IC TUTARLILIK ZATEN BOZULMUSTU ve kimse gormedi.** Sette ucuncu bir ftalat
+tipi var: `4_405_ROCH34` (*Cupriavidus metallidurans*, Gram-negatif), urunu
+cis-4,5-diol. Yani eski hal iki Gram-negatif ftalat dioksijenazina FARKLI
+bolge atiyordu. Ayni substrat + ayni gram tipi + farkli bolge bir celiski
+sinyalidir; hicbir kontrol substrat basina bolge tutarliligini aramiyor.
+ACIK IS: `reaction` alanindaki "ring positions N and M" ifadesini substrat +
+organizma gram tipine karsi sinayan bir kontrol yazilabilir.
+
+**ASIL BULGU: chemistry.csv elle duzenlenebiliyordu.** `types_build.py`'nin
+beyani net -- bir tip TEK dosyadir (`types/<kume>.yaml`) ve chemistry.csv
+ONDAN URETILIR. Ama bunu zorlayan hicbir kontrol yoktu. Onceki oturumda
+dus-notu temizligi dogrudan chemistry.csv'ye islenmisti; 10 hucre ayrisik
+kalmisti ve bir sonraki `types_build.py --write` o duzeltmeleri SESSIZCE
+geri alacakti. Bu, projenin tekrar eden hata sinifinin bir baska yuzu:
+*kararı veren kural, verdigini sandigimiz kural degil.*
+
+- 10 hucre (`1_117_PrnD`, `1_118_RedG`, `3_321_Nvd`, `3_322_DAF36`,
+  `6_601_PAO`, `6_602_CAO`, `6_603_PTC52`, `7_701_AerC`) manifestolara tasindi
+- chemistry.csv manifestolardan yeniden uretildi (`--write --allow-drift`)
+- yeni kontrol: `check_types_are_single_source` -- gidis-donus farki varsa FAIL
+
+## 115. Regulator sayisi: iki tablo da 5.022 OLCUYOR; eksik olan TOPLAM satiriydi (2026-11-01)
+
+Kullanici bildirdi: "Tip bazindaki tablonun toplami 6.032, mimari tablosunda
+5.022."
+
+**Olculdu: ikisi de 5.022.** Mimari tablosu (`/atlas/regulation` bolum 2)
+`ro_regulation`i tek sorguda sayiyor; tip tablosu (bolum 5)
+`analysis_out/regulation_by_cluster.csv`den geliyor. CSV'nin
+`divergent_regulator` sutunu 5.022, tablo sayimi 5.022, indirilebilir CSV
+5.022, ve YAYINDAKI site de 5.022 -- dagitilmis sitenin 500 sayfasi
+tarandi, her tablonun her sutun toplami hesaplandi, **6.032'ye esit tek bir
+sutun toplami yok**. 6.032'nin nereden geldigi bulunamadi.
+
+**Ama sikayet bos degil: sayfa okuyucuyu TOPLAMA yapmaya zorluyordu.**
+68 satirli bir yuzde tablosunun ustteki tek sayiyla ayni seyi olctugu
+yazmiyordu. Projenin tekrar eden tuzagi: *birim yazilmazsa okuyucu toplama
+yapar ve tutmayan bir ucuncu sayi bulur.*
+
+- tip tablosuna olculen `<tfoot>` toplam satiri eklendi (68 tip, 19.125 giris,
+  %26 / 5.022)
+- bes mimarinin ayni 19.125 girisi PARCALADIGINI acikca yazan not eklendi
+- esitlik mekanik: `check_regulation_totals_agree` her mimari sutununun
+  tip-basi toplamini tablo sayimiyla karsilastiriyor; ayrisirsa FAIL
+  (6 yeni kontrol). Bu, CSV bayatladiginda sessizce iki farkli sayi
+  gosterilmesini imkansiz kiliyor.
+
 ## 113. BIRLESIM KURULDU: 70.252 tekil dizi; NCBI protein uzayi ilk kez taraniyor (2026-11-01)
 
 Kullanici: "NCBI'daki ordaki burdaki tum RO olabilecek her sey bu DB'den
