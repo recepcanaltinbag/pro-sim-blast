@@ -99,6 +99,7 @@ industrial site.</p>
 <div class="cols">
 <div>
 <h4>By substrate class</h4>
+<div class="tablewrap">
 <table class="data compact">
 <thead><tr><th>Class</th><th class="num">Species</th><th class="num">Share<span class="unit">%</span></th><th class="num">Fold</th></tr></thead>
 <tbody>
@@ -109,8 +110,10 @@ industrial site.</p>
 {% endfor %}
 </tbody></table>
 </div>
+</div>
 <div>
 <h4>By chemical family</h4>
+<div class="tablewrap">
 <table class="data compact">
 <thead><tr><th>Family</th><th class="num">Species</th><th class="num">Share<span class="unit">%</span></th><th class="num">Fold</th></tr></thead>
 <tbody>
@@ -121,6 +124,7 @@ industrial site.</p>
     <td class="num">{{ '%.1f×' % r.fold if r.fold else '–' }}</td></tr>
 {% endfor %}
 </tbody></table>
+</div>
 </div>
 </div>
 <figcaption><b>The claim belongs to families, not to the class.</b> As a class, xenobiotic-acting

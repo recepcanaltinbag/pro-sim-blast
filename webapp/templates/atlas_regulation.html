@@ -108,14 +108,18 @@ whose true 5' gene was missed will show an inflated distance.</figcaption>
 <h2>4 · Which regulator families face the operon</h2>
 <figure class="fig">
 <div class="cols">
-<div><table class="data compact">
+<div><div class="tablewrap">
+<table class="data compact">
 <thead><tr><th>Family</th><th class="num">Divergent cases</th></tr></thead>
 <tbody>{% for f in fams %}<tr><td>{{ f.f if f.f != 'regulator_unclassified' else 'not assignable to a family' }}</td><td class="num">{{ f.n|fmt }}</td></tr>{% endfor %}</tbody>
-</table></div>
-<div><table class="data compact">
+</table>
+</div></div>
+<div><div class="tablewrap">
+<table class="data compact">
 <thead><tr><th>Most frequent upstream products</th><th class="num">n</th></tr></thead>
 <tbody>{% for p in products %}<tr><td class="small">{{ p.p }}</td><td class="num">{{ p.n }}</td></tr>{% endfor %}</tbody>
-</table></div>
+</table>
+</div></div>
 </div>
 <figcaption><b>Finding.</b> LysR is the largest assignable family in the divergent position, followed
 by TetR, MarR, IclR and GntR. The LysR dominance matches the literature on aromatic catabolism,

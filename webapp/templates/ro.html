@@ -188,6 +188,7 @@ label.</figcaption>
   {% endif %}
 </p>
 {{ operon_regulator_svg(operon.layout, reg)|safe }}
+<div class="tablewrap">
 <table class="data compact">
   <thead><tr><th class="num">Position</th><th>Component by sequence</th><th>Category by annotation</th>
   <th>Product</th><th class="num">Gap to previous gene</th></tr></thead>
@@ -202,6 +203,7 @@ label.</figcaption>
   {% endfor %}
   </tbody>
 </table>
+</div>
 {% endif %}
 
 <h2>All neighbouring genes</h2>

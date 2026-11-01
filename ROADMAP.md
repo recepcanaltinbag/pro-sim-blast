@@ -85,9 +85,27 @@ ayni molekulun her yerdeki adini bir arada tutmaktir.
 
 ### 2. Kalan gorsel denetim bulgulari
 
-- `/clusters` tablo tasmasi ve tip sayfasi carpisma tablosu 1440 px'te.
-- Arama sayfasinin bos baslangic durumu.
-- Mobilde Plotly kirpilmasi.
+- ~~`/clusters` tablo tasmasi ve carpisma tablosu~~ **YAPILDI (2026-11-01)
+  ve 2 tablo degil 15 TABLOYMUS.** `.tablewrap` (overflow-x: auto) eksikti:
+  cluster.html'de 9, ro.html'de 1, atlas_ecology/atlas_regulation'da 4,
+  bir de kendi yeni ekledigim atlas_groups.html'de 1.
+  `check_tables_are_scrollable` artik sarilmamis her tabloyu FAIL veriyor --
+  cunku kesilme DAR degil GENIS ekranda oluyor ve mobil testinde gorunmuyor.
+- ~~Arama sayfasinin bos baslangic durumu~~ **YAPILDI (2026-11-01).** Sorgu
+  ve filtre yokken sayfa 19 binden fazla girisi hicbir yonlendirme olmadan
+  dokuyordu. Artik ne arandigini, sol panelin ne yaptigini ve iki
+  tiklanabilir baslangic ornegi soyleyen bir blok var; ilk filtrede kayboluyor.
+- ~~Mobilde Plotly kirpilmasi~~ **YAPILDI (2026-11-01).** Sebep
+  `responsive: true`nin eksikligi DEGILDI -- o zaten her grafikte vardi ve
+  genisligi izliyor, KENAR BOSLUGUNU izlemiyor. Sol kenar boslugu sabit
+  180 px'ti; 360 px'lik bir telefonda grafige 180 px kaliyor ve kategori
+  etiketleri kirpiliyordu. `plot.js`'teki `plotMargin()` kenar boslugunu
+  ekran genisliginden turetiyor (en az 44 px, en cok istenen, ve ekranin
+  %38'i), `bindPlotMargin()` ekran dondugunde yeniden duzenliyor. Dort
+  grafik baglandi: tax, ev, ops, heat.
+  NOT: plot.js base.html'e `defer` OLMADAN eklendi. table.js defer'li ve
+  sayfa ici Plotly betikleri ayristirma aninda kosuyor -- defer'li bir
+  dosyadan gelen yardimci onlar icin tanimsiz olurdu.
 - ~~`1_118_RedG` Sekil 1 altyazisina kacan gelistirme notu~~ **YAPILDI
   (2026-11-01) ve BIR TIP DEGIL ALTI TIPMIS.** Kullanici RedG'yi
   bildirdi; olcum `1_117_PrnD`, `1_118_RedG`, `3_321_Nvd`,

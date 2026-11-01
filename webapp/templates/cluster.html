@@ -378,6 +378,7 @@
     {% if tier_total %}
     <h3>Evidence for the members</h3>
     <span class="tierbar" style="width:100%">{% for t in TIERS %}{% if tiers[t] %}<i style="background:{{ TIER_COLORS[t] }};width:{{ (100 * tiers[t] / tier_total)|round(2) }}%" title="{{ t }}: {{ tiers[t] }}"></i>{% endif %}{% endfor %}</span>
+    <div class="tablewrap">
     <table class="data compact">
       <tbody>
       {# BOS SEVIYE DE BASILIR. Satir gizlenirse okuyucu 0 ile "olculmedi"yi
@@ -393,6 +394,7 @@
       {% endfor %}
       </tbody>
     </table>
+    </div>
     <p class="note"><a href="{{ u('/atlas/evidence') }}">How these levels are defined</a></p>
     {% endif %}
 
@@ -404,11 +406,13 @@
       an optimal alignment of the two sequences alone would give, so these values understate
       rather than overstate. Above roughly 40 % two types are not reliably separable by
       sequence.</p>
+    <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for name, ident in x.nearest %}
       <tr><td><a href="{{ u('/cluster/' ~ name) }}">{{ name }}</a></td><td class="num">{{ '%.1f %%' % ident }}</td></tr>
       {% endfor %}
     </tbody></table>
+    </div>
     {% if x.conflicts %}
     <h3>Members that collide with another type</h3>
     <p class="note"><b>This is not a similarity measure.</b> Each row is one sequence assigned to
@@ -438,6 +442,7 @@
 <h2>Operon and electron transport</h2>
 <div class="cols">
   <div>
+    <div class="tablewrap">
     <table class="data compact">
       <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
       <tbody>
@@ -450,11 +455,14 @@
         <tr><td><b>All three in the operon</b></td><td class="num">{{ pct(c.operon.complete or 0, c.operon.total) }}</td><td></td></tr>
       </tbody>
     </table>
+    </div>
     {% if x.etc %}
     <h3>Electron-transport configurations</h3>
+    <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for e in x.etc %}<tr><td class="mono small">{{ e.p }}</td><td class="num">{{ e.n|fmt }}</td></tr>{% endfor %}
     </tbody></table>
+    </div>
     {% endif %}
   </div>
   <div>
@@ -465,11 +473,13 @@
     <p class="note">Same-strand gene runs around the alpha subunit, 5′ to 3′, among members that
     are <b>at least 60 % identical</b> to the curated enzyme. These are the arrangements that
     describe this enzyme.</p>
+    <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for l in c.layouts[:6] %}
       <tr><td>{{ layout_svg(l.layout)|safe }}<div class="note mono">{{ l.layout }}</div></td><td class="num">{{ l.n }}</td></tr>
       {% endfor %}
     </tbody></table>
+    </div>
     {% else %}
     <p class="note">No member of this type is close enough to the curated enzyme for its gene
     order to describe this enzyme. Only the distant arrangements below are available.</p>
@@ -480,11 +490,13 @@
       <p class="note">These members are under 60 % identical to the curated enzyme and their
       reaction is unknown. A shared gene name here does not mean a shared function, so a run that
       looks similar may be coincidence rather than a conserved operon.</p>
+      <div class="tablewrap">
       <table class="data compact"><tbody>
         {% for l in c.layouts_distant[:6] %}
         <tr><td>{{ layout_svg(l.layout)|safe }}<div class="note mono">{{ l.layout }}</div></td><td class="num">{{ l.n }}</td></tr>
         {% endfor %}
       </tbody></table>
+      </div>
     </details>
     {% endif %}
   </div>
@@ -556,6 +568,7 @@ there is one, is shown in its own figure above and belongs to that entry, not to
 {% endif %}
 <div class="cols">
   <div>
+    <div class="tablewrap">
     <table class="data compact">
       <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
       <tbody>
@@ -570,19 +583,24 @@ there is one, is shown in its own figure above and belongs to that entry, not to
       {% endfor %}
       </tbody>
     </table>
+    </div>
   </div>
   <div>
     {% if x.reg_families %}
     <h3>Regulator families in the divergent position</h3>
+    <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for f in x.reg_families %}<tr><td>{{ f.f if f.f != 'regulator_unclassified' else 'not assignable' }}</td><td class="num">{{ f.n }}</td></tr>{% endfor %}
     </tbody></table>
+    </div>
     {% endif %}
     {% if c.regulators %}
     <h3>Any regulator within four genes</h3>
+    <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for r in c.regulators[:8] %}<tr><td>{{ r.family }}</td><td class="num">{{ r.n }}</td></tr>{% endfor %}
     </tbody></table>
+    </div>
     {% endif %}
     <p class="note"><a href="{{ u('/atlas/regulation') }}">What the promoter region does and does not tell us</a></p>
   </div>

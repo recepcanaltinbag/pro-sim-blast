@@ -182,7 +182,7 @@ Plotly.newPlot('ops', [
   {type:'bar', orientation:'h', name:'beta subunit', y, x:OVER.map(d=>100*(d.beta||0)/d.n).reverse(), marker:{color:'#2980b9'}, hovertemplate:'beta: %{x:.1f} %<extra></extra>'},
   {type:'bar', orientation:'h', name:'ferredoxin', y, x:OVER.map(d=>100*(d.fd||0)/d.n).reverse(), marker:{color:'#27ae60'}, hovertemplate:'ferredoxin: %{x:.1f} %<extra></extra>'},
   {type:'bar', orientation:'h', name:'reductase', y, x:OVER.map(d=>100*(d.red||0)/d.n).reverse(), marker:{color:'#f39c12'}, hovertemplate:'reductase: %{x:.1f} %<extra></extra>'}
-], {barmode:'group', margin:{l:180,r:24,t:10,b:64}, xaxis:{title:'members with partner in operon (%)', range:[0,100]},
+], {barmode:'group', margin: plotMargin(180, {r: 24, t: 10, b: 64}), xaxis:{title:'members with partner in operon (%)', range:[0,100]},
     yaxis:{tickfont:{size:10}}, legend:{orientation:'h', y:1.015}, font,
     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
 
@@ -226,5 +226,6 @@ if (VAL && VAL.components) {
     legend:{orientation:'h', y:1.02, font:{size:10}}, font,
     paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
 }
+bindPlotMargin('ops', 180, {r: 24, t: 10, b: 64});
 </script>
 {% endblock %}

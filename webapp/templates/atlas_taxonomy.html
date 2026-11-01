@@ -101,9 +101,10 @@ const traces = TOP.map((p, i) => ({type:'bar', orientation:'h', name:p,
 traces.push({type:'bar', orientation:'h', name:'other', marker:{color:'#b9b4ab'}, y,
   x: OVER.map(d => { let s = 0; for (const [k,v] of Object.entries(d.phyla)) if (!TOP.includes(k)) s += v; return 100*s/d.n; }).reverse(),
   hovertemplate:'other: %{x:.1f} %<extra></extra>'});
-Plotly.newPlot('tax', traces, {barmode:'stack', margin:{l:180,r:24,t:10,b:64},
+Plotly.newPlot('tax', traces, {barmode:'stack', margin: plotMargin(180, {r: 24, t: 10, b: 64}),
   xaxis:{title:'share of members (%)', range:[0,100]}, yaxis:{tickfont:{size:10}},
   legend:{orientation:'h', y:1.015, font:{size:10}}, font:{color: dark ? '#e8e6e1' : '#15202b'},
   paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+bindPlotMargin('tax', 180, {r: 24, t: 10, b: 64});
 </script>
 {% endblock %}

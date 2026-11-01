@@ -47,6 +47,7 @@ who meets the word "ungrouped" is owed the measurement that put them there.</p>
 what it is.</div>
 {% endif %}
 
+<div class="tablewrap">
 <table class="data">
   <caption>Groups, measured against the confirmed set. Label, architecture and reasoning come from
   <code>groups.yaml</code>; member and type counts are measured from the database on every build.</caption>
@@ -71,6 +72,7 @@ what it is.</div>
   {% endfor %}
   </tbody>
 </table>
+</div>
 
 <h2>Why each group is a group</h2>
 {% for g in gv.groups %}

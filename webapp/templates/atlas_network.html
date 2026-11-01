@@ -186,12 +186,13 @@ const leafUrl = l => "{{ u('/leaf/') }}" + l.replace('#','-') + (STATIC ? ".html
     colorscale:[[0,'#f6f4f0'],[0.3,'#f2d6ae'],[0.55,'#e0a070'],[0.8,'#c25b3f'],[1,'#7a2a1f']],
     colorbar:{title:{text:'% identity', side:'right'}, thickness:12},
     hovertemplate:'%{y} vs %{x}: %{z:.1f} %<extra></extra>'}],
-    {margin:{l:120,r:20,t:10,b:120}, xaxis:{tickangle:-60, tickfont:{size:9}},
+    {margin: plotMargin(120, {r: 20, t: 10, b: 120}), xaxis:{tickangle:-60, tickfont:{size:9}},
      yaxis:{tickfont:{size:9}, autorange:'reversed'},
      font:{color: dark ? '#e8e6e1' : '#15202b'},
      paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'},
     {responsive:true, displaylogo:false});
 })();
 {% endif %}
+bindPlotMargin('heat', 120, {r: 20, t: 10, b: 120});
 </script>
 {% endblock %}

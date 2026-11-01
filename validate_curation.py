@@ -1542,6 +1542,35 @@ def check_group_monophyly(rep, root, out_dir):
               "clade; the page text says they do not and must be updated")
 
 
+def check_tables_are_scrollable(rep, root):
+    """Her table.data bir .tablewrap icinde mi?
+
+    Gorsel denetim (2026-11-01): sarilmayan tablolar 1440 px kolonda
+    tasiyor ve sagdaki sutunlar kesiliyordu. On tablo sarilmamisti
+    (cluster.html'de dokuz, ro.html'de bir). .tablewrap overflow-x: auto
+    veriyor, yani tablo kendi icinde kayar ve sayfa duzeni bozulmaz.
+
+    Bu kontrol gozle bakmaya BIRAKILMAZ: yeni bir tablo eklenince kimse
+    1440 px'te acip sutun saymaz, ve kesilme tam da dar ekranda degil
+    GENIS ekranda oldugu icin mobil testinde de gorunmez.
+    """
+    tdir = os.path.join(root, "webapp", "templates")
+    bad = []
+    for name in sorted(os.listdir(tdir)):
+        if not name.endswith(".html"):
+            continue
+        path = os.path.join(tdir, name)
+        text = open(path, encoding="utf-8").read()
+        for m in re.finditer(r'<table class="data[^"]*"', text):
+            before = text[max(0, m.start() - 220):m.start()]
+            if "tablewrap" not in before:
+                line = text[:m.start()].count("\n") + 1
+                bad.append(f"{name}:{line}")
+    rep.check("every data table sits inside a scrollable wrapper",
+              not bad, len(bad),
+              "tum tablolar sarili" if not bad else first(bad, 6))
+
+
 def check_no_internal_refs_published(rep, chem, root):
     """Yayinlanan proza ic dosya yolu ya da birinci tekil sahis tasiyamaz.
 
@@ -2509,6 +2538,7 @@ def main():
     check_computed_oxygen_fate(rep, ROOT)
     check_metabolic_role(rep, ROOT)
     check_no_internal_refs_published(rep, chem, ROOT)
+    check_tables_are_scrollable(rep, ROOT)
 
     con = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
     con.text_factory = str

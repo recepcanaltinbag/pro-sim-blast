@@ -471,6 +471,7 @@ Filters on the left narrow the result without a new search.
 <div class="searchlayout">
   <aside class="facets" id="facets"></aside>
   <div class="results">
+    <div id="orient" class="caveat" hidden></div>
     <div id="typeblock"></div>
     <h2>Entries <span class="note" id="count"></span></h2>
     <div class="tablewrap"><table class="data">
@@ -579,7 +580,27 @@ function renderTypes() {
     }).join('') + '</tbody></table></div>';
 }
 
+/*  Sorgu ve filtre YOKKEN sayfa 19 binden fazla girisi hicbir yonlendirme
+    olmadan dokuyordu (gorsel denetim, 2026-11-01). Okuyucu ne yazacagini
+    bilmiyorsa bir tablo degil bir BASLANGIC gerekir. Blok yalnizca
+    baslangic durumunda gorunur; ilk tusa basildiginda kaybolur.          */
+function renderOrientation() {
+  const el = document.getElementById('orient');
+  const filtered = F.q || F.tier || F.domain || F.family || F.cluster ||
+                   F.plasmid || F.partner || F.regulator;
+  if (filtered) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = '<b>Nothing is filtered yet, so every entry is listed below.</b> ' +
+    'The box above searches organism, product, protein identifier, locus tag and ' +
+    'enzyme type at once. Useful starting points: a genus such as ' +
+    '<a href="#" data-try="Mycobacterium">Mycobacterium</a>, a type such as ' +
+    '<a href="#" data-try="naphthalene">naphthalene</a>, or a locus tag. ' +
+    'The panel on the left narrows what is already listed without a new search, ' +
+    'and each count there is measured on the current result, not on the whole set.';
+}
+
 function render() {
+  renderOrientation();
   renderTypes();
   VIEW = IDX.filter(matches);
   document.getElementById('count').textContent = VIEW.length.toLocaleString();
@@ -649,6 +670,14 @@ function renderFacets() {
 /*  Tek dinleyici: facet listesi her render'da yeniden yazildigi icin
     baglantilara tek tek dinleyici baglamak her seferinde tekrar
     gerekirdi; delegasyon bunu gereksiz kilar.                         */
+document.getElementById('orient').addEventListener('click', function (ev) {
+  const a = ev.target.closest('a[data-try]');
+  if (!a) return;
+  ev.preventDefault();
+  document.getElementById('q').value = a.dataset.try;
+  run();
+});
+
 document.getElementById('facets').addEventListener('click', function (ev) {
   const a = ev.target.closest('a');
   if (!a) return;
