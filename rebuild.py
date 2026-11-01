@@ -51,6 +51,9 @@ CHEM = "chemistry.csv"
 ECO = "cluster_ecology.csv"
 REFS = "ROs_71_Clean/refs71.fasta"
 MOTIF_HMM = "ROs_71_Clean/ROmotif71.hmm"
+# RefSeq taramasinin is dizini. SCRATCH altinda, cunku ara dosyalar 40 MB'lik
+# parcalar halinde inip siliniyor ve sistem diskine yazilmamalari gerekiyor.
+NCBI = os.path.join(SCRATCH, "roar_ncbi")
 
 # Her kayit: (ad, ciktilar, komut, girdiler, agir mi)
 #
@@ -278,6 +281,29 @@ ARTEFACTS = [
      ["python3", "ingest_protein_entries.py", "--db", DB,
       "--work", f"{SCRATCH}/roar_protein"],
      ["ingest_protein_entries.py", DB, MOTIF_HMM], True),
+    # RefSeq'in TUM protein uzayi. AGIR: 871 dosya indirilir (~36 GB akitarak,
+    # diskte birikmez) ve ~143 milyon protein taranir. Madde 95'in yazdigi
+    # boslugu kapatir -- protein evrenimiz UniProt'tan gelmisti, NCBI'dan
+    # DEGIL. Ciktisi slot durum dosyalari; kesilirse kaldigi yerden devam
+    # eder, surum degisirse kendini sifirlar.
+    ("ncbi_scan", [f"{NCBI}/hits_slot0.faa"],
+     ["python3", "scan_ncbi_proteins.py", "--work", NCBI, "--parallel", "6"],
+     ["scan_ncbi_proteins.py", MOTIF_HMM], True),
+    # Taramanin adaylarini KARARA baglar. Tip atamasi ro_filter ile (UniProt
+    # tarafiyla ayni kural), triad kapisi ingest_protein_entries'in okumasiyla.
+    # Kendi kaynak tablosunu yazar; birlesimi build_union.py kurar.
+    ("ncbi_hits", [],
+     ["python3", "ingest_ncbi_hits.py", "--db", DB, "--scan-dir", NCBI],
+     ["ingest_ncbi_hits.py", "ro_filter.py", "ingest_protein_entries.py",
+      MOTIF_HMM, f"{NCBI}/hits_slot0.faa"], True),
+    # Birlesim: her kaynaktan gelen adaylarin tek tabloda toplanmasi. ro ve
+    # ro_protein'den SONRA gelmek zorunda, cunku ikisini de okur. Anasayfa
+    # kesisim/birlesim ayrimini bu tablodan yaziyor; bayat kalirsa iki sayi
+    # sessizce ayrisir ve validate_curation check_union_denominator FAIL
+    # verir -- ama once burada tazelenmesi gerekir.
+    ("union", [],
+     ["python3", "build_union.py", "--db", DB, "--fasta", "ro_alpha.fasta"],
+     ["build_union.py", DB, "ro_alpha.fasta"], False),
 
     # --- ozet katmani: HER SEYDEN sonra
     # tree_meta.json BEYAN EDILIR: sayfanin altyazisi kullanilan modeli ve
@@ -438,6 +464,8 @@ _SQL_WORDS = {"set", "or", "if", "into", "from", "table", "where", "select"}
 DECLARED_WRITES = {
     "triad_gate": {"ro_triad", "ro_triad_meta", "ro_membership"},
     "protein_entries": {"ro_protein"},
+    "ncbi_hits": {"ro_ncbi_hit"},
+    "union": {"ro_union", "ro_union_source"},
 }
 
 

@@ -355,7 +355,32 @@ def totals(con):
              "SELECT COUNT(*) FROM ro_membership WHERE basis='documented_exception'"),
             ("ro_membership", "basis_triad_incomplete",
              "SELECT COUNT(*) FROM ro_membership "
-             "WHERE basis='triad_incomplete_retained'")]:
+             "WHERE basis='triad_incomplete_retained'"),
+            # 2026-11-01, BIRLESIM (ro_union). `confirmed` bir KAPSAM degil
+            # KESISIM'dir: hem genomik baglami olan, hem kapiyi gecen
+            # girisler. Bu sayilar o kesisimin disinda kalani gorunur kilar
+            # ve ELLE YAZILMAMALI -- birlesim her kaynak eklendiginde buyur.
+            ("ro_union", "union_sequences",
+             "SELECT COUNT(*) FROM ro_union"),
+            ("ro_union", "union_no_context",
+             "SELECT COUNT(*) FROM ro_union WHERE has_genomic_context=0"),
+            ("ro_union", "union_ungated",
+             "SELECT COUNT(*) FROM ro_union WHERE passes_gate=0"),
+            ("ro_union_source", "union_source_ids",
+             "SELECT COUNT(*) FROM ro_union_source"),
+            ("ro_union_source", "union_sources_dead",
+             "SELECT COUNT(*) FROM ro_union_source WHERE status='deleted'"),
+            # TEK KOPYA: genomik baglami olmayan VE tum kaynak kimlikleri
+            # yukari akista silinmis diziler. "47.988 accession silindi,
+            # yani 47.988 dizinin tek kopyasi bizde" demek YANLIS olurdu --
+            # silinenlerin bir kismi genomik tarafta ya da canli bir baska
+            # accession'da duruyor. Kosul bu yuzden diziye bakiyor,
+            # accession'a degil.
+            ("ro_union", "union_only_copy",
+             "SELECT COUNT(*) FROM ro_union u WHERE u.has_genomic_context=0 "
+             "AND NOT EXISTS (SELECT 1 FROM ro_union_source s "
+             "WHERE s.seq_md5=u.seq_md5 "
+             "AND s.status NOT IN ('deleted','demerged'))")]:
         if con.execute("SELECT name FROM sqlite_master WHERE name=?", (table,)).fetchone():
             t[key] = s(q)
     return t
@@ -1197,6 +1222,74 @@ def dl_all_csv():
     try:
         rows = con.execute(f"SELECT {MEMBER_COLS} {MEMBER_FROM} WHERE r.is_confirmed=1").fetchall()
         return csv_response(rows, "roar_confirmed.csv")
+    finally:
+        con.close()
+
+
+def union_rows(con):
+    """`ro_union` + her dizinin TUM kaynak kimlikleri, tek satirda.
+
+    Birim DIZI oldugu icin bir satir birden fazla accession tasiyabilir;
+    kaynaklar `kaynak:accession:durum` bicimiyle boru isaretiyle birlesir.
+    Indiren kisi boylece ayni dizinin UniProt'ta silinmis, NCBI genomunda
+    onaylanmis olabilecegini TEK satirda gorur -- iki ayri dosyayi
+    elle eslestirmek zorunda kalmaz.
+    """
+    sources = {}
+    for h, src, acc, st in con.execute(
+            "SELECT seq_md5, source, accession, status FROM ro_union_source "
+            "ORDER BY source, accession"):
+        sources.setdefault(h, []).append(f"{src}:{acc}:{st}")
+    rows = []
+    for r in con.execute(
+            "SELECT seq_md5, length, n_sources, has_genomic_context, "
+            "passes_gate, rieske_intact, triad_sites_found, ro_cluster, "
+            "ro_group, genomic_candidate_id, organism, first_source, sequence "
+            "FROM ro_union ORDER BY has_genomic_context DESC, passes_gate DESC, "
+            "ro_cluster, seq_md5"):
+        d = dict(r)
+        d["sources"] = "|".join(sources.get(d["seq_md5"], ()))
+        rows.append(d)
+    return rows
+
+
+@app.get("/download/all_union.fasta")
+def dl_union_fasta():
+    """Birlesimin TAMAMI: kapiyi gecmeyen adaylar DAHIL.
+
+    `all_confirmed.fasta` kesisimi verir (genomik baglami olan VE kapiyi
+    gecen). Bu dosya birlesimi verir. Ikisi ayri sorunun yanitidir ve
+    ikisi de yayinda kalir; hangisini indirdigini basliktan ayirt
+    edebilmek icin her baslik ctx ve gate alanlarini tasiyor.
+    """
+    con = connect()
+    try:
+        buf = io.StringIO()
+        for d in union_rows(con):
+            buf.write(
+                '>%s cluster=%s group=%s ctx=%d gate=%d sources=%s '
+                'organism="%s"\n%s\n' % (
+                    d["seq_md5"], d["ro_cluster"] or "-", d["ro_group"] or "-",
+                    d["has_genomic_context"], d["passes_gate"],
+                    d["sources"] or "-", d["organism"] or "", d["sequence"]))
+        return PlainTextResponse(buf.getvalue(), headers={
+            "Content-Disposition": 'attachment; filename="roar_union.fasta"'})
+    finally:
+        con.close()
+
+
+@app.get("/download/all_union.csv")
+def dl_union_csv():
+    con = connect()
+    try:
+        rows = union_rows(con)
+        for d in rows:
+            d.pop("sequence", None)
+        return csv_response(rows, "roar_union.csv", fieldnames=[
+            "seq_md5", "length", "n_sources", "has_genomic_context",
+            "passes_gate", "rieske_intact", "triad_sites_found",
+            "ro_cluster", "ro_group", "genomic_candidate_id",
+            "organism", "first_source", "sources"])
     finally:
         con.close()
 

@@ -119,7 +119,39 @@ def main():
                     help="paralel kosuda bu islemin numarasi")
     ap.add_argument("--of", type=int, default=1,
                     help="toplam paralel islem sayisi")
+    ap.add_argument("--parallel", type=int, default=0,
+                    help="N alt islem baslat ve hepsini bekle; yeniden "
+                         "uretilebilirlik icin zincirin cagirdigi bicim")
     args = ap.parse_args()
+
+    # Darbogaz INDIRME, tarama degil: tek parca 5 saniyede iniyor ve 0,8
+    # saniyede taraniyor. O yuzden paralellik slot sayisiyla saglaniyor,
+    # hmmsearch'un --cpu'suyla degil.
+    if args.parallel > 1:
+        os.makedirs(os.path.join(args.work, "tmp"), exist_ok=True)
+        kids = []
+        for slot in range(args.parallel):
+            cmd = [sys.executable, os.path.abspath(__file__),
+                   "--work", args.work, "--hmm", args.hmm,
+                   "--slot", str(slot), "--of", str(args.parallel)]
+            if args.limit:
+                cmd += ["--limit", str(args.limit)]
+            log = open(os.path.join(args.work, "log_slot%d.txt" % slot), "a")
+            kids.append(subprocess.Popen(cmd, stdout=log, stderr=log))
+        bad = [k.wait() for k in kids]
+        if any(bad):
+            print("[hata] slot cikis kodlari: %s" % bad, file=sys.stderr)
+            return 1
+        tot = hit = 0
+        for slot in range(args.parallel):
+            st = os.path.join(args.work, "state_slot%d.json" % slot)
+            if os.path.exists(st):
+                d = json.load(open(st))
+                tot += d["n_seq"]
+                hit += d["n_hit"]
+        print("[bitti] %s protein tarandi, %s aday"
+              % (format(tot, ","), format(hit, ",")))
+        return 0
 
     os.makedirs(os.path.join(args.work, "tmp"), exist_ok=True)
     names = listing()

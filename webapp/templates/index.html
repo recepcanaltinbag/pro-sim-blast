@@ -35,6 +35,30 @@ and attack the substrate. Every one of the {{ totals.confirmed|fmt }} proteins i
 confirmed to have both centres intact, so what differs between them is not the machinery but what
 they point it at.</p>
 
+{% if totals.union_sequences %}
+{# 2026-11-01. `totals.confirmed` bu sayfanin her tarafinda payda olarak
+   kullaniliyor ve DOGRU paydadir -- konuma bagli her olcum (operon,
+   komsuluk, replikon) yalnizca genomik baglami olan girisler icin
+   yapilabilir. Ama o sayi bir KAPSAM gibi okunuyordu. Bu paragraf
+   kapsami kesisimden ayiriyor; sayilarin hicbiri elle yazilmadi. #}
+<p class="lede lede--second">That {{ totals.confirmed|fmt }} is an
+<strong>intersection</strong>, not a coverage figure: it counts the alpha subunits that
+both sit in an annotated genome record and pass the triad gate, because every
+position-dependent measurement on this site &mdash; operon, neighbourhood, replicon
+&mdash; can only be made for those. The database itself holds a larger
+<strong>union</strong>: {{ totals.union_sequences|fmt }} distinct alpha subunit sequences
+carrying {{ totals.union_source_ids|fmt }} source identifiers, of which
+{{ totals.union_no_context|fmt }} have no genomic context yet and
+{{ totals.union_ungated|fmt }} do not pass the gate. None of those are discarded.
+{{ totals.union_sources_dead|fmt }} of the source accessions have since been deleted upstream;
+that is not the same as losing the sequence, because many of them are the same protein under a
+second identifier. Counting by sequence instead, <strong>{{ totals.union_only_copy|fmt }}</strong>
+of these sequences now have no surviving source at all &mdash; for those, the copy held here is
+the only one.
+<a href="{{ u('/download/all_union.fasta') }}">Download the union</a>
+(<a href="{{ u('/download/all_union.csv') }}">as a table</a>).</p>
+{% endif %}
+
 {% if not static_mode %}
 <form class="bigsearch" action="{{ u('/search') }}" method="get" role="search">
   <input type="search" name="q" aria-label="Search the database" placeholder="Search by organism, product, protein identifier, locus tag or enzyme type">
@@ -472,6 +496,10 @@ duplicate entries in the reference set, rather than of the literature.
 <ul>
   <li><a href="{{ u('/download/all_confirmed.fasta') }}">All confirmed alpha subunit sequences (FASTA)</a></li>
   <li><a href="{{ u('/download/all_confirmed.csv') }}">All entries with annotation, type, variant and operon summary (CSV)</a></li>
+  <li><a href="{{ u('/download/all_union.fasta') }}">Every RO candidate sequence from every source, gated or not (FASTA)</a>
+      &mdash; the union, not the intersection: it carries the protein-level entries that have no
+      genomic context, and the candidates that do not pass the triad gate, each labelled.</li>
+  <li><a href="{{ u('/download/all_union.csv') }}">The same union as a table, with every source accession per sequence (CSV)</a></li>
   <li><a href="{{ u('/download/operons.csv') }}">Operon gene tables for every entry (CSV)</a></li>
   <li><a href="{{ u('/download/tree_all.nwk') }}">Phylogenetic tree (Newick)</a></li>
 </ul>

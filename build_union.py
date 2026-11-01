@@ -185,6 +185,47 @@ def main():
     print("[kaynak 2] UniProt: %s giris, %s YENI tekil dizi"
           % (format(n_prot, ","), format(n_new, ",")), flush=True)
 
+    # ---- 3. kaynak: RefSeq protein uzayi taramasi (ro_ncbi_hit) ----
+    # Bu tablo varsa okunur, yoksa sessizce atlanir: tarama uzun surer ve
+    # birlesim onsuz da dogru -- yalnizca daha kucuk olur. "Tablo yok" ile
+    # "aday yok" ayri seylerdir, o yuzden hangisi oldugu BASILIR.
+    have = con.execute("SELECT name FROM sqlite_master "
+                       "WHERE name='ro_ncbi_hit'").fetchone()
+    if not have:
+        print("[kaynak 3] ro_ncbi_hit tablosu YOK -- RefSeq taramasi henuz "
+              "iceri alinmadi (scan_ncbi_proteins.py + ingest_ncbi_hits.py)")
+    else:
+        n_ncbi = n_new3 = 0
+        for acc, h, seq, length, cluster, group, rieske, triad, passes in \
+                con.execute(
+                    "SELECT accession, seq_md5, sequence, protein_length, "
+                    "ro_cluster, ro_group, rieske_intact, triad_sites_found, "
+                    "passes_current_gate FROM ro_ncbi_hit"):
+            n_ncbi += 1
+            e = rec.get(h)
+            if e is None:
+                n_new3 += 1
+                e = rec[h] = {
+                    "sequence": seq, "length": length,
+                    "has_genomic_context": 0, "passes_gate": 0,
+                    "rieske_intact": None, "triad_sites_found": None,
+                    "ro_cluster": None, "ro_group": None,
+                    "genomic_candidate_id": None, "organism": None,
+                    "first_source": "refseq_protein",
+                }
+            if e["rieske_intact"] is None:
+                e["rieske_intact"] = rieske
+            if e["triad_sites_found"] is None:
+                e["triad_sites_found"] = triad
+            if not e["ro_cluster"]:
+                e["ro_cluster"] = cluster
+            if not e["ro_group"]:
+                e["ro_group"] = group
+            e["passes_gate"] = max(e["passes_gate"], passes or 0)
+            src.append((h, "refseq_protein", acc, "live"))
+        print("[kaynak 3] RefSeq: %s giris, %s YENI tekil dizi"
+              % (format(n_ncbi, ","), format(n_new3, ",")), flush=True)
+
     # ---- kaynak sayisi ----
     per = {}
     for h, source, acc, st in src:
@@ -219,8 +260,15 @@ def main():
         "INSERT OR IGNORE INTO ro_union_source "
         "(seq_md5, source, accession, status) VALUES (?,?,?,?)", src)
     con.commit()
-    print("[yazildi] ro_union %s satir, ro_union_source %s satir"
-          % (format(len(rec), ","), format(len(src), ",")))
+    # Yazilan satiri TABLODAN say, listeden DEGIL: INSERT OR IGNORE ayni
+    # (dizi, kaynak, accession) uclusunu yutar ve liste uzunlugu tabloya
+    # gireni abartir (ilk kosuda 92.824 dendi, giren 89.743 idi). Bu
+    # projenin tekrar eden hata sinifi: "sayan sey, karar veren sey degil".
+    n_src = con.execute("SELECT COUNT(*) FROM ro_union_source").fetchone()[0]
+    print("[yazildi] ro_union %s satir, ro_union_source %s satir "
+          "(%s kaynak kaydi okundu, %s tekrar yutuldu)"
+          % (format(len(rec), ","), format(n_src, ","),
+             format(len(src), ","), format(len(src) - n_src, ",")))
     return 0
 
 

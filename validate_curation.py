@@ -198,6 +198,7 @@ EXTERNAL_TEXT_FIELDS = {
     ("operon_gene", "product"), ("ro_regulation", "upstream_product"),
     ("ro_search", "organism"), ("ro_search", "genus"), ("ro_search", "product"),
     ("ro_search", "doc"),
+    ("ro_ncbi_hit", "product"),
     ("ro_protein_status", "organism"), ("ro_union", "organism"),
 }
 
@@ -235,6 +236,11 @@ IDENTIFIER_TEXT_FIELDS = {
     ("ro_union", "genomic_candidate_id"), ("ro_union", "first_source"),
     ("ro_union_source", "seq_md5"), ("ro_union_source", "source"),
     ("ro_union_source", "accession"), ("ro_union_source", "status"),
+    # 2026-11-01, RefSeq taramasinin kaynak tablosu (ingest_ncbi_hits.py).
+    # product RefSeq'in kendi anotasyon metni oldugu icin EXTERNAL listesinde.
+    ("ro_ncbi_hit", "accession"), ("ro_ncbi_hit", "seq_md5"),
+    ("ro_ncbi_hit", "sequence"), ("ro_ncbi_hit", "ro_cluster"),
+    ("ro_ncbi_hit", "ro_group"),
     ("ro_membership", "candidate_id"), ("ro_membership", "ro_cluster"),
     ("neighbor", "candidate_id"), ("neighbor", "nucleotide_id"),
     ("neighbor", "protein_id"),
@@ -1536,6 +1542,88 @@ def check_group_monophyly(rep, root, out_dir):
               "clade; the page text says they do not and must be updated")
 
 
+def check_union_denominator(rep, con, root):
+    """Birlesim ile kesisim ayrisirsa FAIL.
+
+    NEDEN. Anasayfa iki sayi yayinliyor: `totals.confirmed` (19.125,
+    KESISIM -- genomik baglami olan VE kapiyi gecen) ve `ro_union`dan
+    gelen birlesim. Ikisi ayri tablodan okunuyor. `ro`ya giris eklenip
+    `build_union.py` kosturulmazsa sayfa iki sayiyi yan yana gosterir ve
+    biri bayat olur; okuyan kisi bunu goremez. Bu kontrol o ayrismayi
+    mekanik hale getirir.
+
+    Ayrica paydayi korur: konuma bagli her olcum (operon, komsuluk,
+    replikon) yalnizca genomik baglami olan girisler icin yapilabilir, ve
+    birlesim buyudukce o paydanin birlesim sanilmasi riski artar. Burada
+    `has_genomic_context=1` satir sayisinin `ro`nun tekil dizi sayisina
+    ESIT olmasi istenir -- esit degilse payda ya sismis ya eksilmis.
+    """
+    have = con.execute(
+        "SELECT name FROM sqlite_master WHERE name='ro_union'").fetchone()
+    if not have:
+        rep.check("union: ro_union exists", False, 1,
+                  "ro_union yok -- build_union.py kosturulmali")
+        return
+
+    ctx = con.execute("SELECT COUNT(*) FROM ro_union "
+                      "WHERE has_genomic_context=1").fetchone()[0]
+    uniq = con.execute("SELECT COUNT(DISTINCT sequence) FROM ro "
+                       "WHERE is_confirmed=1 AND sequence IS NOT NULL"
+                       ).fetchone()[0]
+    rep.check("union: genomic-context rows equal the confirmed unique sequences",
+              ctx == uniq, 0 if ctx == uniq else 1,
+              f"{ctx} rows, {uniq} unique confirmed sequences"
+              + ("" if ctx == uniq else " -- build_union.py bayat"))
+
+    # Her birlesim satiri en az bir kaynak kimligi tasimak ZORUNDA: tasimayan
+    # bir satirin nereden geldigi soylenemez ve indirilen dosyada kaynaksiz
+    # bir dizi olarak gorunur.
+    orphan = con.execute(
+        "SELECT COUNT(*) FROM ro_union u WHERE NOT EXISTS "
+        "(SELECT 1 FROM ro_union_source s WHERE s.seq_md5=u.seq_md5)"
+    ).fetchone()[0]
+    rep.check("union: every sequence carries at least one source accession",
+              not orphan, orphan,
+              "kaynaksiz satir yok" if not orphan
+              else f"{orphan} satir hicbir kaynak kimligi tasimiyor")
+
+    # n_sources beyan edilen sayi; kaynak tablosu olculen sayi. Ayrisirsa
+    # sayfada "kac kaynaktan geliyor" yanlis yazilir.
+    bad = con.execute(
+        "SELECT COUNT(*) FROM ro_union u WHERE u.n_sources <> "
+        "(SELECT COUNT(*) FROM ro_union_source s WHERE s.seq_md5=u.seq_md5)"
+    ).fetchone()[0]
+    rep.check("union: n_sources equals the measured source count",
+              not bad, bad,
+              "beyan ve olcum ayni" if not bad
+              else f"{bad} satirda n_sources kaynak sayisina esit degil")
+
+    # "Tek kopya" iddiasi: genomik baglami OLAN bir dizi hicbir kosulda
+    # tek-kopya sayilamaz, cunku dizisi genom kaydindan geldi.
+    wrong = con.execute(
+        "SELECT COUNT(*) FROM ro_union u WHERE u.has_genomic_context=1 "
+        "AND NOT EXISTS (SELECT 1 FROM ro_union_source s "
+        "WHERE s.seq_md5=u.seq_md5 AND s.status NOT IN ('deleted','demerged'))"
+    ).fetchone()[0]
+    rep.check("union: no genomic-context sequence is counted as only-copy",
+              not wrong, wrong,
+              "tek-kopya kosulu genomik tarafi disariyor" if not wrong
+              else f"{wrong} genomik giris tek-kopya sayiliyor")
+
+    # Sayfanin kesisim/birlesim ayrimini YAZMASI zorunlu. Daha once bu
+    # projede bir duzeltme kesfedildigi yerde uygulanip yayinlandigi yerde
+    # unutuldu; o yuzden metin de kontrol ediliyor.
+    idx = os.path.join(root, "webapp", "templates", "index.html")
+    text = open(idx, encoding="utf-8").read() if os.path.exists(idx) else ""
+    need = ["is an\n<strong>intersection</strong>", "union_sequences",
+            "union_only_copy"]
+    missing = [n for n in need if n not in text]
+    rep.check("union: the homepage states the intersection/union distinction",
+              not missing, len(missing),
+              "ayrim yaziliyor" if not missing
+              else "index.html'de eksik: " + ", ".join(missing))
+
+
 def check_group_numbers_not_published(rep, root, out_dir):
     """Literaturde olmayan grup NUMARALARI yayinda mi?
 
@@ -2329,6 +2417,7 @@ def main():
                             os.path.join(args.out_dir, "reference_pairs.csv"),
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
+        check_union_denominator(rep, con, ROOT)
         check_cluster_coverage(con, rep, eco, chem)
         check_ecology_csv(rep, eco)
         check_chemistry_csv(rep, chem)

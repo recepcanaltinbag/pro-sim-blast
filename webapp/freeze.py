@@ -251,6 +251,11 @@ def main():
     print("[downloads] bulk")
     save("/download/all_confirmed.fasta", "download/all_confirmed.fasta")
     save("/download/all_confirmed.csv", "download/all_confirmed.csv")
+    # Birlesim: kapiyi gecmeyen adaylar DAHIL. all_confirmed KESISIMI verir,
+    # bu ikisi BIRLESIMI; ayri sorunun yanitlari oldugu icin ikisi de disa
+    # aktarilir.
+    save("/download/all_union.fasta", "download/all_union.fasta")
+    save("/download/all_union.csv", "download/all_union.csv")
     save("/download/operons.csv", "download/operons.csv")
     write_download_manifest(out, con)
 
