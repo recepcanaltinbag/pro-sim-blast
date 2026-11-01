@@ -60,6 +60,23 @@
   {% for r in ev.entries_nearest_to_this_reference %}<a href="{{ u('/cluster/' ~ r.type) }}">{{ gene(r.type) }}</a>
   ({{ r.entries|fmt }}{% if r.max_identity %}, up to {{ '%.1f %%' % r.max_identity }}{% endif %}){% if not loop.last %} · {% endif %}{% endfor %}.
   {% endif %}
+  {#  2026-11-01. Baslik "bu tipin kendine ait uyesi yok" diyor ve asagidaki
+      her sayinin sifir oldugunu soyluyor. Birlesim kurulduktan sonra bu
+      sekiz tipin DORDU icin eksik kaldi: BpdC1 13, XylC1 3, NahAc 1,
+      NinA 1 protein-duzeyi uyesi VAR. "Uye yok" ile "genomik baglamli uye
+      yok" ayri seylerdir; var olan veriyi yok gibi gostermemek icin burasi
+      yaziliyor.                                                            #}
+  {% if e.union and e.union.members %}
+  <br><b>But sequences of this type do exist here.</b>
+  {{ e.union.members|fmt }} sequence{{ 's' if e.union.members != 1 }} assigned to
+  {{ c.gene }} {{ 'sit' if e.union.members != 1 else 'sits' }} in the
+  <a href="{{ u('/atlas/groups') }}">union</a> with no genomic context
+  {%- if e.union.gated %}, {{ e.union.gated|fmt }} of them passing the triad gate{% endif %}.
+  They are protein-level entries: they carry no operon, no neighbourhood and no replicon, so
+  they are absent from every figure on this page that needs a position, and that is why the
+  counts read zero. They are in
+  <a href="{{ u('/download/all_union.fasta') }}">the union download</a>.
+  {% endif %}
   {% if ev.best_contest %}
   <br><span class="note">Closest contest: on
   <code>{{ ev.best_contest.candidate_id }}</code> this profile scored

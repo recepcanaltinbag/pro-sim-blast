@@ -80,7 +80,14 @@ ayni molekulun her yerdeki adini bir arada tutmaktir.
   yaziyordu, olcum 617 / 3). Alanlar dosyadan silindi, sayfa olcumden
   yaziyor, ve `check_groups_published` dosyaya sayi geri konursa FAIL
   veriyor.
-- Sekiz uyesiz referans: ucu (BpdC1, XylC1, NinA) gercek uye kazanabilir.
+- Sekiz uyesiz referans. **KISMEN YAPILDI (2026-11-01):** birlesim
+  kurulduktan sonra olculdu, DORDUNUN protein duzeyinde uyesi VAR
+  (BpdC1 13, XylC1 3, NahAc 1, NinA 1). Tip sayfasi "bu tipin kendine ait
+  uyesi yok" derken bunu soylemiyordu, yani var olan veriyi yok gibi
+  gosteriyordu. `empty_types.py` artik her kayda `union` alanini yaziyor
+  ve sayfa "diziler BURADA var, yalnizca genomik baglami yok" diyor.
+  ACIK KALAN: bu dizilere genom kaydi indirilip gercek uye yapilmasi
+  (plan A5); dordu de o zaman kesisime girer.
 - Adlandirma karari: NahAc/NBDO ve CarAa/CARDO (%99,7-100 ayni).
 
 ### 2. Kalan gorsel denetim bulgulari

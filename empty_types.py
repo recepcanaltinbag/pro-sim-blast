@@ -254,6 +254,11 @@ def main():
     print(f"[referans] {len(curated)} kuratorlu tip")
 
     con = sqlite3.connect(args.db)
+
+    # Birlesim tablosu var mi? Yoksa olcum atlanir, "0 uye" diye YAZILMAZ --
+    # "tablo yok" ile "uye yok" ayri seylerdir.
+    has_union = bool(con.execute(
+        "SELECT name FROM sqlite_master WHERE name='ro_union'").fetchone())
     con.row_factory = sqlite3.Row
     counts = dict(con.execute("SELECT ro_cluster, COUNT(*) FROM ro WHERE is_confirmed=1 "
                               "GROUP BY ro_cluster"))
@@ -390,7 +395,29 @@ def main():
                      f" split between the names is a naming decision rather than a"
                      f" biological one.")
 
+        # 2026-11-01: "uye yok" ile "GENOMIK BAGLAMLI uye yok" ayri seylerdir.
+        # Birlesim kurulduktan sonra olculdu: bu sekiz tipin dordunun
+        # (BpdC1 13, XylC1 3, NahAc 1, NinA 1) protein duzeyinde uyesi VAR,
+        # yalnizca genom kaydina baglanabilmis degil. Sayfa "bu tipin kendine
+        # ait uyesi yok" derken bunu soylemek zorunda, yoksa var olan veriyi
+        # yok gibi gosteriyor.
+        union = {"members": 0, "gated": 0}
+        if has_union:
+            row = con.execute(
+                "SELECT COUNT(*), SUM(COALESCE(passes_gate, 0)) FROM ro_union "
+                "WHERE ro_cluster = ?", (cluster,)).fetchone()
+            union = {"members": row[0] or 0, "gated": row[1] or 0}
+        if union["members"]:
+            note += (f" {union['members']:,} sequence"
+                     + ("s" if union["members"] != 1 else "")
+                     + " assigned to this type do exist in the union, with no"
+                       " genomic context: they are protein-level entries, so"
+                       " they carry no operon, neighbourhood or replicon, and"
+                       " they are not counted in any figure that needs a"
+                       " position.")
+
         records.append({
+            "union": union,
             "cluster": cluster,
             "gene": gene,
             "reference_accession": accession,
