@@ -347,7 +347,20 @@
   <div>
     <h3>Key facts</h3>
     <dl class="kv">
-      <dt>Members</dt><dd>{{ c.n|fmt }} confirmed alpha subunits</dd>
+      <dt>Members</dt><dd>{{ c.n|fmt }} confirmed alpha subunits
+        {%- if x.union and x.union.no_context %}
+        {#  2026-11-01. Bu sayi KESISIM: genomik baglami olan VE kapiyi gecen.
+            Birlesim daha buyuk ve okuyucunun bunu tip sayfasinda gormesi
+            gerekiyor, yoksa birlesim yalnizca anasayfada duran bir toplam
+            olarak kalir ve gezilemez.                                      #}
+        <br><span class="note">Counted by <b>sequence</b> instead of by entry &mdash; several
+          entries can carry the same sequence &mdash; the
+          <a href="{{ u('/atlas/groups') }}">union</a> holds
+          {{ x.union.total|fmt }} distinct sequences of this type, and
+          {{ x.union.no_context|fmt }} of them have no genomic context at all. Those carry no
+          operon, neighbourhood or replicon, so they are counted neither above nor in any
+          figure below. <a href="{{ u('/download/all_union.csv') }}">Union table</a>.</span>
+        {%- endif %}</dd>
       <dt>Variants</dt><dd>{{ c.leaves|length }} sequence-homogeneous subgroups</dd>
       <dt>Distribution</dt><dd>{{ c.replicons|fmt }} replicons, {{ c.genera_n }} genera</dd>
       <dt>On plasmids</dt><dd>{{ pct(c.plasmid or 0, c.n) }} ({{ (c.plasmid or 0)|fmt }})</dd>

@@ -1955,6 +1955,21 @@ def cluster_extras(con, cluster):
     # oyleyse uyelerin hangi profile dustugu kismen rastgele ve sayfadaki
     # sayinin bunu SOYLEMESI gerekiyor.
     x["redundancy"] = (reference_redundancy().get("affected") or {}).get(cluster)
+    # Bu tipin BIRLESIMDEKI uyeligi. Sayfadaki "Members" sayisi kesisimdir
+    # (genomik baglami olan VE kapiyi gecen); birlesim bundan buyuk olabilir
+    # ve okuyucunun bunu TIP SAYFASINDA gormesi gerekiyor -- yoksa birlesim
+    # yalnizca anasayfada duran bir toplam olarak kalir ve gezilemez.
+    x["union"] = None
+    if con.execute("SELECT name FROM sqlite_master "
+                   "WHERE name='ro_union'").fetchone():
+        row = con.execute(
+            "SELECT COUNT(*), "
+            "       SUM(CASE WHEN has_genomic_context=0 THEN 1 ELSE 0 END), "
+            "       SUM(COALESCE(passes_gate,0)) "
+            "FROM ro_union WHERE ro_cluster = ?", (cluster,)).fetchone()
+        if row and row[0]:
+            x["union"] = {"total": row[0], "no_context": row[1] or 0,
+                          "gated": row[2] or 0}
     # Bu tipin kendine ait uyesi yoksa SEBEBI yazilmali. Sayfa onceki halinde
     # sessizce bos kaliyordu ve kullanici bunu "sayfa eksik" diye okudu; eksik
     # olan sayfa degil, uye. empty_types.py bu kaydi uretiyor, dosya yoksa
