@@ -1162,6 +1162,50 @@ def layout(root, row_h):
     return counter[0]
 
 
+SUPPORT_WEAK = 0.70   # bu esigin altindaki bolunme COZULMEMIS sayilir
+
+
+def newick_support_summary(newick):
+    """FastTree SH-benzeri yerel destek degerlerinin dagilimi.
+
+    BOOTSTRAP DEGIL. FastTree'nin varsayilan destegi, her ic dalda en yakin
+    komsu takaslarina karsi Shimodaira-Hasegawa benzeri bir testtir; hizalama
+    kolonlari yeniden ORNEKLENMEZ. Ikisini ayni sozcukle anmak okuyucuya
+    yapilmamis bir analizi yapilmis gibi gosterir, bu yuzden sayfa "SH-like
+    local support" der ve "bootstrap" demez.
+
+    Degerler Newick'te ic dugum ADI olarak duruyor; parse_newick bunlari
+    zaten okuyordu ama HIC KULLANILMIYORDU: agac, hangi dalin guvenilir
+    oldugu hic belirtilmeden yayimlaniyordu.
+    """
+    root = parse_newick(newick)
+    vals = []
+
+    def walk(node):
+        if node.children:
+            try:
+                vals.append(float(node.name))
+            except (TypeError, ValueError):
+                pass
+            for c in node.children:
+                walk(c)
+
+    walk(root)
+    if not vals:
+        return None
+    vals.sort()
+    weak = sum(1 for v in vals if v < SUPPORT_WEAK)
+    return {
+        "n": len(vals),
+        "median": round(vals[len(vals) // 2], 3),
+        "weak": weak,
+        "weak_pct": round(100.0 * weak / len(vals), 1),
+        "strong": sum(1 for v in vals if v >= 0.95),
+        "strong_pct": round(100.0 * sum(1 for v in vals if v >= 0.95) / len(vals), 1),
+        "threshold": SUPPORT_WEAK,
+    }
+
+
 def render_tree_svg(newick, tip_info, width=900, row_h=11, label_w=330):
     """Return SVG for a Newick tree.
 
@@ -1183,6 +1227,21 @@ def render_tree_svg(newick, tip_info, width=900, row_h=11, label_w=330):
             parts.append(f'<path d="M{x0:.1f},{node.y + 15:.1f} V{c.y + 15:.1f} H{x1:.1f}" '
                          f'fill="none" stroke="#777" stroke-width="1"/>')
             draw(c)
+        # ZAYIF bolunmeler isaretlenir, guclu olanlar degil: 2.046 ic dalin
+        # hepsine sayi yazmak okunmaz olurdu, ve okuyucunun kararini
+        # degistiren bilgi "bu dal COZULMEMIS" olanidir. Degerin kendisi
+        # fare ustune gelince yazar.
+        if node.children:
+            try:
+                sup = float(node.name)
+            except (TypeError, ValueError):
+                return
+            if sup < SUPPORT_WEAK:
+                parts.append(
+                    f'<circle cx="{x0:.1f}" cy="{node.y + 15:.1f}" r="2.6" fill="none" '
+                    f'stroke="#b5731f" stroke-width="1.2">'
+                    f'<title>SH-like local support {sup:.2f} \u2014 below '
+                    f'{SUPPORT_WEAK:.2f}, this split is not resolved</title></circle>')
         if not node.children:
             info = tip_info.get(node.name, {})
             color = info.get("color", "#95a5a6")
@@ -1545,9 +1604,15 @@ def operon_regulator_svg(layout, reg=None, gene_w=46, gap=3, titles=None):
 
 
 # ------------------------------------------------------------- chemistry
+# SIRALAMA listesi, SUZGEC degil. chemistry_groups() bu sirayi kullanir ve
+# listede olmayan aileleri SONA ekler -- eskiden onlari DUSURUYORDU ve bu
+# olculdu (2026-11-01): `tetrapyrroles` ailesi (6_601_PAO, 6_602_CAO,
+# 6_603_PTC52; 617 giris) 14 Ekim'de eklendigi halde ana sayfanin kimya
+# bolumunde HIC gorunmuyordu -- ne karti, ne reaksiyon tablosundaki satiri,
+# cunku reaction_summary() de bu gruplardan besleniyor.
 FAMILY_ORDER = ["alkylbenzenes", "pah", "biaryls_ethers", "nitroaromatics", "haloaromatics",
                 "sulfoaromatics", "aromatic_acids", "anilines", "quaternary_amines",
-                "alkaloids", "terpenoids_steroids", "unknown"]
+                "alkaloids", "terpenoids_steroids", "tetrapyrroles", "unknown"]
 FAMILY_LABEL = {
     "alkylbenzenes": "Benzene and alkylbenzenes",
     "pah": "Polycyclic aromatic hydrocarbons",
@@ -1560,6 +1625,7 @@ FAMILY_LABEL = {
     "quaternary_amines": "Quaternary amines and osmolytes",
     "alkaloids": "Alkaloids and purines",
     "terpenoids_steroids": "Terpenoids and steroids",
+    "tetrapyrroles": "Chlorophylls and other tetrapyrroles",
     "unknown": "Substrate not established",
 }
 FAMILY_NOTE = {
@@ -1589,6 +1655,10 @@ FAMILY_NOTE = {
                  "methyl groups from nitrogen or install single hydroxyls on complex scaffolds.",
     "terpenoids_steroids": "Conifer resin acids and 3-ketosteroids. Hydroxylation at a specific "
                            "ring position opens polycyclic skeletons that are otherwise inert.",
+    "tetrapyrroles": "Chlorophyll and its precursors, in plants and algae rather than bacteria. "
+                     "These oxygenases act inside the photosynthetic machinery: one opens the "
+                     "porphyrin macrocycle during leaf senescence, the others build and tailor "
+                     "the pigment. They are the reason this database is not only bacterial.",
     "unknown": "Reference enzymes whose original publications could not be traced in this work. "
                "Their members are confirmed Rieske oxygenases, but this database claims no "
                "substrate for them.",
@@ -1601,6 +1671,11 @@ REACTION_LABEL = {
     "N_demethylation": "N-demethylation",
     "hydroxylation": "hydroxylation",
     "C_N_cleavage": "carbon-nitrogen bond cleavage",
+    "C_C_cleavage": "carbon-carbon bond cleavage",
+    "C_C_bond_formation": "oxidative carbon-carbon bond formation",
+    "N_oxygenation": "N-oxygenation",
+    "desaturation": "desaturation",
+    "oxygenolytic_ring_opening": "oxygenolytic ring opening",
     "unknown": "not established",
 }
 REACTION_NOTE = {
@@ -1617,13 +1692,26 @@ REACTION_NOTE = {
                      "water.",
     "C_N_cleavage": "Oxygenation at the carbon next to a quaternary nitrogen, cleaving the "
                     "carbon-nitrogen bond.",
+    "C_C_cleavage": "A carbon-carbon bond is broken, leaving an aldehyde and releasing the "
+                    "other fragment.",
+    "C_C_bond_formation": "Oxidation removes two hydrogens and the two carbons are joined, "
+                          "closing a ring. No oxygen ends up in the product.",
+    "N_oxygenation": "The nitrogen itself is oxidised rather than a carbon: an aryl amine is "
+                     "carried through to a nitro group.",
+    "desaturation": "Two hydrogens are removed and a carbon-carbon double bond is left behind. "
+                    "Oxygen is consumed but none of it appears in the product.",
+    "oxygenolytic_ring_opening": "Oxygen is inserted into a ring bond and the ring opens in the "
+                                 "same step, without a separate ring-cleavage enzyme.",
     "unknown": "No reaction is claimed for these types.",
 }
 REACTION_COLORS = {
     "cis_dihydroxylation": "#1f4e79", "angular_dioxygenation": "#2a8f87",
     "dioxygenation_with_release": "#8c2f22", "O_demethylation": "#b5731f",
     "N_demethylation": "#6d4c9a", "hydroxylation": "#1f7a4d",
-    "C_N_cleavage": "#b03a6e", "unknown": "#8a8a8a",
+    "C_N_cleavage": "#b03a6e", "C_C_cleavage": "#8f5a2a",
+    "C_C_bond_formation": "#3f6f3f", "N_oxygenation": "#7a2f8f",
+    "desaturation": "#2f6f9a", "oxygenolytic_ring_opening": "#9a5a2f",
+    "unknown": "#8a8a8a",
 }
 
 
@@ -1661,8 +1749,13 @@ def chemistry_groups(path, counts, ecology=None):
         if ecology:
             r["sclass"] = ecology.get(r["cluster"], {}).get("substrate_class", "")
         by_family[r["family"]].append(r)
+    # FAMILY_ORDER bir SIRA, bir suzgec degil: once o sira, sonra listede
+    # olmayan aileler uye sayisina gore. Eskiden yalnizca FAMILY_ORDER
+    # geziliyordu ve listede olmayan aile SESSIZCE dusuyordu.
+    extra = sorted((f for f in by_family if f not in FAMILY_ORDER),
+                   key=lambda f: -sum(m["n"] for m in by_family[f]))
     groups = []
-    for family in FAMILY_ORDER:
+    for family in list(FAMILY_ORDER) + extra:
         members = sorted(by_family.get(family, []), key=lambda r: -r["n"])
         if not members:
             continue
@@ -1682,12 +1775,24 @@ def reaction_summary(groups):
         for t in g["types"]:
             per[t["reaction_class"]]["types"] += 1
             per[t["reaction_class"]]["members"] += t["n"]
+    # Sira elle, KUME veriden. Eskiden burada sabit bir anahtar listesi vardi
+    # ve listede olmayan reaksiyon sinifi tablodan sessizce dusuyordu.
+    # Olculdu (2026-11-01): bes sinif (desaturation, N_oxygenation,
+    # C_C_bond_formation, oxygenolytic_ring_opening, C_C_cleavage) hic
+    # yayinlanmiyordu; oysa bolumun kendi cumlesi "cis-dihydroxylation only
+    # the most common case, not the whole story" diyor.
+    ORDER = ["cis_dihydroxylation", "dioxygenation_with_release", "angular_dioxygenation",
+             "hydroxylation", "N_demethylation", "O_demethylation", "C_N_cleavage",
+             "C_C_cleavage", "C_C_bond_formation", "N_oxygenation", "desaturation",
+             "oxygenolytic_ring_opening", "unknown"]
+    rest = sorted((k for k in per if k not in ORDER), key=lambda k: -per[k]["members"])
     out = []
-    for key in ["cis_dihydroxylation", "dioxygenation_with_release", "angular_dioxygenation",
-                "hydroxylation", "N_demethylation", "O_demethylation", "C_N_cleavage", "unknown"]:
+    for key in ORDER + rest:
         if key in per:
-            out.append({"key": key, "label": REACTION_LABEL[key], "note": REACTION_NOTE[key],
-                        "color": REACTION_COLORS[key], **per[key]})
+            out.append({"key": key,
+                        "label": REACTION_LABEL.get(key, key.replace("_", " ")),
+                        "note": REACTION_NOTE.get(key, ""),
+                        "color": REACTION_COLORS.get(key, "#8a8a8a"), **per[key]})
     return out
 
 
@@ -1787,6 +1892,21 @@ REACTION_SCHEME_NOTE = {
     "C_N_cleavage":
         "The carbon-nitrogen bond is broken, releasing the amine and leaving "
         "an aldehyde.",
+    "C_C_cleavage":
+        "The bond between two carbons is broken; one fragment keeps the new "
+        "oxygen as an aldehyde.",
+    "C_C_bond_formation":
+        "No oxygen reaches the product. O2 is the oxidant that removes two "
+        "hydrogens, and the two carbons are then joined.",
+    "N_oxygenation":
+        "Two cycles are needed: the amine is carried to the nitro group "
+        "through a nitroso intermediate, which is not drawn.",
+    "desaturation":
+        "No oxygen reaches the product; both atoms of O2 are reduced to "
+        "water and a double bond is left behind.",
+    "oxygenolytic_ring_opening":
+        "The ring drawn here is generic. Where the ring opens, and which "
+        "carbons carry the oxygen, differs by type and is not asserted.",
 }
 
 
@@ -1826,6 +1946,26 @@ def reaction_scheme_svg(kind, width=262, height=86):
                 + arrow(116, cy, 50, "O₂, NAD(P)H")
                 + '<text x="172" y="46" font-size="11" fill="currentColor">R–CHO</text>'
                 + '<text x="172" y="60" font-size="11" fill="currentColor">+ N(CH₃)₃</text>')
+    elif kind == "C_C_cleavage":
+        body = ('<text x="14" y="52" font-size="13" fill="currentColor">R–CH₂–R′</text>'
+                + arrow(92, cy, 52, "O₂, NAD(P)H")
+                + '<text x="152" y="46" font-size="11" fill="currentColor">R–CHO</text>'
+                + '<text x="152" y="60" font-size="11" fill="currentColor">+ R′–H</text>')
+    elif kind == "C_C_bond_formation":
+        body = ('<text x="10" y="52" font-size="13" fill="currentColor">R–H   H–R′</text>'
+                + arrow(100, cy, 52, "O₂, NAD(P)H", "+ H₂O")
+                + '<text x="162" y="52" font-size="13" fill="currentColor">R–R′</text>')
+    elif kind == "N_oxygenation":
+        body = (_arene(32, cy, r, subs=[(0, "NH₂")]) + arrow(74, cy, 56, "2 O₂, NAD(P)H")
+                + _arene(166, cy, r, subs=[(0, "NO₂")]))
+    elif kind == "desaturation":
+        body = ('<text x="8" y="52" font-size="13" fill="currentColor">–CH₂–CH₂–</text>'
+                + arrow(90, cy, 54, "O₂, NAD(P)H", "+ 2 H₂O")
+                + '<text x="156" y="52" font-size="13" fill="currentColor">–CH=CH–</text>')
+    elif kind == "oxygenolytic_ring_opening":
+        body = (_arene(34, cy, r) + arrow(62, cy, 58, "O₂, NAD(P)H")
+                + '<text x="130" y="46" font-size="11" fill="currentColor">ring opened,</text>'
+                + '<text x="130" y="60" font-size="11" fill="currentColor">O inserted (–CHO, =O)</text>')
     else:
         return ""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
@@ -2074,6 +2214,10 @@ PROVENANCE = [
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),
+    ("tree_meta.json", "file", "How the published tree was actually built: the substitution "
+     "model FastTree fell through to, the aligner, and the support measure with its "
+     "distribution. Recorded because the page caption named a model the run had not used.",
+     "build_phylogeny.py"),
     ("cluster_identity_matrix.csv", "file", "Assignment-boundary signal, not a similarity "
      "measure: the highest identity between any two leaf representatives assigned to different "
      "types.", "build_phylogeny.py"),

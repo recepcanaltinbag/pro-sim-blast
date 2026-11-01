@@ -1383,11 +1383,19 @@ def atlas_phylogeny(request: Request):
         raise HTTPException(404, "tree not built (run build_phylogeny.py)")
     con = connect()
     try:
-        svg, n = atlas.render_tree_svg(open(apath("tree_all.nwk")).read(),
+        newick = open(apath("tree_all.nwk")).read()
+        svg, n = atlas.render_tree_svg(newick,
                                        atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
                                        width=1040, row_h=11, label_w=380)
+        # Yontem beyani OLCUMDEN gelir. Altyazi bir donem "FastTree under the
+        # JTT model" diye sabit yaziyordu; fiilen kosan model LG idi.
+        meta_path = apath("tree_meta.json")
+        import json as _json
+        tree_meta = (_json.load(open(meta_path)) if os.path.exists(meta_path) else None)
         return render(request, "atlas_phylogeny.html", svg=svg, n_tips=n,
-                      cover=atlas.representative_coverage(con))
+                      cover=atlas.representative_coverage(con),
+                      tree_meta=tree_meta,
+                      support=atlas.newick_support_summary(newick))
     finally:
         con.close()
 
@@ -2017,9 +2025,13 @@ def cluster_extras(con, cluster):
     tpath = apath("trees", f"{cluster}.nwk")
     if os.path.exists(tpath) and os.path.getsize(tpath) > 0:
         try:
+            _nwk = open(tpath).read()
             x["tree_svg"], _ = atlas.render_tree_svg(
-                open(tpath).read(), atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
+                _nwk, atlas.tip_info_from_db(con, u, ECOLOGY, short_names()),
                 width=900, row_h=12, label_w=360)
+            # Zayif dal isaretleri bu agacta da ciziliyor; sayilari sayfada
+            # yazilmazsa okuyucu aciklanmamis daireler gorur.
+            x["tree_support"] = atlas.newick_support_summary(_nwk)
         except Exception:
             x["tree_svg"] = None
     return x

@@ -280,7 +280,10 @@ ARTEFACTS = [
      ["ingest_protein_entries.py", DB, MOTIF_HMM], True),
 
     # --- ozet katmani: HER SEYDEN sonra
-    ("phylogeny", [],
+    # tree_meta.json BEYAN EDILIR: sayfanin altyazisi kullanilan modeli ve
+    # destek turunu buradan okuyor, yani dosya tazelik takibine girmek
+    # zorunda -- yoksa altyazi eski bir modelin adini yayinlayabilir.
+    ("phylogeny", [f"{OUT}/tree_all.nwk", f"{OUT}/tree_meta.json"],
      ["python3", "build_phylogeny.py", "--db", DB, "--out-dir", OUT,
       "--fasttree", "FastTree", "--work", f"{SCRATCH}/roar_phylo_work"],
      ["build_phylogeny.py", DB, MOTIF_HMM], False),

@@ -2036,6 +2036,102 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 107. Iki SIRA listesi SUZGEC gibi davraniyordu; agacin yontem beyani yanlisti (2026-11-01)
+
+Kullanici dort sey sordu: "2 - What the reaction actually is" bolumunde tum
+reaksiyonlar var mi, agac bootstrapli ve guncel mi, qxyA'ya benzeyen tip neden
+yok, ve "DB'de protein acisindan eksiklik var gibi".
+
+### (a) Reaksiyon bolumu tiplerin %11'ini ve girislerin %7,5'ini saymiyordu
+
+Iki ELLE tutulan liste vardi ve ikisi de SIRA listesiydi ama SUZGEC gibi
+davraniyordu -- listede olmayan deger sessizce dusuyordu:
+
+- `atlas.FAMILY_ORDER`: `chemistry_groups()` yalnizca bu listeyi geziyordu.
+  `tetrapyrroles` ailesi listede YOKTU, yani 6_601_PAO, 6_602_CAO, 6_603_PTC52
+  (617 giris) ana sayfanin kimya bolumunde HIC gorunmuyordu -- ne karti ne
+  tablo satiri. Uc tip 14 Ekim 2026'da eklenmisti.
+- `reaction_summary()` icindeki sabit anahtar listesi: bes reaksiyon sinifi
+  (`desaturation`, `N_oxygenation`, `C_C_bond_formation`,
+  `oxygenolytic_ring_opening`, `C_C_cleavage`) hic yayinlanmiyordu.
+
+Ustelik `reaction_summary(groups)` gruplardan besleniyor, yani ilk suzgec
+ikincisini de besliyordu.
+
+Olculdu: yayinlanan 7 satir / 68 tip / 17.685 giris; gerceği 12 satir / 76 tip
+/ 19.125 giris. Bolumun kendi cumlesi "cis-dihydroxylation is only the most
+common case, not the whole story" diyordu -- kendisi hikayenin bir kismini
+atlarken.
+
+Yapildi: iki liste de SIRA olarak kullaniliyor, listede olmayan degerler sona
+ekleniyor. `tetrapyrroles` FAMILY_ORDER/LABEL/NOTE'a girdi. Bes sinif icin
+etiket, aciklama, renk, genel sema ve sema notu yazildi -- semalar metin
+tabanli tutuldu, cunku regiyokimya varsaymak yanlis gostermekten kotu.
+
+Bir daha olmamasi icin `check_chemistry_published`: her tipin karta ulastigi,
+tablonun tip ve giris sayisinin kaynagin tamamina ESIT oldugu, her reaksiyon
+sinifinin etiketi/notu/semasi ve her ailenin etiketi oldugu olculuyor.
+121 kontrol: 117 PASS, 0 FAIL, 4 WARN.
+
+### (b) Agac guncel, destek BOOTSTRAP DEGIL, ve model adi yanlis yaziliydi
+
+Agac guncel (31 Ekim 21:48, rebuild --check 0 bayat). Iki kusur:
+
+1. **Destek hic yayinlanmiyordu.** FastTree'nin varsayilan destegi SH-benzeri
+   YEREL destektir: her ic dal kendi en yakin komsu takaslarina karsi test
+   edilir, hizalama kolonlari YENIDEN ORNEKLENMEZ. `parse_newick` bu degerleri
+   ic dugum ADI olarak zaten okuyordu ama HIC KULLANILMIYORDU; altyazi da
+   "branch support values are not shown on tip labels" diyerek konuyu
+   kapatiyordu. Olculdu: 2.046 ic dal, medyan 0,923, %41,9'u >=0,95, ve
+   **491'i (%24) 0,70'in altinda** -- yani dortte bir dalda dallanma sirasi
+   COZULMEMIS ve bu okuyucuya hic soylenmiyordu.
+2. **Altyazi "FastTree under the JTT model" diyordu, fiilen kosan model LG.**
+   build_phylogeny'de bir YEDEKLEME ZINCIRI var (LG -> JTT -> ML'siz) ve
+   hangisinin kostugu calisma zamaninda belli oluyor; altyazi ise sabitti.
+
+Yapildi: `build_phylogeny.py` artik `analysis_out/tree_meta.json` yaziyor
+(kullanilan model, yedekleme zinciri, hizalayici, destek turu ve dagilimi) ve
+bu dosya rebuild.py'de BEYAN EDILEN cikti oldu, yani tazelik takibinde.
+Altyazi modeli oradan okuyor. `newick_support_summary()` dagilimi veriyor;
+`render_tree_svg` 0,70 altindaki dallara ici bos turuncu daire koyuyor ve
+degeri `<title>`'a yaziyor -- 2.046 dala sayi yazmak okunmaz olurdu ve
+okuyucunun kararini degistiren bilgi "bu dal cozulmemis" olanidir. Tip
+sayfasindaki agaclarda da ayni isaret ve kendi sayilari var.
+
+### (c) qxyA'ya benzer tip VAR; "yok" gorunmesinin iki ayri sebebi
+
+Bir tuzak: `cluster_identity_matrix.csv` qxyA/BedC1 icin 91,4 veriyor. Bu
+benzerlik DEGIL -- iki tipe atanmis herhangi iki temsilci arasindaki en yuksek
+kimlik, yani atama sinirinin sizdiginin olcusu. Proje bunu zaten belgelemis ve
+"en yakin tipler" tablosunu `cluster_reference_identity.csv`'ye baglamis.
+
+Gercek referans-referans kimlikleri: Stc2 27,4 / BmoA 23,7 / GbcA 21,7 /
+CntA 21,1; medyan 16,8, maks 27,4, %30 uzeri YOK. Yani en yakin komsular tam
+kimyasal olarak beklenen yerde (hepsi grup 5, hepsi C-N+ kesen) ama hepsi
+`family_member` esiginin (%40) altinda. qxyA gercekten yalitik: eksiklik degil.
+
+### (d) Protein tarafindaki eksiklik GERCEK ve buyuk
+
+| tip | genomik baglamli | protein-only | kat |
+|---|---|---|---|
+| 5_505_qxyA | 164 | 1.370 | 8,4x |
+| 1_109_LigX | 87 | 929 | 10,7x |
+| 4_405_ROCH34 | 364 | 2.295 | 6,3x |
+| TOPLAM | 19.125 | 73.699 | 3,9x |
+
+Ana tablo yalnizca genomik baglami olan proteinleri tutuyor (operon
+turetilebilsin diye). qxyA'nin 1.370 protein-only akrabasinin 1.206'si ana
+tabloda yok. Madde 91 ve 97'nin olcumuyle tutarli; kullanicinin hissettigi
+bosluk tam olarak bu.
+
+### Ayrica
+
+- `SHORT` etiketleri ve `other`/`none` kutulari: madde 106'da duzeltildi.
+- Bolum 3 grup basliklarinda "1 types" yaziyordu; tekil/cogul duzeltildi.
+- `tree_meta.json` belgelendi, yani belgesiz analiz dosyasi listesine
+  eklenmedi.
+
+
 ## 106. Operon sekli, DUZENLEYICI BULUNMADAN "promoter bolgesi" ciziyordu (2026-10-31)
 
 Kullanici bildirimi: "qxyA sayfasindaki gene order bence yanlis, bunu

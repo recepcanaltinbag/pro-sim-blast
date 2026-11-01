@@ -48,9 +48,20 @@ Branch lengths are substitutions per site in the aligned Rieske-plus-catalytic c
     <b>Method.</b> Representatives and references were aligned with <code>hmmalign</code> to the
     {{ N_REFS }}-reference catalytic-centre profile; only match-state columns present in at least half the
     sequences were kept, so insertions and fused domains do not contribute. The tree was inferred
-    with FastTree under the JTT model.
+    with FastTree{% if tree_meta and tree_meta.model %} under the {{ tree_meta.model }} model{% endif %}.
+    {% if support %}
+    <b>Branch support.</b> The values are FastTree's <b>SH-like local support</b>, not bootstrap:
+    each internal branch is tested against the nearest-neighbour rearrangements of itself, and the
+    alignment columns are <b>not</b> resampled. Across {{ support.n|fmt }} internal branches the
+    median is {{ '%.2f' % support.median }}, and {{ support.strong|fmt }}
+    ({{ support.strong_pct }} %) reach 0.95 or more. The
+    <span style="color:#b5731f">hollow circles</span> mark the
+    {{ support.weak|fmt }} branches ({{ support.weak_pct }} %) below
+    {{ '%.2f' % support.threshold }}: at those nodes the branching order is <b>not resolved</b> and
+    must not be read as a lineage. Hover a circle for its value.
+    {% endif %}
     <b>Caveat.</b> One sequence stands for a whole variant, so clade sizes reflect sampled
-    diversity, not abundance; branch support values are not shown on tip labels. Hover a tip for
+    diversity, not abundance. Hover a tip for
     organism, variant size and median within-variant identity; click to open the variant.
     <a href="{{ u('/download/tree_all.nwk') }}">Download Newick</a>
   </figcaption>

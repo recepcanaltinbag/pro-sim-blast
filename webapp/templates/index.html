@@ -429,7 +429,7 @@ filter to find a type by name, substrate or product.</p>
      data-card-facets="reaction:Reaction,sclass:Substrate class,group:RO group">
 {% for g in groups %}
 <section class="chemfam" data-cardsection>
-  <h3>{{ g.label }} <span class="note">· {{ g.n_types }} types · {{ g.n_members|fmt }} entries</span></h3>
+  <h3>{{ g.label }} <span class="note">· {{ g.n_types }} type{{ '' if g.n_types == 1 else 's' }} · {{ g.n_members|fmt }} entr{{ 'y' if g.n_members == 1 else 'ies' }}</span></h3>
   <p class="note">{{ g.note }}</p>
   <div class="structgrid">
   {% for t in g.types %}

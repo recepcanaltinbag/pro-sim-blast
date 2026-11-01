@@ -19,6 +19,7 @@ domain evrimini olcer.
 
 import argparse
 import csv
+import json
 import os
 import sqlite3
 import subprocess
@@ -122,17 +123,51 @@ def main():
         tree_path = os.path.join(args.out_dir, "tree_all.nwk")
         # FastTree tek-duyarlikli ikili bazi hizalamalarda PairLogLk assertion'i ile
         # cokuyor; sirayla LG -> JTT -> ML'siz (NJ+ME) dene.
+        # KULLANILAN MODEL KAYDEDILIR. Burada bir YEDEKLEME ZINCIRI var: LG
+        # cokerse JTT, o da cokerse ML'siz (NJ+ME). Hangisinin kostugu
+        # calisma zamaninda belli olur, ama sayfanin altyazisi "FastTree
+        # under the JTT model" diye SABIT yaziyordu -- oysa 2026-11-01'de
+        # olculdu ki fiilen kosan model LG. Yayimlanan bir yontem beyani
+        # tahminle yazilamaz; artik olcumden okunuyor.
+        model_used = None
         for extra in (["-lg"], [], ["-noml"]):
             try:
                 with open(tree_path, "w") as out:
                     run([args.fasttree, "-quiet", "-quote"] + extra + [aln_fa], stdout=out)
-                print(f"[agac] model secenegi: {extra or ['JTT']}")
+                model_used = {"-lg": "LG", "": "JTT", "-noml": "JTT, without ML branch "
+                              "optimisation (neighbour joining with minimum evolution)"}[
+                                  extra[0] if extra else ""]
+                print(f"[agac] model secenegi: {extra or ['JTT']} -> {model_used}")
                 break
             except subprocess.CalledProcessError:
                 print(f"[uyari] FastTree {extra} basarisiz, sonraki secenek")
         else:
             raise RuntimeError("FastTree hicbir modelde calismadi")
         print(f"[yazildi] {tree_path}")
+
+        # Destek degerleri: FastTree'nin VARSAYILAN destegi SH-benzeri yerel
+        # destektir, BOOTSTRAP DEGIL -- hizalama kolonlari yeniden
+        # orneklenmez. Ikisini ayni sozcukle anmak yapilmamis bir analizi
+        # yapilmis gibi gosterir, bu yuzden adi da kaydedilir.
+        import re as _re
+        _sup = [float(v) for v in _re.findall(r"\)([0-9.]+):", open(tree_path).read())]
+        _sup.sort()
+        meta_path = os.path.join(args.out_dir, "tree_meta.json")
+        with open(meta_path, "w") as fh:
+            json.dump({
+                "tree": os.path.basename(tree_path),
+                "model": model_used,
+                "model_fallback_chain": ["LG", "JTT", "JTT without ML"],
+                "aligner": "hmmalign",
+                "support": "SH-like local support (FastTree default)",
+                "support_is_bootstrap": False,
+                "n_internal_branches": len(_sup),
+                "support_median": round(_sup[len(_sup) // 2], 3) if _sup else None,
+                "support_weak_below_0.70": sum(1 for v in _sup if v < 0.70),
+                "support_strong_at_least_0.95": sum(1 for v in _sup if v >= 0.95),
+                "n_sequences": len(aln),
+            }, fh, indent=1)
+        print(f"[yazildi] {meta_path} (model {model_used}, {len(_sup)} ic dal)")
 
         # --- kume agaclari: kumenin yapraklari + kumenin referansi (+ en yakin 2 referans yok; sade)
         def cluster_of_name(name):

@@ -1051,6 +1051,82 @@ def check_membership_basis(rep, root):
               "; ".join(problems) if problems else detail)
 
 
+def check_chemistry_published(rep, root, con):
+    """chemistry.csv'deki her tip ve her reaksiyon sinifi ana sayfada sayiliyor mu?
+
+    NEDEN. Ana sayfanin kimya bolumu iki ELLE tutulan liste uzerinden
+    geziyordu: atlas.FAMILY_ORDER (aile sirasi) ve reaction_summary'deki
+    reaksiyon anahtarlari. Ikisi de SIRA listesiydi ama SUZGEC gibi
+    davraniyordu -- listede olmayan deger sessizce dusuyordu.
+
+    Olculdu (2026-11-01): `tetrapyrroles` ailesi (6_601_PAO, 6_602_CAO,
+    6_603_PTC52; 617 giris) 14 Ekim'de eklendigi halde ne kart ne tablo
+    satiri aliyordu; ayrica bes reaksiyon sinifi (desaturation,
+    N_oxygenation, C_C_bond_formation, oxygenolytic_ring_opening,
+    C_C_cleavage) hic yayinlanmiyordu. Yayinlanan toplam 68 tip / 17.685
+    giris, gercegi 76 tip / 19.125 giristi -- ve bolumun kendi cumlesi
+    "cis-dihydroxylation only the most common case, not the whole story"
+    diyordu.
+
+    Iki liste artik veriye bagli. Bu kontrol bagin KOPMADIGINI olcer:
+    yayinlanan tip ve giris sayisi kaynagin tamamina esit olmak zorunda.
+    """
+    import csv as _csv
+    sys.path.insert(0, os.path.join(root, "webapp"))
+    import atlas as _at
+    chem = list(_csv.DictReader(open(os.path.join(root, "chemistry.csv"),
+                                     encoding="utf-8")))
+    counts = {r[0]: r[1] for r in con.execute(
+        "SELECT ro_cluster, COUNT(*) FROM ro WHERE is_confirmed=1 "
+        "AND ro_cluster IS NOT NULL GROUP BY 1")}
+    eco_path = os.path.join(root, "cluster_ecology.csv")
+    eco = ({r["cluster"]: r for r in _csv.DictReader(open(eco_path, encoding="utf-8"))}
+           if os.path.exists(eco_path) else {})
+    groups = _at.chemistry_groups(os.path.join(root, "chemistry.csv"), counts, eco)
+
+    grouped = {t["cluster"] for g in groups for t in g["types"]}
+    missing = sorted(r["cluster"] for r in chem if r["cluster"] not in grouped)
+    rep.check("chemistry: every curated type reaches the substrate cards",
+              not missing, len(missing),
+              f"{len(grouped)} of {len(chem)} types grouped"
+              if not missing else first(missing, 6))
+
+    summary = _at.reaction_summary(groups)
+    pub_types = sum(r["types"] for r in summary)
+    pub_members = sum(r["members"] for r in summary)
+    exp_members = sum(counts.get(r["cluster"], 0) for r in chem)
+    bad = []
+    if pub_types != len(chem):
+        bad.append(f"types {pub_types} != {len(chem)}")
+    if pub_members != exp_members:
+        bad.append(f"entries {pub_members} != {exp_members}")
+    rep.check("chemistry: the reaction table counts every type and every entry",
+              not bad, len(bad),
+              f"{pub_types} types, {pub_members} entries"
+              if not bad else "; ".join(bad))
+
+    unlabelled = sorted({(r["reaction_class"] or "").strip() for r in chem}
+                        - set(_at.REACTION_LABEL))
+    rep.check("chemistry: every reaction class has a published label and note",
+              not unlabelled, len(unlabelled),
+              f"{len(set(r['reaction_class'] for r in chem))} classes"
+              if not unlabelled else first(unlabelled, 6))
+
+    noscheme = sorted(k for k in {(r["reaction_class"] or "").strip() for r in chem}
+                      if not _at.reaction_scheme_svg(k))
+    rep.check("chemistry: every reaction class has a generic scheme",
+              not noscheme, len(noscheme),
+              "all classes drawn" if not noscheme else first(noscheme, 6),
+              severity="WARN")
+
+    unfamilied = sorted({(r["family"] or "").strip() for r in chem}
+                        - set(_at.FAMILY_LABEL))
+    rep.check("chemistry: every substrate family has a published label",
+              not unfamilied, len(unfamilied),
+              f"{len(set(r['family'] for r in chem))} families"
+              if not unfamilied else first(unfamilied, 6))
+
+
 def check_leaf_stop_reason(rep, root):
     """Heterojen bir yapragin NEDEN bolunmeyi biraktigi kayitli mi?
 
@@ -2001,6 +2077,7 @@ def main():
         check_cluster_coverage(con, rep, eco, chem)
         check_ecology_csv(rep, eco)
         check_chemistry_csv(rep, chem)
+        check_chemistry_published(rep, ROOT, con)
         check_display_names(rep, chem)
         check_host_kingdom(rep, con)
         check_tree_coverage(rep, con, args.out_dir,

@@ -620,7 +620,16 @@ database. <a href="{{ u('/download/analysis/variant_signatures.csv') }}">Downloa
 <h2>Phylogeny within this type</h2>
 <p class="note">Variant representatives of this type with its curated reference, aligned on the
 catalytic core. A reference on a long branch means the type's members are only distant relatives of
-the characterised enzyme.</p>
+the characterised enzyme.
+{% if x.tree_support %}
+Branch support is FastTree's SH-like local support, <b>not bootstrap</b>.
+{% if x.tree_support.weak %}<span style="color:#b5731f">Hollow circles</span> mark the
+{{ x.tree_support.weak }} of {{ x.tree_support.n }} internal branches below
+{{ '%.2f' % x.tree_support.threshold }}, where the branching order is <b>not resolved</b>; hover one
+for its value.{% else %}{% if x.tree_support.n == 1 %}Its single internal branch reaches{% else %}All
+{{ x.tree_support.n }} internal branches reach{% endif %}
+{{ '%.2f' % x.tree_support.threshold }} or more.{% endif %}
+{% endif %}</p>
 <div class="treewrap">{{ x.tree_svg|safe }}</div>
 {% endif %}
 
