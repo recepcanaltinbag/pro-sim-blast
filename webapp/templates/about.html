@@ -304,7 +304,17 @@ only when both agree. Effect sizes accompany every p value.
 <ul>
   <li>{{ totals.candidates|fmt }} candidates tested, {{ totals.confirmed|fmt }} confirmed alpha subunits</li>
   <li>{{ totals.clusters|fmt }} characterised types, {{ totals.leaves|fmt }} variants</li>
-  <li>{{ totals.replicons|fmt }} annotated replicons scanned, {{ totals.genomes_with_ro|fmt }} carrying at least one</li>
+  <li>{{ totals.survey_replicons|fmt }} annotated replicons in the survey pool,
+    {{ totals.survey_with_ro|fmt }} carrying at least one. This ratio is read only from
+    that pool.{% if totals.recovered_replicons %} A further
+    {{ totals.recovered_replicons|fmt }} records were fetched because a sequence already in
+    the database pointed at them, so they were selected for carrying an oxygenase; counting
+    them here would push the ratio towards 100% without measuring anything. They do enter the
+    operon and neighbourhood measurements, which are made within a record rather than across
+    the pool.{% else %} Records fetched for a sequence already in the database are tracked as
+    a separate cohort and would be excluded from this ratio, because selecting a genome for
+    carrying an oxygenase makes the ratio measure the selection rather than the
+    prevalence.{% endif %}</li>
   <li>{{ totals.neighbors|fmt }} neighbouring genes recorded, {{ totals.operon_any|fmt }} operons with a sequence-verified partner</li>
 </ul>
 

@@ -2158,6 +2158,63 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 119. A5 PLANI: protein duzeyindeki 18.636 diziye genomik baglam (2026-11-02)
+
+Kullanici "planlayip yapabilir misin" dedi. Plan, once OLCULEN uc sayinin
+uzerine kuruldu.
+
+OLCUM (2026-11-02):
+  - `ro_union` 73.299 tekil dizi; genomik baglam tasiyan 15.960, tasimayan
+    57.339.
+  - Baglamsiz olanlardan **18.636**'sinin UniProt capraz referansi bir
+    EMBL/GenBank NUKLEOTID kaydi veriyor. Yani baglam KURULABILIR.
+  - Bu 18.636 dizi **13.079 TEKIL kayda** isaret ediyor (11.037 WGS kontig,
+    2.042 digeri). Indirme birimi dizi degil KAYIT olunca is %30 kuculuyor.
+    En yogun kayit CP000699 tek basina 52 dizi tasiyor.
+  - Hicbiri `replicon` tablosunda YOK: kesisim gercekten buyur.
+
+IKI TASARIM KARARI, IKISI DE OLCUMLE VERILDI.
+
+(a) PENCERE INDIRME REDDEDILDI. Kayitlarin ortalamasi 10 MB (ornek n=24) ve
+baytin ~%95'i ORIGIN dizisi; ihtiyacimiz olan sey CDS cevirileri. CDS'in
+±10 kb penceresini cekmek isi 132 GB'dan ~1 GB'a indiriyordu. REDDEDILDI,
+cunku iki sessiz hata uretiyor: (1) pencere kaydinin koordinatlari pencereye
+gore yeniden numaralanir, yani `candidate_id` ve operon koordinatlari DB'nin
+geri kalaniyla kiyaslanamaz hale gelir; (2) komsuluk penceresi
+NEIGHBOR_WINDOW ile ayni genislikte oldugu icin kenardaki komsular KESILIR
+ve `has_beta` / `has_ferredoxin` / `has_reductase` sistematik olarak EKSIK
+olcuulur -- yani operon tamligi, olcum hatasi yuzunden dusuk yayimlanirdi.
+Tam kayit indirmek bu iki riskin ikisini de tasimiyor ve ORIGIN blogu
+elimizde kaldigi icin promotor analizi ikinci bir indirme gerektirmiyor.
+
+(b) KOHORT ALANI ZORUNLU -- ve bunu bir sayfa metni soyletti. `about.html`
+"17.074 annotated replicons scanned, N carrying at least one" yayimliyor.
+Bu bir YAYGINLIK iddiasi. 13.079 yeni kayit, tam da ICINDE RO OLDUGU
+BILINDIGI ICIN secildi; ayni havuza katilirsa o oran ~%100'e cikar ve bir
+kesif gibi gorunur. Oysa olcum degismis olmaz, ORNEKLEME degismis olur.
+Bu yuzden A5 kayitlari AYRI BIR KOHORT olarak isaretlenir ve genom duzeyinde
+her yaygınlık olcumu hangi kohortu kullandigini BEYAN etmek zorundadir.
+`null_model.py` bu riskten muaf: rastgele pencereleri AYNI replikon icinden
+orneklediği icin karsilastirma kohortlar arasi degil kohort ici.
+
+ADIMLAR (her biri kosturularak dogrulanir):
+  A5.1  `a5_fetch_protein_context.py` -- 13.079 kaydi ceker. Yeniden
+        calistirilabilir, hiz sinirli, her kaydin sonucu `ledger.jsonl`de.
+        Gecici hata ile kalici "yok" AYRI sayilir (madde 116'nin dersi).
+  A5.2  `extract_genomic_context.py` ayni dizine kosturulur -- YENI KOD YOK,
+        ayni cikarici, ayni CSV sozlesmesi.
+  A5.3  DIZI ESLESME SARTI: bir kayit, bir diziye ancak cevirisinin md5'i
+        BIREBIR esitse baglam olur. Capraz referans "ayni kayitta gecer"
+        demektir, "ayni proteindir" DEMEZ. Eslesmeyenler baglamsiz kalir ve
+        kac tane olduklari yayimlanir.
+  A5.4  `replicon_cohort` TURETILMIS TABLOSU (sutun degil): hangi kayit hangi
+        kohorttan, ve A5 kayitlari hangi dizi icin cekildi.
+  A5.5  Kapi kontrolleri: (1) kohort beyan edilmeden genom yaygınlığı
+        yayimlanirsa FAIL; (2) md5 eslesmesi olmayan bir dizi baglamli
+        sayilirsa FAIL; (3) `about.html` orani yalnizca ozgun kohorttan
+        hesaplanmazsa FAIL.
+  A5.6  Zincir yeniden kosturulur, sayfalar guncellenir, dagitilir.
+
 ## 118. HcaE'de "entry duplication" SORULDU: bug yok, ama BIRIM YAZILI DEGILDI (2026-11-02)
 
 Kullanici: "mesela HcaE icin neden entry duplicationlari var bug mi".

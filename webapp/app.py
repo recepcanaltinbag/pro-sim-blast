@@ -313,6 +313,26 @@ def totals(con):
                      "WHERE r.is_confirmed=1 AND p.is_plasmid=1"),
     }
     for table, key, q in [
+            # KOHORTA GORE YAYGINLIK (2026-11-02). "N replikon tarandi,
+            # M tanesi en az bir tane tasiyor" bir YAYGINLIK iddiasi ve
+            # paydasi "taranan genomlar". A5'te hedeflenerek cekilen kayitlar
+            # tam da ICINDE RO OLDUGU BILINDIGI ICIN secildi; ayni paydaya
+            # girerse oran ~%100'e cikar ve bir kesif gibi gorunur -- oysa
+            # degisen sey olcum degil ORNEKLEME. Bu yuzden payda ve pay
+            # YALNIZCA survey kohortundan okunuyor.
+            ("replicon_cohort", "survey_replicons",
+             "SELECT COUNT(*) FROM replicon p JOIN replicon_cohort c "
+             "USING(nucleotide_id) WHERE p.status='ok' AND c.cohort='survey'"),
+            ("replicon_cohort", "survey_with_ro",
+             "SELECT COUNT(DISTINCT r.nucleotide_id) FROM ro r "
+             "JOIN replicon_cohort c USING(nucleotide_id) "
+             "WHERE r.is_confirmed=1 AND c.cohort='survey'"),
+            # Hedeflenerek cekilenler ayri sayilir: gizlenmiyor, yalnizca
+            # yaygınlık oranina sokulmuyor.
+            ("replicon_cohort", "recovered_replicons",
+             "SELECT COUNT(*) FROM replicon p JOIN replicon_cohort c "
+             "USING(nucleotide_id) WHERE p.status='ok' "
+             "AND c.cohort='protein_recovery'"),
             ("leaf", "leaves", "SELECT COUNT(*) FROM leaf"),
             ("operon", "operon_complete", "SELECT COUNT(*) FROM operon WHERE completeness=3"),
             ("operon", "operon_any", "SELECT COUNT(*) FROM operon WHERE completeness>0"),

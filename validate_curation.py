@@ -241,6 +241,9 @@ IDENTIFIER_TEXT_FIELDS = {
     ("ro_ncbi_hit", "accession"), ("ro_ncbi_hit", "seq_md5"),
     ("ro_ncbi_hit", "sequence"), ("ro_ncbi_hit", "ro_cluster"),
     ("ro_ncbi_hit", "ro_group"),
+    # 2026-11-02, a5_cohort.py'nin yazdigi kohort tablosu. Ikisi de kimlik /
+    # sabit etiket ("survey" | "protein_recovery"); cevrilecek proza yok.
+    ("replicon_cohort", "nucleotide_id"), ("replicon_cohort", "cohort"),
     ("ro_membership", "candidate_id"), ("ro_membership", "ro_cluster"),
     ("neighbor", "candidate_id"), ("neighbor", "nucleotide_id"),
     ("neighbor", "protein_id"),
@@ -1831,6 +1834,134 @@ def check_regulation_totals_agree(rep, con, root):
               f"{n_csv} giris, mimari toplami {sum(csv_sum.values())}, tablo {n_db}")
 
 
+def check_prevalence_declares_cohort(rep, con, root):
+    """Genom duzeyinde yaygınlık, kohortunu BEYAN etmek zorunda.
+
+    NEDEN. `about.html` "N annotated replicons scanned, M carrying at least
+    one" yayimliyor. Bu bir yaygınlık iddiasi ve paydasi "taranan genomlar".
+    A5'te cekilen 13.079 kayit, ICINDE BIR RO OLDUGU BILINDIGI ICIN secildi;
+    ayni paydaya girerse oran ~%100'e cikar ve bir KESIF gibi gorunur. Oysa
+    degisen sey olcum degil ORNEKLEME.
+
+    UC SEY SINANIR:
+      1. `replicon_cohort` var mi -- yoksa kohort tanimsiz, iddia yapilamaz.
+      2. survey kohortunun boyu, anlik goruntunun (cohorts/survey.txt) boyuna
+         ESIT mi. Survey listesi BUYUMEZ; buyurse payda hedeflenmis
+         kayitlarla kirlenir ve bunu kimse goremez.
+      3. Yaygınlık cumlesi `survey` kelimesini tasiyor mu.
+
+    UCUNCU SINAMA SATIR TABANLI DEGIL. `check_union_denominator` bir kez
+    satir sonu yuzunden kirildi (madde 117); burada sablonun BOSLUGU
+    DUZLESTIRILIR ve kelime, cumlenin etrafindaki pencerede aranir. Boylece
+    metin yeniden sarildiginda kontrol kirilmaz, yalnizca BEYAN kalkarsa
+    kirilir.
+    """
+    import re as _re
+    have = con.execute("SELECT name FROM sqlite_master "
+                       "WHERE name='replicon_cohort'").fetchone()
+    if not rep.check("prevalence: replicon_cohort exists", bool(have), 0 if have else 1,
+                     "kohort tablosu var" if have else
+                     "replicon_cohort yok -- a5_cohort.py kosturulmali"):
+        return
+
+    snap = os.path.join(root, "cohorts", "survey.txt")
+    n_snap = 0
+    if os.path.exists(snap):
+        with open(snap) as fh:
+            n_snap = sum(1 for ln in fh
+                         if ln.strip() and not ln.startswith("#"))
+    n_survey = con.execute("SELECT COUNT(*) FROM replicon_cohort "
+                           "WHERE cohort='survey'").fetchone()[0]
+    rep.check("prevalence: the survey cohort matches its snapshot",
+              n_snap > 0 and n_snap == n_survey,
+              abs(n_snap - n_survey),
+              f"anlik goruntu {n_snap}, tabloda {n_survey}"
+              + ("" if n_snap == n_survey else
+                 " -- survey havuzu degismis; yaygınlık paydasi artik ayni "
+                 "kumeyi olcmuyor"))
+
+    tpl = os.path.join(root, "webapp", "templates", "about.html")
+    if not os.path.exists(tpl):
+        rep.check("prevalence: about.html exists", False, 1, tpl)
+        return
+    flat = _re.sub(r"\s+", " ", open(tpl).read())
+    phrase = "carrying at least one"
+    ok, detail = True, "yaygınlık cumlesi kohortunu yaziyor"
+    for m in _re.finditer(_re.escape(phrase), flat):
+        window = flat[max(0, m.start() - 400):m.end() + 400]
+        if "survey" not in window:
+            ok = False
+            detail = ("yaygınlık cumlesi kohortunu YAZMIYOR -- okuyucu orani "
+                      "hedeflenmis kayitlari da iceren bir paydadan sanar")
+            break
+    rep.check("prevalence: the genome-level claim names its cohort", ok,
+              0 if ok else 1, detail)
+
+
+def check_prefilter_admits_gate_passers(rep, con, root):
+    """Ucuz on filtre, HMM kapisinin kabul ettigi bir diziyi ELEYEMEZ.
+
+    NEDEN BU KONTROL VAR. `extract_genomic_context.py` milyonlarca CDS'i
+    binlere indirmek icin elle yazilmis bir Rieske regex'i kullaniyor ve
+    2026-11-02'ye kadar penceresi 12-22 kalintiydi. O pencere REFERANSLARDAN
+    turetilmisti (76/76 referans gecer) ama UYELERDEN turetilmemisti.
+    Olcum: kapiyi gecen 71.819 dizinin 3.107'si (%4,33) regex'e takiliyordu
+    ve bunlarin SIFIRI genomik baglam tasiyordu. Yani bir dizi protein
+    tarafinda "onayli RO alpha", genomik tarafta ise "aday bile degil"
+    olabiliyordu -- ayni veritabaninin iki yerinde iki farkli cevap.
+
+    Kaybin grup 5'te yogunlasmasi (CntA 1.165, Stc2 515, qxyA 269, BmoA 213)
+    bunu gorunmez kiliyordu: eksiklik her yere dagilmis degil, tek bir
+    yapisal sinifta toplanmisti ve o sinif genomik tarafta hic yoktu, yani
+    "eksik" diye bakilacak bir sayi da yoktu.
+
+    KONTROLUN MANTIGI. Regex'in kendisi dogrulanmaz; regex'in KARARI
+    kapinin karariyla karsilastirilir. Kapiyi gecen her birlesim dizisi
+    on filtreden de gecmek zorundadir. Gecemeyenler ARTAKALAN olarak
+    sayilir ve sayi kayitli esikten BUYUKSE FAIL verilir -- yani pencere
+    daraltilirsa ya da yeni bir yapisal sinif girerse kapi kapanir.
+
+    Artakalan sifir DEGIL ve olmasi da beklenmiyor: olculen 32 dizinin
+    12'sinde 80 kalintilik pencerede hic C-x-H..C-x-x-H kalibi yok. Onlari
+    bir regex bulamaz; HMM gerekir.
+    """
+    import re as _re
+    import importlib.util as _ilu
+    path = os.path.join(root, "extract_genomic_context.py")
+    if not os.path.exists(path):
+        rep.check("prefilter: extract_genomic_context.py exists", False, 1, path)
+        return
+    # Regex'i KAYNAKTAN okur. Kopyalanmis bir kalip, kontrolu yanlis seyi
+    # sinayan bir kontrole cevirirdi (projenin tekrar eden hata bicimi).
+    src = open(path).read()
+    m = _re.search(r'RIESKE_REGEX = re\.compile\(r"([^"]+)"\)', src)
+    if not m:
+        rep.check("prefilter: the Rieske pre-filter pattern is readable",
+                  False, 1, "RIESKE_REGEX kaynaktan okunamadi")
+        return
+    rx = _re.compile(m.group(1))
+
+    have = con.execute(
+        "SELECT name FROM sqlite_master WHERE name='ro_union'").fetchone()
+    if not have:
+        rep.check("prefilter: ro_union exists", False, 1, "ro_union yok")
+        return
+    rows = con.execute("SELECT sequence FROM ro_union "
+                       "WHERE passes_gate=1 AND sequence IS NOT NULL").fetchall()
+    rejected = [s for (s,) in rows if not rx.search(s)]
+    # 2026-11-02 OLCUMU: 12-45 penceresiyle 32 dizi kurtarilamiyor. Butce
+    # olculen degerin KENDISI; daha gevsek bir butce, aradaki farki sessizce
+    # kaybetmeye izin verirdi.
+    BUDGET = 32
+    n = len(rejected)
+    rep.check("prefilter: the cheap pre-filter admits every gate-passing sequence",
+              n <= BUDGET, n,
+              f"{n} dizi eleniyor, butce {BUDGET} (kapiyi gecen {len(rows)})"
+              + ("" if n <= BUDGET else
+                 " -- on filtre penceresi kapinin kabul ettigi bir sinifi "
+                 "disliyor; extract_genomic_context.py'deki olcume bakilmali"))
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -2712,6 +2843,8 @@ def main():
                             os.path.join(args.out_dir, "reference_pairs.csv"),
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
+        check_prevalence_declares_cohort(rep, con, ROOT)
+        check_prefilter_admits_gate_passers(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
         check_significance_claims(rep, con, ROOT)

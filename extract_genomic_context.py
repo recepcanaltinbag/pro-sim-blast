@@ -34,8 +34,29 @@ from multiprocessing import Pool
 from Bio import SeqIO
 
 # Rieske [2Fe-2S] ligand imzasi: C-x-H ... C-x-x-H
-# Referanslarda olculen aralik 14-18 kalinti; guvenli tarafta genis tutuldu.
-RIESKE_REGEX = re.compile(r"C.H.{12,22}C..H")
+#
+# PENCERE 22'DEN 45'E ACILDI (2026-11-02) ve sebebi olculdu. Eski pencere
+# referanslardan turetilmisti (76/76 referans 12-22'yi gecer) ama UYELERDEN
+# turetilmemisti. OLCUM: kapiyi gecen 71.819 birlesim dizisinin **3.107'si
+# (%4,33)** eski regex'e TAKILIYORDU ve bunlarin **SIFIRI** genomik baglam
+# tasiyordu -- sifir, yani bu bir rastlanti degil sistematik filtre imzasi.
+# Hepsi >=250 aa, yani parca da degillerdi. Yogunlastigi yer grup 5:
+# CntA 1.165, Stc2 515, qxyA 269, BmoA 213, ayrica KshA15 291.
+#
+# Gercek ligand araligi bu dizilerde 23-26 (ve ikinci bir mod 29-31); onayli
+# genomik uyelerde ise 16-18. Yani genomik taraf, HMM kapisinin "Rieske'si
+# saglam" dedigi bir yapisal sinifi hic goremiyordu.
+#
+# MALIYET OLCULDU (10 genom, 32.839 CDS >=250 aa): aday orani %0,63 -> %0,88,
+# yani hmmsearch yuku 1,41 kat. Buna karsilik 3.107 dizinin %98,7'si
+# kurtariliyor. Karar veren sey bu oran: filtre UCUZ ve MUSAMAHAKAR olmak
+# zorunda, cunku neyin RO oldugunu soyleyen sey HMM kapisi, bu regex degil.
+#
+# ARTAKALAN, kapatilmiyor: 41 dizi 12-45 penceresiyle de kurtarilamiyor ve
+# bunlarin 12'sinde 80 kalintilik pencerede HIC C-x-H..C-x-x-H kalibi yok.
+# Onlari bir regex bulamaz; `check_prefilter_admits_gate_passers` bu sayiyi
+# izler ve artarsa FAIL verir.
+RIESKE_REGEX = re.compile(r"C.H.{12,45}C..H")
 
 # RO alpha uzunluk taban degeri -- fragmentleri ucuz asamada eler.
 MIN_CDS_LENGTH = 250
