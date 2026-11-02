@@ -23,6 +23,7 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 
 import yaml
@@ -33,15 +34,27 @@ UNIPROT_RE = re.compile(r"^(?:[OPQ][0-9][A-Z0-9]{3}[0-9]"
                         r"|[A-NR-Z][0-9](?:[A-Z][A-Z0-9]{2}[0-9]){1,2})$")
 
 
-def get(url, tries=3):
+def get(url, tries=6):
+    """UniProt 500'leri GECICI. Kalici hatada bosa beklenmez.
+
+    NEDEN 3 DENEME YETMEDI. 2026-11-02 kosusunda 21 sorgu HTTP 500 aldi ve
+    o tipler "kontrol edilemeyen"e dustu; ozet satiri UYUSMAYAN: 0 yazdi,
+    yani bir onceki kosuda BULUNMUS 6 uyusmazlik raporun temiz gorunmesiyle
+    orduldu. Gecici bir ag hatasi, olculmus bir uyusmazligi sessizce silmemeli.
+    """
     for i in range(tries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
             return urllib.request.urlopen(req, timeout=60).read()
+        except urllib.error.HTTPError as exc:
+            # 404/410: kayit yok -- tekrar denemek durumu degistirmez.
+            if exc.code in (400, 404, 410) or i == tries - 1:
+                raise
+            time.sleep(min(60, 3 * 2 ** i))
         except Exception:
             if i == tries - 1:
                 raise
-            time.sleep(2 * (i + 1))
+            time.sleep(min(60, 3 * 2 ** i))
 
 
 def uniprot_reactions(acc):
@@ -198,9 +211,23 @@ def main():
               for r in rows if r.get("product_agrees")
               and r.get("qualifiers_missing_from_our_product")]
     bad = [r["cluster"] for r in rows if r.get("product_agrees") is False]
-    skip = [r["cluster"] for r in rows if "product_agrees" not in r]
+    # KALICI BOSLUK ile GECICI HATA AYRI SAYILIR. Ikisini "kontrol
+    # edilemeyen" diye tek kovaya atmak, ag hatasinin raporu temiz
+    # gostermesine izin veriyordu: UYUSMAYAN: 0 satiri "hicbir sey
+    # uyusmuyor degil" diye okunuyor, oysa dogrusu "bakamadik".
+    failed = [r["cluster"] for r in rows
+              if str(r.get("status") or "").startswith("lookup failed")]
+    skip = [r["cluster"] for r in rows
+            if "product_agrees" not in r and r["cluster"] not in failed]
     print(f"\ntemiz: {len(clean)} | INCELE: {len(review)} | UYUSMAYAN: "
-          f"{len(bad)} | kontrol edilemeyen: {len(skip)}")
+          f"{len(bad)} | kontrol edilemeyen: {len(skip)} | "
+          f"SORGU BASARISIZ: {len(failed)}")
+    if failed:
+        print("UYARI: %d tip SORULAMADI, yani yukaridaki UYUSMAYAN sayisi bir "
+              "ALT SINIR -- rapor temiz gorunuyorsa sebebi bu olabilir."
+              % len(failed))
+        print("  sorulamayanlar:", ", ".join(failed[:12])
+              + (" ..." if len(failed) > 12 else ""))
     for cl, w in review:
         print(f"  INCELE {cl}: resmi adda var, bizde yok -> {', '.join(w)}")
     if bad:

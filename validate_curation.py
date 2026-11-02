@@ -790,6 +790,24 @@ def check_reaction_names(rep, root):
               "written -- re-run verify_reactions.py", severity="WARN")
 
     rows = json.load(open(rep_path)).get("rows") or []
+
+    # KAPSAM, SONUCTAN ONCE OKUNUR. 2026-11-02: bir kosuda 21 UniProt
+    # sorgusu HTTP 500 aldi; o tipler rapordan dustu ve ozet "UYUSMAYAN: 0"
+    # yazdi -- bir onceki kosuda bulunmus 6 uyusmazlik gorunmez oldu.
+    # Asagidaki "her uyusmazlik kayitli" kontrolu de o halde BOS gecerdi,
+    # cunku bakilmayan tipin uyusmazligi da yok sayilir. Sorgu basarisizligi
+    # bu yuzden sonuctan ONCE ve ayrica bildirilir.
+    failed = sorted(r["cluster"] for r in rows
+                    if str(r.get("status") or "").startswith("lookup failed"))
+    rep.check("reaction names: every reference with an accession was actually "
+              "queried",
+              not failed, len(failed),
+              "sorgu basarisizligi yok" if not failed else
+              f"{len(failed)} tip sorulamadi ({', '.join(failed[:6])}"
+              f"{' ...' if len(failed) > 6 else ''}) -- asagidaki uyusmazlik "
+              "sayisi bir ALT SINIR, raporu yeniden uret",
+              severity="WARN")
+
     flagged = {r["cluster"] for r in rows
                if r.get("product_agrees") is False
                or r.get("qualifiers_missing_from_our_product")}
