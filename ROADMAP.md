@@ -2158,6 +2158,63 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 116. DAGITIM: iki kez yanlis yere derledim; ve 21 sorgu hatasi raporu temiz gosterdi (2026-11-02)
+
+Kullanici: "sitenin istatik kismi ya da diger bolumleri vs guncel mi knk baya
+bisi var cunku". Olculdu: **degildi**. Son dagitim 16:48'deydi ve o andan
+itibaren 10 commit birikmisti; yayindaki sitede `/atlas/groups` 404,
+birlesim indirmeleri 404, PDO/PhtAa hala ters.
+
+Dagitimi UC ayri hata geciktirdi ve ucu de kayda deger:
+
+**(a) On plan timeout'u FastTree'yi oldurdu ve agac 0 bayt kaldi.**
+`timeout 599 python3 rebuild.py --run` ile kostum; timeout `phylogeny`
+adimini ortasinda kesti. `analysis_out/tree_all.nwk` VARDI ve mtime'i
+TAZEYDI, yani tazelik takibi adimi guncel saydi; zincir ilerledi ve
+`group_monophyly` bos dosyayi ayristirip IndexError ile patladi. Hata
+URETEN adimda degil OKUYAN adimda cikti, yani kirilan yerde sebebi
+gorunmuyordu. Kalici duzeltme: beyan edilen bir cikti 0 bayt ise
+URETILMEMIS sayilir (`rebuild.py staleness()`). Agac 328 saniyede yeniden
+kuruldu -- yani korkulan iki saat degildi, bedeli yalnizca gorunurlukti.
+DERS: agir adimlari ON PLANDA timeout ile kosturma; `setsid nohup` + log.
+
+**(b) `freeze.py --out site`'i depo KOKUNE yazdim.** `deploy_pages.sh`
+ilk satirlarinda `cd "$(dirname "$0")"` yapiyor, yani `webapp/site`'i
+dagitiyor. Betik taze derlemeyi hic gormedi, eski kopyayi gh-pages ile
+karsilastirdi ve "degisiklik yok, push yapilmadi" dedi -- BASARILI gibi
+cikti verip hicbir sey yayinlamadan. Dogru cagri:
+`cd webapp && python3 freeze.py --out site --base /pro-sim-blast`.
+ACIK IS: betik `site/` yokken duruyor ama YANLIS YERDE bir `site/` varsa
+sessizce onu dagitiyor; derlemenin yasini kontrol etmesi gerekir.
+
+**(c) Reaksiyon raporu "UYUSMAYAN: 0" yaziyordu, cunku 21 sorgu HTTP 500
+almisti.** Temizlik degildi: o tipler "kontrol edilemeyen" kovasina dustu ve
+bir onceki kosuda BULUNMUS 6 uyusmazlik gorunmez oldu. Daha kotusu,
+`validate_curation.py`'deki "her uyusmazlik kayitli" kontrolu bu halde BOS
+geciyordu -- bakilmayan tipin uyusmazligi da yok sayilir, yani kapi tam
+kapatmasi gereken durumda kapatmiyordu. `get()` 6 denemeye cikti (400/404/410
+kalici sayilir), ozet KALICI boslugu GECICI hatadan ayri sayiyor, ve
+"every reference with an accession was actually queried" kontrolu sonuctan
+ONCE okunuyor. Yeniden kosuldu: SORGU BASARISIZ 0, 6 uyusmazlik geri geldi.
+
+**Ayrica** `metabolic_role.csv` satir 74 "group 6" yaziyordu ve dogrulama
+kapisi FAIL verdi; kaynak `types/6_601_PAO.yaml`'in `metabolic_role_basis`
+alaniydi. chemistry.csv'deki duzyazi bu oturumda temizlenmisti ama ayni ifade
+manifestonun BASKA bir alaninda duruyordu ve yeniden uretimde geri geldi.
+
+**Dagitildi:** 3.218 degisen dosya, gh-pages tek commit. Yayinda dogrulandi:
+/atlas/groups 200, birlesim indirmeleri 200, PDO 4,5 / PhtAa 3,4, regulator
+uzlasma notu, tip sayfasi birlesim notu. Kapilar: `rebuild.py --check` 61/61
+guncel, `validate_curation.py` 147 kontrol / 0 FAIL / 4 WARN, `check_site.py`
+85 sayfa + 9.062 ic baglanti + 64.005 statik baglanti temiz.
+
+**NCBI zinciri tamamlandi.** RefSeq release 237 protein uzayi: 871/871 parca,
+76.043.118 protein, 15.407 aday, 0 hata. Karar: 5.083 RO alpha (122 fragment,
+7.422 RO degil elendi), 4.550'si kapiyi geciyor. Birlesim 70.252 -> **73.299
+tekil dizi**, kaynak kimligi 89.743 -> **94.826**; RefSeq'in getirdigi **3.047
+YENI tekil dizi**. Yani NCBI protein uzayinin buyuk kismi UniProt uzerinden
+zaten iceriydi -- ama 3.047 dizi hicbir yoldan girmiyordu ve simdi iceride.
+
 ## 114. PDO/PhtAa urunleri TERSTI; ve `types/` tek kaynak olmayi BIRAKMISTI (2026-11-01)
 
 Kullanici bildirdi: "PDO ve PhtAa urunleri hala ters."
