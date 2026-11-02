@@ -2158,6 +2158,74 @@ girisi "yok" denmeden elenir. Dogru cozum: annotate sabit-kolon 2/3'u ON
 FILTRE olarak tutar, uyelik son karari ro_triad'dan gelen ayri bir pastan
 verilir. O pas yazilmadi; madde 96/96a/97'deki olcumler hazir.
 
+## 118. HcaE'de "entry duplication" SORULDU: bug yok, ama BIRIM YAZILI DEGILDI (2026-11-02)
+
+Kullanici: "mesela HcaE icin neden entry duplicationlari var bug mi".
+
+**Bug yok.** 259 girisin 258'i AYRI genom kaydi, ve ayni genom+koordinat
+ikilisinin tekrari **0**. Tekrar eden sey giris degil, iki baska sey:
+
+1. **Ayni protein farkli suslarda.** HcaE *E. coli*'nin 3-fenilpropiyonat
+   dioksijenazi; tek bir dizi 46 genomda birebir ayni. 259 giris 156 tekil
+   diziye cokuyor.
+2. **RefSeq `WP_` kayitlari tasarimi geregi tekrar eder.** `WP_` accession'lari
+   non-redundant: ayni proteini tasiyan butun genomlar icin TEK accession.
+   HcaE girislerinin %98,8'i `WP_` tasiyor.
+
+Yani birim **bir genomik lokus**, bir protein degil. Tum set icin ayni
+ayrisma: 19.125 giris, 11.610 tekil genom kaydi, 15.960 tekil dizi, ayni
+lokus tekrari 0.
+
+**ASIL KUSUR SAYFADA.** Birim yaziliydi degil, o yuzden okuyucu hata
+sonucuna vardi -- projenin tekrar eden sinifi: *birim yazilmazsa okuyucu
+kendi sonucunu uretir* (ayni sinif 2026-11-01'de birlesim sayilarinda da
+cikti). Tip sayfasina olculen not eklendi: giris / tekil genom kaydi /
+tekil dizi / en yayginin kac genomda oldugu / WP_ orani / ayni lokus
+tekrari. Sayilar `app.py`'de olculuyor, sablonda yazili degil.
+
+ACIK IS: substrat basina bolge tutarliligini sinayan bir kontrol yok --
+PDO/PhtAa hatasi (madde 114) tam boyle bir celiskiydi ve iki Gram-negatif
+ftalat dioksijenazina farkli bolge atanmasini hicbir kapi yakalamadi.
+
+## 117. ANASAYFA: once ONEM, sonra sayilar; 11.481 kelimelik aciklama kirpildi (2026-11-02)
+
+Kullanici, dort mesajda: "anasayfada cok yazi var daha duzenli ve goze hitap
+eden bi tasarim olamaz mi" / "ozellikle 1.2 ve ilk giris kismi, hic iyi bi
+database gibi durmuyo" / "kalabilirler ama daha ozet gibi olmalila" /
+"sayfayi ilk acan direkt bisuru yaziyla karsilasiyor ya tablonun altin bi
+yazi var inanilmaz uzun aciklama vs" / "rieskelerin onemli oldugunu insanlar
+direkt anlamali ya anasayfa nasil yapilir biliyor olman lazim".
+
+OLCUM: anasayfa 3.933 kelime (1. bolum 1.477, giris paragrafi 256). Site
+genelinde 45 kelimeden uzun 131 aciklama blogu, toplam 11.481 kelime, en
+uzunu 283.
+
+**Hicbir olculmus cumle silinmedi** -- metnin hepsi bir olcumun sinirini
+yaziyor. Degisen sey nerede ve ne zaman gorundugu.
+
+- **Onem yayinda ve OLCULUYOR.** Yeni h1 + uc kart (9.430/53, 3.487/30,
+  9.695/23). "Hangi aileler kirletici sayilir" bir kurator karari, o yuzden
+  `significance.yaml`'da -- dosya TEK SAYI tasimiyor, sayim her derlemede
+  DB'den yapiliyor, yani bayatlayamaz. 3 yeni kontrol.
+- **Sira degisti**: baslik -> neden onemli -> arama -> sayilar ->
+  kesisim/birlesim -> mimari ozeti. Ilk ekran 449 -> **252** gorunur kelime.
+- **1. bolum ozete indi**, gerekcesi `/architecture`'a tasindi. Icerigin
+  baska hicbir sayfada OLMADIGI olculdu, yani silinebilir degildi. Sema iki
+  yere kopyalanmadi: `_arch_svg.html` olarak paylasiliyor.
+- **Uzun aciklamalar kirpildi** (`longnote.js`): 45+ kelime -> 3 satir
+  (anasayfada 2) + "Show the full note". HICBIR DUGUM TASINMIYOR; ilk
+  tasarim metni cumleden kesip tasiyordu ve bu icerideki `<a>`/`<b>`
+  etiketlerini bolup bozuk HTML uretebiliyordu. `line-clamp` kullanilmadi,
+  cunku gerektirdigi `display:-webkit-box` blok cocuk tasiyan bloklari
+  bozuyor. JS yoksa ve yazdirmada metin TAM.
+
+KIRILGAN KAPI: `check_union_denominator` `"is an\n<strong>intersection
+</strong>"` ariyordu, yani SATIR SONUNA bagliydi ve panel bicimine gecince
+kirildi. Amaci bicim degil ayrimin yazili olmasi -- esnetildi.
+
+Dagitildi: 3.210 degisen dosya. Kapilar: 150 kontrol / 146 PASS / 0 FAIL,
+rebuild 61/61, check_site 85 sayfa + 67.411 statik baglanti temiz.
+
 ## 116. DAGITIM: iki kez yanlis yere derledim; ve 21 sorgu hatasi raporu temiz gosterdi (2026-11-02)
 
 Kullanici: "sitenin istatik kismi ya da diger bolumleri vs guncel mi knk baya
