@@ -27,10 +27,16 @@ data-k="{{ t.gene }} {{ t.cluster }} {{ t.substrate_en }} {{ t.product_en }} {{ 
 
 {% block body %}
 
+<div class="hero">
+  <div class="hero__text">
 <h1>Rieske oxygenases: one iron architecture, many chemistries</h1>
 <p class="lede"><b>Rieske oxygenases</b> use O<sub>2</sub> to do oxidations that are otherwise
 chemically hard. One alpha subunit chain holds both halves of the machine: a Rieske [2Fe-2S]
 cluster that delivers the electrons, and a mononuclear Fe(II) site that does the chemistry.</p>
+  </div>
+  <div class="hero__fig">{% include "_hero_fig.html" %}</div>
+</div>
+
 
 {#  2026-11-02. SIRA DEGISTI: kullanici "veritabani sayfasi olmali, insana
     onu verebilmeli" dedi. Bir veritabani acilis sayfasinda once ARAMA ve
@@ -61,19 +67,7 @@ cluster that delivers the electrons, and a mononuclear Fe(II) site that does the
   {%- endif %}
 </section>
 
-{#  Yapi seridi SUSLEME DEGIL, bir giris noktasi: her kutu o ailenin en
-    kalabalik tipine goturur. Secim olculuyor (atlas.hero_structures).  #}
-{% if hero %}
-<h2 class="quiet">Browse by substrate</h2>
-<div class="herostrip" aria-label="Representative substrates">
-  {% for h in hero %}
-  <a class="herostrip__i" href="{{ u('/cluster/' ~ h.cluster) }}" title="{{ h.substrate }} &mdash; {{ h.n|fmt }} entries">
-    <svg class="struct" data-smiles="{{ h.smiles }}" aria-label="{{ h.substrate }}"></svg>
-    <span class="herostrip__l">{{ h.substrate }}<br><span class="herostrip__n">{{ h.n|fmt }} entries</span></span>
-  </a>
-  {% endfor %}
-</div>
-{% endif %}
+
 
 {% if significance %}
 <h2 class="quiet">What these enzymes are, measured</h2>

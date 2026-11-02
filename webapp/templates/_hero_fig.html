@@ -1,0 +1,96 @@
+{#  ACILIS GORSELI: katalitik cekirdek, iki alt birim arasinda.  (2026-11-02)
+
+    Kullanici: "en uste sagdaki bosluga bi foto mu koysak rieskelerle
+    alakali bi gorsel uretebilir misin".
+
+    FOTOGRAF DEGIL, SEMA. Bu veritabaninin kullanma hakki olan bir Rieske
+    oksijenaz fotografi/yapi goruntusu yok; PDB goruntulerini kopyalayip
+    yayinlamak atif ve lisans sorunudur ve site zaten yapilari RCSB'den
+    CALISMA ANINDA cekiyor, yeniden dagitmiyor. O yuzden burada cizilen sey
+    sahipligi bize ait bir sema.
+
+    SEMA UYDURMA DEGIL: gosterdigi tek sayi (alt birim kavsagi boyunca
+    12 A) sitenin /architecture sayfasinda zaten yayinlanmis bir olcum --
+    "the distance from the iron to its own subunit's Rieske centre is
+    reported as 43.5 A, against 12 A across the subunit junction".
+    Ayrintili mesafeler (2,04 / 2,15 / 2,27 A ligandlar, 6,95 A kopru)
+    BILEREK buraya konmadi: acilista on etiket, kullanicinin sikayet
+    ettigi duvarin ta kendisi olurdu. Onlar /architecture'da.
+
+    RENKLER TOKEN: --fig-rieske / --fig-cat / --fig-iron / --fig-sulfur
+    zaten koyu tema icin yeniden tanimli, yani sema kendiliginde dogru
+    calisir. Yeni renk TANIMLANMADI.                                   #}
+<svg class="herofig" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 268"
+     role="img" aria-labelledby="herofig-t herofig-d">
+  <title id="herofig-t">The two metal centres of a Rieske oxygenase</title>
+  <desc id="herofig-d">A Rieske [2Fe-2S] cluster in one subunit donates electrons across the
+  subunit interface, about 12 angstroms, to the mononuclear Fe(II) site of the neighbouring
+  subunit, where O2 is activated.</desc>
+  <style>
+    .hf-dom   { stroke: var(--fig-stroke); stroke-width: 1; }
+    .hf-lb    { font-size: 11px; fill: var(--ink); font-weight: 600; }
+    .hf-sm    { font-size: 9.5px; fill: var(--dim); }
+    .hf-bond  { stroke: var(--fig-stroke); stroke-width: 1.2; fill: none; }
+    .hf-hb    { stroke: var(--fig-stroke); stroke-width: 1.1; stroke-dasharray: 3 3; fill: none; opacity: .8; }
+    .hf-iface { stroke: var(--fig-stroke); stroke-width: 1; stroke-dasharray: 2 4; opacity: .55; }
+    .hf-e     { stroke: var(--fig-iron); stroke-width: 1.8; fill: none; }
+    .hf-fe    { fill: var(--fig-iron); }
+    .hf-s     { fill: var(--fig-sulfur); }
+    .hf-et    { font-size: 10px; fill: var(--fig-iron); font-weight: 700; }
+  </style>
+
+  <!-- iki alt birim -->
+  <rect class="hf-dom" x="6"   y="30" width="198" height="176" rx="10" fill="var(--fig-rieske)"/>
+  <rect class="hf-dom" x="256" y="30" width="198" height="176" rx="10" fill="var(--fig-cat)"/>
+  <text class="hf-lb" x="18"  y="50">subunit A</text>
+  <text class="hf-lb" x="268" y="50">subunit B</text>
+  <line class="hf-iface" x1="230" y1="24" x2="230" y2="212"/>
+  <text class="hf-sm" x="230" y="20" text-anchor="middle">subunit interface</text>
+
+  <!-- Rieske [2Fe-2S]: eskenar dortgen, iki Fe + iki S -->
+  <path class="hf-bond" d="M104,96 L124,116 L104,136 L84,116 Z"/>
+  <circle class="hf-fe" cx="84"  cy="116" r="7"/>
+  <circle class="hf-fe" cx="124" cy="116" r="7"/>
+  <circle class="hf-s"  cx="104" cy="96"  r="5.5"/>
+  <circle class="hf-s"  cx="104" cy="136" r="5.5"/>
+  <text class="hf-sm" x="104" y="166" text-anchor="middle">Rieske [2Fe-2S]</text>
+  <!-- ligandlar: iki Cys bir Fe'de, iki His digerinde -->
+  <path class="hf-bond" d="M84,116 L54,100 M84,116 L54,132"/>
+  <text class="hf-sm" x="50" y="98"  text-anchor="end">Cys</text>
+  <text class="hf-sm" x="50" y="137" text-anchor="end">Cys</text>
+  <path class="hf-bond" d="M124,116 L154,100 M124,116 L154,132"/>
+  <text class="hf-sm" x="158" y="98">His</text>
+  <text class="hf-sm" x="158" y="137">His</text>
+
+  <!-- mononukleer Fe(II): 2-His-1-karboksilat -->
+  <circle class="hf-fe" cx="348" cy="116" r="8"/>
+  <path class="hf-bond" d="M348,116 L318,100 M348,116 L318,132 M348,116 L380,116"/>
+  <text class="hf-sm" x="314" y="98"  text-anchor="end">His</text>
+  <text class="hf-sm" x="314" y="137" text-anchor="end">His</text>
+  <text class="hf-sm" x="385" y="119">Asp</text>
+  <text class="hf-sm" x="348" y="166" text-anchor="middle">mononuclear Fe(II)</text>
+  <!-- O2 girisi -->
+  <path class="hf-e" d="M348,78 L348,100" marker-end="url(#hf-ar)"/>
+  <text class="hf-et" x="348" y="72" text-anchor="middle">O₂</text>
+
+  <!-- koprudeki karboksilat ve iki hidrojen bagi -->
+  <circle cx="230" cy="116" r="4" fill="var(--fig-stroke)"/>
+  <path class="hf-hb" d="M154,116 L226,116 M234,116 L314,116"/>
+  <text class="hf-sm" x="230" y="104" text-anchor="middle">Asp</text>
+
+  <!-- elektron yolu -->
+  <defs>
+    <marker id="hf-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--fig-iron)"/>
+    </marker>
+  </defs>
+  <path class="hf-e" d="M104,186 C170,206 290,206 344,136" marker-end="url(#hf-ar)"/>
+  <text class="hf-et" x="224" y="212" text-anchor="middle">e⁻</text>
+
+  <text class="hf-sm" x="230" y="238" text-anchor="middle">
+    about 12 Å across the junction — the enzyme is active only as an oligomer
+  </text>
+  <text class="hf-sm" x="230" y="254" text-anchor="middle" opacity=".8">
+    electrons reach the iron of the neighbouring subunit, not its own
+  </text>
+</svg>

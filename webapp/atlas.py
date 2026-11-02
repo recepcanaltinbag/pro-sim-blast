@@ -2922,28 +2922,3 @@ def significance_view(chemistry_path, counts, yaml_path, con=None):
     return out
 
 
-def hero_structures(chemistry_path, counts, n=6):
-    """Anasayfanin ustunde gercek substrat yapilari.
-
-    NEDEN. Bir KIMYA veritabaninin acilis ekraninda hic kimya gorunmuyordu
-    -- yalnizca duzyazi ve sayilar. Yapilar zaten her tip kartinda SMILES'tan
-    ciziliyor; ustte altisi, sayfanin ne oldugunu bir bakista soyluyor.
-
-    SECIM OLCULUR, elle yazilmaz. Her kuratorlu kimya ailesinden EN COK
-    UYELI tip aliniyor, sonra uyeye gore siralanip ilk n tanesi. Boylece
-    hem en kalabalik kimyalar temsil edilir hem de alti kutu alti FARKLI
-    aile olur; elle secilmis bir liste bayatlardi (bir tip uye kaybederse
-    ya da yeni bir aile eklenirse kimse fark etmezdi).
-    """
-    best = {}
-    for r in csv.DictReader(open(chemistry_path, encoding="utf-8")):
-        smiles = (r.get("substrate_smiles") or "").strip()
-        fam = r.get("family") or ""
-        if not smiles or not fam:
-            continue
-        n_mem = counts.get(r["cluster"], 0)
-        if n_mem > (best.get(fam) or {}).get("n", -1):
-            best[fam] = {"cluster": r["cluster"], "family": fam, "n": n_mem,
-                         "smiles": smiles,
-                         "substrate": r.get("substrate_en") or ""}
-    return sorted(best.values(), key=lambda x: -x["n"])[:n]
