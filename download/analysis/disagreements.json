@@ -1,0 +1,707 @@
+{
+ "what_this_page_is": "Places where what this database measures does not match a published claim, including claims made earlier by this project itself. Every number is read from the analysis file that produced it rather than retyped, and every entry states what its test does NOT show, because a distributional measurement cannot overturn an experiment.",
+ "n_entries": 5,
+ "by_status": {
+  "contradicted": 1,
+  "not supported": 1,
+  "refined": 1,
+  "overturned in part, and it was our own": 1,
+  "overturned, and it was our own": 1
+ },
+ "entries": [
+  {
+   "id": "ferredoxin_class_residue",
+   "status": "contradicted",
+   "claim": "The residue at the NDO-Fd A50 / CDO-Fd W48 column is class-dependent: tryptophan predominates in Class IIB ferredoxins, alanine in Class III, and tyrosine in certain plant-type Class IIA ferredoxins.",
+   "source": "Miao H, Oerlemanns R, Hagedoorn P-L, Schmidt S. Decoding and Reprogramming Redox Partner Specificity in Rieske Oxygenases for Enhanced Catalytic Activity. bioRxiv 2026",
+   "doi": "10.64898/2026.04.03.713453",
+   "their_evidence": "mutagenesis and chimera construction on two ferredoxins, plus a reading of previously published alignments",
+   "our_measurement": {
+    "claim_tested": "that the residue at the NDO-Fd A50 / CDO-Fd W48 column is class-dependent, with W predominating in Class IIB Fds, A in Class III Fds and Y in plant-type Class IIA Fds",
+    "dominant_residue_overall": "A",
+    "dominant_share_entry_level": 0.8135,
+    "dominant_share_genus_level": 0.6562,
+    "tryptophan_share_entry_level": 0.0291,
+    "tyrosine_share_entry_level": 0.0056,
+    "material_cells_that_survive_genus_collapse": [
+     {
+      "test": "residue_by_enzyme_type",
+      "row": "2_202_EdoA1",
+      "residue": "A",
+      "share": 0.0,
+      "baseline": 0.8372,
+      "lift": -0.8372,
+      "direction": "under",
+      "q": 2.7070944204907424e-43,
+      "q_genus": 1.4655140164361168e-07
+     },
+     {
+      "test": "residue_by_own_pfam_domain",
+      "row": "plant+rieske",
+      "residue": "A",
+      "share": 0.0,
+      "baseline": 0.8135,
+      "lift": -0.8135,
+      "direction": "under",
+      "q": 4.627088420601724e-15,
+      "q_genus": null
+     },
+     {
+      "test": "residue_by_enzyme_type",
+      "row": "4_405_ROCH34",
+      "residue": "A",
+      "share": 0.3443,
+      "baseline": 0.8372,
+      "lift": -0.4929,
+      "direction": "under",
+      "q": 5.424408947034584e-25,
+      "q_genus": 0.0018705348990737975
+     },
+     {
+      "test": "residue_by_enzyme_type",
+      "row": "1_107_CndA",
+      "residue": "A",
+      "share": 0.45,
+      "baseline": 0.8372,
+      "lift": -0.3872,
+      "direction": "under",
+      "q": 8.369573959968333e-06,
+      "q_genus": null
+     },
+     {
+      "test": "residue_by_enzyme_type",
+      "row": "2_217_HcaE",
+      "residue": "A",
+      "share": 1.0,
+      "baseline": 0.8372,
+      "lift": 0.1628,
+      "direction": "over",
+      "q": 8.390138076309763e-13,
+      "q_genus": 0.02401904760871586
+     },
+     {
+      "test": "residue_by_enzyme_type",
+      "row": "3_307_NagGH",
+      "residue": "A",
+      "share": 0.9936,
+      "baseline": 0.8372,
+      "lift": 0.1564,
+      "direction": "over",
+      "q": 1.6670440092601074e-14,
+      "q_genus": 0.00019554402883961044
+     },
+     {
+      "test": "residue_by_group",
+      "row": "group 3",
+      "residue": "A",
+      "share": 0.9183,
+      "baseline": 0.8135,
+      "lift": 0.1049,
+      "direction": "over",
+      "q": 8.95017253060443e-13,
+      "q_genus": 5.272411190396705e-07
+     }
+    ],
+    "n_material_cells_surviving": 7,
+    "proxy_class_shares": {
+     "IIB_like_W_share": 0.05714285714285714,
+     "IIB_like_A_share": 0.8747252747252747,
+     "III_like_A_share": 0.8828828828828829,
+     "III_like_W_share": 0.0
+    },
+    "arm_plant_type_IIA_tyrosine": "untestable",
+    "arm_plant_type_IIA_tyrosine_reason": "the 'tyrosine in certain plant-type Fds from Class IIA' arm cannot be tested by this method at all, and not because of missing labels. Plant-type ferredoxins (Fer2, PF00111) have a thioredoxin-like fold with no structural or evolutionary counterpart to the Rieske-type ferredoxin region that carries A50. There is no column in a plant-type Fd that corresponds to NDO-Fd A50, so there is nothing to read. This shows up in the data as plant-type Fds failing the alignment thresholds rather than as a tyrosine count",
+    "status": "contradicted",
+    "reasoning": "alanine is the single dominant residue at this column across the whole readable set (81% of 3029 observations at entry level, 66% after collapsing to one observation per type x genus), and it is dominant in the IIB-like proxy class as well. Tryptophan is a global minority (3%) and does not predominate in the IIB-like class. Alanine at this position is therefore the default state of Rieske-type ferredoxins, not a marker of Class III",
+    "direct_test_of_their_class_labels": "untestable",
+    "refinement": {
+     "headline": "the residue is strongly structured, but by ENZYME TYPE, not by class",
+     "cramers_v_enzyme_type": 0.5929046194919175,
+     "cramers_v_batie_proxy": 0.1757423971815434,
+     "effect_size_ratio": 3.37,
+     "tryptophan_is_a_clade_marker": {
+      "total_W_observations": 88,
+      "n_types_carrying_it": 8,
+      "of_readable_types": 56,
+      "share_of_W_in_top3_types": 0.5568
+     },
+     "statement": "W at this column is confined to a narrow clade of types around cumene / toluene / ethylbenzene dioxygenase - the very enzymes the preprint studied and cited. Within that clade the authors' observation is correct and reproduces perfectly. The error is one of extrapolation: the clade is much smaller than Class IIB, and the rest of Class IIB carries alanine. A two-protein sample drawn from inside that clade cannot distinguish a clade marker from a class marker, which is precisely why the generalisation fails"
+    },
+    "summary": "The distributional claim is CONTRADICTED in this dataset for the two arms that can be tested (W in IIB, A in III), and the third arm (Y in plant-type IIA) is UNTESTABLE here. A direct test of the authors' Batie class labels is UNTESTABLE because this database does not assign them. alanine is the single dominant residue at this column across the whole readable set (81% of 3029 observations at entry level, 66% after collapsing to one observation per type x genus), and it is dominant in the IIB-like proxy class as well. Tryptophan is a global minority (3%) and does not predominate in the IIB-like class. Alanine at this position is therefore the default state of Rieske-type ferredoxins, not a marker of Class III.",
+    "what_this_does_not_show": "that the position does not matter. The authors' mutagenesis shows it does, and a residue can be functionally critical while being almost invariant across a family - indeed that is the usual case. What the distribution contradicts is only the claim that the IDENTITY of this residue tracks RO class"
+   },
+   "our_evidence": "the equivalent column read in 3,029 ferredoxins (1,793 distinct sequences) out of 7,022 in the database. The rest were discarded, almost all of them because the four Rieske ligands did not align to the chemically identical residue -- the column sits three residues after one of those ligands, so without that anchor the register is noise",
+   "headline": "Alanine holds this column in 81 % of observations across the whole family, and in 87 % of the Class IIB-like set where tryptophan was said to predominate. Tryptophan is at 2.9 % overall.",
+   "refinement": {
+    "headline": "the residue is strongly structured, but by ENZYME TYPE, not by class",
+    "cramers_v_enzyme_type": 0.5929046194919175,
+    "cramers_v_batie_proxy": 0.1757423971815434,
+    "effect_size_ratio": 3.37,
+    "tryptophan_is_a_clade_marker": {
+     "total_W_observations": 88,
+     "n_types_carrying_it": 8,
+     "of_readable_types": 56,
+     "share_of_W_in_top3_types": 0.5568
+    },
+    "statement": "W at this column is confined to a narrow clade of types around cumene / toluene / ethylbenzene dioxygenase - the very enzymes the preprint studied and cited. Within that clade the authors' observation is correct and reproduces perfectly. The error is one of extrapolation: the clade is much smaller than Class IIB, and the rest of Class IIB carries alanine. A two-protein sample drawn from inside that clade cannot distinguish a clade marker from a class marker, which is precisely why the generalisation fails"
+   },
+   "positive_controls": {
+    "why": "the close homologues of each reference must read back that reference's own residue. If they did not, the column mapping would be broken and the distribution below would be meaningless. This is what separates a real negative result from a broken pipeline",
+    "results": {
+     "CDO-Fd": {
+      "identity_threshold_pct": 60.0,
+      "n": 30,
+      "residues": {
+       "W": 30
+      },
+      "expected_residue": "W",
+      "share_expected": 1.0,
+      "best_identity_pct": 100.0,
+      "enzyme_types": {
+       "2_202_EdoA1": 23,
+       "2_203_cumA1": 7
+      }
+     },
+     "NDO-Fd": {
+      "identity_threshold_pct": 70.0,
+      "n": 32,
+      "residues": {
+       "A": 32
+      },
+      "expected_residue": "A",
+      "share_expected": 1.0,
+      "best_identity_pct": 100.0,
+      "enzyme_types": {
+       "3_303_NBDO": 24,
+       "3_307_NagGH": 8
+      }
+     }
+    },
+    "passed": true
+   },
+   "what_this_does_not_show": "that the position does not matter. The authors' mutagenesis shows it does, and a residue can be functionally critical while being almost invariant across a family - indeed that is the usual case. What the distribution contradicts is only the claim that the IDENTITY of this residue tracks RO class",
+   "what_would_settle_it": "an agreed assignment of Batie classes to these enzymes. This database assigns none, and its own groups are built from alpha subunit sequence rather than electron-chain architecture, so the class arm of the claim is answered here only through a proxy that the output states in full.",
+   "source_file": "ferredoxin_residue.json"
+  },
+  {
+   "id": "ferredoxin_more_selective",
+   "status": "not supported",
+   "claim": "The reductase shows moderate promiscuity in redox partner compatibility, while interactions between ferredoxin and oxygenase are typically more selective.",
+   "source": "Miao H, Schmidt S. Rieske Oxygenases: Powerful Models for Understanding Nature's Orchestration of Electron Transfer and Oxidative Chemistry. Biochemistry 2025;64:3801-3813",
+   "doi": "10.1021/acs.biochem.5c00369",
+   "their_evidence": "structural studies of individual complexes and reconstitution experiments with non-native partners",
+   "our_measurement": {
+    "reductase_type_by_enzyme_type": {
+     "cramers_v": 0.39093891081177073,
+     "n": 18077,
+     "shuffled_null": 0.0559
+    },
+    "ferredoxin_type_by_enzyme_type": {
+     "cramers_v": 0.37628615134510607,
+     "n": 18029,
+     "shuffled_null": 0.0555
+    }
+   },
+   "our_evidence": "how tightly each partner's identity tracks the enzyme type across the whole database, measured the same way for both and against the same kind of shuffled null",
+   "headline": "If the ferredoxin coupling were the more selective of the two, the ferredoxin should track the enzyme type more tightly than the reductase does. It does not: Cram\u00e9r's V is 0.38 for the ferredoxin against 0.39 for the reductase, a difference of 0.01 in the opposite direction to the claim.",
+   "what_this_does_not_show": "that ferredoxin coupling is not selective in the biochemical sense. What is measured here is which partner FAMILY sits beside which enzyme in the genome, not whether a given ferredoxin can productively transfer electrons to a given oxygenase. Those are different questions and the second is the one their experiments answer.",
+   "what_would_settle_it": "cross-reconstitution assays across many more pairs than the handful tested so far, which is laboratory work this database cannot substitute for.",
+   "source_file": "stats.json"
+  },
+  {
+   "id": "conserved_bridging_aspartate",
+   "status": "refined",
+   "claim": "Electron transfer between the Rieske cluster and the mononuclear iron proceeds by a proton-coupled mechanism mediated by a highly conserved aspartate residue, which bridges the two metal centres of neighbouring subunits.",
+   "source": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813",
+   "doi": "10.1021/acs.biochem.5c00369",
+   "their_evidence": "crystal structures and computational studies of a small number of model systems",
+   "our_measurement": {
+    "asp": 13964,
+    "glu": 5156,
+    "ratio": 2.71,
+    "cramers_v_by_group": 0.8314224023137645,
+    "cramers_v_by_reaction": 0.7884739098285872,
+    "p_by_group": 0.0
+   },
+   "our_evidence": "the identity of the bridging carboxylate read from every confirmed alpha subunit that has one",
+   "headline": "Conserved in kind, not in identity. The bridging position is a carboxylate almost without exception, but it is aspartate 13,964 times and glutamate 5,156 times, a ratio of 2.7 to 1 rather than invariance. The glutamate is not scattered: it maps onto a definable branch, with Cram\u00e9r's V = 0.83 against the RO group and 0.79 against the reaction class.",
+   "what_this_does_not_show": "that the mechanism differs in the glutamate branch. Both residues are carboxylates and either could in principle carry the same proton-coupled step; no kinetics were measured here. The claim being refined is about conservation, not mechanism.",
+   "what_would_settle_it": "a structure or a kinetic measurement from an enzyme in the glutamate branch.",
+   "source_file": "stats.json"
+  },
+  {
+   "id": "regulators_diverge_faster",
+   "status": "overturned in part, and it was our own",
+   "claim": "Regulators diverge faster than the enzymes they control. Measured over 45 enzyme types and 2,382 pairs: mean main diversity 0.378 against mean regulator diversity 0.446.",
+   "source": "this project's own earlier analysis (evolution_rates_of_reg_and_enz.py, enzyme_regulator_graphs.py), and the same direction is widely assumed in the literature",
+   "doi": null,
+   "their_evidence": "they ask the same question and reach the same direction. From the old pipeline's proteins_output.fasta they paired each main gene with the nearest regulator within 1000 to 1500 bp by midpoint distance, aligned all main sequences of a type together with MUSCLE and all regulator sequences together, took the mean pairwise p-distance of each alignment, and compared the two numbers per type. Published result: 45 types, 2382 pairs, mean main diversity 0.378 against mean regulator diversity 0.446, concluding that regulators are the more diverse.",
+   "our_measurement": {
+    "controls": [
+     {
+      "protein": "regulator",
+      "key": "regulator",
+      "n_pairs": 47615,
+      "n_types": 56,
+      "n_genus_pairs": 5808,
+      "alpha_identity_mean": 53.2,
+      "alpha_identity_median": 45.3,
+      "identity_mean": 38.9,
+      "identity_median": 27.5,
+      "identity_quartiles": [
+       23.6,
+       48.8
+      ],
+      "gap_mean": 14.3,
+      "gap_median": 11.0,
+      "share_of_pairs_less_conserved_than_alpha": 0.906,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_alpha_over_protein": 0.468,
+      "cliffs_delta_p": 0.0,
+      "share_at_or_below_measured_floor": 0.619
+     },
+     {
+      "protein": "beta subunit",
+      "key": "ro_beta",
+      "n_pairs": 17541,
+      "n_types": 28,
+      "n_genus_pairs": 1913,
+      "alpha_identity_mean": 67.4,
+      "alpha_identity_median": 71.2,
+      "identity_mean": 60.4,
+      "identity_median": 61.7,
+      "identity_quartiles": [
+       39.8,
+       74.8
+      ],
+      "gap_mean": 7.0,
+      "gap_median": 6.9,
+      "share_of_pairs_less_conserved_than_alpha": 0.851,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_alpha_over_protein": 0.206,
+      "cliffs_delta_p": 3.344054227637894e-244,
+      "share_at_or_below_measured_floor": 0.089
+     },
+     {
+      "protein": "ferredoxin",
+      "key": "ferredoxin",
+      "n_pairs": 7946,
+      "n_types": 38,
+      "n_genus_pairs": 780,
+      "alpha_identity_mean": 70.9,
+      "alpha_identity_median": 75.3,
+      "identity_mean": 57.7,
+      "identity_median": 58.0,
+      "identity_quartiles": [
+       34.6,
+       75.9
+      ],
+      "gap_mean": 13.1,
+      "gap_median": 12.3,
+      "share_of_pairs_less_conserved_than_alpha": 0.868,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_alpha_over_protein": 0.328,
+      "cliffs_delta_p": 3.6959802046001495e-281,
+      "share_at_or_below_measured_floor": 0.148
+     },
+     {
+      "protein": "reductase",
+      "key": "reductase",
+      "n_pairs": 12233,
+      "n_types": 48,
+      "n_genus_pairs": 2477,
+      "alpha_identity_mean": 50.7,
+      "alpha_identity_median": 40.7,
+      "identity_mean": 42.5,
+      "identity_median": 32.7,
+      "identity_quartiles": [
+       24.6,
+       52.4
+      ],
+      "gap_mean": 8.2,
+      "gap_median": 6.4,
+      "share_of_pairs_less_conserved_than_alpha": 0.775,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_alpha_over_protein": 0.289,
+      "cliffs_delta_p": 0.0,
+      "share_at_or_below_measured_floor": 0.48
+     }
+    ],
+    "common_set": {
+     "note": "every protein scored on the pairs where all four are present at both ends, so the four numbers are strictly comparable",
+     "n_pairs": 1050,
+     "rows": [
+      {
+       "protein": "regulator",
+       "key": "regulator",
+       "n_pairs": 1050,
+       "n_types": 18,
+       "n_genus_pairs": 173,
+       "alpha_identity_mean": 69.9,
+       "alpha_identity_median": 71.7,
+       "identity_mean": 50.9,
+       "identity_median": 36.5,
+       "identity_quartiles": [
+        26.8,
+        74.4
+       ],
+       "gap_mean": 19.0,
+       "gap_median": 16.8,
+       "share_of_pairs_less_conserved_than_alpha": 0.952,
+       "wilcoxon_p": 4.434505480072768e-167,
+       "cliffs_delta_alpha_over_protein": 0.439,
+       "cliffs_delta_p": 4.348312666505308e-68,
+       "share_at_or_below_measured_floor": 0.428
+      },
+      {
+       "protein": "beta subunit",
+       "key": "ro_beta",
+       "n_pairs": 1050,
+       "n_types": 18,
+       "n_genus_pairs": 173,
+       "alpha_identity_mean": 69.9,
+       "alpha_identity_median": 71.7,
+       "identity_mean": 66.3,
+       "identity_median": 70.1,
+       "identity_quartiles": [
+        44.0,
+        79.2
+       ],
+       "gap_mean": 3.7,
+       "gap_median": 2.3,
+       "share_of_pairs_less_conserved_than_alpha": 0.657,
+       "wilcoxon_p": 3.6459803926476545e-65,
+       "cliffs_delta_alpha_over_protein": 0.09,
+       "cliffs_delta_p": 0.0003626900231074017,
+       "share_at_or_below_measured_floor": 0.014
+      },
+      {
+       "protein": "ferredoxin",
+       "key": "ferredoxin",
+       "n_pairs": 1050,
+       "n_types": 18,
+       "n_genus_pairs": 173,
+       "alpha_identity_mean": 69.9,
+       "alpha_identity_median": 71.7,
+       "identity_mean": 59.3,
+       "identity_median": 54.7,
+       "identity_quartiles": [
+        41.5,
+        78.3
+       ],
+       "gap_mean": 10.6,
+       "gap_median": 10.7,
+       "share_of_pairs_less_conserved_than_alpha": 0.815,
+       "wilcoxon_p": 1.729941261619707e-136,
+       "cliffs_delta_alpha_over_protein": 0.27,
+       "cliffs_delta_p": 7.337475496259858e-27,
+       "share_at_or_below_measured_floor": 0.114
+      },
+      {
+       "protein": "reductase",
+       "key": "reductase",
+       "n_pairs": 1050,
+       "n_types": 18,
+       "n_genus_pairs": 173,
+       "alpha_identity_mean": 69.9,
+       "alpha_identity_median": 71.7,
+       "identity_mean": 52.4,
+       "identity_median": 50.8,
+       "identity_quartiles": [
+        28.0,
+        64.8
+       ],
+       "gap_mean": 17.5,
+       "gap_median": 18.6,
+       "share_of_pairs_less_conserved_than_alpha": 0.918,
+       "wilcoxon_p": 3.7367361172276006e-162,
+       "cliffs_delta_alpha_over_protein": 0.405,
+       "cliffs_delta_p": 4.541836787443879e-58,
+       "share_at_or_below_measured_floor": 0.285
+      }
+     ]
+    },
+    "head_to_head": [
+     {
+      "control": "beta subunit",
+      "key": "ro_beta",
+      "n_pairs": 17541,
+      "n_types": 28,
+      "n_genus_pairs": 1913,
+      "control_identity_mean": 60.4,
+      "regulator_identity_mean": 45.9,
+      "mean_difference_control_minus_regulator": 14.5,
+      "median_difference_control_minus_regulator": 11.6,
+      "share_of_pairs_regulator_less_conserved_than_control": 0.884,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_control_over_regulator": 0.393,
+      "cliffs_delta_p": 0.0
+     },
+     {
+      "control": "ferredoxin",
+      "key": "ferredoxin",
+      "n_pairs": 7946,
+      "n_types": 38,
+      "n_genus_pairs": 780,
+      "control_identity_mean": 57.7,
+      "regulator_identity_mean": 52.9,
+      "mean_difference_control_minus_regulator": 4.9,
+      "median_difference_control_minus_regulator": 4.8,
+      "share_of_pairs_regulator_less_conserved_than_control": 0.7,
+      "wilcoxon_p": 1.123061149608761e-291,
+      "cliffs_delta_control_over_regulator": 0.147,
+      "cliffs_delta_p": 6.522587346692658e-58
+     },
+     {
+      "control": "reductase",
+      "key": "reductase",
+      "n_pairs": 12233,
+      "n_types": 48,
+      "n_genus_pairs": 2477,
+      "control_identity_mean": 42.5,
+      "regulator_identity_mean": 37.9,
+      "mean_difference_control_minus_regulator": 4.5,
+      "median_difference_control_minus_regulator": 2.6,
+      "share_of_pairs_regulator_less_conserved_than_control": 0.636,
+      "wilcoxon_p": 0.0,
+      "cliffs_delta_control_over_regulator": 0.178,
+      "cliffs_delta_p": 2.4833188809640303e-128
+     }
+    ],
+    "verdict": {
+     "conclusion": "The regulator claim survives only PARTLY. The regulator's gap exceeds the gap of the beta subunit by more than 5 points, but against the reductase the margin is only +4.5 points. A headline of the form 'regulators diverge faster than the enzymes they control' overstates it, because part of the apparent gap is the selection effect: the pairs were chosen on the alpha subunit, so every other operon protein is more variable than it by construction.",
+     "measured": "On the pairs where each protein is present at both ends, the mean identity is 38.9 % for the regulator (n = 47615, gap to the alpha subunit +14.3 points), 57.7 % for the ferredoxin (n = 7946, gap to the alpha subunit +13.1 points), 42.5 % for the reductase (n = 12233, gap to the alpha subunit +8.2 points), 60.4 % for the beta subunit (n = 17541, gap to the alpha subunit +7.0 points).",
+     "direct_comparison": "Compared directly against each control on the same pairs, the regulator is 14.5 points less conserved than the beta subunit (n = 17541, Cliff's delta +0.39, p = 0.0e+00), 4.9 points less conserved than the ferredoxin (n = 7946, Cliff's delta +0.15, p = 1.1e-291), 4.5 points less conserved than the reductase (n = 12233, Cliff's delta +0.18, p = 0.0e+00).",
+     "regulator_gap_exceeds_every_control": false,
+     "controls_the_regulator_beats": [
+      "beta subunit"
+     ],
+     "excess_over_each_control": [
+      {
+       "control": "beta subunit",
+       "points": 14.5
+      },
+      {
+       "control": "ferredoxin",
+       "points": 4.9
+      },
+      {
+       "control": "reductase",
+       "points": 4.5
+      }
+     ],
+     "smallest_margin_over_a_control": {
+      "control": "reductase",
+      "points": 4.5
+     },
+     "largest_margin_over_a_control": {
+      "control": "beta subunit",
+      "points": 14.5
+     },
+     "tolerance_points": 5.0,
+     "what_counts_as_clearing_a_control": "a margin above 5 percentage points AND a Cliff's delta of at least 0.147. The p value is not one of the conditions: at these pair counts a half-point difference and a fifteen-point difference both come out at p below 1e-200.",
+     "negligible_delta": 0.147,
+     "restated_finding": "regulators are the most variable protein in the operon, but every operon component is more variable than the alpha subunit, and the alpha subunit's conservation is an artefact of selecting the pairs on it"
+    },
+    "gate_ladder": {
+     "question": "What does the regulator-to-alpha contrast look like at successively stricter evidence that the two regulators are the same protein rather than two members of one large family?",
+     "gates": [
+      {
+       "protein": "regulator",
+       "key": "regulator",
+       "n_pairs": 47615,
+       "n_types": 56,
+       "n_genus_pairs": 5808,
+       "alpha_identity_mean": 53.2,
+       "alpha_identity_median": 45.3,
+       "identity_mean": 38.9,
+       "identity_median": 27.5,
+       "identity_quartiles": [
+        23.6,
+        48.8
+       ],
+       "gap_mean": 14.3,
+       "gap_median": 11.0,
+       "share_of_pairs_less_conserved_than_alpha": 0.906,
+       "wilcoxon_p": 0.0,
+       "cliffs_delta_alpha_over_protein": 0.468,
+       "cliffs_delta_p": 0.0,
+       "share_at_or_below_measured_floor": 0.619,
+       "gate": "1. all pairs",
+       "why": "no orthology evidence at all; two regulators may be unrelated proteins"
+      },
+      {
+       "protein": "regulator",
+       "key": "regulator",
+       "n_pairs": 16713,
+       "n_types": 52,
+       "n_genus_pairs": 2420,
+       "alpha_identity_mean": 64.7,
+       "alpha_identity_median": 70.2,
+       "identity_mean": 53.5,
+       "identity_median": 53.0,
+       "identity_quartiles": [
+        29.5,
+        72.2
+       ],
+       "gap_mean": 11.2,
+       "gap_median": 10.2,
+       "share_of_pairs_less_conserved_than_alpha": 0.872,
+       "wilcoxon_p": 0.0,
+       "cliffs_delta_alpha_over_protein": 0.285,
+       "cliffs_delta_p": 0.0,
+       "share_at_or_below_measured_floor": 0.272,
+       "gate": "2. same regulator family",
+       "why": "TetR and LysR are very large families, so this is weak evidence: two TetR-family regulators in two genomes can still be different proteins"
+      },
+      {
+       "protein": "regulator",
+       "key": "regulator",
+       "n_pairs": 12162,
+       "n_types": 52,
+       "n_genus_pairs": 1480,
+       "alpha_identity_mean": 75.2,
+       "alpha_identity_median": 78.2,
+       "identity_mean": 64.3,
+       "identity_median": 63.6,
+       "identity_quartiles": [
+        48.7,
+        77.2
+       ],
+       "gap_mean": 10.9,
+       "gap_median": 11.0,
+       "share_of_pairs_less_conserved_than_alpha": 0.85,
+       "wilcoxon_p": 0.0,
+       "cliffs_delta_alpha_over_protein": 0.349,
+       "cliffs_delta_p": 0.0,
+       "share_at_or_below_measured_floor": 0.0,
+       "gate": "3. same family, above the measured floor (31 %)",
+       "why": "pairs at or below the floor carry no divergence information at all, because regulators known to be unrelated already score that high"
+      },
+      {
+       "protein": "regulator",
+       "key": "regulator",
+       "n_pairs": 1237,
+       "n_types": 51,
+       "n_genus_pairs": 293,
+       "alpha_identity_mean": 92.6,
+       "alpha_identity_median": 98.9,
+       "identity_mean": 92.9,
+       "identity_median": 99.4,
+       "identity_quartiles": [
+        94.5,
+        100.0
+       ],
+       "gap_mean": -0.3,
+       "gap_median": 0.0,
+       "share_of_pairs_less_conserved_than_alpha": 0.384,
+       "wilcoxon_p": 0.0034626919977234437,
+       "cliffs_delta_alpha_over_protein": -0.112,
+       "cliffs_delta_p": 8.443163658149579e-07,
+       "share_at_or_below_measured_floor": 0.021,
+       "gate": "4. same family and reciprocal best hit",
+       "why": "the strongest orthology evidence obtainable from sequence alone here: each regulator's best-scoring match among all that type's regulators is the other one"
+      }
+     ],
+     "pairs_removed_by_each_gate": {
+      "all_pairs": 47615,
+      "both_families_classified": 34183,
+      "same_family": 16713,
+      "same_family_above_the_measured_floor": 12162,
+      "same_family_and_reciprocal_best_hit": 1237
+     },
+     "reciprocal_best_hit": {
+      "rule": "within an enzyme type, regulator A's best-scoring global alignment among all that type's regulators is regulator B, and B's best is A. Ranking uses the alignment score rather than percent identity, which is what a reciprocal best hit means; the score comes from the same blastp scoring used everywhere else in this module.",
+      "types_scanned": 56,
+      "alignments": 739799,
+      "entry_cap_per_type": 400,
+      "types_capped": 2,
+      "what_was_capped": [
+       {
+        "type": "1_104_VanA",
+        "entries": 522,
+        "entries_scanned": 400,
+        "alignments": 79800,
+        "capped": true
+       },
+       {
+        "type": "5_506_Stc2",
+        "entries": 584,
+        "entries_scanned": 400,
+        "alignments": 79800,
+        "capped": true
+       }
+      ],
+      "reciprocal_pairs_found": 1555,
+      "ties_encountered_while_ranking": 9071,
+      "reciprocal_pairs_usable": 1237,
+      "why_fewer_are_usable": "a reciprocal pair still has to pass the alignment coverage check and to carry two classified regulators of the same family"
+     },
+     "what_the_gates_also_change": {
+      "first_gate": "1. all pairs",
+      "last_gate": "4. same family and reciprocal best hit",
+      "alpha_identity_at_the_first_gate": 53.2,
+      "alpha_identity_at_the_last_gate": 92.6,
+      "gap_at_the_first_gate": 14.3,
+      "gap_at_the_last_gate": -0.3,
+      "note": "The gates do not only remove pairs, they move the comparison to a different evolutionary distance. A reciprocal best hit inside one type is easiest to establish between close relatives, so the pairs that survive the last gate have a mean alpha identity of 92.6 % against 53.2 % at the first. Part of the change in the gap is therefore a change in distance rather than a change in orthology evidence, and the two cannot be separated with this design."
+     },
+     "how_to_read_gate_4": "Gate 4 biases toward conserved regulators. A fast-diverging regulator is exactly the one whose best match inside its own type is somebody else, so it fails the reciprocal test and leaves the sample. The gate is therefore conservative in one direction only: a gap that survives it is real, while a gap that disappears at it is ambiguous, because the pairs it removed are the ones the claim is about.",
+     "gate_4_pair_universe": "the reciprocal best hit pairs are scored directly rather than taken from the sampled set. Inside a large type the sampler keeps 2000 of tens of thousands of pairs, so it would catch almost none of the at most n/2 reciprocal pairs and the gate would rest on a handful of observations."
+    },
+    "measured_floor": {
+     "what_was_sampled": "regulator pairs drawn from DIFFERENT enzyme types and DIFFERENT regulator families, scored exactly like the real pairs, with the same alignment coverage check",
+     "n_pairs": 4000,
+     "mean": 24.6,
+     "median": 24.4,
+     "sd": 3.8,
+     "percentiles": {
+      "50": 24.4,
+      "75": 26.9,
+      "90": 29.6,
+      "95": 31.1,
+      "99": 34.7
+     },
+     "floor_percentile": 95,
+     "measured_floor": 31.1,
+     "assumed_floor_in_the_earlier_version": 25.0
+    }
+   },
+   "our_evidence": "the same comparison, but with the beta subunit, the ferredoxin and the reductase measured at the same genome pairs as controls",
+   "headline": "The pairs are drawn from within an enzyme type, and an enzyme type is defined by alpha subunit similarity, so a high alpha identity is a property of the selection rather than an observation. Against controls, roughly sixty per cent of the gap disappears: the regulator does beat the beta subunit, beats the reductase only marginally, and does not beat the ferredoxin at all. Under the strictest orthology gate the gap vanishes.",
+   "what_this_does_not_show": "that regulators evolve at the same rate as their enzymes. The regulator remains the most variable protein in the operon on every measure here. What collapses is the size of the effect and the claim that it is specific to regulators.",
+   "what_would_settle_it": "a phylogeny-aware rate comparison on confidently orthologous sets, rather than pairwise identity within profile bins.",
+   "source_file": "operon_relations.json"
+  },
+  {
+   "id": "taxonomic_breadth_metric",
+   "status": "overturned, and it was our own",
+   "claim": "Enzyme types acting on man-made substrates occupy more bacterial genera than types acting on natural ones, measured as distinct genera per member.",
+   "source": "this database's own earlier metric",
+   "doi": null,
+   "their_evidence": "genera per member, computed per enzyme type",
+   "our_measurement": {
+    "old_metric": {
+     "xenobiotic_median": 0.2728965258087658,
+     "natural_median": 0.29096765303661853,
+     "p": 0.9155131375970287
+    },
+    "rarefied": {
+     "xenobiotic_median": 11.773333333333333,
+     "natural_median": 12.936666666666667,
+     "p": 0.2123707333774547
+    },
+    "size_correlation_after_rarefaction": {
+     "spearman_rho": 0.3141784852287168,
+     "p": 0.016315177851172077,
+     "note": "near zero is the point of rarefaction; the unrarefied metric correlated with type size at rho = -0.77, p = 9e-11, so it was measuring how many members a type has"
+    }
+   },
+   "our_evidence": "the same question with every type rarefied to a common sample size",
+   "headline": "The old metric was measuring type size, not breadth: it correlated with the number of members at rho = -0.77. Rarefied to a common size the direction REVERSES and the difference is not significant. A result that exists only because of how the measure behaves is not a result.",
+   "what_this_does_not_show": "that there is no difference in taxonomic breadth. With this many types the rarefied test has little power; it shows that the original evidence does not survive, not that the opposite is true.",
+   "what_would_settle_it": "more characterised types.",
+   "source_file": "stats.json"
+  }
+ ]
+}

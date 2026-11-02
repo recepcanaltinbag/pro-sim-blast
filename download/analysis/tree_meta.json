@@ -1,0 +1,17 @@
+{
+ "tree": "tree_all.nwk",
+ "model": "LG",
+ "model_fallback_chain": [
+  "LG",
+  "JTT",
+  "JTT without ML"
+ ],
+ "aligner": "hmmalign",
+ "support": "SH-like local support (FastTree default)",
+ "support_is_bootstrap": false,
+ "n_internal_branches": 2046,
+ "support_median": 0.923,
+ "support_weak_below_0.70": 491,
+ "support_strong_at_least_0.95": 857,
+ "n_sequences": 2062
+}

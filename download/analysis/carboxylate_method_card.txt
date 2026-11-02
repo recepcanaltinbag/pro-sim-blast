@@ -1,0 +1,191 @@
+======================================================================
+ROAR-DB  --  reading the catalytic carboxylate: what is looked at
+audit generated 2026-10-30T12:01:24+00:00   model ROmotif71, carboxylate at match column 431
+======================================================================
+
+STEP 1  the baseline reading, and what it claims
+------------------------------------------------
+  looked at   the residue standing in ONE FIXED alignment column
+              (match column 431, window +-2) for every confirmed
+              member; the stored table is recomputed from the
+              alignment to check it (0 disagreements)
+  found       2388 members give no D/E there, and the breakdown
+              splits that number into two different findings:
+                 1947  the column AND its neighbours are gaps
+                       -> an alignment event, not a biological one
+                  221  a real residue sits there but is not D/E
+                       -> a biological claim, and testable
+                  220  centre gapped, neighbours present
+  reading     81.5% of the 'absences' are empty columns. An
+              uncovered column cannot report an absence.
+
+STEP 2  is the column even reachable in those members?
+------------------------------------------------------
+  looked at   per entry, the first and last FILLED match column of
+              its own alignment -- how much of the model the
+              sequence actually occupies
+                                      no-carboxylate   with
+    last filled match column (median)           403        488
+    filled match residues (median)              262        341
+    model coverage (mean)                     0.691      0.852
+    hmm score (mean)                          248.1      424.5
+    identity to nearest reference %            39.9       47.7
+  found       the alignment stops before column 431 in 1538 of 2388
+              entries (64.4%).
+  the anchor  in ALL 2388 of them the two catalytic histidines and
+              the bridging Asp/Glu are present, so the local
+              register near the Rieske end is intact -- the
+              failure is specific to the C-terminal lobe.
+
+STEP 3  would a wider window rescue it? (the cheap fix, tested)
+---------------------------------------------------------------
+  looked at   the SAME fixed column at +-2, +-5, +-10, +-20, +-40
+    +-2   columns ->    0 rescued (0.0%)
+    +-5   columns ->  351 rescued (14.7%); offsets reach -5
+    +-10  columns ->  609 rescued (25.5%); offsets reach -10
+    +-20  columns ->  941 rescued (39.4%); offsets reach -20
+    +-40  columns -> 1372 rescued (57.5%); offsets reach -40
+  reading     widening a window around an EMPTY column scans more
+              empty columns. At +-40 the hits sit ~40 columns away,
+              which is no longer the same site. The fix has to be
+              a different anchor, not a looser one.
+
+STEP 4  the naive anchor, and why it is NOT evidence
+----------------------------------------------------
+  looked at   D/E at a raw-sequence distance from the second
+              catalytic histidine, calibrated on 16726 positives
+  found       that distance is not fixed: 50-236 residues
+              (2.5-97.5%: 97-176), so the window must be 93
+              residues wide
+  the test    hit rate 99.29%  vs  chance 99.26% from each
+              sequence's OWN D/E composition
+  reading     a window that wide finds a D/E in almost any
+              sequence. This step is reported precisely so it
+              cannot be mistaken for the measurement.
+
+STEP 5  where is the failure -- the sequence, or the model?
+-----------------------------------------------------------
+  looked at   three sub-models cut from the curated reference
+              alignment, searched against three sets: the
+              no-carboxylate members, the carboxylate-bearing
+              members, and -- as a CONTROL -- candidates the gate
+              rejected as not RO alpha at all
+    model      region                 no-carbox      with  rejected
+    RORieske   cols 139-219           2388/2388 16726/16726 2700/2700
+    ROcatC     cols 241-502           2353/2388 16701/16726  234/2700
+    ROcarbox   cols 406-456             89/2388 7847/16726   17/2700
+  reading     the Rieske sub-model hits every set -- the positive
+              control holds, so these are real Rieske proteins.
+              The catalytic-lobe model is what fails on them. The
+              global profile cannot align that lobe; the sequence
+              is not the problem.
+
+STEP 6  the anchored re-reading -- THE measurement
+--------------------------------------------------
+  per type, the type's own members are realigned with mafft, and
+  the carboxylate column is decided by the type's POSITIVES rather
+  than by a constant. Window +-3 columns. Four things are looked
+  at, in this order:
+    (a) anchor      where the positives put the carboxylate in the
+                    raw sequence; the column is their vote, and the
+                    vote share is printed so a split vote shows
+    (b) reference   the type's curated reference is in the same
+                    alignment; if it does not carry D/E at the
+                    anchor, the anchor is wrong
+    (c) recovery    the method's accuracy IN THAT alignment: of the
+                    positives, how many does the anchor hand back
+    (d) only then   what the no-carboxylate members carry there
+
+    type                 neg   pos   vote  recov    found   abs null
+    3_313_KshA15         492   120  0.317    1.0      1.0     0 pass
+    5_504_CntA           257   120  0.983    1.0      1.0     0 pass
+    3_321_Nvd            224    50   0.54    1.0   0.9866     3 pass
+    3_322_DAF36          173   120  0.733    1.0   0.9769     4 pass
+    1_105_DdmC           166   120    1.0    1.0      1.0     0 pass
+    1_106_TsaM           165   120  0.992    1.0   0.9939     1 pass
+    5_507_BmoA           144   120   0.95    1.0   0.9931     1 pass
+    1_108_PobA            81    89  0.494  0.506      1.0     0 underpowered
+    5_501_CmoS            80   120  0.667    1.0   0.9875     1 pass
+    1_117_PrnD            72    88   0.75   0.83      1.0     0 underpowered
+    1_104_VanA            68   120  0.992    1.0      1.0     0 pass
+    1_111_GxtA            46   120  0.983    1.0      1.0     0 pass
+    4_405_ROCH34          44   120  0.467    1.0      1.0     0 pass
+    1_110_SxtT            41   120  0.983    1.0      1.0     0 pass
+    1_113_CdnA            40   120  0.992    1.0      1.0     0 pass
+    5_506_Stc2            37   120    1.0    1.0    0.973     1 pass
+    6_601_PAO             33   120  0.992    1.0      1.0     0 pass
+    4_406_PDO             33   120    0.7  0.967      1.0     0 pass
+    3_319_PhdA            25   115    1.0    1.0     0.96     1 pass
+    2_211_bfzA            19    74  0.973    1.0      1.0     0 pass
+    6_603_PTC52           14   120  0.992    1.0   0.6429     5 pass
+    4_401_CmtAb           13   120   0.95    1.0      1.0     0 pass
+    1_112_NdmA            12    29  0.897    1.0      1.0     0 pass
+    1_107_CndA            11    62    1.0    1.0   0.9091     1 pass
+    1_118_RedG            10    54    1.0    1.0      1.0     0 pass
+    3_311_PhtAa           10   120    0.9    1.0      1.0     0 pass
+    1_109_LigX             8    79   0.38  0.987      1.0     0 pass
+    6_602_CAO              8   120    1.0    1.0    0.375     5 pass
+    4_409_TPDO             8   120    1.0    1.0      1.0     0 pass
+    4_403_AtdA             6   120    1.0    1.0      1.0     0 pass
+    2_212_BedC1            6    25   0.96    1.0      1.0     0 pass
+    2_218_BphA1            6   116  0.793    1.0      1.0     0 pass
+    1_116_GdmA             5    52    1.0    1.0      1.0     0 pass
+    3_305_ArhA1            5    19    1.0    1.0      0.8     1 pass
+    3_316_NarAa            5    43    1.0    1.0      1.0     0 pass
+    1_102_CARDO            3   108  0.981    1.0      1.0     0 pass
+    1_114_NdmB             2    24    1.0    1.0      1.0     0 pass
+    3_317_NidA             2    62    1.0    1.0      1.0     0 pass
+    5_505_qxyA             2   120    1.0    1.0      1.0     0 pass
+    3_318_NidA             1    18  0.889    1.0      1.0     0 underpowered
+    3_301_PhnA1a           1   120    1.0    1.0      1.0     0 underpowered
+    2_208_TecA1            1    18    1.0    1.0      1.0     0 underpowered
+    5_503_CmoA             1    11  0.909    1.0      1.0     0 underpowered
+    5_502_CmoB             1    32  0.875    1.0      1.0     0 underpowered
+
+  totals      carboxylate at the HOMOLOGOUS column    2200
+              at a group-conserved column              157
+              still ABSENT after anchoring              24
+
+STEP 7  could the conserved column be luck? (the null model)
+------------------------------------------------------------
+  looked at   per type: observed D/E at the anchor against that
+              group's OWN D/E frequency, one-sided binomial,
+              Benjamini-Hochberg corrected
+  compared to the D/E fraction of EVERY column in the same
+              alignment with >=80% occupancy -- if the anchor
+              column sits inside that distribution there is no
+              signal (median column D/E fraction is reported per
+              type for exactly this comparison)
+  found       37 of 44 types beat the null.
+  the rest    have too few members to test, not a weak signal:
+                1_108_PobA         81 member(s) read, 81 found, 0 absent
+                1_117_PrnD         72 member(s) read, 72 found, 0 absent
+                3_318_NidA         1 member(s) read, 1 found, 0 absent
+                3_301_PhnA1a       1 member(s) read, 1 found, 0 absent
+                2_208_TecA1        1 member(s) read, 1 found, 0 absent
+                5_503_CmoA         1 member(s) read, 1 found, 0 absent
+                5_502_CmoB         1 member(s) read, 1 found, 0 absent
+              total 158 entries, all of them found.
+
+STEP 8  what the residue-distance spread means, and does not
+------------------------------------------------------------
+  median 8 residues, 95% interval -68..67; within +-10: 1036 of 2356
+  reading     the register test is the ALIGNMENT column in step 6,
+              where offset 0 means the homologous position. This
+              raw distance measures something else: how much indel
+              has accumulated in the ~140-residue stretch between
+              the His pair and the carboxylate. A wide spread is
+              not error -- it is WHY a fixed column drifts out of
+              register, and why the anchor has to be per type.
+
+WHAT THE GATE MAY THEREFORE SAY
+-------------------------------
+  before      '4/4 Rieske ligands and >=2/3 of the facial triad'
+              -- a tolerance, with nothing measured behind the
+              third site
+  after       '3/3 measured: 19083 members are triad-complete and 24
+              are documented, individually characterised
+              exceptions'
+  which is the canonical 2-His-1-carboxylate definition, measured
+  rather than assumed.
+

@@ -1,0 +1,18 @@
+{
+ "source": "UniProtKB REST",
+ "n_queried": 73699,
+ "by_entry_type": {
+  "Inactive": 47993,
+  "UniProtKB reviewed (Swiss-Prot)": 94,
+  "UniProtKB unreviewed (TrEMBL)": 25612
+ },
+ "inactive_by_reason": {
+  "DELETED": 47988,
+  "DEMERGED": 2,
+  "MERGED": 3
+ },
+ "alive": 25706,
+ "ec_present": 3853,
+ "recoverable_genomic_context": 18076,
+ "note": "recoverable_genomic_context counts entries that are still live in UniProt, carry an EMBL nucleotide cross-reference, pass the motif gate and are not already linked to a genomic candidate -- that is, the entries for which a genomic record could be fetched and an operon built."
+}
