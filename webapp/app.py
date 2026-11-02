@@ -463,9 +463,10 @@ def home(request: Request):
         groups = atlas.chemistry_groups(CHEMISTRY_PATH, counts, ECOLOGY)
         return render(request, "index.html", totals=totals(con), groups=groups,
                       reactions=atlas.reaction_summary(groups),
+                      hero=atlas.hero_structures(CHEMISTRY_PATH, counts),
                       significance=atlas.significance_view(
                           CHEMISTRY_PATH, counts,
-                          os.path.join(PARENT, "significance.yaml")),
+                          os.path.join(PARENT, "significance.yaml"), con),
                       motif=atlas.read_json(apath("motif_stats.json")))
     finally:
         con.close()

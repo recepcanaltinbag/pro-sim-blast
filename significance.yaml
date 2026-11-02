@@ -1,61 +1,58 @@
 # NEDEN BU DOSYA VAR  (2026-11-02)
 #
-# Kullanici: "rieskelerin onemli oldugunu insanlar direkt anlamali ya
-# anasayfa nasil yapilir biliyor olman lazim". Haklı: anasayfa metodoloji
-# ile basliyordu, onem ile degil.
+# Kullanici: "rieskelerin onemli oldugunu insanlar direkt anlamali", sonra
+# "daha genel temel kapsayici anladin mi ROlar ile ilgili".
 #
-# AMA "onemlidir" bir IDDIA ve bu projede yayinlanan her iddianin kosulu
-# yazili olmak zorunda. O yuzden onem DUZYAZIYLA ANLATILMIYOR: her kart bir
-# OLCUME baglaniyor ve olcum bu dosyadaki anahtarlardan uretiliyor.
-# Sayilarin hicbiri burada yazili degil -- `families` / `reactions`
-# anahtarlari chemistry.csv'deki degerlerdir ve sayim her derlemede
-# veritabanindan yapilir. Bayatlayabilecek bir sayi yok.
+# ILK SURUM FAZLA DARDI. Kartlar kirletici parcalanmasi ile basliyordu;
+# o bir UYGULAMA, ailenin tanimi degil. Rieske oksijenazlari temelde
+# tanimlayan sey: tek zincirde iki demir merkezi, O2 ile zor oksidasyonlar,
+# ve bunun yasamin uc alanina birden yayilmis olmasi. Kartlar artik bu uc
+# ekseni olcuyor -- KIMYA, SUBSTRAT, CANLI -- ve kirletici o eksenlerden
+# birinin icinde bir ornek olarak geciyor.
 #
-# GRUPLAMA BURADA, SABLONDA DEGIL: "hangi aileler kirletici sayilir" bir
-# KURATOR KARARIDIR. Sablona gomulse denetlenemezdi; burada duruyor ve
-# validate_curation.py her anahtarin chemistry.csv'de gercekten var
-# oldugunu dogruluyor.
+# ONEM DUZYAZIYLA ANLATILMIYOR: her kart bir OLCUME bagli. Bu dosya TEK
+# SAYI tasimaz; `measure` anahtari neyin sayilacagini soyler ve sayim her
+# derlemede veritabanindan yapilir, yani bayatlayamaz. Hangi olcunun
+# yayinlanacagi bir kurator karari oldugu icin sablona gomulmedi;
+# validate_curation.py her `measure` degerinin tanimli oldugunu ve hicbir
+# iddianin sifir olcmedigini dogrular.
 
 claims:
-  - id: pollutants
-    label: They open the ring that nothing else will
-    families: [pah, haloaromatics, nitroaromatics, biaryls_ethers,
-               alkylbenzenes, anilines, sulfoaromatics, aromatic_acids]
+  - id: chemistry
+    measure: reaction_classes
+    label: Two metal centres, twelve different oxidations
     body: >-
-      An aromatic ring is stable, and most of the environment's worst organic
-      pollutants are aromatic. A Rieske oxygenase performs the first,
-      rate-limiting attack that makes the rest of a degradation pathway
-      possible. The curated substrates in these families include
-      polycyclic aromatic hydrocarbons, chlorinated and nitro-substituted
-      benzenes, biphenyls, dioxin-like diaryl ethers and phthalate
-      plasticisers.
+      Adding two hydroxyls across a ring at once, hydroxylating an unactivated
+      carbon, stripping methyl groups from nitrogen or oxygen, desaturating,
+      and cleaving rings open — all from the same pair of metal centres.
     basis: >-
-      Counted from the curated substrate family of each enzyme type. The
-      family assignment is a curator decision recorded in chemistry.csv;
-      the entry counts are measured from the database on every build.
+      Distinct reaction classes among the curated enzyme types. The class of
+      each type comes from the literature on its reference enzyme; type and
+      entry counts are measured from the database on every build.
 
-  - id: chirality
-    label: One step installs two hydroxyls, stereospecifically
-    reactions: [cis_dihydroxylation]
+  - id: substrates
+    measure: chemical_families
+    label: From aromatic pollutants to chlorophyll
     body: >-
-      The reaction the family is named for adds two adjacent hydroxyl groups
-      across a double bond with defined stereochemistry, in a single
-      enzymatic step and from O<sub>2</sub>. That is the reason these enzymes
-      are used preparatively: the cis-diol it produces is hard to make
-      selectively by chemical means.
+      The same fold is pointed at polycyclic aromatic hydrocarbons,
+      chlorinated and nitroaromatics, biphenyls and dioxin-like ethers,
+      phthalate plasticisers, sulfonated aromatics, anilines, alkaloids such
+      as caffeine, steroid and resin acid skeletons, quaternary-amine
+      osmolytes and carnitine, and chlorophyll in senescing leaves.
     basis: >-
-      Reaction class of each type, curated from the literature on its
-      reference enzyme; counts measured from the database.
+      Curated substrate families across the characterised types. The family
+      assignment is a curator decision recorded in chemistry.csv; counts are
+      measured from the database.
 
-  - id: beyond_bacteria
-    label: Not only bacteria, and not only pollutants
-    families: [quaternary_amines, terpenoids_steroids, tetrapyrroles, alkaloids]
+  - id: life
+    measure: domains_of_life
+    label: Bacteria, archaea and eukaryotes alike
     body: >-
-      The same fold works on osmolytes and carnitine, on steroid and resin
-      acid skeletons, on alkaloids, and on chlorophyll during senescence in
-      plants. The architecture is shared; the chemistry is not confined to
-      degradation.
+      These are not a bacterial speciality. The architecture is present in
+      plants, algae and fungi as well as across the bacterial tree, which is
+      why a catalogue of it cannot be built from one clade's genomes.
     basis: >-
-      Curated substrate families, counted from the database. Whether a given
-      member performs its type's reference reaction depends on its identity
-      to that reference, which every entry page states.
+      Domain and phylum read from the taxonomy of each entry's source
+      replicon, counted from the database. Entries without a genome record
+      carry no taxonomy and are not counted here.
+

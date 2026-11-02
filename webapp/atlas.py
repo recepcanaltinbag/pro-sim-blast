@@ -2851,20 +2851,19 @@ def retired_type_view(cluster):
     return retired_types().get(cluster)
 
 
-def significance_view(chemistry_path, counts, yaml_path):
-    """Anasayfanin "bu enzimler neden onemli" kartlari: ONEM OLCULUR.
+def significance_view(chemistry_path, counts, yaml_path, con=None):
+    """Anasayfanin "bu enzimler nedir ve nerede" kartlari: KAPSAM OLCULUR.
 
-    Kullanici 2026-11-02'de anasayfanin onemi anlatmadigini soyledi. Onem
-    bir iddia oldugu icin duzyaziyla yazilmiyor: her kartin sayilari
-    chemistry.csv'nin `family` / `reaction_class` degerlerinden ve
-    veritabanindaki uye sayimindan URETILIR. significance.yaml yalnizca
-    hangi anahtarlarin bir arada okunacagini (kurator karari) ve gerekcesini
-    tasir; tek bir sayi tasimaz, yani bayatlayamaz.
+    Kullanici once onemin gorunmedigini, sonra ilk surumun fazla dar
+    oldugunu soyledi ("daha genel temel kapsayici"). Ilk surum kirletici
+    parcalanmasi ile basliyordu -- o bir UYGULAMA. Kartlar artik ailenin
+    uc temel eksenini olcuyor: KIMYA (kac farkli oksidasyon), SUBSTRAT
+    (kac kimyasal aile) ve CANLI (kac yasam alani / filum).
 
-    Eksik anahtar SESSIZCE 0 vermez: dogrulama anahtarin chemistry.csv'de
-    var oldugunu zorluyor, burada da olculen tip sayisi 0 olan iddia
-    DONDURULMEZ -- bos bir kart yayinlamak, olcmedigini olculmus gibi
-    gostermektir.
+    significance.yaml TEK SAYI TASIMAZ: yalnizca hangi olcunun yayinlanacagi
+    (kurator karari) ve gerekcesi. Sayim her derlemede yapilir, yani
+    bayatlayamaz. Tanimsiz bir `measure` SESSIZCE atlanmaz -- dogrulama
+    onu FAIL eder.
     """
     if not os.path.exists(yaml_path):
         return []
@@ -2874,20 +2873,77 @@ def significance_view(chemistry_path, counts, yaml_path):
                   or {}).get("claims") or []
     except Exception:                                      # noqa: BLE001
         return []
-    rows = list(csv.DictReader(open(chemistry_path, encoding="utf-8")))
+    allrows = list(csv.DictReader(open(chemistry_path, encoding="utf-8")))
+    # BIRIM SABITLENIR. chemistry.csv 76 kuratorlu REFERANS tasiyor, ama
+    # sitenin her yerinde yayinlanan tip sayisi UYESI OLAN tiplerdir (68) --
+    # `totals.clusters` da odur. Ilk surum burada 76 yaziyordu ve ayni
+    # buyukluk iki ayri sayiyla yayinlanmis oluyordu; bu, projenin tekrar
+    # eden hata sinifi. Olculdu: her iki kume de 12 reaksiyon sinifi ve 12
+    # kimyasal aile veriyor, yani daraltma hicbir sinifi dusurmuyor.
+    rows = [r for r in allrows if counts.get(r["cluster"], 0)]
     out = []
     for c in claims:
-        fams = set(c.get("families") or [])
-        rxs = set(c.get("reactions") or [])
-        hit = [r for r in rows
-               if (fams and r.get("family") in fams)
-               or (rxs and r.get("reaction_class") in rxs)]
-        n_types = len(hit)
-        n_members = sum(counts.get(r["cluster"], 0) for r in hit)
-        if not n_types:
+        m = c.get("measure")
+        n = sub = None
+        if m == "reaction_classes":
+            keys = {r.get("reaction_class") for r in rows if r.get("reaction_class")}
+            n, unit = len(keys), "distinct reactions"
+            sub = "performed by %s characterised enzyme types" % len(rows)
+        elif m == "chemical_families":
+            keys = {r.get("family") for r in rows if r.get("family")}
+            n, unit = len(keys), "chemical families"
+            sub = ("attacked by %s types, %s confirmed entries"
+                   % (format(len(rows), ","),
+                      format(sum(counts.get(r["cluster"], 0) for r in rows), ",")))
+        elif m == "domains_of_life" and con is not None:
+            tax = [t for (t,) in con.execute(
+                "SELECT p.taxonomy FROM ro r JOIN replicon p USING(nucleotide_id) "
+                "WHERE r.is_confirmed=1")]
+            doms = {(t or "").split(";")[0].strip() for t in tax if t}
+            doms.discard("")
+            # Virus kaydi bir yasam ALANI degil; sayilmaz ama atildigi yazili.
+            doms.discard("Viruses")
+            phyla = {phylum_of(t) for t in tax if t}
+            phyla.discard("")
+            n, unit = len(doms), "domains of life"
+            # Genom kaydi AYRI sorulur: taksonomi metnini saymak, ayni
+            # taksonomiyi paylasan iki genomu tek sayardi.
+            n_rec = con.execute(
+                "SELECT COUNT(DISTINCT nucleotide_id) FROM ro "
+                "WHERE is_confirmed=1").fetchone()[0]
+            sub = "%s phyla, %s genome records" % (len(phyla), format(n_rec, ","))
+        else:
+            continue
+        if not n:
             continue
         out.append({"id": c.get("id"), "label": c.get("label"),
                     "body": c.get("body"), "basis": c.get("basis"),
-                    "types": n_types, "members": n_members,
-                    "keys": sorted(fams | rxs)})
+                    "n": n, "unit": unit, "sub": sub, "measure": m})
     return out
+
+
+def hero_structures(chemistry_path, counts, n=6):
+    """Anasayfanin ustunde gercek substrat yapilari.
+
+    NEDEN. Bir KIMYA veritabaninin acilis ekraninda hic kimya gorunmuyordu
+    -- yalnizca duzyazi ve sayilar. Yapilar zaten her tip kartinda SMILES'tan
+    ciziliyor; ustte altisi, sayfanin ne oldugunu bir bakista soyluyor.
+
+    SECIM OLCULUR, elle yazilmaz. Her kuratorlu kimya ailesinden EN COK
+    UYELI tip aliniyor, sonra uyeye gore siralanip ilk n tanesi. Boylece
+    hem en kalabalik kimyalar temsil edilir hem de alti kutu alti FARKLI
+    aile olur; elle secilmis bir liste bayatlardi (bir tip uye kaybederse
+    ya da yeni bir aile eklenirse kimse fark etmezdi).
+    """
+    best = {}
+    for r in csv.DictReader(open(chemistry_path, encoding="utf-8")):
+        smiles = (r.get("substrate_smiles") or "").strip()
+        fam = r.get("family") or ""
+        if not smiles or not fam:
+            continue
+        n_mem = counts.get(r["cluster"], 0)
+        if n_mem > (best.get(fam) or {}).get("n", -1):
+            best[fam] = {"cluster": r["cluster"], "family": fam, "n": n_mem,
+                         "smiles": smiles,
+                         "substrate": r.get("substrate_en") or ""}
+    return sorted(best.values(), key=lambda x: -x["n"])[:n]

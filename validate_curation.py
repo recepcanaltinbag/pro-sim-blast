@@ -1721,19 +1721,18 @@ def check_types_are_single_source(rep, root):
 
 
 def check_significance_claims(rep, con, root):
-    """Anasayfanin "neden onemli" kartlari OLCULEBILIR mi?
+    """Anasayfanin kapsam kartlari OLCULEBILIR mi?
 
-    NEDEN. Kullanici 2026-11-02'de anasayfanin onemi anlatmadigini soyledi
-    ve hakliydi. Onem artik yayinda -- yani bir IDDIA yayinda, ve bu projede
-    yayinlanan her iddianin kosulu yazili olmak zorunda. Kart sayilari
-    `significance.yaml`'daki `families` / `reactions` anahtarlarindan
-    uretiliyor, o yuzden uc sey ayrisabilir:
+    NEDEN. Kartlar bir IDDIA yayinliyor ("iki metal merkez, on iki farkli
+    oksidasyon; uc yasam alani") ve bu projede yayinlanan her iddianin
+    kosulu yazili olmak zorunda. Sayilar significance.yaml'daki `measure`
+    anahtarindan uretiliyor, o yuzden uc sey ayrisabilir:
 
-      1. Bir anahtar chemistry.csv'de YOK -> kart sessizce kucuk bir sayi
-         gosterir. Yazim hatasi, veri kaybi gibi gorunmez.
-      2. Bir iddianin olculen tip sayisi 0 -> bos bir kart, yani olcmedigini
-         olculmus gibi gostermek.
-      3. `basis` eksik -> iddia var, kosulu yok. Sayfa onu yayinlamamali.
+      1. Tanimsiz bir `measure` -> kart SESSIZCE dusuyor. Bir iddianin
+         yayindan kaybolmasi, yanlis yayinlanmasi kadar kotu ve hic
+         gorunmuyor.
+      2. Olculen deger 0 -> bos kart; olcmedigini olculmus gibi gostermek.
+      3. `basis` eksik -> iddia var, kosulu yok.
     """
     path = os.path.join(root, "significance.yaml")
     if not os.path.exists(path):
@@ -1746,42 +1745,50 @@ def check_significance_claims(rep, con, root):
         rep.check("significance: significance.yaml is readable", False, 1,
                   str(exc))
         return
-    rows = list(csv.DictReader(open(os.path.join(root, "chemistry.csv"),
-                                    encoding="utf-8")))
-    fams = {r.get("family") for r in rows}
-    rxs = {r.get("reaction_class") for r in rows}
+    sys.path.insert(0, os.path.join(root, "webapp"))
+    try:
+        import atlas as _atlas                            # noqa: PLC0415
+    except Exception as exc:                              # noqa: BLE001
+        rep.check("significance: the view is importable", False, 1, str(exc))
+        return
     counts = dict(con.execute("SELECT ro_cluster, COUNT(*) FROM ro "
                               "WHERE is_confirmed=1 GROUP BY 1"))
+    measured = {v["id"]: v for v in _atlas.significance_view(
+        os.path.join(root, "chemistry.csv"), counts, path, con)}
 
-    unknown, empty, no_basis = [], [], []
-    for c in claims:
-        cid = c.get("id") or "?"
-        for k in (c.get("families") or []):
-            if k not in fams:
-                unknown.append(f"{cid}:family={k}")
-        for k in (c.get("reactions") or []):
-            if k not in rxs:
-                unknown.append(f"{cid}:reaction={k}")
-        hit = [r for r in rows
-               if r.get("family") in set(c.get("families") or [])
-               or r.get("reaction_class") in set(c.get("reactions") or [])]
-        if not hit or not sum(counts.get(r["cluster"], 0) for r in hit):
-            empty.append(cid)
-        if not (c.get("basis") or "").strip():
-            no_basis.append(cid)
+    dropped = [c.get("id") or "?" for c in claims if (c.get("id") or "?") not in measured]
+    rep.check("significance: every claim in the file is actually measured",
+              not dropped, len(dropped),
+              f"{len(claims)} iddia, hepsi olculuyor" if not dropped
+              else "olculmeyen (tanimsiz `measure`?): " + ", ".join(dropped))
 
-    rep.check("significance: every key exists in chemistry.csv",
-              not unknown, len(unknown),
-              f"{len(claims)} iddia, butun anahtarlar tanimli" if not unknown
-              else "tanimsiz anahtar: " + ", ".join(unknown))
+    zero = [k for k, v in measured.items() if not v.get("n")]
     rep.check("significance: no claim measures zero",
-              not empty, len(empty),
-              "her iddia olculuyor" if not empty
-              else "bos iddia: " + ", ".join(empty))
+              not zero, len(zero),
+              "her iddia sifirdan buyuk" if not zero
+              else "sifir olcen iddia: " + ", ".join(zero))
+
+    no_basis = [c.get("id") or "?" for c in claims
+                if not (c.get("basis") or "").strip()]
     rep.check("significance: every claim states what it is counted from",
               not no_basis, len(no_basis),
               "her iddianin kosulu yazili" if not no_basis
               else "basis eksik: " + ", ".join(no_basis))
+
+    # BIRIM TUTARLILIGI. Kartlar tip sayisi yaziyor ve bu sayi sitenin her
+    # yerinde yayinlanan tip sayisiyla AYNI olmak zorunda. Ilk surumde 76
+    # (kuratorlu referans) yaziyordu, kutucuklar 68 (uyesi olan tip)
+    # diyordu: ayni buyukluk iki ayri sayiyla yayinda.
+    n_types = len([1 for v in counts.values() if v])
+    bad = [k for k, v in measured.items()
+           if re.search(r"\b(\d[\d,]*) (?:characterised enzyme )?types?\b",
+                        v.get("sub") or "")
+           and int(re.search(r"\b(\d[\d,]*) (?:characterised enzyme )?types?\b",
+                             v["sub"]).group(1).replace(",", "")) != n_types]
+    rep.check("significance: the type count agrees with the rest of the site",
+              not bad, len(bad),
+              f"kartlar {n_types} tip yaziyor" if not bad
+              else "tutmayan kart: " + ", ".join(bad))
 
 
 def check_regulation_totals_agree(rep, con, root):

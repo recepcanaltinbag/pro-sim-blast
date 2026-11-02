@@ -1844,3 +1844,51 @@ details.basis > summary::before { content: "\25b8\00a0"; }
 details.basis[open] > summary::before { content: "\25be\00a0"; }
 details.basis > summary:hover { color: var(--accent-ink); }
 details.basis p { margin: var(--s2) 0 0; font-size: .76rem; }
+
+/* Acilis serisi: gercek substrat yapilari. Secim olculuyor, elle degil. */
+.herostrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: var(--s2);
+  margin: var(--s4) 0 var(--s5);
+}
+.herostrip__i {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--panel);
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+.herostrip__i:hover { border-color: var(--accent-ink); }
+.herostrip__i .struct { width: 100%; height: 64px; }
+.herostrip__l {
+  font-size: .72rem;
+  color: var(--dim);
+  text-align: center;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+/* Arama kutusunun altindaki ornekler: giris noktasi, duzyazi degil. */
+.searchhint { font-size: .82rem; color: var(--dim); margin: var(--s2) 0 var(--s4); }
+.searchhint a { margin-right: 2px; }
+
+/* Sessiz bolum basligi: bir giris noktasini etiketler, bolum numarasi almaz. */
+h2.quiet {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--dim);
+  margin: var(--s5) 0 var(--s2);
+  border: 0;
+  padding: 0;
+  counter-increment: none;
+}
+h2.quiet::before, h2.quiet::after { content: none; }
+.herostrip__n { color: var(--dim); font-size: .68rem; }

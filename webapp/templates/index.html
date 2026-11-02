@@ -27,32 +27,63 @@ data-k="{{ t.gene }} {{ t.cluster }} {{ t.substrate_en }} {{ t.product_en }} {{ 
 
 {% block body %}
 
-<h1>The enzymes that break open an aromatic ring</h1>
-<p class="lede">An aromatic ring is chemically stable, and most persistent organic
-pollutants are aromatic. <b>Rieske oxygenases</b> make the first attack on one &mdash; the step the
-whole degradation pathway waits on &mdash; using two metal centres in a single chain and
-O<sub>2</sub> as the oxidant. The same fold also builds chiral diols, turns over osmolytes and
-steroids, and dismantles chlorophyll in senescing plants.</p>
+<h1>Rieske oxygenases: one iron architecture, many chemistries</h1>
+<p class="lede"><b>Rieske oxygenases</b> use O<sub>2</sub> to do oxidations that are otherwise
+chemically hard. One alpha subunit chain holds both halves of the machine: a Rieske [2Fe-2S]
+cluster that delivers the electrons, and a mononuclear Fe(II) site that does the chemistry.</p>
 
-{#  2026-11-02. Kullanici: "rieskelerin onemli oldugunu insanlar direkt
-    anlamali ya anasayfa nasil yapilir biliyor olman lazim". Onceki hal
-    dogrudan METODOLOJI ile basliyordu (iki metal merkez, kapi, kolonlar) --
-    dogru ama bir okuyucuya NEDEN bakmasi gerektigini soylemiyordu.
-    Kartlarin sayilari OLCULUYOR (atlas.significance_view), gruplama
-    significance.yaml'da denetlenebilir halde duruyor, ve elle yazilmis tek
-    bir sayi yok.                                                         #}
+{#  2026-11-02. SIRA DEGISTI: kullanici "veritabani sayfasi olmali, insana
+    onu verebilmeli" dedi. Bir veritabani acilis sayfasinda once ARAMA ve
+    ENVANTER gelir, baglam sonra. Onceki hal uc duzyazi kartini aramanin
+    ONUNE koyuyordu; kartlar simdi sayilarin altinda, cunku onlar KONUYU
+    anlatir, sayfanin isi degildir.                                      #}
+<form class="bigsearch" action="{{ u('/search') }}" method="get" role="search">
+  <input type="search" name="q" aria-label="Search the database"
+         placeholder="Search {{ totals.confirmed|fmt }} entries &mdash; organism, substrate, protein ID, locus tag or enzyme type">
+  <button class="primary">Search</button>
+</form>
+<p class="searchhint">Try
+  <a href="{{ u('/search') }}?q=pyrene" data-try>pyrene</a>,
+  <a href="{{ u('/search') }}?q=Mycobacterium" data-try>Mycobacterium</a>,
+  <a href="{{ u('/search') }}?q=biphenyl" data-try>biphenyl</a> &middot;
+  or browse <a href="{{ u('/clusters') }}">all {{ totals.clusters }} enzyme types</a>,
+  <a href="{{ u('/atlas') }}">the atlas</a>, or
+  <a href="#downloads">the downloads</a>.</p>
+
+<section class="tiles">
+  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed alpha subunits</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">characterised enzyme types</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence variants</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">genomes represented</div></div>
+  {%- if totals.union_sequences %}
+  <div class="tile"><div class="tile__n">{{ totals.union_sequences|fmt }}</div><div class="tile__l">sequences held in all</div></div>
+  <div class="tile"><div class="tile__n">{{ totals.union_source_ids|fmt }}</div><div class="tile__l">source identifiers</div></div>
+  {%- endif %}
+</section>
+
+{#  Yapi seridi SUSLEME DEGIL, bir giris noktasi: her kutu o ailenin en
+    kalabalik tipine goturur. Secim olculuyor (atlas.hero_structures).  #}
+{% if hero %}
+<h2 class="quiet">Browse by substrate</h2>
+<div class="herostrip" aria-label="Representative substrates">
+  {% for h in hero %}
+  <a class="herostrip__i" href="{{ u('/cluster/' ~ h.cluster) }}" title="{{ h.substrate }} &mdash; {{ h.n|fmt }} entries">
+    <svg class="struct" data-smiles="{{ h.smiles }}" aria-label="{{ h.substrate }}"></svg>
+    <span class="herostrip__l">{{ h.substrate }}<br><span class="herostrip__n">{{ h.n|fmt }} entries</span></span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
 {% if significance %}
-<section class="why" aria-label="Why these enzymes matter">
+<h2 class="quiet">What these enzymes are, measured</h2>
+<section class="why" aria-label="What this family is">
   {% for s in significance %}
   <article class="why__card">
-    <h2 class="why__h">{{ s.label }}</h2>
-    <div class="why__n">{{ s.members|fmt }}<span class="why__u">entries</span></div>
-    <div class="why__t">across {{ s.types }} characterised enzyme types</div>
+    <h3 class="why__h">{{ s.label }}</h3>
+    <div class="why__n">{{ s.n|fmt }}<span class="why__u">{{ s.unit }}</span></div>
+    <div class="why__t">{{ s.sub }}</div>
     <p class="why__b">{{ s.body|safe }}</p>
-    {#  Kosul GIZLENMIYOR, KATLANIYOR. Bu projede yayinlanan her iddianin
-        kosulu okunabilir olmak zorunda; ama ilk acilista uc kartin altinda
-        uc paragraf kosul, kullanicinin sikayet ettigi "bisuru yazi"nin ta
-        kendisi. <details> ikisini birden saglar.                        #}
     <details class="basis">
       <summary>How this is counted</summary>
       <p class="note">{{ s.basis }}</p>
@@ -61,22 +92,6 @@ steroids, and dismantles chlorophyll in senescing plants.</p>
   {% endfor %}
 </section>
 {% endif %}
-
-{% if not static_mode %}
-<form class="bigsearch" action="{{ u('/search') }}" method="get" role="search">
-  <input type="search" name="q" aria-label="Search the database" placeholder="Search by organism, product, protein identifier, locus tag or enzyme type">
-  <button class="primary">Search</button>
-</form>
-{% endif %}
-
-<section class="tiles">
-  <div class="tile"><div class="tile__n">{{ totals.confirmed|fmt }}</div><div class="tile__l">confirmed alpha subunits</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.clusters|fmt }}</div><div class="tile__l">characterised enzyme types</div></div>
-  <div class="tile"><div class="tile__n">{{ groups|length }}</div><div class="tile__l">chemical families attacked</div></div>
-  <div class="tile"><div class="tile__n">{{ reactions|length }}</div><div class="tile__l">distinct reaction types</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.leaves|fmt }}</div><div class="tile__l">sequence variants</div></div>
-  <div class="tile"><div class="tile__n">{{ totals.genomes_with_ro|fmt }}</div><div class="tile__l">genomes represented</div></div>
-</section>
 
 {% if totals.union_sequences %}
 {#  2026-11-02. Bu ayrim bir 256 KELIMELIK PARAGRAFTI ve kullanici hakliydi:
@@ -168,8 +183,9 @@ whole database.</p>
 </div>
 
 <h2>2 · What the reaction actually is</h2>
-<p class="note">The <em>cis</em>-dihydroxylation the family is named for is the most common
-case, not the whole story.</p>
+<p>The two metal centres support more than one chemistry. Counting types and members by reaction
+shows that the <em>cis</em>-dihydroxylation the family is named for is only the most common case, not
+the whole story.</p>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Reaction</th><th class="num">Types</th><th class="num">Entries</th>
@@ -194,10 +210,9 @@ page states. <a href="{{ u('/atlas/evidence') }}">Evidence levels</a></figcaptio
 </figure>
 
 <h2>3 · Enzymes grouped by the chemicals they act on</h2>
-<p class="note">One card per characterised enzyme type: reference substrate, reaction, and
-confirmed entries. A <b>dashed</b> border means this build found no confirmed member for a curated
-type &mdash; the card still opens, because the enzyme is real and the absence belongs to the search.
-<a href="{{ u('/atlas/quality') }}">Why some references recruit nothing</a></p>
+<p class="note">Each card is one characterised enzyme type with its reference substrate drawn from
+SMILES, the reaction it performs, and the number of confirmed entries assigned to it. Use the
+filter to find a type by name, substrate or product.</p>
 
 <div data-cardfilter="Find a type by name, substrate or product…"
      data-card-facets="reaction:Reaction,sclass:Substrate class,group:RO group">
@@ -218,6 +233,11 @@ type &mdash; the card still opens, because the enzyme is real and the absence be
 </section>
 {% endfor %}
 </div>
+<p class="note">Cards drawn with a dashed border are curated types for which this build found no
+confirmed alpha subunit. They still open, showing what the literature records about the reference
+enzyme, because the enzyme is real: the absence is a property of this build's search, and of the
+duplicate entries in the reference set, rather than of the literature.
+<a href="{{ u('/atlas/quality') }}">Why some references recruit nothing</a></p>
 
 <h2>4 · Explore further</h2>
 <div class="cards">
@@ -240,7 +260,7 @@ type &mdash; the card still opens, because the enzyme is real and the absence be
     claim.</p></a>
 </div>
 
-<h2>5 · Downloads</h2>
+<h2 id="downloads">5 · Downloads</h2>
 <ul>
   <li><a href="{{ u('/download/all_confirmed.fasta') }}">All confirmed alpha subunit sequences (FASTA)</a></li>
   <li><a href="{{ u('/download/all_confirmed.csv') }}">All entries with annotation, type, variant and operon summary (CSV)</a></li>
