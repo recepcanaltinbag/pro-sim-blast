@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% block title %}Architecture{% endblock %}
+{% set page_id = 'architecture' %}
+{% block body %}
+
+{#  Bu sayfa 2026-11-02'de ANASAYFADAN AYRILDI. Kullanici: "anasayfada cok
+    yazi var ... ozellikle 1.2 ve ilk giris kismi, hic iyi bi database gibi
+    durmuyo". Olculdu: anasayfa 3.933 kelimeydi ve tek basina bu bolum
+    1.477'siydi (%38). Icerigin KENDISI dogru ve baska hicbir sayfada yok --
+    /atlas/structure, /atlas/evidence ve /about'ta Asp205 veya iki-karboksilat
+    ayrimi gecmiyor, olculdu. O yuzden SILINMEDI, tasindi: anasayfa artik
+    ozetini ve buraya baglantiyi tasiyor.                                  #}
+
+<h1>The shared architecture, as measured</h1>
+<p class="lede">Every entry in this database carries the same two metal centres. This page is the
+measurement behind that claim: which alignment columns are read, which of them were tested against
+crystal structures, and which one <em>failed</em> that test. It is the methodological core of the
+set, and it is deliberately long.</p>
+
+<nav class="pagenav" aria-label="On this page">
+  <a href="#electron-path">1 · The electron path</a>
+  <a href="#carboxylates">2 · Two carboxylates</a>
+  <a href="#completeness">3 · Completeness of the two centres</a>
+</nav>
+
+
+{#  The figure used to be one 980x330 SVG holding the schematic, the per-position
+    labels, the electron path and four lines of prose. Text in SVG cannot wrap or
+    reflow, so the per-position labels collided with each other and the prose sat a
+    few pixels below the row above it. It is now three independent pieces: two
+    schematics with their own viewBox, and real HTML for everything that is a
+    number or a sentence.                                                         #}
+
+<p class="note">Positions below are columns of the {{ motif.model.length if motif and motif.model else 426 }}-column
+profile built from {{ motif.model.references if motif and motif.model else N_REFS }} characterised
+enzymes, not residue numbers in any one protein.</p>
+
+<figure class="fig">
+<div class="archscroll">
+{% include "_arch_svg.html" %}
+</div>
+<figcaption><b>The alpha subunit and the eight positions membership depends on.</b> Ticks mark the
+columns listed in Table&nbsp;1. Residue identities and conservation are given there rather than on
+the drawing, because three of the groups are only a few profile columns wide. Nothing in this figure
+is derived from a structure.</figcaption>
+</figure>
+
+{% if motif %}
+<h3>Table 1 · The eight defining positions</h3>
+<div class="tablewrap"><table class="data compact" data-filter="Filter positions…">
+<thead><tr>
+  <th class="num">Profile<span class="unit">column</span></th>
+  <th>Position</th>
+  <th data-facet="Centre">Centre</th>
+  <th class="num">Expected<span class="unit">residue</span></th>
+  <th class="num">Entries with it<span class="unit">of {{ motif.n|fmt }}</span></th>
+  <th class="num">Conservation<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+{% for s in motif.sites|sort(attribute='column') %}
+<tr>
+  <td class="num">{{ s.column }}</td>
+  <td>{{ s.label }}</td>
+  {#  MERKEZ ARTIK ETIKETTEN TURETILIYOR, KOLON NUMARASINDAN DEGIL.
+      Eskiden burada [85, 87, 105, 108] ve 209 sabit yaziliydi. O numaralar
+      426 kolonluk ESKI bir profilden kalmaydi; model 603 kolona gecince
+      HICBIRI eslesemez oldu ve sekiz satirin HEPSI else dalina dusup
+      "mononuclear Fe(II)" basmaya basladi -- yani sayfa Rieske
+      sisteinlerinin mononukleer demiri koordine ettigini soyluyordu.
+      Bu literaturle celisir: 1NDO'da [2Fe-2S] kumesini Cys81/His83/
+      Cys101/His104 tutar, mononukleer demiri ise His208/His213/Asp362.
+      motif_stats.json'daki `label` alani merkezi ZATEN tasiyor, o yuzden
+      burada tek kaynak odur; kolon numaralari degisse de dogru kalir.   #}
+  <td>{% if 'Rieske' in s.label %}Rieske [2Fe-2S]
+      {%- elif 'bridging' in s.label %}subunit bridge
+      {%- else %}mononuclear Fe(II){% endif %}</td>
+  <td class="num">{{ s.expected }}</td>
+  <td class="num" data-v="{{ s.found }}">{{ s.found|fmt }}</td>
+  <td class="num" data-v="{{ s.fraction }}">{{ '%.2f' % (100 * s.fraction) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note"><b>Method.</b> Each entry was aligned to the profile and the residue at each column
+read directly from the alignment. Membership requires all four Rieske ligands and at least two of
+the three iron ligands. The one position with real variation is the catalytic carboxylate, for the
+reason set out in section 1.2.</p>
+{% endif %}
+
+<h2 id="electron-path">1 · The electron path</h2>
+<figure class="fig">
+<div class="archscroll">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 104" class="flowfig" role="img"
+     aria-label="Electron path from NAD(P)H through a reductase and ferredoxin to the Rieske centre and the mononuclear iron">
+  <style>
+    .fl-lb  { font-size: 11px; }
+    .fl-lbs { font-size: 10px; }
+    .fl-box { stroke: var(--fig-stroke); stroke-width: 1; }
+    .fl-arr { stroke: currentColor; stroke-width: 1.4; fill: none; marker-end: url(#flarrow); }
+    .fl-tick { stroke: var(--fig-stroke); stroke-width: 1; }
+    .c-rieske  { fill: var(--fig-rieske); }
+    .c-cat     { fill: var(--fig-cat); }
+    .c-red     { fill: var(--fig-red); }
+    .c-fd      { fill: var(--fig-fd); }
+    .c-neutral { fill: var(--fig-neutral); }
+    .c-iron    { fill: var(--fig-iron); }
+    .c-sulfur  { fill: var(--fig-sulfur); }
+  </style>
+  <defs>
+    <marker id="flarrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+            orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  </defs>
+
+  <rect class="fl-box c-neutral" x="0" y="22" width="96" height="34" rx="4"/>
+  <text class="fl-lb" x="48" y="43" text-anchor="middle">NAD(P)H</text>
+  <path class="fl-arr" d="M100,39 H132"/>
+
+  <rect class="fl-box c-red" x="140" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="192" y="43" text-anchor="middle">reductase</text>
+  <path class="fl-arr" d="M248,39 H280"/>
+
+  <rect class="fl-box c-fd" x="288" y="22" width="104" height="34" rx="4"/>
+  <text class="fl-lb" x="340" y="43" text-anchor="middle">ferredoxin</text>
+  <path class="fl-arr" d="M396,39 H428"/>
+
+  <rect class="fl-box c-rieske" x="436" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-sulfur" cx="453" cy="39" r="5"/>
+  <circle class="c-sulfur" cx="471" cy="39" r="5"/>
+  <circle class="c-iron" cx="462" cy="30" r="4"/>
+  <circle class="c-iron" cx="462" cy="48" r="4"/>
+  <text class="fl-lbs" x="486" y="36">Rieske</text>
+  <text class="fl-lbs" x="486" y="48">[2Fe-2S]</text>
+  <path class="fl-arr" d="M590,39 H622"/>
+
+  <rect class="fl-box c-cat" x="630" y="14" width="150" height="50" rx="4"/>
+  <circle class="c-iron" cx="652" cy="39" r="6"/>
+  <text class="fl-lbs" x="666" y="36">mononuclear</text>
+  <text class="fl-lbs" x="666" y="48">Fe(II)</text>
+  <path class="fl-arr" d="M784,39 H816"/>
+
+  <rect class="fl-box c-neutral" x="824" y="22" width="156" height="34" rx="4"/>
+  <text class="fl-lb" x="902" y="43" text-anchor="middle">substrate + O₂ → product</text>
+
+  <!-- the one annotation that stays on the drawing, below the boxes where it has
+       the full width to itself -->
+  <path class="fl-tick" d="M606,64 V76"/>
+  <text class="fl-lbs" x="606" y="88" text-anchor="middle">subunit interface</text>
+</svg>
+</div>
+<figcaption><b>Electrons reach the iron of a neighbouring subunit, not its own.</b> The Rieske
+centre of one chain donates across the interface to the mononuclear iron of the next, which is why
+the enzyme is active only as an oligomer. The carboxylate at the interface and the carboxylate at
+the iron are two different residues with two different behaviours, set out next.</figcaption>
+</figure>
+
+<h2 id="carboxylates">2 · Two carboxylates, and they are not the same kind of site</h2>
+{% if motif and motif.carboxylate_identity %}
+{% set cat = motif.carboxylate_identity.catalytic_iron %}
+{% set brg = motif.carboxylate_identity.bridging %}
+<p>Calling both of these "the carboxylate" obscures that they sit in different shells. In
+naphthalene dioxygenase the mononuclear iron is coordinated by His208 at 2.04 Å, His213 at 2.15 Å
+and <b>Asp362</b> at 2.27 Å: that is the 2-His-1-carboxylate triad, and its carboxylate is a
+first-shell <b>ligand</b>. The bridging <b>Asp205</b> is 6.95 Å from the same iron and
+coordinates nothing at all; it is a second-shell <b>relay</b>, hydrogen-bonded to His208 on one
+side and, across the subunit junction, to the Rieske ligand His104 of the neighbour. One holds the
+metal, the other carries electrons to it. They are listed together below only because both are
+carboxylates read from an alignment column — and the audit of those columns came out differently
+for the two, which is the point of the table.</p>
+
+{#  TABLO TRANSPOZE EDILDI (2026-10-31). Onceki bicimde basliklar 7 kolon
+    vaat ediyordu ama katalitik satir bunlarin DORDUNU colspan ile duzyaziyla
+    doldurmak zorundaydi, cunku o dort olcum katalitik karboksilat icin YOK.
+    Sonuc: basligin satirlardan birini tanimlamadigi bir tablo, ve dar
+    ekranda sayisal kolonlarin duzyaziyla gerilmesi. Transpoze haliyle her
+    satir bir OZELLIK, her kolon bir karboksilat; iki satirin ortak
+    doldurabildigi hucre kalmadigi icin colspan'a gerek yok.
+
+    KATALITIK KOLONUN SAYILARI HALA YAYIMLANMIYOR. Kolon {{ cat.column }}
+    ligandi OKUMUYOR: 27 kuratorlu referansin kristal yapisina karsi sinandi
+    ve cagirdigi kalinti 26/26'sinda demirden 10,9-14,7 A uzakta cikti. Test
+    geciyordu cunku o kolonda gercekten bir D/E var -- test "kolonda asidik
+    kalinti var mi" diye soruyor, "metali koordine ediyor mu" diye SORMUYOR.
+    Sayilari yayimlamak, olculmeyen bir seyi olculmus gibi gostermek olurdu.
+    Bu yuzden o dort hucre tek bir rowspan ile TEK bir ifade tasiyor.      #}
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th></th>
+  <th><b>Catalytic</b><span class="unit">first-shell ligand</span></th>
+  <th><b>Bridging</b><span class="unit">second-shell relay</span></th>
+</tr></thead>
+<tbody>
+<tr>
+  <th scope="row">What it does</th>
+  <td>Coordinates the mononuclear iron directly, at 2.27 Å in naphthalene dioxygenase
+  (<b>Asp362</b>)</td>
+  <td>Coordinates no metal. It sits 6.95 Å from the iron (<b>Asp205</b>) and hydrogen-bonds the
+  Rieske centre of one subunit to the iron ligand of the next</td>
+</tr>
+<tr>
+  <th scope="row">Profile column</th>
+  <td class="num">–</td>
+  <td class="num">{{ brg.column }}</td>
+</tr>
+<tr>
+  <th scope="row">Readable from a fixed column?</th>
+  <td><b>No.</b> Tested against the crystal structures of 27 curated references: the residue
+  column {{ cat.column }} calls is 10.9–14.7 Å from the iron in <b>26 of 26</b> testable
+  structures, so it is not the ligand. The column test passed only because an acidic residue does
+  sit there — it asks whether the column holds a D or an E, not whether that residue coordinates
+  the metal.</td>
+  <td><b>Yes.</b> In the 9 structures that contain the neighbouring subunit, the residue this
+  column calls sits 5.9–7.2 Å from that neighbour's Rieske cluster — the geometry of a bridge and
+  nothing else.</td>
+</tr>
+<tr>
+  <th scope="row">Asp<span class="unit">entries</span></th>
+  <td class="small" rowspan="4">Not measurable from a column. The four counts opposite exist only
+  because the bridging column reads the residue it claims to read; for the catalytic carboxylate
+  there is no column that does, so there is nothing to count.</td>
+  <td class="num" data-v="{{ brg.asp }}">{{ brg.asp|fmt }}</td>
+</tr>
+<tr>
+  <th scope="row">Glu<span class="unit">entries</span></th>
+  <td class="num" data-v="{{ brg.glu }}">{{ brg.glu|fmt }}</td>
+</tr>
+<tr>
+  <th scope="row">Asp : Glu</th>
+  <td class="num" data-v="{{ brg.asp_to_glu }}">{{ '%.1f' % brg.asp_to_glu }} : 1</td>
+</tr>
+<tr>
+  <th scope="row">Carboxylate in window<span class="unit">of {{ motif.n|fmt }}</span></th>
+  <td class="num" data-v="{{ brg.with_carboxylate }}">{{ brg.with_carboxylate|fmt }}
+  <span class="note">({{ pct(brg.with_carboxylate, motif.n) }})</span></td>
+</tr>
+<tr>
+  <th scope="row">In the reference set</th>
+  <td class="small">The iron-coordinating carboxylate is <b>aspartate in 26 of 26</b> structures.
+  It lands on column 431 in 18 of them and on 432 in 2 more, with the remaining 6 spread over
+  407–411 and 449–451, so no single column holds them all.</td>
+  <td class="small">{% set br = brg.references %}{% if br %}{{ br.asp }} Asp, {{ br.glu }} Glu{% if br.other %}, {{ br.other }} neither (Cys or Ser){% endif %} <span class="note">of {{ br.n }}</span>{% else %}–{% endif %}</td>
+</tr>
+</tbody></table></div>
+<p class="note"><b>Both columns were checked against structures, and they came out
+differently.</b> The bridging column <b>passes</b>: in the 9 structures where the neighbouring
+subunit is present in the file, the residue it calls sits 5.9–7.2 Å from that neighbour's Rieske
+cluster and 6.7–10.6 Å from its own subunit's iron in 8 of 9, which is the geometry of a bridge
+and nothing else. For naphthalene dioxygenase it returns Asp205, the residue whose carboxylate is
+hydrogen-bonded to a Rieske ligand on one side and an iron ligand on the other. The catalytic
+column <b>fails</b>: the residue it calls is 10.9–14.7 Å from the iron in 26 of 26 testable
+structures. The two mononuclear histidine columns pass as well — for the phthalate dioxygenase
+they give His181 and His186, exactly the residues that coordinate the iron in the crystal, at 2.01
+and 1.94 Å. So membership requiring two of the three iron ligands is no longer a tolerance for
+alignment shift but a necessity: the third ligand is not something a fixed column can report.
+The measurement also reproduces a known number, which is the best check that it is reading the
+right thing: in the structures that hold only one subunit the nearest Rieske cluster comes out
+44–48 Å away, and the distance from the iron to its own subunit's Rieske centre is reported as
+43.5 Å, against 12 Å across the subunit junction. The bridge reaches the neighbour, not its own
+cluster.</p>
+
+<p class="note"><b>An open question, not a result.</b> In the quaternary-amine branch this
+position is not aspartate: carnitine oxygenase has Glu205 and the stachydrine demethylase has
+Cys202. Neither is a Rieske ligand — the cluster in both structures is held by the usual
+Cys86/Cys106/His88/His109, and these residues sit 46 and 48 Å from it — and both are 6.9 and
+6.0 Å from their own mononuclear iron, the same distance the verified bridging Asp205 of
+naphthalene dioxygenase sits at. So they occupy the equivalent position. Whether they do the
+equivalent job cannot be concluded here, for two reasons. Both structures contain a single
+subunit, so the neighbouring cluster the bridge would reach is simply absent from the file. And
+replacing Asp205 with glutamate in naphthalene dioxygenase <i>abolishes</i> the route to the
+active-site iron while leaving the NADH-to-Rieske step intact, so a naturally occurring glutamate
+at the equivalent position is a puzzle rather than a confirmation. Resolving it needs a structure
+of one of these enzymes with the oligomer intact.</p>
+
+{% set glu = brg.glu_clusters|selectattr('n', 'ge', 20)|list %}
+{% if glu %}
+<h3>The glutamate is a branch marker, not scattered noise</h3>
+<div class="tablewrap"><table class="data compact">
+<thead><tr>
+  <th>Type</th>
+  <th class="num">RO<span class="unit">group</span></th>
+  <th class="num">Glu<span class="unit">members</span></th>
+  <th class="num">Members</th>
+  <th class="num">Glu share<span class="unit">%</span></th>
+</tr></thead>
+<tbody>
+{% for t in glu[:10] %}
+<tr{% if t.fraction >= 0.8 %} class="hl"{% endif %}>
+  <td>{% if t.n %}<a href="{{ u('/cluster/' ~ t.cluster) }}">{{ gene(t.cluster) }}</a>
+      <span class="note small">{{ t.cluster }}</span>{% else %}{{ t.cluster }}{% endif %}</td>
+  <td class="num">{{ t.cluster.split('_')[0] }}</td>
+  <td class="num" data-v="{{ t.glu }}">{{ t.glu|fmt }}</td>
+  <td class="num" data-v="{{ t.n }}">{{ t.n|fmt }}</td>
+  <td class="num" data-v="{{ t.fraction }}">{{ '%.1f' % (100 * t.fraction) }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Types with at least 20 members, ordered by the share of members carrying glutamate at
+column {{ brg.column }}. The enzymes at the top of this table cleave carbon–nitrogen bonds or
+demethylate open-chain quaternary amines; the ring-hydroxylating types carry aspartate. Again, these
+are alignment residues, not structurally verified contacts.
+<a href="{{ u('/atlas/evidence') }}">How far a residue may be read as a function</a></p>
+{% endif %}
+{% endif %}
+
+{% if motif %}
+<h2 id="completeness">3 · Completeness of the two centres</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Requirement</th><th class="num">Entries<span class="unit">of {{ motif.n|fmt }}</span></th><th class="num">Share<span class="unit">%</span></th></tr></thead>
+<tbody>
+<tr><td>All four Rieske ligands present</td>
+    <td class="num" data-v="{{ motif.rieske_ligands['4'] }}">{{ motif.rieske_ligands['4']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.rieske_ligands['4'] / motif.n }}">{{ '%.1f' % (100 * motif.rieske_ligands['4'] / motif.n) }}</td></tr>
+<tr><td>Complete 2-His-1-carboxylate triad at the iron</td>
+    <td class="num" data-v="{{ motif.catalytic_triad['3'] }}">{{ motif.catalytic_triad['3']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.catalytic_triad['3'] / motif.n }}">{{ '%.1f' % (100 * motif.catalytic_triad['3'] / motif.n) }}</td></tr>
+<tr><td>Two of the three iron ligands, the minimum for membership</td>
+    <td class="num" data-v="{{ motif.catalytic_triad['2'] }}">{{ motif.catalytic_triad['2']|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.catalytic_triad['2'] / motif.n }}">{{ '%.1f' % (100 * motif.catalytic_triad['2'] / motif.n) }}</td></tr>
+<tr><td>Inter-subunit bridging Asp or Glu present</td>
+    <td class="num" data-v="{{ motif.bridging_present }}">{{ motif.bridging_present|fmt }}</td>
+    <td class="num" data-v="{{ 100 * motif.bridging_present / motif.n }}">{{ '%.1f' % (100 * motif.bridging_present / motif.n) }}</td></tr>
+</tbody></table></div>
+<p class="note">The Rieske centre is invariant across the whole database. <a href="{{ u('/about') }}">Full
+methods</a> · <a href="{{ u('/atlas/quality') }}">what these counts cannot tell you</a></p>
+{% endif %}
+
+<p class="note"><a href="{{ u('/') }}">&larr; Back to the database overview</a> &middot;
+<a href="{{ u('/about') }}">Full methods</a> &middot;
+<a href="{{ u('/atlas/evidence') }}">How far a residue may be read as a function</a></p>
+{% endblock %}

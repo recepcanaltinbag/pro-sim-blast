@@ -1,0 +1,47 @@
+{#  Alfa alt birimi semasi. ANASAYFA ve /architecture AYNI dosyayi
+    kullanir: 2026-11-02'de anasayfa ozete indirilirken sema iki yere
+    kopyalanacakti; kopyalanan bir sekil tek yerde duzeltilir ve digeri
+    sessizce eskir -- bu projede ayni hata zinciri daha once yasandi.  #}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 118" class="arch" role="img"
+     aria-label="Schematic of the alpha subunit showing the Rieske domain, the catalytic domain and the eight defining positions">
+  <style>
+    .arch-lb  { font-size: 11px; }
+    .arch-lbs { font-size: 10px; }
+    .arch-dim { font-size: 10px; opacity: .75; }
+    .arch-dom { stroke: var(--fig-stroke); stroke-width: 1; }
+    .arch-tick { stroke: var(--fig-iron); stroke-width: 1.4; }
+    .arch-brk { stroke: var(--fig-stroke); stroke-width: 1; fill: none; }
+    .c-rieske { fill: var(--fig-rieske); }
+    .c-cat    { fill: var(--fig-cat); }
+    .c-iron   { fill: var(--fig-iron); }
+  </style>
+
+  <!-- domain bars: 0-130 Rieske, 130-426 catalytic, scaled col/426*980 -->
+  <rect class="arch-dom c-rieske" x="0" y="14" width="300" height="40" rx="4"/>
+  <text class="arch-lb" x="12" y="39">Rieske [2Fe-2S] domain</text>
+  <rect class="arch-dom c-cat" x="300" y="14" width="680" height="40" rx="4"/>
+  <text class="arch-lb" x="312" y="39">catalytic domain, mononuclear Fe(II) site</text>
+
+  <!-- the eight required positions: ticks only. Columns 85/87, 105/108 and
+       209/212/217 are 4.6 to 11.5 user units apart at this scale, so printing a
+       residue label and a percentage under each one guaranteed an overlap. The
+       values are in the table below instead. -->
+  {% for col in [85, 87, 105, 108, 209, 212, 217, 355] %}
+  {% set px = (col / 426.0 * 980)|round(1) %}
+  <line class="arch-tick" x1="{{ px }}" y1="14" x2="{{ px }}" y2="54"/>
+  <circle class="c-iron" cx="{{ px }}" cy="60" r="3"/>
+  {% endfor %}
+
+  <!-- grouped brackets, placed so no two labels can touch -->
+  <path class="arch-brk" d="M195.5,68 V72 H248.5 V68"/>
+  <text class="arch-lbs" x="222" y="86" text-anchor="middle">4 Rieske ligands</text>
+
+  <path class="arch-brk" d="M480.7,68 V72 H499.1 V68"/>
+  <text class="arch-lbs" x="490" y="86" text-anchor="middle">bridge + 2 Fe histidines</text>
+
+  <path class="arch-brk" d="M816.6,68 V72"/>
+  <text class="arch-lbs" x="816.6" y="86" text-anchor="middle">catalytic Asp</text>
+
+  <text class="arch-dim" x="0" y="106">N-terminus</text>
+  <text class="arch-dim" x="980" y="106" text-anchor="end">C-terminus</text>
+</svg>

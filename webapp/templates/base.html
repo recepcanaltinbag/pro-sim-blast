@@ -8,13 +8,14 @@
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="{{ u('/static/style.css') }}">
 </head>
-<body>
 {% set path = (request.url.path if request else '/') %}
+<body{% if path == '/' %} data-page="home"{% endif %}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <a class="brand" href="{{ u('/') }}"><span class="brand__mark">RO</span> ROAR-DB</a>
   <nav aria-label="Main">
     <a href="{{ u('/atlas') }}"{% if path.startswith('/atlas') %} aria-current="page"{% endif %}>Atlas</a>
+    <a href="{{ u('/architecture') }}"{% if path.startswith('/architecture') %} aria-current="page"{% endif %}>Architecture</a>
     <a href="{{ u('/clusters') }}"{% if path in ('/clusters',) or path.startswith('/cluster/') %} aria-current="page"{% endif %}>Types</a>
     <a href="{{ u('/search') }}"{% if path.startswith('/search') %} aria-current="page"{% endif %}>Search</a>
     {% if not static_mode %}<a href="{{ u('/classify') }}"{% if path.startswith('/classify') %} aria-current="page"{% endif %}>Classify a sequence</a>{% endif %}
@@ -43,6 +44,7 @@
   variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
 </footer>
 <script src="{{ u('/static/table.js') }}" defer></script>
+<script src="{{ u('/static/longnote.js') }}" defer></script>
 <script src="{{ u('/static/plot.js') }}"></script>
 {% block scripts %}{% endblock %}
 </body>

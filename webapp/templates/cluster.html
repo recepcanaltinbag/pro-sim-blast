@@ -348,6 +348,22 @@
     <h3>Key facts</h3>
     <dl class="kv">
       <dt>Members</dt><dd>{{ c.n|fmt }} confirmed alpha subunits
+        {%- if x.unit and x.unit.sequences < x.unit.entries %}
+        {#  2026-11-02. "Ayni accession neden tekrar ediyor, bug mi" sorusu
+            tam burada doguyor. Birim bir GENOMIK LOKUS; tekrar eden sey dizi
+            ve RefSeq WP_ kaydi. Sayilar app.py'de olculuyor.              #}
+        <br><span class="note"><b>One entry is one genomic locus, not one protein.</b>
+          These {{ x.unit.entries|fmt }} entries sit in {{ x.unit.records|fmt }} distinct
+          genome records and carry {{ x.unit.sequences|fmt }} distinct sequences: the same
+          protein recurs across strains, and the most widespread sequence of this type is
+          identical in {{ x.unit.max_copies|fmt }} of them.
+          {% if x.unit.wp %}{{ pct(x.unit.wp, x.unit.entries) }} of the entries carry a RefSeq
+          <code>WP_</code> accession, which is <b>non-redundant by design</b> &mdash; one such
+          accession is deliberately shared by every genome holding an identical protein, so a
+          repeated identifier is the expected result, not a duplicated record.{% endif %}
+          No locus is counted twice: the same genome record and coordinates occur more than once
+          in <b>{{ x.unit.same_locus_twice }}</b> cases.</span>
+        {%- endif %}
         {%- if x.union and x.union.no_context %}
         {#  2026-11-01. Bu sayi KESISIM: genomik baglami olan VE kapiyi gecen.
             Birlesim daha buyuk ve okuyucunun bunu tip sayfasinda gormesi

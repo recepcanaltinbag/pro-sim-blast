@@ -463,6 +463,29 @@ def home(request: Request):
         groups = atlas.chemistry_groups(CHEMISTRY_PATH, counts, ECOLOGY)
         return render(request, "index.html", totals=totals(con), groups=groups,
                       reactions=atlas.reaction_summary(groups),
+                      significance=atlas.significance_view(
+                          CHEMISTRY_PATH, counts,
+                          os.path.join(PARENT, "significance.yaml")),
+                      motif=atlas.read_json(apath("motif_stats.json")))
+    finally:
+        con.close()
+
+
+@app.get("/architecture", response_class=HTMLResponse)
+def architecture(request: Request):
+    """Anasayfanin 1. bolumu 2026-11-02'de BURAYA tasindi.
+
+    Kullanici: "anasayfada cok yazi var ... ozellikle 1.2 ve ilk giris
+    kismi, hic iyi bi database gibi durmuyo", sonra "kalabilirler ama daha
+    ozet gibi olmalila". Olculdu: anasayfa 3.933 kelime, bu bolum 1.477'si.
+    Icerik /atlas/structure, /atlas/evidence ve /about'ta GECMIYOR (olculdu),
+    yani silinebilir degil. Anasayfa artik semayi, dort tamamlanma oranini
+    ve bir paragraflik bulguyu tutuyor; gerekcenin tamami burada.
+    """
+    con = connect()
+    try:
+        return render(request, "architecture.html",
+                      totals=totals(con),
                       motif=atlas.read_json(apath("motif_stats.json")))
     finally:
         con.close()
@@ -1981,6 +2004,32 @@ def cluster_extras(con, cluster):
         if row and row[0]:
             x["union"] = {"total": row[0], "no_context": row[1] or 0,
                           "gated": row[2] or 0}
+    # BIRIM: bir giris bir GENOMIK LOKUSTUR, bir protein degil. Kullanici
+    # 2026-11-02'de HcaE sayfasinda ayni protein kimliginin tekrar tekrar
+    # gectigini gorup "entry duplication var, bug mi" diye sordu. Olculdu:
+    # bug yok -- 259 girisin 258'i AYRI genom kaydi ve ayni genom+koordinat
+    # ikilisi SIFIR kez tekrarliyor. Tekrar eden sey dizi ve accession:
+    # HcaE E. coli enzimi, tek bir dizi 46 susta ayni; ve RefSeq WP_
+    # kayitlari TASARIMI GEREGI ayni proteini tasiyan butun genomlar icin
+    # TEK accession kullanir. Yani tekrar bir hata degil, birimin sonucu.
+    # Sayfa bunu yazmiyordu, o yuzden okuyucu hata sonucuna vardi -- bu
+    # projenin tekrar eden sinifi: BIRIM YAZILMAZSA OKUYUCU KENDI SONUCUNU
+    # URETIR. Sayilar burada OLCULUYOR, sablonda yazilmiyor.
+    row = con.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT nucleotide_id), "
+        "       COUNT(DISTINCT sequence), "
+        "       SUM(CASE WHEN protein_id LIKE 'WP_%' THEN 1 ELSE 0 END) "
+        "FROM ro WHERE is_confirmed=1 AND ro_cluster=?", (cluster,)).fetchone()
+    top = con.execute(
+        "SELECT COUNT(*) n FROM ro WHERE is_confirmed=1 AND ro_cluster=? "
+        "GROUP BY sequence ORDER BY n DESC LIMIT 1", (cluster,)).fetchone()
+    overlap = con.execute(
+        "SELECT COUNT(*) FROM (SELECT nucleotide_id, start, end, COUNT(*) n "
+        "FROM ro WHERE is_confirmed=1 AND ro_cluster=? "
+        "GROUP BY 1,2,3 HAVING n > 1)", (cluster,)).fetchone()[0]
+    x["unit"] = ({"entries": row[0], "records": row[1], "sequences": row[2],
+                  "wp": row[3] or 0, "max_copies": (top or [0])[0],
+                  "same_locus_twice": overlap} if row and row[0] else None)
     # Bu tipin kendine ait uyesi yoksa SEBEBI yazilmali. Sayfa onceki halinde
     # sessizce bos kaliyordu ve kullanici bunu "sayfa eksik" diye okudu; eksik
     # olan sayfa degil, uye. empty_types.py bu kaydi uretiyor, dosya yoksa

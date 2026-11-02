@@ -1720,6 +1720,70 @@ def check_types_are_single_source(rep, root):
               "types_build.py --write kos")
 
 
+def check_significance_claims(rep, con, root):
+    """Anasayfanin "neden onemli" kartlari OLCULEBILIR mi?
+
+    NEDEN. Kullanici 2026-11-02'de anasayfanin onemi anlatmadigini soyledi
+    ve hakliydi. Onem artik yayinda -- yani bir IDDIA yayinda, ve bu projede
+    yayinlanan her iddianin kosulu yazili olmak zorunda. Kart sayilari
+    `significance.yaml`'daki `families` / `reactions` anahtarlarindan
+    uretiliyor, o yuzden uc sey ayrisabilir:
+
+      1. Bir anahtar chemistry.csv'de YOK -> kart sessizce kucuk bir sayi
+         gosterir. Yazim hatasi, veri kaybi gibi gorunmez.
+      2. Bir iddianin olculen tip sayisi 0 -> bos bir kart, yani olcmedigini
+         olculmus gibi gostermek.
+      3. `basis` eksik -> iddia var, kosulu yok. Sayfa onu yayinlamamali.
+    """
+    path = os.path.join(root, "significance.yaml")
+    if not os.path.exists(path):
+        return
+    try:
+        import yaml as _y                                 # noqa: PLC0415
+        claims = (_y.safe_load(open(path, encoding="utf-8"))
+                  or {}).get("claims") or []
+    except Exception as exc:                              # noqa: BLE001
+        rep.check("significance: significance.yaml is readable", False, 1,
+                  str(exc))
+        return
+    rows = list(csv.DictReader(open(os.path.join(root, "chemistry.csv"),
+                                    encoding="utf-8")))
+    fams = {r.get("family") for r in rows}
+    rxs = {r.get("reaction_class") for r in rows}
+    counts = dict(con.execute("SELECT ro_cluster, COUNT(*) FROM ro "
+                              "WHERE is_confirmed=1 GROUP BY 1"))
+
+    unknown, empty, no_basis = [], [], []
+    for c in claims:
+        cid = c.get("id") or "?"
+        for k in (c.get("families") or []):
+            if k not in fams:
+                unknown.append(f"{cid}:family={k}")
+        for k in (c.get("reactions") or []):
+            if k not in rxs:
+                unknown.append(f"{cid}:reaction={k}")
+        hit = [r for r in rows
+               if r.get("family") in set(c.get("families") or [])
+               or r.get("reaction_class") in set(c.get("reactions") or [])]
+        if not hit or not sum(counts.get(r["cluster"], 0) for r in hit):
+            empty.append(cid)
+        if not (c.get("basis") or "").strip():
+            no_basis.append(cid)
+
+    rep.check("significance: every key exists in chemistry.csv",
+              not unknown, len(unknown),
+              f"{len(claims)} iddia, butun anahtarlar tanimli" if not unknown
+              else "tanimsiz anahtar: " + ", ".join(unknown))
+    rep.check("significance: no claim measures zero",
+              not empty, len(empty),
+              "her iddia olculuyor" if not empty
+              else "bos iddia: " + ", ".join(empty))
+    rep.check("significance: every claim states what it is counted from",
+              not no_basis, len(no_basis),
+              "her iddianin kosulu yazili" if not no_basis
+              else "basis eksik: " + ", ".join(no_basis))
+
+
 def check_regulation_totals_agree(rep, con, root):
     """Ayni sayiyi veren iki tablo AYRISAMAZ.
 
@@ -1833,8 +1897,12 @@ def check_union_denominator(rep, con, root):
     # unutuldu; o yuzden metin de kontrol ediliyor.
     idx = os.path.join(root, "webapp", "templates", "index.html")
     text = open(idx, encoding="utf-8").read() if os.path.exists(idx) else ""
-    need = ["is an\n<strong>intersection</strong>", "union_sequences",
-            "union_only_copy"]
+    # 2026-11-02: eskiden bu liste `"is an\n<strong>intersection</strong>"`
+    # ariyordu, yani SATIR SONUNA bagliydi. Anasayfa paragraftan panele
+    # donusturuldugunde kontrol kirildi -- oysa amaci bicim degil, AYRIMIN
+    # yazili olmasi. Artik kelimeleri ve uc olculmus degiskeni ariyor.
+    need = ["Intersection", "Union", "totals.union_sequences",
+            "totals.union_no_context", "totals.union_only_copy"]
     missing = [n for n in need if n not in text]
     rep.check("union: the homepage states the intersection/union distinction",
               not missing, len(missing),
@@ -2639,6 +2707,7 @@ def main():
         n_conf = check_confirmed_ro(con, rep)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
+        check_significance_claims(rep, con, ROOT)
         check_types_are_single_source(rep, ROOT)
         check_groups_published(rep, con, ROOT)
         check_cluster_coverage(con, rep, eco, chem)

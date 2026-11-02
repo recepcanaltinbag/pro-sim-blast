@@ -186,6 +186,8 @@ def main():
 
     print("[pages] fixed")
     save("/", "index.html"); save("/clusters", "clusters.html"); save("/about", "about.html")
+    # 2026-11-02: anasayfanin mimari bolumu kendi sayfasina tasindi.
+    save("/architecture", "architecture.html")
     print("[pages] atlas")
     for p in ("atlas", "atlas/groups", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
@@ -296,7 +298,9 @@ def write_fallback_pages(out, A, con):
                 f'<a href="{A.BASE}/about.html">Methods</a></nav></header>'
                 f'<main><h1>{heading}</h1>{body}</main></body></html>')
 
-    links = (f'<ul><li><a href="{A.BASE}/index.html">Home: the shared architecture, the '
+    links = (f'<ul><li><a href="{A.BASE}/architecture.html">The shared architecture, as '
+             f'measured</a></li>'
+             f'<li><a href="{A.BASE}/index.html">Home: the shared architecture, the '
              f'reactions and the enzyme types grouped by chemistry</a></li>'
              f'<li><a href="{A.BASE}/search.html">Search by organism, protein identifier, '
              f'enzyme type or a chemical</a></li>'

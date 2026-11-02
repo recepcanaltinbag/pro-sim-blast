@@ -1,0 +1,61 @@
+# NEDEN BU DOSYA VAR  (2026-11-02)
+#
+# Kullanici: "rieskelerin onemli oldugunu insanlar direkt anlamali ya
+# anasayfa nasil yapilir biliyor olman lazim". Haklı: anasayfa metodoloji
+# ile basliyordu, onem ile degil.
+#
+# AMA "onemlidir" bir IDDIA ve bu projede yayinlanan her iddianin kosulu
+# yazili olmak zorunda. O yuzden onem DUZYAZIYLA ANLATILMIYOR: her kart bir
+# OLCUME baglaniyor ve olcum bu dosyadaki anahtarlardan uretiliyor.
+# Sayilarin hicbiri burada yazili degil -- `families` / `reactions`
+# anahtarlari chemistry.csv'deki degerlerdir ve sayim her derlemede
+# veritabanindan yapilir. Bayatlayabilecek bir sayi yok.
+#
+# GRUPLAMA BURADA, SABLONDA DEGIL: "hangi aileler kirletici sayilir" bir
+# KURATOR KARARIDIR. Sablona gomulse denetlenemezdi; burada duruyor ve
+# validate_curation.py her anahtarin chemistry.csv'de gercekten var
+# oldugunu dogruluyor.
+
+claims:
+  - id: pollutants
+    label: They open the ring that nothing else will
+    families: [pah, haloaromatics, nitroaromatics, biaryls_ethers,
+               alkylbenzenes, anilines, sulfoaromatics, aromatic_acids]
+    body: >-
+      An aromatic ring is stable, and most of the environment's worst organic
+      pollutants are aromatic. A Rieske oxygenase performs the first,
+      rate-limiting attack that makes the rest of a degradation pathway
+      possible. The curated substrates in these families include
+      polycyclic aromatic hydrocarbons, chlorinated and nitro-substituted
+      benzenes, biphenyls, dioxin-like diaryl ethers and phthalate
+      plasticisers.
+    basis: >-
+      Counted from the curated substrate family of each enzyme type. The
+      family assignment is a curator decision recorded in chemistry.csv;
+      the entry counts are measured from the database on every build.
+
+  - id: chirality
+    label: One step installs two hydroxyls, stereospecifically
+    reactions: [cis_dihydroxylation]
+    body: >-
+      The reaction the family is named for adds two adjacent hydroxyl groups
+      across a double bond with defined stereochemistry, in a single
+      enzymatic step and from O<sub>2</sub>. That is the reason these enzymes
+      are used preparatively: the cis-diol it produces is hard to make
+      selectively by chemical means.
+    basis: >-
+      Reaction class of each type, curated from the literature on its
+      reference enzyme; counts measured from the database.
+
+  - id: beyond_bacteria
+    label: Not only bacteria, and not only pollutants
+    families: [quaternary_amines, terpenoids_steroids, tetrapyrroles, alkaloids]
+    body: >-
+      The same fold works on osmolytes and carnitine, on steroid and resin
+      acid skeletons, on alkaloids, and on chlorophyll during senescence in
+      plants. The architecture is shared; the chemistry is not confined to
+      degradation.
+    basis: >-
+      Curated substrate families, counted from the database. Whether a given
+      member performs its type's reference reaction depends on its identity
+      to that reference, which every entry page states.

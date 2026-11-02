@@ -2849,3 +2849,45 @@ def retired_types(types_dir=None):
 def retired_type_view(cluster):
     """Tek bir emekli tipin kaydi, ya da None."""
     return retired_types().get(cluster)
+
+
+def significance_view(chemistry_path, counts, yaml_path):
+    """Anasayfanin "bu enzimler neden onemli" kartlari: ONEM OLCULUR.
+
+    Kullanici 2026-11-02'de anasayfanin onemi anlatmadigini soyledi. Onem
+    bir iddia oldugu icin duzyaziyla yazilmiyor: her kartin sayilari
+    chemistry.csv'nin `family` / `reaction_class` degerlerinden ve
+    veritabanindaki uye sayimindan URETILIR. significance.yaml yalnizca
+    hangi anahtarlarin bir arada okunacagini (kurator karari) ve gerekcesini
+    tasir; tek bir sayi tasimaz, yani bayatlayamaz.
+
+    Eksik anahtar SESSIZCE 0 vermez: dogrulama anahtarin chemistry.csv'de
+    var oldugunu zorluyor, burada da olculen tip sayisi 0 olan iddia
+    DONDURULMEZ -- bos bir kart yayinlamak, olcmedigini olculmus gibi
+    gostermektir.
+    """
+    if not os.path.exists(yaml_path):
+        return []
+    try:
+        import yaml                                       # noqa: PLC0415
+        claims = (yaml.safe_load(open(yaml_path, encoding="utf-8"))
+                  or {}).get("claims") or []
+    except Exception:                                      # noqa: BLE001
+        return []
+    rows = list(csv.DictReader(open(chemistry_path, encoding="utf-8")))
+    out = []
+    for c in claims:
+        fams = set(c.get("families") or [])
+        rxs = set(c.get("reactions") or [])
+        hit = [r for r in rows
+               if (fams and r.get("family") in fams)
+               or (rxs and r.get("reaction_class") in rxs)]
+        n_types = len(hit)
+        n_members = sum(counts.get(r["cluster"], 0) for r in hit)
+        if not n_types:
+            continue
+        out.append({"id": c.get("id"), "label": c.get("label"),
+                    "body": c.get("body"), "basis": c.get("basis"),
+                    "types": n_types, "members": n_members,
+                    "keys": sorted(fams | rxs)})
+    return out
