@@ -45,8 +45,28 @@ from collections import Counter, defaultdict
 
 from ro_motif import read_stockholm_matchcols, MODEL_COLUMNS, DEFAULT_MODEL
 
-# Katalitik domain kabaca burada baslar (Rieske N-terminal, katalitik C-terminal)
-CATALYTIC_DOMAIN_START = 180
+# BOLGE SINIRI ARTIK OLCULUYOR, ELLE YAZILMIYOR (2026-11-03).
+#
+# Oncesinde burada `CATALYTIC_DOMAIN_START = 180` yaziyordu ve yorumu
+# "kabaca" diyordu. Olcum: ROmotif71'in Rieske ligand kolonlari 164, 166,
+# **184, 187**; yani 180 siniri Rieske ligand kumesinin ICINDEN geciyordu ve
+# Rieske Cys-2 (184) ile Rieske His-2 (187) "katalitik domain" sayiliyordu.
+# Bu yalnizca bir rapor satiri degil: `sdp_positions.csv` sitede
+# INDIRILEBILIR ve `in_catalytic_domain` sutununda 416 satirin 320'si
+# katalitik isaretliydi, oysa ilk katalitik ligand kolonu 289. Yani 109
+# satir (%26) yanlis bolgeye atanmisti ve ikisi dogrudan Rieske demir
+# ligandiydi.
+#
+# Yeni kural, kolonlari ro_motif'ten OKUYOR:
+#   rieske    : kolon <= son Rieske ligand kolonu (187)
+#   catalytic : kolon >= ilk katalitik ligand kolonu (289)
+#   between   : arasi (188-288). Burada OLCULMUS bir domain siniri YOK;
+#               101 satir bu bantta ve bugune kadar katalitik sayiliyorlardi.
+#               Uydurmak yerine "atanmamis" deniyor.
+# Turetme ro_motif'te; burada IKINCI bir kopya tutmak tam da duzeltilen
+# hatanin kendisi olurdu.
+from ro_motif import (zone_of as column_region, RIESKE_DOMAIN_END,
+                      CATALYTIC_DOMAIN_START)
 
 # Ikili kimlik hesabinda kume basina en fazla kac uye orneklenecek
 MAX_PAIRWISE_SAMPLE = 120
@@ -235,9 +255,12 @@ def main():
     path = os.path.join(args.out_dir, "sdp_positions.csv")
     with open(path, "w", newline="") as handle:
         writer = csv.writer(handle)
+        # `in_catalytic_domain` KORUNUYOR (indirilebilir dosyanin sutunu) ama
+        # artik olculen sinirla hesaplaniyor; `region` uc degerli karsiligi.
         writer.writerow(["column", "sdp_score", "within_cluster_entropy",
                          "between_cluster_entropy", "in_catalytic_domain",
-                         "is_motif_position", "top_residues_by_cluster"])
+                         "region", "is_motif_position",
+                         "top_residues_by_cluster"])
         for score, column, w, b in scored:
             top = ";".join(
                 f"{cluster}:{per_cluster_columns[cluster][column-1].most_common(1)[0][0]}"
@@ -245,6 +268,7 @@ def main():
                 if sum(per_cluster_columns[cluster][column-1].values()) >= 5)
             writer.writerow([column, round(score, 4), round(w, 4), round(b, 4),
                              int(column >= CATALYTIC_DOMAIN_START),
+                             column_region(column),
                              int(column in motif_positions), top])
 
     print("\n" + "=" * 72)
@@ -255,13 +279,18 @@ def main():
     print(f"{'kolon':>7s} {'SDP skoru':>10s} {'kume ici':>9s} {'kumeler arasi':>14s}  bolge")
     print("-" * 60)
     for score, column, w, b in scored[:20]:
-        region = "KATALITIK" if column >= CATALYTIC_DOMAIN_START else "Rieske/N-term"
+        region = {"catalytic": "KATALITIK", "rieske": "Rieske/N-term",
+                  "unassigned": "arada (sinir olculmemis)"}[column_region(column)]
         flag = "  <- motif" if column in motif_positions else ""
         print(f"{column:>7d} {score:>10.3f} {w:>9.3f} {b:>14.3f}  {region}{flag}")
 
-    catalytic_top = sum(1 for s, c, _, _ in scored[:30] if c >= CATALYTIC_DOMAIN_START)
-    print(f"\nIlk 30 SDP'nin {catalytic_top}'i katalitik domainde "
-          f"(kolon >= {CATALYTIC_DOMAIN_START}).")
+    top30 = [c for _s, c, _w, _b in scored[:30]]
+    n_cat = sum(1 for c in top30 if column_region(c) == "catalytic")
+    n_rie = sum(1 for c in top30 if column_region(c) == "rieske")
+    n_btw = sum(1 for c in top30 if column_region(c) == "unassigned")
+    print(f"\nIlk 30 SDP: {n_cat} katalitik (kolon >= {CATALYTIC_DOMAIN_START}), "
+          f"{n_rie} Rieske/N-term (kolon <= {RIESKE_DOMAIN_END}), "
+          f"{n_btw} arada -- o bantta olculmus bir domain siniri yok.")
     print(f"[yazildi] {path}")
 
 

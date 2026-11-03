@@ -145,7 +145,11 @@ REQUIRE_ANCHORS = 4     # dort Rieske ligandinin hepsi dogru oturmali
 RESIDUE_CLASSES = ["W", "A", "Y", "other"]
 REGEX_METHOD = "regex_v1"
 MIN_TYPE_N = 20         # enzim tipi tablosuna girmek icin asgari uye (ev olcutu)
-MAX_FD_LEN = 250        # etc_types.py'nin "bu bir ferredoksindir" uzunluk olcutu
+# etc_types.py'nin "bu bir ferredoksindir" uzunluk olcutu. Deger BURADA
+# TANIMLANMIYOR (2026-11-03): yorum zaten baska bir betigin olcutunden soz
+# ediyordu, yani bir KOPYAYDI ve o betik degisse bu sessizce eski degerde
+# kalirdi. Olcutu uygulayan betikten okunuyor.
+from etc_types import MAX_FD_LEN
 
 RIESKE_HMM = {"Rieske", "Rieske_2"}
 PLANT_HMM = {"Fer2"}

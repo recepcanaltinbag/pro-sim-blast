@@ -673,7 +673,7 @@ but differ from one another. Cells that differ from this type's majority residue
 <div class="tablewrap"><table class="data compact sdp">
 <thead>
 <tr><th>Variant</th><th class="num">Members</th>
-  {% for col in x.sdp_columns %}<th class="num" title="score {{ col.score }} · {{ col.domain }} domain{{ ' · metal ligand' if col.is_ligand }}">{{ col.column }}{% if col.is_ligand %}<sup>L</sup>{% endif %}</th>{% endfor %}
+  {% for col in x.sdp_columns %}<th class="num" title="score {{ col.score }} · {% if col.domain == 'rieske' %}Rieske domain{% elif col.domain == 'catalytic' %}catalytic domain{% else %}between the two domains; the boundary in this band is not measured{% endif %}{{ ' · metal ligand' if col.is_ligand }}">{{ col.column }}{% if col.is_ligand %}<sup>L</sup>{% endif %}</th>{% endfor %}
   <th class="num">Differs</th></tr>
 <tr><th class="note">type majority</th><th></th>
   {% for col in x.sdp_columns %}<th class="num note">{{ col.consensus }}</th>{% endfor %}<th></th></tr>

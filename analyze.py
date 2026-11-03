@@ -18,9 +18,19 @@ import sqlite3
 from collections import Counter, defaultdict
 
 # Ayni operonda kabul edilecek maksimum intergenik bosluk.
-# Bakteriyel operonlarda gen arasi mesafe tipik olarak <50 bp; 100 bp
-# muhafazakar bir ust sinir.
-OPERON_MAX_GAP = 100
+#
+# TEK KAYNAK (2026-11-03): bu deger ARTIK BURADA TANIMLANMIYOR.
+# Oncesinde 100 bp yaziyordu, oysa `operon` tablosunu kuran
+# `build_operons.py` 150 bp kullaniyor ve sitenin yayimladigi operon
+# tanimi ("150 bp gap rule", variant_and_operon.py) o tablodan geliyor.
+# Yani ayni veritabani uzerinde iki farkli operon kurali vardi: biri
+# tabloyu kuruyor, digeri rapor basiyordu, ve ikisi ayni basligi
+# ("OPERON") tasiyordu. Raporu okuyan kisi sitenin sayisini bulamazdi.
+#
+# Deger artik kurali UYGULAYAN betikten okunuyor. Degeri degistirmek
+# isteyen kisi onu tek bir yerde degistirir ve her iki cikti birlikte
+# kayar; ayrismalari artik mumkun degil.
+from build_operons import DEFAULT_MAX_GAP as OPERON_MAX_GAP
 
 # Divergent regulator: RO'nun SOLUNDA, TERS yonde, promotor mesafesinde.
 # LysR ailesi duzenleyiciler hedef operonun karsisina kafa kafaya oturur.

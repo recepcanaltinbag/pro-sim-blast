@@ -148,6 +148,50 @@ RIESKE_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["rieske"]
 CATALYTIC_SITES = MODEL_COLUMNS[DEFAULT_MODEL]["catalytic"]
 BRIDGING_SITE = MODEL_COLUMNS[DEFAULT_MODEL]["bridging"]
 
+# --- BOLGE SINIRLARI: tek kaynak (2026-11-03) -------------------------------
+#
+# Bu sinirlar DORT yerde ayri ayri tanimliydi ve UCU de ligand kolonlariyla
+# celisiyordu:
+#     analyze_variants.py : CATALYTIC_DOMAIN_START = 180
+#     variant_signature.py: RIESKE_END = 120, CATALYTIC_START = 191
+#     learn_from_data.py  : RIESKE_END = 120, CATALYTIC_START = 191
+#
+# Oysa bu modelin Rieske ligandlari kolon 164, 166, 184, 187; ilk katalitik
+# ligand 289. Yani:
+#   - 180 siniri Rieske ligand kumesinin ICINDEN geciyordu ve Rieske Cys-2
+#     (184) ile His-2 (187) "katalitik domain" sayiliyordu. Bu, sitede
+#     indirilebilir olan sdp_positions.csv'de 416 satirin 109'unu (%26)
+#     yanlis bolgeye atiyordu.
+#   - 120 siniri DORT Rieske ligandinin HEPSINI "rieske" bolgesinin DISINA
+#     atiyordu; `cluster_sdp`'de "rieske" etiketli 25 satir, icinde hic
+#     Rieske ligandi olmayan kolonlardi ve bu etiket her tip sayfasinda
+#     SDP tablosunun tooltip'inde yayimlaniyordu.
+#   - variant_signature.py'nin yorumu "Rieske ligandlari kolon 108'de
+#     bitiyor, ilk katalitik ligand 212'de basliyor" diyordu. Olcum:
+#     `cluster_sdp` kolonlari 99-492 araliginda, yani ro_motif ile AYNI
+#     uzayda. Yorumdaki iki sayi bu uzayda dogru degil.
+#
+# Siniflar artik ligand kolonlarindan TURETILIYOR. Arada kalan bant
+# (188-288) icin olculmus bir domain siniri YOK; yapisal dogrulama
+# yapilmadigi icin "katalitik" demek de "linker" demek de bir iddia olurdu.
+# O bant `unassigned` olarak isaretlenir ve sayfada oyle okunur.
+RIESKE_DOMAIN_END = max(col for col, _res, _label in RIESKE_SITES)
+CATALYTIC_DOMAIN_START = min(col for col, _res, _label in CATALYTIC_SITES)
+
+
+def zone_of(column):
+    """Kolonun bolgesi: 'rieske' | 'unassigned' | 'catalytic'.
+
+    Sinirlar ligand kolonlarindan turetilir, elle yazilmaz. Arada kalan
+    bant icin olculmus bir domain siniri olmadigi icin ad vermiyoruz.
+    """
+    if column <= RIESKE_DOMAIN_END:
+        return "rieske"
+    if column >= CATALYTIC_DOMAIN_START:
+        return "catalytic"
+    return "unassigned"
+
+
 # --- Kriterin gevsetilmesi: neden ---
 #
 # Katalitik triad'in 3/3'unu tam kolonda aramak FAZLA RIJIT. 73 kuratorlu

@@ -135,9 +135,10 @@ DEPTH_SWEEP = (1, 2, 3, 4, 5, 6, 8, 12, 20)
 NESTED_DEPTHS = (2, 3, 4, 5, 6, 8)
 PRIMARY_DEPTH = 5         # tek-derinlikli sayilar icin; ic ice CV ayrica kosulur
 
-# variant_signature.py ile AYNI konvansiyon; bolge sinirlari yaklasiktir.
-RIESKE_END = 120
-CATALYTIC_START = 191
+# BOLGE SINIRLARI ro_motif'TEN (2026-11-03). Burada 120/191 yaziyordu ve
+# ikisi de ligand kolonlariyla celisiyordu; ayrintili gerekce ro_motif.py'de.
+from ro_motif import (zone_of as _model_zone, RIESKE_DOMAIN_END,
+                      CATALYTIC_DOMAIN_START)
 
 # Rastgelelik tek yerden; her kosu ayni sayilari uretsin.
 SEED = 20261006
@@ -152,13 +153,18 @@ def entropy(counter):
     return -sum((n / total) * math.log2(n / total) for n in counter.values() if n)
 
 
+# Bu modulun cikti sozlugu "_domain" ekli adlar kullaniyor (learning.json);
+# KARAR ro_motif'te veriliyor, burada yalnizca ada cevriliyor. Ortadaki bant
+# eskiden "linker" diye yayimlaniyordu -- linker yapisal bir iddia ve bu
+# bantta olculmus bir domain siniri yok, o yuzden "unassigned".
+_ZONE_NAME = {"rieske": "rieske_domain",
+              "catalytic": "catalytic_domain",
+              "unassigned": "unassigned"}
+
+
 def zone_of(column):
-    """Kolonun bolgesi -- variant_signature.py'deki ayni konvansiyon."""
-    if column <= RIESKE_END:
-        return "rieske_domain"
-    if column < CATALYTIC_START:
-        return "linker"
-    return "catalytic_domain"
+    """Kolonun bolgesi; siniri ro_motif'ten alir, adini bu modulun sozlugune cevirir."""
+    return _ZONE_NAME[_model_zone(column)]
 
 
 def cramers_v(table):
@@ -1415,9 +1421,10 @@ def main():
     q2["catalytic_centre_columns"] = motif_columns
     q2["catalytic_centre_source"] = motif_source
     q2["zone_convention"] = {
-        "rieske_domain": f"column <= {RIESKE_END}",
-        "linker": f"{RIESKE_END} < column < {CATALYTIC_START}",
-        "catalytic_domain": f"column >= {CATALYTIC_START}",
+        "rieske_domain": f"column <= {RIESKE_DOMAIN_END}",
+        "unassigned": (f"{RIESKE_DOMAIN_END} < column < {CATALYTIC_DOMAIN_START}"
+                       " -- no measured domain boundary in this band"),
+        "catalytic_domain": f"column >= {CATALYTIC_DOMAIN_START}",
         "note": ("the boundaries are the convention of variant_signature.py and "
                  "are approximate; no structure was used, so a column close to a "
                  "metal ligand is a hypothesis about the active site and not "

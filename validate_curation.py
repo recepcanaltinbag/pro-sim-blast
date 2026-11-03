@@ -1834,6 +1834,81 @@ def check_regulation_totals_agree(rep, con, root):
               f"{n_csv} giris, mimari toplami {sum(csv_sum.values())}, tablo {n_db}")
 
 
+def check_sdp_regions(rep, con, root):
+    """Yayimlanan SDP tablosunda hicbir Rieske ligandi katalitik sayilamaz.
+
+    NEDEN. `analysis_out/sdp_positions.csv` sitede INDIRILEBILIR ve bir
+    `in_catalytic_domain` sutunu tasiyor. O sutun 2026-11-03'e kadar elle
+    yazilmis `CATALYTIC_DOMAIN_START = 180` sinirindan hesaplaniyordu, oysa
+    ROmotif71'in Rieske ligand kolonlari 164, 166, 184, 187. Yani sinir
+    ligand kumesinin ICINDEN geciyor ve Rieske Cys-2 ile Rieske His-2
+    "katalitik domainde" yayimlaniyordu. 416 satirin 109'u (%26) yanlis
+    bolgedeydi.
+
+    Sinir artik ro_motif'ten turetiliyor. Bu kontrol turetmenin yerinde
+    kalmasini sagliyor: bir Rieske ligand kolonu katalitik isaretlenirse
+    ya da `region` sutunu kaybolursa FAIL.
+    """
+    import csv as _csv
+    path = os.path.join(root, "analysis_out", "sdp_positions.csv")
+    if not os.path.exists(path):
+        rep.check("sdp: sdp_positions.csv exists", False, 1,
+                  "dosya yok -- analyze_variants.py kosturulmali",
+                  severity="WARN")
+        return
+    try:
+        from ro_motif import RIESKE_SITES, CATALYTIC_SITES
+    except Exception as exc:  # noqa: BLE001
+        rep.check("sdp: ligand columns are readable", False, 1, str(exc))
+        return
+    rieske_cols = {c for c, _r, _l in RIESKE_SITES}
+    first_cat = min(c for c, _r, _l in CATALYTIC_SITES)
+    rows = list(_csv.DictReader(open(path)))
+    if "region" not in (rows[0].keys() if rows else {}):
+        rep.check("sdp: the published table carries a region column",
+                  False, 1, "`region` sutunu yok -- bolge atamasi iki degerli "
+                            "kalmis, oysa 188-288 bandinda olculmus sinir yok")
+        return
+    bad_lig = [r["column"] for r in rows
+               if int(r["column"]) in rieske_cols
+               and r["in_catalytic_domain"] == "1"]
+    rep.check("sdp: no Rieske ligand column is published as catalytic",
+              not bad_lig, len(bad_lig),
+              "Rieske ligandlari katalitik sayilmiyor" if not bad_lig
+              else f"katalitik isaretli Rieske ligand kolonlari: "
+                   f"{', '.join(bad_lig)}")
+    # Bayrak ile olculen sinir ayrisirsa dosya bayat.
+    wrong = [r["column"] for r in rows
+             if (int(r["column"]) >= first_cat) != (r["in_catalytic_domain"] == "1")]
+    rep.check("sdp: the catalytic flag agrees with the measured boundary",
+              not wrong, len(wrong),
+              f"sinir kolon {first_cat}, bayrak uyusuyor" if not wrong
+              else f"{len(wrong)} satirda bayrak olculen sinirla uyusmuyor "
+                   f"-- dosya bayat, analyze_variants.py kosturulmali")
+
+    # BOLGE SINIRI TEK KAYNAK OLMAK ZORUNDA. 2026-11-03'e kadar ayni sinir
+    # dort yerde tanimliydi (analyze_variants 180; variant_signature ve
+    # learn_from_data 120/191) ve ucu de ligand kolonlariyla celisiyordu.
+    # Burada kaynak dosyalarda ELLE YAZILMIS bir sinir kalmadigi sinaniyor:
+    # kalirsa ro_motif'teki turetme ile sessizce ayrisabilir.
+    import re as _re2
+    literal = []
+    for fn in ("analyze_variants.py", "variant_signature.py",
+               "learn_from_data.py"):
+        fp = os.path.join(root, fn)
+        if not os.path.exists(fp):
+            continue
+        for i, line in enumerate(open(fp), 1):
+            if _re2.match(r"\s*(RIESKE_END|CATALYTIC_START|"
+                          r"CATALYTIC_DOMAIN_START|RIESKE_DOMAIN_END)"
+                          r"\s*=\s*[0-9]", line):
+                literal.append(f"{fn}:{i}")
+    rep.check("sdp: the domain boundary is defined only in ro_motif",
+              not literal, len(literal),
+              "sinir yalnizca ro_motif'te turetiliyor" if not literal
+              else "elle yazilmis sinir: " + ", ".join(literal))
+
+
 def check_prevalence_declares_cohort(rep, con, root):
     """Genom duzeyinde yaygınlık, kohortunu BEYAN etmek zorunda.
 
@@ -2843,6 +2918,7 @@ def main():
                             os.path.join(args.out_dir, "reference_pairs.csv"),
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
+        check_sdp_regions(rep, con, ROOT)
         check_prevalence_declares_cohort(rep, con, ROOT)
         check_prefilter_admits_gate_passers(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)

@@ -88,20 +88,18 @@ def ligand_columns():
     return cols
 
 
-# Domain sinirlari YAKLASIKTIR. Model icinde Rieske ligandlari kolon 108'de
-# bitiyor, ilk katalitik ligand 212'de basliyor; arada ikisine de atanamayan bir
-# bolge var. Yapisal dogrulama yapilmadigi icin bolgeler konvansiyon olarak
-# isaretlenir ve arayuzde oyle sunulur.
-RIESKE_END = 120
-CATALYTIC_START = 191
-
-
-def zone_of(column):
-    if column <= RIESKE_END:
-        return "rieske"
-    if column < CATALYTIC_START:
-        return "linker"
-    return "catalytic"
+# BOLGE SINIRLARI ro_motif'TEN GELIYOR (2026-11-03). Burada 120 ve 191
+# yaziyordu ve yorumu "Rieske ligandlari kolon 108'de bitiyor, ilk katalitik
+# ligand 212'de basliyor" diyordu. OLCUM: `cluster_sdp` kolonlari 99-492
+# araliginda, yani ro_motif ile AYNI uzayda; o uzayda Rieske ligandlari 164,
+# 166, 184, 187 ve ilk katalitik ligand 289. Yani 120 siniri DORT Rieske
+# ligandinin hepsini "rieske" bolgesinin DISINA atiyordu ve "rieske" etiketli
+# satirlar icinde hic Rieske ligandi olmayan kolonlardi. Bu etiket her tip
+# sayfasinin SDP tablosunda tooltip olarak YAYIMLANIYORDU.
+#
+# Arada kalan bant artik "linker" degil "unassigned": linker demek yapisal
+# bir iddia ve bu projede olculmedi.
+from ro_motif import zone_of, RIESKE_DOMAIN_END, CATALYTIC_DOMAIN_START
 
 
 def main():
@@ -237,7 +235,9 @@ def main():
     total_cols = sum(len(json.loads(r[3])) for r in cluster_rows)
     print(f"[kontrol] ayirt edici kolonlar: katalitik bolge "
           f"{100 * catalytic / max(1, total_cols):.1f}%, Rieske bolgesi "
-          f"{100 * rieske_zone / max(1, total_cols):.1f}%, geri kalani baglanti bolgesi")
+          f"{100 * rieske_zone / max(1, total_cols):.1f}%, geri kalani iki domain "
+          f"ARASINDA -- o bantta olculmus bir domain siniri yok, o yuzden "
+          f"'baglanti bolgesi' denmiyor")
     print(f"[kontrol] {ligand_hits} kolon metal ligandi pozisyonu. Motif testi +-2 kolon "
           f"penceresi kullandigi icin ligandin TAM kolonu kayabilir; bu yuzden ligand "
           f"pozisyonunun burada cikmasi eksik merkez anlamina gelmez.")
