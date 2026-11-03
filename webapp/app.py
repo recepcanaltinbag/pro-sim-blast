@@ -1528,12 +1528,109 @@ def _overview(con):
     return atlas.per_cluster_overview(con, ECOLOGY)
 
 
+def _carboxylate_spread():
+    """Katalitik karboksilatin yapisal referanslarda hangi kolonlara dustugu.
+
+    BU SAYILAR SAYFADA ELLE YAZILIYDU (2026-11-03'e kadar): "18 of them",
+    "432 in 2 more", "the remaining 6", "407-411 and 449-451". Olcum iki
+    dosyada ZATEN vardi; yani sayfa, var olan bir olcumu kopyalayarak
+    yayimliyordu ve referans seti ya da capalama degistiginde sessizce
+    bayatlayacakti -- bu projede ayni bicimde bir sayi daha once bayatladi.
+
+    Duzyazi AYRISTIRILMIYOR. Denetimin `note` alani bantlari Turkce bir
+    cumlede tasiyor; buradaki hicbir deger o cumleden okunmuyor:
+      testable    : result.testable
+      within_one  : references_at_431 + at_432  (431 +-1 penceresi)
+      outliers    : testable - within_one
+      bands       : column_bands'in LISTE degerli anahtarlari -- "431-432"
+                    anahtari bir sayi dizesi tasidigi icin kendiliginden
+                    disarida kalir
+    Herhangi bir alan eksikse None doner ve sablon o cumleyi yazmaz; eksik
+    olcumu tahminle doldurmak, olculmemis bir seyi yayimlamak olurdu.
+    """
+    audit = atlas.read_json(apath("carboxylate_column_audit.json")) or {}
+    clade = atlas.read_json(apath("carboxylate_clade_shift.json")) or {}
+    real = audit.get("the_real_column") or {}
+    result = audit.get("result") or {}
+    bands = [k for k, v in (clade.get("column_bands") or {}).items()
+             if isinstance(v, list)]
+    try:
+        testable = int(result["testable"])
+        at_col = int(real["references_at_431"])
+        at_next = int(real["at_432"])
+        column = int(real["column"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if not bands:
+        return None
+    within_one = at_col + at_next
+
+    # MESAFE ARALIGI: sayfa "in all 26 testable structures" diyordu, OLCUM
+    # 20 (2026-11-03). Ham dosyada 6 yapi `column_call_distance = -1`
+    # tasiyor -- bu bir mesafe DEGIL, "kolon cagrisinin yapida karsiligi
+    # bulunamadi" nobetci degeri; ve o 6 yapi tam da bant aykirilarindan
+    # (DdmC, NdmA, NdmB, BphA1, NagGH, ROCH34). Bir yapida (HcaE/8K0A)
+    # mononukleer demir hic yok ve alan bile yazilmamis.
+    #
+    # Nobetci degeri ayiklamak ZORUNLU: naif bir min() sayfaya "-1 A"
+    # yazardi. Ayiklanan sayi da GIZLENMIYOR, cunku 20'de olculen bir
+    # araligi 26 yapiya atfetmek tam olarak bu projenin tekrar eden hatasi.
+    raw = atlas.read_json(apath("carboxylate_column_audit_raw.json")) or []
+    dists = [r["column_call_distance"] for r in raw
+             if isinstance(r.get("column_call_distance"), (int, float))
+             and r["column_call_distance"] > 0]
+    sentinel = sum(1 for r in raw
+                   if isinstance(r.get("column_call_distance"), (int, float))
+                   and r["column_call_distance"] <= 0)
+    no_field = sum(1 for r in raw if "column_call_distance" not in r)
+
+    out = {"column": column, "testable": testable, "at_column": at_col,
+           "at_next": at_next, "within_one": within_one,
+           "outliers": testable - within_one,
+           "bands": " and ".join(sorted(bands))}
+    if dists:
+        out.update({"dist_n": len(dists), "dist_min": min(dists),
+                    "dist_max": max(dists), "dist_unmeasured": sentinel,
+                    "dist_no_iron": no_field})
+    return out
+
+
+def _bridging_glu_by_type(con, group="5", min_n=20, top=4):
+    """Grup 5 tiplerinde koprudeki karboksilatin Glu payi -- OLCULEREK.
+
+    SAYFA BU IKI SAYIYI ELLE YAZIYORDU: "reaching 100 % in GbcA and above
+    89 % in Stc2, CntA and BmoA". Olcum (2026-11-03): GbcA %100,0 dogru, ama
+    Stc2 %93,4, CntA %90,7 ve **BmoA %87,4** -- yani BmoA 89'un ALTINDA ve
+    iddia onun icin yanlis. Ustelik bu paylar uyelik her buyudugunde kayar
+    (A5 kurtarmasi tam da grup 5'i buyutuyor), yani elle yazilan bir sayi
+    burada kalici olarak yanlis olmaya mahkum.
+
+    min_n: tek haneli uye sayilariyla hesaplanan bir yuzdeyi yayimlamamak
+    icin taban; etc_types.py'nin MIN_TYPE_N olcutuyle ayni gerekce.
+    """
+    rows = con.execute("""
+        SELECT m.ro_cluster, COUNT(*) n,
+               SUM(CASE WHEN c.bridging_residue='E' THEN 1 ELSE 0 END) e
+        FROM ro_carboxylate c JOIN ro_membership m USING(candidate_id)
+        -- LIKE yerine on ek karsilastirmasi: '5_%' kalibinda alt tire
+        -- LIKE'in joker karakteri ve ESCAPE kacisi gereksiz kirilganlik.
+        WHERE substr(m.ro_cluster, 1, length(? ) + 1) = ? || '_'
+        GROUP BY 1 HAVING COUNT(*) >= ?
+        ORDER BY 1.0 * SUM(CASE WHEN c.bridging_residue='E' THEN 1 ELSE 0 END)
+                 / COUNT(*) DESC
+    """, (group, group, min_n)).fetchall()
+    return [{"cluster": r[0], "name": r[0].split("_", 2)[-1],
+             "n": r[1], "share": r[2] / r[1]} for r in rows[:top]]
+
+
 @app.get("/atlas", response_class=HTMLResponse)
 def atlas_home(request: Request):
     con = connect()
     try:
         return render(request, "atlas_home.html", over=_overview(con), totals=totals(con),
                       stats=atlas.read_json(apath("stats.json")),
+                      carbox_spread=_carboxylate_spread(),
+                      glu_top=_bridging_glu_by_type(con),
                       motif=atlas.read_json(apath("motif_stats.json")))
     finally:
         con.close()

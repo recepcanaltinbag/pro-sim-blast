@@ -100,21 +100,29 @@ operon, and the organisms that carry it.</p>
     expected geometry for a shared promoter region.
     <a href="{{ u('/atlas/regulation') }}">Regulation</a></li>
   {% if motif and motif.carboxylate_identity %}
+  {% set cs = carbox_spread %}
   {% set cat = motif.carboxylate_identity.catalytic_iron %}
   {% set brg = motif.carboxylate_identity.bridging %}
   <li><b>One alignment column separates the quaternary-amine branch from the rest of the family.</b>
     The two carboxylates of this fold behave in opposite ways, and only one of them can be read
     from an alignment column at all. The catalytic carboxylate is a first-shell ligand of the
-    mononuclear iron, and in the structural reference set it is <b>aspartate in 26 of 26</b>
-    structures — but no single column holds it: it lands on column {{ cat.column }} in 18 of them
-    and on 432 in 2 more, with the remaining 6 spread over 407–411 and 449–451. The residue
-    column {{ cat.column }} calls sits 10.9–14.7 Å from the iron in all 26 testable structures,
-    so that column's Asp-to-Glu ratio is not a measurement of the ligand and is not published
-    here. The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
+    mononuclear iron, and in the structural reference set it is
+    <b>aspartate in {{ cs.testable }} of {{ cs.testable }}</b> structures{% if cs %} — but no
+    single column holds it: it lands within one column of {{ cs.column }} in {{ cs.within_one }}
+    of them, and the remaining {{ cs.outliers }} are spread over {{ cs.bands }}{% endif %}.
+    {% if cs and cs.dist_n %}The residue column {{ cs.column }} calls sits
+    {{ '%.1f' % cs.dist_min }}–{{ '%.1f' % cs.dist_max }} Å from the iron in the
+    {{ cs.dist_n }} structures where that residue could be located at all; in
+    {{ cs.dist_unmeasured }} more the column call has no counterpart to measure, and
+    {{ cs.dist_no_iron }} structure carries no mononuclear iron. The range is therefore a
+    measurement on {{ cs.dist_n }} structures, not on {{ cs.testable }}.{% endif %}
+    Either way that column's Asp-to-Glu ratio is not a measurement of the ligand and is not
+    published here. The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
     structural test, and it splits {{ brg.asp|fmt }} Asp to {{ brg.glu|fmt }} Glu, and the
     glutamate is not scattered: it marks the group-5 enzymes that cleave carbon–nitrogen bonds or
-    demethylate open-chain quaternary amines, reaching 100 % in GbcA and above 89 % in Stc2, CntA
-    and BmoA. The per-member residues are still column reads; what the structures verified is that
+    demethylate open-chain quaternary amines{% if glu_top %}, measured as
+    {% for g in glu_top %}{{ '%.0f' % (100 * g.share) }} % in {{ g.name }}
+    <span class="unit">(n={{ g.n|fmt }})</span>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}. The per-member residues are still column reads; what the structures verified is that
     this column reads the bridge.
     <a href="{{ u('/atlas/evidence') }}">Evidence</a> ·
     <a href="{{ u('/') }}#main">the figure and full counts</a></li>

@@ -1834,6 +1834,51 @@ def check_regulation_totals_agree(rep, con, root):
               f"{n_csv} giris, mimari toplami {sum(csv_sum.values())}, tablo {n_db}")
 
 
+def check_carboxylate_claim_is_measured(rep, con, root):
+    """Anasayfa-atlas'taki karboksilat iddiasinda elle yazilmis sayi kalamaz.
+
+    NEDEN. O paragraf canli degiskenlerle ELLE YAZILMIS sayilari
+    karistiriyordu ve ikisi YANLISTI (2026-11-03 olcumu):
+
+      - "The residue column 431 calls sits 10.9-14.7 A from the iron in all
+        26 testable structures". Ham denetimde 6 yapi
+        `column_call_distance = -1` tasiyor; bu bir mesafe DEGIL, "kolon
+        cagrisinin yapida karsiligi bulunamadi" nobetcisi, ve bir yapida
+        (HcaE/8K0A) mononukleer demir hic yok. Aralik 20 yapida olculmus,
+        26'ya atfedilmisti.
+      - "above 89 % in Stc2, CntA and BmoA". Olcum: Stc2 %93,4, CntA %90,7,
+        **BmoA %87,4** -- yani BmoA 89'un altinda. Ustelik bu paylar uyelik
+        buyudukce kayiyor ve A5 kurtarmasi tam da grup 5'i buyutuyor.
+
+    KONTROL. Paragraf, capa cumleden itibaren duzlestirilir, Jinja
+    ifadeleri ({{...}} ve {%...%}) CIKARILIR ve geri kalanda iki ya da daha
+    cok haneli bir sayi aranir. Kalan varsa o sayi olcumden gelmiyor
+    demektir. Boylece metin yeniden sarilsa da kontrol kirilmaz; yalnizca
+    bir sayi SABITLENIRSE kirilir.
+    """
+    import re as _re3
+    tpl = os.path.join(root, "webapp", "templates", "atlas_home.html")
+    if not os.path.exists(tpl):
+        rep.check("carboxylate claim: atlas_home.html exists", False, 1, tpl)
+        return
+    flat = _re3.sub(r"\s+", " ", open(tpl).read())
+    anchor = "The two carboxylates of this fold"
+    i = flat.find(anchor)
+    if i < 0:
+        rep.check("carboxylate claim: the paragraph is found", False, 1,
+                  f"capa cumle yok: {anchor!r} -- kontrol bos gecemez",
+                  severity="WARN")
+        return
+    window = flat[i:i + 1800]
+    bare = _re3.sub(r"\{\{.*?\}\}|\{%.*?%\}", " ", window)
+    nums = _re3.findall(r"(?<![\w.])\d{2,}(?![\w%])", bare)
+    rep.check("carboxylate claim: every number comes from a measurement",
+              not nums, len(nums),
+              "paragrafta elle yazilmis sayi yok" if not nums
+              else f"elle yazilmis sayi(lar): {', '.join(sorted(set(nums)))} "
+                   f"-- olcum var ve sayfa onu kopyaliyor, yani bayatlayacak")
+
+
 def check_sdp_regions(rep, con, root):
     """Yayimlanan SDP tablosunda hicbir Rieske ligandi katalitik sayilamaz.
 
@@ -2918,6 +2963,7 @@ def main():
                             os.path.join(args.out_dir, "reference_pairs.csv"),
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
+        check_carboxylate_claim_is_measured(rep, con, ROOT)
         check_sdp_regions(rep, con, ROOT)
         check_prevalence_declares_cohort(rep, con, ROOT)
         check_prefilter_admits_gate_passers(rep, con, ROOT)
