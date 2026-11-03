@@ -30,6 +30,13 @@ from collections import Counter, defaultdict
 
 from scipy import stats
 
+# OPERON BOSLUK ESIGI: kurali UYGULAYAN betikten okunur (2026-11-03).
+# Burada `g <= 150` yaziliydi ve alanin adi da `gap_under_150`'ydi; yani
+# esik hem dorduncu kez kopyalanmis hem de ADIN ICINE gomulmustu. Esik
+# degisse ad yalan olur ve sayfa da o adi basiyordu. Deger artik tek
+# kaynaktan geliyor, ad sayiyi tasimiyor ve esigin kendisi yayimlaniyor.
+from build_operons import DEFAULT_MAX_GAP
+
 COMPONENTS = ["beta", "ferredoxin", "reductase", "alpha_other"]
 GAP_THRESHOLDS = [50, 100, 150, 200, 300, 500]
 NEAR = 2            # "yakin" tanimi: |gen uzakligi| <= 2
@@ -110,6 +117,9 @@ def main():
                 d["gaps"].append(abs(distance))
 
     out = {"n_neighbour_genes": len(rows),
+           # Esik YAYIMLANIYOR: okuyucunun "gap_under_max" alaninin neyin
+           # altini saydigini tahmin etmesi gerekmesin.
+           "max_gap_bp": DEFAULT_MAX_GAP,
            "background": {"same_strand_rate": round(bg_same[True] / max(1, len(rows)), 4),
                           "near_rate": round(bg_near[True] / max(1, len(rows)), 4),
                           "near_definition": f"|gene offset| <= {NEAR}"},
@@ -133,7 +143,8 @@ def main():
                         for k in range(-OFFSET_RANGE, OFFSET_RANGE + 1) if d["offsets"][k]},
             "gap_median": gaps[len(gaps) // 2] if gaps else None,
             "gap_quartiles": [gaps[len(gaps) // 4], gaps[3 * len(gaps) // 4]] if len(gaps) >= 4 else None,
-            "gap_under_150": round(sum(1 for g in gaps if g <= 150) / len(gaps), 4) if gaps else None,
+            "gap_under_max": (round(sum(1 for g in gaps if g <= DEFAULT_MAX_GAP)
+                                    / len(gaps), 4) if gaps else None),
         }
         out["components"][comp] = entry
         print(f"[{comp:12s}] n={entry['n']:6,}  ayni iplik {100*entry['strand']['rate']:.1f}% "

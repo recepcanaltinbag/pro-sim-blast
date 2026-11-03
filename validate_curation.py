@@ -1834,6 +1834,60 @@ def check_regulation_totals_agree(rep, con, root):
               f"{n_csv} giris, mimari toplami {sum(csv_sum.values())}, tablo {n_db}")
 
 
+def check_operon_gap_single_source(rep, con, root):
+    """Operon bosluk esigi yalnizca build_operons.py'de tanimli olabilir.
+
+    NEDEN. Esik DORT yerde ayri ayri yaziliydi ve biri AYRISMISTI:
+        build_operons.py     DEFAULT_MAX_GAP = 150   <- tabloyu kuran
+        analyze.py           OPERON_MAX_GAP  = 100   <- ayrismis
+        operon_validation.py g <= 150 (ve alan adi `gap_under_150`)
+        atlas_operons.html   "at most 150 base pairs" (uc yerde)
+    Yani ayni veritabani uzerinde iki operon kurali vardi, ikisi de "OPERON"
+    basligi tasiyordu ve raporu okuyan kisi sitenin sayisini bulamazdi.
+    Ayrica esik bir ALAN ADININ icine gomulmustu: esik degisse ad yalan olur
+    ama kimse farketmez.
+
+    Esik artik tek yerde; `max_gap_bp` olarak yayimlaniyor ve sayfa oradan
+    okuyor. Bu kontrol kopyanin geri gelmesini engeller.
+    """
+    import re as _re4
+    offenders = []
+    for fn in ("analyze.py", "operon_validation.py", "operon_relations.py",
+               "variant_and_operon.py"):
+        fp = os.path.join(root, fn)
+        if not os.path.exists(fp):
+            continue
+        for i, line in enumerate(open(fp), 1):
+            if _re4.match(r"\s*(OPERON_MAX_GAP|DEFAULT_MAX_GAP|MAX_GAP)"
+                          r"\s*=\s*[0-9]", line):
+                offenders.append(f"{fn}:{i}")
+    rep.check("operon: the gap threshold is defined only in build_operons.py",
+              not offenders, len(offenders),
+              "esik tek kaynakta" if not offenders
+              else "elle yazilmis esik: " + ", ".join(offenders))
+
+    # Yayimlanan dosya esigi BEYAN etmek zorunda: etmezse okuyucu
+    # `gap_under_max` alaninin neyin altini saydigini tahmin eder.
+    import json as _json
+    path = os.path.join(root, "analysis_out", "operon_validation.json")
+    if not os.path.exists(path):
+        rep.check("operon: operon_validation.json exists", False, 1,
+                  "dosya yok", severity="WARN")
+        return
+    data = _json.load(open(path))
+    try:
+        from build_operons import DEFAULT_MAX_GAP
+    except Exception as exc:  # noqa: BLE001
+        rep.check("operon: the rule is importable", False, 1, str(exc))
+        return
+    pub = data.get("max_gap_bp")
+    rep.check("operon: the published file declares the gap it measured",
+              pub == DEFAULT_MAX_GAP, 0 if pub == DEFAULT_MAX_GAP else 1,
+              f"yayimlanan esik {pub} bp, kural {DEFAULT_MAX_GAP} bp"
+              + ("" if pub == DEFAULT_MAX_GAP else
+                 " -- dosya bayat ya da esigi hic beyan etmiyor"))
+
+
 def check_carboxylate_claim_is_measured(rep, con, root):
     """Anasayfa-atlas'taki karboksilat iddiasinda elle yazilmis sayi kalamaz.
 
@@ -2963,6 +3017,7 @@ def main():
                             os.path.join(args.out_dir, "reference_pairs.csv"),
                             eco, chem, con)
         n_conf = check_confirmed_ro(con, rep)
+        check_operon_gap_single_source(rep, con, ROOT)
         check_carboxylate_claim_is_measured(rep, con, ROOT)
         check_sdp_regions(rep, con, ROOT)
         check_prevalence_declares_cohort(rep, con, ROOT)

@@ -84,7 +84,7 @@ that is, there is no experimental evidence anywhere in this set.</p>
 </dl>
 
 <h3>Not a recent transfer from bacteria</h3>
-<p>{{ pr.archaea.hgt_test.question }} The 109 sequences were compared against
+<p>{{ pr.archaea.hgt_test.question }} The {{ pr.archaea.strict_pass }} sequences were compared against
 {{ pr.archaea.hgt_test.db }}. The nearest bacterium is
 {{ pr.archaea.hgt_test.identity.median }} % identical at the median and
 {{ pr.archaea.hgt_test.identity.max }} % at most;
@@ -93,8 +93,9 @@ that is, there is no experimental evidence anywhere in this set.</p>
 would have left near-identical bacterial copies, and there are none.</p>
 
 <h3>But not one lineage either</h3>
-<p>This was the result that did not go as expected. The tree holds the 109 archaeal sequences,
-the curated references and 281 bacterial Rieske oxygenases. The archaeal proteins do
+<p>This was the result that did not go as expected. The tree was built once, from the
+{{ pr.archaea.strict_pass }} archaeal sequences, the curated references and 281 bacterial Rieske
+oxygenases; those are the counts of that run, not of the database as it stands now. The archaeal proteins do
 <b>not</b> form a single clade: they split into
 {{ pr.archaea.phylogeny.n_clusters }} pure clusters, each well supported within
 itself, and <em>each with a bacterial sister group</em>. Halobacteria alone shows at least two

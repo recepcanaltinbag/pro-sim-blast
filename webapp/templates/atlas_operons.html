@@ -34,7 +34,8 @@ reproduce the historical class boundaries.
 
 <h2>2 · Does the operon rule measure anything?</h2>
 {% if validation %}
-<p>The operon is defined by a convention: same strand, intergenic gap of at most 150 base pairs.
+<p>The operon is defined by a convention: same strand, intergenic gap of at most
+{{ validation.max_gap_bp if validation.max_gap_bp else 150 }} base pairs.
 Without transcription data that convention cannot be verified directly. What can be tested is
 whether it captures a real pattern, by asking where the sequence-verified partners actually sit
 compared with any gene in the same windows.</p>
@@ -42,7 +43,8 @@ compared with any gene in the same windows.</p>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Component</th><th class="num">Genes found</th><th class="num">Same strand</th>
 <th class="num">vs background</th><th class="num">Within 2 genes</th><th class="num">vs background</th>
-<th class="num">Median gap</th><th class="num">Gap ≤ 150 bp</th></tr></thead>
+<th class="num">Median gap</th>
+<th class="num">Gap &le; {{ validation.max_gap_bp if validation.max_gap_bp else 150 }} bp</th></tr></thead>
 <tbody>
 {% for key, label in [('beta','beta subunit'), ('ferredoxin','ferredoxin'),
                       ('reductase','reductase'), ('alpha_other','another alpha subunit')] %}
@@ -56,7 +58,7 @@ compared with any gene in the same windows.</p>
   <td class="num">{{ '%.1f %%' % (100 * c.position.rate) }}</td>
   <td class="num">{{ '%.2f×' % c.position.ratio }}<div class="note">p = {{ '%.0e' % c.position.p }}</div></td>
   <td class="num">{{ c.gap_median }} bp</td>
-  <td class="num">{{ '%.0f %%' % (100 * c.gap_under_150) if c.gap_under_150 else '–' }}</td>
+  <td class="num">{{ '%.0f %%' % (100 * c.gap_under_max) if c.gap_under_max else '–' }}</td>
 </tr>
 {% endif %}
 {% endfor %}
