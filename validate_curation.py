@@ -2364,6 +2364,160 @@ def check_component_scan_is_fresh(rep, con, root):
                  "--force ile kosturulup sayilar yeniden olculmeli"))
 
 
+def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
+    """Veritabanindan turetilen her yayimlanmis istatistik, veritabanindan YENI olmali.
+
+    NEDEN BU KONTROL VAR (kullanici istegi, 2026-11-04). Bu depoda
+    bayatliga karsi tek tek kontroller vardi (tepkime raporu, ro_search,
+    turetilmis rol tablosu...) ama GENEL bir kapi yoktu. Yani bir tablo
+    duzeltildiginde ondan turetilen istatistiklerin eski surumle hesaplanmis
+    kalmasi mekanik olarak yakalanmiyordu.
+
+    Maliyeti ayni gun olculdu: bilesen taramasi bayat oldugu icin beta
+    2.523 -> 4.372, reduktaz 6.185 -> 10.394 duzeltildi. O sayilar
+    `operon_validation.json`, `stats.json`, `control_elements`,
+    `operon_relations` ve atlas sayfalarini besliyor. Veritabani duzeldi ama
+    turetilmis dosyalar duzelmedi; aradaki fark sayfada GORUNMEZ.
+
+    KONTROLUN MANTIGI. Yayimlanan dosya listesi `atlas.PROVENANCE`tan gelir
+    -- yani site bir dosyayi indirmeye sunuyorsa burada sinaniyor. Bir
+    dosyanin veritabanini OKUYUP okumadigi, uretici betigin KAYNAGINDAN
+    cikarilir (`sqlite3.connect`, `--db`, ya da `roar.sqlite` gecmesi);
+    elle tutulan bir liste olsa listenin kendisi bayatlardi.
+
+    Yalnizca veritabanini okuyan betiklerin ciktilari sinanir. `types/`den
+    turetilen dosyalar veritabanindan bagimsizdir ve onlarin kendi tazelik
+    kontrolleri var.
+
+    TEK YONLU. Dosya veritabanindan ESKI ise FAIL. Yeni olmasi sorun degil:
+    analiz veritabani degismeden yeniden kosturulmus olabilir.
+    """
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(root, "webapp"))
+    import atlas as _atlas
+
+    db_path = os.path.join(root, "roar.sqlite")
+    if not os.path.exists(db_path):
+        rep.check("freshness: roar.sqlite exists", False, 1, db_path)
+        return
+    db_age = os.path.getmtime(db_path)
+
+    # Uretici betigin veritabanini okuyup okumadigini KAYNAKTAN cikar.
+    reads_db = {}
+
+    def script_reads_db(name):
+        if name in reads_db:
+            return reads_db[name]
+        path = os.path.join(root, name)
+        if not os.path.exists(path):
+            reads_db[name] = False
+            return False
+        try:
+            text = open(path, errors="replace").read()
+        except OSError:
+            reads_db[name] = False
+            return False
+        reads_db[name] = ("sqlite3.connect" in text or "roar.sqlite" in text
+                          or '"--db"' in text or "'--db'" in text)
+        return reads_db[name]
+
+    documented = set(_atlas.ANALYSIS_FILES)
+    stale, checked, no_script = [], 0, []
+    for entry in _atlas.PROVENANCE:
+        name, kind = entry[0], entry[1]
+        scripts = entry[3] if len(entry) > 3 else ""
+        if kind != "file" or name not in documented:
+            continue
+        producers = [s.strip() for s in (scripts or "").split(",") if s.strip()]
+        if not producers:
+            no_script.append(name)
+            continue
+        if not any(script_reads_db(s) for s in producers):
+            continue          # veritabanindan bagimsiz cikti
+        path = os.path.join(root, out_dir, name)
+        if not os.path.exists(path):
+            continue          # varligi ayri bir kontrolun isi
+        checked += 1
+        if os.path.getmtime(path) < db_age:
+            hours = (db_age - os.path.getmtime(path)) / 3600.0
+            stale.append(f"{name} ({hours:.1f} sa eski)")
+
+    rep.check("freshness: every published statistic derived from the database is "
+              "newer than the database",
+              not stale, len(stale),
+              f"{checked} veritabani turevi dosya sinandi"
+              + ("" if not stale else
+                 f"; BAYAT: {first(sorted(stale), 5)} -- ilgili analiz "
+                 "yeniden kosturulmali, yoksa sayfa veritabaninin eski "
+                 "surumunden hesaplanmis sayilar yayimlar"))
+
+    if no_script:
+        rep.check("freshness: every published file names the script that makes it",
+                  False, len(no_script), first(sorted(no_script), 5),
+                  severity="WARN")
+
+
+def check_published_files_are_in_rebuild_graph(rep, con, root):
+    """Yayimlanan her analiz dosyasi, yeniden kurma grafiginin bir CIKTISI olmali.
+
+    NEDEN BU KONTROL VAR (kullanici istegi "DB'nin modulerligini iyi
+    planlamak cok kritik", 2026-11-04). `rebuild.py:ARTEFACTS` dosya
+    duzeyinde bir bagimlilik grafigidir ve 61 adimin 50'si veritabanini
+    GIRDI olarak beyan eder; yani veritabani degisince o adimlar yeniden
+    kosar. Grafik, SAHIP OLDUGU adimlar icin dogru.
+
+    Sorun eksik dugumler. 2026-11-04 olcumu: yayimlanan 56 analiz
+    dosyasinin 25'i hicbir adimin ciktisi DEGIL. Bu dosyalar
+    `rebuild.py --run` ile hic tazelenemez; veritabani duzeltilse bile eski
+    surumden hesaplanmis halleriyle indirmeye sunulmaya devam ederler ve
+    sayfada bunu gosteren hicbir sey yoktur.
+
+    Ayni gun olculen ornek: bilesen taramasi bayat oldugu icin beta
+    2.523 -> 4.372 duzeltildi, ve veritabanindan turetilen 42 yayimlanmis
+    dosyanin 42'si bir anda bayat hale geldi.
+
+    KONTROLUN MANTIGI. Yayim listesi `atlas.ANALYSIS_FILES`, grafik
+    `rebuild.ARTEFACTS`; ikisi ayri yerlerde tutuldugu icin ayrisabilirler
+    ve bu kontrol ayrismayi sayar. Butce OLCULEN degerdir ve KUCULMEK
+    uzeredir; buyumesi FAIL'dir -- yani bundan sonra grafige baglanmamis
+    yeni bir yayim dosyasi eklenemez.
+    """
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(root, "webapp"))
+    _sys.path.insert(0, root)
+    import atlas as _atlas
+    try:
+        import rebuild as _rebuild
+    except Exception as exc:
+        rep.check("modularity: the rebuild graph is importable", False, 1, str(exc))
+        return
+
+    outputs = set()
+    for entry in _rebuild.ARTEFACTS:
+        for out in entry[1]:
+            outputs.add(out)
+            outputs.add(os.path.basename(out))
+
+    missing = sorted(name for name in _atlas.ANALYSIS_FILES
+                     if name not in outputs
+                     and os.path.join("analysis_out", name) not in outputs)
+
+    # 2026-11-04 OLCUMU. Butce olculen degerin kendisi; her baglanan dosyada
+    # DUSURULUR. Yukari dogru hareket, grafige baglanmamis bir yayim dosyasi
+    # eklendigi anlamina gelir ve kapi kapanir.
+    BUDGET = 25
+    rep.check("modularity: every published analysis file is an output of the "
+              "rebuild graph",
+              len(missing) <= BUDGET, len(missing),
+              f"{len(missing)} dosya grafikte yok, butce {BUDGET} "
+              f"({len(_atlas.ANALYSIS_FILES)} yayim dosyasi, "
+              f"{len(_rebuild.ARTEFACTS)} adim)"
+              + (f": {first(missing, 5)}" if missing else "")
+              + ("" if len(missing) <= BUDGET else
+                 " -- yeni yayim dosyasi rebuild.ARTEFACTS'a BAGLANMADAN "
+                 "eklenmis; o dosya hic tazelenemez"))
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -3253,6 +3407,8 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_derived_statistics_are_fresh(rep, con, ROOT)
+        check_published_files_are_in_rebuild_graph(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
         check_significance_claims(rep, con, ROOT)

@@ -3563,6 +3563,110 @@ SART: cagrilan ORF'ler anote CDS'lerle AYNI sutuna karismaz
 (`annotation_source` = `ncbi` | `prodigal`), cunku cagrilmis bir genin
 sinirlari olculmus degil TAHMIN edilmistir.
 
+## 124. IS/transpozon, duzenleyici ve promotor: ayni iki-hat yontemi (acik, 2026-11-04)
+
+Kullanicinin onerisi: beta icin yapilani insersiyon dizisi/transpozon ve
+duzenleyiciler icin de denemek, ve promotor belirlemeye calismak. Mevcut
+durum olculdu ve oneri YERINDE -- ayni tek-kaynak zaafi orada hala duruyor.
+
+### 124.1 IS / transpozon -- etiket su an REGEX ile konuyor
+
+`control_elements.py` kendi yorumunda bunu zaten itiraf ediyor:
+
+> "Transpozon" etiketi regex ile konuyor ve icine rekombinasyon makinesi de
+> giriyor: urun adlarinda 117 kez "Holliday junction resolvase RuvX" var, ki
+> o bir mobil element degil.
+
+Yani karar veren sey URUN METNI. Beta olayinda ogrenilen tam buydu: metin
+tek basina yer gercegi degil. IS ailesi "IS<n> family" kalibiyla
+cikariliyor, yani ADLANDIRILMAMIS bir transpozaz ya da aile adi yazilmamis
+bir kayit gorunmez kaliyor.
+
+PLAN: Pfam modelleriyle (DDE_Tnp_1, DDE_Tnp_1_assoc, rve, HTH_Tnp_1,
+Transposase_mut, DDE_Tnp_IS66 vb.) ikinci bir kanit hatti kurulur ve IKI
+HAT KARSILASTIRILIR -- metin diyor model demiyor, model diyor metin demiyor,
+ikisi de diyor. Uc sayi da yayimlanir; "duzelttik" demek yerine nerede
+ayristiklari gosterilir.
+
+SART (modulerlik): bu modeller `component_hmms/components.hmm` icine
+KARISTIRILMAZ. O kutuphane RO bilesenleri icin ve `assign_component` oradan
+karar veriyor; mobil element modelleri ayni kutuphaneye girerse o karar
+belirsizlesir. Ayri kutuphane + ayri turetilmis tablo.
+
+### 124.2 Duzenleyici -- konumla belirleniyor, baglanma olculmedi
+
+`regulation.py` bunu da acikca yaziyor: duzenleyici "operonun 5' ucunun
+yukarisindaki ilk gen" olarak aliniyor. `upstream_family` 11.422 girisin
+8.061'inde BOS (operon_relations.py:281). Yani aile atamasi su an
+girislerin ucte birinde var.
+
+PLAN: HTH aileleri icin model tabanli atama (TetR_N, GntR, LysR +
+LysR_substrate, MarR, AraC_binding, IclR) ve ayni iki-hat karsilastirmasi.
+Konum kurali DEGISMEZ -- "yukaridaki ilk gen" tanimi aynen kalir, yalnizca
+o genin AILESI metne degil modele dayanir.
+
+### 124.3 Promotor -- su an motif aramasi HIC YOK
+
+Mevcut "promotor bolgesi" yalnizca iraksak duzenleyici ile operon arasindaki
+MESAFE (`intergenic_bp`) ve kaynak bunu zaten "TAHMINDIR; deneysel promoter
+degil, inceleme icin ipucu" diye isaretliyor. Yani motif aramasi yok.
+
+DURUST SINIR -- bu bastan yazilmali ki sonra asirilmasin. Bakteriyel sigma70
+promotoru -10 (TATAAT) ve -35 (TTGACA) kutularindan olusur ve bu kutular
+BILGI BAKIMINDAN ZAYIFTIR: rastgele bir intergenik bolgede de sik bulunur.
+Bu yuzden operon BASINA "promotor burada" demek yayimlanabilir bir iddia
+DEGILDIR ve oyle yayimlanmayacak.
+
+YAYIMLANABILIR OLAN: ZENGINLESME. Gercek yukari-akis intergenik bolgelerde
+motif siklig, EŞLENMIS bir null'a karsi olculur (ayni bolgelerin dizi
+karistirilmasi + ayni genomlarin baska intergenik bolgeleri; GC icerigi ve
+uzunluk eslenir, yoksa fark GC'den gelir). Depoda `null_model` makinesi
+zaten var, yontem oraya oturuyor.
+
+Ikinci yayimlanabilir sey: KARSILASTIRMA. Iraksak duzenleyicisi olan
+operonlarin yukari-akisi ile olmayanlarin yukari-akisi karsilastirilir. Burada
+null kendiliginden var ve iddia "sigma70 kutusu sudur" degil, "iki kume
+arasinda fark var/yok" olur.
+
+### 124.4 EN KRITIK SART (kullanici: "bunlari etkileyen istatistiklerin de
+guncellenmesi kritik, burada iyi bi kontrol lazim")
+
+Ayni gun bunun maliyeti olculdu: bilesen taramasi duzeltilince
+veritabanindan turetilen 42 yayimlanmis dosyanin 42'si bir anda bayat hale
+geldi ve sayfada bunu gosterecek hicbir sey yoktu.
+
+Iki kapi kuruldu:
+
+```
+check_derived_statistics_are_fresh          veritabanindan turetilen her
+                                            yayim dosyasi DB'den yeni olmali;
+                                            dosyanin DB okuyup okumadigi
+                                            uretici betigin KAYNAGINDAN cikarilir
+check_published_files_are_in_rebuild_graph  yayimlanan her dosya rebuild
+                                            grafiginin bir CIKTISI olmali;
+                                            butce 25 ve KUCULMEK uzere
+```
+
+### 124.5 MODULERLIK (kullanici: "DB'nin modulerligini iyi planlamak cok kritik")
+
+Olculdu: yayimlanan 56 analiz dosyasinin **25'i** hicbir `rebuild` adiminin
+ciktisi degil. `rebuild.py --run` onlari hic tazeleyemez. 61 adimin 50'si
+veritabanini girdi beyan ediyor, yani grafik SAHIP OLDUGU adimlar icin
+dogru; sorun eksik dugumler.
+
+Ikinci ayrisma: grafikte veritabaninin girdisi `genomic_context/` olarak
+beyan edili, ama fiili cikarim ciktilari artik `/media/lin-bio/back2/`
+altinda (`roar_gc_wide`, `roar_gc_a5`, `roar_gc_merged`). Yani BEYAN EDILEN
+girdi ile GERCEK girdi ayrismis durumda; `genomic_context/` 2026-10-14'ten
+ve genisletme ONCESI 26.693 adayi tutuyor.
+
+TASARIM YONU (henuz uygulanmadi): bagimlilik dosya duzeyinde degil TABLO
+duzeyinde beyan edilmeli. Her adim okudugu ve yazdigi TABLOLARI bildirsin,
+her tablonun bir surumu (`db_revision.py` zaten surum tutuyor) olsun ve
+turetilmis cikti okudugu tablolarin surumlerini kaydetsin. O zaman bayatlik
+karari mtime'a degil TABLO SURUMUNE dayanir -- ve mtime bu depoda iki kez
+yanilttigi icin bu fark onemli.
+
 ## Yeniden uretim
 
 ```
