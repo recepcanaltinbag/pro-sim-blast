@@ -41,24 +41,11 @@ def main():
     domtbl = os.path.join(args.context_dir, "cand_dom.out")
     stockholm = os.path.join(args.context_dir, "cand_aln.sto")
 
-    # ATLAMA KURALI: dosyanin VAR OLMASI degil, GUNCEL olmasi.
-    #
-    # Olculdu ve pahaliya mal oldu: bu iki ara dosya 21 Temmuz'dan kalmisti,
-    # aday fastasi ise 9 Ekim'de yeniden uretilmisti. Script ikisinin de
-    # "zaten var" oldugunu gorup hmmsearch'u atladi, 26.693 yeni adayi
-    # 14.229 adaylik eski taramanin sonucuyla eslestirmeye calisti ve
-    # DOGRULANMIS RO: 0 yazdi. Hicbir sey hata vermedi.
-    #
-    # Artik ara dosya, girdilerinden (aday fastasi ve ilgili HMM) HERHANGI
-    # biri daha yeniyse yeniden uretilir.
-    def stale(output, *inputs):
-        if not os.path.exists(output) or os.path.getsize(output) == 0:
-            return "yok"
-        out_age = os.path.getmtime(output)
-        newer = [p for p in inputs
-                 if os.path.exists(p) and os.path.getmtime(p) > out_age]
-        return ("girdi daha yeni: " + ", ".join(os.path.basename(p)
-                                                for p in newer)) if newer else None
+    # ATLAMA KURALI: dosyanin VAR OLMASI degil, GUNCEL olmasi. Kural artik
+    # burada TANIMLANMIYOR, tek kaynaktan aliniyor -- cunku ayni tuzak
+    # `build_operons.py`de duzeltilmemis halde duruyordu ve 2026-11-04'te
+    # ikinci kez kurban aldi. Olayin tam dokumu stale_intermediate.py'de.
+    from stale_intermediate import stale
 
     why = stale(domtbl, fasta, args.cluster_hmm)
     if why:

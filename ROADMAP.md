@@ -3426,6 +3426,143 @@ Bu, 71 tip semasina sutun eklemek degil, turetilmis tabloya alan eklemektir
 BUYUKLUK: 50 dizi, veritabaninin %0,3'u. Kucuk; ama "yok" ile "bakmadik"
 ayrimi buyukluge bagli degil.
 
+## 122. Bilesen taramasi 2026-10-05'ten beri bayatmis -- varlik kontrolu, tazelik kontrolu DEGILDIR (2026-11-04)
+
+Bu madde BIR KEZ YANLIS YAZILDI ve duzeltildi; yanlis sürüm burada
+kaliyor cunku nasil yanildigi bulgunun kendisi kadar onemli.
+
+ILK (YANLIS) IDDIA. Kullanicinin "anotasyon yanlis yapilmis da olabiliyor"
+tespitini arastirirken su olculdu: anotasyonun kendisi "dioxygenase small
+subunit" veya "beta subunit" dedigi 1.529 tekil komsu proteinden 841'i
+`Ring_hydroxyl_B` tutuyor, 688'i HIC domain almiyor. Bundan "beta tespiti
+tek Pfam modeline dayaniyor ve yanlis-negatif orani ~%45" sonucu cikarildi
+ve kendi beta HMM'ini kurup sinayan bir betik yazildi. Ayrik test kumesinde
+628/628 geri kazanildi, en kotu E-degeri 9,9e-62.
+
+SONUC FAZLA TEMIZ OLDUGU ICIN SINANDI. Pfam'in KENDI `Ring_hydroxyl_B`
+modeli ayni 628 dizide dogrudan kosturuldu: **628/628 isabet, E <= 1e-5.**
+Yani Pfam onlari kacirmiyor. Domain satirlarinin olmamasinin nedeni baska:
+o proteinler HIC ARANMAMIS.
+
+GERCEK HATA. `build_operons.py:run_component_hmms` icinde iki varlik
+kontrolu vardi ve ikisi de yanlis soruyu soruyordu:
+
+```
+1. if existing and not force: return        -> neighbor_domain'de TEK satir
+                                               varsa fonksiyonun TAMAMI atlanir
+2. if not os.path.exists(domtbl)            -> domtbl dosyasi VARSA arama atlanir
+```
+
+Diskteki kanit:
+
+```
+operon_work/neighbor_components.domtbl   2026-10-05   13.091 isabetli protein
+operon_work/neighbor_proteins.fasta      2026-10-14   (daha YENI)
+roar.sqlite                              2026-11-03   316.120 komsu protein
+```
+
+Yani komsu protein kumesi yenilenmis, bilesen taramasi yenilenmemis.
+2026-10-05'ten sonra eklenen her komsu protein taramayi GORMEDI ve `none`
+olarak siniflandi -- beta, ferredoksin ve reduktaz dahil. 628 beta alt
+birimi domtbl'de hic gecmiyor.
+
+AYNI TUZAK, IKINCI KEZ. `annotate_ro.py` bu olayin birebir aynisini
+yasamis, cozmus ve yorumuna yazmis: "iki ara dosya 21 Temmuz'dan kalmisti,
+aday fastasi 9 Ekim'de yeniden uretilmisti... DOGRULANMIS RO: 0 yazdi.
+Hicbir sey hata vermedi." Duzeltme O dosyaya uygulanmis, AYNI kurali
+uygulayan `build_operons.py`e uygulanmamisti.
+
+DUZELTME. Kural artik kopyalanmiyor: `stale_intermediate.py` tek kaynak ve
+hem `annotate_ro.py` hem `build_operons.py` oradan aliyor. (`rebuild.py`
+ve `provenance.py`deki bayatlik mantiklari AYRI isler yapar ve bilincli
+olarak birlestirilmedi.) Ayrica fasta her kosuda yeniden yazilirsa mtime'i
+degisir ve domtbl HER ZAMAN bayat gorunur -- tuzagin tersi; o yuzden fasta
+gecici dosyaya yazilip ancak OZETI degistiyse yerine konuyor
+("mtime tetikler, ozet karar verir").
+
+DERS. Kullanicinin tespiti dogruydu, ama hatanin yeri degildi: anotasyon
+dogru, Pfam dogru, bizim boru hattimiz yanlis. Ve "fazla temiz" bir sonuc
+(628/628, E=1e-62) bir basari degil bir UYARI isaretiydi -- o yuzden
+yayimlanmadan once bagimsiz olarak sinandi.
+
+MALIYETI OLCULDU. Tarama dogru kosturulunca:
+
+```
+bilesen        once     sonra    degisim
+beta          2.523     4.372    +%73
+reduktaz      6.185    10.394    +%68
+ferredoksin   1.624     2.736    +%68
+alpha_other   1.407     2.332    +%66
+domain isabetli protein  13.091 -> 22.302   +%70
+```
+
+Operon bayraklari: has_beta 2.502 -> 4.333, has_reductase 3.203 -> 5.409,
+has_ferredoxin 1.202 -> 1.989. Yani yayimlanan operon paylari gercek
+bilesenlerin ~%40'ini kaciriyordu.
+
+VE SONUC BIYOLOJIYE OTURDU -- duzeltmenin en guclu kaniti bu:
+
+```
+grup  once beta yok   sonra    yorum
+4         %57,4       %25,2    bifenil tipi; beta artik cogunda bulunuyor
+2         %53,8       %23,8    ayni
+3         %83,8       %72,2    hala yuksek -- ACIK
+5        %100,0      %100,0    CntA/CntB tipi, betasi YOK; degismemesi DOGRU
+1         %100       %99,9     CarAa tipi, betasi YOK; dogru
+6        %100,0      %100,0    tek gen agirlikli
+```
+
+Beta yoklugu beklendigi gruplarda degismedi, beklenmedigi gruplarda dustu.
+Rastgele bir duzeltme boyle davranmaz.
+
+KAPI. `check_component_scan_is_fresh` IKI ayakli: (1) domtbl girdilerinden
+yeni olmali -- kural `stale_intermediate`ten alinir; (2) mtime'lardan
+BAGIMSIZ sonuc sinamasi -- anotasyonun beta dedigi her komsu `beta`
+siniflanmali, artakalan butce 60 (duzeltme oncesi 688). Birinci ayak bir
+gun yanilirsa ikincisi hala tutar.
+
+SILINDI: `beta_subunit_model.py`. Kendi beta HMM'ini kurmak icin yazilmisti
+ve premisi (Pfam betalari kaciriyor) CURUDU. Yanlis varsayima dayanan bir
+betigi depoda birakmak, birinin onu kosturmasina davetiyedir. Olcumun
+kendisi bu maddede kayitli.
+
+ACIK (60 protein). Urun metni "dioxygenase small/beta subunit" diyor ama
+hicbir model tutmuyor. Kullanicinin "anotasyon yanlis da olabiliyor"
+tespitinin asil aday kumesi tam bu: ikisinden biri yanlis ve hangisi
+oldugu HENUZ OLCULMEDI. 688'den 60'a dustugu icin artik tek tek bakilabilir
+buyuklukte -- model kurmak degil, incelemek gerekiyor.
+
+ACIK (grup 3). %72,2 beta yoklugu duzeltmeden sonra da yuksek. Naftalin
+tipi dioksijenazlarda beta zorunlu ortaktir; ya grup atamasi bu girislerde
+genis, ya beta komsulukta 150 bp esiginin otesinde, ya da anotasyonda yok.
+Olculmedi.
+
+## 123. Anotasyon kalitesi, operon iddialarinin DAYANDIGI bolgede olculmeli (acik)
+
+Kullanicinin isaret ettigi sinifin dort ayri bicimi var ve her biri ayri
+sinanir:
+
+```
+1. EKSIK GEN       DNA'da var, CDS anotasyonu yok   -> ORF cagrimi (madde 121)
+2. YANLIS SINIR    CDS var, start/end kaymis        -> bosluk aritmetigini bozar
+3. YANLIS URUN     metin yanlis                     -> bizi etkilemez (HMM kullaniyoruz)
+4. BIZIM HATAMIZ   anotasyon dogru, siniflandirici  -> madde 122
+                   kaciriyor
+```
+
+Madde 121 yalnizca TAMAMEN anotasyonsuz 47 kaydi kapsiyor. Asil olcum
+sudur: onaylanmis her RO'nun +-10 kb penceresinde ORF cagrilip anotasyonla
+karsilastirilsa, operon iddialarimizin dayandigi bolgede anotasyonun
+EKSIKLIK ORANI olculur. Bu, "beta yok" ile "beta anote edilmemis" ayrimini
+operon duzeyinde yapilabilir kilar.
+
+MALIYET: 19.125 onayli RO x 20 kb ~ 380 Mb DNA; prodigal icin onemsiz. Pahali
+olan kisim 17.074 gbk dosyasini yeniden okumak (cikarim ile ayni mertebe).
+
+SART: cagrilan ORF'ler anote CDS'lerle AYNI sutuna karismaz
+(`annotation_source` = `ncbi` | `prodigal`), cunku cagrilmis bir genin
+sinirlari olculmus degil TAHMIN edilmistir.
+
 ## Yeniden uretim
 
 ```

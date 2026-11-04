@@ -2286,6 +2286,84 @@ def check_ro_footprint_explained(rep, con, root):
                   f"{wraps} giris orijini asiyor ve gercek kenarlariyla kayitli")
 
 
+def check_component_scan_is_fresh(rep, con, root):
+    """Bilesen taramasi komsu protein kumesiyle GUNCEL olmali.
+
+    NEDEN BU KONTROL VAR. `build_operons.py:run_component_hmms` icinde iki
+    VARLIK kontrolu vardi: `neighbor_domain` tablosunda tek satir varsa
+    fonksiyonun tamami atlaniyor, ve `domtbl` dosyasi varsa hmmsearch
+    atlaniyordu. Diskteki kanit: domtbl 2026-10-05'ten, komsu protein
+    fastasi 2026-10-14'ten, veritabani 2026-11-03'ten. Yani komsu kumesi
+    buyumus, bilesen taramasi buyumemis; o tarihten sonra eklenen her
+    protein `none` siniflandi.
+
+    MALIYETI OLCULDU. Tarama dogru kosturuldugunda:
+        beta        2.523 -> 4.372   (+%73)
+        reduktaz    6.185 -> 10.394  (+%68)
+        ferredoksin 1.624 -> 2.736   (+%68)
+    ve operon bayraklari has_beta 2.502 -> 4.333, has_reductase 3.203 ->
+    5.409. Yani yayimlanan operon paylari gercek bilesenlerin ~%40'ini
+    kaciriyordu. Ayni tuzak `annotate_ro.py`de bulunup cozulmus, bu dosyaya
+    uygulanmamisti (bkz. stale_intermediate.py).
+
+    KONTROLUN MANTIGI IKI AYAKLI.
+      1. MEKANIZMA: domtbl, girdilerinden (komsu fastasi, bilesen HMM'i)
+         daha yeni olmak zorunda. Kural `stale_intermediate`ten alinir,
+         burada YENIDEN YAZILMAZ.
+      2. SONUC: mtime'lardan BAGIMSIZ bir sinama. Anotasyonun kendisi
+         "dioxygenase small/beta subunit" dedigi her komsu protein `beta`
+         siniflanmali. Mekanizma kontrolu bir gun yanilirsa bu ayak hala
+         tutar, cunku dosya tarihlerine degil SINIFLANDIRMANIN KENDISINE
+         bakar.
+
+    Artakalan 60 protein olculen degerin kendisidir (duzeltme oncesi 688).
+    O 60, kullanicinin "anotasyon yanlis da olabiliyor" tespitinin asil aday
+    kumesi: urun metni beta diyor, hicbir model tutmuyor. Ikisinden biri
+    yanlis ve hangisi oldugu HENUZ OLCULMEDI.
+    """
+    import sys as _sys
+    _sys.path.insert(0, root)
+    try:
+        from stale_intermediate import stale
+    except ImportError:
+        rep.check("components: the staleness rule has a single source", False, 1,
+                  "stale_intermediate.py bulunamadi")
+        return
+
+    work = os.path.join(root, "operon_work")
+    fasta = os.path.join(work, "neighbor_proteins.fasta")
+    domtbl = os.path.join(work, "neighbor_components.domtbl")
+    hmm = os.path.join(root, "component_hmms", "components.hmm")
+    if os.path.exists(domtbl):
+        why = stale(domtbl, fasta, hmm)
+        rep.check("components: the component scan is newer than the protein set",
+                  not why, 1 if why else 0,
+                  why or f"{os.path.basename(domtbl)} guncel")
+    else:
+        rep.check("components: the component scan is newer than the protein set",
+                  True, 0, "domtbl yok -- tarama bir sonraki kosuda uretilir",
+                  severity="WARN")
+
+    # 2. ayak: sonuc sinamasi, dosya tarihlerinden bagimsiz.
+    BUDGET = 60
+    key = "nb.nucleotide_id||':'||nb.start||'-'||nb.end||':'||nb.strand"
+    unclassified = con.execute(f"""
+        SELECT COUNT(*) FROM (
+          SELECT DISTINCT {key} AS pk FROM neighbor nb
+          WHERE lower(nb.product) LIKE '%dioxygenase small subunit%'
+             OR lower(nb.product) LIKE '%dioxygenase beta subunit%')
+        WHERE pk NOT IN (SELECT protein_key FROM neighbor_component
+                         WHERE component = 'beta')""").fetchone()[0]
+    rep.check("components: a neighbour the annotation calls a beta subunit is "
+              "classified as beta",
+              unclassified <= BUDGET, unclassified,
+              f"{unclassified} protein urun metninde beta diyor ama beta "
+              f"siniflanmamis, butce {BUDGET}"
+              + ("" if unclassified <= BUDGET else
+                 " -- bilesen taramasi bayat olabilir; build_operons.py "
+                 "--force ile kosturulup sayilar yeniden olculmeli"))
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -3174,6 +3252,7 @@ def main():
         check_prefilter_admits_gate_passers(rep, con, ROOT)
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
+        check_component_scan_is_fresh(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
         check_significance_claims(rep, con, ROOT)

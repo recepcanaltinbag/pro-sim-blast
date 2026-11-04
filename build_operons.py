@@ -27,6 +27,7 @@ Tekrar calistirmak guvenli: tablolar bastan uretilir, uzun adimlar
 import argparse
 import csv
 import gzip
+import hashlib
 import os
 import sqlite3
 import subprocess
@@ -227,24 +228,74 @@ def extract_neighbor_proteins(connection, gbk_dir, processes, force):
 
 # -------------------------------------------------------- 3. neighbor_domain
 def run_component_hmms(connection, hmm_file, work_dir, cpu, force):
-    existing = connection.execute("SELECT COUNT(*) FROM neighbor_domain").fetchone()[0]
-    if existing and not force:
-        print(f"[atlandi] neighbor_domain dolu ({existing})")
-        return
+    """Komsu proteinleri bilesen HMM'lerine karsi tara.
+
+    ATLAMA KURALI (2026-11-04'te duzeltildi). Burada IKI tane varlik
+    kontrolu vardi ve ikisi de yanlis soruyu soruyordu:
+
+      1. `if existing and not force: return` -- `neighbor_domain` tablosunda
+         TEK satir varsa fonksiyonun tamami atlaniyordu.
+      2. `if not os.path.exists(domtbl)` -- domtbl dosyasi VARSA arama
+         atlaniyordu.
+
+    Olculen sonuc: `operon_work/neighbor_components.domtbl` 2026-10-05'ten,
+    `operon_work/neighbor_proteins.fasta` ise 2026-10-14'ten kalmisti. Yani
+    komsu protein kumesi yenilenmis, bilesen taramasi yenilenmemisti ve
+    2026-10-05'ten sonra eklenen her komsu protein `none` olarak siniflandi
+    -- beta, ferredoksin, reduktaz dahil. Kanit: anotasyonun "dioxygenase
+    small subunit" dedigi 628 protein domtbl'de hic gecmiyor, ama Pfam'in
+    kendi Ring_hydroxyl_B modeli o 628'in 628'ini E <= 1e-5 ile tutuyor.
+
+    Ayni tuzak `annotate_ro.py`de bulunup cozulmustu; duzeltme BU dosyaya
+    uygulanmamisti. Kural artik kopyalanmiyor, `stale_intermediate`ten
+    aliniyor.
+
+    MTIME TETIKLER, OZET KARAR VERIR. Fasta her kosuda yeniden yazilsa
+    mtime'i degisir ve domtbl HER ZAMAN bayat gorunur -- tuzagin tersi.
+    O yuzden fasta once gecici bir dosyaya yazilir ve ancak ICERIGI
+    degistiyse yerine konur; degismediyse eski dosya mtime'iyla korunur.
+    """
+    from stale_intermediate import stale
+
     os.makedirs(work_dir, exist_ok=True)
     fasta = os.path.join(work_dir, "neighbor_proteins.fasta")
     domtbl = os.path.join(work_dir, "neighbor_components.domtbl")
 
-    with open(fasta, "w") as handle:
+    tmp = fasta + ".new"
+    digest = hashlib.md5()
+    n_proteins = 0
+    with open(tmp, "w") as handle:
         for key, seq in connection.execute(
-                "SELECT protein_key, translation FROM neighbor_protein"):
-            handle.write(f">{key}\n{seq}\n")
+                "SELECT protein_key, translation FROM neighbor_protein "
+                "ORDER BY protein_key"):
+            record = f">{key}\n{seq}\n"
+            handle.write(record)
+            digest.update(record.encode())
+            n_proteins += 1
+    new_digest = digest.hexdigest()
+    old_digest = None
+    if os.path.exists(fasta):
+        h = hashlib.md5()
+        with open(fasta, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        old_digest = h.hexdigest()
+    if old_digest == new_digest:
+        os.remove(tmp)
+        print(f"[korundu] {os.path.basename(fasta)} degismedi ({n_proteins:,} protein)")
+    else:
+        os.replace(tmp, fasta)
+        print(f"[yazildi] {os.path.basename(fasta)} "
+              f"({n_proteins:,} protein, icerik degisti)")
 
-    if force or not os.path.exists(domtbl) or os.path.getsize(domtbl) == 0:
+    why = stale(domtbl, fasta, hmm_file) if not force else "force"
+    if why:
         cmd = ["hmmsearch", "--domtblout", domtbl, "--noali", "--cpu", str(cpu),
                "-E", str(DEFAULT_EVALUE), hmm_file, fasta]
-        print("[calisiyor]", " ".join(cmd))
+        print(f"[uretiliyor] {os.path.basename(domtbl)} ({why})")
         subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
+    else:
+        print(f"[atlandi] {os.path.basename(domtbl)} guncel")
 
     # ro_filter.parse_domtblout ayni formati okur; coverage = HMM ekseninde kaplama
     from ro_filter import parse_domtblout
