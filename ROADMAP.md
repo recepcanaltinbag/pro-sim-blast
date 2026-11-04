@@ -3348,6 +3348,84 @@ ortaklarina, `ro_group` alfa alt birimi dizi kumelenmesine dayanir
 (citations.yaml kweon2008_classification notu). Yaprak bunlarin hicbiri
 degil, agac boyutunu kisan islevsel bir gruplamadir ve sayfada oyle okunuyor.
 
+## 120. A5.3 dizi eslesme kapisi -- "ayni kayitta gecer" ile "ayni proteindir" ayri seylerdir (2026-11-04)
+
+A5'te 13.079 nukleotid kaydi indirildi ve 18.636 (dizi, kayit) cifti NCBI
+capraz referansindan geldi. Capraz referans "bu dizi su kayitta gecer" der.
+Ucuz ve cazip olan, kaydi acip oradaki bir RO adayinin komsulugunu o diziye
+yazmakti. OLCULDU, ve olcum o yolu kapatti.
+
+KURAL: bir kayit bir diziye ancak AYNI KAYITTA cevirisinin md5'i BIREBIR
+esit bir aday varsa baglam olur. Betik: `a5_match_guard.py`, cikti
+`analysis_out/a5_match_guard.json`, kapi `validate_curation.py` icinde
+`check_a5_match_guard` (butce KAYNAKTAN okunur, JSON ile karsilastirilir).
+
+```
+hedef                          18.636 cift / 18.532 tekil dizi
+ayni kayitta birebir eslesme   18.139  %97,3   -> baglam kurulur
+yalnizca baska kayitta eslesme      9  %0,0    -> kurulmaz
+hic eslesme yok                   488  %2,6
+BAGLAM KAZANAN TEKIL DIZI      18.043/18.532  %97,4
+```
+
+Kalan 497 cift nedenine gore ayrildi; dagilim yayimlaniyor cunku "%2,6
+eksik" ile "%2,6 yok" ayni sey degil:
+
+```
+A kayit indirilemedi                16   %3,2
+B kayitta hic CDS anotasyonu yok    50  %10,1   <- nukleotid VAR
+C anotasyonlu ama RO adayi yok      52  %10,5
+D adayi var, ceviri tutmuyor       379  %76,3
+```
+
+D'nin ici, kurali gevsetme karari icin belirleyici oldu:
+
+```
+ortak parca BILE yok -> baska protein  114  %30,1
+ic parca ortak, uclar farkli           105  %27,7
+aday hedefin icinde                     89  %23,5
+hedef adayin icinde                     71  %18,7
+```
+
+KURALIN KAZANCI: "ayni kayit yeter" denseydi en az **114 dizi baska bir
+genin komsulugu ile yayimlanacakti** ve sayfada bunu gosterecek hicbir sey
+olmayacakti. Bu sayi `a5_match_guard.py` icinde `DIFFERENT_PROTEIN` olarak
+beyan edilir ve kapi onu olcumle karsilastirir; ayrisirsa FAIL.
+
+ACIK: icerme oranina dayali bir IKINCI kural (ornegin %90 ortusme) 265
+cifti kurtarabilir. Ama bu ayri bir kuraldir: ilan edilmeden, olculmeden ve
+kendi kapisi kurulmadan uygulanmaz. Bu surumde kural birebir md5'tir.
+
+## 121. Anotasyonsuz ama nukleotidi olan kayitlar -- "baglami yok" degil, "baglamini biz cagirmadik" (2026-11-04)
+
+Kullanicinin tespiti: genomik anlamda anotasyonsuz ama genomik baglami
+BULUNAN diziler olmasi mumkun. Olculdu ve dogru cikti.
+
+```
+anotasyonsuz replikon (cds_count=0)   47   (A5 46 + survey 1)
+bu kayitlara dusen hedef dizi         50
+kalan eslesmeyen ciftin payi        %10,1   (sinif B)
+```
+
+Bu 50 dizi icin kayitta NUKLEOTID VAR; eksik olan yalnizca CDS anotasyonu.
+Yani sayfanin "genomik baglam yok" demesi bir BIYOLOJI ifadesi degil, bir
+ARAC ifadesi -- ve ikisi ayni cumlede birlesmemeli.
+
+PLAN: bu 47 kayda ORF cagrimi (prodigal) uygulanir, cikan ORF'ler
+`extract_genomic_context.py`e verilir ve md5 kapisi AYNEN uygulanir --
+cagrilan ORF'un cevirisi hedef diziyle birebir tutmak zorunda. Tutmazsa
+baglam yine kurulmaz; ORF cagrimi kapiyi gevsetmek icin bir bahane degil.
+
+SART: provenans AYRI bir alan olur (`annotation_source` = `ncbi` | `prodigal`).
+NCBI anotasyonu ile cagrilmis ORF ayni sutuna sessizce karismaz; konuma
+bagli her olcum (operon, komsuluk) kaynagina gore ayrilabilir olmali, cunku
+cagrilmis bir komsulugun gen sinirlari olculmus degil TAHMIN edilmistir.
+Bu, 71 tip semasina sutun eklemek degil, turetilmis tabloya alan eklemektir
+(bkz. sema genisletme kurali).
+
+BUYUKLUK: 50 dizi, veritabaninin %0,3'u. Kucuk; ama "yok" ile "bakmadik"
+ayrimi buyukluge bagli degil.
+
 ## Yeniden uretim
 
 ```

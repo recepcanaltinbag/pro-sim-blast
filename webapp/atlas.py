@@ -2358,6 +2358,9 @@ PROVENANCE = [
      "analyze_regulation.py"),
     ("operon_validation.json", "file", "Position and strand tests of the operon rule, with the "
      "negative control and threshold sensitivity.", "operon_validation.py"),
+    ("a5_match_guard.json", "file", "Why a cross-referenced nucleotide record is linked to a "
+     "sequence only on a byte-identical translation: match rate, the residual broken down by "
+     "cause, and the measured cost of dropping the rule.", "a5_match_guard.py"),
     ("variant_signatures.csv", "file", "Residue signature of every variant at the columns that "
      "separate variants.", "variant_signature.py"),
     ("motif_stats.json", "file", "Conservation of the eight defining columns.", "motif_stats.py"),

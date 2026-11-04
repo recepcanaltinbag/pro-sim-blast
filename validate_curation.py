@@ -2135,6 +2135,79 @@ def check_prefilter_admits_gate_passers(rep, con, root):
                  " -- on filtre penceresi kapinin kabul ettigi bir sinifi "
                  "disliyor; extract_genomic_context.py'deki olcume bakilmali"))
 
+def check_a5_match_guard(rep, con, root):
+    """Capraz referansla gelen baglam, BIREBIR dizi eslesmesi olmadan baglanamaz.
+
+    NEDEN BU KONTROL VAR. A5'te 18.636 (dizi, kayit) cifti NCBI capraz
+    referansindan geldi. Capraz referans "bu dizi su kayitta gecer" der;
+    "su kayitta ayni proteindir" DEMEZ. Kaydi acip oradaki herhangi bir RO
+    adayini almak cazip ve ucuzdu. Olculdu: eslesmeyen 379 ciftin 114'unde
+    aday ile hedef dizinin ORTAK PARCASI BILE YOK. Yani "ayni kayit yeter"
+    kurali uygulansaydi en az 114 dizi BASKA bir genin komsulugu ile
+    yayimlanacakti -- ve sayfada bunu gosteren hicbir sey olmayacakti.
+
+    KONTROLUN MANTIGI. Kural `a5_match_guard.py`de uygulanir, butce de
+    ORADA yazilidir; bu kontrol butceyi KAYNAKTAN okur ve cikti JSON'u ile
+    karsilastirir. Butce kaynaktan okunmazsa esik iki yere kopyalanmis olur
+    ve bu projenin tekrar eden hata bicimi tam budur.
+
+    Ayrica TAZELIK sinanir: hedef listesi JSON'dan yeni ise olcum bayattir
+    ve "%97,4 baglam kurulur" iddiasi artik olculmemis bir iddiadir.
+    """
+    import json as _json
+    import re as _re
+    guard = os.path.join(root, "a5_match_guard.py")
+    out = os.path.join(root, "analysis_out", "a5_match_guard.json")
+    targets = os.path.join(root, "cohorts", "a5_protein_recovery.tsv")
+    if not os.path.exists(guard):
+        rep.check("a5 guard: a5_match_guard.py exists", False, 1, guard)
+        return
+    if not os.path.exists(out):
+        rep.check("a5 guard: the match measurement has been run", False, 1,
+                  f"{out} yok -- python3 a5_match_guard.py", severity="WARN")
+        return
+    src = open(guard).read()
+    m = _re.search(r"^RESIDUAL_BUDGET = (\d+)", src, _re.M)
+    w = _re.search(r"^DIFFERENT_PROTEIN = (\d+)", src, _re.M)
+    if not m or not w:
+        rep.check("a5 guard: the residual budget is readable from source",
+                  False, 1, "RESIDUAL_BUDGET / DIFFERENT_PROTEIN okunamadi")
+        return
+    budget, declared_wrong = int(m.group(1)), int(w.group(1))
+    data = _json.load(open(out))
+
+    residual = data.get("residual_pairs", -1)
+    rep.check("a5 guard: unmatched pairs stay within the measured budget",
+              0 <= residual <= budget, residual,
+              f"{residual} eslesmeyen cift, butce {budget}"
+              + ("" if 0 <= residual <= budget else
+                 " -- cikarim degismis; a5_match_guard.py yeniden kosturulup "
+                 "butce OLCUMLE birlikte guncellenmeli"))
+
+    # Kuralin kazanci yayimlanabilir bir sayi; kaynaktaki beyan ile olcum
+    # ayrisirsa iddia olculmemis hale gelir.
+    measured_wrong = data.get("would_be_wrong_without_rule", -1)
+    rep.check("a5 guard: the stated cost of dropping the rule is the measured one",
+              measured_wrong == declared_wrong, abs(measured_wrong - declared_wrong),
+              f"olculen {measured_wrong}, kaynakta beyan {declared_wrong}")
+
+    # Birebir eslesme sarti gercekten UYGULANMIS mi: baska kayitta eslesen
+    # ciftler baglam KAZANMAMIS olmali.
+    rep.check("a5 guard: a match in a different record does not link context",
+              data.get("matched_other_record_only", 0) >= 0
+              and data.get("sequences_linked", 0) <= data.get("n_target_sequences", 0),
+              data.get("matched_other_record_only", 0),
+              f"{data.get('matched_other_record_only', 0)} cift yalnizca baska "
+              f"kayitta esliyor ve baglam almiyor")
+
+    if os.path.exists(targets) and os.path.getmtime(targets) > os.path.getmtime(out):
+        rep.check("a5 guard: the measurement is newer than the target list",
+                  False, 1, "hedef listesi JSON'dan yeni -- olcum bayat",
+                  severity="WARN")
+    else:
+        rep.check("a5 guard: the measurement is newer than the target list",
+                  True, 0)
+
 
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
@@ -3022,6 +3095,7 @@ def main():
         check_sdp_regions(rep, con, ROOT)
         check_prevalence_declares_cohort(rep, con, ROOT)
         check_prefilter_admits_gate_passers(rep, con, ROOT)
+        check_a5_match_guard(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
         check_significance_claims(rep, con, ROOT)
