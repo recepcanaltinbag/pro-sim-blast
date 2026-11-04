@@ -2209,6 +2209,83 @@ def check_a5_match_guard(rep, con, root):
                   True, 0)
 
 
+def check_ro_footprint_explained(rep, con, root):
+    """Onaylanmis bir RO'nun genomik ayak izi cevirisiyle ACIKLANABILIR olmali.
+
+    NEDEN BU KONTROL VAR. `extract_genomic_context.py` icindeki
+    `feature_spans` dairesel replikonda orijini asan genleri DOGRU ele alir
+    ve komsu mesafeleri parcalar uzerinden hesaplanir. Ama adayin kendi
+    `start`/`end` degerleri parcalarin MIN ve MAX'i olarak yazilir ve
+    kaynaktaki yorum bunu "raporlama icin" diye isaretler. Asagi akista
+    `build_operons.py`, `operon_validation.py` ve `analyze.py` bosluk
+    aritmetigini TAM O iki degerle yapar. Yani tuzak komsular icin
+    kapatilmis, adayin KENDISI icin kapatilmamis; ustelik `ro` tablosu
+    komsu tablosunun tasidigi `spans_origin` alanini tasimadigi icin bilgi
+    hic ulasmiyor.
+
+    SONUC NE OLURDU. Ayak izi replikon uzunluguna esit bir RO'da o
+    replikondaki HER komsu "ortusuyor" sayilir, bosluk hep 0 cikar, operon
+    yurumesi hic kirilmaz ve sayfa TUM KROMOZOMU kapsayan bir operon
+    yayimlar. 2026-11-04 olcumunde A5 kayitlarinda tam bu durumda iki
+    bakteri girisi var: CP063373.1 (9,96 Mb ayak izi / 318 aa) ve
+    CP060714.1 (5,17 Mb / 905 aa), ikisi de dairesel.
+
+    KONTROLUN MANTIGI. Oran `ro_cds_span.py`de yazilidir ve buraya
+    KAYNAKTAN okunur. Aciklanamaz ayak izi olan her onayli giris ya
+    `ro_cds_span` tablosunda gercek parcalariyla COZULMUS olmali, ya da
+    kontrol FAIL verir. Yani "aciklanamaz" durumu sessiz kalamaz: ya
+    aciklanir ya kapi kapanir.
+
+    Eukaryota girisleri de ayrica sayilir: orada ayak izi intron tasir,
+    yani buyuk span bir hata DEGIL -- ama operon mantigi da gecerli degil
+    ve bu sayinin gorunur olmasi gerekir.
+    """
+    import re as _re
+    script = os.path.join(root, "ro_cds_span.py")
+    if not os.path.exists(script):
+        rep.check("footprint: ro_cds_span.py exists", False, 1, script)
+        return
+    m = _re.search(r"^UNEXPLAINED_RATIO = ([\d.]+)", open(script).read(), _re.M)
+    if not m:
+        rep.check("footprint: the unexplained-footprint ratio is readable from source",
+                  False, 1, "UNEXPLAINED_RATIO okunamadi")
+        return
+    ratio = float(m.group(1))
+
+    have_span = con.execute("SELECT name FROM sqlite_master "
+                            "WHERE name='ro_cds_span'").fetchone()
+    resolved = set()
+    if have_span:
+        resolved = {c for (c,) in con.execute("SELECT candidate_id FROM ro_cds_span")}
+
+    # Ayak izi, cevirinin beklenen bp'sinin `ratio` katindan buyuk mu?
+    # Ceviri uzunlugu `ro_union.length` uzerinden gelir (dizi DB'de).
+    rows = con.execute("""
+        SELECT r.candidate_id, r.end - r.start, u.length
+        FROM ro r JOIN ro_union u ON u.genomic_candidate_id = r.candidate_id
+        WHERE r.is_confirmed = 1 AND u.length IS NOT NULL""").fetchall()
+    unexplained = [(cid, span, n_aa) for cid, span, n_aa in rows
+                   if span > ratio * 3 * (n_aa + 1)]
+    unresolved = [c for c, _s, _a in unexplained if c not in resolved]
+
+    rep.check("footprint: every confirmed RO footprint is explained by its translation "
+              "or resolved into real parts",
+              not unresolved, len(unresolved),
+              f"{len(rows):,} onayli giris olculdu, aciklanamaz {len(unexplained)}, "
+              f"cozulmemis {len(unresolved)}"
+              + ("" if not unresolved else
+                 f" -- {first(sorted(unresolved), 3)}; ro_cds_span.py kosturulmali. "
+                 "Ayak izi replikon uzunluguna yaklasirsa bosluk aritmetigi her "
+                 "komsuyu ortusuyor sayar ve operon tum kromozomu kapsar"))
+
+    if have_span:
+        wraps = con.execute(
+            "SELECT COUNT(*) FROM ro_cds_span WHERE wraps_origin = 1").fetchone()[0]
+        rep.check("footprint: origin-spanning genes are recorded with their real parts",
+                  True, wraps,
+                  f"{wraps} giris orijini asiyor ve gercek kenarlariyla kayitli")
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -3096,6 +3173,7 @@ def main():
         check_prevalence_declares_cohort(rep, con, ROOT)
         check_prefilter_admits_gate_passers(rep, con, ROOT)
         check_a5_match_guard(rep, con, ROOT)
+        check_ro_footprint_explained(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)
         check_regulation_totals_agree(rep, con, ROOT)
         check_significance_claims(rep, con, ROOT)
