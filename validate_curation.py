@@ -2365,13 +2365,14 @@ def check_component_scan_is_fresh(rep, con, root):
 
 
 def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
-    """Veritabanindan turetilen her yayimlanmis istatistik, veritabanindan YENI olmali.
+    """Veritabanindan turetilen her yayimlanmis istatistik, OKUDUGU tablolarin
+    bugunku icerigiyle hesaplanmis olmali.
 
-    NEDEN BU KONTROL VAR (kullanici istegi, 2026-11-04). Bu depoda
-    bayatliga karsi tek tek kontroller vardi (tepkime raporu, ro_search,
-    turetilmis rol tablosu...) ama GENEL bir kapi yoktu. Yani bir tablo
-    duzeltildiginde ondan turetilen istatistiklerin eski surumle hesaplanmis
-    kalmasi mekanik olarak yakalanmiyordu.
+    NEDEN BU KONTROL VAR (kullanici istegi, 2026-11-04). Bu depoda bayatliga
+    karsi tek tek kontroller vardi (tepkime raporu, ro_search, turetilmis rol
+    tablosu...) ama GENEL bir kapi yoktu. Yani bir tablo duzeltildiginde
+    ondan turetilen istatistiklerin eski surumle hesaplanmis kalmasi
+    mekanik olarak yakalanmiyordu.
 
     Maliyeti ayni gun olculdu: bilesen taramasi bayat oldugu icin beta
     2.523 -> 4.372, reduktaz 6.185 -> 10.394 duzeltildi. O sayilar
@@ -2379,81 +2380,83 @@ def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
     `operon_relations` ve atlas sayfalarini besliyor. Veritabani duzeldi ama
     turetilmis dosyalar duzelmedi; aradaki fark sayfada GORUNMEZ.
 
-    KONTROLUN MANTIGI. Yayimlanan dosya listesi `atlas.PROVENANCE`tan gelir
-    -- yani site bir dosyayi indirmeye sunuyorsa burada sinaniyor. Bir
-    dosyanin veritabanini OKUYUP okumadigi, uretici betigin KAYNAGINDAN
-    cikarilir (`sqlite3.connect`, `--db`, ya da `roar.sqlite` gecmesi);
-    elle tutulan bir liste olsa listenin kendisi bayatlardi.
+    KURAL NEREDEN GELIYOR (2026-11-05 duzeltmesi). Ilk surum kendi kuralini
+    yazdi: dosyanin mtime'i `roar.sqlite`in mtime'indan eski ise bayat.
+    O karsilastirma YANLIS ve `rebuild.py` onu 2026-10-14'te bilerek
+    kaldirmisti (oradaki "TABLO BAZINDA DB GIRDISI" notu): veritabanina
+    zincirin ICINDE yazan adimlar var, dolayisiyla DB'nin mtime'i her kosuda
+    en sona kayar ve kendisinden ONCE kosmus her analiz bayat gorunur.
+    Olculdu: kapi 42 dosyanin 42'sini bayat gosterdi; bazilari 0,3 saat
+    "eski"ydi, yani AYNI kosuda uretilmislerdi. Depodaki tekrar eden hata
+    siniftan biriydi -- "karar veren kural, karar verdigini soyledigimiz
+    kural degil".
 
-    Yalnizca veritabanini okuyan betiklerin ciktilari sinanir. `types/`den
-    turetilen dosyalar veritabanindan bagimsizdir ve onlarin kendi tazelik
-    kontrolleri var.
+    Artik karar `rebuild.plan(state, propagate=False)` veriyor: adimin DB
+    girdisi TABLO BAZINDADIR ve yalnizca kendisinden ONCEKI adimlarin yazdigi
+    tablolar sayilir. Yani sayi, OKUDUGU tablolarin ozeti degistiyse bayattir
+    -- alakasiz bir tabloya yazilmis olmasi onu bayat yapmaz.
 
-    TEK YONLU. Dosya veritabanindan ESKI ise FAIL. Yeni olmasi sorun degil:
-    analiz veritabani degismeden yeniden kosturulmus olabilir.
+    `propagate=False` BILINCLI. Plan "yeniden kosmali mi?" diye sorar ve
+    ust adim kosacaksa alt adimi da bayat sayar. Kapi baska bir sey sorar:
+    "yayimlanan sayi YANLIS mi?" Ileride bir ust adimin kosacak olmasi
+    yayimlanmis sayiyi yanlis yapmaz. Olculdu: yayilim dahil 53, haric 20.
+
+    KAPSAM. Yalnizca `rebuild.ARTEFACTS` icinde bir adimin ciktisi olan
+    dosyalar yargilanabilir; grafikte olmayan dosya icin bu sorunun cevabi
+    YOK ve bu bir tazelik bulgusu degil, modularite bulgusudur --
+    `check_published_files_are_in_rebuild_graph` onu sayar. Burada yalnizca
+    WARN olarak gecilir ki iki kapi ayni seyi iki kez FAIL etmesin.
     """
     import sys as _sys
+    _sys.path.insert(0, root)
     _sys.path.insert(0, os.path.join(root, "webapp"))
     import atlas as _atlas
+    import rebuild as _rebuild
 
-    db_path = os.path.join(root, "roar.sqlite")
-    if not os.path.exists(db_path):
-        rep.check("freshness: roar.sqlite exists", False, 1, db_path)
-        return
-    db_age = os.path.getmtime(db_path)
+    cwd = os.getcwd()
+    try:
+        os.chdir(root)
+        rows = _rebuild.plan(_rebuild.load_state(), propagate=False)
+    finally:
+        os.chdir(cwd)
 
-    # Uretici betigin veritabanini okuyup okumadigini KAYNAKTAN cikar.
-    reads_db = {}
-
-    def script_reads_db(name):
-        if name in reads_db:
-            return reads_db[name]
-        path = os.path.join(root, name)
-        if not os.path.exists(path):
-            reads_db[name] = False
-            return False
-        try:
-            text = open(path, errors="replace").read()
-        except OSError:
-            reads_db[name] = False
-            return False
-        reads_db[name] = ("sqlite3.connect" in text or "roar.sqlite" in text
-                          or '"--db"' in text or "'--db'" in text)
-        return reads_db[name]
+    # cikti yolu -> (adim adi, bayatlik sebebi ya da None)
+    produced = {}
+    for name, outputs, _cmd, _inputs, _heavy, why in rows:
+        for p in outputs:
+            produced[os.path.normpath(p)] = (name, why)
 
     documented = set(_atlas.ANALYSIS_FILES)
-    stale, checked, no_script = [], 0, []
+    stale, fresh, ungated = [], 0, []
     for entry in _atlas.PROVENANCE:
         name, kind = entry[0], entry[1]
-        scripts = entry[3] if len(entry) > 3 else ""
         if kind != "file" or name not in documented:
             continue
-        producers = [s.strip() for s in (scripts or "").split(",") if s.strip()]
-        if not producers:
-            no_script.append(name)
+        rel = os.path.normpath(os.path.join(out_dir, name))
+        if rel not in produced:
+            ungated.append(name)
             continue
-        if not any(script_reads_db(s) for s in producers):
-            continue          # veritabanindan bagimsiz cikti
-        path = os.path.join(root, out_dir, name)
-        if not os.path.exists(path):
-            continue          # varligi ayri bir kontrolun isi
-        checked += 1
-        if os.path.getmtime(path) < db_age:
-            hours = (db_age - os.path.getmtime(path)) / 3600.0
-            stale.append(f"{name} ({hours:.1f} sa eski)")
+        step, why = produced[rel]
+        if why:
+            stale.append(f"{name} [{step}: {why}]")
+        else:
+            fresh += 1
 
     rep.check("freshness: every published statistic derived from the database is "
-              "newer than the database",
+              "computed from the current table contents",
               not stale, len(stale),
-              f"{checked} veritabani turevi dosya sinandi"
+              f"{fresh + len(stale)} dosya rebuild grafiginden yargilandi"
               + ("" if not stale else
-                 f"; BAYAT: {first(sorted(stale), 5)} -- ilgili analiz "
-                 "yeniden kosturulmali, yoksa sayfa veritabaninin eski "
-                 "surumunden hesaplanmis sayilar yayimlar"))
+                 f"; BAYAT: {first(sorted(stale), 4)} -- ilgili adim yeniden "
+                 "kosturulmali, yoksa sayfa tablolarin eski icerigiyle "
+                 "hesaplanmis sayilar yayimlar"))
 
-    if no_script:
-        rep.check("freshness: every published file names the script that makes it",
-                  False, len(no_script), first(sorted(no_script), 5),
+    if ungated:
+        rep.check("freshness: every published file is judgeable (is a rebuild "
+                  "step output)",
+                  False, len(ungated),
+                  first(sorted(ungated), 5) + " -- grafikte olmadigi icin "
+                  "tazeligi SINANAMIYOR; modularite kapisina bak",
                   severity="WARN")
 
 

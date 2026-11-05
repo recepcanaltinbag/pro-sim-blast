@@ -624,25 +624,35 @@ def staleness(name, outputs, inputs, state, ignore=None, counts=None):
     return None
 
 
-def main():
-    ap = argparse.ArgumentParser(
-        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    g = ap.add_mutually_exclusive_group(required=True)
-    g.add_argument("--check", action="store_true",
-                   help="hicbir sey calistirma; bayat varsa 1 don")
-    g.add_argument("--plan", action="store_true", help="ne calisacagini goster")
-    g.add_argument("--run", action="store_true", help="bayat olanlari uret")
-    g.add_argument("--baseline", action="store_true",
-                   help="hicbir sey calistirmadan mevcut durumu guncel say "
-                        "(ilk kurulum icin)")
-    ap.add_argument("--include-heavy", action="store_true",
-                    help="saatler suren adimlari da calistir")
-    ap.add_argument("--only", action="append",
-                    help="yalnizca bu artefakt(lar); tekrarlanabilir")
-    ap.add_argument("--cpu", type=int, default=8)
-    args = ap.parse_args()
+def plan(state, propagate=True):
+    """Her artefakt icin bayatlik sebebi (ya da None) -- TEK KAYNAK.
 
-    state = load_state()
+    NEDEN AYRI ISLEV (2026-11-05). Bu mantik `main()` icinde gomuluydu ve
+    `validate_curation.py` "yayimlanan istatistik guncel mi?" sorusunu KENDI
+    kuraliyla cevapliyordu: analiz dosyasinin mtime'ini `roar.sqlite`
+    mtime'i ile karsilastiriyordu. O karsilastirma bu dosyanin 2026-10-14'te
+    BILEREK kaldirdigi karsilastirmanin aynisi (yukaridaki "TABLO BAZINDA DB
+    GIRDISI" notuna bak): DB'ye zincirin ICINDE yazan adimlar var, dolayisiyla
+    DB mtime'i her kosuda en sona kayar ve kendisinden ONCE kosmus her analiz
+    "bayat" gorunur. Olculdu: kapi 42 dosyanin 42'sini bayat gosterdi ve
+    bazilari 0,3 saat "eski"ydi -- yani AYNI kosuda uretilmislerdi.
+
+    Soru ayniysa kural da ayni olmali. Artik iki yerde iki kural yok: kapi
+    da bu islevi cagiriyor.
+
+    propagate=False ise bayatlik ILERI YAYILMAZ: her adim yalnizca kendi
+    girdilerine karsi sinanir. Iki ayri soru vardir ve karistirilmamalidir:
+
+      "yeniden kosmali mi?"      -> yayilim DAHIL (plan/run bunu sorar; ust
+                                    adim kosacaksa alt adim da kosmalidir)
+      "yayimlanan sayi yanlis mi?" -> yayilim HARIC (dogrulama kapisi bunu
+                                    sorar; bir sayi, OKUDUGU tablo icerigi
+                                    o gunden beri degistiyse yanlistir --
+                                    ileride bir ust adimin kosacak olmasi
+                                    yayimlanmis sayiyi yanlis yapmaz)
+
+    Doner: [(name, outputs, cmd, inputs, heavy, why), ...], ARTEFACTS sirasinda.
+    """
     # Her adimin yazdigi tablolar: statik (kaynak) + dinamik (olculen).
     writes = {}
     for name, outputs, cmd, inputs, heavy in ARTEFACTS:
@@ -683,7 +693,7 @@ def main():
     for name, outputs, cmd, inputs, heavy in ARTEFACTS:
         why = staleness(name, outputs, inputs, state,
                         ignore=ignore[name], counts=counts_now)
-        if not why:
+        if not why and propagate:
             up_files = [p for p in inputs if p in dirty_files]
             up_tabs = (sorted(dirty_tables - ignore[name])
                        if DB in inputs else [])
@@ -694,9 +704,32 @@ def main():
         if why:
             dirty_files.update(outputs)
             dirty_tables.update(writes[name])
-        if args.only and name not in args.only:
-            continue
         rows.append((name, outputs, cmd, inputs, heavy, why))
+    return rows
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--check", action="store_true",
+                   help="hicbir sey calistirma; bayat varsa 1 don")
+    g.add_argument("--plan", action="store_true", help="ne calisacagini goster")
+    g.add_argument("--run", action="store_true", help="bayat olanlari uret")
+    g.add_argument("--baseline", action="store_true",
+                   help="hicbir sey calistirmadan mevcut durumu guncel say "
+                        "(ilk kurulum icin)")
+    ap.add_argument("--include-heavy", action="store_true",
+                    help="saatler suren adimlari da calistir")
+    ap.add_argument("--only", action="append",
+                    help="yalnizca bu artefakt(lar); tekrarlanabilir")
+    ap.add_argument("--cpu", type=int, default=8)
+    args = ap.parse_args()
+
+    state = load_state()
+    rows = plan(state)
+    if args.only:
+        rows = [r for r in rows if r[0] in args.only]
 
     if args.baseline:
         for name, outputs, cmd, inputs, heavy, _ in rows:
