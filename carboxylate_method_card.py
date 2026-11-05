@@ -227,4 +227,27 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # --out ile dosyaya da yazilir (2026-11-05). Bu kart yayimlanan bir
+    # dosyaydi ama uretimi kabuk yonlendirmesiyle elle yapiliyordu, yani
+    # `rebuild.py` grafiginde yer alamiyordu ve tazeligi hic sinanamiyordu.
+    # rebuild komutu kabuk ACMAZ (subprocess.run liste ile), dolayisiyla
+    # "> dosya" bir cozum degil; betigin kendisi yazmali.
+    import argparse
+    import contextlib
+    import io
+
+    _ap = argparse.ArgumentParser(description=__doc__)
+    _ap.add_argument("--out", default=None,
+                     help="karti bu dosyaya da yaz (stdout'a basmaya devam eder)")
+    _args = _ap.parse_args()
+    if not _args.out:
+        main()
+    else:
+        _buf = io.StringIO()
+        with contextlib.redirect_stdout(_buf):
+            main()
+        text = _buf.getvalue()
+        sys.stdout.write(text)
+        os.makedirs(os.path.dirname(_args.out) or ".", exist_ok=True)
+        with open(_args.out, "w") as fh:
+            fh.write(text)

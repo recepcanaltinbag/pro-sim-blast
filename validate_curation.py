@@ -2535,10 +2535,28 @@ def check_published_files_are_in_rebuild_graph(rep, con, root):
                      if name not in outputs
                      and os.path.join("analysis_out", name) not in outputs)
 
-    # 2026-11-04 OLCUMU. Butce olculen degerin kendisi; her baglanan dosyada
-    # DUSURULUR. Yukari dogru hareket, grafige baglanmamis bir yayim dosyasi
+    # UC TUR VAR, TEK SAYI DEGIL (2026-11-05). Butce 25'ten 6'ya dusurulurken
+    # kalan dosyalarin HEPSININ ayni sebeple grafik disinda olmadigi goruldu:
+    #
+    #   onbellek      : chebi_formula_cache.json -- `reaction_balance.py`
+    #                   argv'den Rhea ID alan bir EL ARACI, pipeline adimi
+    #                   degil; ciktisi bir istatistik degil, ChEBI formul
+    #                   onbellegi. Grafige konmasi "tazelenmeli" demek olur
+    #                   ki yanlistir.
+    #   ureticisiz    : curation_claims_ncbi.json -- depoda bu dosyayi YAZAN
+    #                   hicbir betik yok. atlas kokeni
+    #                   "verify_curation_claims.py (NCBI efetch pass)" diyor
+    #                   ama o betik bu dosyayi yazmiyor; koken IDDIASI yanlis.
+    #   elle kosulmus : motif_gate_B_new.json, motif_single_his_members.json,
+    #                   oxygen_role_phylogeny.json, repertoire_matrix.json --
+    #                   tek seferlik analizler, betigi yok.
+    #
+    # Bunlari grafige ZORLAMAK dogru olmaz; dogru olan NE OLDUKLARINI beyan
+    # etmek. Butce bu yuzden 0 degil 6: 6 dosya icin "tazelenebilir" iddiasi
+    # ZATEN yapilmiyor. Butce olculen degerin kendisi; her baglanan dosyada
+    # DUSURULUR. Yukari hareket, grafige baglanmamis YENI bir yayim dosyasi
     # eklendigi anlamina gelir ve kapi kapanir.
-    BUDGET = 25
+    BUDGET = 6
     rep.check("modularity: every published analysis file is an output of the "
               "rebuild graph",
               len(missing) <= BUDGET, len(missing),

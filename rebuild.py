@@ -126,13 +126,13 @@ ARTEFACTS = [
      ["build_operons.py", DB, "component_hmms/components.hmm"], True),
 
     # --- veritabanina yazan ara adimlar
-    ("evidence_tiers", [f"{OUT}/evidence_by_cluster.csv"],
+    ("evidence_tiers", [f"{OUT}/evidence_by_cluster.csv", f"{OUT}/reference_pairs.csv"],
      ["python3", "evidence_tiers.py", "--db", DB, "--out-dir", OUT],
      ["evidence_tiers.py", DB, CHEM], False),
     ("etc_types", [f"{OUT}/etc_by_cluster.csv"],
      ["python3", "etc_types.py", "--db", DB, "--out-dir", OUT],
      ["etc_types.py", DB], False),
-    ("regulation", [],
+    ("regulation", [f"{OUT}/regulation_by_cluster.csv"],
      ["python3", "analyze_regulation.py", "--db", DB, "--out-dir", OUT],
      ["analyze_regulation.py", DB], False),
 
@@ -144,7 +144,7 @@ ARTEFACTS = [
      ["python3", "null_model.py", "--db", DB, "--gbk-dir", "gbk_files",
       "--processes", "16", "--out", f"{OUT}/null_model.csv"],
      ["null_model.py", DB], True),
-    ("variants", [],
+    ("variants", [f"{OUT}/sdp_positions.csv"],
      ["python3", "analyze_variants.py", "--db", DB, "--out-dir", OUT],
      ["analyze_variants.py", DB], False),
     ("subfamilies", [],
@@ -153,7 +153,7 @@ ARTEFACTS = [
     ("homogenize", [],
      ["python3", "recursive_homogenize.py", "--db", DB, "--out-dir", OUT],
      ["recursive_homogenize.py", DB], False),
-    ("leaves", [],
+    ("leaves", [f"{OUT}/leaf_profiles.csv"],
      ["python3", "characterize_leaves.py", "--db", DB, "--out-dir", OUT],
      ["characterize_leaves.py", DB], False),
     ("representatives", [],
@@ -168,7 +168,7 @@ ARTEFACTS = [
      ["python3", "analyze_ecology.py", "--db", DB,
       "--out", f"{OUT}/cluster_ecology_stats.csv"],
      ["analyze_ecology.py", DB, ECO], False),
-    ("variant_signature", [],
+    ("variant_signature", [f"{OUT}/variant_signatures.csv"],
      ["python3", "variant_signature.py", "--db", DB, "--out-dir", OUT],
      ["variant_signature.py", DB], False),
     ("motif_stats", [f"{OUT}/motif_stats.json"],
@@ -204,7 +204,7 @@ ARTEFACTS = [
      ["python3", "threshold_sensitivity.py", "--db", DB,
       "--out", f"{OUT}/threshold_sensitivity.json"],
      ["threshold_sensitivity.py", DB, ECO], False),
-    ("stratified_stats", [f"{OUT}/stratified_stats.json"],
+    ("stratified_stats", [f"{OUT}/stratified_stats.json", f"{OUT}/carboxylate_rows.json"],
      ["python3", "stratified_stats.py", "--db", DB, "--out-dir", OUT],
      ["stratified_stats.py", DB, ECO], False),
 
@@ -285,7 +285,7 @@ ARTEFACTS = [
     # tree_meta.json BEYAN EDILIR: sayfanin altyazisi kullanilan modeli ve
     # destek turunu buradan okuyor, yani dosya tazelik takibine girmek
     # zorunda -- yoksa altyazi eski bir modelin adini yayinlayabilir.
-    ("phylogeny", [f"{OUT}/tree_all.nwk", f"{OUT}/tree_meta.json"],
+    ("phylogeny", [f"{OUT}/tree_all.nwk", f"{OUT}/tree_meta.json", f"{OUT}/cluster_assignment_conflicts.csv", f"{OUT}/cluster_identity_matrix.csv", f"{OUT}/cluster_reference_identity.csv", f"{OUT}/ssn_edges.csv", f"{OUT}/ssn_nodes.csv"],
      ["python3", "build_phylogeny.py", "--db", DB, "--out-dir", OUT,
       "--fasttree", "FastTree", "--work", f"{SCRATCH}/roar_phylo_work"],
      ["build_phylogeny.py", DB, MOTIF_HMM], False),
@@ -374,6 +374,43 @@ ARTEFACTS = [
     ("hub_html", ["hub.html"],
      ["python3", "make_hub.py", "--db", DB, "--out-dir", OUT, "-o", "hub.html"],
      ["make_hub.py", DB], False),
+    # --- 2026-11-05: YAYIMLANAN AMA GRAFIKTE OLMAYAN artefaktlar.
+    # Olculdu: atlas'in indirmeye sundugu 56 dosyanin 25'i hicbir adimin
+    # ciktisi degildi, yani `rebuild.py --run` onlari ASLA tazeleyemezdi ve
+    # tazelik kapisi onlari YARGILAYAMIYORDU. Kanit: carboxylate_method_card
+    # 30 Ekim'deki denetimden uretilmis ve kalmisti, oysa denetim 31 Ekim'de
+    # yenilenmisti -- yayimlanan kart bayatti ve bunu kimse goremiyordu.
+    #
+    # AGIR OLANLAR DIS SERVISE ISTEK ATIYOR (ChEBI, Rhea, UniProt, NCBI,
+    # PDB). Depodaki konvansiyon bunu zaten `heavy` ile isaretliyor
+    # ("AGIR cunku 737 ag sorgusu", yukarida). Yani `--run` onlari
+    # KENDILIGINDEN kosturmaz; dis servis ancak bilerek sorgulanir.
+    ("a5_match_guard", [f"{OUT}/a5_match_guard.json"],
+     ["python3", "a5_match_guard.py", "--db", DB],
+     ["a5_match_guard.py", DB, "cohorts/a5_protein_recovery.tsv"], True),
+    ("carboxylate_anchor_holdout", [f"{OUT}/carboxylate_anchor_holdout.json"],
+     ["python3", "carboxylate_anchor_holdout.py", "--db", DB],
+     ["carboxylate_anchor_holdout.py", DB, "genomic_context/cand_aln.sto",
+      "ROs_71_Clean/refs71.fasta"], True),
+    ("carboxylate_method_card", [f"{OUT}/carboxylate_method_card.txt"],
+     ["python3", "carboxylate_method_card.py",
+      "--out", f"{OUT}/carboxylate_method_card.txt"],
+     ["carboxylate_method_card.py", f"{OUT}/carboxylate_audit.json"], False),
+    ("oxygen_fate_computed", [f"{OUT}/oxygen_fate_computed.json"],
+     ["python3", "compute_oxygen_fate.py"],
+     ["compute_oxygen_fate.py", "types", "oxygen_fate.csv"], False),
+    ("reaction_anchors", [f"{OUT}/reaction_anchors.json"],
+     ["python3", "anchor_reactions.py"],
+     ["anchor_reactions.py", "types"], True),
+    ("reaction_verification", [f"{OUT}/reaction_verification.json"],
+     ["python3", "verify_reactions.py"],
+     ["verify_reactions.py", "types"], True),
+    ("curation_claims", [f"{OUT}/curation_claims.json"],
+     ["python3", "verify_curation_claims.py"],
+     ["verify_curation_claims.py", "types"], True),
+    ("bridging_geometry_audit", [f"{OUT}/bridging_geometry_audit.json"],
+     ["python3", "bridging_geometry_audit.py"],
+     ["bridging_geometry_audit.py"], True),
 ]
 
 
@@ -523,10 +560,59 @@ def db_changed(prev, cur, ignore):
                   if _table_of(k) not in ignore and prev.get(k) != cur.get(k))
 
 
+# Bir dizinin icerik ozeti icin: bu boyutun ALTINDAKI dizinlerde dosya
+# ICERIKLERI okunur, ustunde yalnizca ad+boyut. `types/` kucuk yaml'lar
+# oldugu icin tam icerik, `genomic_context/` (GB'lar) ad+boyut.
+DIR_CONTENT_LIMIT = 32 << 20
+
+
+def dir_digest(path):
+    """DIZIN OZETI (2026-11-05).
+
+    NEDEN. `digest()` bir dizinde `open()` ile OSError aliyor ve None
+    donuyordu. None ise karsilastirma onu ATLIYOR
+    (`if not prev.get(p): continue`). Ustelik bir dizinin mtime'i icindeki
+    bir dosya DUZENLENINCE degismez -- yalnizca dosya eklenip silinince
+    degisir. Ikisi birlesince su cikti: `types/` iki adimda girdi olarak
+    BEYAN EDILMIS ama bir `types/*.yaml` duzenlendiginde HICBIR adim bayat
+    gorunmuyordu. `types/` bu veritabaninin TEK KAYIT KAYNAGI; yani kayit
+    kaynagi bagimlilik grafigine gorunmuyordu.
+
+    Olculdu: state dosyasinda `"types": null`.
+
+    mtime'a GUVENMEZ (bu dosyanin ucuncu kurali): ad + boyut + icerik ozeti.
+    """
+    entries, total = [], 0
+    for root, dirs, files in os.walk(path):
+        dirs.sort()
+        for fn in sorted(files):
+            p = os.path.join(root, fn)
+            try:
+                size = os.path.getsize(p)
+            except OSError:
+                continue
+            entries.append((os.path.relpath(p, path), size, p))
+            total += size
+    h = hashlib.sha256()
+    read_content = total <= DIR_CONTENT_LIMIT
+    for rel, size, p in entries:
+        h.update(f"{rel}:{size}|".encode())
+        if read_content:
+            try:
+                with open(p, "rb") as fh:
+                    for chunk in iter(lambda: fh.read(1 << 20), b""):
+                        h.update(chunk)
+            except OSError:
+                h.update(b"<okunamadi>")
+    return h.hexdigest()[:16]
+
+
 def digest(path):
     """Icerik ozeti. Buyuk dosyalarda bas + son + boyut yeter ve hizlidir."""
     if path.endswith(".sqlite"):
         return db_counts(path)
+    if os.path.isdir(path):
+        return dir_digest(path)
     try:
         size = os.path.getsize(path)
     except OSError:
@@ -621,6 +707,24 @@ def staleness(name, outputs, inputs, state, ignore=None, counts=None):
         return f"girdi icerigi degisti: {', '.join(sorted(changed)[:3])}"
     if not prev:
         return "daha once bu araçla uretilmedi (temel kaydi yok)"
+    return None
+
+
+def script_flags(script):
+    """Betik --cpu ya da --threads kabul ediyor mu -- KAYNAKTAN okunur.
+
+    Calistirarak sormak yan etki uretiyordu; yukaridaki nota bak.
+    """
+    if not script or not os.path.exists(script):
+        return None
+    try:
+        text = open(script, errors="replace").read()
+    except OSError:
+        return None
+    if '"--cpu"' in text or "'--cpu'" in text:
+        return "--cpu"
+    if '"--threads"' in text or "'--threads'" in text:
+        return "--threads"
     return None
 
 
@@ -774,16 +878,21 @@ def main():
     for i, (name, outputs, cmd, inputs, heavy, why) in enumerate(runnable, 1):
         print(f"\n==> [{i}/{len(runnable)}] {name}  ({why})")
         full = list(cmd)
-        # --cpu kabul eden betiklere gecir
-        try:
-            helptext = subprocess.run(full[:2] + ["--help"], capture_output=True,
-                                      text=True, timeout=60).stdout
-            if "--cpu" in helptext:
-                full += ["--cpu", str(args.cpu)]
-            elif "--threads" in helptext:
-                full += ["--threads", str(args.cpu)]
-        except (subprocess.SubprocessError, OSError):
-            pass
+        # --cpu kabul eden betiklere gecir.
+        #
+        # ESKIDEN betigi `--help` ile CALISTIRIP cikisinda "--cpu" arardi.
+        # Bu, argparse'i OLMAYAN bir betikte `--help`in sessizce yok sayilip
+        # betigin GERCEKTEN kosmasi demekti: 60 saniyelik bir "prob" ic
+        # ag sorgulari atar, dosya yazar, ve cikisi atilir. Yan etkisi olan
+        # bir yoklama yoklama degildir. (2026-11-05; `anchor_reactions.py` ve
+        # `reaction_balance.py` grafige eklenirken bulundu -- ikisi de
+        # argparse'siz ve ikisi de dis servise istek atiyor.)
+        #
+        # Artik KAYNAKTAN okunur: calistirmak gerekmez, yan etkisi yoktur ve
+        # hizlidir.
+        flag = script_flags(full[1] if len(full) > 1 else "")
+        if flag:
+            full += [flag, str(args.cpu)]
         t0 = time.time()
         before = db_counts(DB) if os.path.exists(DB) else {}
         res = subprocess.run(full)

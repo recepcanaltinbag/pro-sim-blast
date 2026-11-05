@@ -2312,7 +2312,7 @@ PROVENANCE = [
      "number, with participant formulas from ChEBI, compared against the "
      "value this database resolves. Where the skeleton fragments and the "
      "substrate already carries oxygen, counting cannot trace atoms and the "
-     "entry says so instead of guessing.", "reaction_balance.py"),
+     "entry says so instead of guessing.", "compute_oxygen_fate.py"),
     ("chebi_formula_cache.json", "file", "Molecular formulas fetched from "
      "ChEBI, cached so the balance check can re-run without the network.",
      "reaction_balance.py"),
