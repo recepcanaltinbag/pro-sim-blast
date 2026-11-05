@@ -2254,9 +2254,20 @@ def check_ro_footprint_explained(rep, con, root):
 
     have_span = con.execute("SELECT name FROM sqlite_master "
                             "WHERE name='ro_cds_span'").fetchone()
-    resolved = set()
+    # COZULMUS = SATIR VAR demek DEGILDIR (2026-11-05 duzeltmesi). Ilk surumde
+    # `resolved` yalnizca "ro_cds_span'de kaydi var mi" diye sorardi. Yani
+    # ayak izi tum replikonu kaplayan bir giris, SADECE kaydedildigi icin
+    # temiz sayiliyordu -- oysa bu kontrolun kendi FAIL metni zararin ne
+    # oldugunu yaziyor: "ayak izi replikon uzunluguna yaklasirsa bosluk
+    # aritmetigi her komsuyu ortusuyor sayar". Kaydetmek kullanmak degildir.
+    #
+    # Dogru olcut: parcalardan hesaplanan GERCEK ayak izi (`cds_length`)
+    # cevirinin butcesine giriyor mu. Girmiyorsa parcalar o geni
+    # aciklamiyor ve cozum bir kurgudur.
+    span_rows = {}
     if have_span:
-        resolved = {c for (c,) in con.execute("SELECT candidate_id FROM ro_cds_span")}
+        span_rows = {c: (ln, parts) for c, ln, parts in con.execute(
+            "SELECT candidate_id, cds_length, parts FROM ro_cds_span")}
 
     # Ayak izi, cevirinin beklenen bp'sinin `ratio` katindan buyuk mu?
     # Ceviri uzunlugu `ro_union.length` uzerinden gelir (dizi DB'de).
@@ -2266,7 +2277,9 @@ def check_ro_footprint_explained(rep, con, root):
         WHERE r.is_confirmed = 1 AND u.length IS NOT NULL""").fetchall()
     unexplained = [(cid, span, n_aa) for cid, span, n_aa in rows
                    if span > ratio * 3 * (n_aa + 1)]
-    unresolved = [c for c, _s, _a in unexplained if c not in resolved]
+    unresolved = [c for c, _s, n_aa in unexplained
+                  if c not in span_rows
+                  or span_rows[c][0] > ratio * 3 * (n_aa + 1)]
 
     rep.check("footprint: every confirmed RO footprint is explained by its translation "
               "or resolved into real parts",
@@ -2279,11 +2292,28 @@ def check_ro_footprint_explained(rep, con, root):
                  "komsuyu ortusuyor sayar ve operon tum kromozomu kapsar"))
 
     if have_span:
+        # BU KONTROL ESKIDEN `True` SABITIYLE CAGRILIYORDU (2026-11-05).
+        # Yani hic FAIL edemezdi: adi kontrol, isi sayac. Artik yanlislanabilir
+        # bir sey soruyor -- kaydedilen parcalar gercekten o geni veriyor mu:
+        # parcalarin toplami `cds_length`e esit olmali. Esit degilse yazici
+        # hatali ve yukaridaki butce testi yanlis sayiyla yapiliyor.
+        bad = []
+        for cid, (ln, parts) in span_rows.items():
+            try:
+                total = sum(int(b) - int(a)
+                            for a, b in (p.split("-") for p in parts.split(";") if p))
+            except ValueError:
+                bad.append(f"{cid} (parcalar ayristirilamadi)")
+                continue
+            if total != ln:
+                bad.append(f"{cid} (parcalar {total} != cds_length {ln})")
         wraps = con.execute(
             "SELECT COUNT(*) FROM ro_cds_span WHERE wraps_origin = 1").fetchone()[0]
-        rep.check("footprint: origin-spanning genes are recorded with their real parts",
-                  True, wraps,
-                  f"{wraps} giris orijini asiyor ve gercek kenarlariyla kayitli")
+        rep.check("footprint: recorded parts actually add up to the recorded "
+                  "CDS length",
+                  not bad, len(bad),
+                  f"{len(span_rows):,} kayit sinandi, {wraps} orijin asan"
+                  + ("" if not bad else f"; TUTARSIZ: {first(sorted(bad), 3)}"))
 
 
 def check_component_scan_is_fresh(rep, con, root):
