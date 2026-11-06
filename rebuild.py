@@ -387,7 +387,11 @@ ARTEFACTS = [
     # KENDILIGINDEN kosturmaz; dis servis ancak bilerek sorgulanir.
     ("a5_match_guard", [f"{OUT}/a5_match_guard.json"],
      ["python3", "a5_match_guard.py", "--db", DB],
-     ["a5_match_guard.py", DB, "cohorts/a5_protein_recovery.tsv"], True),
+     # Betigin GERCEKTEN okudugu cikarim dizinleri de girdi: a5_match_guard.py
+     # icindeki varsayilanlarla ayni. Beyan edilmezse bu dizinler degistiginde
+     # adim bayat gorunmez (dizin ozeti 2026-11-05'te eklendi, bak dir_digest).
+     ["a5_match_guard.py", DB, "cohorts/a5_protein_recovery.tsv",
+      "/media/lin-bio/back2/roar_gc_a5", "/media/lin-bio/back2/roar_gc_wide"], True),
     ("carboxylate_anchor_holdout", [f"{OUT}/carboxylate_anchor_holdout.json"],
      ["python3", "carboxylate_anchor_holdout.py", "--db", DB],
      ["carboxylate_anchor_holdout.py", DB, "genomic_context/cand_aln.sto",

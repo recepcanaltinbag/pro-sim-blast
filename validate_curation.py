@@ -2450,9 +2450,46 @@ def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
     finally:
         os.chdir(cwd)
 
+    # KAPSAM: YALNIZCA VERITABANINA BAGLI ADIMLAR (2026-11-05).
+    # Kontrolun adi "veritabanindan turetilen her yayimlanmis istatistik"
+    # diyor. Ilk surum ise yargilanacak dosyayi "uretici betik roar.sqlite
+    # okuyor mu" diye KAYNAK METNINDEN tahmin ediyordu, ve 2026-11-05'te
+    # grafige 8 yeni adim baglandiginda bunun yine adindan genis karar
+    # verdigi goruldu: `bridging_geometry_audit` (PDB), `reaction_anchors`
+    # ve `reaction_verification` (Rhea/ChEBI), `curation_claims` (UniProt,
+    # NCBI) veritabanini HIC okumuyor -- girdileri bir DIS SERVIS. Onlarin
+    # "bugunku tablo icerigiyle hesaplanmis olmasi" diye bir sey yok;
+    # tazelikleri ancak "servise ne zaman soruldu" ile ifade edilebilir ve
+    # bu grafigin yargilayacagi bir sey degildir.
+    #
+    # Artik kapsam GRAFIKTEN cikarilir: DB'yi girdi beyan eden adimlar, ve
+    # ciktisi onlarin girdisi olan adimlar (gecisli). Yani kural adinin
+    # soyledigi seyi yapar. Tahmin yok, kaynak metni okuma yok.
+    dep = {name: set(inputs) for name, _o, _c, inputs, _h, _w in rows}
+    by_output = {}
+    for name, outputs, _c, _i, _h, _w in rows:
+        for p in outputs:
+            by_output[os.path.normpath(p)] = name
+
+    db_linked = set()
+    changed = True
+    while changed:
+        changed = False
+        for name, inputs in dep.items():
+            if name in db_linked:
+                continue
+            for p in inputs:
+                q = os.path.normpath(p)
+                if q.endswith("roar.sqlite") or by_output.get(q) in db_linked:
+                    db_linked.add(name)
+                    changed = True
+                    break
+
     # cikti yolu -> (adim adi, bayatlik sebebi ya da None)
     produced = {}
     for name, outputs, _cmd, _inputs, _heavy, why in rows:
+        if name not in db_linked:
+            continue
         for p in outputs:
             produced[os.path.normpath(p)] = (name, why)
 
