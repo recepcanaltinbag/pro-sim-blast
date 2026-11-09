@@ -3763,8 +3763,12 @@ YANLIS iddia ediyor), 4 elle kosulmus tek seferlik analiz. Butce 6 ve
 kapi uc turu ayri ayri yaziyor. Dogru olan bunlari tazelenebilir gibi
 gostermek degil, NE OLDUKLARINI beyan etmek.
 
-ACIK: `freeze.py` de grafikte degil, yani YAYIMLANAN SITENIN KENDISI
-tazelik denetiminin disinda.
+KAPANDI (2026-11-10): `freeze.py` artik grafikte (`site_freeze`, AGIR).
+Yayimlanan sitenin kendisi de tazelik denetimine girdi; `--plan` artik
+"canlidaki kopya eski" diyebiliyor. Olculen bedel neydi: gh-pages
+2026-11-02'de kalmisti ve bilesen duzeltmesi oncesi operon sayilarini
+gosteriyordu, YEREL HER DOSYA GUNCELKEN. Adim hafif zincirde kosmaz --
+isi bayatligi gorunur kilmak, kendiliginden yayim yapmak degil.
 
 ### 128. A5 AYAK IZI OLCUMU (ETKISI YOK, KAYIT ICIN)
 

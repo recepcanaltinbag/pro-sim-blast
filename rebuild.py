@@ -436,6 +436,23 @@ ARTEFACTS = [
      ["python3", "family_scan.py", "--db", DB, "--out", f"{OUT}/family_scan.json"],
      ["family_scan.py", DB, "family_hmms/mobility.hmm",
       "family_hmms/recombinase.hmm", "family_hmms/regulator.hmm"], False),
+
+    # YAYIMLANAN SITENIN KENDISI. 2026-11-09'a kadar grafigin disindaydi:
+    # her sey taze olsa bile canlidaki kopyanin eski olup olmadigini hicbir
+    # sey sormuyordu. Olculen bedel: gh-pages 2026-11-02'de kalmisti ve
+    # bilesen duzeltmesi oncesi operon sayilarini gosteriyordu (beta 2.523
+    # yerine 4.372 olmaliydi) -- yerel her dosya guncelken.
+    #
+    # AGIR: ~16 dakika, 3.282 statik sayfa. Hafif zincirde kosmaz; isi
+    # bayatligi GORUNUR kilmak, kendiliginden yayim yapmak degil. Yayim
+    # sirasi degismedi: check_site.py -> freeze.py -> deploy_pages.sh.
+    ("site_freeze", ["webapp/site/index.html", "webapp/site/search_index.json",
+                     "webapp/site/download/MANIFEST.txt"],
+     ["python3", "webapp/freeze.py", "--out", "webapp/site",
+      "--base", "/pro-sim-blast"],
+     ["webapp/freeze.py", "webapp/app.py", "webapp/atlas.py",
+      "webapp/build_entry_data.py", "webapp/templates", "webapp/static",
+      DB, OUT], True),
 ]
 
 
