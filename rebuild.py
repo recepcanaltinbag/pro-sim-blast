@@ -415,6 +415,27 @@ ARTEFACTS = [
     ("bridging_geometry_audit", [f"{OUT}/bridging_geometry_audit.json"],
      ["python3", "bridging_geometry_audit.py"],
      ["bridging_geometry_audit.py"], True),
+
+    # Komsu geni URUN ADINDAN degil Pfam modelinden siniflandirir: hareketli
+    # eleman, rekombinaz ve duzenleyici ailesi. Uc AYRI kutuphane kullanir ve
+    # hicbiri component_hmms/components.hmm ile karistirilmaz.
+    #
+    # NEDEN ZINCIRIN SONUNDA. Yeni tablo yazan bir adim nereye konursa
+    # KENDISINDEN SONRAKI her adimin DB girdisi degisir ve hepsi bir kez
+    # bayat gorunur. Bu adimin ciktisini su an okuyan baska adim yok;
+    # sona konunca kimseyi bayatlatmaz. Bir tuketici eklenirse adim onun
+    # ONUNE tasinmali -- yoksa tuketici eski tabloyu okur.
+    ("family_hmms", ["family_hmms/mobility.hmm", "family_hmms/recombinase.hmm",
+                     "family_hmms/regulator.hmm",
+                     "family_hmms/mobility.manifest.json",
+                     "family_hmms/recombinase.manifest.json",
+                     "family_hmms/regulator.manifest.json"],
+     ["python3", "fetch_family_hmms.py", "--library", "all"],
+     ["fetch_family_hmms.py"], True),
+    ("family_scan", [f"{OUT}/family_scan.json"],
+     ["python3", "family_scan.py", "--db", DB, "--out", f"{OUT}/family_scan.json"],
+     ["family_scan.py", DB, "family_hmms/mobility.hmm",
+      "family_hmms/recombinase.hmm", "family_hmms/regulator.hmm"], False),
 ]
 
 

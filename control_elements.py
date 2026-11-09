@@ -356,11 +356,16 @@ def main():
             "the operon 5' end whose product reads as a regulator. No binding was "
             "measured. A distal or global regulator is invisible to this, and a "
             "gene that merely sits upstream can be counted.",
-            "The transposon label comes from a product-name regular expression, "
-            "and it catches recombination machinery that is not a mobile element "
-            "at all -- Holliday junction resolvase RuvX appears 117 times. Named "
-            "insertion-sequence families are therefore extracted separately from "
-            "the product string and kept apart from unnamed transposases.",
+            "The transposon label on this page comes from a product-name regular "
+            "expression, and it catches recombination machinery that is not a "
+            "mobile element at all -- Holliday junction resolvase RuvX appears 117 "
+            "times. Named insertion-sequence families are therefore extracted "
+            "separately from the product string and kept apart from unnamed "
+            "transposases. How far the label can be trusted was measured "
+            "independently with Pfam models, in separate transposase and "
+            "recombinase HMM libraries; that measurement is published whole in "
+            "family_scan.json and is NOT folded into the counts on this page, "
+            "which remain the product-name reading.",
             "An entry can carry more than one insertion-sequence family, so the "
             "per-family sets overlap and their sizes do not sum to the total.",
         ],

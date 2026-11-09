@@ -2417,6 +2417,10 @@ PROVENANCE = [
     ("control_elements.json", "file", "Regulator families and insertion-sequence families: "
      "which enzyme types each sits beside, and whether mobile elements track the enzyme "
      "or the host.", "control_elements.py"),
+    ("family_scan.json", "file", "Neighbouring genes classified by Pfam model rather "
+     "than by product name: transposase, recombinase and regulator families, each from "
+     "its own HMM library, set against what the product-name rule says.",
+     "family_scan.py"),
     ("ssn_edges.csv", "file", "Similarity network edges above 30 % identity.",
      "build_phylogeny.py"),
     ("ssn_nodes.csv", "file", "Similarity network nodes.", "build_phylogeny.py"),

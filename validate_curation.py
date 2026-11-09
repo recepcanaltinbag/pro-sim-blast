@@ -207,6 +207,19 @@ EXTERNAL_TEXT_FIELDS = {
 IDENTIFIER_TEXT_FIELDS = {
     ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
     ("gene_category", "category"),
+    # 2026-11-10, family_scan.py'nin yazdigi uc tablo. Hepsi KIMLIK:
+    # category Pfam ailesinin ingilizce sabit adi (IS3-like, LysR, ...),
+    # method yontem etiketi, model/library Pfam model adi, protein_key
+    # koordinat anahtari, source uc degerli bir sabit. Cevrilecek proza yok,
+    # ama uc listeden birinde olmak ZORUNDA -- yoksa dil kontrolu gormez.
+    ("neighbor_family", "category"), ("neighbor_family", "method"),
+    ("neighbor_family_hit", "protein_key"), ("neighbor_family_hit", "library"),
+    ("neighbor_family_hit", "model"),
+    ("ro_upstream_family_hmm", "candidate_id"),
+    ("ro_upstream_family_hmm", "family_regex"),
+    ("ro_upstream_family_hmm", "family_hmm"),
+    ("ro_upstream_family_hmm", "family_best"),
+    ("ro_upstream_family_hmm", "source"),
     ("leaf", "leaf_id"), ("leaf", "cluster"), ("leaf", "representative"),
     ("leaf", "top_genera"),
     # 2026-10-28, icerikten turetilen varyant kimlikleri. Ucu de KIMLIK:
@@ -2394,6 +2407,79 @@ def check_component_scan_is_fresh(rep, con, root):
                  "--force ile kosturulup sayilar yeniden olculmeli"))
 
 
+def check_family_scan_is_fresh(rep, con, root):
+    """Aile taramasi (hareketlilik / rekombinaz / duzenleyici) guncel ve
+    kendi kutuphanesiyle tutarli olmali.
+
+    NEDEN BU KONTROL VAR. Tarama uc AYRI Pfam kutuphanesi kullanir ve her
+    biri `family_scan.py` icindeki bir MODEL->AILE sozluguyle eslesir. Iki
+    sessiz bozulma bicimi var:
+
+      1. BAYATLIK: domtbl, komsu protein fastasindan ya da .hmm'den eski
+         kalirsa tarama yeni proteinleri hic gormez ve hepsi sinifsiz sayilir.
+         Ayni tuzak `build_operons.py`de yasandi; kural yine
+         `stale_intermediate`ten alinir, burada yeniden yazilmaz.
+      2. SESSIZ KAYMA: kutuphaneye model eklenip sozluge eklenmezse o modelin
+         tuttugu her protein `unassigned_model` olur ve sayilar hicbir hata
+         vermeden degisir. Model listesi TEK KAYNAKTAN (manifesto) okunur ve
+         sozlukle karsilastirilir.
+
+    OLCULEN DEGER (2026-11-10). Urun adi regex'inin 'transposon' dedigi 3.385
+    komsu satirinin 1.447'si transpozaz modeliyle dogrulandi, 486'si
+    rekombinazdi (hareketli eleman DEGIL), 1.452'sinde hicbir model tutmadi.
+    Yani etiketin %43'u hala yalnizca urun metnine dayaniyor.
+    """
+    import sys as _sys
+    _sys.path.insert(0, root)
+    try:
+        from stale_intermediate import stale
+        import family_scan as _fs
+    except ImportError as exc:
+        rep.check("families: the family scan is importable", False, 1, str(exc))
+        return
+
+    work = os.path.join(root, "family_work")
+    fasta = os.path.join(work, "neighbor_proteins.fasta")
+    reasons = []
+    for library in _fs.LIBRARIES:
+        hmm = os.path.join(root, _fs.HMM_DIR, f"{library}.hmm")
+        domtbl = os.path.join(work, f"{library}.domtbl")
+        if not os.path.exists(domtbl):
+            reasons.append(f"{library}: domtbl yok")
+            continue
+        why = stale(domtbl, fasta, hmm)
+        if why:
+            reasons.append(f"{library}: {why}")
+    rep.check("families: every family scan is newer than the protein set and "
+              "its model library",
+              not reasons, len(reasons),
+              "; ".join(reasons) or f"{len(_fs.LIBRARIES)} kutuphane guncel")
+
+    # 2. ayak: kutuphanedeki her model bir aileye bagli mi?
+    missing = []
+    for library in _fs.LIBRARIES:
+        man = os.path.join(root, _fs.HMM_DIR, f"{library}.manifest.json")
+        if not os.path.exists(man):
+            missing.append(f"{library}: manifesto yok")
+            continue
+        mapping = _fs.FAMILY_MAP[library]
+        with open(man) as fh:
+            for model in json.load(fh)["models"]:
+                if model["name"] not in mapping:
+                    missing.append(f"{library}/{model['name']}")
+    rep.check("families: every model in a library maps to a family",
+              not missing, len(missing),
+              "; ".join(missing) or "her model bir aileye bagli")
+
+    # 3. ayak: tabloda sozlukte olmayan aile kalmamali.
+    unassigned = con.execute(
+        "SELECT COUNT(*) FROM neighbor_family "
+        "WHERE category = 'unassigned_model'").fetchone()[0]
+    rep.check("families: no neighbour carries an unmapped model label",
+              unassigned == 0, unassigned,
+              f"{unassigned} satir 'unassigned_model'")
+
+
 def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
     """Veritabanindan turetilen her yayimlanmis istatistik, OKUDUGU tablolarin
     bugunku icerigiyle hesaplanmis olmali.
@@ -3495,6 +3581,7 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_family_scan_is_fresh(rep, con, ROOT)
         check_derived_statistics_are_fresh(rep, con, ROOT)
         check_published_files_are_in_rebuild_graph(rep, con, ROOT)
         check_union_denominator(rep, con, ROOT)

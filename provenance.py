@@ -89,6 +89,13 @@ SOURCE_DATA = {
                        "provenance map is worse than none.",
         "hand_curated": True,
     },
+    "family_hmms/": {
+        "kind": "dir",
+        "description": "Pfam models for neighbouring-gene families (transposase, "
+                       "recombinase, regulator), fetched by accession; kept apart "
+                       "from component_hmms/ so the two scans stay separate questions.",
+        "hand_curated": False,
+    },
     "component_hmms/": {
         "kind": "dir",
         "description": "Pfam models for operon components (beta, ferredoxin, "
@@ -155,6 +162,18 @@ TABLE_PROVENANCE = {
                             "Component label per neighbour protein: beta, "
                             "ferredoxin, reductase, alpha_other, rieske_other "
                             "or none."),
+    "neighbor_family_hit": P("family_scan.py", ["family_hmms/", "table:neighbor_protein"],
+                             "Raw hits of the mobility, recombinase and regulator "
+                             "HMM libraries per neighbour protein."),
+    "neighbor_family": P("family_scan.py", ["table:neighbor_family_hit"],
+                         "Family label per neighbouring gene from the Pfam model, "
+                         "kept apart from the product-name label in gene_category: "
+                         "mobility_hmm_v1, recombinase_hmm_v1, "
+                         "regulator_family_hmm_v1."),
+    "ro_upstream_family_hmm": P("family_scan.py", ["table:neighbor_family",
+                                                   "table:ro_regulation"],
+                                "Upstream regulator family per RO, regex and HMM "
+                                "reading side by side, with which one was used."),
     "operon": P("build_operons.py", ["table:neighbor_component", "table:ro"],
                 "Derived operon per confirmed RO: extent, gene count, which "
                 "components sit inside the operon versus merely within 10 kb, "
@@ -242,6 +261,13 @@ FILE_PROVENANCE = {
                         "Neighbourhood enrichment of each gene category against "
                         "random same-size windows drawn from the same replicon "
                         "population."),
+    "family_scan.json": P("family_scan.py", ["family_hmms/", "table:neighbor_protein",
+                                             "table:gene_category",
+                                             "table:ro_regulation"],
+                          "Neighbouring genes classified by Pfam model instead of "
+                          "product name -- transposase, recombinase and regulator "
+                          "families -- and how that reading differs from the "
+                          "product-name rule."),
     "transposon_by_genus.csv": P("analyze.py", ["table:ro", "table:gene_category",
                                                 "table:replicon"],
                                  "Transposon adjacency per genus crossed with RO "
@@ -406,6 +432,7 @@ NON_ARTEFACT_SCRIPTS = {
     "extract_genomic_context.py",  # genomic_context/
     "build_db.py", "annotate_ro.py",   # sadece tablolar
     "build_search_index.py",
+    "fetch_family_hmms.py",    # family_hmms/ -- kaynak dizin, analiz ciktisi degil
     "make_report.py", "make_explorer.py", "make_hub.py",   # HTML
     "validate_curation.py",    # kapi; artefakt yazmaz
     "provenance.py",           # manifestoyu kendisi yazar, kendini sayma

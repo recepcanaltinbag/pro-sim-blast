@@ -3780,6 +3780,91 @@ turetilmis tablolara hic girmiyorlar. Yayimlanan operon istatistiklerine
 etkisi yok, yeniden cikarim gerekmiyor. A5 ingest'te dogrulanan cikarsa
 kapi yakalar.
 
+### 129. KOMSU GEN AILESI: URUN ADI DEGIL PFAM MODELI (124.1 + 124.2)
+
+Komsu genin kategorisi `build_db.py` icinde urun adina uygulanan bir
+duzenli ifadeyle konuyordu. Iki olculmus zaafi vardi ve ikisi de
+kapatildi.
+
+**Kurulan sey.** `fetch_family_hmms.py` Pfam modellerini AD ile degil
+ERISIM ile indirir, inen dosyanin NAME/ACC satirini okur ve beklenen ad
+tutmazsa HATA VERIR. Bu kapi hemen ise yaradi: PF01614 artik `IclR`
+degil `IclR_C`, PF03811 artik `Zn_Tnp_IS1` degil `Zn_ribbon_InsA`. Ad
+ile indirilseydi iki model sessizce yanlis olurdu.
+
+UC AYRI kutuphane kuruldu ve hicbiri `component_hmms/components.hmm`
+ile karistirilmadi -- o kutuphanedeki her model bir operon bileseni
+etiketine baglidir, oraya baska soru sokmak taramanin anlamini degistirir:
+
+  - `family_hmms/mobility.hmm` (12 model) -- transpozaz cekirdekleri
+  - `family_hmms/recombinase.hmm` (7 model) -- rekombinaz/integraz/RuvX
+  - `family_hmms/regulator.hmm` (9 model) -- TetR, GntR, LysR, MarR,
+    AraC, IclR
+
+Rekombinazin AYRI kutuphane olmasi isin can alici yeri: regex ikisini
+ayni `transposon` kovasina koyuyor, ayirmak icin once ayri olculmeleri
+gerekiyor.
+
+**124.1 -- hareketli eleman. Olculen sonuc:** regex'in `transposon`
+dedigi 3.385 komsu satirinin
+  - 1.447'si transpozaz modeliyle DOGRULANDI (%42,7)
+  - 486'si rekombinazdi, yani hareketli eleman DEGIL (%14,4)
+  - 1.452'sinde hicbir model tutmadi (%42,9)
+Regex'in kacirdigi transpozaz yalnizca 5 satir.
+
+En buyuk aciklanamayan grup 725 proteinlik "recombinase-like
+helix-turn-helix domain-containing protein". 28 modelin HICBIRI, esik
+ALTI dahil, E<=1e-5'te bu proteinleri tutmuyor; `components.hmm` de
+tutmuyor. Etiket tamamen urun metnine dayaniyor. ACIK: bu ailenin
+hangi Pfam modeline karsilik geldigi bulunmadi.
+
+**Kendi yanlisimi da olctum.** Ilk mobility kutuphanesinde `IstB_IS21`
+(PF01695) vardi ve 67 kez `chromosomal replication initiator protein
+DnaA`'yi IS21 ilan etti -- genel bir AAA ATPaz alani oldugu icin. Model
+cikarildi; "regex'in kacirdigi transpozaz" 79'dan 5'e dustu. Model
+tabanli yontem de ad tabanli yontemle AYNI hatayi yapabiliyor; fark,
+hatanin olculebilir olmasi.
+
+**124.2 -- duzenleyici ailesi.** Regex'in duzenleyici dedigi 32.233
+komsu satirinda:
+  - 20.088 model ile UYUSUYOR, yalnizca 2 catisma (Crp_Fnr -> MarR)
+  - 2.860 satirda regex aile veremiyordu, model verdi
+  - 4.038 satirda regex aile veriyor ama model vermiyor -- bunlar
+    kutuphanede olmayan aileler (LuxR, sigma54, Crp_Fnr), eksiklik
+    kutuphanede, veride degil
+Operon duzeyinde: ailesi adlandirilmis RO 4.693'ten **5.549**'a cikti
+(19.125 icinde, +%18).
+
+**Nereye yazildi.** `gene_category`ye DEGIL. O tablo erken yazilir ve
+neredeyse her adimin DB girdisi sayilir; oraya satir eklemek grafikte 63
+adimi birden bayat gosterdi, oysa hicbirinin cikti sayisi degismiyordu.
+Olculup geri alindi, yerine turetilmis tablolar kuruldu:
+`neighbor_family_hit`, `neighbor_family`, `ro_upstream_family_hmm`.
+`ro_regulation.upstream_family` ELLENMEDI -- sahibi
+`analyze_regulation.py` ve kaynagi regex; iki yontem tek ada yazilirsa
+sutunun ne anlattigi belirsizlesir. Birlesik okuma
+`ro_upstream_family_hmm.source` ile hangi satirin hangi yontemden
+geldigini acikca soyluyor.
+
+Adim ZINCIRIN SONUNA kondu: su an ciktisini okuyan baska adim yok, sona
+konunca kimseyi bayatlatmiyor. Bir tuketici eklenirse adim onun ONUNE
+tasinmali.
+
+Kapi: `check_family_scan_is_fresh` uc ayakli -- domtbl bayat mi
+(`stale_intermediate`ten, kural kopyalanmiyor), manifestodaki her model
+bir aileye bagli mi, tabloda `unassigned_model` kalmis mi. 174 kontrol,
+169 PASS, 0 FAIL, 5 WARN.
+
+ACIK: `control_elements.json`'daki transpozon sayilari HALA urun adi
+okumasi. Model okumasi `family_scan.json`'da ayri yayimlaniyor ve
+sayfadaki uyari bunu acikca soyluyor. Ikisini tek sayfada birlestirmek
+icin `family_scan` adiminin `control_elements`in onune tasinmasi ve tum
+hafif zincirin yeniden kosmasi gerekir.
+
+ACIK: 124.3 (promotorler) hic baslanmadi. Tek operon icin iddia
+edilemez; ancak uzunluk ve GC eslenmis bir bos modele karsi zenginlesme
+olarak yayimlanabilir.
+
 ## Yeniden uretim
 
 ```
