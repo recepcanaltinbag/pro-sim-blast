@@ -31,6 +31,7 @@ ve bir kuratorluk duzeltmesinden sonra gerekmezler.
 """
 
 import argparse
+import functools
 import hashlib
 import json
 import os
@@ -98,11 +99,18 @@ ARTEFACTS = [
      ["python3", "run_ro_filter.py", "--fasta", "combined_pfam.fasta",
       "--hmm", "RieskeDB71.hmm"],
      ["run_ro_filter.py", "ro_filter.py", "RieskeDB71.hmm"], True),
+    # gbk_files GIRDIDIR ve 2026-11-10'a kadar BEYAN EDILMEMISTI. Dort adim
+    # (genomic_context, operons, null_model, habitat) o dizinden okuyor;
+    # hicbiri onu girdi saymiyordu, yani genom eklense ya da bir kayit
+    # yenilense bu adimlarin HICBIRI bayat gorunmuyordu. Dizin ozeti
+    # 2026-11-05'te eklendiginde bu beyan mumkun hale geldi (bkz. dir_digest);
+    # 3,2 GB / 17.074 dosya icin ozet ~2,8 s suruyor ve surec basina bir kez
+    # hesaplaniyor (lru_cache).
     ("genomic_context", ["genomic_context/neighbors.csv",
                          "genomic_context/ro_candidates.fasta"],
      ["python3", "extract_genomic_context.py", "--gbk-dir", "gbk_files",
       "--out-dir", "genomic_context"],
-     ["extract_genomic_context.py"], True),
+     ["extract_genomic_context.py", "gbk_files"], True),
     ("database", [DB],
      ["python3", "build_db.py", "--context-dir", "genomic_context", "--db", DB],
      ["build_db.py", "genomic_context/neighbors.csv"], True),
@@ -123,7 +131,7 @@ ARTEFACTS = [
     # "no such column: sequence" ile dustu (2026-10-14).
     ("operons", [],
      ["python3", "build_operons.py", "--db", DB, "--gbk-dir", "gbk_files"],
-     ["build_operons.py", DB, "component_hmms/components.hmm"], True),
+     ["build_operons.py", DB, "component_hmms/components.hmm", "gbk_files"], True),
 
     # --- veritabanina yazan ara adimlar
     ("evidence_tiers", [f"{OUT}/evidence_by_cluster.csv", f"{OUT}/reference_pairs.csv"],
@@ -143,7 +151,7 @@ ARTEFACTS = [
     ("null_model", [f"{OUT}/null_model.csv"],
      ["python3", "null_model.py", "--db", DB, "--gbk-dir", "gbk_files",
       "--processes", "16", "--out", f"{OUT}/null_model.csv"],
-     ["null_model.py", DB], True),
+     ["null_model.py", DB, "gbk_files"], True),
     ("variants", [f"{OUT}/sdp_positions.csv"],
      ["python3", "analyze_variants.py", "--db", DB, "--out-dir", OUT],
      ["analyze_variants.py", DB], False),
@@ -199,7 +207,7 @@ ARTEFACTS = [
     ("habitat", [f"{OUT}/habitat.json"],
      ["python3", "isolation_source.py", "--db", DB, "--gbk-dir", "gbk_files",
       "--ecology", ECO, "--chemistry", CHEM, "--out", f"{OUT}/habitat.json"],
-     ["isolation_source.py", DB, ECO, CHEM], False),
+     ["isolation_source.py", DB, ECO, CHEM, "gbk_files"], False),
     ("threshold_sensitivity", [f"{OUT}/threshold_sensitivity.json"],
      ["python3", "threshold_sensitivity.py", "--db", DB,
       "--out", f"{OUT}/threshold_sensitivity.json"],
@@ -608,6 +616,7 @@ def db_changed(prev, cur, ignore):
 DIR_CONTENT_LIMIT = 32 << 20
 
 
+@functools.lru_cache(maxsize=None)
 def dir_digest(path):
     """DIZIN OZETI (2026-11-05).
 
