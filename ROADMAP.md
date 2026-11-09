@@ -3899,6 +3899,44 @@ ACIK: 124.3'un kalan yarisi -- uzunluk ve GC eslenmis bos modele karsi
 MOTIF zenginlesmesi. Intergenik DNA'nin `gbk_files/`ten cikarilmasini
 gerektiriyor; bu dizi hic cikarilmadi.
 
+### 131. SIFIR UYELI 8 REFERANS: SEBEBI OLCULDU
+
+Kapi aylardir "76 referansin 68'i uye topluyor" diye uyariyordu, sebebi
+yazili degildi. Her birinin en yakin kardesi olculdu (blastp, refs71
+kendi kendine):
+
+| referans | en yakin kardes | kimlik | kardesin uyesi |
+|---|---|---|---|
+| 1_103_CarAa | 1_102_CARDO | %99,2 | 111 |
+| 2_206_IpBAa | 2_203_cumA1 | %90,8 | 8 |
+| 2_207_BpdC1 | 2_213_BphA1A2 | %79,2 | 21 |
+| 2_210_XylC1 | 2_201_BphA1 | %67,0 | 1 |
+| 3_309_NahAc | 3_312_NinA | %85,7 | 0 |
+| 3_310_DntAc | 3_312_NinA | %93,1 | 0 |
+| 3_312_NinA | 3_310_DntAc | %93,1 | 0 |
+| 4_407_PbaA1 | 3_308_DxnA1 | %65,6 | 2 |
+
+UC AYRI sebep var, tek bir "sorun" degil:
+  - **Ad ikiligi (2):** CarAa/CARDO ayni substrat %99,2; cumA1/IpBAa
+    SMILES'leri HARFI HARFINE ayni (`CC(C)c1ccccc1`) cunku kumen ile
+    izopropilbenzen AYNI bilesik. Ikisinde de kardes tum uyeleri aliyor.
+  - **Uc kisilik bos ada (3):** NahAc / DntAc / NinA birbirine %85-93
+    benzer ve UCUNUN DE uyesi yok; en yakin uyeli referans 3_306_3NTDO,
+    o da yalnizca 2 uye. Bu alt grup verinin tamaminda neredeyse yok.
+  - **Gercekten uzak (3):** BpdC1, XylC1, PbaA1 -- en yakin kardesleri
+    %65-79, yani uyeleri "calinmiyor"; bu enzimler veri kumesinde yok.
+
+Yeni kapi `check_same_structure_same_name`: ayni SMILES farkli ADLA
+yayimlanmamali. Ayni substrata birden cok referans olmasi normaldir
+(bifenil 5, ftalat 3); hata olan ayni molekule sayfada iki ad vermektir.
+Butce 3 ve ucu de yazili: cumen/izopropilbenzen GERCEK es anlamli cift,
+oteki ikisi ("caffeine and methylxanthines", "polycyclic aromatic
+hydrocarbons") KASITLI genis etiket -- orada ad degil SMILES dar.
+
+KULLANICI KARARI: CARDO/CarAa ve cumA1/IpBAa birlestirilsin mi, yoksa
+ikisi de ayri referans olarak mi kalsin? Birlestirme kume atamalarini
+degistirir, o yuzden kendiliginden yapilmadi.
+
 ## Yeniden uretim
 
 ```

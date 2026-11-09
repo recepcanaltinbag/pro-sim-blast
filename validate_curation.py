@@ -33,7 +33,7 @@ import re
 import sqlite3
 import yaml
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -2407,6 +2407,36 @@ def check_component_scan_is_fresh(rep, con, root):
                  "--force ile kosturulup sayilar yeniden olculmeli"))
 
 
+def check_same_structure_same_name(rep, chem):
+    """Ayni SMILES'i tasiyan referanslar substrati AYNI ADLA anmali.
+
+    NEDEN. Ayni substrata etki eden birden cok referans olmasi normaldir ve
+    hata degildir (bifenil 5, ftalat 3 referans). Hata olan sey, AYNI
+    molekule sayfada IKI FARKLI AD verilmesidir: okuyucu iki ayri substrat
+    gorur. Olculen ornek: `2_203_cumA1` "cumene", `2_206_IpBAa`
+    "isopropylbenzene" -- SMILES'leri harfi harfine ayni (CC(C)c1ccccc1),
+    cunku ikisi ayni bilesigin iki adi. Ikisi %90,8 benzer ve IpBAa SIFIR
+    uye topluyor: ad ikiligi dogrudan atamaya da vuruyor.
+
+    BUTCE 3, cunku kalan ikisi KASITLI genis etiket: "caffeine and
+    methylxanthines" ve "polycyclic aromatic hydrocarbons" -- orada SMILES
+    temsilcidir, ad daha genistir. Yanlis olan ad degil, SMILES'in dar
+    olmasi; bu kontrol onu da gorunur tutuyor.
+    """
+    groups = defaultdict(set)
+    for row in chem:
+        smiles = (row.get("substrate_smiles") or "").strip()
+        name = (row.get("substrate_en") or "").strip()
+        if smiles and name:
+            groups[smiles].add(name)
+    clashes = sorted(f"{s} -> {' / '.join(sorted(n))}"
+                     for s, n in groups.items() if len(n) > 1)
+    BUDGET = 3
+    rep.check("chemistry.csv: one structure is published under one substrate name",
+              len(clashes) <= BUDGET, len(clashes),
+              f"butce {BUDGET}; " + ("; ".join(clashes) if clashes else "catisma yok"))
+
+
 def check_promoter_claim_is_levelled(rep, root, out_dir="analysis_out"):
     """Promotor mimarisi iddiasi UC DUZEYDE ve CINS ICINDE de verilmis olmali.
 
@@ -3624,6 +3654,7 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)
         check_derived_statistics_are_fresh(rep, con, ROOT)
