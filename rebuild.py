@@ -143,6 +143,12 @@ ARTEFACTS = [
     ("regulation", [f"{OUT}/regulation_by_cluster.csv"],
      ["python3", "analyze_regulation.py", "--db", DB, "--out-dir", OUT],
      ["analyze_regulation.py", DB], False),
+    # Tablo YAZMAZ, yalnizca okur: nereye konursa konsun kimseyi
+    # bayatlatmaz (bkz. family_scan'daki not).
+    ("promoter_architecture", [f"{OUT}/promoter_architecture.json"],
+     ["python3", "promoter_architecture.py", "--db", DB,
+      "--out", f"{OUT}/promoter_architecture.json"],
+     ["promoter_architecture.py", DB], False),
 
     # --- run_all.sh 5-12: grafikte eksik olan analiz ve DB-yazar adimlari
     ("analyze", [],

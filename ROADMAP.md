@@ -3865,9 +3865,39 @@ sayfadaki uyari bunu acikca soyluyor. Ikisini tek sayfada birlestirmek
 icin `family_scan` adiminin `control_elements`in onune tasinmasi ve tum
 hafif zincirin yeniden kosmasi gerekir.
 
-ACIK: 124.3 (promotorler) hic baslanmadi. Tek operon icin iddia
-edilemez; ancak uzunluk ve GC eslenmis bir bos modele karsi zenginlesme
-olarak yayimlanabilir.
+### 130. 124.3'UN YARISI: DIVERGENT DUZENLEYICI DAHA KISA BOLGE PAYLASIYOR
+
+LysR tipi duzenleyiciler klasik olarak hedef operonla kafa kafaya oturur
+ve aradaki kisa bolgeyi paylasir. Sinanabilir hali su: yukarisinda
+DUZENLEYICI olan divergent ciftlerin intergenik bolgesi, yukarisinda
+baska bir gen olan divergent ciftlerinkinden kisa olmali.
+
+**Olculen (promoter_architecture.py).** Dort ayri sinama, hepsi ayni
+yonde:
+
+| duzey | duzenleyici | digeri | fark | Cliff delta | p |
+|---|---|---|---|---|---|
+| giris (n=13.351) | 168 bp | 247 bp | -79 | -0,295 | 2,8e-180 |
+| dizi (n=11.055) | 168 bp | 243 bp | -75 | -0,291 | 3,8e-145 |
+| cins (n=2.345) | 162 bp | 221 bp | -59 | -0,270 | 2,1e-23 |
+
+Cins ICI esli sinama: 53 cinsin **47'sinde** duzenleyici boslugu daha
+kisa, farklarin medyani -83 bp, Wilcoxon p=2,3e-07. Yani sonuc "bazi
+cinslerin genomu sikisik" kaymasindan gelmiyor; karsilastirma hep ayni
+cinsin icinde kaliyor.
+
+**Iddia edilmeyen sey.** Hicbir promotor DIZISI incelenmedi ve hicbir
+promotor tahmin edilmedi. Veritabaninda komsu genlerin protein cevirileri
+var, intergenik DNA yok. Kisa bolge paylasilan promotorla TUTARLIDIR,
+onu GOSTERMEZ; burada transkripsiyon olcen hicbir sey yok.
+
+Kapi `check_promoter_claim_is_levelled` dosyanin SEKLINI sinar, sonucunu
+degil: uc duzey + cins ici sinama var mi, ve uc duzey ayni yonu mu
+gosteriyor. Bir sonucun yonu veriyle degisebilir, disiplin degisemez.
+
+ACIK: 124.3'un kalan yarisi -- uzunluk ve GC eslenmis bos modele karsi
+MOTIF zenginlesmesi. Intergenik DNA'nin `gbk_files/`ten cikarilmasini
+gerektiriyor; bu dizi hic cikarilmadi.
 
 ## Yeniden uretim
 

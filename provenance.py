@@ -261,6 +261,12 @@ FILE_PROVENANCE = {
                         "Neighbourhood enrichment of each gene category against "
                         "random same-size windows drawn from the same replicon "
                         "population."),
+    "promoter_architecture.json": P("promoter_architecture.py",
+                                    ["table:ro_regulation", "table:ro",
+                                     "table:replicon"],
+                                    "Intergenic length of divergent regulator "
+                                    "pairs against divergent non-regulator pairs, "
+                                    "at three levels and within genus."),
     "family_scan.json": P("family_scan.py", ["family_hmms/", "table:neighbor_protein",
                                              "table:gene_category",
                                              "table:ro_regulation"],

@@ -2407,6 +2407,49 @@ def check_component_scan_is_fresh(rep, con, root):
                  "--force ile kosturulup sayilar yeniden olculmeli"))
 
 
+def check_promoter_claim_is_levelled(rep, root, out_dir="analysis_out"):
+    """Promotor mimarisi iddiasi UC DUZEYDE ve CINS ICINDE de verilmis olmali.
+
+    NEDEN BU KONTROL VAR. 17.730 giriste p degeri neredeyse her seyi anlamli
+    yapar; bu projede bir iliski ancak giris / dizi / cins duzeylerinde ayni
+    yonde durursa raporlanir. Dosyanin kendisi tazelik kapisindan geciyor ama
+    tazelik "icinde ne var" sorusunu sormaz: biri ileride yalnizca giris
+    duzeyini biraksa dosya tap taze olur ve disiplin sessizce kaybolurdu.
+    Bu kontrol dosyanin SEKLINI sinar, sonucunu degil -- bir sonucun yonu
+    veriyle degisebilir, disiplin degisemez.
+    """
+    path = os.path.join(root, out_dir, "promoter_architecture.json")
+    if not os.path.exists(path):
+        rep.check("promoter: the architecture comparison is published", True, 0,
+                  "promoter_architecture.json yok -- adim henuz kosmadi",
+                  severity="WARN")
+        return
+    with open(path) as fh:
+        data = json.load(fh)
+    want = ("entry", "sequence", "genus")
+    levels = data.get("levels") or {}
+    missing = [lv for lv in want
+               if not (levels.get(lv) or {}).get("usable")]
+    if not (data.get("within_genus") or {}).get("usable"):
+        missing.append("within_genus")
+    rep.check("promoter: the intergenic comparison is reported at entry, "
+              "sequence and genus level and within genus",
+              not missing, len(missing),
+              ("eksik duzey: " + ", ".join(missing)) if missing
+              else "uc duzey + cins ici esli sinama var")
+
+    # Yon tutarliligi: duzeyler arasinda isaret degisiyorsa bu bir SONUC
+    # degil, bir uyaridir -- iddia zayif demektir, yayimi durdurmaz.
+    signs = {lv: (levels[lv]["median_difference"] > 0) - (levels[lv]["median_difference"] < 0)
+             for lv in want if (levels.get(lv) or {}).get("usable")}
+    consistent = len(set(signs.values())) <= 1
+    rep.check("promoter: the three levels point the same way",
+              consistent, 0 if consistent else len(set(signs.values())),
+              str(signs) if not consistent else
+              f"uc duzey ayni yonde ({'kisa' if -1 in signs.values() else 'uzun'})",
+              severity="WARN")
+
+
 def check_family_scan_is_fresh(rep, con, root):
     """Aile taramasi (hareketlilik / rekombinaz / duzenleyici) guncel ve
     kendi kutuphanesiyle tutarli olmali.
@@ -3581,6 +3624,7 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)
         check_derived_statistics_are_fresh(rep, con, ROOT)
         check_published_files_are_in_rebuild_graph(rep, con, ROOT)

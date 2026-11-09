@@ -39,6 +39,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 4c | `evidence_tiers.py` | diamond blastp → `ro_evidence` (kanit kademesi: characterized / close_homolog / family_member / distant / novel) |
 | 4d | `etc_types.py` | komsu Pfam domainleri → `ro_etc` (FNR/GR reduktaz, Rieske/bitki ferredoksin, α3 vs α3β3) |
 | 4e | `analyze_regulation.py` | operon 5' ucu + yukari intergenik bolge + regulator ailesi → `ro_regulation` |
+| 4e2 | `promoter_architecture.py` | divergent duzenleyici daha kisa intergenik bolge mi paylasiyor → `promoter_architecture.json` |
 | 4f | `fetch_family_hmms.py` | Pfam modellerini ERISIM ile indirir → `family_hmms/{mobility,recombinase,regulator}.hmm` |
 | 4g | `family_scan.py` | komsu genin ailesi urun adindan DEGIL modelden: transpozaz / rekombinaz / duzenleyici → `neighbor_family`, `ro_upstream_family_hmm`, `family_scan.json` |
 | 5 | `analyze.py` | orientation, divergent regülatör, transpozon×takson |

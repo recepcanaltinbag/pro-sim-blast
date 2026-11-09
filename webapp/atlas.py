@@ -2417,6 +2417,10 @@ PROVENANCE = [
     ("control_elements.json", "file", "Regulator families and insertion-sequence families: "
      "which enzyme types each sits beside, and whether mobile elements track the enzyme "
      "or the host.", "control_elements.py"),
+    ("promoter_architecture.json", "file", "Whether a divergent upstream regulator "
+     "sits across a shorter intergenic region than a divergent non-regulator, tested "
+     "at entry, sequence and genus level and again within each genus. No promoter "
+     "sequence is examined.", "promoter_architecture.py"),
     ("family_scan.json", "file", "Neighbouring genes classified by Pfam model rather "
      "than by product name: transposase, recombinase and regulator families, each from "
      "its own HMM library, set against what the product-name rule says.",
