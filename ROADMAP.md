@@ -3667,6 +3667,119 @@ turetilmis cikti okudugu tablolarin surumlerini kaydetsin. O zaman bayatlik
 karari mtime'a degil TABLO SURUMUNE dayanir -- ve mtime bu depoda iki kez
 yanilttigi icin bu fark onemli.
 
+### 125. TAZELIK KAPISI KENDI KURALINI YAZIYORDU (2026-11-05/06, COZULDU)
+
+`rebuild.py` 33/38'de `validation_gate` FAIL'i ile duruyordu; kapi 42
+yayim dosyasini bayat gosteriyordu. SEBEP VERI DEGILDI, KAPININ KENDISIYDI
+-- ve iki katmanda:
+
+**Kural.** Kapi dosyanin mtime'ini `roar.sqlite`in mtime'iyla
+karsilastiriyordu. `rebuild.py` o karsilastirmayi 2026-10-14'te BILEREK
+kaldirmisti ("TABLO BAZINDA DB GIRDISI" notu): veritabanina zincirin ICINDE
+yazan adimlar var, dolayisiyla DB mtime'i her kosuda en sona kayar ve
+kendisinden ONCE kosmus her analiz bayat gorunur. Kanit: bayat denen
+dosyalarin bazilari 0,3 saat "eski"ydi -- AYNI kosuda uretilmislerdi.
+Duzeltme: planlama mantigi `rebuild.plan(state, propagate)` olarak tek
+kaynaga cikarildi (`--plan` ciktisi refactor oncesiyle birebir dogrulandi)
+ve kapi ona baglandi. `propagate=False`, cunku iki AYRI soru var:
+"yeniden kosmali mi?" (yayilim dahil, 53) ve "yayimlanan sayi YANLIS mi?"
+(yayilim haric, 20). Ileride bir ust adimin kosacak olmasi yayimlanmis
+bir sayiyi yanlis yapmaz.
+
+**Kapsam.** Kapi yargilanacak dosyayi uretici betigin KAYNAK METNINDE
+"sqlite3.connect" / "--db" arayarak TAHMIN ediyordu. Grafige 8 yeni adim
+baglaninca bunun yine adindan genis karar verdigi goruldu: dordu
+veritabanini HIC okumuyor, girdileri bir DIS SERVIS
+(`bridging_geometry_audit` PDB; `reaction_anchors`, `reaction_verification`
+Rhea/ChEBI; `curation_claims` UniProt/NCBI). Boyle bir dosyanin "bugunku
+tablo icerigiyle hesaplanmis olmasi" diye bir sey yoktur. Kapsam artik
+GECISLI olarak grafikten cikariliyor: 69 adimin 55'i.
+
+SONUC: 42 -> 10 -> 0. Gercekten bayat 10 dosya yenilendi (dokuz adim,
+hicbiri basarisiz olmadi; `learning` 8.578 s, `bootstrap_confident`
+4.389 s). Zincir sonradan 40/40 tamamlandi. Dogrulama: 171 kontrol,
+166 PASS, 0 FAIL, 5 WARN.
+
+### 126. YOL USTUNDE CIKAN BES GERCEK BOSLUK (COZULDU)
+
+1. **`types/` bagimlilik grafigine GORUNMUYORDU.** `digest()` bir dizinde
+   `open()` ile OSError alip None donuyordu, ve None ozetler
+   karsilastirmada ATLANIYOR (`if not prev.get(p): continue`). Ustelik bir
+   dizinin mtime'i icindeki dosya DUZENLENINCE degismez, yalnizca dosya
+   eklenip silinince. Ikisi birlesince: veritabaninin TEK KAYIT KAYNAGI
+   degistirildiginde HICBIR adim bayat gorunmuyordu. Kanit: state
+   dosyasinda `"types": null`. `dir_digest()` eklendi (mtime'a guvenmez;
+   32 MB altindaki dizinlerde ICERIK, ustunde ad+boyut); `types` 0,08 s.
+   `oxygen_fate` ve `metabolic_role` "guncel" sayildiklari icin
+   kendiliginden kosmayacaklardi -- ozeti IDDIA etmek yerine kosturularak
+   uretildi.
+
+2. **Yan etkili "yoklama".** `--cpu` destegi, betigi `--help` ile
+   CALISTIRIP cikisinda aranarak bulunuyordu. argparse'i OLMAYAN bir
+   betikte `--help` sessizce yok sayilir ve betik GERCEKTEN kosar: 60
+   saniyelik bir "prob" dis servise istek atar, dosya yazar, cikisi
+   atilir. `anchor_reactions.py` ve `reaction_balance.py` tam boyle.
+   `script_flags()` artik kaynaktan okur.
+
+3. **Ayak izi kapisinda "cozuldu" = "satir var".** Ayak izi tum replikonu
+   kaplayan bir giris, SADECE `ro_cds_span`de kaydedildigi icin temiz
+   sayiliyordu -- oysa kontrolun kendi FAIL metni zarari yaziyor.
+   Kaydetmek kullanmak degildir. Ayrica "origin-spanning genes are
+   recorded with their real parts" kontrolu `True` SABITIYLE cagriliyordu:
+   adi kontrol, isi sayac; hic FAIL edemezdi. Yerine yanlislanabilir bir
+   soru (parcalarin toplami == cds_length); A5'teki 10.474 kayitta
+   sinandi, tutarsiz 0.
+
+4. **`a5_match_guard` okudugu dizinleri beyan etmiyordu**
+   (`roar_gc_a5`, `roar_gc_wide`). Beyan edildi.
+
+5. **Atlas koken hatasi.** `oxygen_fate_computed.json`'u
+   `reaction_balance.py` degil `compute_oxygen_fate.py` yaziyor.
+
+### 127. MODULERLIK: 25 -> 6 (124.5'in UYGULANMASI)
+
+11 dosya: zaten grafikte olan adimlarin BEYAN EDILMEMIS ikincil
+ciktilariydi (regulation, variants, phylogeny, leaves, evidence_tiers,
+stratified_stats, variant_signature). Dort adim HIC cikti beyan
+etmiyordu. Beyan edilince gercek bir kenar da ortaya cikti:
+`substrate_predictability`, `evidence_tiers`in urettigi
+`reference_pairs.csv`ye bagli -- bu bagimlilik grafige gorunmuyordu.
+
+8 dosya: yeni adim olarak eklendi. Ag sorgusu atanlar AGIR isaretli
+(depo konvansiyonu: "AGIR cunku 737 ag sorgusu"), boylece `--run` dis
+servisi KENDILIGINDEN sorgulamaz.
+
+Bu boslugun ne sakladiginin KANITI: `carboxylate_method_card.txt`
+30 Ekim'deki denetimden uretilip kalmis, oysa `carboxylate_audit.json`
+31 Ekim'de yenilenmis. Yayimlanan kartta D/E vermeyen uye 2.388, gercekte
+3.007. Dosya grafikte olmadigi icin kimse goremiyordu.
+
+Kalan 6 dosya grafige ZORLANMADI, cunku hepsi ayni sebeple disarida
+degil: 1 onbellek (`chebi_formula_cache.json`; `reaction_balance.py`
+argv'den Rhea ID alan bir EL ARACI, pipeline adimi degil), 1 URETICISIZ
+(`curation_claims_ncbi.json` -- depoda bu dosyayi yazan betik YOK, ve
+atlas kokeni `verify_curation_claims.py (NCBI efetch pass)` diyerek
+YANLIS iddia ediyor), 4 elle kosulmus tek seferlik analiz. Butce 6 ve
+kapi uc turu ayri ayri yaziyor. Dogru olan bunlari tazelenebilir gibi
+gostermek degil, NE OLDUKLARINI beyan etmek.
+
+ACIK: `freeze.py` de grafikte degil, yani YAYIMLANAN SITENIN KENDISI
+tazelik denetiminin disinda.
+
+### 128. A5 AYAK IZI OLCUMU (ETKISI YOK, KAYIT ICIN)
+
+`ro_cds_span.py` `/media/lin-bio/back2/roar_a5.sqlite` uzerinde: 72.315
+adayin 10.474'unde (%14,48) ayak izi aciklanamaz. Tek hata degil, IKI
+AYRI POPULASYON:
+  - 10.471 cok parcali (intronlu okaryot kayitlari; 2.484 bp CDS 667 kb'a
+    yayilabiliyor) -- gercek, hata degil
+  - 3 orijin asan, ayak izi tum replikon (CP060714.1, 5.167.372 bp)
+
+Operona etkisi OLCULDU: bu 10.474 adayin **sifiri** dogrulanmis, yani
+turetilmis tablolara hic girmiyorlar. Yayimlanan operon istatistiklerine
+etkisi yok, yeniden cikarim gerekmiyor. A5 ingest'te dogrulanan cikarsa
+kapi yakalar.
+
 ## Yeniden uretim
 
 ```
