@@ -32,7 +32,26 @@
 
   function clamp(el, i) {
     if (el.closest(".longnote")) return;          // ic ice sarma yok
+    /*  ACIK ANLATIM KIRPMAYI YENER (2026-11-10). Sablon bir blogu kendisi
+        <details class="basis"> ile katladiysa, ustune bir de genel kirpma
+        koymak IKI katlama uretiyor: tip sayfasinda Figure 2'nin basligi
+        kirpilmis, benim etiketli ozetim de kirpmanin icinde kalmisti.
+        Etiketli ozet ("bu yapi ne icin KULLANILMIYOR") isimsiz bir
+        "Show the full note" dugmesinden daha iyi oldugu icin o kazanir. */
+    if (el.closest("details.basis")) return;      // zaten acilir kutunun icinde
+    if (el.querySelector("details.basis")) return;  // kendi acilir kutusunu tasiyor
+    var next = el.nextElementSibling;
+    if (next && next.matches && next.matches("details.basis")) return;
     el.classList.add("longnote");
+    /*  KIRPILMAYAN SEYE DUGME KOYMA (2026-11-10). 45 kelime sayfada 3
+        satiri doldurmayabiliyor: tip sayfasinda Figure 3'un basligi iki
+        satirda bitiyor ve altinda hicbir sey gizlemeyen bir
+        "Show the full note" dugmesi duruyordu. Olcum sinifi uygulandiktan
+        SONRA yapilir, cunku max-height'i veren sinifin kendisi. */
+    if (el.scrollHeight <= el.clientHeight + 2) {
+      el.classList.remove("longnote");
+      return;
+    }
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "longnote__more";
@@ -59,9 +78,22 @@
     });
   }
 
+  /*  YAZI TIPI YUKLENDIKTEN SONRA OLC (2026-11-10). Olcum DOMContentLoaded
+      aninda yapilinca metin hala yedek yazi tipiyle diziliyor ve daha genis
+      cikiyor: Figure 3'un basligi o anda 4 satir, yazi tipi gelince 2 satir.
+      Sonuc, hicbir sey gizlemeyen bir "Show the full note" dugmesiydi.
+      document.fonts yoksa eski davranisa duser. */
+  function start() {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(run).catch(run);
+    } else {
+      run();
+    }
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", run);
+    document.addEventListener("DOMContentLoaded", start);
   } else {
-    run();
+    start();
   }
 })();

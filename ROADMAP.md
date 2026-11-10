@@ -3937,6 +3937,38 @@ KULLANICI KARARI: CARDO/CarAa ve cumA1/IpBAa birlestirilsin mi, yoksa
 ikisi de ayri referans olarak mi kalsin? Birlestirme kume atamalarini
 degistirir, o yuzden kendiliginden yapilmadi.
 
+## 132. Tip sayfalarinda metin yuku (2026-11-10)
+
+Kullanici: "enzimler icin olan sayfalarda cok yazi var ya onlari
+duzeltemez miyiz". Olculdu: tip sayfalarinda tablolar disinda
+**ortanca 1.804, en yuksek 2.210 gorunur kelime**; her bolum uzun bir
+aciklama paragrafiyla basliyordu.
+
+Hicbir cumle SILINMEDI -- bu projede yayimlanan her iddianin kosulu
+yazili olmak zorunda. Degisen sey BICIM: **ilk satir cevabi verir,
+yontem ve caveat bir tik oteye** (`details class="basis"`, ana sayfada
+ayni sikayet icin zaten kullanilan bilesen). 21 blok donusturuldu:
+bes ust kutu, uc figcaption, Key facts'in iki uzun notu, SDP'nin iki
+paragrafi, en yakin tipler, carpisan uyeler, filogeni, habitat, uyeler.
+
+Sonuc: **ortanca 1.100, en yuksek 1.435 gorunur kelime** (%39 azalma),
+sayfa basina ortanca 12 acilir kutu. 80 tip sayfasinin hepsi 200
+donuyor; 177 kontrolun sonucu degismedi (172 PASS, 0 FAIL, 5 WARN).
+
+`longnote.js` iki yerde duzeltildi, cunku 45 kelime ustu her
+`figcaption`/`p.note` blogunu kirpan o betik yeni acilir kutularla
+cakisiyordu:
+  - Sablon bir blogu kendisi katladiysa genel kirpma devre disi
+    (yoksa IKI katlama: Figure 2'nin etiketli ozeti kirpmanin icinde
+    kaliyordu).
+  - Kirpma sinifi uygulandiktan sonra tasma gercekten var mi diye
+    olculuyor ve olcum `document.fonts.ready` sonrasina alindi; yoksa
+    hicbir sey gizlemeyen bir "Show the full note" dugmesi cikiyordu.
+
+Yapilmadi: Varyantlar tablosu bazi tiplerde 377 satir (CntA'da 5.760
+kelime). Bu VERI, duzyazi degil ve tablonun kendi filtresi var;
+bolmek filtreyi bozar. Sayfalama istenirse ayri bir is.
+
 ## Yeniden uretim
 
 ```

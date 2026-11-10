@@ -17,11 +17,13 @@
 <div class="caveat caveat--warn">
   <b>This type has no members of its own, and that is a property of the reference set
   rather than missing data.</b>
-  Every confirmed Rieske oxygenase is filed under the one reference profile it scores
-  highest on, by bit score. The {{ c.gene }} profile never won that comparison for any
-  protein in the scanned genomes, so the counts, variants, operons and taxonomy below are
-  all zero.
-  <br>
+  The counts, variants, operons and taxonomy below are all zero.
+  <details class="basis">
+    <summary>Why a curated type can win no members</summary>
+    <p class="note">Every confirmed Rieske oxygenase is filed under the one reference profile it
+    scores highest on, by bit score. The {{ c.gene }} profile never won that comparison for any
+    protein in the scanned genomes.</p>
+  </details>
   {% if e.case == 'reference_absorbed' %}
   The curated reference protein of {{ c.gene }}
   {% if e.reference_accession %}(<b>{{ e.reference_accession }}</b>){% endif %}
@@ -102,15 +104,19 @@
 <div class="caveat">
   <b>{{ x.absorbs|length }} further curated name{{ '' if x.absorbs|length == 1 else 's' }}
   {{ 'is' if x.absorbs|length == 1 else 'are' }} counted under this type</b>, having won no
-  member of their own. Every confirmed protein is filed under the single reference profile it
-  scores highest on, so a profile with a near-identical sibling can recruit nothing at all.
+  member of their own.
   The {{ c.n|fmt }} members below therefore stand for this reference enzyme <i>and</i>
   {% for a in x.absorbs %}<a href="{{ u('/cluster/' ~ a.cluster) }}">{{ a.gene }}</a>{% if a.substrate %}
   ({{ a.substrate }}){% endif %}{% if a.identity %} &mdash; {{ '%.1f %%' % a.identity }}
   identical to this type's reference{% endif %}{% if not loop.last %}; {% endif %}{% endfor %}.
-  <br><span class="note">Which name to keep is a nomenclature decision and is not made here;
-  the competition behind each empty type is measured by <code>empty_types.py</code> and
-  reported on the <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+  <details class="basis">
+    <summary>Why one name absorbs another</summary>
+    <p class="note">Every confirmed protein is filed under the single reference profile it scores
+    highest on, so a profile with a near-identical sibling can recruit nothing at all. Which name
+    to keep is a nomenclature decision and is not made here; the competition behind each empty type
+    is measured by <code>empty_types.py</code> and reported on the
+    <a href="{{ u('/atlas/quality') }}">data quality page</a>.</p>
+  </details>
 </div>
 {% endif %}
 
@@ -141,30 +147,37 @@
   which is close enough that the split of members between the two profiles is partly arbitrary.
   {{ rr.entries_total|fmt }} members fall across the pair and {{ rr.entries|fmt }} here.
   {% endif %}
-  <br><span class="note">This is a known defect of the curated reference set, not of the
-  assignment method. It is measured and listed on the
-  <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+  <details class="basis">
+    <summary>Where this is measured</summary>
+    <p class="note">This is a known defect of the curated reference set, not of the assignment
+    method. It is measured and listed on the
+    <a href="{{ u('/atlas/quality') }}">data quality page</a>.</p>
+  </details>
 </div>
 {% endif %}
 
 {% if x.agreement and x.agreement.members >= 5 and x.agreement.agreement < 0.75 %}
 <div class="caveat caveat--warn">
   <b>Most members of this type are closer to a different reference enzyme.</b>
-  Membership is decided by profile score, while "nearest reference" is measured by sequence
-  identity, and the two are different questions. Here they disagree: of
-  {{ x.agreement.members|fmt }} members, only {{ x.agreement.nearest_is_own|fmt }}
+  Of {{ x.agreement.members|fmt }} members, only {{ x.agreement.nearest_is_own|fmt }}
   ({{ '%.0f %%' % (100 * x.agreement.agreement) }}) are in fact most similar to this type's own
-  reference, and the average identity to the nearest reference is
-  {{ '%.1f %%' % x.agreement.mean_identity_to_nearest }}.
+  reference, at a mean {{ '%.1f %%' % x.agreement.mean_identity_to_nearest }} identity to their
+  nearest.
   {% if x.agreement.mean_identity_to_nearest >= 60 %}
-  At that identity the cause is usually a duplicated or near-duplicated reference, so the split
-  between the two names is close to arbitrary.
+  The split between the two names is close to arbitrary.
   {% else %}
-  At that identity no profile can separate the neighbouring types reliably, so read this as a
-  region of sequence space rather than as a set of proteins like the reference.
+  Read this as a region of sequence space rather than as a set of proteins like the reference.
   {% endif %}
-  <br><span class="note">Measured for every type on the
-  <a href="{{ u('/atlas/quality') }}">data quality page</a>.</span>
+  <details class="basis">
+    <summary>Why the two measures disagree</summary>
+    <p class="note">Membership is decided by profile score, while "nearest reference" is measured
+    by sequence identity, and the two are different questions.
+    {% if x.agreement.mean_identity_to_nearest >= 60 %}At this identity the cause is usually a
+    duplicated or near-duplicated reference.{% else %}At this identity no profile can separate the
+    neighbouring types reliably.{% endif %}
+    Measured for every type on the
+    <a href="{{ u('/atlas/quality') }}">data quality page</a>.</p>
+  </details>
 </div>
 {% endif %}
 
@@ -176,16 +189,19 @@
   {% if c.sclass %}<span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>{% endif %}
   {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
   <br>
-  This substrate was determined experimentally for the curated reference enzyme of this type.
-  It is the compound that enzyme was <em>tested on</em>, not the limit of what it accepts: one
-  Rieske oxygenase commonly turns over several related compounds, and most have been assayed
-  against only a few.
-  {% if tier_total %}Of the {{ c.n|fmt }} members assigned here,
-  <b>{{ pct(near, tier_total) }}</b> are at least 60 % identical to <b>some</b> characterised
-  reference enzyme &mdash; usually this type's, but the evidence level records the best match
-  across all 76 references, not a match to this one specifically. For those members the substrate
-  label carries over; the rest are more distant relatives whose function is unknown.
-  {% endif %}
+  Determined experimentally for this type's <b>curated reference enzyme</b>.
+  {% if tier_total %}<b>{{ pct(near, tier_total) }}</b> of the {{ c.n|fmt }} members here are at
+  least 60 % identical to a characterised reference, so the substrate label carries over to
+  them.{% endif %}
+  <details class="basis">
+    <summary>What this label does and does not cover</summary>
+    <p class="note">It is the compound the reference enzyme was <em>tested on</em>, not the limit of
+    what it accepts: one Rieske oxygenase commonly turns over several related compounds, and most
+    have been assayed against only a few.
+    {% if tier_total %}The evidence level behind the share above records the best match across all
+    76 curated references, not a match to this type specifically. The remaining members are more
+    distant relatives whose function is unknown.{% endif %}</p>
+  </details>
   {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
   {% if chem and chem.source %}
   <br><span class="note"><b>Curated from:</b> {{ chem.source|cite|safe }}
@@ -265,10 +281,14 @@
   </div>
   {% endif %}
   <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
-  literature. The substrate is drawn from its SMILES string; products are given by name because
-  drawing them would require assuming which ring positions are attacked in every member.
-  Whether a given member catalyses this reaction depends on its evidence level.
-  {% if chem.notes %}<br><b>Note.</b> {{ chem.notes }}{% endif %}</figcaption>
+  literature. Whether a given member catalyses it depends on that member's evidence level.
+  {% if chem.notes %}<br><b>Note.</b> {{ chem.notes }}{% endif %}
+  <details class="basis">
+    <summary>Why the product is named and not drawn</summary>
+    <p class="note">The substrate is drawn from its SMILES string; drawing the product would
+    require assuming which ring positions are attacked in every member, so it is given by
+    name.</p>
+  </details></figcaption>
 </figure>
 {% endif %}
 
@@ -335,11 +355,16 @@
   </div>
   <figcaption><b>This is the structure of the characterised reference enzyme, not of the database
   entry you are viewing.</b> PDB {{ pdb }} was solved for the enzyme from which this type's
-  substrate assignment comes. None of the {{ c.n|fmt }} members listed on this page has a structure
-  of its own, and no structural information is used anywhere in ROAR-DB: types, variants and
-  catalytic-centre calls are made from sequence alignment only. Treat the fold as context for the
-  reference, and read the evidence table above for how close any given member is to it.
-  Coordinates are fetched from RCSB PDB when the figure loads and are not redistributed here.</figcaption>
+  substrate assignment comes.
+  <details class="basis">
+    <summary>What this structure is not used for</summary>
+    <p class="note">None of the {{ c.n|fmt }} members listed on this page has a structure of its
+    own, and no structural information is used anywhere in ROAR-DB: types, variants and
+    catalytic-centre calls are made from sequence alignment only. Treat the fold as context for the
+    reference, and read the evidence table above for how close any given member is to it.
+    Coordinates are fetched from RCSB PDB when the figure loads and are not redistributed
+    here.</p>
+  </details></figcaption>
 </figure>
 {% endif %}
 
@@ -352,30 +377,36 @@
         {#  2026-11-02. "Ayni accession neden tekrar ediyor, bug mi" sorusu
             tam burada doguyor. Birim bir GENOMIK LOKUS; tekrar eden sey dizi
             ve RefSeq WP_ kaydi. Sayilar app.py'de olculuyor.              #}
-        <br><span class="note"><b>One entry is one genomic locus, not one protein.</b>
-          These {{ x.unit.entries|fmt }} entries sit in {{ x.unit.records|fmt }} distinct
-          genome records and carry {{ x.unit.sequences|fmt }} distinct sequences: the same
-          protein recurs across strains, and the most widespread sequence of this type is
-          identical in {{ x.unit.max_copies|fmt }} of them.
-          {% if x.unit.wp %}{{ pct(x.unit.wp, x.unit.entries) }} of the entries carry a RefSeq
+        <br><span class="note">in {{ x.unit.records|fmt }} genome records,
+          {{ x.unit.sequences|fmt }} distinct sequences</span>
+        <details class="basis">
+          <summary>Why the same accession recurs</summary>
+          <p class="note"><b>One entry is one genomic locus, not one protein.</b>
+          The same protein recurs across strains, and the most widespread sequence of this type is
+          identical in {{ x.unit.max_copies|fmt }} of these {{ x.unit.entries|fmt }} entries.
+          {% if x.unit.wp %}{{ pct(x.unit.wp, x.unit.entries) }} of them carry a RefSeq
           <code>WP_</code> accession, which is <b>non-redundant by design</b> &mdash; one such
           accession is deliberately shared by every genome holding an identical protein, so a
           repeated identifier is the expected result, not a duplicated record.{% endif %}
           No locus is counted twice: the same genome record and coordinates occur more than once
-          in <b>{{ x.unit.same_locus_twice }}</b> cases.</span>
+          in <b>{{ x.unit.same_locus_twice }}</b> cases.</p>
+        </details>
         {%- endif %}
         {%- if x.union and x.union.no_context %}
         {#  2026-11-01. Bu sayi KESISIM: genomik baglami olan VE kapiyi gecen.
             Birlesim daha buyuk ve okuyucunun bunu tip sayfasinda gormesi
             gerekiyor, yoksa birlesim yalnizca anasayfada duran bir toplam
             olarak kalir ve gezilemez.                                      #}
-        <br><span class="note">Counted by <b>sequence</b> instead of by entry &mdash; several
+        <details class="basis">
+          <summary>{{ x.union.no_context|fmt }} further sequences are not counted here</summary>
+          <p class="note">Counted by <b>sequence</b> instead of by entry &mdash; several
           entries can carry the same sequence &mdash; the
           <a href="{{ u('/atlas/groups') }}">union</a> holds
           {{ x.union.total|fmt }} distinct sequences of this type, and
           {{ x.union.no_context|fmt }} of them have no genomic context at all. Those carry no
           operon, neighbourhood or replicon, so they are counted neither above nor in any
-          figure below. <a href="{{ u('/download/all_union.csv') }}">Union table</a>.</span>
+          figure below. <a href="{{ u('/download/all_union.csv') }}">Union table</a>.</p>
+        </details>
         {%- endif %}</dd>
       <dt>Variants</dt><dd>{{ c.leaves|length }} sequence-homogeneous subgroups</dd>
       <dt>Distribution</dt><dd>{{ c.replicons|fmt }} replicons, {{ c.genera_n }} genera</dd>
@@ -446,12 +477,15 @@
 
     {% if x.nearest %}
     <h3>Nearest other types</h3>
-    <p class="note">Identity between <b>this type's curated reference sequence and another's</b>,
-      read over the columns where both carry a residue in the common alignment of the 76
-      references. Pairwise identity taken from a multiple alignment runs a few points below what
-      an optimal alignment of the two sequences alone would give, so these values understate
-      rather than overstate. Above roughly 40 % two types are not reliably separable by
-      sequence.</p>
+    <p class="note">Identity between <b>this type's curated reference sequence and another's</b>.
+      Above roughly 40 % two types are not reliably separable by sequence.</p>
+    <details class="basis">
+      <summary>How this identity is measured</summary>
+      <p class="note">Read over the columns where both references carry a residue in the common
+      alignment of all 76. Pairwise identity taken from a multiple alignment runs a few points
+      below what an optimal alignment of the two sequences alone would give, so these values
+      understate rather than overstate.</p>
+    </details>
     <div class="tablewrap">
     <table class="data compact"><tbody>
       {% for name, ident in x.nearest %}
@@ -463,10 +497,12 @@
     <h3>Members that collide with another type</h3>
     <p class="note"><b>This is not a similarity measure.</b> Each row is one sequence assigned to
       this type that is nearly identical to a sequence assigned to a different type &mdash; so one
-      of the two assignments is probably wrong, or the two types overlap at their boundary. Read
-      the evidence level with it: a collision between two <i>distant</i> members, each only
-      distantly related to its own reference, says far less than one between two characterised
-      entries.</p>
+      of the two assignments is probably wrong, or the two types overlap at their boundary.</p>
+    <details class="basis">
+      <summary>Read the evidence level with it</summary>
+      <p class="note">A collision between two <i>distant</i> members, each only distantly related
+      to its own reference, says far less than one between two characterised entries.</p>
+    </details>
     <div class="tablewrap"><table class="data compact">
       <thead><tr><th>Other type</th><th class="num">Identity</th>
         <th>This type's sequence</th><th>Its level</th>
@@ -558,9 +594,7 @@ not a property of the type.</b>
 {% if x.ref_arch.architecture == 'divergent_regulator' %}
 A <b>{{ x.ref_arch.family or 'regulator' }}</b>-family regulator sits on the <b>opposite
 strand</b>{% if x.ref_arch.intergenic_bp %}, {{ x.ref_arch.intergenic_bp }} bp away{% endif %}. It
-cannot be in one transcript with the operon, which is why it does not appear in the gene order
-above; it lies between the operon and its promoter, so a single regulatory region can control
-both.
+cannot be in one transcript with the operon, so a single regulatory region can control both.
 {% elif x.ref_arch.architecture == 'codirectional_regulator' %}
 A <b>{{ x.ref_arch.family or 'regulator' }}</b>-family regulator lies upstream on the <b>same
 strand</b>{% if x.ref_arch.intergenic_bp %}, {{ x.ref_arch.intergenic_bp }} bp away{% endif %}.
@@ -568,8 +602,8 @@ strand</b>{% if x.ref_arch.intergenic_bp %}, {{ x.ref_arch.intergenic_bp }} bp a
 The gene upstream of the operon is not a recognised regulator
 {% if x.ref_arch.product %}({{ x.ref_arch.product }}){% endif %}.
 {% endif %}
-This is one entry, so it carries no statistics; the figures below count members.
-<a href="{{ entry_href(x.ref_arch.cid) }}">See the entry</a>.</figcaption>
+<a href="{{ entry_href(x.ref_arch.cid) }}">See the entry</a> &mdash; one entry, so it carries no
+statistics; the figures below count members.</figcaption>
 </figure>
 {% endif %}
 {% if x.canonical_svg %}
@@ -580,36 +614,41 @@ reference{% if x.layout_basis == 'all' %} &mdash; or, here, among all members, b
 resemble it closely enough to count{% endif %}
 {% if x.layout_share %}&mdash; {{ '%.0f' % x.layout_share }} %
 ({{ x.layout_n }} of {{ x.layout_total }}){% endif %}.</b>
-{% if x.layout_basis == 'close' %}
-Members are assigned by profile score, and most of them are distant: counting all of them would
-describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
-family-member level are counted here.
-{% endif %}
 {% if x.layout_share and x.layout_share < 50 %}
-<b>This is a plurality, not a typical case:</b> the other
+<b>A plurality, not a typical case:</b> the other
 {{ '%.0f' % (100 - x.layout_share) }} % are spread over
-{{ x.layout_distinct - 1 }} further arrangements, so the figure shows the commonest order rather
-than the order of this type.
-{% endif %}
-{% if x.layout_alpha_only %}
-The commonest order holds the alpha subunit alone, which means that in most members no other gene
-lies on the same strand within 150 base pairs &mdash; not that this enzyme has no partners
-anywhere. Genes beyond that distance, and genes on the opposite strand such as a divergent
-regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
-pages and in the sections above.
+{{ x.layout_distinct - 1 }} further arrangements.
 {% endif %}
 Preceded by what lies 5&prime; of the operon in most of its members{% if x.canonical_reg_total %}
-({{ x.canonical_reg_n }} of {{ x.canonical_reg_total }}, counted on the same basis as the gene
-order above){% endif %}: {{ x.canonical_arch_text }}.
-{% if x.canonical_has_regulator %}
-The dashed box is the median length of that intergenic region; where the regulator is divergent it
-and the operon share the region, so one regulatory site can control both.
-{% else %}
-The dashed box is the median length of that intergenic region. <b>It is a measured distance, not a
-demonstrated promoter:</b> no regulator was identified next to the operon in most members, so the
-figure must not be read as showing one. A regulator described for the characterised reference, if
-there is one, is shown in its own figure above and belongs to that entry, not to the type.
-{% endif %}</figcaption>
+({{ x.canonical_reg_n }} of {{ x.canonical_reg_total }}){% endif %}: {{ x.canonical_arch_text }}.
+{% if not x.canonical_has_regulator %}
+The dashed box is <b>a measured distance, not a demonstrated promoter.</b>
+{% endif %}
+<details class="basis">
+  <summary>How this figure is counted, and what the dashed box is</summary>
+  <p class="note">
+  {% if x.layout_basis == 'close' %}
+  Members are assigned by profile score, and most of them are distant: counting all of them would
+  describe proteins that are not this enzyme. Only members at the characterised, close-homologue or
+  family-member level are counted here, and the upstream share above is counted on the same basis.
+  {% endif %}
+  {% if x.layout_alpha_only %}
+  The commonest order holds the alpha subunit alone, which means that in most members no other gene
+  lies on the same strand within 150 base pairs &mdash; not that this enzyme has no partners
+  anywhere. Genes beyond that distance, and genes on the opposite strand such as a divergent
+  regulator, cannot be in one transcript with it and so are not drawn here; they are on the entry
+  pages and in the sections above.
+  {% endif %}
+  {% if x.canonical_has_regulator %}
+  The dashed box is the median length of the intergenic region; where the regulator is divergent it
+  and the operon share the region, so one regulatory site can control both.
+  {% else %}
+  The dashed box is the median length of the intergenic region. No regulator was identified next to
+  the operon in most members, so the figure must not be read as showing a promoter. A regulator
+  described for the characterised reference, if there is one, is shown in its own figure above and
+  belongs to that entry, not to the type.
+  {% endif %}</p>
+</details></figcaption>
 </figure>
 {% endif %}
 <div class="cols">
@@ -664,12 +703,15 @@ sequence-verified partners above.</p>
 
 {% if x.sdp_columns %}
 <h2>Positions that separate the variants</h2>
-<p class="note" style="max-width:92ch">In this family the substrate is set by a few residues, not by
-overall similarity: among the characterised references, pairs acting on different compounds reach
-99 % identity. The table below therefore asks a sharper question than "how similar are these
-proteins". For each alignment column it compares variation <em>within</em> each variant against
-variation <em>between</em> variants, and keeps the columns where variants are internally consistent
-but differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<p class="note" style="max-width:92ch">Columns where the variants are internally consistent but
+differ from one another. Cells that differ from this type's majority residue are highlighted.</p>
+<details class="basis">
+  <summary>Why these columns, and not overall similarity</summary>
+  <p class="note">In this family the substrate is set by a few residues, not by overall
+  similarity: among the characterised references, pairs acting on different compounds reach 99 %
+  identity. So for each alignment column the table compares variation <em>within</em> each variant
+  against variation <em>between</em> variants, and keeps the columns that separate them.</p>
+</details>
 <div class="tablewrap"><table class="data compact sdp">
 <thead>
 <tr><th>Variant</th><th class="num">Members</th>
@@ -690,13 +732,17 @@ but differ from one another. Cells that differ from this type's majority residue
 {% endfor %}
 </tbody></table></div>
 <p class="note">Columns are positions in the profile, not residue numbers in any one protein.
-A column qualifies only if it is filled in at least 90 % of members, takes at most four different
-residues across variants, is dominated by its two commonest residues, and is conserved inside each
-variant; without those limits the metric simply finds the worst-aligned loops. A superscript L marks
-a metal-binding position: the motif test accepts a ligand up to two columns away, so a ligand column
-can still vary here without the centre being incomplete. These are statistically discriminating
-positions, not structurally verified binding residues, because no structure is used anywhere in this
-database. <a href="{{ u('/download/analysis/variant_signatures.csv') }}">Download signatures</a></p>
+<a href="{{ u('/download/analysis/variant_signatures.csv') }}">Download signatures</a></p>
+<details class="basis">
+  <summary>What qualifies a column, and what the superscript L means</summary>
+  <p class="note">A column qualifies only if it is filled in at least 90 % of members, takes at
+  most four different residues across variants, is dominated by its two commonest residues, and is
+  conserved inside each variant; without those limits the metric simply finds the worst-aligned
+  loops. A superscript L marks a metal-binding position: the motif test accepts a ligand up to two
+  columns away, so a ligand column can still vary here without the centre being incomplete. These
+  are statistically discriminating positions, not structurally verified binding residues, because
+  no structure is used anywhere in this database.</p>
+</details>
 {% endif %}
 
 {% if x.tree_svg %}
@@ -704,15 +750,20 @@ database. <a href="{{ u('/download/analysis/variant_signatures.csv') }}">Downloa
 <p class="note">Variant representatives of this type with its curated reference, aligned on the
 catalytic core. A reference on a long branch means the type's members are only distant relatives of
 the characterised enzyme.
+{% if x.tree_support and x.tree_support.weak %}
+<span style="color:#b5731f">Hollow circles</span> mark the {{ x.tree_support.weak }} of
+{{ x.tree_support.n }} internal branches whose order is <b>not resolved</b>.{% endif %}</p>
 {% if x.tree_support %}
-Branch support is FastTree's SH-like local support, <b>not bootstrap</b>.
-{% if x.tree_support.weak %}<span style="color:#b5731f">Hollow circles</span> mark the
-{{ x.tree_support.weak }} of {{ x.tree_support.n }} internal branches below
-{{ '%.2f' % x.tree_support.threshold }}, where the branching order is <b>not resolved</b>; hover one
-for its value.{% else %}{% if x.tree_support.n == 1 %}Its single internal branch reaches{% else %}All
-{{ x.tree_support.n }} internal branches reach{% endif %}
-{{ '%.2f' % x.tree_support.threshold }} or more.{% endif %}
-{% endif %}</p>
+<details class="basis">
+  <summary>How branch support is measured</summary>
+  <p class="note">FastTree's SH-like local support, <b>not bootstrap</b>.
+  {% if x.tree_support.weak %}The hollow circles are the branches below
+  {{ '%.2f' % x.tree_support.threshold }}; hover one for its value.{% else %}{% if
+  x.tree_support.n == 1 %}Its single internal branch reaches{% else %}All
+  {{ x.tree_support.n }} internal branches reach{% endif %}
+  {{ '%.2f' % x.tree_support.threshold }} or more.{% endif %}</p>
+</details>
+{% endif %}
 <div class="treewrap">{{ x.tree_svg|safe }}</div>
 {% endif %}
 
@@ -722,8 +773,12 @@ for its value.{% else %}{% if x.tree_support.n == 1 %}Its single internal branch
 <p class="note">Habitat of the genome record, normalised from its free-text isolation source.
 {% if hc %}Recorded for {{ hc[0]|fmt }} of this type's {{ hc[1]|fmt }} entries
 ({{ pct(hc[0], hc[1]) }}); the rest state no source.{% endif %}
-Species counts are given beside entry counts because a habitat that attracts heavy sequencing
-accumulates entries without accumulating ecology.</p>
+</p>
+<details class="basis">
+  <summary>Why organisms are counted beside entries</summary>
+  <p class="note">A habitat that attracts heavy sequencing accumulates entries without
+  accumulating ecology, so the two columns can disagree sharply.</p>
+</details>
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Habitat</th><th class="num">Entries</th><th class="num">Distinct organisms</th></tr></thead>
 <tbody>
@@ -782,16 +837,22 @@ target. A variant is the finest unit at which a distinct function can reasonably
   <b>No member of this type is a close homologue of the reference enzyme.</b>
   All {{ far_n|fmt }} members are below 60 % identical to it{% if members and members[0].ref_identity %},
   the closest at {{ '%.0f %%' % members[0].ref_identity }}{% endif %}.
-  Nothing here should be read as doing the reaction the reference does. What the profile has
-  collected is the surrounding region of sequence space, and the function of everything in it is
-  unknown. If you came here for the characterised enzyme, it is described above; the table below
-  is a list of relatives, not of examples.
+  <details class="basis">
+    <summary>How to read the table below</summary>
+    <p class="note">Nothing here should be read as doing the reaction the reference does. What the
+    profile has collected is the surrounding region of sequence space, and the function of
+    everything in it is unknown. If you came here for the characterised enzyme, it is described
+    above; the table below is a list of relatives, not of examples.</p>
+  </details>
   {% else %}
   <b>{{ close_n|fmt }} of {{ (close_n + far_n)|fmt }} members are close enough for the substrate
-  label to mean something</b>, that is at least 60 % identical to the curated enzyme. The remaining
-  {{ far_n|fmt }} are more distant relatives whose reaction has not been measured and cannot be
-  inferred from membership alone. The table is ordered with the closest first, so the informative
-  members are on this page and the distant ones follow.
+  label to mean something</b> &mdash; at least 60 % identical to the curated enzyme. The table is
+  ordered with the closest first.
+  <details class="basis">
+    <summary>What the other {{ far_n|fmt }} members are</summary>
+    <p class="note">More distant relatives whose reaction has not been measured and cannot be
+    inferred from membership alone.</p>
+  </details>
   {% endif %}
   <br><span class="note">Why the line is drawn at 60 % and what it costs:
   <a href="{{ u('/atlas/evidence') }}">evidence levels</a> ·
