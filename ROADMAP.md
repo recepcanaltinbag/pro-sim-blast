@@ -3965,9 +3965,25 @@ cakisiyordu:
     olculuyor ve olcum `document.fonts.ready` sonrasina alindi; yoksa
     hicbir sey gizlemeyen bir "Show the full note" dugmesi cikiyordu.
 
-Yapilmadi: Varyantlar tablosu bazi tiplerde 377 satir (CntA'da 5.760
-kelime). Bu VERI, duzyazi degil ve tablonun kendi filtresi var;
-bolmek filtreyi bozar. Sayfalama istenirse ayri bir is.
+**Sayfalama GEREKMEDI, olculdu.** Varyantlar tablosu CntA'da 377 satir
+ve ilk bakista sayfanin yarisi gibi duruyordu, ama `table.js` 24
+satirdan uzun her tabloyu zaten `min(72vh, 680px)` kapakli kendi
+kaydirma kutusuna aliyor: o tablo sayfada 377 satir degil ~680 px yer
+kapliyor. Kelime saymak yaniltti, PIKSEL olcmek duzeltti.
+
+**Asil eksik oradan cikti: ICINDEKILER SERIDI.** Tip sayfasi 1280 px
+genislikte **9.414 px** ve 18 bolum, ama "On this page" seridi yalnizca
+atlas sayfalarinda vardi -- cunku `pageContents()` kapisi `nav.subnav`
+idi. Atlas icin yazilan gerekce ("sonuna kadar kaydirmadan sayfada ne
+oldugunu goremiyorsun") tip sayfasinda bire bir gecerliydi.
+
+`table.js` artik acik bir isarete de bakiyor: `[data-contents]` tasiyan
+sarmalayicinin dogrudan h2 cocuklari seride girer. `cluster.html`'in
+`div.numbered`'i isaretlendi. Numaralar CSS sayacindan geldigi icin
+`textContent`'te yok; serit `.numbered` kapsaminda numarayi belge
+sirasindan uretiyor, boylece serit ile basliklar ayni numarayi gosterir.
+Regresyon: atlas seridi duruyor, anasayfa/about/varyant sayfalari
+eskisi gibi seritsiz.
 
 ## Yeniden uretim
 

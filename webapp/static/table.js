@@ -520,13 +520,27 @@
   }
 
   function pageContents() {
-    var subnav = document.querySelector('nav.subnav');
     var main = document.querySelector('main');
-    if (!subnav || !main) return;
-    /* The statistics page wraps each test in its own <section class="stat">,
-       so the headings that matter are not all direct children of <main>. */
-    var heads = Array.prototype.slice.call(
-      main.querySelectorAll(':scope > h2, :scope > section > h2'));
+    if (!main) return;
+
+    /*  TIP SAYFALARI DA BU SERIDI HAK EDIYOR (2026-11-10). Serit once
+        yalnizca atlas sayfalarinda cikiyordu, cunku kapi `nav.subnav` idi.
+        Olculdu: bir tip sayfasi 9.414 px ve 18 bolum -- atlas'takiyle AYNI
+        sorun, "sonuna kadar kaydirmadan sayfada ne oldugunu goremiyorsun".
+        Tip sayfasinin h2'leri <main>'in dogrudan cocugu degil, .numbered
+        sarmalayicisinin icinde; o yuzden kapi artik acik bir isarete
+        (data-contents) de bakiyor ve basliklari o sarmalayicidan aliyor. */
+    var scope = main.querySelector('[data-contents]');
+    var heads;
+    if (scope) {
+      heads = Array.prototype.slice.call(scope.querySelectorAll(':scope > h2'));
+    } else {
+      if (!document.querySelector('nav.subnav')) return;
+      /* The statistics page wraps each test in its own <section class="stat">,
+         so the headings that matter are not all direct children of <main>. */
+      heads = Array.prototype.slice.call(
+        main.querySelectorAll(':scope > h2, :scope > section > h2'));
+    }
     if (heads.length < 4) return;
 
     /*  A contents strip helps when headings are short labels you can scan. When
@@ -557,11 +571,15 @@
          separate mark so the strip scans as a numbered list */
       var txt = h.textContent.replace(/\s+/g, ' ').trim();
       var m = txt.match(/^(\d+)\s*\u00b7\s*(.*)$/);
-      if (m) {
+      /*  .numbered sayfalarinda numara CSS sayacindan geliyor, yani
+          textContent'te yok. Serit ile basliklar ayni numarayi gostersin
+          diye burada belge sirasindan uretilir. */
+      var counted = scope && scope.classList.contains('numbered');
+      if (m || counted) {
         var n = document.createElement('b');
-        n.textContent = m[1];
+        n.textContent = m ? m[1] : String(i + 1);
         a.appendChild(n);
-        a.appendChild(document.createTextNode(m[2]));
+        a.appendChild(document.createTextNode(m ? m[2] : txt));
       } else {
         a.textContent = txt;
       }
@@ -569,7 +587,9 @@
     });
 
     /* after the lede if there is one, otherwise after the h1 */
-    var after = main.querySelector('p.lede') || main.querySelector('h1') || subnav;
+    var after = main.querySelector('p.lede') || main.querySelector('h1')
+             || document.querySelector('nav.subnav');
+    if (!after) return;
     after.parentNode.insertBefore(nav, after.nextSibling);
   }
 
