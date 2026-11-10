@@ -50,6 +50,8 @@ SCRATCH = os.environ.get("ROAR_SCRATCH", "/media/lin-bio/back2")
 DB = "roar.sqlite"
 CHEM = "chemistry.csv"
 ECO = "cluster_ecology.csv"
+# Kuratorun fazlalik ciftleri icin verdigi karar: olcumun degil, insanin ciktisi.
+DECISIONS = "curation_decisions.csv"
 REFS = "ROs_71_Clean/refs71.fasta"
 MOTIF_HMM = "ROs_71_Clean/ROmotif71.hmm"
 # RefSeq taramasinin is dizini. SCRATCH altinda, cunku ara dosyalar 40 MB'lik
@@ -198,8 +200,9 @@ ARTEFACTS = [
     # kontrolde FAIL verdi. Artik grafikte (2026-10-16).
     ("reference_redundancy", [f"{OUT}/reference_redundancy.json"],
      ["python3", "reference_redundancy.py", "--db", DB, "--refs", REFS,
-      "--chemistry", CHEM, "--out", f"{OUT}/reference_redundancy.json"],
-     ["reference_redundancy.py", DB, CHEM, REFS], False),
+      "--chemistry", CHEM, "--decisions", DECISIONS,
+      "--out", f"{OUT}/reference_redundancy.json"],
+     ["reference_redundancy.py", DB, CHEM, REFS, DECISIONS], False),
     ("redundancy", [f"{OUT}/redundancy.json"],
      ["python3", "redundancy.py", "--db", DB, "--out", f"{OUT}/redundancy.json"],
      ["redundancy.py", DB], False),

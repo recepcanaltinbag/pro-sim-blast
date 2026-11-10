@@ -115,6 +115,30 @@ def near_identical(pairs_path, threshold, exclude):
     return out
 
 
+def read_decisions(path):
+    """Kuratorun bu cift icin verdigi karar: pair -> satir.
+
+    Bu dosya SEBEBI tasiyor, sayiyi tasimiyor. Fazlaligi olcen kod ile karari
+    veren insan ayri yerde durmali: olcum her kosuda yeniden uretiliyor, karar
+    ise elle yaziliyor ve tarihi var. Ikisini ayni dosyada tutmak karari ilk
+    rebuild'de siliyor.
+    """
+    out = {}
+    if not os.path.exists(path):
+        return out
+    with open(path, newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            a, b = (row.get("pair_a") or "").strip(), (row.get("pair_b") or "").strip()
+            if not a or not b:
+                continue
+            out[frozenset((a, b))] = {
+                "decision": (row.get("decision") or "").strip(),
+                "decided_on": (row.get("decided_on") or "").strip(),
+                "rationale": (row.get("rationale") or "").strip(),
+            }
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -122,6 +146,7 @@ def main():
     parser.add_argument("--refs", default=os.path.join("ROs_71_Clean", "refs71.fasta"))
     parser.add_argument("--pairs", default=os.path.join("analysis_out", "reference_pairs.csv"))
     parser.add_argument("--chemistry", default="chemistry.csv")
+    parser.add_argument("--decisions", default="curation_decisions.csv")
     parser.add_argument("--out", default=os.path.join("analysis_out",
                                                       "reference_redundancy.json"))
     args = parser.parse_args()
@@ -162,9 +187,24 @@ def main():
         seen_pairs.add(frozenset((pair["contained"], pair["container"])))
 
     near = near_identical(args.pairs, NEAR_IDENTICAL, seen_pairs)
+    decisions = read_decisions(args.decisions)
     for pair in near:
         pair["entries_a"] = counts.get(pair["ref_a"], 0)
         pair["entries_b"] = counts.get(pair["ref_b"], 0)
+        taken = decisions.get(frozenset((pair["ref_a"], pair["ref_b"])))
+        if taken:
+            pair.update(taken)
+
+    #  TAZELIK: olcum ile karar birbirinden kayabilir. Karari olmayan bir cift
+    #  sayfada "karar bekliyor" diye gorunur; artik yakin olmayan bir cifte
+    #  yazilmis karar ise okuyucuya yanlis sey anlatir. Ikisi de burada bagirir.
+    near_keys = {frozenset((p["ref_a"], p["ref_b"])) for p in near}
+    undecided = sorted("/".join(sorted(k)) for k in near_keys - set(decisions))
+    stale = sorted("/".join(sorted(k)) for k in set(decisions) - near_keys)
+    for name in undecided:
+        print(f"[uyari] {name}: yakin-ayni cift, kaydedilmis karar yok")
+    for name in stale:
+        print(f"[uyari] {name}: karar kayitli ama cift artik yakin-ayni degil")
 
     # Etkilenen her tip -> sayfada gosterilecek not.
     affected = {}
@@ -186,11 +226,15 @@ def main():
             "entries_total": pair["contained_entries"] + pair["container_entries"]})
     for pair in near:
         for name, other in ((pair["ref_a"], pair["ref_b"]), (pair["ref_b"], pair["ref_a"])):
-            affected.setdefault(name, {
+            note = {
                 "kind": "near_identical", "others": [other],
                 "identity": pair["identity"],
                 "entries": counts.get(name, 0),
-                "entries_total": pair["entries_a"] + pair["entries_b"]})
+                "entries_total": pair["entries_a"] + pair["entries_b"]}
+            for field in ("decision", "decided_on", "rationale"):
+                if pair.get(field):
+                    note[field] = pair[field]
+            affected.setdefault(name, note)
 
     result = {
         "method": {
@@ -207,6 +251,9 @@ def main():
                                "changing the reference set and rebuilding the profile "
                                "library, and which name to keep is a nomenclature decision"),
             "near_identical_threshold": NEAR_IDENTICAL,
+            "decisions": ("what the curator decided to do about each near-identical pair, "
+                          "read from curation_decisions.csv with its date and reason; a pair "
+                          "without a row is reported as awaiting a decision"),
         },
         "totals": {
             "references": len(records),
@@ -215,6 +262,8 @@ def main():
             "references_in_identical_groups": sum(len(g["members"]) for g in groups),
             "contained_pairs": len(contained),
             "near_identical_pairs": len(near),
+            "near_identical_pairs_with_a_recorded_decision": sum(
+                1 for p in near if p.get("decision")),
             "affected_references": len(affected),
             "entries_under_an_ambiguous_reference": sum(
                 counts.get(name, 0) for name in affected),
@@ -237,6 +286,8 @@ def main():
     print(f"  birebir ayni grup             {totals['identical_groups']}")
     print(f"  bir digerinin parcasi         {totals['contained_pairs']}")
     print(f"  >= {NEAR_IDENTICAL}% kimlikli cift        {totals['near_identical_pairs']}")
+    print(f"  bunlardan karari yazili        "
+          f"{totals['near_identical_pairs_with_a_recorded_decision']}")
     print(f"  etkilenen referans            {totals['affected_references']}")
     print(f"  bu referanslardaki giris      {totals['entries_under_an_ambiguous_reference']}")
     for group in groups:

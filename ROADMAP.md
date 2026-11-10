@@ -3985,6 +3985,48 @@ sirasindan uretiyor, boylece serit ile basliklar ayni numarayi gosterir.
 Regresyon: atlas seridi duruyor, anasayfa/about/varyant sayfalari
 eskisi gibi seritsiz.
 
+### 133. REFERANS FAZLALIGINDA KARAR: IKI CIFT AYRI KALIYOR (2026-11-10)
+
+Kullanici karari: **"birlesmese de olur belirtelim ama"** -- yani
+birlestirme yok, ama kararin KENDISI yazili olacak.
+
+Durum zaten olculuyordu: `reference_redundancy.py` iki yakin-ayni cift
+buluyor, `2_202_EdoA1 / 2_203_cumA1` %99,8 (etiketler etilbenzen ve
+kumen, 47/8 uye) ve `1_102_CARDO / 1_103_CarAa` %99,2 (ikisi de
+karbazol, 111/0 uye). Her iki tip sayfasinda ve kalite sayfasinda
+"bolunme kismen rastlantisal" caveat'i vardi. **Eksik olan sey kararin
+kendisiydi:** okuyucu fazlaligi gorup, gorulmemis mi sandi diye
+dusunebilirdi.
+
+**Karar olcumden AYRI dosyada duruyor.** `curation_decisions.csv`
+(`pair_a, pair_b, decision, decided_on, rationale`). Sebebi: olcum her
+kosuda yeniden uretiliyor, karar elle yazildi ve tarihi var; ikisini
+ayni dosyada tutmak karari ilk `rebuild.py --run`'da silerdi. Dosya
+`rebuild.py`'nin `reference_redundancy` adiminin girdisi
+(`DECISIONS`), yani karar metni degisirse JSON bayatlar.
+
+Kararin gezdigi UC yer -- "duzeltmeyi bulundugu yere yazip
+yayimlandigi her yere tasimamak" bu projenin tekrar eden hatasi:
+  1. tip sayfasi fazlalik caveat'i: "kept as separate references
+     deliberately", gerekce `details.basis` icinde tarihiyle,
+  2. BOS TIP caveat'i (`CarAa` 0 uye): zaten "isimlendirme karari"
+     diyordu, artik karari da soyluyor,
+  3. kalite sayfasi: tabloda "Decision" kolonu + her cift icin
+     gerekceyi tasiyan `details.basis`.
+
+**Yoldan cikan iki BAYAT metin.** Kalite sayfasinin 4. bolumu hala
+birebir-ayni ciftleri anlatiyordu (`identical_groups` artik 0) ve
+"76 records contain only 76 distinct sequences" diye okunuyordu;
+kalemde ise uye bolunmesi **elle "29 to 6" yaziyordu**, oysa veri 47/8.
+Ikisi de veriye baglandi: bolunme sayilari ve farkli-substratli cift
+artik `refdup`'tan geliyor, birebir-ayni anlatimi kosullu.
+
+**Kapi.** `validate_curation.py` yeni SERT kontrol: her yakin-ayni
+ciftin tarihli ve gerekceli bir karar satiri var mi -- karari olmayan
+cift, cifti olmayan karar ve gerekcesi bos satir hata. Fazlalik WARN'i
+kalici oldugu icin kararin yazili olmasi da kalici sart. 178 kontrol,
+173 PASS, 0 FAIL, 5 WARN.
+
 ## Yeniden uretim
 
 ```

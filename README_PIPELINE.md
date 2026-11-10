@@ -552,6 +552,7 @@ veri web sitesine gitmez. Kapsam:
 | grup | ne sinaniyor |
 |---|---|
 | **referans seti** (`ROs_71_Clean/refs71.fasta`) | iki referans dizisi birbirinin AYNISI olmasin; bir dizi bir baskasinin ICINDE gecmesin (parca referans); her kimlik FASTA + `cluster_ecology.csv` + `chemistry.csv` ucunde de tam bir kez olsun. Ayrica WARN olarak: %99 uzeri kimlikli ciftler (substratlariyla) ve hic uye toplamayan referanslar (ikiz/parca etiketiyle) |
+| **kuratorluk kararlari** (`curation_decisions.csv`) | %99 uzeri kimlikli her cift icin tarihli ve gerekceli bir karar satiri var mi; karari olmayan cift, cifti olmayan karar ve gerekcesi/tarihi bos satir hata. Fazlalik WARN'i kalici oldugu icin KARARIN KENDISI yazili olmak zorunda; yoksa okuyucu fazlaligi gorulmemis sanar |
 | sozluk | `add_reference.py`'nin YAZARKEN kullandigi izinli deger listeleri ile dogrulayicinin KONTROL ETTIGI listeler ayni mi (ayrisirsa yeni referans sessizce gecer) |
 | CSV bicimi | her satirin alan sayisi baslikla ayni mi — `2\,4` kacisi hata sinifi tam olarak bu |
 | `ro` | dogrulanan her RO'nun gercek bir `ro_cluster`'i (`NULL`/`'N/A'` degil), dizisi ve `rieske_intact=1`'i var mi; `is_confirmed` hic `NULL` kalmis mi |
@@ -599,7 +600,8 @@ siniflari:
 - **girdisi kendisinden yeni olan artefakt** — bayat zincir.
 
 Her artefakt icin zincir kaynak veriye kadar cozulur: `combined_pfam.fasta`,
-`gbk_files/`, `ROs_71_Clean/`, `cluster_ecology.csv`, `chemistry.csv`
+`gbk_files/`, `ROs_71_Clean/`, `cluster_ecology.csv`, `chemistry.csv`,
+`curation_decisions.csv`
 (+ `RieskeDB71.hmm`, `component_hmms/`).
 
 `provenance.py` varsayilan olarak sifir doner (yalnizca uyarir); CI'da sert

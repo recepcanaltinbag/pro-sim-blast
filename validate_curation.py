@@ -593,6 +593,7 @@ def check_reference_set(rep, refs_path, pairs_path, eco, chem, con):
         except OSError:
             pass
         near = []
+        near_keys = set()
         with open(pairs_path, newline="", encoding="utf-8") as fh:
             for row in csv.DictReader(fh):
                 try:
@@ -613,11 +614,40 @@ def check_reference_set(rep, refs_path, pairs_path, eco, chem, con):
                     continue
                 near.append(f"{a} / {b} at {pid:.1f}% "
                             f"({substrate_of(a)} against {substrate_of(b)})")
+                near_keys.add(frozenset((a, b)))
         rep.check(f"refs71: near-identical pairs above "
                   f"{NEAR_IDENTICAL_PCT:.0f}% identity", not near, len(near),
                   "; ".join(near[:4]) + (f"; ... (+{len(near) - 4})"
                                          if len(near) > 4 else "") + stale_note,
                   severity="WARN")
+
+        # 4b. Yukaridaki WARN kalici: cift ayri kalmaya karar verildi. O zaman
+        #     KARARIN KENDISI yazili olmak zorunda, yoksa okuyucu fazlaligi
+        #     gorulmemis mi sanacak. curation_decisions.csv bu kaydi tutuyor ve
+        #     iki yonlu kontrol ediliyor: karari olmayan cift ve artik var
+        #     olmayan cifte yazilmis karar, ikisi de hata.
+        decisions = {}
+        dec_path = os.path.join(ROOT, "curation_decisions.csv")
+        if os.path.exists(dec_path):
+            with open(dec_path, newline="", encoding="utf-8") as fh:
+                for row in csv.DictReader(fh):
+                    a = (row.get("pair_a") or "").strip()
+                    b = (row.get("pair_b") or "").strip()
+                    if a and b:
+                        decisions[frozenset((a, b))] = row
+        missing = sorted("/".join(sorted(k)) for k in near_keys - set(decisions))
+        stale = sorted("/".join(sorted(k)) for k in set(decisions) - near_keys)
+        bare = sorted("/".join(sorted(k)) for k, row in decisions.items()
+                      if not (row.get("rationale") or "").strip()
+                      or not (row.get("decided_on") or "").strip())
+        problems = ([f"karari yok: {n}" for n in missing]
+                    + [f"cift yok: {n}" for n in stale]
+                    + [f"gerekcesi/tarihi eksik: {n}" for n in bare])
+        rep.check("curation_decisions: every near-identical pair has a dated, "
+                  "reasoned decision", not problems, len(problems),
+                  f"{len(near_keys)} near-identical pair(s), "
+                  f"{len(decisions)} decision(s) recorded" +
+                  ("; " + first(problems, 6) if problems else ""))
 
     # 5. Hic uye toplamayan referanslar: WARN. Sifir uye hem ikizin hem de
     #    parca referansin imzasidir, o yuzden isimleriyle yazilir.

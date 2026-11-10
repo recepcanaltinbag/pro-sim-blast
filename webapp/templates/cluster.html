@@ -52,6 +52,11 @@
   <a href="{{ u('/cluster/' ~ ev.nearest_reference_sibling.type) }}">{{ gene(ev.nearest_reference_sibling.type) }}</a>
   ({{ ev.nearest_reference_sibling.type }}), so the split between the two names is a
   nomenclature decision, not a biological one.
+  {% if x.redundancy and x.redundancy.decision == 'keep_separate' %}
+  That decision has been taken: <b>both names are kept</b>, because each is a separate
+  characterisation in the literature. The two pages are to be read as one enzyme type with the
+  members counted once.
+  {% endif %}
   {% endif %}
   {% if ev.entries_nearest_to_this_reference %}
   <br>
@@ -146,12 +151,22 @@
   {% for o in rr.others %}<a href="{{ u('/cluster/' ~ o) }}">{{ gene(o) }}</a>{% endfor %},
   which is close enough that the split of members between the two profiles is partly arbitrary.
   {{ rr.entries_total|fmt }} members fall across the pair and {{ rr.entries|fmt }} here.
+  {% if rr.decision == 'keep_separate' %}
+  <b>The two are kept as separate references deliberately</b>, so read the pair together and the
+  member counts as one number.
+  {% elif rr.decision %}
+  The recorded decision for this pair is <b>{{ rr.decision|replace('_', ' ') }}</b>.
+  {% else %}
+  <b>No decision has been recorded for this pair yet.</b>
+  {% endif %}
   {% endif %}
   <details class="basis">
-    <summary>Where this is measured</summary>
+    <summary>{% if rr.rationale %}Why it was left this way, and where it is measured{% else %}Where this is measured{% endif %}</summary>
     <p class="note">This is a known defect of the curated reference set, not of the assignment
     method. It is measured and listed on the
-    <a href="{{ u('/atlas/quality') }}">data quality page</a>.</p>
+    <a href="{{ u('/atlas/quality') }}">data quality page</a>.
+    {% if rr.rationale %}<br><b>Curator's note{% if rr.decided_on %}, {{ rr.decided_on }}{% endif %}.</b>
+    {{ rr.rationale }}{% endif %}</p>
   </details>
 </div>
 {% endif %}

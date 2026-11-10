@@ -132,15 +132,23 @@ the change, not the absolute count.
 {% if refdup and refdup.totals %}
 <h2>4 · Where the reference set repeats itself</h2>
 <p>Everything above concerns the members. This section concerns the {{ N_REFS }} curated enzymes they are
-compared against, and it is the one unresolved defect in the database. Those {{ N_REFS }} records contain only
-{{ refdup.totals.distinct_sequences }} distinct sequences. A repeated sequence enters the profile
-library twice, and a member then falls to whichever of the two copies scores fractionally higher.
-That is arithmetic, not biology, and it is why some type pages report a member count far below their
-twin and two report none at all.</p>
+compared against, and it is the one unresolved defect in the database. Those {{ N_REFS }} records hold
+{{ refdup.totals.distinct_sequences }} distinct sequences, but
+{{ refdup.totals.affected_references }} of them are not uniquely defined:
+{% if refdup.totals.identical_groups %}some are repeated byte for byte, so one sequence enters the
+profile library twice, and {% endif %}{{ refdup.totals.near_identical_pairs }} pair{{ 's' if refdup.totals.near_identical_pairs != 1 }}
+sit at or above {{ '%.0f %%' % refdup.method.near_identical_threshold }} identity. A member then
+falls to whichever of the two profiles scores fractionally higher. That is arithmetic, not biology,
+and it is why one page of such a pair can report a member count far below its twin, or none at all.
+<b>Every such pair carries a recorded curation decision</b>
+({{ refdup.totals.near_identical_pairs_with_a_recorded_decision }} of
+{{ refdup.totals.near_identical_pairs }} written down), printed in the table below and repeated on
+each affected type page, so no reader has to guess whether the duplication was noticed.</p>
 <figure class="fig">
 <div class="tablewrap"><table class="data compact" data-nosort>
 <thead><tr><th>Relationship</th><th>References</th><th class="num">Identity</th>
-<th class="num">Members each</th><th class="num">Members in total</th><th>Same substrate</th></tr></thead>
+<th class="num">Members each</th><th class="num">Members in total</th><th>Same substrate</th>
+<th>Decision</th></tr></thead>
 <tbody>
 {% for g in refdup.identical_groups %}
 <tr><td>byte-identical</td>
@@ -149,7 +157,8 @@ twin and two report none at all.</p>
   <td class="num">100.0 %</td>
   <td class="num">{% for m in g.members %}{{ m.entries }}{% if not loop.last %} / {% endif %}{% endfor %}</td>
   <td class="num">{{ g.entries_total }}</td>
-  <td><span class="chip chip--ok">identical sequence</span></td></tr>
+  <td><span class="chip chip--ok">identical sequence</span></td>
+  <td class="note">nomenclature question, open</td></tr>
 {% endfor %}
 {% for p in refdup.contained_pairs %}
 <tr><td>fragment of another</td>
@@ -159,7 +168,8 @@ twin and two report none at all.</p>
   <td class="num">exact substring</td>
   <td class="num">{{ p.contained_entries }} / {{ p.container_entries }}</td>
   <td class="num">{{ p.contained_entries + p.container_entries }}</td>
-  <td><span class="chip chip--bad">different labels</span></td></tr>
+  <td><span class="chip chip--bad">different labels</span></td>
+  <td class="note">nomenclature question, open</td></tr>
 {% endfor %}
 {% for p in refdup.near_identical_pairs %}
 <tr><td>near-identical</td>
@@ -169,15 +179,22 @@ twin and two report none at all.</p>
   <td class="num">{{ '%.1f %%' % p.identity }}</td>
   <td class="num">{{ p.entries_a }} / {{ p.entries_b }}</td>
   <td class="num">{{ p.entries_a + p.entries_b }}</td>
-  <td>{% if p.same_substrate %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td></tr>
+  <td>{% if p.same_substrate %}<span class="chip chip--ok">same</span>{% else %}<span class="chip chip--bad">different</span>{% endif %}</td>
+  <td>{% if p.decision == 'keep_separate' %}<span class="chip chip--ok">kept separate</span>
+      {% elif p.decision %}<span class="chip chip--ok">{{ p.decision|replace('_', ' ') }}</span>
+      {% else %}<span class="chip chip--bad">no decision recorded</span>{% endif %}
+      {% if p.decided_on %}<div class="note">{{ p.decided_on }}</div>{% endif %}</td></tr>
 {% endfor %}
 </tbody></table></div>
 <figcaption><b>How much of the database this touches.</b>
 {{ refdup.totals.affected_references }} of {{ refdup.totals.references }} references are not uniquely
 defined, and {{ refdup.totals.entries_under_an_ambiguous_reference|fmt }} members sit under one of
 them. That is a small fraction of the database, and every other type is unaffected.
-<b>The near-identical pair at 99.8 % needs reading carefully.</b> Its two reference enzymes carry
-different substrate labels, ethylbenzene against cumene, and the members split 29 to 6 between them.
+{% set split = refdup.near_identical_pairs | selectattr('same_substrate', 'equalto', false) | list | first %}
+{% if split %}<b>The pair with two different substrate labels needs reading carefully.</b> Its two
+reference enzymes are {{ '%.1f %%' % split.identity }} identical yet are labelled
+{{ split.substrate_a }} against {{ split.substrate_b }}, and the members split
+{{ split.entries_a|fmt }} to {{ split.entries_b|fmt }} between them.
 That is not evidence of an error, because <b>one Rieske oxygenase commonly accepts many
 substrates</b>; two laboratories testing one compound each will report two different substrates for
 the same enzyme. The labels in this database are the compound each reference was characterised on,
@@ -186,14 +203,27 @@ than about a contradiction in the data: a member assigned here may well act on b
 on others nobody has tried. It is the same lesson the
 <a href="{{ u('/atlas/network') }}">sequence space page</a> draws from the reference set as a whole,
 that identity does not determine substrate, with its converse, that a single substrate name does not
-bound an enzyme.
-<b>Why it is not simply fixed.</b> Repairing it means removing records from the curated set and
-rebuilding the profile library, which re-derives every number on this site. For the byte-identical
-pairs nothing scientific is lost either way, because the sequences are the same; what has to be
-decided is which name the merged type should carry, and that is a nomenclature question for a
-curator rather than something to settle by script.
+bound an enzyme.{% endif %}
+<b>Why it is not simply fixed, and what was decided instead.</b> Repairing it means removing records
+from the curated set and rebuilding the profile library, which re-derives every number on this site.
+{% if refdup.totals.identical_groups %}For a byte-identical pair nothing scientific is lost either
+way, because the sequences are the same; what has to be decided is which name the merged type should
+carry, and that is a nomenclature question for a curator rather than something to settle by script.
+{% endif %}For the near-identical pairs the decision has been taken and recorded: <b>they stay as
+separate references.</b> Each record is a separate characterisation in the literature, and merging
+one into the other would discard a published measurement &mdash; a substrate label in one case,
+an independent report of the same activity in the other &mdash; in order to tidy a member count that
+is already published with this caveat beside it. The split of members between two such profiles is
+arbitrary; the records are not. The reasons, with their dates, travel with the data.
 <a href="{{ u('/download/analysis/reference_redundancy.json') }}">Download the full report</a></figcaption>
 </figure>
+{% for p in refdup.near_identical_pairs if p.rationale %}
+<details class="basis">
+  <summary>Decision: {{ gene(p.ref_a) }} / {{ gene(p.ref_b) }} &mdash;
+  {{ p.decision|replace('_', ' ') }}{% if p.decided_on %}, {{ p.decided_on }}{% endif %}</summary>
+  <p class="note">{{ p.rationale }}</p>
+</details>
+{% endfor %}
 {% endif %}
 
 <h2>5 · Limits that cannot be measured away</h2>
