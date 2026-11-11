@@ -25,6 +25,7 @@ Cikti:
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import os
 import sqlite3
@@ -93,8 +94,9 @@ def main():
 
     # Uye basina: cins, plazmit, transpozon-yakin
     stats = defaultdict(lambda: {"genera": Counter(), "plasmid": 0, "tn": 0, "n": 0})
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     for row in connection.execute("""
-        SELECT r.candidate_id, rep.organism, rep.is_plasmid,
+        SELECT r.candidate_id, r.nucleotide_id, rep.organism, rep.is_plasmid,
                MAX(CASE WHEN c.category='transposon' AND ABS(nb.distance) <= ?
                         THEN 1 ELSE 0 END) has_tn
         FROM ro r
@@ -111,9 +113,11 @@ def main():
         entry["n"] += 1
         entry["plasmid"] += row["is_plasmid"] or 0
         entry["tn"] += row["has_tn"] or 0
-        organism = row["organism"] or ""
-        if organism.split():
-            entry["genera"][organism.split()[0]] += 1
+#  CINS: tahmin edilmez, `taxon_genus`'tan rank ile okunur (tek sahip
+#  ro_taxonomy.genus_map; gerekcesi ROADMAP 135.1).
+        got = genus_by_nuc.get(row["nucleotide_id"])
+        if got is not None and got.is_ranked:
+            entry["genera"][got.key] += 1
 
     # Komsuluk imzasi: yaprak uyelerinin +-4 gen komsu URUNLERI
     leaf_products = defaultdict(Counter)

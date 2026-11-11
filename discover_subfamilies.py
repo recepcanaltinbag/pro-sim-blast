@@ -26,6 +26,7 @@ Cikti:
     analysis_out/novel_candidates.csv
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import os
@@ -165,6 +166,9 @@ def main():
 
     connection = sqlite3.connect(args.db)
     connection.row_factory = sqlite3.Row
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(connection)
     rows = connection.execute("""
         SELECT r.candidate_id, r.ro_cluster, rep.organism
         FROM ro r JOIN replicon rep ON rep.nucleotide_id = r.nucleotide_id
@@ -214,8 +218,8 @@ def main():
                 class_totals[cls] += 1
                 member_rows.append((candidate_id, cluster, 0, f"{cluster}.0",
                                     len(members), round(ci, 4), cls))
-            genera = Counter(organism_of[m].split()[0] for m in members
-                             if organism_of[m].split())
+            genera = Counter(genus_by_cid[m].key for m in members
+                             if m in genus_by_cid)
             subfamily_rows.append((cluster, 0, f"{cluster}.0", len(members), 1,
                                    members[0], ";".join(f"{g}:{n}" for g, n
                                    in genera.most_common(5)), length))
@@ -243,8 +247,8 @@ def main():
                 consensus([aligned[m] for m in ordered[0][1]], length))
 
         for new_index, (old_index, sub_members) in enumerate(ordered):
-            genera = Counter(organism_of[m].split()[0] for m in sub_members
-                             if organism_of[m].split())
+            genera = Counter(genus_by_cid[m].key for m in sub_members
+                             if m in genus_by_cid)
             subfamily_rows.append((
                 cluster, new_index, f"{cluster}.{new_index}", len(sub_members),
                 1 if new_index == 0 else 0,

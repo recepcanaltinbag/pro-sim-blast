@@ -27,6 +27,7 @@ Cikti: analysis_out/geography.json
 """
 
 import argparse
+import ro_taxonomy
 import json
 import os
 import sqlite3
@@ -90,6 +91,7 @@ MIN_ENTRIES_FOR_COUNTRY = 15  # bunun altindaki ulke sapma testine girmez
 def load(con):
     rows = con.execute("""
         SELECT r.candidate_id, r.ro_cluster, r.ro_group, p.organism,
+               r.nucleotide_id,
                s.country, s.geo, s.collection_year, s.habitat,
                e.tier, l.leaf_id
         FROM ro r
@@ -101,10 +103,16 @@ def load(con):
           AND s.country IS NOT NULL AND s.country <> ''
     """).fetchall()
     out = []
-    for cid, cluster, group, organism, country, geo, year, habitat, tier, leaf in rows:
+    genus_by_nuc = ro_taxonomy.genus_map(con)
+    for (cid, cluster, group, organism, nuc, country, geo, year, habitat,
+         tier, leaf) in rows:
+        got = genus_by_nuc.get(nuc)
         out.append({
             "candidate_id": cid, "cluster": cluster, "group": group or "?",
-            "genus": (organism or "?").split()[0],
+            #  Cinsi atanmamis satir `rank:` on ekli anahtar tasir, yani
+            #  bir cins tablosunda gercek bir cinsle ayni kovaya DUSEMEZ.
+            "genus": got.key if got else ro_taxonomy.UNKNOWN_KEY,
+            "genus_is_ranked": bool(got and got.is_ranked),
             "country": country, "geo": geo, "year": year,
             "habitat": habitat or "unknown", "tier": tier or "unknown",
             "leaf": leaf,

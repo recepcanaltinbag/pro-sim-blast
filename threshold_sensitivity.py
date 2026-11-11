@@ -20,6 +20,7 @@ Cikti:
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import json
 import os
@@ -60,12 +61,13 @@ def load(connection, ecology_path):
     carboxylate = {cid: (cat, bridge) for cid, cat, bridge in connection.execute(
         "SELECT candidate_id, catalytic_residue, bridging_residue FROM ro_carboxylate")}
 
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     rows = []
     for (cid, cluster, group, coverage, rieske, catalytic, plasmid,
-         organism, domain) in connection.execute("""
+         nuc, domain) in connection.execute("""
             SELECT r.candidate_id, r.ro_cluster, r.ro_group, r.model_coverage,
                    r.rieske_intact, r.catalytic_intact, p.is_plasmid,
-                   p.organism, d.domain
+                   r.nucleotide_id, d.domain
             FROM ro r JOIN replicon p USING(nucleotide_id)
             LEFT JOIN ro_domain d ON d.candidate_id = r.candidate_id
             WHERE r.model_coverage IS NOT NULL"""):
@@ -73,7 +75,9 @@ def load(connection, ecology_path):
             "id": cid, "cluster": cluster, "group": group,
             "coverage": coverage, "rieske": rieske, "catalytic": catalytic,
             "plasmid": bool(plasmid),
-            "genus": (organism or "?").split()[0],
+            #  Cins tahmin edilmez; tek sahip ro_taxonomy (bkz. ROADMAP 135.1)
+            "genus": (genus_by_nuc[nuc].key if nuc in genus_by_nuc
+                      else ro_taxonomy.UNKNOWN_KEY),
             "domain": domain,
             "sclass": substrate_class.get(cluster, ""),
             "carbox": carboxylate.get(cid),

@@ -153,6 +153,7 @@ Kullanim:
     python3 variant_and_operon.py --db roar.sqlite --out-dir analysis_out
 """
 
+import ro_taxonomy
 import argparse
 import datetime
 import json
@@ -2143,6 +2144,10 @@ def question_one(con, aligned, active_site_path, py_rng):
 
 def question_two(con, rng):
     """Transpozon yakinligi cinsin mi tipin mi ozelligi."""
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
+    species_by_cid = ro_taxonomy.species_by_candidate(con)
     rows = con.execute("""
         SELECT r.candidate_id, r.ro_cluster, r.ro_group, p.organism, p.status,
                (SELECT COUNT(*) FROM neighbor nb
@@ -2159,13 +2164,14 @@ def question_two(con, rng):
     everything = []
     for (candidate_id, cluster, group, organism, status, n_neighbours,
          transposons) in rows:
-        words = (organism or "?").split()
+        #  CINS ve TUR: NCBI rank'indan (ro_taxonomy; ROADMAP 135.1).
+        got = genus_by_cid.get(candidate_id)
         everything.append({
             "candidate_id": candidate_id,
             "type": cluster or "?",
             "group": group or "?",
-            "genus": words[0] if words else "?",
-            "species": " ".join(words[:2]) if words else "?",
+            "genus": got.key if got else ro_taxonomy.UNKNOWN_KEY,
+            "species": species_by_cid.get(candidate_id) or "?",
             "replicon_status": status,
             "n_neighbours": n_neighbours or 0,
             "outcome": int((transposons or 0) > 0)})
@@ -2428,6 +2434,9 @@ def question_two(con, rng):
 
 def question_three(con, aligned, py_rng):
     """Enzim kimligi ile operon gen sirasi benzerligi arasindaki iliski."""
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     entries = {}
     for candidate_id, cluster, organism, n_genes, layout in con.execute("""
             SELECT r.candidate_id, r.ro_cluster, p.organism,
@@ -2439,10 +2448,11 @@ def question_three(con, aligned, py_rng):
             continue
         if not n_genes or n_genes < MIN_OPERON_GENES:
             continue
-        words = (organism or "?").split()
+        #  CINS: NCBI rank'indan (ro_taxonomy; ROADMAP 135.1).
+        got = genus_by_cid.get(candidate_id)
         entries[candidate_id] = {
             "type": cluster or "?",
-            "genus": words[0] if words else "?",
+            "genus": got.key if got else ro_taxonomy.UNKNOWN_KEY,
             "n_genes": n_genes,
             "layout": layout.split(" > ")}
     components, categories, positions = (defaultdict(set), defaultdict(set),

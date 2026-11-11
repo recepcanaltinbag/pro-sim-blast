@@ -20,6 +20,7 @@ Arama sozdizimi FTS5'in kendisidir: bosluk = VE, "tam ifade", onek*.
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import os
 import sqlite3
@@ -86,7 +87,7 @@ def main():
 
     rows = con.execute(f"""
         SELECT r.candidate_id, r.protein_id, r.locus_tag, r.gene, r.product, r.ro_cluster,
-               p.organism, p.taxonomy, p.is_plasmid,
+               r.nucleotide_id, p.organism, p.taxonomy, p.is_plasmid,
                {'rl.leaf_id' if has('ro_leaf') else 'NULL'} leaf_id,
                {'e.tier' if has('ro_evidence') else 'NULL'} tier,
                {'d.domain' if has('ro_domain') else 'NULL'} domain,
@@ -101,6 +102,7 @@ def main():
         {'LEFT JOIN ro_regulation g ON g.candidate_id = r.candidate_id' if has('ro_regulation') else ''}
         WHERE r.is_confirmed = 1""").fetchall()
 
+    genus_by_nuc = ro_taxonomy.genus_map(con)
     out = []
     for i, r in enumerate(rows, 1):
         cluster = r["ro_cluster"] or ""
@@ -108,7 +110,11 @@ def main():
         ch = chem.get(cluster, {})
         substrate = ch.get("substrate_en") or eco.get(cluster, {}).get("substrate", "")
         organism = r["organism"] or ""
-        genus = organism.split()[0] if organism else ""
+        #  Aranabilir cins RANK'tan gelir. Eski adlar (Mycolicibacterium,
+        #  Sinorhizobium) KAYBOLMAZ: `organism` ve `taxonomy` alanlari zaten
+        #  ayni belgede indeksleniyor, yani eski adla arayan da bulur.
+        got = genus_by_nuc.get(r["nucleotide_id"])
+        genus = (got.name or "") if got else ""
         # Indekslenecek metin: arayan kisinin yazabilecegi her sey tek belgede.
         doc = " ".join(filter(None, [
             r["candidate_id"], r["protein_id"], r["locus_tag"], r["gene"], r["product"],

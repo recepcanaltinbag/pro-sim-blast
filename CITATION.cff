@@ -1,0 +1,37 @@
+# Makine-okunur atif bilgisi (Citation File Format 1.2.0).
+#
+# NEDEN BU DOSYA VAR. ROAR-DB herkese acik bir veritabani olarak
+# yayimlaniyor ama 2026-11-11'e kadar sitede ne yazar adi ne atif bicimi
+# vardi: bir okuyucu bu veritabanindan bir sayi alip makalesine koymak
+# istedigi anda neyi atif edecegini bilmiyordu, ve bir sayinin hangi
+# SURUMDEN geldigini yazmasinin yolu da yoktu. Surum onemli, cunku bu
+# DB'nin sayilari her pipeline kosusunda degisiyor ve `db_revision.py`
+# her surumu degismez bir kayit olarak tutuyor -- atif o kayda
+# baglanabilmeli.
+#
+# ACIK KALAN (kullanici karari gerekiyor): ORCID, ve bir Zenodo DOI'si.
+# Ikisi de uydurulamaz. DOI alinirsa `doi:` alani ve `preferred-citation`
+# buraya eklenir; o zamana kadar atif depo URL'si + surum uzerinden.
+cff-version: 1.2.0
+message: "Bu veritabanini kullanirsaniz lutfen asagidaki gibi atif verin ve kullandiginiz SURUMU belirtin."
+title: "ROAR-DB: a curated database of Rieske oxygenase alpha subunits with genomic context"
+abstract: >-
+  ROAR-DB, Rieske oksijenaz alfa alt birimlerini kuratorlu enzim tiplerine
+  bagli olarak toplar ve her girisi uzerinde durdugu genom kaydinin
+  baglamiyla birlikte yayinlar: operon, komsuluk, duzenleyici, habitat,
+  takson ve capraz referanslar. Yayimlanan her sayinin KOSULU yazilidir;
+  iddialar giris, dizi ve cins duzeyinde test edilir ve karari cins
+  duzeyi verir. Cins, NCBI taksonomi rank'indan okunur.
+type: dataset
+authors:
+  - family-names: "Altınbağ"
+    given-names: "Recep Can"
+license: MIT
+repository-code: "https://github.com/recepcanaltinbag/pro-sim-blast"
+url: "https://recepcanaltinbag.github.io/pro-sim-blast/"
+keywords:
+  - Rieske oxygenase
+  - ring-hydroxylating dioxygenase
+  - biodegradation
+  - comparative genomics
+  - enzyme database

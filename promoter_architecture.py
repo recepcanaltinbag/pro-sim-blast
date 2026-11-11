@@ -29,6 +29,7 @@ Cikti: analysis_out/promoter_architecture.json
 """
 
 import argparse
+import ro_taxonomy
 import json
 import os
 import sqlite3
@@ -42,8 +43,8 @@ ARCH_A = "divergent_regulator"
 ARCH_B = "divergent_other"
 
 
-def genus_of(organism):
-    return (organism or "").split()[0] if organism else "?"
+#  CINS: tahmin edilmez, `taxon_genus`'tan rank ile okunur (tek sahip
+#  ro_taxonomy.genus_map; gerekcesi ROADMAP 135.1).
 
 
 def cliffs_delta(a, b):
@@ -92,10 +93,11 @@ def main():
     args = ap.parse_args()
 
     con = sqlite3.connect(args.db)
+    genus_by_nuc = ro_taxonomy.genus_map(con)
     rows = []
-    for cid, gap, arch, cluster, seq, organism in con.execute("""
+    for cid, gap, arch, cluster, seq, nuc, organism in con.execute("""
             SELECT g.candidate_id, g.intergenic_bp, g.architecture,
-                   r.ro_cluster, r.sequence, p.organism
+                   r.ro_cluster, r.sequence, r.nucleotide_id, p.organism
             FROM ro_regulation g
             JOIN ro r USING(candidate_id)
             JOIN replicon p ON p.nucleotide_id = r.nucleotide_id
@@ -104,7 +106,12 @@ def main():
               AND g.architecture IN (?, ?)""", (ARCH_A, ARCH_B)):
         rows.append({"candidate_id": cid, "gap": gap, "arch": arch,
                      "cluster": cluster, "sequence": seq or cid,
-                     "genus": genus_of(organism)})
+                     "genus": (genus_by_nuc[nuc].key if nuc in genus_by_nuc
+                               else ro_taxonomy.UNKNOWN_KEY),
+                     #  Yalnizca BIRIM DUYARLILIGI icin tutuluyor (asagi),
+                     #  hicbir iddiada kullanilmiyor.
+                     #  genus-string-intentional: BIRIM DUYARLILIGI olcumu
+                     "genus_string_guess": (organism or "?").split()[0]})
 
     levels = {}
     for name, data in (
@@ -113,6 +120,21 @@ def main():
             ("genus", collapse(rows, lambda r: (r["cluster"], r["genus"])))):
         levels[name] = compare([r for r in data if r["arch"] == ARCH_A],
                                [r for r in data if r["arch"] == ARCH_B])
+
+    #  BIRIMIN KENDI DUYARLILIGI. Cins bu dosyanin KARAR birimi, ve
+    #  2026-11-11'de tanimi degisti: `organism.split()[0]` yerine NCBI
+    #  rank'i (ROADMAP 135.1). Bir karar biriminin tanimi degistiginde
+    #  sorulmasi gereken sey, hukmun DONUP DONMEDIGI -- ve cevabi
+    #  yayimlanmali, cunku "degistirdim ama bir sey degismedi" ile
+    #  "degistirdim ve sonuc tersine dondu" okuyucu icin ayni sey degil.
+    #  Iki tanim ayni veri uzerinde ayri ayri hesaplanir.
+    unit_sensitivity = {}
+    for label, key in (("ncbi_rank", "genus"),
+                       ("first_word_of_organism", "genus_string_guess")):
+        data = collapse(rows, lambda r, k=key: (r["cluster"], r[k]))
+        unit_sensitivity[label] = compare(
+            [r for r in data if r["arch"] == ARCH_A],
+            [r for r in data if r["arch"] == ARCH_B])
 
     # CINS ICI ESLI SINAMA: her cins kendi icinde karsilastirilir.
     per_genus, paired = {}, []
@@ -146,6 +168,14 @@ def main():
                     "translations of neighbouring genes, not intergenic DNA.",
         "comparison": {"group_a": ARCH_A, "group_b": ARCH_B},
         "levels": levels,
+        "genus_unit_sensitivity": {
+            "why": "Genus is this test's decision unit, and on 2026-11-11 its "
+                   "definition changed from a guess at the organism name to the "
+                   "NCBI rank. The two rows below measure the same data under "
+                   "both definitions, so the reader can see how much the "
+                   "verdict depends on the unit rather than on the biology.",
+            "definitions": unit_sensitivity,
+        },
         "within_genus": within,
         "per_genus": per_genus,
         "caveats": [

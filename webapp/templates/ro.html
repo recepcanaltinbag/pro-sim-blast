@@ -54,6 +54,15 @@ and is shown for completeness only.</div>
     <dt>Organism</dt><dd><i>{{ ro.organism }}</i>
       {% if ro.is_plasmid %}<span class="chip chip--plasmid">plasmid</span>{% endif %}
       {% if ro.domain %}<span class="chip">{{ ro.domain }}{% if ro.euk_group %} / {{ ro.euk_group }}{% endif %}</span>{% endif %}</dd>
+    {#  Organizma adi serbest metin; taxid kalici tanimlayici, ve cins
+        adin ilk kelimesinden degil NCBI rank'indan geliyor. Ayni blok
+        `static/entry.js`'te de var -- yayimlanan giris sayfalari bu
+        sablonla degil onunla ciziliyor (ROADMAP 135.1).  #}
+    {% if ro.taxid %}
+    <dt>NCBI taxon</dt><dd><a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id={{ ro.taxid }}" rel="noopener">taxid {{ ro.taxid }}</a>
+      {% if ro.genus_name %}<span class="note">genus <i>{{ ro.genus_name }}</i>, read from the NCBI rank</span>
+      {% elif ro.proxy_rank %}<span class="note">NCBI assigns this organism no genus; its nearest named rank is {{ ro.proxy_rank }} <i>{{ ro.proxy_name }}</i></span>{% endif %}</dd>
+    {% endif %}
     <dt>Lineage</dt><dd class="small">{{ ro.taxonomy }}</dd>
     <dt>Genome record</dt><dd><a href="https://www.ncbi.nlm.nih.gov/nuccore/{{ ro.nucleotide_id }}" rel="noopener">{{ ro.nucleotide_id }}</a>
       <span class="note">{{ ro.description }} · {{ ro.replicon_length|fmt }} bp ·

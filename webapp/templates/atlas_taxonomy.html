@@ -1,5 +1,107 @@
 {% extends "base.html" %}
-{% block title %}Taxonomy{% endblock %}
+{% block title %}Taxonomy
+<h2 id="genus">4 &middot; How a genus is decided</h2>
+<p class="lede">The statistical rule of this database is that a signal is tested at entry,
+sequence and genus level, and that <b>the genus level decides</b>. That makes the genus the unit
+of every published signal &mdash; so it has to be a classification, not a string operation.</p>
+
+<p class="note">Until 2026-11-11 it was a string operation. The genus was taken as the first word
+of the GenBank organism name, independently in <b>sixteen places</b> across the pipeline and the
+web application. Two of them disagreed on a missing organism &mdash; one counted
+<code>Unknown</code> as a genus, the other dropped the row &mdash; so the genus denominator of the
+same set depended on which script you ran. The genus is now read from the <b>NCBI taxonomy
+rank</b>: the nearest ancestor of the genome record's taxon whose rank is exactly
+<code>genus</code>. One reader owns the question; the validator fails if a second local
+implementation appears.</p>
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Measured</th><th>Value</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Genome records with an NCBI taxid</td>
+    <td>{{ '{:,}'.format(gtax.denominators.replicons_with_taxid) }} /
+        {{ '{:,}'.format(gtax.denominators.replicons_with_taxid) }}</td>
+    <td>Taken from <code>/db_xref="taxon:N"</code> in each record; no network lookup was needed.</td></tr>
+<tr><td>Taxids carried forward by NCBI</td>
+    <td>{{ '{:,}'.format(gtax.taxid_status.get('merged', 0)) }}</td>
+    <td>Merged into a newer taxon since the record was written; resolved through
+        <code>merged.dmp</code> rather than left dangling.</td></tr>
+<tr><td>Distinct genera, by rank</td>
+    <td>{{ '{:,}'.format(gtax.distinct_ranked_genera) }}</td>
+    <td>Every one of them is a taxon with rank <code>genus</code>, not a first word.</td></tr>
+<tr><td>Entries whose genus changes</td>
+    <td>{{ '{:,}'.format(gtax.genus_change.entries_whose_genus_changes) }}
+        ({{ '%.1f'|format(gtax.genus_change.share_changed * 100) }}%)</td>
+    <td>Renamings the string missed: <i>Sinorhizobium</i> &rarr; <b>Ensifer</b>,
+        <i>Rhizobium rhizogenes</i> &rarr; <b>Martinezella</b>,
+        <i>[Enterobacter] lignolyticus</i> &rarr; <b>Pluralibacter</b>.</td></tr>
+<tr><td>Entries with <b>no</b> genus-rank ancestor</td>
+    <td>{{ '{:,}'.format(gtax.genus_unassigned.entries) }}
+        ({{ '%.1f'|format(gtax.genus_unassigned.share * 100) }}%)</td>
+    <td>Not a gap in our data: NCBI assigns these species no genus at all. Carried as
+        <code>unassigned</code>, excluded from genus counts, declared wherever those counts
+        are published.</td></tr>
+<tr><td>Genera hidden in one &ldquo;Candidatus&rdquo; bucket</td>
+    <td>{{ gtax.candidatus_genera }}</td>
+    <td><i>Candidatus</i> is a naming status, not a genus. The first-word rule put
+        {{ gtax.fake_genus_buckets_removed.get('Candidatus', 0) }} entries from
+        {{ gtax.candidatus_genera }} separate genera into a single cell.</td></tr>
+</tbody></table></div>
+<figcaption><b>Denominator.</b> Entry counts are over the
+{{ '{:,}'.format(gtax.denominators.confirmed_entries) }} confirmed entries; the taxid counts are
+over genome records, of which this database holds
+{{ '{:,}'.format(gtax.denominators.replicons_with_taxid) }}.
+<b>Source.</b> NCBI taxonomy dump (<code>nodes.dmp</code>, <code>names.dmp</code>,
+<code>merged.dmp</code>, <code>delnodes.dmp</code>), downloaded with its published md5 checked.</figcaption>
+</figure>
+
+{% set sens = (gsens.genus_unit_sensitivity.definitions if gsens and gsens.genus_unit_sensitivity else none) %}
+{% if sens and sens.ncbi_rank and sens.first_word_of_organism %}
+<p class="note"><b>Did the correction change a verdict?</b> It has to be asked, because changing the
+unit of a test can reverse it, and &ldquo;I changed the definition and nothing moved&rdquo; is not
+the same statement as &ldquo;I changed it and the result flipped.&rdquo; The genus-level promoter
+test was recomputed on the same data under both definitions: with the NCBI rank the effect size is
+{{ '%.3f'|format(sens.ncbi_rank.cliffs_delta) }}
+(p = {{ '%.1e'|format(sens.ncbi_rank.p) }}), with the first word of the organism name
+{{ '%.3f'|format(sens.first_word_of_organism.cliffs_delta) }}
+(p = {{ '%.1e'|format(sens.first_word_of_organism.p) }}). <b>The verdict does not move.</b> The
+genus definition was wrong and is now right; that it did not rescue or destroy a published claim is
+a measurement, not an assumption, and it is recomputed on every run rather than written here once.
+The two rows are in
+<a href="{{ u('/download/analysis/promoter_architecture.json') }}">promoter_architecture.json</a>
+under <code>genus_unit_sensitivity</code>.</p>
+{% endif %}
+
+<details class="basis">
+  <summary>Why the lineage already in the record was not enough</summary>
+  <p class="note">Each GenBank record also carries a semicolon-separated lineage, and the obvious
+  repair is to call its last field the genus. That was measured and rejected: in
+  <b>2,006 of 17,074</b> records (11.7%) the last field is not a genus but a species complex
+  &mdash; <i>Mycobacterium tuberculosis complex</i>, <i>Bacillus cereus group</i>,
+  <i>Ralstonia solanacearum species complex</i>. The lineage string carries no rank labels, so
+  field position does not mean rank. Rank has to come from <code>nodes.dmp</code>, which is why
+  the taxonomy dump is a pipeline input.</p>
+</details>
+
+<details class="basis">
+  <summary>The database's seventh largest &ldquo;genus&rdquo; is not a genus</summary>
+  <p class="note">The organism strings name <i>Mycolicibacterium</i> on
+  {{ '{:,}'.format(gtax.genus_unassigned.entries) }}-odd entries, which under the first-word rule
+  made it this database's seventh largest genus, between <i>Rhodococcus</i> and
+  <i>Novosphingobium</i>. In the current NCBI taxonomy it is a <b>subgenus</b>:
+  <code>Mycobacterium (subgen. Mycolicibacterium)</code>, and the lineage of
+  <i>Mycolicibacterium fortuitum</i> runs species &rarr; subgenus &rarr; <b>family</b>
+  Mycobacteriaceae, with no genus node on the way. So a published genus-level signal was resting
+  on a genus that does not exist. Dropping those entries would have shrunk the denominator
+  silently; folding them into <i>Mycobacterium</i> would have asserted a placement NCBI does not
+  make. They are carried with their nearest named rank and counted separately.</p>
+  <p class="note">NCBI is not internally consistent here, and that is reported rather than
+  tidied: the same-shaped node for <i>Mycolicibacter</i> (taxid 1073531) carries rank
+  <code>genus</code>, while the one for <i>Mycolicibacterium</i> carries rank
+  <code>subgenus</code>. Rank is taken from the source as it stands.</p>
+</details>
+
+{% endblock %}
 {% set page_id = 'taxonomy' %}
 {% block body %}
 {% include "_atlas_nav.html" %}

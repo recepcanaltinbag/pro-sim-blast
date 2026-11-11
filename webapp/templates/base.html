@@ -7,6 +7,32 @@
 <meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
 <meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="{{ u('/static/style.css') }}">
+{#  Makine-okunur veri kumesi meta verisi (schema.org Dataset / Bioschemas).
+    NEDEN: bu veritabani yalnizca baglantiyi ZATEN bilen biri tarafindan
+    bulunabiliyordu; veri kumesi arama motorlari icin hicbir yapili bilgi
+    yoktu. `version` KOD surumu degil VERI surumudur -- ikisini tek sayiya
+    indirmek, ayni commit'in yeniden kosturulunca baska sayilar
+    yayinlayabildigi gercegini gizler.  #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast"{%
+  if build.data_revision %},
+  "version": "{{ build.data_revision }}"{% endif %}{%
+  if build.data_revision_date %},
+  "dateModified": "{{ build.data_revision_date }}"{% endif %}
+}
+</script>
 </head>
 {% set path = (request.url.path if request else '/') %}
 <body{% if path == '/' %} data-page="home"{% endif %}>
@@ -37,11 +63,16 @@
   annotation with profile models of {{ N_REFS }} Rieske oxygenases characterised in the literature.
   Every figure states its method and its limits; <a href="{{ u('/atlas/quality') }}">what the
   database cannot tell you</a> is documented alongside what it can.</p>
-  <p class="note">Build {{ build.built }}{% if build.commit %} · pipeline revision
-  <code>{{ build.commit }}</code> of {{ build.commit_date }}{% endif %} ·
+  <p class="note">Build {{ build.built }}{% if build.commit %} · code revision
+  <code>{{ build.commit }}</code> of {{ build.commit_date }}{% endif %}{%
+  if build.data_revision %} · <b>data revision</b>
+  <code>{{ build.data_revision }}</code> of {{ build.data_revision_date }}{% endif %} ·
   source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
-  When citing a specific entry, quote its identifier and this revision, because type assignments and
-  variant boundaries change when the pipeline is rerun. Provided as-is for research use.</p>
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="{{ u('/about') }}#cite">How to cite</a>. Provided as-is for research
+  use.</p>
 </footer>
 <script src="{{ u('/static/table.js') }}" defer></script>
 <script src="{{ u('/static/longnote.js') }}" defer></script>

@@ -107,6 +107,7 @@ Cikti:
     analysis_out/learning.json
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import json
@@ -912,7 +913,13 @@ def build_context_features(connection, entries):
                 add(f"lineage_rank{rank}={level}",
                     [1.0 if (len(l) > rank and l[rank] == level) else 0.0
                      for l in lineages], "taxonomy")
-    genera = [e["organism"].split()[0] if e["organism"] else "unknown"
+    #  CINS bir OZELLIK olarak ogrenilecekse, ogrenilen sey bir
+    #  siniflandirma olmali: dizgi tahmini ayri cinsleri tek ozellige
+    #  toplar ve modelin o ozellige verdigi agirlik olculmemis olur
+    #  (ro_taxonomy; ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(connection)
+    genera = [(genus_by_cid[e["candidate_id"]].key
+               if e["candidate_id"] in genus_by_cid else "unknown")
               for e in entries]
     for level, count in sorted(Counter(genera).items()):
         if count >= 25:

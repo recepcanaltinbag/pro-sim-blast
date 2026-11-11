@@ -166,6 +166,19 @@
       (ro.is_plasmid ? '<span class="chip chip--plasmid">plasmid</span>' : '') +
       (ro.domain ? '<span class="chip">' + esc(ro.domain) +
         (ro.euk_group ? ' / ' + esc(ro.euk_group) : '') + '</span>' : '') + '</dd>');
+    /*  Organizma adi serbest metin; taxid kalici tanimlayici. Cins adin
+        ilk kelimesinden DEGIL, rank'i 'genus' olan atadan gelir -- ve
+        NCBI hic cins atamadiysa o SOYLENIR, uydurulmaz (ROADMAP 135.1).  */
+    if (rec.tx) {
+      h.push('<dt>NCBI taxon</dt><dd><a href="https://www.ncbi.nlm.nih.gov/' +
+        'Taxonomy/Browser/wwwtax.cgi?id=' + rec.tx + '" rel="noopener">taxid ' +
+        rec.tx + '</a>' +
+        (rec.gn ? ' <span class="note">genus <i>' + esc(rec.gn) +
+          '</i>, read from the NCBI rank</span>'
+         : rec.gp ? ' <span class="note">NCBI assigns this organism no genus; ' +
+            'its nearest named rank is ' + esc(rec.gp[0]) + ' <i>' +
+            esc(rec.gp[1]) + '</i></span>' : '') + '</dd>');
+    }
     h.push('<dt>Lineage</dt><dd class="small">' + esc(ro.taxonomy) + '</dd>');
     h.push('<dt>Genome record</dt><dd><a href="https://www.ncbi.nlm.nih.gov/nuccore/' +
       encodeURIComponent(ro.nucleotide_id) + '" rel="noopener">' + esc(ro.nucleotide_id) +

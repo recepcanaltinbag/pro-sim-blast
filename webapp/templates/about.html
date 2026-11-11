@@ -350,4 +350,53 @@ POST /api/classify               body: FASTA text, or JSON {"sequences": "..."}<
 <a href="{{ u('/download/all_confirmed.csv') }}">all annotation</a>,
 <a href="{{ u('/download/operons.csv') }}">operon gene tables</a>,
 <a href="{{ u('/download/tree_all.nwk') }}">tree in Newick format</a>.</p>
+
+<h2 id="cite">10 &middot; How to cite this database, and which version</h2>
+<p class="lede">A number taken from here is only reproducible if the <b>data revision</b> is quoted
+with it. Type assignments, variant boundaries and member counts all move when the pipeline is
+rerun over refetched records, so the code revision alone does not pin a number.</p>
+
+<p>Current data revision: <b><code>{{ build.data_revision or 'not recorded' }}</code></b>{%
+if build.data_revision_date %}, recorded {{ build.data_revision_date }}{% endif %}{%
+if build.data_revision_entries %}, {{ build.data_revision_entries|fmt }} confirmed
+entries{% endif %}. Each revision is written once and never edited; it stores the counts, the
+per-type member numbers, the fingerprints of the curated inputs and the code revision that
+produced it, so two numbers that disagree can be traced to the run that changed them.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Citing</th><th>Quote</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>the database</td>
+    <td>ROAR-DB, data revision <code>{{ build.data_revision or 'rev-NNNN' }}</code>,
+        {{ build.data_revision_date or '' }}</td>
+    <td>Identifies the dataset state your numbers came from.</td></tr>
+<tr><td>a single entry</td>
+    <td>its identifier, e.g. <code>NC_000913.3:14167-15298:1</code>, plus the data revision</td>
+    <td>Entry identifiers are genomic coordinates, so they survive reclassification: a type can be
+        renamed or split without the permalink breaking.</td></tr>
+<tr><td>an enzyme type</td>
+    <td>the type identifier and the data revision</td>
+    <td>Membership of a type is a measurement and changes between revisions.</td></tr>
+<tr><td>a figure or a statistic</td>
+    <td>the page, the data revision, and the analysis file it links to</td>
+    <td>Every figure links the file it was computed from; those files are downloadable so a
+        reader can recompute the number rather than trust it.</td></tr>
+</tbody></table></div>
+
+<p class="note">The repository carries a machine-readable
+<a href="https://github.com/recepcanaltinbag/pro-sim-blast/blob/main/CITATION.cff" rel="noopener"><code>CITATION.cff</code></a>,
+which GitHub renders as a &ldquo;Cite this repository&rdquo; box, and this page carries
+schema.org <code>Dataset</code> metadata so the database is discoverable by dataset search
+engines rather than only by someone who already has the link. Licence: MIT, as stated in the
+repository.</p>
+
+<details class="basis">
+  <summary>What is still missing from the citation record</summary>
+  <p class="note">There is <b>no DOI</b> and no author ORCID yet. A DOI would make a given data
+  revision citable as a fixed, archived object rather than as a URL that keeps moving; until one
+  is minted, a citation has to carry the revision id to be reproducible. This is recorded as an
+  open item rather than quietly left out, because a database that cannot be cited precisely is
+  being used on trust.</p>
+</details>
+
 {% endblock %}

@@ -100,6 +100,7 @@ Kullanim:
     python3 operon_relations.py --db roar.sqlite --out-dir analysis_out
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import json
@@ -443,6 +444,9 @@ def mantel_haenszel(strata):
 # ------------------------------------------------------------------ veri yukleme
 
 def load(con, chemistry_path, ecology_path, domain_csv):
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     chem = {}
     with open(chemistry_path, encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
@@ -492,7 +496,9 @@ def load(con, chemistry_path, ecology_path, domain_csv):
             "candidate_id": cid,
             "cluster": cluster,
             "group": group or "?",
-            "genus": (organism or "?").split()[0],
+            #  CINS: NCBI rank'indan (ro_taxonomy; ROADMAP 135.1).
+            "genus": (genus_by_cid[cid].key if cid in genus_by_cid
+                      else ro_taxonomy.UNKNOWN_KEY),
             "chem_family": c.get("family") or "unknown",
             "reaction_class": c.get("reaction_class") or "unknown",
             "sclass": e.get("substrate_class", "unknown"),
@@ -1982,6 +1988,9 @@ def gate_ladder(sampled, rbh_pairs, floor, rbh_report):
 
 
 def divergence_block(con, cpu, seed=RANDOM_SEED):
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     rows = load_regulator_pairs_input(con)
     total_confirmed = con.execute(
         "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
@@ -2069,7 +2078,9 @@ def divergence_block(con, cpu, seed=RANDOM_SEED):
         return out
 
     entries = [{"candidate_id": cid, "type": cluster, "group": group or "?",
-                "genus": (organism or "?").split()[0],
+                #  CINS: NCBI rank'indan (ro_taxonomy; ROADMAP 135.1).
+                "genus": (genus_by_cid[cid].key if cid in genus_by_cid
+                          else ro_taxonomy.UNKNOWN_KEY),
                 "family": family, "architecture": architecture,
                 "alpha": alpha, "regulator": regulator}
                for (cid, cluster, group, organism, family, architecture,

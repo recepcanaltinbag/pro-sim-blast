@@ -12,6 +12,7 @@ gelince su sorular sorulabilir hale geliyor:
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import os
 import sqlite3
@@ -43,12 +44,11 @@ def connect(db_path):
     return connection
 
 
-def genus_of(organism):
-    """Organizma adindan cins (genus) cikar."""
-    if not organism:
-        return "Unknown"
-    parts = organism.split()
-    return parts[0] if parts else "Unknown"
+#  CINS: tahmin edilmez, `taxon_genus`'tan rank ile okunur. Burada bir
+#  zamanlar `organism.split()[0] or "Unknown"` duruyordu -- ve "Unknown"
+#  BIR CINS olarak sayiliyordu, oysa `analyze_ecology.py` ayni durumda
+#  satiri dusuruyordu; yani ayni kumenin cins paydasi hangi betigi
+#  kosturdugunuza gore degisiyordu. Tek sahip: ro_taxonomy.genus_map.
 
 
 def section(title):
@@ -163,7 +163,7 @@ def transposon_by_taxon(connection, window=5000, min_ro=20, output_csv=None):
     section(f"TRANSPOZON ILISKISI (RO'nun +-{window}bp icinde mobil element)")
 
     rows = connection.execute("""
-        SELECT rep.organism, r.candidate_id,
+        SELECT r.nucleotide_id, r.candidate_id,
                MAX(CASE WHEN c.category='transposon' AND ABS(nb.distance) <= ?
                         THEN 1 ELSE 0 END) has_tn
         FROM ro r
@@ -174,16 +174,27 @@ def transposon_by_taxon(connection, window=5000, min_ro=20, output_csv=None):
         GROUP BY r.candidate_id
     """, (window,)).fetchall()
 
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     by_genus = defaultdict(lambda: [0, 0])   # genus -> [ro sayisi, transpozonlu]
+    unassigned = [0, 0]
     for row in rows:
-        stats = by_genus[genus_of(row["organism"])]
+        got = genus_by_nuc.get(row["nucleotide_id"])
+        if got is None or not got.is_ranked:
+            #  Cinsi atanmamis giris bir CINS sayilmaz, ama kaybedilmez de:
+            #  ayri sayilip tablonun altinda beyan edilir.
+            unassigned[0] += 1
+            unassigned[1] += row["has_tn"]
+            continue
+        stats = by_genus[got.key]
         stats[0] += 1
         stats[1] += row["has_tn"]
 
     total_ro = sum(v[0] for v in by_genus.values())
     total_tn = sum(v[1] for v in by_genus.values())
     baseline = total_tn / total_ro if total_ro else 0
-    print(f"  Genel taban oran: {total_tn:,}/{total_ro:,} = {baseline:.1%}\n")
+    print(f"  Genel taban oran: {total_tn:,}/{total_ro:,} = {baseline:.1%}")
+    print(f"  (cinsi NCBI'da atanmamis ve bu tabloya GIRMEYEN: "
+          f"{unassigned[0]:,} giris, {unassigned[1]:,} transpozonlu)\n")
 
     ranked = [(genus, count, tn, tn / count)
               for genus, (count, tn) in by_genus.items() if count >= min_ro]

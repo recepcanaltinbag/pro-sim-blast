@@ -460,6 +460,7 @@
       <dt>Phyla</dt><dd class="small">{% for p, n in x.phyla %}{{ p }} {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}</dd>
       <dt>Top genera</dt><dd>{% for g, n in c.top_genera %}<span class="chip">{{ g }} {{ n }}</span> {% endfor %}</dd>
     </dl>
+    {% include "_genus_basis.html" %}
     <p class="dl">
       <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.fasta') }}">Sequences (FASTA)</a>
       <a class="btn" href="{{ u('/download/cluster/' ~ c.cluster ~ '.csv') }}">Annotation (CSV)</a>

@@ -4102,6 +4102,127 @@ canlidaki 19.109 sayfanin hepsinde duruyordu. Duzeltildi.
 ACIK KALAN (A6'nin oteki yarisi): InterPro, KEGG, MetaCyc. Bunlar
 elimizde YOK; UniProt REST'ten 68.747 accession icin cekilmesi gerekiyor.
 
+## 135. "Biyoinformatik acidan profesyonel" -- olculmus eksik listesi (2026-11-11)
+
+Kullanici istegi: "bu DATAbase'i profesyonel bi hale getirelim biyoinformatik
+acidan". Tahmin yerine OLCUM yapildi; asagidaki her satir kosturularak
+dogrulandi. Siralama "yayimlanan bir iddiaya dokunuyor mu" olcutune gore.
+
+| # | eksik | olculmus durum | yayimlanan iddiaya dokunur mu |
+|---|---|---|---|
+| 135.1 | NCBI taxid + rank'li taksonomi | **YOKTU**; cins 5 ayri dosyada `organism.split()[0]` ile tahmin ediliyordu | **EVET** -- cins, her istatistigin KARAR birimi |
+| 135.2 | Surum + atif (CITATION.cff, DOI, makine-okunur meta) | yok; `db_revision.py` ici surum tutuyor ama site surum YAYINLAMIYOR | hayir, ama DB atif edilemez |
+| 135.3 | Substratlar icin ChEBI | yok; `chemistry.csv` yalnizca Ingilizce ad + SMILES | kismen -- substrat adi dis dunyaya baglanamiyor |
+| 135.4 | Genomik baglam icin GFF3 ciktisi | yok; operon/komsuluk yalnizca DB icinde | hayir, ama veri yeniden kullanilamaz |
+| 135.5 | Pfam/InterPro surum sabitleme | accession'lar var, **Pfam SURUMU yazili degil** | evet -- bir HMM vurusu adlandirilmis surum olmadan yeniden uretilemez |
+
+Iyi durumda OLAN ve degistirilmemesi gerekenler (bakildi, dogrulandi):
+`candidate_id` koordinat tabanli (`NC_000853.1:1311057-1312053:1`) -- yani
+bir tip yeniden siniflandirildiginda kalici baglantilar BOZULMUYOR; LICENSE
+(MIT) var; `db_revision.py` surumleri degismez kayitlar halinde tutuyor;
+FASTA indirmeleri ve `/download/analysis/` saglamligi `check_site.py` ile
+sinaniyor.
+
+### 135.1 Taksonomi KONTROLLU SOZLUK oldu -- ve cins tahmini curutuldu
+
+Bu DB'nin kendi istatistik kurali "karari CINS DUZEYI verir" diyor. Ama
+cins hicbir yerde TANIMLI degildi; **ON DORT** yerde ayri ayri dizgiden
+tahmin ediliyordu. Dokuzunu grep buldu (`analyze.py`, `analyze_ecology.py`,
+`geography.py`, `threshold_sensitivity.py`, `build_search_index.py`,
+`promoter_architecture.py`, `make_explorer.py` (iki yer), `make_report.py`,
+`characterize_leaves.py`); kalan besini **dogrulayici muhafizin kendisi**
+yakaladi: `ancestry.py`, `isolation_source.py` (tur icin), ve
+`webapp/app.py` + `webapp/atlas.py` (iki yer) -- ki bu son ucu dogrudan
+YAYIMLANAN sayfalari besliyordu. Ustelik ikisi eksik
+organizmada BIRBIRINE ZIT: `analyze.py` "Unknown" deyip onu bir cins olarak
+SAYIYOR, `analyze_ecology.py` None deyip satiri DUSURUYOR -- yani ayni
+kumenin cins paydasi hangi betigi kosturdugunuza gore degisiyordu.
+
+Olculen hatalar:
+
+1. **`Candidatus` bir cins degil.** `split()[0]` onu cins sanip **17 ayri
+   gercek cinsi** (Micropelagos, Rhodobacter, Pelagibacter,
+   Puniceispirillum, Pseudothioglobus, ...) tek kovaya yiginiyordu: 57
+   giris. Yonu de en kotusu -- ayri cinsleri tek cins gostermek, bir
+   sinyalin tek cinste YOGUNLASTIGI izlenimini guclendirir, ki cins
+   muhafizinin varlik sebebi tam olarak bunu engellemek. `uncultured` ayni
+   sekilde bir cins sayiliyordu.
+2. **Dizgi, cins adi uretiyor.** `'Nostoc azollae' 0708` -> cins `'Nostoc`
+   (tirnakla), `[Enterobacter] lignolyticus` -> `[Enterobacter]`
+   (koseli parantezle; NCBI'nin "yanlis uygulanmis ad" isareti).
+3. **Yeniden adlandirmalar kaciriliyor.** Olculdu: 325 dogrulanmis girisin
+   cinsi rank'la bakildiginda degisiyor -- Sinorhizobium -> **Ensifer**,
+   Rhizobium rhizogenes -> **Martinezella**, [Enterobacter] lignolyticus ->
+   **Pluralibacter**.
+
+Akla gelen ilk duzeltme -- `replicon.taxonomy` soyagacinin SON alanini cins
+saymak -- de curutuldu: 17.074 replikonun **2.006'sinda (%11,7)** o alan
+cins degil, bir TUR KOMPLEKSI ("Mycobacterium tuberculosis complex",
+"Bacillus cereus group"). Soyagacinda rank etiketi yok; alan sirasi rank
+anlamina gelmiyor. O yuzden cins NCBI `nodes.dmp`'ten RANK ile okunuyor.
+
+**En agir bulgu: DB'nin 7. en kalabalik "cinsi" diye bir cins yok.**
+`Mycolicibacterium` (612 giris) bugunun NCBI taksonomisinde cins DEGIL,
+**altcins**: `Mycobacterium (subgen. Mycolicibacterium)`, ve o yolda cins
+rank'li dugum HIC YOK (tur -> altcins -> AILE Mycobacteriaceae). Yani
+yayimlanan bir cins duzeyi sinyal, var olmayan bir cins uzerine kuruluydu.
+Bu satirlar DUSURULMEDI (payda sessizce kuculurdu) ve cins UYDURULMADI;
+`genus_state='unassigned'` ile tasiniyor ve en yakin adlandirilmis rank
+VEKIL olarak yaziliyor. Cins duzeyi bir test ya vekille gruplar ya da
+disarida birakir -- hangisi olursa olsun **614 girisi (%3,2) beyan etmek
+zorunda**.
+
+Kurulan (yerel, aga yalnizca taxdump icin cikildi, md5 dogrulandi):
+`replicon_taxon(nucleotide_id, taxid, taxid_current, status, name, rank)`
+-- 17.073/17.074 replikon, 6.223 tekil taxid, 71'i `merged.dmp` ile
+guncele tasindi; `taxon_lineage(taxid, rank, ancestor_taxid, ancestor_name)`
+-- 43.526 satir, 1.380 rank'li tekil cins; `taxon_genus(...)` tek sahipli
+cevap. taxid kaynagi her GenBank kaydinin `source` ozelligindeki
+`/db_xref="taxon:N"` -- 17.074/17.074 dosyada VAR, hic aga cikilmadi.
+
+Yan bulgu: `replicon` tablosunda **bos bir hayalet satir** var
+(`nucleotide_id=''`, `status='no_annotation'`, `cds_count=0`); hicbir `ro`
+satiri ona bagli degil ama replikon sayisini 1 sisiriyor, yani replikon
+basina her yuzdenin paydasi bir fazla. (A3 payda muhafizi kapsaminda.)
+
+NCBI'nin kendi tutarsizligi da not: `Mycolicibacter` icin ayni bicimdeki
+dugum (`Mycobacterium (subgen. Mycolicibacter)`, taxid 1073531) rank'i
+**genus**, `Mycolicibacterium` icin ayni bicimdeki dugum rank'i
+**subgenus**. Rank kaynaktan oldugu gibi aktariliyor, duzeltilmiyor.
+
+ACIK: (a) bes dizgi tahmincisini tek sahipli okuyucuya cevirmek ve
+asagi akisi yeniden kosturmak, (b) dogrulayici kontrolleri, (c) cins
+duzeyi iddia yayimlayan HER sayfaya duzeltmeyi tasimak.
+
+
+### 135.2 Surum ve atif YAYIMLANDI (2026-11-11)
+
+Sitede ne yazar adi ne atif bicimi vardi; bir okuyucu buradan bir sayi
+alip makalesine koymak istedigi anda neyi atif edecegini bilmiyordu.
+Daha sinsi olani ikinci bulgu: **veri surumu hic yayinlanmiyordu.**
+`db_revision.py` surumleri degismez kayitlar halinde tutuyor, ama son
+kayit `rev-0007` (2026-10-30) iken DB on iki gun boyunca degisti --
+yani site, gosterdigi veriyi tanimlamayan bir durumdan yayinlaniyordu.
+
+Yapilan:
+- `CITATION.cff` (CFF 1.2.0). DOI ve ORCID **uydurulmadi**, acik madde
+  olarak yazildi; DOI alinirsa `preferred-citation` eklenecek.
+- `/about#cite`: neyi atif etmeli, hangi surumle, ve neden. Giris
+  kimliklerinin koordinat tabanli oldugu -- yani yeniden siniflandirma
+  kalici baglantiyi bozmadigi -- burada soyleniyor.
+- Footer'da **veri surumu, kod surumunden AYRI** yaziliyor. Ikisini tek
+  sayiya indirmek yanlis olurdu: ayni commit, yeniden kosturulmus bir
+  pipeline ile baska sayilar yayinlayabilir.
+- `base.html` basinda schema.org `Dataset` JSON-LD (`version` = VERI
+  surumu). DB artik yalnizca baglantiyi zaten bilen biri tarafindan degil,
+  veri kumesi arama motorlariyla da bulunabilir.
+- Dogrulayici: `CITATION.cff` alanlari + **yayimlanan veri surumu DB ile
+  ayni durumu anlatiyor mu** (rev kaydindaki giris sayisi ile canli sayim
+  karsilastirilir). rev-0007'nin on iki gun bayat kalmasi bir daha sessizce
+  olmayacak.
+
+ACIK (kullanici karari): Zenodo DOI ve ORCID.
+
 ## Yeniden uretim
 
 ```
@@ -4110,3 +4231,55 @@ cd webapp && uvicorn app:app        # yerel sunucu
 python3 freeze.py --out site --base /pro-sim-blast && bash deploy_pages.sh \
   git@github-prosimblast:recepcanaltinbag/pro-sim-blast.git
 ```
+
+### 135.1c — Muhafızın bulduğu 18 yer: dizgi tahmini 11 dosyada daha duruyordu
+
+135.1'de cins tanımı düzeltildi ve 16 çağrı yeri `ro_taxonomy`'ye bağlandı.
+Bu yeterli sanıldı. Kapı (`validation_gate`) o koşuda **BAŞARISIZ** döndü ve
+geri sürünme muhafızı **18 yer daha** saydı:
+
+| dosya | yer | ne yapıyordu |
+|---|---|---|
+| `stats_overview.py` | 1 | projenin **istatistik motoru**; "kararı cins düzeyi verir" kuralının uygulandığı yer |
+| `carboxylate_audit.py` | 1 | 19.125 girişin denetim kaydındaki `genus` alanı |
+| `operon_relations.py` | 2 | yükleyici + diverjans bloğu |
+| `variant_and_operon.py` | 2 | cins mi tip mi sorusu (hem cins hem tür) |
+| `control_elements.py` | 2 | cins + tür ("ilk iki kelime") |
+| `discover_subfamilies.py` | 2 | alt-aile başına cins dökümü |
+| `recursive_homogenize.py` | 1 | yaprak başına cins dökümü |
+| `ferredoxin_residue.py` | 1 | Fd bağlamı |
+| `redundancy.py` | 1 | tekrarlanan dizilerin cins dağılımı |
+| `learn_from_data.py` | 1 | cins bir **öğrenme özelliği** olarak |
+| `promoter_architecture.py` | 1 | **kasıtlı**: birim duyarlılığı ölçümü |
+
+Buradaki ders 135.1'in dersinin tekrarı değil, devamı: *bir ölçümün ikinci
+uygulaması* ilk taramada bulunmaz, çünkü tarama "aradığını bildiğin şeyi"
+bulur. `stats_overview.py`'nin satırı en pahalısıydı — cins muhafızının
+koruduğu her iddia, muhafızın kendisi dizgiden hesaplandığı için ölçülmemişti.
+
+Dönüşüm iki biçimde yapıldı. Replikonu sorgulayan betikler
+`ro_taxonomy.genus_map` kullanır. Replikonu hiç görmeyen betikler (alt-aile
+keşfi, yaprak homojenleştirme, özellik öğrenme) için **aynı tablonun aday
+kimliği anahtarlı görünümü** eklendi: `genus_by_candidate` /
+`species_by_candidate`. Alternatif, o betiklerin SQL'ine `nucleotide_id`
+eklemekti; o, veri akışını değiştirir, bu değiştirmez.
+
+Kasıtlı tek istisna **satıra** bağlandı, dosyaya değil: muhafız bir önceki
+satırda `genus-string-intentional` yorumunu arar. Dosya bazlı muafiyet, o
+dosyaya **sonradan** eklenen gerçek bir ihlali de muaf tutardı.
+
+**Düzeltmenin ölçülmüş etkisi** (19.125 doğrulanmış giriş, aynı veri, iki tanım):
+
+| sıra | eski (dizgi tahmini) | yeni (NCBI rank'ı) |
+|---|---|---|
+| 1 | Pseudomonas 1955 | Pseudomonas **1944** |
+| 2 | Burkholderia 1289 | Burkholderia **1294** |
+| 3 | Mycobacterium 1225 | Mycobacterium **1260** |
+| 6 | Rhodococcus 618 | Rhodococcus **636** |
+| 7 | **Mycolicibacterium 612** | — (altcins; vekil olarak taşınır, cins sayılmaz) |
+| 8 | Novosphingobium 521 | Novosphingobium 521, **Paraburkholderia 492** |
+
+942 ayrı "kova" → **948 rank'lı cins**. Yani düzeltme yalnızca bir adı
+silmedi: tabloyu hem küçülttü (uydurma kova gitti) hem büyüttü (NCBI'nin
+ayırdığı cinsler ayrıldı). Sıralamanın ilk üçü bile değişti — dizgi tahmini
+Pseudomonas'a 11 giriş fazla, Mycobacterium'a 35 giriş eksik veriyordu.

@@ -34,6 +34,7 @@ import argparse
 import functools
 import hashlib
 import json
+import glob
 import os
 import subprocess
 import sys
@@ -145,6 +146,20 @@ ARTEFACTS = [
     ("regulation", [f"{OUT}/regulation_by_cluster.csv"],
      ["python3", "analyze_regulation.py", "--db", DB, "--out-dir", OUT],
      ["analyze_regulation.py", DB], False),
+    # taxonomy_ids: taksonomi KONTROLLU SOZLUK olur (ROADMAP 135.1).
+    # Uc tablo YAZAR (replicon_taxon, taxon_lineage, taxon_genus), yani
+    # kendisinden sonraki her DB girdili adimi bayatlatir. Buraya konuldu
+    # cunku CINS SORAN DOKUZ ADIMIN HEPSI bundan sonra geliyor
+    # (promoter_architecture, characterize_leaves, analyze_ecology,
+    # threshold_sensitivity, geography, build_search_index, make_report,
+    # make_explorer) ve hepsi cinsi artik `taxon_genus`'tan okuyor.
+    # Daha erkeye konsa yayilim buyur, daha geriye konsa tuketiciler
+    # tabloyu bulamaz. Girdisi: replicon (build_db) + gbk_files + taxdump.
+    ("taxonomy_ids", [f"{OUT}/taxonomy_ids.json"],
+     ["python3", "taxonomy_ids.py", "--db", DB, "--gbk", "gbk_files",
+      "--out", f"{OUT}/taxonomy_ids.json"],
+     ["taxonomy_ids.py", DB, "gbk_files"], False),
+
     # Tablo YAZMAZ, yalnizca okur: nereye konursa konsun kimseyi
     # bayatlatmaz (bkz. family_scan'daki not).
     ("promoter_architecture", [f"{OUT}/promoter_architecture.json"],
@@ -367,13 +382,6 @@ ARTEFACTS = [
      ["python3", "build_search_index.py", "--db", DB, "--ecology", ECO,
       "--chemistry", CHEM],
      ["build_search_index.py", DB, ECO, CHEM], False),
-    ("validation_gate", [],
-     ["python3", "validate_curation.py", "--db", DB, "--ecology", ECO,
-      "--chemistry", CHEM, "--out-dir", OUT],
-     ["validate_curation.py", DB, ECO, CHEM, "ROs_71_Clean/ROmotif71_hmmaln.sto"], False),
-    ("provenance", [f"{OUT}/provenance.json"],
-     ["python3", "provenance.py", "--db", DB, "--out-dir", OUT],
-     ["provenance.py", DB], False),
     # disagreements.py yalnizca baska JSON'lari OKUR, bu yuzden en sonda ve
     # girdileri o dosyalardir.
     ("disagreements", [f"{OUT}/disagreements.json"],
@@ -472,6 +480,21 @@ ARTEFACTS = [
     # bilesen duzeltmesi oncesi operon sayilarini gosteriyordu (beta 2.523
     # yerine 4.372 olmaliydi) -- yerel her dosya guncelken.
     #
+    #  KAPI EN SONDA, site_freeze'den hemen once. Onceki yerinde (stats'tan
+    #  hemen sonra) grafigin 15'ten fazla adimi KAPIDAN SONRA yayimlanan
+    #  dosya uretiyordu, ve kapinin tazelik kontrolu yayimlanan TUM kumeyi
+    #  yargiliyor. Yani kapi, kendisinden sonraki bir adim bayatken asla
+    #  yesil donemiyordu -- tam kosuda bile, cunku o adimlar henuz
+    #  kosmamisti. Tasimak guvenli: `validation_gate`'in cikti listesi BOS
+    #  ve hicbir adim `provenance.json`'u girdi olarak okumuyor.
+    ("validation_gate", [],
+     ["python3", "validate_curation.py", "--db", DB, "--ecology", ECO,
+      "--chemistry", CHEM, "--out-dir", OUT],
+     ["validate_curation.py", DB, ECO, CHEM, "ROs_71_Clean/ROmotif71_hmmaln.sto"], False),
+    ("provenance", [f"{OUT}/provenance.json"],
+     ["python3", "provenance.py", "--db", DB, "--out-dir", OUT],
+     ["provenance.py", DB], False),
+
     # AGIR: ~16 dakika, 3.282 statik sayfa. Hafif zincirde kosmaz; isi
     # bayatligi GORUNUR kilmak, kendiliginden yayim yapmak degil. Yayim
     # sirasi degismedi: check_site.py -> freeze.py -> deploy_pages.sh.
@@ -578,7 +601,98 @@ DECLARED_WRITES = {
     "protein_entries": {"ro_protein"},
     "ncbi_hits": {"ro_ncbi_hit"},
     "union": {"ro_union", "ro_union_source"},
+    "taxonomy_ids": {"replicon_taxon", "taxon_lineage", "taxon_genus"},
 }
+
+
+#  OKUDUGU TABLOLAR. Bir adimin DB girdisi, "kendisinden once yazilan TUM
+#  tablolar" olarak hesaplaniyordu. Bu asiri genis, ve uc kez ayni yanlis
+#  alarmi uretti: zincire tablo yazan yeni bir adim eklendiginde, o
+#  tablolari HIC OKUMAYAN onlarca adim bayat gorundu (2026-11-01
+#  cross_references'ta 4 adim; 2026-11-11 taxonomy_ids'te 32 adim, 8'i
+#  AGIR). Saatlerce yeniden hesap, birebir ayni cikti -- ve dogrulama
+#  kapisi yanlis yere FAIL verdi.
+#
+#  Bir adim, adini HIC ANMADIGI bir tablodan etkilenemez. O yuzden
+#  karsilastirma, adimin kaynaginda (ve yerel olarak import ettigi
+#  modullerin kaynaginda) adi GECEN tablolarla sinirlanir. Kapanis
+#  gereklidir: cins tuketicileri `taxon_genus`'u kendi SQL'lerinde
+#  anmiyor, `ro_taxonomy`yi import edip ona soruyorlar.
+#
+#  KURAL ZAYIFLATILMIYOR, cunku belirsizlikte TUM tablolar karsilastirilir:
+#    - kaynak okunamiyorsa,
+#    - kaynak tablo adini DINAMIK kuruyorsa (f-string ya da dizgi toplama
+#      icinde FROM/JOIN/UPDATE/INTO).
+#  Yani kacirma yonunde degil, fazla sayma yonunde hata yapar.
+#
+#  `sqlite_master` TEK BASINA belirsizlik SAYILMAZ, ve bunun sebebi var:
+#  depodaki kullanimlarin tamami VARLIK KONTROLU -- ya `WHERE name=?` ile
+#  tek tabloyu soruyor, ya da `WHERE type='table'` ile adlari toplayip
+#  kaynakta HARFI HARFINE yazili adlara karsi uyelik bakiyor. Iki durumda
+#  da tablo adi kaynakta geciyor, yani okuma gorunur. SQL'de tanimlayici
+#  parametre olamaz; dolayisiyla adi gezip o tabloyu gercekten OKUYAN bir
+#  betik, adi dizgiyle kurmak ZORUNDA -- ve o durumu asagidaki desen
+#  yakaliyor. Olcum: bu ayrim 18 adimi yanlis alarmdan cikardi.
+_IDENT_RX = _re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_DYNAMIC_SQL_RX = _re.compile(
+    r"(?:FROM|JOIN|INTO|UPDATE|TABLE)\s*(?:[\"']?\{|[\"']\s*\+|%s)",
+    _re.IGNORECASE)
+
+
+def _local_modules():
+    """Depo kokundeki ve webapp/ altindaki modul adi -> dosya yolu.
+
+    Bu iki dizin, depodaki TUM import edilebilir modulleri kapsiyor
+    (`find . -name '*.py'`: 129 kok + 7 webapp; otekiler test ve cikti
+    dizinleri, hicbir adim onlari import etmiyor). Yeni bir paket dizini
+    eklenirse buraya da eklenmek ZORUNDA, yoksa o modulun okudugu
+    tablolar gorunmez olur -- ve gorunmez bir okuma, bayatligi KACIRIR.
+    """
+    out = {}
+    for pattern in ("*.py", os.path.join("webapp", "*.py")):
+        for path in glob.glob(pattern):
+            out.setdefault(os.path.basename(path)[:-3], path)
+    return out
+
+
+@functools.lru_cache(maxsize=None)
+def source_closure(script):
+    """Betigin kaynagi + yerel olarak import ettigi modullerin kaynagi.
+
+    Doner: (metin, kesin_mi). `kesin_mi` False ise cagiran TUM tablolari
+    karsilastirmak zorundadir.
+    """
+    modules = _local_modules()
+    seen, stack, chunks, certain = set(), [script], [], True
+    while stack:
+        path = stack.pop()
+        if path in seen:
+            continue
+        seen.add(path)
+        try:
+            text = open(path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            return "", False
+        chunks.append(text)
+        if _DYNAMIC_SQL_RX.search(text):
+            certain = False
+        for match in _re.finditer(r"^\s*(?:import|from)\s+([A-Za-z_][\w.]*)",
+                                  text, _re.M):
+            head = match.group(1).split(".")[0]
+            if head in modules:
+                stack.append(modules[head])
+    return "\n".join(chunks), certain
+
+
+def unread_tables(script, tables):
+    """`tables` icinde betigin HIC ANMADIGI olanlar (karsilastirma disi)."""
+    if not script or not os.path.exists(script):
+        return set()
+    text, certain = source_closure(script)
+    if not certain or not text:
+        return set()
+    words = set(_IDENT_RX.findall(text))
+    return {t for t in tables if t not in words}
 
 
 def static_writes(script):
@@ -859,6 +973,14 @@ def plan(state, propagate=True):
         acc = acc | writes[name]
 
     counts_now = db_counts(DB) if os.path.exists(DB) else {}
+
+    #  ... ve adimin adini hic anmadigi tablolar da karsilastirma disi
+    #  (gerekcesi `unread_tables`'in basinda). Tablo listesi CANLI DB'den
+    #  gelir, yani yeni bir tablo eklenince kendiliginden kapsanir.
+    live_tables = {t for t in counts_now if not t.startswith("__")}
+    for name, _o, cmd, _i, _h in ARTEFACTS:
+        script = cmd[1] if len(cmd) > 1 else None
+        ignore[name] |= unread_tables(script, live_tables)
 
     # Bayatligi SIRAYLA ILERI YAY: bir adim bayatsa ciktilari ve yazdigi
     # tablolar "kirli" sayilir; onlari okuyan sonraki adimlar da bayattir.

@@ -9,6 +9,7 @@ ve detay panelinde o kumenin genomik baglamini gorur.
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import json
 import os
@@ -190,8 +191,10 @@ def build_payload(connection, ecology, null_rates, variance, subfam_data,
     clusters = {}
 
     # --- Temel istatistikler
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     rows = connection.execute("""
         SELECT r.ro_cluster cluster, r.candidate_id, r.ro_group, rep.organism,
+               r.nucleotide_id,
                rep.is_plasmid, r.model_coverage, r.protein_id,
                MAX(CASE WHEN c.category='transposon' AND ABS(nb.distance)<=5000
                         THEN 1 ELSE 0 END) has_tn
@@ -216,12 +219,16 @@ def build_payload(connection, ecology, null_rates, variance, subfam_data,
         entry["tn"] += row["has_tn"] or 0
         entry["plasmid"] += row["is_plasmid"] or 0
         organism = row["organism"] or ""
-        if organism.split():
-            entry["genera"][organism.split()[0]] += 1
+#  CINS: tahmin edilmez, `taxon_genus`'tan rank ile okunur (tek sahip
+#  ro_taxonomy.genus_map; gerekcesi ROADMAP 135.1).
+        got = genus_by_nuc.get(row["nucleotide_id"])
+        if got is not None and got.is_ranked:
+            entry["genera"][got.key] += 1
         if row["model_coverage"]:
             entry["coverage"].append(row["model_coverage"])
         if len(entry["examples"]) < 40:
-            entry["examples"].append((row["candidate_id"], organism))
+            entry["examples"].append((row["candidate_id"], organism,
+                                      row["nucleotide_id"]))
         # TUM uyeler -- indirilebilir liste icin
         leaf_id, leaf_ident = member_leaf.get(row["candidate_id"], ("", None))
         entry.setdefault("members", []).append([
@@ -283,8 +290,11 @@ def build_payload(connection, ecology, null_rates, variance, subfam_data,
 
         # Sinteni ornekleri -- farkli organizmalardan sec
         seen_organisms, synteny = set(), []
-        for candidate_id, organism in entry["examples"]:
-            genus = organism.split()[0] if organism.split() else "?"
+        for candidate_id, organism, nuc in entry["examples"]:
+            #  Sinteni orneklerini AYRI cinslerden secmek icin; vekil
+            #  anahtar da ayrim saglar, dizgi tahmini saglamiyordu.
+            got = genus_by_nuc.get(nuc)
+            genus = got.key if got else ro_taxonomy.UNKNOWN_KEY
             if genus in seen_organisms:
                 continue
             seen_organisms.add(genus)

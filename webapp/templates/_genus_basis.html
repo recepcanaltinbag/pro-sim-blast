@@ -1,0 +1,29 @@
+{#  Cins duzeyi bir sayinin YANINDA yayimlanan kosul. Tek yerde durur ve
+    cins sayan her sayfadan include edilir; cunku bu projenin tekrar eden
+    hatasi, bir duzeltmeyi bulundugu yere yazip YAYIMLANDIGI her yere
+    tasimamak. Sayilar `gtax` ile gelir (analysis_out/taxonomy_ids.json).  #}
+<details class="basis">
+  <summary>What counts as a genus here, and what is left out</summary>
+  <p class="note">A genus is read from the <b>NCBI taxonomy rank</b> of the genome record that
+  carries the entry: the nearest ancestor whose rank is exactly <code>genus</code>. It is not
+  taken from the first word of the organism name. That difference is measured, not cosmetic:
+  the first word merges every <i>Candidatus</i> organism into one bucket that actually holds
+  {{ gtax.candidatus_genera if gtax and gtax.candidatus_genera else 17 }} separate genera, it
+  carries over quoting and bracketing from the source string (<code>'Nostoc</code>,
+  <code>[Enterobacter]</code>), and it misses renamings
+  {% if gtax and gtax.genus_change %}&mdash; {{ '{:,}'.format(gtax.genus_change.entries_whose_genus_changes) }}
+  confirmed entries change genus when the rank is used{% endif %}
+  (<i>Sinorhizobium</i> &rarr; <b>Ensifer</b>, <i>Rhizobium rhizogenes</i> &rarr;
+  <b>Martinezella</b>).</p>
+  <p class="note"><b>What is left out of every genus count on this page.</b>
+  {% if gtax and gtax.genus_unassigned %}{{ '{:,}'.format(gtax.genus_unassigned.entries) }}
+  confirmed entries ({{ '%.1f'|format(gtax.genus_unassigned.share * 100) }}%){% else %}614
+  confirmed entries (3.2%){% endif %} have <b>no genus-rank ancestor at all</b> in the current
+  NCBI taxonomy. The largest case is <i>Mycolicibacterium</i>, which the organism strings still
+  name and which would be this database's seventh largest &ldquo;genus&rdquo;: NCBI now holds it
+  as a <b>subgenus</b>, <code>Mycobacterium (subgen. Mycolicibacterium)</code>, and that lineage
+  runs from species straight to the family. Those entries are neither dropped nor given an
+  invented genus; they are carried with the state <code>unassigned</code> and the nearest named
+  rank beside them, and they are excluded from the genus counts shown here. The
+  <a href="{{ u('/atlas/taxonomy') }}#genus">taxonomy page</a> gives the full measurement.</p>
+</details>

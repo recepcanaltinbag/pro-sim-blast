@@ -54,6 +54,8 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12b | `variant_signature.py` | varyantlari ayiran hizalama kolonlari → `cluster_sdp`, `leaf_sdp` |
 | 12c | `motif_stats.py` | 8 tanimlayici kolonun korunma olcumu → `motif_stats.json` |
 | 12c2 | `operon_validation.py` | operon kuralinin sinanmasi + esik duyarliligi → `operon_validation.json` |
+| 12a0 | `taxonomy_ids.py` | `gbk_files/` `source` nitelikleri (`/db_xref="taxon:N"`) + NCBI taxonomy dump (`nodes.dmp`, `names.dmp`, `merged.dmp`, `delnodes.dmp`, md5 dogrulanmis) → `replicon_taxon`, `taxon_lineage`, `taxon_genus` + `analysis_out/taxonomy_ids.json`. Taksonomiyi KONTROLLU SOZLUK yapar: cins artik `organism.split()[0]` ile tahmin edilmiyor, NCBI rank'indan okunuyor. NCBI'nin hic cins atamadigi 614 giris (%3,2) dusurulmez ve uydurulmaz; `genus_state='unassigned'` + en yakin adlandirilmis rank ile tasinir. Zincirde CINS SORAN DOKUZ ADIMDAN ONCE durur |
+| 12a1 | `ro_taxonomy.py` | cins ve tur sorusunun TEK SAHIBI (`genus_map`, `species_map`, `genus_counts`); betik degil modul. `genus_counts` bir cins dagiliminin yaninda BEYAN EDILMESI GEREKEN sayilari (cinsi atanmamis, taxid'i olmayan) birlikte dondurur |
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
 | 12c5 | `substrate_predictability.py` | kimlik → substrat ongorusunun ROC/kesinlik olcumu → `substrate_predictability.json` |

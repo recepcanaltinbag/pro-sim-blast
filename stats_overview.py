@@ -11,6 +11,7 @@ Sonuc ikisinde de ayni yonde ve genus duzeyinde p<0.05 ise "saglam" sayilir.
 Cikti: analysis_out/stats.json  (web sayfasi dogrudan okur)
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import random
@@ -224,6 +225,9 @@ def signal_map(rows, cols, table, genus_table=None, min_expected=5.0, alpha=0.05
 
 
 def load(con, ecology_path):
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     eco = {}
     with open(ecology_path) as fh:
         for r in csv.DictReader(fh):
@@ -261,7 +265,12 @@ def load(con, ecology_path):
         # mantigin iki kopyasi olmasi, birinin duzeltilip otekinin
         # unutulmasi demekti.
         d["phylum"] = _phylum_of(d["taxonomy"])
-        d["genus"] = (d["organism"] or "?").split()[0]
+        #  CINS: TEK YERDEN, ro_taxonomy. Bu dosya projenin istatistik
+        #  motoru ve "karari cins duzeyi verir" kuralinin uygulandigi yer;
+        #  burada cinsin dizgiden kesilmesi, cins muhafizinin korudugu her
+        #  iddiayi olculmemis yapiyordu (ROADMAP 135.1).
+        got = genus_by_cid.get(d["candidate_id"])
+        d["genus"] = got.key if got else ro_taxonomy.UNKNOWN_KEY
         d["mobile"] = int(bool(d["is_plasmid"]) or (d["transposons"] or 0) > 0)
         # Elektron tasima SISTEMI: klasik siniflandirmanin asil ekseni. Bazi
         # RO'lar uc bilesenli (reduktaz + ferredoksin + oksijenaz), bazilari iki

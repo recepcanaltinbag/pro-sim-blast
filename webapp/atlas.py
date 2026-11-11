@@ -975,11 +975,18 @@ def per_cluster_overview(con, ecology):
                 "SELECT cluster, SUM(domain = 'Eukaryota') FROM ro_domain GROUP BY cluster"):
             if cluster in rows:
                 rows[cluster]["euk"] = n or 0
-    for cl, tax, org in con.execute(
-            "SELECT r.ro_cluster, p.taxonomy, p.organism FROM ro r JOIN replicon p USING(nucleotide_id) "
+    #  Cins NCBI rank'indan gelir (ro_taxonomy tek sahip, ROADMAP 135.1);
+    #  cinsi atanmamis giris bir cins SAYILMAZ, cunku sayilsa tip basina
+    #  "kac cins" sayisi var olmayan cinsleri de sayardi.
+    for cl, tax, nuc, gname, gstate in con.execute(
+            "SELECT r.ro_cluster, p.taxonomy, r.nucleotide_id, "
+            "       g.genus_name, g.genus_state "
+            "FROM ro r JOIN replicon p USING(nucleotide_id) "
+            "LEFT JOIN taxon_genus g ON g.nucleotide_id = r.nucleotide_id "
             "WHERE r.is_confirmed=1"):
         rows[cl]["phyla"][phylum_of(tax)] += 1
-        rows[cl]["genera"].add((org or "?").split()[0])
+        if gstate == "ranked" and gname:
+            rows[cl]["genera"].add(gname)
     if table_exists(con, "ro_evidence"):
         for cl, tier, n in con.execute(
                 "SELECT r.ro_cluster, e.tier, COUNT(*) FROM ro_evidence e JOIN ro r USING(candidate_id) "
@@ -1109,11 +1116,13 @@ def assignment_conflicts(path, cluster, k=5, min_identity=70.0):
 
 
 def species_of(organism):
-    """Organizma adinin ilk iki kelimesi -- isolation_source.species_of ile
-    AYNI tanim, webapp tarafindan da kullanilabilsin diye burada.
+    """GERIYE DONUK: artik tur NCBI rank'indan okunuyor.
 
-    Tur tanimi DEGIL: GenBank organizma dizgisi sus adini da tasir, ve suslari
-    saymak ayni turun on izolatini on "organizma" gosterir.
+    Eskiden burada "organizma adinin ilk iki kelimesi" vardi ve docstring'i
+    bile "tur tanimi DEGIL" diyordu. Tur artik `taxon_lineage`'da
+    rank='species' atasindan gelir (ro_taxonomy.species_map, ROADMAP
+    135.1); bu fonksiyon yalnizca taxid'i OLMAYAN bir kayit icin son care
+    olarak durur ve cagiranin bunu beyan etmesi gerekir.
     """
     if not organism:
         return None
@@ -2219,6 +2228,10 @@ def taxonomy_tree(con, max_children=25, min_count=2, max_depth=7):
 
 # ---------------------------------------------------- provenance of downloads
 PROVENANCE = [
+    ("taxonomy_ids.json", "file",
+     "NCBI taxid and rank-based genus for every genome record; the entries that "
+     "NCBI assigns no genus at all are counted rather than dropped.",
+     "taxonomy_ids.py"),
     ("all_confirmed.fasta", "route", "Amino acid sequence of every confirmed alpha subunit.",
      "extract_genomic_context.py, build_operons.py"),
     ("all_confirmed.csv", "route", "One row per confirmed entry: coordinates, type, variant, "

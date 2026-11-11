@@ -10,6 +10,7 @@ Kaynaklar:
 """
 
 import argparse
+import ro_taxonomy
 import html
 import math
 import os
@@ -166,7 +167,7 @@ def read_genomic(db_path):
 
     # Transpozon x cins
     rows = connection.execute("""
-        SELECT rep.organism, r.candidate_id,
+        SELECT r.nucleotide_id, r.candidate_id,
                MAX(CASE WHEN c.category='transposon' AND ABS(nb.distance)<=5000
                         THEN 1 ELSE 0 END) has_tn
         FROM ro r
@@ -176,12 +177,19 @@ def read_genomic(db_path):
         WHERE r.is_confirmed=1 AND rep.status='ok'
         GROUP BY r.candidate_id
     """).fetchall()
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     by_genus = defaultdict(lambda: [0, 0])
+#  CINS: tahmin edilmez, `taxon_genus`'tan rank ile okunur (tek sahip
+#  ro_taxonomy.genus_map; gerekcesi ROADMAP 135.1).
+    unassigned = [0, 0]
     for row in rows:
-        organism = row["organism"] or ""
-        genus = organism.split()[0] if organism.split() else "Bilinmeyen"
-        by_genus[genus][0] += 1
-        by_genus[genus][1] += row["has_tn"]
+        got = genus_by_nuc.get(row["nucleotide_id"])
+        if got is None or not got.is_ranked:
+            unassigned[0] += 1
+            unassigned[1] += row["has_tn"]
+            continue
+        by_genus[got.key][0] += 1
+        by_genus[got.key][1] += row["has_tn"]
     total_ro = sum(v[0] for v in by_genus.values())
     total_tn = sum(v[1] for v in by_genus.values())
     baseline = total_tn / total_ro if total_ro else 0

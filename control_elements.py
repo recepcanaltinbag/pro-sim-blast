@@ -32,6 +32,7 @@ Sayilan sey hakkinda iki uyari, ikisi de ciktiya yaziliyor:
 Cikti: analysis_out/control_elements.json
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import json
@@ -70,13 +71,19 @@ def load(con, chemistry_path):
         LEFT JOIN ro_regulation g USING(candidate_id)
         WHERE r.is_confirmed = 1
     """).fetchall()
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
+    species_by_cid = ro_taxonomy.species_by_candidate(con)
     data = {}
     for (cid, cluster, group, organism, plasmid, fam, cat, arch, inter) in rows:
         c = chem.get(cluster, {})
         data[cid] = {
             "candidate_id": cid, "cluster": cluster, "group": group or "?",
-            "genus": (organism or "?").split()[0],
-            "species": " ".join((organism or "?").split()[:2]),
+            #  CINS ve TUR: dizgiden kesilmez, NCBI rank'indan okunur
+            #  (ro_taxonomy; ROADMAP 135.1). "ilk kelime"/"ilk iki kelime"
+            #  kurali Candidatus adlarinda cinsi de turu de kaydiriyordu.
+            "genus": (genus_by_cid[cid].key if cid in genus_by_cid
+                      else ro_taxonomy.UNKNOWN_KEY),
+            "species": species_by_cid.get(cid) or "?",
             "is_plasmid": int(bool(plasmid)),
             "regulator_family": fam if cat == "regulator" else None,
             "architecture": arch or "unknown",

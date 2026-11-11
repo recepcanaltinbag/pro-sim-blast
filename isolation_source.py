@@ -73,6 +73,7 @@ habitat atamasi her kosuda yeniden yapilir (kural degisikligi hemen yansir).
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import json
 import os
@@ -716,12 +717,11 @@ def read_csv_map(path, key="cluster"):
         return {row[key]: row for row in csv.DictReader(handle)}
 
 
-def species_of(organism):
-    """Organizma ikili adinin ilk iki kelimesi. Tur tanimi DEGIL (bkz. docstring)."""
-    if not organism:
-        return None
-    parts = organism.split()
-    return " ".join(parts[:2]) if parts else None
+#  TUR: artik dizgiden kesilmiyor. "Ilk iki kelime" kurali GenBank
+#  dizgisine bagliydi ve docstring'i bile "tur tanimi DEGIL" diyordu;
+#  ustelik "Candidatus Pelagibacter ubique" gibi adlarda ilk iki kelime
+#  cins+adlandirma durumu veriyordu. Tek sahip: ro_taxonomy.species_map,
+#  NCBI rank='species' atasindan okur (ROADMAP 135.1).
 
 
 def load_entries(connection, ecology, chemistry):
@@ -733,6 +733,7 @@ def load_entries(connection, ecology, chemistry):
         JOIN replicon rep ON rep.nucleotide_id = r.nucleotide_id
         LEFT JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
         WHERE r.is_confirmed = 1""").fetchall()
+    species_by_nuc = ro_taxonomy.species_map(connection)
     entries = []
     for (cid, nuc, cluster, organism, iso, host, country, year, habitat) in rows:
         eco = ecology.get(cluster, {})
@@ -741,7 +742,7 @@ def load_entries(connection, ecology, chemistry):
             "candidate_id": cid,
             "nucleotide_id": nuc,
             "cluster": cluster if cluster and cluster != "N/A" else None,
-            "species": species_of(organism),
+            "species": species_by_nuc.get(nuc),
             "isolation_source": iso,
             "host": host,
             "country": country,

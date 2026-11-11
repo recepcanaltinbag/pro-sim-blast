@@ -24,6 +24,7 @@ Cikti:
     analysis_out/leaves.csv
 """
 
+import ro_taxonomy
 import argparse
 import csv
 import hashlib
@@ -295,6 +296,9 @@ def main():
 
     connection = sqlite3.connect(args.db)
     connection.row_factory = sqlite3.Row
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(connection)
     rows = connection.execute("""
         SELECT r.candidate_id, r.ro_cluster, rep.organism
         FROM ro r JOIN replicon rep ON rep.nucleotide_id = r.nucleotide_id
@@ -339,8 +343,8 @@ def main():
             # bolme ayni diziyi gormek zorunda.
             vid = variant_id(raw.get(m, aligned[m]) for m in leaf_members)
             kind = label_of(tier_of.get(m, "") for m in leaf_members)
-            genera = Counter(organism_of[m].split()[0] for m in leaf_members
-                             if organism_of[m].split())
+            genera = Counter(genus_by_cid[m].key for m in leaf_members
+                             if m in genus_by_cid)
             leaf_rows.append(LeafRow(
                 leaf_id=leaf_id, variant_id=vid, nearest_type=cluster,
                 label_kind=kind, cluster=cluster, size=len(leaf_members),

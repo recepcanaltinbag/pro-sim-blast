@@ -205,6 +205,16 @@ EXTERNAL_TEXT_FIELDS = {
 # Kimlik, kod ve olcum sutunlari: serbest metin tasimadiklari icin dil
 # kontrolune girmezler.
 IDENTIFIER_TEXT_FIELDS = {
+    # 2026-11-11, taxonomy_ids.py. Hepsi KIMLIK ya da NCBI'nin kendi
+    # terimleri: `rank` NCBI rank sozlugunden sabit bir deger ('genus',
+    # 'subgenus', ...), adlar bilimsel ad, `status` dort degerli sabit.
+    # Cevrilecek proza yok; cevirmek kaynakla baglantiyi koparir.
+    ("replicon_taxon", "nucleotide_id"), ("replicon_taxon", "status"),
+    ("replicon_taxon", "name"), ("replicon_taxon", "rank"),
+    ("taxon_lineage", "rank"), ("taxon_lineage", "ancestor_name"),
+    ("taxon_genus", "nucleotide_id"),
+    ("taxon_genus", "genus_name"), ("taxon_genus", "genus_state"),
+    ("taxon_genus", "proxy_rank"), ("taxon_genus", "proxy_name"),
     ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
     ("gene_category", "category"),
     # 2026-11-11, cross_references.py'nin yazdigi ro_xref. Ucu de KIMLIK:
@@ -2801,6 +2811,169 @@ def check_published_files_are_in_rebuild_graph(rep, con, root):
                  "eklenmis; o dosya hic tazelenemez"))
 
 
+def check_citation_and_version(rep, con, root):
+    """DB atif edilebilir mi, ve yayimlanan VERI SURUMU taze mi.
+
+    NEDEN. ROAR-DB herkese acik bir veritabani olarak yayinlaniyor ama
+    2026-11-11'e kadar sitede ne yazar adi ne atif bicimi vardi, ve veri
+    surumu HIC yayinlanmiyordu. Ikincisi daha sinsi: `db_revision.py`
+    surumleri tutuyor ama son kayit rev-0007 (2026-10-30) iken DB on iki
+    gun boyunca degismisti. Yani bir okuyucu "hangi surumu kullandim"
+    sorusunu cevaplayamiyordu; cevaplayabildigini SANDIGI durum daha
+    kotuydu, cunku sitede yazan surum artik gosterdigi veriyi
+    tanimlamiyordu.
+    """
+    path = os.path.join(root, "CITATION.cff")
+    rep.check("citation: CITATION.cff var", os.path.exists(path), 0, path)
+    if os.path.exists(path):
+        text = open(path, encoding="utf-8").read()
+        for field in ("cff-version", "title", "authors", "license", "type"):
+            rep.check(f"citation: CITATION.cff '{field}' alani var",
+                      field + ":" in text, 0, "")
+
+    ledger = os.path.join(root, "analysis_out", "revisions.jsonl")
+    rep.check("citation: veri surumu defteri var", os.path.exists(ledger), 0,
+              ledger)
+    if not os.path.exists(ledger):
+        return
+    with open(ledger, encoding="utf-8") as handle:
+        lines = [ln for ln in handle if ln.strip()]
+    rep.check("citation: en az bir veri surumu kayitli", bool(lines), 0, "")
+    if not lines:
+        return
+    last = json.loads(lines[-1])
+    live = con.execute(
+        "SELECT COUNT(*) FROM ro WHERE is_confirmed = 1").fetchone()[0]
+    recorded = last.get("confirmed_entries")
+    #  Yayimlanan surum, GOSTERDIGI veriyi tanimlamak zorunda. Sayilar
+    #  ayrisiyorsa sitede yazan surum id'si yanlis bir seye isaret ediyor.
+    rep.check("citation: yayimlanan veri surumu DB ile ayni durumu anlatiyor",
+              recorded == live, abs((recorded or 0) - live),
+              f"{last.get('revision')} {recorded} giris yaziyor, DB'de {live}")
+
+
+def check_taxonomy_is_controlled(rep, con, root, out_dir="analysis_out"):
+    """Cins TAHMIN EDILMIYOR: rank'tan okunuyor, ve atanmamislari beyanli.
+
+    NEDEN. Bu DB'nin istatistik kurali "karari cins duzeyi verir" diyor,
+    yani cins yayimlanan her sinyalin birimi. Ama cins bes degil DOKUZ
+    yerde `organism.split()[0]` ile tahmin ediliyordu ve o satir olculmus
+    hata uretiyordu: "Candidatus" bir cins sanilip 17 ayri gercek cins tek
+    kovaya yiginiyordu; `Mycolicibacterium` (612 giris, DB'nin 7. en
+    kalabalik "cinsi") cins sanilyordu, oysa bugunun NCBI taksonomisinde
+    bir ALTCINS ve o yolda cins rank'li dugum hic yok. Bu kontrol
+    duzeltmenin geri surunmesini engeller: yeni bir yerel `split()[0]`
+    eklenirse ya da cinsi atanmamis girisler sessizce dusurulurse FAIL.
+    """
+    import glob as _glob
+
+    tables = {r[0] for r in con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'")}
+    needed = {"replicon_taxon", "taxon_lineage", "taxon_genus"}
+    rep.check("taxonomy: uc tablo da var", needed <= tables,
+              len(needed - tables), f"eksik: {sorted(needed - tables)}")
+    if not needed <= tables:
+        return
+
+    #  1. Her replikonun taxid'i olmali. Olmayan bir replikonun uzerindeki
+    #  girisler cins duzeyi hicbir teste giremez.
+    n_rep = con.execute(
+        "SELECT COUNT(*) FROM replicon WHERE nucleotide_id <> ''").fetchone()[0]
+    n_tax = con.execute("SELECT COUNT(*) FROM replicon_taxon").fetchone()[0]
+    rep.check("taxonomy: her replikonun NCBI taxid'i var", n_tax >= n_rep,
+              max(0, n_rep - n_tax), f"replikon {n_rep}, taxid'li {n_tax}")
+
+    #  2. Cins RANK'tan gelmeli: genus_taxid, soyagacinda rank='genus'
+    #  olarak gecen ata olmak zorunda.
+    bad = con.execute("""
+        SELECT COUNT(*) FROM taxon_genus g
+         WHERE g.genus_taxid IS NOT NULL
+           AND NOT EXISTS (SELECT 1 FROM taxon_lineage l
+                            WHERE l.taxid = g.taxid_current
+                              AND l.rank = 'genus'
+                              AND l.ancestor_taxid = g.genus_taxid)""").fetchone()[0]
+    rep.check("taxonomy: cins rank='genus' atasindan geliyor", bad == 0, bad,
+              "genus_taxid soyagacinda genus rank'li degil")
+
+    #  3. Cins adi, cins OLMAYAN bir sey olmamali -- eski tahmincinin
+    #  urettigi hatanin tam kendisi (char(39) = tek tirnak).
+    fake = con.execute("""
+        SELECT genus_name, COUNT(*) n FROM taxon_genus
+         WHERE genus_state = 'ranked'
+           AND (LOWER(genus_name) IN ('candidatus','uncultured','unclassified',
+                                      'candidate','bacterium','archaeon')
+                OR genus_name LIKE '[%'
+                OR genus_name LIKE char(39) || '%')
+         GROUP BY 1""").fetchall()
+    rep.check("taxonomy: cins adi cins (Candidatus/parantez/tirnak yok)",
+              not fake, len(fake), first([f"{r[0]} x{r[1]}" for r in fake], 5))
+
+    #  4. Cinsi atanmamis girisler DUSURULMEMIS olmali: rapor onlari
+    #  SAYMAK ve nasil ele alindigini YAZMAK zorunda.
+    path = os.path.join(root, out_dir, "taxonomy_ids.json")
+    data = None
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as handle:
+            data = json.load(handle)
+    rep.check("taxonomy: rapor dosyasi var", data is not None, 0, path)
+    if data:
+        una = data.get("genus_unassigned") or {}
+        measured = con.execute("""
+            SELECT COUNT(*) FROM ro JOIN taxon_genus USING (nucleotide_id)
+             WHERE ro.is_confirmed = 1 AND genus_state <> 'ranked'""").fetchone()[0]
+        rep.check("taxonomy: cinsi atanmamis giris sayisi TAZE",
+                  una.get("entries") == measured,
+                  abs((una.get("entries") or 0) - measured),
+                  f"raporda {una.get('entries')}, DB'de {measured}")
+        rep.check("taxonomy: atanmamislarin nasil ele alindigi YAZILI",
+                  bool((una.get("handling") or "").strip()), 0,
+                  "genus_unassigned.handling bos")
+        rep.check("taxonomy: payda beyanli",
+                  bool((data.get("denominators") or {}).get("confirmed_entries")),
+                  0, "denominators.confirmed_entries yok")
+
+    #  5. GERI SURUNME MUHAFIZI. Cinsi dizgiden tahmin eden yerel bir
+    #  uygulama yeniden eklenirse bu kontrol duser. Tek sahip ro_taxonomy.
+    #  webapp/ de taranir: cins/tur oradaki uc yerde de dizgiden
+    #  kesiliyordu ve YAYIMLANAN sayfalari besliyordu. `atlas.species_of`
+    #  taxid'i olmayan kayit icin son care olarak duruyor, o yuzden
+    #  izinli.
+    allowed = {"taxonomy_ids.py", "ro_taxonomy.py", "validate_curation.py",
+               "atlas.py"}
+    offenders = []
+    for path_py in sorted(_glob.glob(os.path.join(root, "*.py"))
+                          + _glob.glob(os.path.join(root, "webapp", "*.py"))):
+        name = os.path.basename(path_py)
+        if name in allowed:
+            continue
+        with open(path_py, encoding="utf-8", errors="replace") as handle:
+            previous = ""
+            for i, line in enumerate(handle, 1):
+                stripped = line.strip()
+                if stripped.startswith("#"):
+                    previous = stripped
+                    continue
+                #  TEK ISTISNA, ve yorumla DEKLARE edilmek zorunda: bir
+                #  olcum, dizgi tahminini KASITLI olarak eski tanim diye
+                #  hesaplayabilir (`promoter_architecture.py`'nin birim
+                #  duyarliligi). Istisna dosya adina degil SATIRA baglandi,
+                #  cunku bir dosyayi butunuyle muaf tutmak o dosyadaki
+                #  SONRADAN eklenen gercek bir ihlali de muaf tutar.
+                if "genus-string-intentional" in previous:
+                    previous = stripped
+                    continue
+                #  Desen GENISTIR: ilk hali yalnizca `organism.split()`
+                #  ariyordu ve `(organism or "").split()[0]` yazan
+                #  `ecological_origin.py`'yi KACIRDI. Ayni satirda
+                #  organizma adi ve bir dizgi kesmesi varsa, cins ya da
+                #  tur dizgiden tahmin ediliyor demektir.
+                if "organism" in stripped and ".split()" in stripped:
+                    offenders.append(f"{name}:{i}")
+                previous = stripped
+    rep.check("taxonomy: cinsi dizgiden tahmin eden ikinci uygulama yok",
+              not offenders, len(offenders), first(offenders, 6))
+
+
 def check_cross_references(rep, con, root, out_dir="analysis_out"):
     """`ro_xref` ve `cross_references.json`: adres tiklanabilir, payda beyanli.
 
@@ -3803,6 +3976,8 @@ def main():
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
         check_cross_references(rep, con, ROOT)
+        check_taxonomy_is_controlled(rep, con, ROOT)
+        check_citation_and_version(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)

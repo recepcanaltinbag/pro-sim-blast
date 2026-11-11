@@ -272,6 +272,7 @@ Test: two-by-two Fisher exact, bacterial entries only, eukaryote-heavy types exc
 </li>
 {% endfor %}
 </ul>
+{% include "_genus_basis.html" %}
 <p class="note">Standardised Pearson residuals, Benjamini–Hochberg corrected across the
 {{ sg.n_cells_tested }} cells whose expected count reaches {{ sg.min_expected|int }}.
 {{ sg.n_cells_material }} of them are also at least

@@ -110,6 +110,7 @@ SINIRLAR, ACIKCA
 Cikti: analysis_out/carboxylate_audit.json  (verdict blogu duz sozlerle)
 """
 
+import ro_taxonomy
 import argparse
 import json
 import os
@@ -290,10 +291,15 @@ def load_entries(con):
               "tier nearest_ref ref_identity ref_qcov domain euk_group organism "
               "has_operon has_beta has_ferredoxin has_reductase nearby_beta "
               "leaf_id subfamily_id assignment_class").split()
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     out = {}
     for row in con.execute(sql):
         rec = dict(zip(fields, row))
-        rec["genus"] = (rec["organism"] or "?").split()[0]
+        #  CINS: dizgiden tahmin EDILMEZ, `taxon_genus`'tan rank ile okunur
+        #  (tek sahip ro_taxonomy; gerekcesi ROADMAP 135.1). Cinsi atanmamis
+        #  satir "?" kovasina DUSMEZ, vekil rank anahtari tasir.
+        got = genus_by_cid.get(rec["candidate_id"])
+        rec["genus"] = got.key if got else ro_taxonomy.UNKNOWN_KEY
         out[rec["candidate_id"]] = rec
     return out
 

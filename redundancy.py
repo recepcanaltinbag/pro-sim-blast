@@ -19,6 +19,7 @@ gozlemdir. Olculen sey, bu kopyaların istatistige ne kadar etki ettigidir.
 Cikti: analysis_out/redundancy.json
 """
 
+import ro_taxonomy
 import argparse
 import json
 import os
@@ -67,12 +68,18 @@ def main():
                     SELECT ro_cluster, COUNT(*), COUNT(DISTINCT sequence) FROM ro
                     WHERE is_confirmed=1 GROUP BY 1 ORDER BY COUNT(*) DESC""")]
 
+    #  CINS: dizgiden tahmin EDILMEZ (ro_taxonomy; ROADMAP 135.1). Burada
+    #  olculen sey "tekrarlanan diziler hangi cinslerde yogunlasiyor", yani
+    #  ayri cinsleri tek kovaya toplayan bir tahmin tam da olculen seyi
+    #  sisirirdi.
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     genera = Counter()
-    for (organism,) in con.execute("""
-            SELECT p.organism FROM ro r JOIN replicon p USING(nucleotide_id)
+    for (cid,) in con.execute("""
+            SELECT r.candidate_id FROM ro r
             WHERE r.is_confirmed=1 AND r.sequence IN
               (SELECT sequence FROM ro WHERE is_confirmed=1 GROUP BY 1 HAVING COUNT(*) > 1)"""):
-        genera[(organism or "?").split()[0]] += 1
+        got = genus_by_cid.get(cid)
+        genera[got.key if got else ro_taxonomy.UNKNOWN_KEY] += 1
 
     # Plazmit orani: her kopya tek tek sayildiginda ve dizi basina bir kez
     raw_plasmid = scalar("""

@@ -63,6 +63,7 @@ BATIE SINIFI UYARISI -- BU ONEMLI
 Cikti: analysis_out/ferredoxin_residue.json
 """
 
+import ro_taxonomy
 import argparse
 import json
 import os
@@ -230,6 +231,9 @@ def load_ferredoxins(con):
     cok genomda tekrar ettigi icin dizi duzeyinde ve cins duzeyinde cokertme
     ayrica yapilir.
     """
+    #  CINS tek sahipten: ro_taxonomy, `taxon_genus`'tan NCBI rank'i ile
+    #  (gerekcesi ROADMAP 135.1).
+    genus_by_cid = ro_taxonomy.genus_by_candidate(con)
     rows = con.execute(f"""
         SELECT nb.candidate_id, np.protein_key, np.translation, np.length,
                r.ro_cluster, r.ro_group,
@@ -278,7 +282,9 @@ def load_ferredoxins(con):
             "reductase_type": red_type or "none",
             "fd_own_domain": own,
             "organism": organism or "?",
-            "genus": (organism or "?").split()[0],
+            #  CINS: NCBI rank'indan (ro_taxonomy; ROADMAP 135.1).
+            "genus": (genus_by_cid[cid].key if cid in genus_by_cid
+                      else ro_taxonomy.UNKNOWN_KEY),
             # collapse_genus() bu alanlarda ortalama aliyor; var olmalari sart
             "is_plasmid": int(bool(is_plasmid)),
             "mobile": int(bool(is_plasmid)),

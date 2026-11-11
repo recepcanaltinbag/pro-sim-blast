@@ -165,6 +165,21 @@ def main():
             xrev.add(md5h)
         print(f"[xref] {len(xref)} dizi, {len(xrev)} incelenmis EC")
 
+    #  TAXID: organizma adi serbest metin, taxid KALICI TANIMLAYICI. Ad
+    #  degisir (Sinorhizobium -> Ensifer), taxid degismez ve NCBI
+    #  Taxonomy'ye tiklanabilir. Cins de buradan gelir: `organism`in ilk
+    #  kelimesi degil, rank'i 'genus' olan ata (ROADMAP 135.1).
+    taxon = {}
+    if con.execute("SELECT name FROM sqlite_master "
+                   "WHERE name='taxon_genus'").fetchone():
+        for nuc, taxid, gname, gstate, prank, pname in con.execute(
+                "SELECT t.nucleotide_id, t.taxid_current, g.genus_name, "
+                "       g.genus_state, g.proxy_rank, g.proxy_name "
+                "FROM replicon_taxon t "
+                "LEFT JOIN taxon_genus g ON g.nucleotide_id = t.nucleotide_id"):
+            taxon[nuc] = (taxid, gname, gstate, prank, pname)
+        print(f"[taxon] {len(taxon)} replikon taxid'i")
+
     shards = {}                 # shard -> {"e": {...}, "s": [sozluk]}
     interners = {}
     opsvg = {}                  # svg_key -> svg  (parcalanmadan once)
@@ -270,6 +285,19 @@ def main():
             bucket["e"][cid]["xr"] = packed
             if seq_hash in xrev:
                 bucket["e"][cid]["xrv"] = 1
+        #  `ro` bir sqlite3.Row, dict degil: .get() YOK. Bu satir once
+        #  .get() ile yazilmisti ve donma adimini patlatiyordu; Flask
+        #  yolu ayri bir kod oldugu icin canli sayfada gorunmuyordu.
+        got = taxon.get(ro["nucleotide_id"])
+        if got:
+            taxid, gname, gstate, prank, pname = got
+            bucket["e"][cid]["tx"] = taxid
+            if gstate == "ranked" and gname:
+                bucket["e"][cid]["gn"] = gname
+            elif prank and pname:
+                #  Cins atanmamis: vekil rank ADIYLA yazilir, yoksa
+                #  okuyucu bunu bir cins sanar.
+                bucket["e"][cid]["gp"] = [prank, pname]
         if n % 2000 == 0:
             print(f"   {n}/{len(ids)}")
 

@@ -28,6 +28,7 @@ import csv
 import math
 import os
 import sqlite3
+import ro_taxonomy
 from collections import Counter, defaultdict
 
 
@@ -47,12 +48,11 @@ def load_ecology(path):
     return mapping
 
 
-def genus_of(organism):
-    if not organism:
-        return None
-    parts = organism.split()
-    return parts[0] if parts else None
-
+#  CINS: tahmin edilmez, `taxon_genus` tablosundan rank ile okunur.
+#  Burada bir zamanlar `organism.split()[0]` duruyordu; o satir 17 ayri
+#  cinsi "Candidatus" kovasina yigiyor ve bugun cins OLMAYAN adlari
+#  (Mycolicibacterium: altcins, 612 giris) cins sayiyordu. Tek sahip:
+#  `ro_taxonomy.genus_map`. Yeni bir yerel uygulama YAZILMAZ.
 
 def shannon(counts):
     """Kategori dagiliminin Shannon entropisi -- sinteni cesitliligi olcusu."""
@@ -66,7 +66,7 @@ def collect(connection, ecology, window=5000):
     """Her kume icin mobilite, taksonomi ve sinteni olculerini topla."""
     # --- RO basina: cins, plazmit mi, transpozon yakin mi
     rows = connection.execute("""
-        SELECT r.candidate_id, r.ro_cluster, rep.organism, rep.is_plasmid,
+        SELECT r.candidate_id, r.ro_cluster, r.nucleotide_id, rep.is_plasmid,
                MAX(CASE WHEN c.category='transposon' AND ABS(nb.distance) <= ?
                         THEN 1 ELSE 0 END) has_tn
         FROM ro r
@@ -78,8 +78,10 @@ def collect(connection, ecology, window=5000):
         GROUP BY r.candidate_id
     """, (window,)).fetchall()
 
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     stats = defaultdict(lambda: {"n": 0, "tn": 0, "plasmid": 0,
-                                 "genera": Counter(), "ids": []})
+                                 "genera": Counter(), "ids": [],
+                                 "genus_unassigned": 0})
     for row in rows:
         cluster = row["ro_cluster"]
         if not cluster or cluster == "N/A":
@@ -88,9 +90,13 @@ def collect(connection, ecology, window=5000):
         entry["n"] += 1
         entry["tn"] += row["has_tn"] or 0
         entry["plasmid"] += row["is_plasmid"] or 0
-        genus = genus_of(row["organism"])
-        if genus:
-            entry["genera"][genus] += 1
+        got = genus_by_nuc.get(row["nucleotide_id"])
+        if got is not None and got.is_ranked:
+            entry["genera"][got.key] += 1
+        else:
+            #  Cinsi atanmamis giris DUSURULMEZ; ayri sayilir, cunku cins
+            #  sayisi bu sayi beyan edilmeden okunamaz.
+            entry["genus_unassigned"] += 1
         entry["ids"].append(row["candidate_id"])
 
     # --- Sinteni cesitliligi: kume icinde komsu kategori dagiliminin entropisi

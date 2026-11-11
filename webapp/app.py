@@ -20,6 +20,7 @@ import csv
 import datetime as _dt
 import io
 import functools
+import json
 import hashlib
 import os
 import re
@@ -41,6 +42,7 @@ for p in (HERE, PARENT):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+import ro_taxonomy                                               # noqa: E402
 from ro_filter import classify_target, parse_domtblout          # noqa: E402
 from ro_motif import classify_motifs, read_stockholm_matchcols  # noqa: E402
 
@@ -134,6 +136,23 @@ def build_info():
         if out.returncode == 0 and "|" in out.stdout:
             info["commit"], info["commit_date"] = out.stdout.strip().split("|", 1)
     except (subprocess.SubprocessError, OSError):
+        pass
+    #  VERI SURUMU, kod surumunden AYRI bir seydir ve ikisini tek sayiya
+    #  indirmek yanlis olur: ayni commit, yeniden kosturulmus bir pipeline
+    #  ile baska sayilar yayinlayabilir. `db_revision.py` her veri surumunu
+    #  DEGISMEZ bir kayit olarak tutuyor; atif edilecek olan budur.
+    info["data_revision"] = None
+    info["data_revision_date"] = None
+    path = os.path.join(PARENT, "analysis_out", "revisions.jsonl")
+    try:
+        with open(path, encoding="utf-8") as handle:
+            lines = [ln for ln in handle if ln.strip()]
+        if lines:
+            last = json.loads(lines[-1])
+            info["data_revision"] = last.get("revision")
+            info["data_revision_date"] = (last.get("recorded_utc") or "")[:10]
+            info["data_revision_entries"] = last.get("confirmed_entries")
+    except (OSError, ValueError):
         pass
     return info
 
@@ -282,18 +301,37 @@ def cluster_parts(cluster):
             "gene": parts[2] if len(parts) > 2 else cluster}
 
 
-def genus(organism):
-    if not organism:
-        return ""
-    w = organism.split()
-    if w[0] in ("Candidatus", "uncultured") and len(w) > 1:
-        return w[1]
-    return w[0]
+#  CINS: dizgiden kesilmiyor, NCBI rank'indan okunuyor. Burada
+#  "Candidatus X -> X" kurali vardi; `split()[0]`'in sahte-cins hatasini
+#  dogru teshis etmis ama dizgi icinde cozmeye calismisti ve kalanlari
+#  yakalamiyordu: `Mycolicibacterium` bugun bir ALTCINS (612 giris),
+#  `'Nostoc`/`[Enterobacter]` tirnakli-parantezli adlar, ve yeniden
+#  adlandirmalar (Sinorhizobium -> Ensifer). Tek sahip: ro_taxonomy
+#  (ROADMAP 135.1). Burada ONBELLEKLENIR, cunku her istekte 17 bin satir
+#  okumak sayfa cizimine giriyor.
+@functools.lru_cache(maxsize=1)
+def _genus_cache(db_mtime):
+    with sqlite3.connect(DB_PATH) as con:
+        return ro_taxonomy.genus_map(con)
+
+
+def genus_map():
+    """nucleotide_id -> Genus. DB dosyasi degisince onbellek yenilenir."""
+    try:
+        stamp = os.path.getmtime(DB_PATH)
+    except OSError:
+        stamp = 0
+    return _genus_cache(stamp)
 
 
 def render(request, name, **ctx):
     ctx.setdefault("request", request)
     ctx.setdefault("static_mode", STATIC_MODE)
+    #  `gtax` her sablonda hazir: `_genus_basis.html` cins sayan HER
+    #  sayfadan include ediliyor ve her birinin route'una elle eklemek,
+    #  bir sayfanin unutulmasi demekti -- bu projenin tekrar eden hatasi
+    #  tam olarak bir duzeltmeyi yayimlandigi her yere tasimamak.
+    ctx.setdefault("gtax", atlas.read_json(apath("taxonomy_ids.json")))
     try:                                   # Starlette >= 0.29: (request, name, context)
         return templates.TemplateResponse(request, name, ctx)
     except TypeError:                      # older Starlette: (name, context-with-request)
@@ -422,10 +460,13 @@ def cluster_table(con):
     leaves = dict(con.execute("SELECT cluster, COUNT(*) FROM leaf GROUP BY cluster"))
     euk = dict(con.execute(
         "SELECT cluster, SUM(domain='Eukaryota') FROM ro_domain GROUP BY cluster"))
+    gmap = genus_map()
     genera = {}
-    for cl, org in con.execute("SELECT ro_cluster, organism FROM ro r JOIN replicon p "
-                               "USING(nucleotide_id) WHERE is_confirmed=1"):
-        genera.setdefault(cl, set()).add(genus(org))
+    for cl, nuc in con.execute(
+            "SELECT ro_cluster, nucleotide_id FROM ro WHERE is_confirmed=1"):
+        got = gmap.get(nuc)
+        if got is not None and got.is_ranked:
+            genera.setdefault(cl, set()).add(got.key)
     out = []
     for r in rows:
         out.append(_cluster_row(dict(r), leaves, euk, genera))
@@ -569,9 +610,16 @@ def cluster_detail(con, cluster):
         SELECT organism, COUNT(*) n FROM ro r JOIN replicon p USING(nucleotide_id)
         WHERE r.is_confirmed=1 AND r.ro_cluster=? GROUP BY organism ORDER BY n DESC LIMIT 400""",
         (cluster,)).fetchall()
+    #  Cins sayimi organizma dizgisinden degil replikonun taxid'inden
+    #  gelir; cinsi NCBI'da atanmamis girisler bir cins SAYILMAZ.
+    gmap = genus_map()
     gcount = Counter()
-    for r in info["genera"]:
-        gcount[genus(r["organism"])] += r["n"]
+    for nuc, n in con.execute(
+            "SELECT nucleotide_id, COUNT(*) FROM ro WHERE is_confirmed=1 "
+            "AND ro_cluster=? GROUP BY 1", (cluster,)):
+        got = gmap.get(nuc)
+        if got is not None and got.is_ranked:
+            gcount[got.key] += n
     info["top_genera"] = gcount.most_common(12)
     info["genera_n"] = len(gcount)
     # neighborhood: categories within +-4 genes, per-RO rate
@@ -804,8 +852,12 @@ def ro_detail(con, candidate_id):
         SELECT r.*, p.organism, p.taxonomy, p.description, p.is_plasmid, p.is_circular,
                p.length replicon_length, p.cds_count,
                rl.leaf_id, rl.leaf_size, rs.assignment_class, rs.core_identity, rs.subfamily_id,
-               d.domain, d.euk_group
+               d.domain, d.euk_group,
+               t.taxid_current taxid, g.genus_name, g.genus_state,
+               g.proxy_rank, g.proxy_name
         FROM ro r JOIN replicon p USING(nucleotide_id)
+        LEFT JOIN replicon_taxon t ON t.nucleotide_id = r.nucleotide_id
+        LEFT JOIN taxon_genus g ON g.nucleotide_id = r.nucleotide_id
         LEFT JOIN ro_leaf rl ON rl.candidate_id = r.candidate_id
         LEFT JOIN ro_subfamily rs ON rs.candidate_id = r.candidate_id
         LEFT JOIN ro_domain d ON d.candidate_id = r.candidate_id
@@ -1729,7 +1781,9 @@ def atlas_taxonomy(request: Request):
         return render(request, "atlas_taxonomy.html", over=over,
                       top_phyla=[p for p, _ in counted.most_common(12)],
                       all_phyla=counted.most_common(20),
-                      tree=atlas.taxonomy_tree(con))
+                      tree=atlas.taxonomy_tree(con),
+                      gtax=atlas.read_json(apath("taxonomy_ids.json")),
+                      gsens=atlas.read_json(apath("promoter_architecture.json")))
     finally:
         con.close()
 
@@ -2215,19 +2269,26 @@ def cluster_extras(con, cluster):
         # soyledigi artefaktin kendisi. 2026-10-31'de olculdu, 4_411_XylX
         # rizosfer topragi: 28 yayimlanmis, gercek tur 8; 1_113_CdnA insan
         # klinik: 60'a karsi 32. Projenin kendi tur tanimi
-        # isolation_source.species_of() (ilk iki kelime) ve her atlas sayfasi
-        # onu dogru kullaniyor; burada da o kullaniliyor.
+        # isolation_source.species_of() (ilk iki kelime) kullaniliyordu.
+        #
+        # 2026-11-11: o tanim da BIRAKILDI. "Ilk iki kelime" GenBank
+        # dizgisine bagliydi ve "Candidatus Pelagibacter ubique" gibi
+        # adlarda tur yerine cins+adlandirma durumu veriyordu. Tur artik
+        # NCBI rank='species' atasindan okunuyor (ro_taxonomy.species_map).
+        # taxid'i olmayan kayit icin `atlas.species_of` son care olarak
+        # kaliyor; su an boyle bir kayit YOK (17.073/17.073).
         hab_rows = con.execute("""
-            SELECT s.habitat h, p.organism org
+            SELECT s.habitat h, p.organism org, r.nucleotide_id nuc
             FROM ro r JOIN replicon p USING(nucleotide_id)
             JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
             WHERE r.is_confirmed=1 AND r.ro_cluster=? AND s.habitat != 'unknown'
             """, (cluster,)).fetchall()
+        spmap = ro_taxonomy.species_map(con)
         agg = {}
         for r in hab_rows:
             cell = agg.setdefault(r["h"], {"h": r["h"], "n": 0, "_sp": set()})
             cell["n"] += 1
-            sp = atlas.species_of(r["org"])
+            sp = spmap.get(r["nuc"]) or atlas.species_of(r["org"])
             if sp:
                 cell["_sp"].add(sp)
         x["habitats"] = sorted(

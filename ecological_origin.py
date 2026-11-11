@@ -107,7 +107,8 @@ from scipy.stats import chi2_contingency
 # Habitat sozlugu TEK yerde tanimli olmali. Kopyalamak, projenin en cok
 # zarar gormus hata sinifi olan "sessizce ayrisan iki liste" durumunu
 # uretirdi; bu yuzden vokabuler uretildigi modulden okunuyor.
-from isolation_source import CLASSIFIED, HABITAT_ORDER, species_of
+import ro_taxonomy
+from isolation_source import CLASSIFIED, HABITAT_ORDER
 
 TIERS = ("characterized", "close_homolog", "family_member", "distant", "novel")
 
@@ -177,7 +178,7 @@ WASTEWATER_WORDING = ("sludge", "wastewater", "waste water", "sewage",
 def load_entries(connection):
     """Her dogrulanmis RO icin tek satir: tip, kademe, habitat, tur, yaprak."""
     rows = connection.execute("""
-        SELECT r.candidate_id, r.ro_cluster, rep.organism,
+        SELECT r.candidate_id, r.ro_cluster, r.nucleotide_id,
                e.tier, e.ref_identity,
                s.habitat, s.isolation_source,
                l.leaf_id
@@ -187,13 +188,18 @@ def load_entries(connection):
         LEFT JOIN replicon_source s ON s.nucleotide_id = r.nucleotide_id
         LEFT JOIN ro_leaf l ON l.candidate_id = r.candidate_id
         WHERE r.is_confirmed = 1""").fetchall()
+    #  TUR ve CINS: ikisi de dizgiden kesiliyordu, ikisi de artik NCBI
+    #  rank'indan okunuyor (tek sahip ro_taxonomy, ROADMAP 135.1).
+    species_by_nuc = ro_taxonomy.species_map(connection)
+    genus_by_nuc = ro_taxonomy.genus_map(connection)
     entries = []
-    for cid, cluster, organism, tier, identity, habitat, source, leaf_id in rows:
+    for cid, cluster, nuc, tier, identity, habitat, source, leaf_id in rows:
+        got = genus_by_nuc.get(nuc)
         entries.append({
             "candidate_id": cid,
             "cluster": cluster if cluster and cluster != "N/A" else None,
-            "species": species_of(organism),
-            "genus": (organism or "").split()[0] if organism else None,
+            "species": species_by_nuc.get(nuc),
+            "genus": got.key if got else None,
             "tier": tier or "unknown",
             "identity": identity,
             "habitat": habitat or "unknown",

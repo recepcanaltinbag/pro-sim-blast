@@ -55,6 +55,7 @@ Kullanim:
 """
 
 import argparse
+import ro_taxonomy
 import csv
 import json
 import os
@@ -132,18 +133,13 @@ SUBSTRATE_CLASSES = ["xenobiotic", "natural_aromatic", "natural_specialized"]
 NATURAL_CLASSES = ("natural_aromatic", "natural_specialized")
 
 
-def genus_of(organism):
-    """Cins adi. 'Candidatus X' ve 'uncultured X' ikinci kelimeyi verir.
-
-    webapp/app.py'deki `genus()` ile ayni kural: ilk kelimeyi almak bu iki
-    onek icin butun adaylari tek bir sahte cinse yigardi.
-    """
-    if not organism:
-        return "?"
-    words = organism.split()
-    if words[0] in ("Candidatus", "uncultured") and len(words) > 1:
-        return words[1]
-    return words[0]
+#  CINS: artik dizgiden kesilmiyor. Burada "Candidatus X -> X" kurali
+#  vardi; o kural `split()[0]`'in Candidatus kovasi hatasini dogru teshis
+#  etmis ama dizgi icinde cozmeye calismisti, ve kalan hatalari
+#  yakalayamaz: `Mycolicibacterium` (bugun ALTCINS, 612 giris),
+#  `'Nostoc`/`[Enterobacter]` (tirnak ve parantezli adlar) ve yeniden
+#  adlandirmalar (Sinorhizobium -> Ensifer). Tek sahip:
+#  ro_taxonomy.genus_map, rank'tan okur (ROADMAP 135.1).
 
 
 def band_of(identity):
@@ -172,7 +168,7 @@ def load_members(con):
     """Dogrulanmis, dizisi olan her giris: tip, habitat, organizma, varyant."""
     rows = con.execute("""
         SELECT r.candidate_id, r.ro_cluster, s.habitat, p.organism,
-               l.leaf_id, r.sequence
+               r.nucleotide_id, l.leaf_id, r.sequence
         FROM ro r
         JOIN replicon p USING(nucleotide_id)
         JOIN replicon_source s USING(nucleotide_id)
@@ -180,14 +176,17 @@ def load_members(con):
         WHERE r.is_confirmed = 1
           AND r.sequence IS NOT NULL AND r.sequence <> ''
     """).fetchall()
+    genus_by_nuc = ro_taxonomy.genus_map(con)
     members = []
-    for candidate_id, cluster, habitat, organism, leaf_id, sequence in rows:
+    for (candidate_id, cluster, habitat, organism, nuc, leaf_id,
+         sequence) in rows:
         members.append({
             "candidate_id": candidate_id,
             "type": cluster,
             "habitat": habitat or "unknown",
             "organism": organism,
-            "genus": genus_of(organism),
+            "genus": (genus_by_nuc[nuc].key if nuc in genus_by_nuc
+                      else ro_taxonomy.UNKNOWN_KEY),
             "leaf_id": leaf_id,
             "sequence": sequence,
         })
