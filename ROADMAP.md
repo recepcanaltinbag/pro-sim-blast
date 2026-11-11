@@ -4283,3 +4283,31 @@ dosyaya **sonradan** eklenen gerçek bir ihlali de muaf tutardı.
 silmedi: tabloyu hem küçülttü (uydurma kova gitti) hem büyüttü (NCBI'nin
 ayırdığı cinsler ayrıldı). Sıralamanın ilk üçü bile değişti — dizgi tahmini
 Pseudomonas'a 11 giriş fazla, Mycobacterium'a 35 giriş eksik veriyordu.
+
+### 135.1d — Kapı grafiğin sonuna taşındı; ve donma yolu canlı yoldan ayrı
+
+İki yapısal hata, ikisi de aynı sebeple görünmüyordu: **doğrulandı sanılan
+şey, yayımlanan şey değildi.**
+
+**Kapı sıralaması.** `validation_gate` grafikte `stats`'tan hemen sonra
+duruyordu, ama ondan **sonra** 15'ten fazla adım yayımlanan dosya üretiyor —
+ve kapının tazelik kontrolü yayımlanan **tüm** kümeyi yargılıyor. Yani kapı,
+kendisinden sonraki bir adım bayatken asla yeşil dönemiyordu; tam koşuda
+bile, çünkü o adımlar henüz koşmamıştı. Pratikte bu, `--only` ile kapıyı da
+içeren bir zincirin **kilitlenmesi** olarak çıktı: kapı başarısız olup zinciri
+durduruyor, durduğu için de kapının şikâyet ettiği adımlar hiç koşmuyor.
+Kapı `site_freeze`'den hemen önceye taşındı (çıktı listesi boş, hiçbir adım
+`provenance.json`'u girdi olarak okumuyor, yani taşımak güvenli).
+
+**Donma yolu ≠ canlı yol.** `build_entry_data.py` `ro.get("nucleotide_id")`
+çağırıyordu; `ro` bir `sqlite3.Row` ve `.get()` yok. Giriş shard'larının
+taksonomi bloğu bu yüzden hiç yazılmamıştı. Önceki turda "giriş sayfaları
+NCBI taxon satırını gösteriyor" diye doğrulanan şey **Flask yoluydu**
+(`app.py` rotası) — yayımlanan site ise `entry.html` + shard + `entry.js`
+üçlüsünden render ediliyor, ayrı kod. Ders: yayımlanan bir alanı doğrulamak,
+**yayımlanan artefakttan** saymaktır; canlı sunucudan bakmak başka bir kod
+yolunu doğrular. Shard'lar şimdi tek tek sayıldı: 19.125 taxid, 18.511
+rank'lı cins, **614 vekil rank** — beyan edilen sayıyla birebir.
+
+Yayım: `rev-0008`, 204 kontrol / 199 PASS / 0 FAIL / 5 WARN, `check_site.py`
+temiz, 3.483 dosya gh-pages'e gitti, canlıda doğrulandı.
