@@ -165,6 +165,85 @@ better treated as one lineage.</p>
 </tbody></table></div>
 {% endif %}
 
+{% if xref and xref.coverage %}
+<h2>8 &middot; What other databases call the same protein</h2>
+<p>Everything above is this database measuring itself. This section reports the identifiers that
+other databases attach to the same sequences, and &mdash; for the one identifier that is a claim
+rather than an address &mdash; whether their answer agrees with the curation here.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Database</th><th>What it identifies</th><th class="num">Sequences</th>
+<th class="num">Share of the UniProt-sourced set</th></tr></thead>
+<tbody>
+{% for key, label, what in [
+     ('uniprot', 'UniProt', 'the protein record itself'),
+     ('refseq_protein', 'RefSeq protein', 'the same protein in NCBI'),
+     ('embl_nucleotide', 'ENA nucleotide', 'the DNA record it was translated from'),
+     ('ec', 'EC', 'the reaction it is expected to catalyse')] %}
+{% set c = xref.coverage[key] %}
+<tr><td><b>{{ label }}</b></td><td>{{ what }}</td>
+    <td class="num">{{ c.sequences|fmt }}</td>
+    <td class="num">{{ '%.1f %%' % (100 * c.share_of_uniprot_sourced) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>The denominator is declared.</b> Every identifier here reaches this database through
+a UniProt record, so the share is taken over the
+{{ xref.denominators.uniprot_sourced_sequences|fmt }} sequences that have a UniProt source, not over
+all {{ xref.denominators.all_sequences|fmt }} sequences in the union. Taken over the whole union the
+EC share would read lower and would be measuring the wrong thing: the absence of a UniProt record,
+not the absence of an EC number.
+<details class="basis">
+  <summary>Why an EC number is not treated like the other three</summary>
+  <p class="note">UniProt, RefSeq and ENA identifiers are <em>addresses</em>: they point at the same
+  sequence in another archive and can be checked by comparing the sequence. An EC number is a
+  statement about <b>function</b>, and it is only as good as the entry that carries it. Measured
+  here: of the sequences with an EC number,
+  <b>{{ xref.ec_review_status.sequences_with_a_reviewed_ec|fmt }}</b> carry one from a reviewed
+  (Swiss-Prot) entry and
+  <b>{{ xref.ec_review_status.sequences_with_only_an_unreviewed_ec|fmt }}</b> only from an
+  unreviewed (TrEMBL) entry &mdash; that is
+  {{ '%.1f %%' % (100 * (1 - xref.ec_review_status.reviewed_share)) }} propagated by automatic
+  annotation rather than measured on the protein. Each entry page prints the review status beside
+  its EC number for exactly this reason.</p>
+</details>
+</figcaption>
+</figure>
+
+{% if xref.ec_by_type %}
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th class="num">EC readings</th><th class="num">Distinct EC</th>
+<th>Most frequent</th><th class="num">Its share</th><th>Outside class 1.14</th></tr></thead>
+<tbody>
+{% for r in xref.ec_by_type %}
+<tr><td><a href="{{ u('/cluster/' ~ r.cluster) }}">{{ genes.get(r.cluster, r.cluster) }}</a>
+    <div class="note">{{ r.cluster }}</div></td>
+    <td class="num">{{ r.ec_readings|fmt }}</td>
+    <td class="num">{{ r.distinct_ec }}</td>
+    <td><a href="https://enzyme.expasy.org/EC/{{ r.modal_ec }}" rel="noopener">{{ r.modal_ec }}</a></td>
+    <td class="num">{{ '%.0f %%' % (100 * r.modal_share) }}</td>
+    <td>{% if r.ec_outside_expected_class %}
+        {% for ec in r.ec_outside_expected_class %}<a href="https://enzyme.expasy.org/EC/{{ ec }}" rel="noopener">{{ ec }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+        {% else %}<span class="note">none</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<figcaption><b>Does the external annotation agree with this database's types?</b> Mostly, and where
+it does not the disagreement is informative rather than alarming. A share near 100 % means every
+sequence of that type carries the same EC number, so the two classifications are telling the same
+story. A lower share means one curated type collects sequences that UniProt labels with several
+different reactions &mdash; which is the same lesson as section 3, that identity does not determine
+substrate, arriving from an independent direction.
+<b>An EC outside class 1.14 does not contradict the assignment.</b> Class 1.14 is the expected one
+(paired donors, incorporation of molecular oxygen), but a UniProt entry can describe a multi-domain
+protein and the EC number belongs to the whole record, not to the Rieske oxygenase domain inside it.
+That is why these are listed rather than counted as errors.
+{% if xref.ec_outside_expected_class %}Across the database
+{{ xref.ec_outside_expected_class|length }} distinct EC numbers fall outside class 1.14.{% endif %}
+<a href="{{ u('/download/analysis/cross_references.json') }}">Download the full table</a></figcaption>
+</figure>
+{% endif %}
+{% endif %}
+
 <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.35.2/dist/plotly-cartesian.min.js"></script>
 <script>
 const OVER = {{ over|tojson }}, TIERS = {{ TIERS|tojson }}, TC = {{ TIER_COLORS|tojson }};

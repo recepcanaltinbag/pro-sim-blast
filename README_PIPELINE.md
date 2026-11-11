@@ -57,6 +57,7 @@ Veri: `combined_pfam.fasta` (189.657 PF00355 proteini), `gbk_files/` (17.074 Gen
 | 12c3 | `redundancy.py` | dizi fazlaligi ve her sayima etkisi → `redundancy.json` |
 | 12c4 | `cooccurrence.py` | tip birliktelikleri + permutasyon null'i → `cooccurrence.json` |
 | 12c5 | `substrate_predictability.py` | kimlik → substrat ongorusunun ROC/kesinlik olcumu → `substrate_predictability.json` |
+| 12c9 | `cross_references.py` | `ro_union_source` + `ro_protein_status` → `ro_xref(seq_md5, db, identifier)` + `analysis_out/cross_references.json`; dis tanimlayicilar (UniProt, RefSeq, ENA, EC) DIZI basina, beyan edilmis paydayla. EC bir ISLEV iddiasi oldugu icin inceleme durumu (Swiss-Prot/TrEMBL) ve tip basina uzlasma ayrica olculur. Zincirde YAPRAK: `ro_xref` yazdigi icin ortada dururken kendisinden sonraki her DB girdili adimi bayatlatiyordu |
 | 12c8 | `reference_redundancy.py` | `ROs_71_Clean/refs71.fasta` + `analysis_out/reference_pairs.csv` → `analysis_out/reference_redundancy.json`; referans setinin kendi fazlaligi ve bunun atamaya etkisi |
 | 12c6 | `isolation_source.py` | `gbk_files/` `source` nitelikleri + `cluster_ecology.csv`/`chemistry.csv` → `replicon_source` tablosu (izolasyon kaynagi, konak, cografya, yil, habitat) + `analysis_out/habitat.json`; habitat × substrat sinifi tur-normalize capraz tablolari |
 | 12d | `build_search_index.py` | FTS5 tam metin indeksi + filtre alanlari → `ro_search`, `ro_fts` |

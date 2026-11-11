@@ -2371,6 +2371,10 @@ PROVENANCE = [
     ("threshold_sensitivity.json", "file", "Every headline figure recomputed across eight "
      "inclusion thresholds, so the reader can see what the choice of threshold costs.",
      "threshold_sensitivity.py"),
+    ("cross_references.json", "file", "The identifiers other databases attach to the same "
+     "sequences (UniProt, RefSeq, ENA, EC), with the declared denominator and, for EC, the "
+     "review status that says whether the number was measured or propagated.",
+     "cross_references.py"),
     ("reference_redundancy.json", "file", "Where the curated reference set repeats itself, and "
      "how many members sit under a reference that is not uniquely defined.",
      "reference_redundancy.py"),

@@ -4027,6 +4027,81 @@ cift, cifti olmayan karar ve gerekcesi bos satir hata. Fazlalik WARN'i
 kalici oldugu icin kararin yazili olmasi da kalici sart. 178 kontrol,
 173 PASS, 0 FAIL, 5 WARN.
 
+### 134. A6 KURULDU: CAPRAZ REFERANSLAR ALAN OLDU (2026-11-11)
+
+Dort tanimlayici (`ec`, `refseq`, `embl_nuc` + UniProt accession'i)
+2026-11-01'den beri `ro_protein_status`'ta duruyordu ve sitede
+**hicbir yerde** gorunmuyordu: okuyucu bir diziyi UniProt'ta, ENA'da ya
+da RefSeq'te aramak istedigi anda elinde hicbir sey yoktu.
+
+`cross_references.py` -> `ro_xref(seq_md5, db, identifier)` +
+`analysis_out/cross_references.json`. Birim DIZI, accession DEGIL
+(madde A1): tek bir dizi YEDI UniProt accession'i altinda gecebiliyor
+(NC_003143.1:2801274-2802399:-1 boyle).
+
+**EC'yi oteki ucuyle ayni kefeye KOYMADIK.** Olculdu: EC tasiyan
+3.813 dizinin yalnizca **87'si** incelenmis (Swiss-Prot) bir kayittan
+geliyor, **3.726'si** yalnizca incelenmemis (TrEMBL) kayittan --
+yani %97,7'si otomatik anotasyonun yaydigi bir TAHMIN. Bir tip
+sayfasina ciplak "EC 1.14.15.7" yazmak, kuratorlu substrat etiketiyle
+ayni gorunen 3.726 islev iddiasi uretirdi. O yuzden EC her giris
+sayfasinda inceleme durumu cipiyle ve "bu bir adres degil, bir islev
+iddiasi" diyen acilir kutuyla duruyor.
+
+**PAYDA BEYANLI (madde A3).** Butun tanimlayicilar UniProt kaynakli
+dizilerden geliyor, o yuzden payda 68.747 (UniProt kaynakli), 73.299
+(tum birlesim) DEGIL. Tum birlesim uzerinden alinsa oran yanlis seyi
+olcerdi: EC'nin yoklugunu degil, UniProt kaydinin yoklugunu.
+
+**Yeni olcum: dis anotasyon bizim tipimizle anlasiyor mu.**
+`/atlas/evidence` bolum 8, tip basina EC okumasi / farkli EC / en sik
+EC'nin payi / 1.14 sinifi disindaki EC'ler. CntA'da en sik EC okumalarin
+%92'si, KshA15'te %50 -- yani bir kuratorlu tip, UniProt'un birkac
+farkli reaksiyonla etiketledigi dizileri topluyor. Bolum 3'un dersinin
+(kimlik substrati belirlemez) BAGIMSIZ bir yonden gelisi. 1.14 disi
+EC'ler "hata" degil "listelenmis": UniProt kaydi cok alanli olabilir ve
+EC kaydin tamamina aittir.
+
+**Iki hatayi olcum yakaladi, ikisi de bicim kontrolunun ATILAN SAYIYI
+raporlamasi sayesinde:**
+  1. EMBL deseni `\d{5,8}` idi ve 6 harf + 9 haneli GECERLI WGS
+     accession'larini (`JACBZF010000002`) bozuk sayip **5.358 kaydi
+     atiyordu**. "Kac tane atildi" yazilmasaydi gorunmezdi.
+  2. Adim zincirde `stats`'tan ONCE duruyordu; `ro_xref` tablosunu
+     yazdigi icin kendisinden sonraki her DB girdili adim (stats,
+     family_scan, a5_match_guard, carboxylate_anchor_holdout) onu
+     "degismis ust girdi" sayip bayatliyordu -- ucu AGIR. Adim YAPRAK,
+     o yuzden zincirin sonuna alindi. **Ders: DB'ye tablo yazan yeni bir
+     adimin zincirdeki YERI, kendisinden sonraki her seyi bayatlatir.**
+
+Dogrulayici: sekiz yeni kontrol (sahipsiz satir, bos tanimlayici, URL
+kalibi olmayan ad, EC'nin dort alani, RefSeq oneki, PAYDA TAZELIGI,
+atilan kayit, EC inceleme durumunun yayimlanmis olmasi).
+`ro_xref`'in uc sutunu `IDENTIFIER_TEXT_FIELDS`'a eklendi -- yoksa dil
+kontrolu onlari hic gormez.
+
+**AYNI HATAYI BIR KEZ DAHA YAPTIM, ve ikinci bir tanesini yakaladi.**
+Blogu ilk olarak yalnizca `ro.html`'e yazdim. Ama YAYIMLANAN sitede giris
+sayfalari o sablonla cizilmiyor: tek kabuk (`entry.html`) + `data/entry/`
+altinda 256 parca JSON + `static/entry.js`. Yani blok 19.109 giris
+sayfasinin HICBIRINDE gorunmeyecekti; yalnizca gelistirme uygulamasinda.
+Duzeltme: `build_entry_data.py` artik parcaya `xr` (tek harfli anahtarlar:
+u/r/n/e) ve `xrv` (EC'yi incelenmis kayit tasiyor mu) yaziyor, `entry.js`
+de ayni blogu ciziyor. Bedel olculdu: ham JSON +0,83 MB (46 MB uzerine
+%1,8). **17.535 / 19.109 giris (%91,8) en az bir capraz referans tasiyor.**
+
+Bunu ararken AYNI SINIFTAN ikinci bir hata cikti: `entry.js:207`
+`core_identity`'yi hala **"alignment identity to nearest reference"** diye
+etiketliyordu. O etiketin yanlis oldugu 5f68cc4751'de ("yayimlanan sayi ile
+basliginin uyusmadigi 9 yer") tespit edilip `ro.html`'de duzeltilmis, ama
+`entry.js`'e tasinmamis. Sayi kumenin KENDI alt aile uzlasilarina karsi
+olculuyor, hicbir kuratorlu referansa dokunmuyor -- fark CntA'da 0,99'a
+karsi %24,4. Yani duzeltilmis hali gelistirme uygulamasinda, yanlis hali
+canlidaki 19.109 sayfanin hepsinde duruyordu. Duzeltildi.
+
+ACIK KALAN (A6'nin oteki yarisi): InterPro, KEGG, MetaCyc. Bunlar
+elimizde YOK; UniProt REST'ten 68.747 accession icin cekilmesi gerekiyor.
+
 ## Yeniden uretim
 
 ```

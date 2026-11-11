@@ -454,6 +454,18 @@ ARTEFACTS = [
      ["family_scan.py", DB, "family_hmms/mobility.hmm",
       "family_hmms/recombinase.hmm", "family_hmms/regulator.hmm"], False),
 
+    # cross_references: A6. Girdisi ro_union_source + ro_protein_status, yani
+    # union'dan SONRA. YAPRAK olarak en sona konuldu: `ro_xref` tablosunu
+    # yazdigi icin zincirin ortasinda dururken kendisinden SONRAKI her DB
+    # girdili adim (stats, family_scan, a5_match_guard,
+    # carboxylate_anchor_holdout) onu "degismis ust girdi" sayip bayatliyordu
+    # -- ucu AGIR. Bu tabloyu okuyan tek sey webapp, yani adimin burada
+    # durmasinin hicbir bedeli yok.
+    ("cross_references", [f"{OUT}/cross_references.json"],
+     ["python3", "cross_references.py", "--db", DB,
+      "--out", f"{OUT}/cross_references.json"],
+     ["cross_references.py", DB], False),
+
     # YAYIMLANAN SITENIN KENDISI. 2026-11-09'a kadar grafigin disindaydi:
     # her sey taze olsa bile canlidaki kopyanin eski olup olmadigini hicbir
     # sey sormuyordu. Olculen bedel: gh-pages 2026-11-02'de kalmisti ve

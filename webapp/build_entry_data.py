@@ -136,6 +136,35 @@ def main():
     ids = [r[0] for r in con.execute(q)]
     print(f"[giris] {len(ids)}")
 
+    #  CAPRAZ REFERANSLAR (A6). Giris basina sorgu yerine TEK seferde
+    #  yukleniyor: 121.047 satir, 19.109 girisin her biri icin ayri sorgu
+    #  atmanin anlami yok. Anahtar seq_md5, cunku birim DIZI -- ayni protein
+    #  birkac accession altinda gecebiliyor.
+    #
+    #  NEDEN SUNUCU SABLONU YETMEDI. Yayimlanan sitede giris sayfasi
+    #  `ro.html` ile cizilmiyor; kabuk + bu parcalar ile ciziliyor. Blogu
+    #  yalnizca sablona yazmak, sitede HICBIR giriste gorunmemesi demekti --
+    #  "duzeltmeyi bulundugu yere yazip yayimlandigi her yere tasimamak"
+    #  hatasinin tam olarak kendisi.
+    xref = {}
+    xrev = set()
+    if con.execute("SELECT name FROM sqlite_master "
+                   "WHERE name='ro_xref'").fetchone():
+        for md5h, dbname, ident in con.execute(
+                "SELECT seq_md5, db, identifier FROM ro_xref "
+                "ORDER BY db, identifier"):
+            xref.setdefault(md5h, {}).setdefault(dbname, []).append(ident)
+        #  EC'yi INCELENMIS bir kayit mi tasiyor: bu, EC'nin olcum mu tahmin
+        #  mi oldugunu soyleyen tek isaret ve giris sayfasinda cipe donuyor.
+        for (md5h,) in con.execute(
+                "SELECT DISTINCT u.seq_md5 FROM ro_union_source u "
+                "JOIN ro_protein_status st ON st.accession = u.accession "
+                "WHERE u.source='uniprot' AND st.ec IS NOT NULL AND st.ec <> '' "
+                "AND st.entry_type LIKE '%reviewed%' "
+                "AND st.entry_type NOT LIKE '%unreviewed%'"):
+            xrev.add(md5h)
+        print(f"[xref] {len(xref)} dizi, {len(xrev)} incelenmis EC")
+
     shards = {}                 # shard -> {"e": {...}, "s": [sozluk]}
     interners = {}
     opsvg = {}                  # svg_key -> svg  (parcalanmadan once)
@@ -225,6 +254,22 @@ def main():
             "mb": ((d["membership"]["basis"] if d["membership"] else None),
                    (d["triad"]["triad_status"] if d["triad"] else None)),
         }
+        #  Tek harfli anahtarlar: u=uniprot, r=refseq, n=ena nukleotit, e=ec.
+        #  Bos olanlar hic yazilmiyor; hicbiri yoksa "xr" alani da yok, cunku
+        #  olculmemis ile bulunmamis ayri seylerdir ve sayfa o zaman bolumu
+        #  hic cizmiyor.
+        seq_hash = hashlib.md5(seq.strip().upper().encode()).hexdigest() \
+            if seq else None
+        got = xref.get(seq_hash) if seq_hash else None
+        if got:
+            packed = {}
+            for short, dbname in (("u", "uniprot"), ("r", "refseq_protein"),
+                                  ("n", "embl_nucleotide"), ("e", "ec")):
+                if got.get(dbname):
+                    packed[short] = got[dbname]
+            bucket["e"][cid]["xr"] = packed
+            if seq_hash in xrev:
+                bucket["e"][cid]["xrv"] = 1
         if n % 2000 == 0:
             print(f"   {n}/{len(ids)}")
 

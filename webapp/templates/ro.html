@@ -91,6 +91,47 @@ and is shown for completeness only.</div>
       subfamily consensus {{ '%.2f' % ro.core_identity }} &mdash; how typical this
       member is inside its own type, not its distance to a curated reference
       (that is given above)</span>{% endif %}</dd>
+    {#  CAPRAZ REFERANSLAR (A6). Uc tanimlayici ADRES, EC ise bir ISLEV
+        IDDIASI; o yuzden ayri satirda ve kosuluyla duruyor. Sira
+        cross_references.py'nin URL kaliplariyla tek sahipli.  #}
+    {% set addr = xrefs | rejectattr('0', 'equalto', 'ec') | list %}
+    {% set ec = xrefs | selectattr('0', 'equalto', 'ec') | list | first %}
+    {% if addr %}
+    <dt>Same protein elsewhere</dt><dd>
+      {% for name, label, items in addr %}
+      <span class="note">{{ label }}</span>
+      {% for ident, url in items %}<a href="{{ url }}" rel="noopener">{{ ident }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+      {% if not loop.last %}<br>{% endif %}
+      {% endfor %}
+    </dd>
+    {% endif %}
+    {% if ec %}
+    <dt>EC number</dt><dd>
+      {% for ident, url in ec[2] %}<a href="{{ url }}" rel="noopener">{{ ident }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+      {% if ecrev and ecrev.reviewed %}
+      <span class="chip chip--ok">reviewed entry</span>
+      {% else %}
+      <span class="chip chip--bad">unreviewed entry</span>
+      {% endif %}
+      <details class="basis">
+        <summary>What this EC number is, and is not</summary>
+        <p class="note">Unlike the records above, which are addresses for the same
+        sequence, an EC number is a statement about <b>function</b>. It is carried here
+        by the UniProt entry for this sequence, not measured in this database.
+        {% if ecrev and ecrev.reviewed %}This one comes from a <b>reviewed</b>
+        (Swiss-Prot) entry, which is curated by hand.
+        {% else %}This one comes from an <b>unreviewed</b> (TrEMBL) entry, which means
+        it was propagated by automatic annotation rather than measured on this protein;
+        almost every EC number in this database is of that kind.
+        {% endif %}
+        Read it as an external database's expectation, not as evidence of what this
+        protein does, and not as equivalent to the curated substrate on its
+        <a href="{{ u('/cluster/' ~ ro.ro_cluster) }}">type page</a>. How far the
+        external numbers agree with this database's own curation is measured on the
+        <a href="{{ u('/atlas/evidence') }}">evidence page</a>.</p>
+      </details>
+    </dd>
+    {% endif %}
   </dl>
 </div>
 

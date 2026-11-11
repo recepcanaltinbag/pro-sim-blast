@@ -20,6 +20,7 @@ import csv
 import datetime as _dt
 import io
 import functools
+import hashlib
 import os
 import re
 import sqlite3
@@ -866,7 +867,10 @@ def ro_page(request: Request, ro_slug: str):
         d = ro_detail(con, unslug(ro_slug))
         if not d:
             raise HTTPException(404, "entry not found")
-        return render(request, "ro.html", x=ro_extras(con, d["ro"]["candidate_id"]), **d)
+        return render(request, "ro.html",
+                      x=ro_extras(con, d["ro"]["candidate_id"]),
+                      xrefs=cross_refs(con, d["ro"]["sequence"]),
+                      ecrev=ec_review_note(con, d["ro"]["sequence"]), **d)
     finally:
         con.close()
 
@@ -1840,6 +1844,9 @@ def atlas_evidence(request: Request):
             "n_diff": len(diff), "n_same": len(same)}
         return render(request, "atlas_evidence.html", over=over, tot=tot, mism=mism,
                       sweep=sweep, calib=calib,
+                      xref=atlas.read_json(apath("cross_references.json")),
+                      genes={c: (CHEMISTRY.get(c) or {}).get("gene") or c
+                             for c in CHEMISTRY},
                       pred=atlas.read_json(apath("substrate_predictability.json")))
     finally:
         con.close()
@@ -2381,6 +2388,72 @@ def cluster_extras(con, cluster):
         except Exception:
             x["tree_svg"] = None
     return x
+
+
+#  Capraz referans URL kaliplari. Tek sahipli: cross_references.py ayni
+#  kaliplari JSON'a yaziyor, dogrulayici dort adin hepsinin burada bir
+#  karsiligi olmasini SINIYOR. Yeni bir veritabani eklenirse ikisi birlikte
+#  degisir, yoksa sayfa URL'si olmayan bir ad basar.
+XREF_DBS = [
+    ("ec", "EC", "https://enzyme.expasy.org/EC/{}"),
+    ("uniprot", "UniProt", "https://www.uniprot.org/uniprotkb/{}"),
+    ("refseq_protein", "RefSeq protein",
+     "https://www.ncbi.nlm.nih.gov/protein/{}"),
+    ("embl_nucleotide", "ENA nucleotide",
+     "https://www.ebi.ac.uk/ena/browser/view/{}"),
+]
+
+
+def cross_refs(con, sequence):
+    """Bir dizinin dis tanimlayicilari: [(ad, etiket, [(kimlik, url)])].
+
+    Birim DIZI (madde A1): ayni protein birkac accession altinda gecebilir,
+    o yuzden anahtar `seq_md5`. Dizisi olmayan ya da `ro_xref` henuz
+    kurulmamis bir kurulumda bos liste doner -- sayfa bolumu o zaman hic
+    cizilmez, "yok" yazmaz, cunku olculmemis ile bulunmamis ayri seylerdir.
+    """
+    if not sequence or not atlas.table_exists(con, "ro_xref"):
+        return []
+    digest = hashlib.md5(sequence.strip().upper().encode()).hexdigest()
+    rows = con.execute(
+        "SELECT db, identifier FROM ro_xref WHERE seq_md5=? ORDER BY db, identifier",
+        (digest,)).fetchall()
+    if not rows:
+        return []
+    by_db = {}
+    for db, ident in rows:
+        by_db.setdefault(db, []).append(ident)
+    out = []
+    for name, label, template in XREF_DBS:
+        idents = by_db.get(name)
+        if idents:
+            out.append((name, label,
+                        [(i, template.format(i)) for i in idents]))
+    return out
+
+
+def ec_review_note(con, sequence):
+    """EC'yi tasiyan UniProt kaydi incelenmis mi -- EC bir IDDIA.
+
+    EC'lerin neredeyse tamami TrEMBL'den geliyor, yani otomatik anotasyonun
+    yaydigi bir tahmin. Sayfa bunu yazmazsa okuyucu EC'yi kuratorlu substrat
+    etiketiyle ayni kefeye koyar.
+    """
+    if not sequence or not atlas.table_exists(con, "ro_xref"):
+        return None
+    digest = hashlib.md5(sequence.strip().upper().encode()).hexdigest()
+    row = con.execute(
+        """SELECT SUM(CASE WHEN s.entry_type LIKE '%reviewed%'
+                            AND s.entry_type NOT LIKE '%unreviewed%'
+                           THEN 1 ELSE 0 END),
+                  COUNT(*)
+             FROM ro_union_source u
+             JOIN ro_protein_status s ON s.accession = u.accession
+            WHERE u.seq_md5 = ? AND u.source = 'uniprot'
+              AND s.ec IS NOT NULL AND s.ec <> ''""", (digest,)).fetchone()
+    if not row or not row[1]:
+        return None
+    return {"reviewed": row[0] or 0, "entries": row[1]}
 
 
 def ro_extras(con, candidate_id):

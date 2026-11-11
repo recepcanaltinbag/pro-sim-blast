@@ -207,6 +207,12 @@ EXTERNAL_TEXT_FIELDS = {
 IDENTIFIER_TEXT_FIELDS = {
     ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
     ("gene_category", "category"),
+    # 2026-11-11, cross_references.py'nin yazdigi ro_xref. Ucu de KIMLIK:
+    # seq_md5 dizi ozeti, db dort degerli bir sabit (uniprot /
+    # refseq_protein / embl_nucleotide / ec), identifier DIS bir
+    # veritabaninin accession'i. Cevrilecek proza yok, ama uc listeden
+    # birinde olmak ZORUNDA -- yoksa dil kontrolu onlari hic gormez.
+    ("ro_xref", "seq_md5"), ("ro_xref", "db"), ("ro_xref", "identifier"),
     # 2026-11-10, family_scan.py'nin yazdigi uc tablo. Hepsi KIMLIK:
     # category Pfam ailesinin ingilizce sabit adi (IS3-like, LysR, ...),
     # method yontem etiketi, model/library Pfam model adi, protein_key
@@ -2795,6 +2801,118 @@ def check_published_files_are_in_rebuild_graph(rep, con, root):
                  "eklenmis; o dosya hic tazelenemez"))
 
 
+def check_cross_references(rep, con, root, out_dir="analysis_out"):
+    """`ro_xref` ve `cross_references.json`: adres tiklanabilir, payda beyanli.
+
+    NEDEN. Buradaki her tanimlayici sayfada DIS BIR BAGLANTI olacak, yani
+    bozuk bir deger okuyucuyu 404'e goturur; ve her yuzde UniProt kaynakli
+    dizi paydasindan hesaplaniyor, TUM diziler paydasindan degil (madde A3).
+    Iki sey de kendiliginden bozulabilir: payda `build_union.py` kostugunda
+    buyur, bicim ise yeni bir accession semasi geldiginde kayar -- ilk
+    kosuda 6 harf + 9 haneli WGS accession'lari (`JACBZF010000002`) desene
+    uymadigi icin 5.358 GECERLI kayit atilmisti.
+
+    EC AYRI BIR SEY. Oteki uc tanimlayici adres, EC ise ISLEV IDDIASI. Bu
+    veritabaninin kuratorlu substrat etiketiyle ayni kefeye konmamasi icin
+    inceleme durumunun yayimlanmasi SART: EC'lerin tamamina yakini
+    incelenmemis (TrEMBL) kayitlardan geliyor. Oran yayimlanmiyorsa iddia
+    kosulsuz kalir, o yuzden alanin varligi burada sinaniyor.
+    """
+    have = con.execute(
+        "SELECT name FROM sqlite_master WHERE name='ro_xref'").fetchone()
+    if not have:
+        rep.check("xref: ro_xref exists", False, 1,
+                  "ro_xref yok -- cross_references.py kosturulmali")
+        return
+
+    # 1. Her satir bir birlesim dizisine ait olmak zorunda.
+    orphan = con.execute(
+        "SELECT COUNT(*) FROM ro_xref x WHERE NOT EXISTS "
+        "(SELECT 1 FROM ro_union u WHERE u.seq_md5 = x.seq_md5)").fetchone()[0]
+    rep.check("xref: every cross-reference belongs to a union sequence",
+              not orphan, orphan,
+              "sahipsiz satir yok" if not orphan
+              else f"{orphan} satir ro_union'da olmayan bir dizide")
+
+    # 2. Bos ya da bosluk tasiyan tanimlayici: dogrudan kirik baglanti.
+    blank = con.execute(
+        "SELECT COUNT(*) FROM ro_xref WHERE identifier IS NULL "
+        "OR TRIM(identifier) = '' OR identifier LIKE '% %'").fetchone()[0]
+    rep.check("xref: no blank identifier", not blank, blank,
+              "hepsi dolu" if not blank else f"{blank} satir bos/bosluklu")
+
+    # 3. Bilinmeyen veritabani adi: sayfa onun icin URL kalibi bilmiyor.
+    known = ("uniprot", "refseq_protein", "embl_nucleotide", "ec")
+    unknown = [r[0] for r in con.execute(
+        "SELECT DISTINCT db FROM ro_xref") if r[0] not in known]
+    rep.check("xref: every database name has a published URL template",
+              not unknown, len(unknown),
+              "bilinen dort ad" if not unknown
+              else "URL kalibi olmayan ad: " + ", ".join(sorted(unknown)))
+
+    # 4. EC'nin yapisi: dort noktali alan. Bozuk bir EC, var olmayan bir
+    #    ExPASy sayfasina baglanir.
+    bad_ec = [r[0] for r in con.execute(
+        "SELECT DISTINCT identifier FROM ro_xref WHERE db='ec'")
+        if len([f for f in r[0].split(".")]) != 4]
+    rep.check("xref: every EC number has four fields", not bad_ec, len(bad_ec),
+              "hepsi n.n.n.n" if not bad_ec else first(bad_ec, 6))
+
+    # 5. RefSeq protein accession'i alt cizgi tasir (WP_/NP_/YP_...).
+    bad_rs = [r[0] for r in con.execute(
+        "SELECT DISTINCT identifier FROM ro_xref WHERE db='refseq_protein'")
+        if "_" not in r[0]]
+    rep.check("xref: every RefSeq protein accession is prefixed",
+              not bad_rs, len(bad_rs),
+              "hepsi onekli" if not bad_rs else first(bad_rs, 6))
+
+    # 6. PAYDA TAZELIGI: yayimlanan yuzdelerin paydasi bugunku DB ile ayni mi.
+    path = os.path.join(root, out_dir, "cross_references.json")
+    if not os.path.exists(path):
+        rep.check("xref: cross_references.json present", False, 1,
+                  f"{path} yok -- cross_references.py kosturulmali")
+        return
+    with open(path, encoding="utf-8") as fh:
+        data = json.load(fh)
+    den = data.get("denominators") or {}
+    live_all = con.execute("SELECT COUNT(*) FROM ro_union").fetchone()[0]
+    live_uni = con.execute(
+        "SELECT COUNT(DISTINCT seq_md5) FROM ro_union_source "
+        "WHERE source='uniprot'").fetchone()[0]
+    drift = []
+    if den.get("all_sequences") != live_all:
+        drift.append(f"all_sequences {den.get('all_sequences')} != {live_all}")
+    if den.get("uniprot_sourced_sequences") != live_uni:
+        drift.append(f"uniprot_sourced {den.get('uniprot_sourced_sequences')} "
+                     f"!= {live_uni}")
+    rep.check("xref: the published denominators match the current database",
+              not drift, len(drift),
+              f"all={live_all}, uniprot-sourced={live_uni}"
+              + ("" if not drift else "; BAYAT: " + "; ".join(drift)))
+
+    # 7. Bicim kontrolu atilan kayit birakmamali: atilan varsa desen bir
+    #    GECERLI semayi tanimiyor demektir ve o adresler sessizce kaybolur.
+    dropped = {db: (info or {}).get("rejected_malformed", 0)
+               for db, info in (data.get("coverage") or {}).items()}
+    lost = {db: n for db, n in dropped.items() if n}
+    rep.check("xref: no identifier was dropped as malformed",
+              not lost, sum(lost.values()),
+              "hicbiri atilmadi" if not lost
+              else "; ".join(f"{db}: {n}" for db, n in sorted(lost.items()))
+              + " -- desen gecerli bir accession semasini tanimiyor olabilir")
+
+    # 8. EC'nin KOSULU yayimlanmis mi: inceleme durumu alani dolu olmak
+    #    zorunda, yoksa islev iddiasi kosulsuz yayimlanir.
+    review = data.get("ec_review_status") or {}
+    has_share = isinstance(review.get("reviewed_share"), (int, float))
+    rep.check("xref: the EC review status is published with the EC numbers",
+              has_share, 0 if has_share else 1,
+              (f"incelenmis {review.get('sequences_with_a_reviewed_ec')} / "
+               f"yalnizca incelenmemis "
+               f"{review.get('sequences_with_only_an_unreviewed_ec')} dizi")
+              if has_share else "reviewed_share yok -- EC kosulsuz kalir")
+
+
 def check_union_denominator(rep, con, root):
     """Birlesim ile kesisim ayrisirsa FAIL.
 
@@ -3684,6 +3802,7 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_cross_references(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)

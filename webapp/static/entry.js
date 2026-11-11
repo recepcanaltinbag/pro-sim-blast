@@ -203,9 +203,69 @@
     }
     h.push('<dt>Assignment class</dt><dd><span class="chip chip--' +
       esc(ro.assignment_class || '') + '">' + esc(ro.assignment_class || '–') + '</span>' +
+      /*  BU SAYI "EN YAKIN REFERANSA KIMLIK" DEGIL (2026-11-11).
+          discover_subfamilies.py onu kumenin KENDI alt ailelerinin kolon
+          uzlasilarina karsi hesapliyor; hicbir kuratorlu referans diziye
+          dokunmuyor. Etiket `ro.html`'de 5f68cc4751 ile duzeltilmisti ama
+          BURADA eski halinde kaldi -- ve yayimlanan sitede giris sayfalari
+          sablonla degil bu dosyayla ciziliyor, yani yanlis etiket 19.109
+          sayfanin HEPSINDE canliydi, duzeltilmis hali ise yalnizca
+          gelistirme uygulamasinda.  */
       (ro.core_identity !== null && ro.core_identity !== undefined
-        ? ' <span class="note">alignment identity to nearest reference ' +
-          num(ro.core_identity, 2) + '</span>' : '') + '</dd>');
+        ? ' <span class="note">identity to its subfamily consensus ' +
+          num(ro.core_identity, 2) + ' — how typical this member is inside ' +
+          'its own type, not its distance to a curated reference</span>' : '') +
+      '</dd>');
+    /*  CAPRAZ REFERANSLAR (A6). Uc tanimlayici ADRES, EC ise bir ISLEV
+        IDDIASI; o yuzden ayri satirda ve kosuluyla duruyor. Sira ve URL
+        kaliplari cross_references.py ile tek sahipli.  */
+    var XR = [['u', 'UniProt', 'https://www.uniprot.org/uniprotkb/'],
+              ['r', 'RefSeq protein', 'https://www.ncbi.nlm.nih.gov/protein/'],
+              ['n', 'ENA nucleotide', 'https://www.ebi.ac.uk/ena/browser/view/']];
+    var xr = rec.xr || null;
+    if (xr) {
+      var parts = [];
+      for (var xi = 0; xi < XR.length; xi++) {
+        var ids = xr[XR[xi][0]];
+        if (!ids || !ids.length) continue;
+        var links = ids.map(function (id) {
+          return '<a href="' + XR[xi][2] + encodeURIComponent(id) +
+                 '" rel="noopener">' + esc(id) + '</a>';
+        }).join(', ');
+        parts.push('<span class="note">' + XR[xi][1] + '</span> ' + links);
+      }
+      if (parts.length) {
+        h.push('<dt>Same protein elsewhere</dt><dd>' +
+          parts.join('<br>') + '</dd>');
+      }
+      if (xr.e && xr.e.length) {
+        var reviewed = !!rec.xrv;
+        h.push('<dt>EC number</dt><dd>' + xr.e.map(function (ec) {
+          return '<a href="https://enzyme.expasy.org/EC/' +
+                 encodeURIComponent(ec) + '" rel="noopener">' + esc(ec) +
+                 '</a>';
+        }).join(', ') +
+          ' <span class="chip ' + (reviewed ? 'chip--ok' : 'chip--bad') + '">' +
+          (reviewed ? 'reviewed entry' : 'unreviewed entry') + '</span>' +
+          '<details class="basis"><summary>What this EC number is, and is not' +
+          '</summary><p class="note">Unlike the records above, which are ' +
+          'addresses for the same sequence, an EC number is a statement about ' +
+          '<b>function</b>. It is carried here by the UniProt entry for this ' +
+          'sequence, not measured in this database. ' +
+          (reviewed
+            ? 'This one comes from a <b>reviewed</b> (Swiss-Prot) entry, which ' +
+              'is curated by hand. '
+            : 'This one comes from an <b>unreviewed</b> (TrEMBL) entry, which ' +
+              'means it was propagated by automatic annotation rather than ' +
+              'measured on this protein; almost every EC number in this ' +
+              'database is of that kind. ') +
+          'Read it as an external database\'s expectation, not as evidence of ' +
+          'what this protein does. How far the external numbers agree with ' +
+          'this database\'s own curation is measured on the ' +
+          '<a href="' + href('/atlas/evidence.html') + '">evidence page</a>.' +
+          '</p></details></dd>');
+      }
+    }
     h.push('</dl></div>');
 
     // --- komsuluk haritasi
