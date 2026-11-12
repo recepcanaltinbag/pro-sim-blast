@@ -48,15 +48,17 @@ exceptions:
     why: "Same as 2_201_BphA1: the same compound under the two conventions."
     checked_on: 2026-10-28
 
-  - cluster: 2_208_TecA1
-    official: "(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol"
-    ours: "chlorinated cis-dihydrodiol"
-    why: >
-      Same chemistry. Ours is deliberately generic because this enzyme has
-      broad specificity across chlorinated benzenes, so no single official
-      product covers the type; the official entry names the chlorobenzene
-      case. The generic wording is a curation choice, not a disagreement.
-    checked_on: 2026-10-28
+#  2_208_TecA1 KALDIRILDI 2026-11-12. Kayit, urun adinin KASTEN jenerik
+#  tutuldugunu soyluyordu ("chlorinated cis-dihydrodiol"), cunku enzim
+#  klorlu benzenler arasinda genis spektrumlu. Gerekce savunulabilirdi, ama
+#  bir yan etkisi vardi: ayni tipin `substrate_en` alani 1,2,4,5-tetraklor-
+#  obenzen yazarken `chemistry_evidence` alani "computed_from_official_
+#  equation" diyordu -- yani kayit, resmi denklemin HIC ANMADIGI bir molekul
+#  icin resmi denklem destegi iddia ediyordu. Substrat ve urun artik
+#  O24676'nin dengeledigi tek reaksiyona (klorobenzen) hizali, enzimin
+#  genis spektrumu ve tetraklorobenzen dehalojenasyonu ise tipin kendi
+#  notlarinda DOGRU urunuyle (3,4,6-triklorokatekol) duruyor. Istisna
+#  gereksiz kaldi; sessizce silinmedi, gerekcesi burada (ROADMAP 135.6).
 
   - cluster: 2_209_TDO
     official: "(1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol"

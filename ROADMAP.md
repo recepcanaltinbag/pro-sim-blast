@@ -4449,3 +4449,120 @@ iki molekülü ayırt etmeye yetiyor. `rdkit` kurulu değil.)
 Ağ, kapının koşulu olamaz: `--lookup-names` yalnızca önbellekte olmayan
 adlar için ağa çıkar, boru hattı adımı **önbellekten** aynı 67 çifti
 çevrimdışı üretiyor (doğrulandı).
+
+### 135.6 — İki kurasyon uyuşmazlığı literatürden kapatıldı; ve biri hata değildi
+
+135.3'ün yapısal ayırt edicisi iki tipte "ayrı molekül" hükmü verdi. İkisi
+de birincil kaynaktan kontrol edildi ve **ikisinin de teşhisi farklı çıktı.**
+
+**`1_114_NdmB` — kurasyon kimyasal olarak DOĞRUYDU.** NdmB gerçekten
+kafeini paraksantine çevirir ([UniProt H9N290](https://www.uniprot.org/uniprotkb/H9N290);
+Summers 2012, J Bacteriol 194:2041, doi:10.1128/jb.06637-11, PMID 22328667).
+Yani "hata" diye raporlanan şey bir hata değildi. Gerçek sorun başkaydı:
+UniProt birincil reaksiyonu **teobromin → 7-metilksantin** veriyor ve
+dengelediği Rhea kayıtlarının hepsi o reaksiyon üzerinde — üstelik
+`official_equation` alanı **aynı YAML dosyasının içinde** zaten teobromini
+yazıyordu. `substrate_en` kendi dosyasındaki resmî denkleme hizalı değildi.
+Ayrıca kayıtlı substrat dizgisi NdmA'nınkiyle **birebir aynıydı**
+("caffeine"), yani iki tip aynı işi yapıyor gibi görünüyordu; oysa ayırt
+edici özellik demetillenen **pozisyon** (NdmA: N1, NdmB: N3). Substrat
+teobromine hizalandı; kafein→paraksantin, teofilin→1-metilksantin ve
+3-metilksantin→ksantin **ikincil belgelenmiş aktiviteler** olarak notlara
+geçti.
+
+**`2_208_TecA1` — kusur kimyada değil, KANIT ETIKETINDEYDI.** Kayıt
+`chemistry_evidence: computed_from_official_equation` diyordu, yani oksijen
+kaderinin resmî denklemden hesaplandığını iddia ediyordu; ama o denklem
+**klorobenzen** üzerinde (RHEA:57512) ve kayıtlı substrat
+1,2,4,5-tetraklorobenzendi. Yani kayıt, denklemin **hiç anmadığı** bir
+molekül için resmî denklem desteği iddia ediyordu.
+[UniProt O24676](https://www.uniprot.org/uniprotkb/O24676)'nın önerilen adı
+"Chlorobenzene dioxygenase subunit alpha", birincil makalenin başlığı da
+"Broad Spectrum **Chlorobenzene** Dioxygenase ... Dechlorination of
+1,2,4,5-Tetrachlorobenzene" (Beil 1997, Eur J Biochem 247:190,
+doi:10.1111/j.1432-1033.1997.00190.x, PMID 9249026). Substrat klorobenzene
+hizalandı.
+
+Tetraklorobenzen **atılmadı** — operonun adının kaynağı o, ve notlara
+*doğru ürünüyle* girdi: enzim klor taşıyan karbonu dioksijenliyor, kararsız
+diol klorür kaybıyla rearomatize olup **3,4,6-triklorokatekol** veriyor
+(Beil 1997; sorumlu dizi öğeleri Beil 1998, J Bacteriol 180:5520). Eski
+kayıttaki ürün adı "chlorinated cis-dihydrodiol" bu yüzden ayrıca
+yanlıştı — o, izole edilen ürün değil geçici tür.
+
+**Ders.** Yapısal ayırt edici iki tipi de doğru işaretledi, ama
+"different_molecule" hükmü **"kurasyon hatası" anlamına gelmiyor**. Üç ayrı
+durum aynı hükmün altına düşebiliyor: (a) kurasyon ikincil bir substratı
+birincil diye yazmış, (b) kanıt etiketi denklemin kapsamadığı bir molekül
+için destek iddia ediyor, (c) gerçekten yanlış molekül. İlk ikisi bu turda
+görüldü, üçüncüsü görülmedi. Kapının WARN vermesi (FAIL değil) bu yüzden
+doğruydu: fark gerçekti, teşhis ise literatür gerektirdi.
+
+Yazma yolu: `types/<kume>.yaml` (tek kaynak) → `types_build.py --check`
+farkın yalnızca o on alan olduğunu doğruladı → `--write --allow-drift`.
+**`ROs_71_Clean/refs71.fasta` birebir aynı kaldı**, yani referans modelleri
+ve ağır zincir yeniden koşmadı.
+
+### 135.7 — Kontig uzunluğu bağlamı bozmuyor; bağlamsız girişler contig değil mRNA
+
+Öneri şuydu: tüm genom olmasa bile **uzun parçalı contig'ler** varsa
+veritabanına eklenebilir. Ölçüm gösterdi ki bu **zaten yapılmış** durumda,
+ve iyi bir karar olduğu ölçülebilir.
+
+Mevcut bileşim (17.073 replikon): **13.185'i `NZ_` WGS contig'i (%77)**,
+1.991'i tam RefSeq kaydı (`NC_`/`NZ_C`), 1.897'si `XM_`/`NM_` mRNA kaydı.
+Contig uzunlukları 593 bp ile 12 Mb arasında.
+
+Bağlam, kontig uzunluğuna göre (onaylanmış girişler):
+
+| band | giriş | komşusuz | ort. komşu | operon tam |
+|---|---|---|---|---|
+| <10 kb | 1.160 | **%82,7** | 1,0 | %0,3 |
+| 10–50 kb | 1.678 | %0 | 15,8 | %6,1 |
+| 50–200 kb | 4.006 | %0 | 18,9 | %6,8 |
+| 0,2–1 Mb | 4.605 | %0 | 19,4 | %6,3 |
+| >1 Mb | 7.676 | %0 | 19,6 | %5,8 |
+
+Doğrudan karşılaştırma, ≥10 kb:
+
+| | giriş | ort. komşu | operon tam |
+|---|---|---|---|
+| WGS contig | 13.029 | **18,8** | **%6,0** |
+| tam genom kaydı | 4.936 | 19,7 | %6,5 |
+
+Yani **≥10 kb bir contig, tamamlanmış genomdan daha kötü bir bağlam
+vermiyor** — ne komşu sayısında ne operon tamlığında. Eşik keskin ve
+10 kb'da.
+
+**Asıl bulgu:** <10 kb bandındaki 1.160 girişin **958'i contig değil,
+`XM_` mRNA kaydı** (354–7.881 bp, 1 CDS). Yayımlanan "bağlamsız giriş"
+sayısı neredeyse tamamen mRNA kayıtlarından geliyor, kısa contig'lerden
+değil. Bu, hayalet replikonla **aynı hata sınıfı**: bir kayıt, tablonun
+birimi olduğunu iddia ettiği şey değil. Bir mRNA kaydı bir replikon değil,
+ve replikon-başı paydada duruyor. **AÇIK İŞ** — silmek değil, ayrı bir
+`record_kind` ile işaretlemek ve bağlam istatistiklerinin paydasından
+çıkarmak (silmek, dizisi gerçek olan 958 girişi kaybettirir).
+
+### 135.8 — Kapsama açığı ölçüldü: eksiklik dizide değil, taksonda
+
+"Veri eksik geliyor" sezgisi bir payda sorusu, ve ölçüldü.
+
+| birim | bizde | dış evren (Pfam PF00848, halka hidroksilleyen alfa katalitik domain) | oran |
+|---|---|---|---|
+| ayrı dizi / protein | **15.960** | 22.620 | ~%71 |
+| ayrı takson | **4.565** | 12.532 | **~%36** |
+
+Paydalar tam aynı birim değil (InterPro'nun sayımı UniProtKB kaydı,
+bizimki genomdan türetilmiş giriş), ama 2,7 kat fark gürültü değil. Açık
+**dizi sayısında değil, taksonomik genişlikte** — çünkü set belirli bir
+genom kümesinden kuruldu, protein uzayının taramasından değil.
+
+Bu, A4'ün yolunu değiştiriyor. Tüm RefSeq nr taraması diskte tıkanmış
+(back2 139 GB, root 33 GB boş), **ama gerekmiyor**: PF00848'in protein
+kümesi 22.620 kayıt, yani onlarca MB. InterPro API'sinden taxid'leriyle
+çekip bizim 15.960 dizimizle karşılaştırmak hangi taksonların eksik
+olduğunu tam olarak söyler — ağır tarama olmadan.
+
+Sonra eksik taksonlar için **genom** indirilir, çıplak protein değil:
+çıplak protein tam olarak 135.7'deki mRNA sorununu üretir (bağlamsız
+giriş, replikon paydasında duran replikon-olmayan kayıt).

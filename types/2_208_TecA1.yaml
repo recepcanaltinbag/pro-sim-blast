@@ -1,17 +1,17 @@
 cluster: 2_208_TecA1
 gene: TecA1
 group: 2
-substrate_en: 1,2,4,5-tetrachlorobenzene
-substrate_smiles: Clc1cc(Cl)c(Cl)cc1Cl
-product_en: chlorinated cis-dihydrodiol
-reaction: cis-dihydroxylation of a highly chlorinated ring
+substrate_en: chlorobenzene
+substrate_smiles: Clc1ccccc1
+product_en: '(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol'
+reaction: cis-dihydroxylation of the chlorinated ring
 reaction_class: cis_dihydroxylation
 family: haloaromatics
 pdb: 
-source: 'UniProt O24676 (TECA1_CUPXP, reviewed), Cupriavidus sp. (strain PS; stored sequence verified byte-identical to that entry (449 aa) on 2026-10-28. Identified by gene name, not from a recorded citation -- the enzyme''s primary paper is still unlinked'
+source: 'UniProt O24676 (TECA1_CUPXP, reviewed), Cupriavidus sp. (strain PS; stored sequence verified byte-identical to that entry (449 aa) on 2026-10-28. the primary characterisation is beil1997_TecA1 (Eur J Biochem 247:190, PMID 9249026), linked in citations'
 source_kind: paper
 curation_confidence: high
-notes: 
+notes: 'UniProt O24676 is named Chlorobenzene dioxygenase subunit alpha and balances one reaction, on chlorobenzene (RHEA:57512); the primary paper (Beil 1997) is titled for the broad-spectrum chlorobenzene dioxygenase. The substrate recorded here was 1,2,4,5-tetrachlorobenzene until 2026-11-12, which made this record claim official-equation support for a molecule that equation does not mention. The tetrachlorobenzene activity is why the operon is called tec and is kept here rather than dropped: the enzyme dioxygenates a chlorine-bearing carbon of 1,2,4,5-tetrachlorobenzene, and the unstable diol rearomatises with loss of chloride to 3,4,6-trichlorocatechol (Beil 1997; sequence elements responsible identified in Beil 1998). That product is a catechol, not the cis-dihydrodiol this record used to name.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:

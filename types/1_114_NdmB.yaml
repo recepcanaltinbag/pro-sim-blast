@@ -1,9 +1,9 @@
 cluster: 1_114_NdmB
 gene: NdmB
 group: 1
-substrate_en: caffeine
-substrate_smiles: Cn1cnc2c1c(=O)n(C)c(=O)n2C
-product_en: paraxanthine and formaldehyde
+substrate_en: theobromine
+substrate_smiles: Cn1cnc2c1c(=O)[nH]c(=O)n2C
+product_en: 7-methylxanthine and formaldehyde
 reaction: N-demethylation at position N3
 reaction_class: N_demethylation
 family: alkaloids
@@ -11,7 +11,7 @@ pdb: 6ICL
 source: 'PDB 6ICL, methylxanthine N3-demethylase NdmB; stored sequence verified byte-identical to the deposited polymer entity (373 aa) on 2026-10-28'
 source_kind: structure
 curation_confidence: high
-notes: 
+notes: 'UniProt H9N290 names theobromine as the substrate of the reaction it balances (RHEA:30319), and the same entry records three further documented N3-demethylations by this enzyme: caffeine to paraxanthine, theophylline to 1-methylxanthine, and 3-methylxanthine to xanthine (Summers 2012). The substrate recorded here was caffeine until 2026-11-12; that reaction is real but secondary, and naming it made this type indistinguishable from NdmA, whose substrate is also caffeine. What separates the two is the position demethylated: N1 for NdmA, N3 here.'
 added_by: (migrated from chemistry.csv)
 added_on: 2026-10-07
 citations:
@@ -24,7 +24,7 @@ accession_verified: '2026-10-28 UniParc CRC64; kayitli dizi ile birebir'
 accession_evidence: 'H9N290 reviewed (Swiss-Prot), proteinExistence "Evidence at protein level"'
 accession_organism: 'Pseudomonas putida CBB5'
 metabolic_role: catabolic
-metabolic_role_basis: 'caffeine N3-demethylation in caffeine catabolism.'
+metabolic_role_basis: 'theobromine N3-demethylation in caffeine catabolism.'
 rhea: RHEA:30319, RHEA:30447, RHEA:36287, RHEA:36291
 official_equation: 'theobromine + NADH + O2 + H(+) = 7-methylxanthine + formaldehyde + NAD(+) + H2O'
 reaction_anchor: 'UniProt H9N290 (named in accession_db as holding the same sequence)'
