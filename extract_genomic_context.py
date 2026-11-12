@@ -212,6 +212,27 @@ def find_ro_candidates(all_cds):
 def process_file(path):
     """Tek bir gbk dosyasini isle. Donen: (replicon, candidates, neighbors)"""
     replicon, all_cds = parse_genbank(path)
+    if not replicon["nucleotide_id"]:
+        # KIMLIGI OLMAYAN DOSYA, "anotasyonsuz" DEGILDIR. Iki durum
+        # birbirine karistirilmisti ve ikisi de `status='no_annotation'`
+        # yaziliyordu:
+        #   anotasyonsuz -- LOCUS okundu, kimlik var, CDS yok. Gercek bir
+        #     durum ve dosyalarin %17'si bu; SAYILMALI, cunku "komsusuz
+        #     RO" ile "verisi eksik replikon" ayri seyler.
+        #   okunamayan   -- hic kayit ayristirilamadi, yani nucleotide_id
+        #     BOS. Bu bir replikon degil; kimligi olmayan bir sey replikon
+        #     tablosunun BIRIMI olamaz.
+        # Olculdu (2026-11-12): tek bir dosya, NZ_QXDB01000002.1.gbk,
+        # 0 bayt (Ara 2024'te yarim kalmis indirme). Urettigi satir
+        # nucleotide_id='' ile replicon tablosunda duruyordu ve her
+        # replikon-basi paydayi BIR fazla gosteriyordu (17.074 yerine
+        # 17.073). Satir silinmek yerine bir yerde `WHERE nucleotide_id
+        # <> ''` ile baypas edilmisti -- baypas durdukca satirin GERI
+        # GELMESI de gorunmez olur.
+        # Dosya adi atilmaz: istenen bir kaydin hic gelmedigi OLGUSU
+        # beyan edilir (unreadable_files.csv), silinmez.
+        replicon["status"] = "unreadable"
+        return replicon, [], []
     if not all_cds:
         # Anotasyonsuz dosya. Sessizce bos donmek yerine isaretlenir --
         # orneklemde dosyalarin %17'si sifir CDS iceriyor ve bunlar
@@ -299,7 +320,9 @@ def main():
                        "distance", "same_strand", "gene_offset", "spans_origin",
                        "product", "locus_tag", "protein_id", "gene"]
 
-    counts = {"files": 0, "no_annotation": 0, "candidates": 0, "neighbors": 0}
+    counts = {"files": 0, "no_annotation": 0, "unreadable": 0,
+              "candidates": 0, "neighbors": 0}
+    unreadable_files = []
 
     with open(replicon_path, "w", newline="") as rep_fh, \
          open(candidate_path, "w", newline="") as cand_fh, \
@@ -316,6 +339,11 @@ def main():
             for replicon, candidates, neighbors in pool.imap_unordered(
                     process_file, paths, chunksize=4):
                 counts["files"] += 1
+                if replicon.get("status") == "unreadable":
+                    #  Satir YAZILMAZ: kimligi yok, yani replikon degil.
+                    counts["unreadable"] += 1
+                    unreadable_files.append(replicon["file"])
+                    continue
                 if replicon.get("status") == "no_annotation":
                     counts["no_annotation"] += 1
                 rep_writer.writerow(replicon)
@@ -340,7 +368,21 @@ def main():
                         f"{counts['no_annotation']} anotasyonsuz")
                     sys.stdout.flush()
 
+    #  BEYAN: okunamayan dosyalar sessizce yok sayilmaz. Bir kayit
+    #  istenmis ve gelmemisse, bu bir OLGU ve yazili kalmali.
+    unreadable_path = os.path.join(args.out_dir, "unreadable_files.csv")
+    with open(unreadable_path, "w", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["file", "bytes"])
+        for name in sorted(unreadable_files):
+            full = os.path.join(args.gbk_dir, name)
+            writer.writerow([name, os.path.getsize(full)
+                             if os.path.exists(full) else ""])
+
     print(f"\n[bitti] {counts['files']} dosya islendi")
+    print(f"        okunamayan      : {counts['unreadable']} "
+          f"(kimlik ayristirilamadi; replicon satiri URETILMEDI, "
+          f"{unreadable_path} icinde)")
     print(f"        anotasyonsuz    : {counts['no_annotation']} "
           f"({100*counts['no_annotation']/max(1,counts['files']):.1f}%)")
     print(f"        RO adayi        : {counts['candidates']}")
