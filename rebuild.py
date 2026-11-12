@@ -485,6 +485,15 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  replicon_sequence_census: hangi replikonun NUKLEOTID dizisi
+    #  elimizde. ROADMAP 124.3'un kalan yarisi (motif zenginlesmesi)
+    #  intergenik DNA gerektiriyor ve kayitlarin cogu CON tipi: anotasyon
+    #  var, dizi YOK. Olcum o yarinin PAYDASI, iddianin kendisi degil
+    #  (ROADMAP 135.21). gbk_files GIRDIDIR.
+    ("replicon_sequence_census", [f"{OUT}/replicon_sequence.csv"],
+     ["python3", "replicon_sequence_census.py", "--db", DB,
+      "--gbk", "gbk_files", "--out", f"{OUT}/replicon_sequence.csv"],
+     ["replicon_sequence_census.py", DB, "gbk_files"], False),
     #  rieske_ligand_audit: InterPro'nun Rieske dedigi ama kapinin
     #  disladigi dizilerde HANGI ligandin yok oldugu, ve kanonik motifin
     #  HAM dizide bulunup bulunmadigi. `interpro_agreement`den SONRA

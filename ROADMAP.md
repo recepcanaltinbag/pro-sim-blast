@@ -5330,3 +5330,49 @@ sahipten al"** olmaliydi.
 
 Cikti: `analysis_out/rieske_ligand_audit.json`, betik
 `rieske_ligand_audit.py`.
+
+### 135.21 — 124.3'un kalan yarisinin PAYDASI olculdu: dizi kayitlarin %20'sinde var
+
+124.3'un acik yarisi "sigma70 kutusu zenginlesmesini uzunluk ve GC
+eslenmis bir null'a karsi olc" diyor ve yaninda bir VARSAYIM duruyordu:
+"intergenik DNA'nin `gbk_files/`ten cikarilmasini gerektiriyor". O
+varsayim sinanmamisti; sinandi.
+
+**Kayitlarin cogu CON tipi: anotasyon var, DIZI YOK.** Ornek:
+`NC_002033.1` 184.457 bp beyan ediyor, dosya 231 KB, ve
+`CONTIG join(AF079317.1:1..184457)` ile bitiyor -- ozellikler ve protein
+cevirileri var, nukleotid dizisi yok.
+
+| birim | dizisi var | toplam | pay |
+|---|---|---|---|
+| replikon kaydi | 4.882 | 17.073 | %28,6 |
+| **GENOM kaydi** | **2.985** | **15.176** | **%19,7** |
+| dogrulanmis giris (genom kaydinda) | **7.761** | 18.167 | **%42,7** |
+
+**TRANSKRIPTLER ORANI SISIRIYORDU -- ve 135.7 tam bunu yakalatti.** Dizisi
+olan 4.882 kaydin 1.897'si `XM_`/`NM_` transkripti; transkriptlerin
+%100'unde dizi var, genom kayitlarinin yalnizca %20'sinde. Ama bir
+transkriptin YUKARI AKIS INTERGENIK BOLGESI YOK, yani bu olcum icin
+ise yaramaz. `record_kind` ayrimi olmasa "dogrulanmis girislerin %45,6'si
+okunabilir" diye yazacaktim; dogru sayi %42,7 ve payda GENOM kaydi.
+
+Dosya bicimi de ayrisiyor: gzip'li 2.982 dosyanin TAMAMINDA dizi var,
+duz 14.092'nin yalnizca 1.900'unde. Yani iki kume farkli zamanda, farkli
+yolla indirilmis.
+
+**NE YAPILDI, NE YAPILMADI.** Yapilan: `replicon_sequence_census.py`, her
+replikon icin diziyi okuyup okuyamadigimizi kaydediyor (dizinin kendisini
+OKUMAZ, yalnizca `ORIGIN` satirini arar -- gereksiz gigabayt okumamak
+icin). Yapilmayan: zenginlesme olcumunun kendisi. Once payda, sonra
+iddia; cunku okunamayan bir bolgeyi paydada tutmak "motif yok" gibi
+gorunur ve bu projenin tekrar eden hata bicimi tam olarak bu.
+
+**SONRAKI ADIMIN SINIRI simdiden yazili.** Olcum 7.761 giris / 2.985
+replikon uzerinde yapilabilir. Null ayni bolgelerden uretildigi icin
+(dizi karistirma + ayni genomlarin baska intergenik bolgeleri, GC ve
+uzunluk eslenmis) karsilastirma IC gecerliligi tasir; okunamayan yariya
+GENELLENIP genellenemeyecegi ise OLCULMEMIS kalir ve oyle beyan
+edilmelidir.
+
+Cikti: `analysis_out/replicon_sequence.csv`, betik
+`replicon_sequence_census.py`.

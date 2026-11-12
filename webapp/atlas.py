@@ -2249,6 +2249,12 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("replicon_sequence.csv", "file",
+     "Which genome records carry nucleotide sequence and which carry only "
+     "annotation. Most are CON-type entries whose sequence is not in the "
+     "file, so an upstream region can be read for 2,985 of the 15,176 genome "
+     "replicons -- the denominator any future motif measurement has to carry.",
+     "replicon_sequence_census.py"),
     ("rieske_ligand_audit.json", "file",
      "Which cluster ligand is missing in the 139 sequences InterPro calls "
      "Rieske but this database excludes, and whether the canonical "
