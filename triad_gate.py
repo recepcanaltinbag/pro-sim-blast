@@ -57,6 +57,9 @@ import json
 import os
 import re
 import sqlite3
+import sys
+
+import yaml
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 
@@ -224,6 +227,37 @@ def membership_rows(out_rows, exceptions):
     return rows
 
 
+#  Uc harfli kalinti adindan tek harfe. Yalnizca KARBOKSILAT kalintilari
+#  gerekiyor: kayit baska bir kalinti adi tasirsa esleme BULUNMAZ ve sutun
+#  None kalir -- yani yanlis bir kalinti sessizce kabul edilmez.
+THREE_TO_ONE = {"Asp": "D", "Glu": "E"}
+
+
+def read_structure_anchors(path):
+    """Yapidan olculmus karboksilat atamalari. Alani eksik kayit ALINMAZ.
+
+    Gerekcesiz bir istisna, istisnasiz bir hatadan kotudur: bir kayit
+    `residue`, `method`, `measured`, `runner_up`, `limits` ve `decided_on`
+    tasimak zorunda. Eksik olan sessizce gecmez, STDERR'e yazilir ve
+    kullanilmaz -- boylece kapi onu hala cozulmemis sayar.
+    """
+    required = ("residue", "method", "measured", "runner_up", "limits",
+                "decided_on")
+    out = {}
+    if not os.path.exists(path):
+        return out
+    doc = yaml.safe_load(open(path, encoding="utf-8")) or {}
+    for rec in (doc.get("anchors") or []):
+        cluster = rec.get("cluster")
+        missing = [f for f in required if not rec.get(f)]
+        if not cluster or missing:
+            print("[atlandi] %s: eksik alan %s" % (cluster, missing),
+                  file=sys.stderr)
+            continue
+        out[cluster] = rec
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -234,10 +268,18 @@ def main():
                     help="triad_anchor_his.py ciktisi; yoksa His SADECE sabit "
                          "kolondan okunur ve karari verilemeyenler "
                          "'his_needs_anchoring' kalir")
+    ap.add_argument("--anchors",
+                    default="carboxylate_structure_anchors.yaml",
+                    help="yapidan olculmus karboksilat atamalari")
     ap.add_argument("--out", default="analysis_out/triad_gate.json")
     ap.add_argument("--apply", action="store_true",
                     help="ro_triad tablosunu yaz (verilmezse sadece bildirir)")
     args = ap.parse_args()
+
+    structure_anchors = read_structure_anchors(args.anchors)
+    if structure_anchors:
+        print("[yapi capasi] %d tip: %s"
+              % (len(structure_anchors), ", ".join(sorted(structure_anchors))))
 
     his1_col, his1_ok, his1_label = CATALYTIC_SITES[0]
     his2_col, his2_ok, his2_label = CATALYTIC_SITES[1]
@@ -403,7 +445,28 @@ def main():
             status = ("his_absent" if his_source == "anchored"
                       else "his_needs_anchoring")
         elif source == "untested":
-            status = "carboxylate_untested"
+            #  OLCULEMEDI ile BASKA YONTEMLE OLCULDU ayni sey degil. Kolon
+            #  bu tipte homolog olmadigi icin okuma yapilamiyor; ama ligand
+            #  yapidan olculmus ve kurator onaylamis olabilir. O kayit
+            #  `carboxylate_structure_anchors.yaml`de duruyor -- duz metinde
+            #  degil, cunku mekanizmanin goremedigi bir yere yazilan karar
+            #  verilmemis karardir.
+            if cluster in structure_anchors:
+                anchor = structure_anchors[cluster]
+                status = "carboxylate_structure_anchored"
+                #  SUTUNUN TURU KORUNUR: `carboxylate_residue` tek harfli
+                #  kalinti kodu tasiyor ve "Asp667" yazmak onu baska bir
+                #  sey yapardi. Kalintinin KODU sutuna, POZISYONU nota
+                #  gider; tam gerekce kayit dosyasinda durur.
+                three = re.match(r"([A-Za-z]{3})", anchor["residue"])
+                carbox = THREE_TO_ONE.get(
+                    (three.group(1).title() if three else ""), None)
+                source = "structure_anchored"
+                note = (f"{anchor['residue']} measured from structure, not "
+                        f"read from the column; see "
+                        f"carboxylate_structure_anchors.yaml")
+            else:
+                status = "carboxylate_untested"
         else:
             status = "carboxylate_absent"
         tally[status] += 1
@@ -481,6 +544,20 @@ def main():
             "same within-type anchored reading the carboxylate got."
             % HIS_WIDE_WINDOW,
         "absence_not_proven": tally["carboxylate_untested"],
+        #  YAPIDAN OLCULENLER AYRI SAYILIR. "Olculemedi" ile "baska bir
+        #  yontemle olculdu" ayni kovaya girerse, cozulmus bir vaka
+        #  cozulmemis gorunur -- 7_701_AerC'nin yedi girisi tam olarak
+        #  bunu yapiyordu.
+        "carboxylate_structure_anchored":
+            tally["carboxylate_structure_anchored"],
+        "structure_anchored_types": sorted(structure_anchors),
+        "structure_anchored_note":
+            "the carboxylate of these types was measured from structure "
+            "rather than read from the alignment column, because the column "
+            "has no counterpart in them. Declared in "
+            "carboxylate_structure_anchors.yaml with its distances, its "
+            "runner-up and its limits; triad_complete is NOT changed by it, "
+            "because that flag is the column reading's own measure",
         "his_absent": tally["his_absent"],
         "his_undecided": tally["his_needs_anchoring"],
         "applied": bool(args.apply),

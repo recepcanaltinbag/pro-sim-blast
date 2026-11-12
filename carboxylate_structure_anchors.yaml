@@ -1,0 +1,63 @@
+# YAPIDAN OLCULMUS KARBOKSILAT ATAMALARI -- kolon testinin GOREMEDIGI ligandlar.
+#
+# NEDEN BU DOSYA VAR. `triad_gate.py` mononukleer Fe ucgenini SABIT KOLON
+# okumasiyla kuruyor: iki histidin ve bir karboksilat, motif modelinin
+# capali kolonlarinda. Bu, bir tipin hizalamasi o kolonlari KAPSADIGI
+# surece calisir. Kapsamadiginda sonuc "yok" degil "OLCULEMEDI" olur ve
+# `triad_gate` dogru davranip `carboxylate_untested` diyor -- yokluk
+# kanitlanmamistir.
+#
+# Ama bir tipte olculemeyen bir ligand BASKA bir yontemle olculmus
+# olabilir, ve 7_701_AerC'de tam olarak bu oldu: karboksilat
+# geometrik olarak bulundu, kurator onayladi (2026-10-21), ve bulgu
+# tipin `notes` alanina DUZ METIN olarak yazildi. Kapi `ro_triad`
+# tablosunu okuyor; duz metni okumuyor. Sonuc: COZULMUS bir vaka aylarca
+# "cozulmemis" diye uyari uretti.
+#
+# Bu, bu projenin tekrar eden hatasi: mekanizmanin GOREMEDIGI bir yere
+# yazilan karar, verilmemis karardir. (Ayni ders: TecA1'in urun adi
+# karari `reaction_name_exceptions.yaml`e tasinmadan once de boyleydi.)
+#
+# NE YAPMAZ -- ve bu kasitli. Buradaki bir kayit `triad_complete`
+# bayragini DEGISTIRMEZ. O bayrak KOLON okumasinin olcusudur ve yayimlanan
+# 3/3 sayilari ona bagli; bir yayimlanan sayiyi bir dosyaya satir
+# ekleyerek oynatmak, olcumu degil muhasebeyi degistirmek olurdu. Kayit
+# yalnizca durumu `carboxylate_untested`den
+# `carboxylate_structure_anchored`a tasir: "olculemedi" ile "baska bir
+# yontemle olculdu" ayni sey degil.
+#
+# BIR KAYIT SU ALANLARI TASIMAK ZORUNDADIR:
+#   cluster   : tip kimligi
+#   residue   : kalinti ve pozisyonu (orn. Asp667)
+#   method    : nasil olculdu, tek cumleyle
+#   measured  : olculen mesafeler ve KARSILASTIRMA DAYANAGI
+#   runner_up : ikinci aday ve mesafesi -- atamanin belirsiz OLMADIGININ kaniti
+#   limits    : bu kanitin NE OLMADIGI
+#   decided_on: tarih
+#
+# Alani eksik bir kayit kapiyi GECMEZ: gerekcesiz bir istisna, istisnasiz
+# bir hatadan kotudur.
+
+anchors:
+  - cluster: 7_701_AerC
+    residue: Asp667
+    method: >-
+      geometry measured on an ESMFold model of residues 440-700, with the
+      same method applied to naphthalene dioxygenase as the calibration
+    measured: >-
+      His513 NE2 and His518 NE2 lie 3.22 A apart (NDO crystal 3.49), with
+      Asp667 OD1 at 2.64 A and OD2 at 3.21 A from them (NDO Asp362: 3.41
+      and 3.20). The Rieske site was verified the same way: all six
+      inter-ligand distances for C146/H148/C168/H171 fall within 0.34 A of
+      the same method applied to NDO, whose own crystal geometry the method
+      reproduces to about 0.3 A.
+    runner_up: >-
+      Glu510, at 4.18 A -- far enough that the assignment is not ambiguous
+    limits: >-
+      a prediction of isolated domains, not an experimental structure, and
+      no metal was modelled; mutagenesis would settle Asp667. The column
+      test still reads 2/3 here, which is a statement about the alignment
+      rather than about the protein: a global alignment of this 717 aa
+      protein to the catalytic-centre model covers only 18.9 % and never
+      reaches the carboxylate column.
+    decided_on: '2026-10-21'

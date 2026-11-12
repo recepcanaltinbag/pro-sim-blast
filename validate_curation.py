@@ -1398,15 +1398,55 @@ def check_triad_gate(rep, root):
               "" if "3/3" in rule else f"kayitli kural: {rule!r}")
 
     undecided = (meta.get("his_undecided") or 0) + (meta.get("absence_not_proven") or 0)
+    anchored_by_structure = meta.get("carboxylate_structure_anchored") or 0
     rep.check("triad gate: every triad call rests on an anchored reading",
               not undecided, undecided,
-              "" if not undecided else
-              f"{undecided} entries are still decided on an unanchored "
-              f"reading ({meta.get('his_undecided')} histidine, "
-              f"{meta.get('absence_not_proven')} carboxylate); ro_triad does "
-              f"NOT call them absent, and they must be resolved before "
-              f"is_confirmed is tightened to 3/3",
+              (f"{anchored_by_structure} entries are anchored from structure "
+               "instead of the column, declared with their distances in "
+               "carboxylate_structure_anchors.yaml"
+               if not undecided else
+               f"{undecided} entries are still decided on an unanchored "
+               f"reading ({meta.get('his_undecided')} histidine, "
+               f"{meta.get('absence_not_proven')} carboxylate); ro_triad does "
+               f"NOT call them absent, and they must be resolved before "
+               f"is_confirmed is tightened to 3/3"),
               severity="WARN")
+
+    #  YAPI CAPASI KAYITLARI: gerekceli VE CANLI olmak zorunda.
+    #
+    #  NEDEN. Bu kayit, kolon testinin okuyamadigi bir ligandi "yapidan
+    #  olculdu" diye isaretliyor, yani bir uyariyi SUSTURUYOR. Boyle bir
+    #  mekanizmanin iki yoldan bozulmasi mumkun: kayit gerekcesiz kalir
+    #  (istisna bir hata gizler), ya da BAYATLAR -- tipin kolonu artik
+    #  okunabiliyorsa kayit gereksizdir ve durmasi, gelecekte gercek bir
+    #  olcumun ustunu ortebilir. Ikisi de ayri ayri sinanir; ayni ders
+    #  `reaction_name_exceptions.yaml`in bayat kaydindan geliyor.
+    anchors_path = os.path.join(root, "carboxylate_structure_anchors.yaml")
+    declared = {}
+    if os.path.exists(anchors_path):
+        try:
+            doc = yaml.safe_load(open(anchors_path, encoding="utf-8")) or {}
+        except Exception:                             # noqa: BLE001
+            doc = {}
+        for rec in (doc.get("anchors") or []):
+            if rec.get("cluster"):
+                declared[rec["cluster"]] = rec
+
+    required = ("residue", "method", "measured", "runner_up", "limits",
+                "decided_on")
+    thin = [f"{c}: eksik {[f for f in required if not r.get(f)]}"
+            for c, r in declared.items()
+            if any(not r.get(f) for f in required)]
+    rep.check("triad gate: every structure anchor carries its evidence",
+              not thin, len(thin), first(thin, 3))
+
+    used = set(meta.get("structure_anchored_types") or [])
+    stale = sorted(set(declared) - used)
+    rep.check("triad gate: no stale structure anchor",
+              not stale, len(stale),
+              (f"{first(stale, 3)} -- kolon artik okunabiliyor ya da tip yok; "
+               "kayit kaldirilmali" if stale else
+               f"{len(used)} kayit kullanimda"))
 
 
 def check_motif_columns_anchored(rep, root, refs_aln=None):

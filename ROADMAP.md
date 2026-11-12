@@ -5005,3 +5005,65 @@ yazildi.
 
 Modularite butcesi 6 -> 5 dusuruldu (her baglanan dosyada dusurulur).
 Kapi: 233 kontrol, 226 PASS, 0 FAIL, 7 WARN.
+
+### 135.16 — "7 giris capasiz" uyarisi: vaka COZULMUSTU, ama kapinin GOREMEDIGI bir yerde
+
+Uyari "7 entries are still decided on an unanchored reading" diyordu ve
+aylarca durdu. Ilk olcum sayinin yapisini degistirdi: **7 giris daginik
+degil, TEK BIR TIPIN tamami** -- `7_701_AerC`'nin yedi uyesi var ve
+yedisi de ayni durumda. Yani soru "7 giris" degil, "AerC'nin karboksilati
+var mi".
+
+Ve cevap ZATEN VERILMISTI. Tipin `notes` alani, kurator onayiyla
+(2026-10-21):
+
+> CARBOXYLATE IS Asp667. ESMFold modeli His513 NE2 ile His518 NE2'yi
+> 3,22 A ayri yerlestiriyor (NDO kristali 3,49), Asp667 OD1 2,64 A ve
+> OD2 3,21 A mesafede (NDO Asp362: 3,41 / 3,20); ikinci aday Glu510
+> 4,18 A, yani atama belirsiz degil. Kolon testi hala 2/3 veriyor cunku
+> karboksilat kolonunu tasiyan model bolgesinin burada karsiligi yok --
+> bu, protein hakkinda degil HIZALAMA hakkinda bir ifade.
+
+Olcum var, gerekce var, onay var. Ama hepsi DUZ METIN, ve kapi `ro_triad`
+tablosunu okuyor. Sonuc: cozulmus bir vaka, cozulmemis diye uyari uretti.
+**Bu projenin tekrar eden hatasi: mekanizmanin GOREMEDIGI bir yere
+yazilan karar, verilmemis karardir.** (Ayni ders TecA1'in urun adi
+kararinda da yasandi; o da `reaction_name_exceptions.yaml`e tasinana
+kadar gorunmuyordu.)
+
+**KARAR BILDIRIME TASINDI:** `carboxylate_structure_anchors.yaml`. Her
+kayit `residue`, `method`, `measured`, `runner_up`, `limits`,
+`decided_on` tasimak ZORUNDA; alani eksik kayit YUKLENMEZ ve STDERR'e
+yazilir -- gerekcesiz bir istisna, istisnasiz bir hatadan kotudur.
+
+**IKI SEY BILEREK YAPILMADI.**
+
+1. `triad_complete` bayragina DOKUNULMADI. O bayrak KOLON okumasinin
+   olcusu ve yayimlanan 3/3 sayilari ona bagli; bir yayimlanan sayiyi bir
+   YAML'a satir ekleyerek oynatmak, olcumu degil MUHASEBEYI degistirmek
+   olurdu. Olculdu: `triad_complete` 19.064'te kaldi. Kayit yalnizca
+   durumu tasidi: `carboxylate_untested` -> `carboxylate_structure_anchored`.
+   "Olculemedi" ile "baska bir yontemle olculdu" ayni kovaya girmemeli.
+2. Sutunun TURU korundu. Ilk yazimda `ro_triad.carboxylate_residue`'ya
+   "Asp667" yazmistim; o sutun tek harfli kalinti kodu tasiyor. Kodun
+   kendisi sutuna, pozisyon nota, tam gerekce kayit dosyasina gidiyor --
+   ve uc-harf->bir-harf eslemesi yalnizca Asp/Glu taniyor, yani kayda
+   yanlis bir kalinti adi yazilsa esleme BULUNMAZ ve sutun None kalir;
+   yanlis kalinti sessizce kabul edilmez.
+
+**KAPIYA IKI KONTROL.** Bu mekanizma bir uyariyi SUSTURUYOR, dolayisiyla
+iki yoldan bozulabilir: kayit gerekcesiz kalir, ya da BAYATLAR (tipin
+kolonu artik okunabiliyorsa kayit gereksizdir ve durmasi gelecekte gercek
+bir olcumun ustunu orter). Ikisi ayri ayri sinaniyor.
+
+Sonuc: `absence_not_proven` 7 -> 0, `his_undecided` 0, uc triad kontrolu
+yerine BES kontrol ve hepsi PASS. Kapi: 235 kontrol, 228 PASS, 0 FAIL,
+WARN 7 -> 6.
+
+| triad durumu | giris |
+|---|---|
+| complete | 19.031 |
+| complete_non_canonical_his_spacing | 33 |
+| his_absent | 31 |
+| carboxylate_absent | 23 |
+| **carboxylate_structure_anchored** | **7** |
