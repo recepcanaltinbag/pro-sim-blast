@@ -4828,9 +4828,43 @@ Ama yesil olmasinin yolu kanitsiz `--baseline` degildi: iki kok gercekten
 kosturulup cikti birebir karsilastirildi, biri mtime+ozet kaniti ile
 kapandi, biri KODDA duzeltildi.
 
-**YAN BULGU (acik is).** `annotate` `ro` tablosunun atama sutunlarini
-(`ro_cluster`, `ro_group`, `model_coverage`, `hmm_score`, `hmm_evalue`,
-`is_confirmed`) UPDATE ediyor ama `DECLARED_WRITES`'ta BEYAN EDILMEMIS.
-Bu, bu DB'nin en merkezi yazma islemi ve grafikte gorunmuyor; yani
-`annotate` kosunca hangi adimlarin bayatladigini grafik tam bilemiyor.
-Beyan eklenmeli, ama eklemek kaskadi degistirecegi icin ayri bir tur isi.
+**YAN BULGU -- ve bu not DUZELTILDI (135.12).** Burada once "`annotate`
+`ro`'ya yaziyor ama `DECLARED_WRITES`'ta beyan edilmemis, yani grafik onu
+gormuyor" yazmistim. YANLISTI: `static_writes` betigin KAYNAGINDAKI SQL'i
+ayristiriyor ve `annotate_ro.py` icin `{'ro'}` donduruyor, yani grafik o
+yazmayi zaten biliyor. `DECLARED_WRITES` bir eksiklik listesi degil,
+regex'in GOREMEDIGI yazmalar icin bir kacis kapisi. Gercek eksik baska
+yerdeydi; bkz. 135.12.
+
+### 135.12 — Sahipsiz DB yazmasi: FTS5'in golge tablolari kimseye ait degildi
+
+135.11'in yan bulgusu yanlis yere isaret ediyordu (yukarida duzeltildi).
+Dogru soru "hangi adim beyan edilmemis" degil, **"olculen hangi yazmanin
+SAHIBI yok"**: bayatlik grafigi "bu adim hangi tablolari yazar" sorusunu
+uc kaynaktan cevapliyor -- betigin kaynagindaki SQL (`static_writes`),
+elle beyan (`DECLARED_WRITES`), ve adim kostugunda OLCULEN degisim. Ucuncu
+digerlerinin disina tasarsa o yazma SAHIPSIZDIR, ve sahipsiz bir degisim
+HERKESIN ustune yazilir.
+
+81 adim tarandi, **tek bir adimda** sahipsiz yazma bulundu:
+
+| adim | sahipsiz tablolar |
+|---|---|
+| `search_index` | `ro_fts_config`, `ro_fts_data`, `ro_fts_docsize`, `ro_fts_idx` |
+
+Dordu de **FTS5 GOLGE TABLOSU**. `build_search_index.py` yalnizca
+`CREATE VIRTUAL TABLE ro_fts` diyor; bu dort tabloyu SQLite'in kendisi
+uretiyor ve bizim SQL'imiz adlarini hic anmiyor -- yani hicbir kaynak
+taramasi onlari bulamaz. `DECLARED_WRITES` tam olarak bu durum icin var.
+
+**Bedeli olculdu:** sahipsiz kaldiklari icin `ro_fts_data`'nin degismesi,
+onu HIC okumayan uc rapor adimini (`report_html`, `explorer_html`,
+`hub_html`) bayat gosteriyordu -- 135.11'de elle kosturulan uc adim tam
+olarak bunlardi.
+
+**Denetim artik kapida.** `check_db_writes_are_attributed` her adim icin
+olculen yazmalari kaynak+beyan ile karsilastiriyor, cunku bir sonraki
+sahipsiz yazmayi yine elle aramak bu projenin tekrar eden hatasi olurdu.
+Kontrolun SINIRI da yazili: yalnizca OLCULMUS olani sinar -- bir adim bu
+araçla hic kosmadiysa yazmasi henuz gorulmemistir. Yani "yazma yok"
+demiyor, "gorulen her yazmanin sahibi var" diyor.

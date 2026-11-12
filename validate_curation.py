@@ -3154,6 +3154,49 @@ def check_gff3_export(rep, con, root, out_dir="analysis_out"):
               f"dosya {len(regions)}, DB {n_rep_db}")
 
 
+def check_db_writes_are_attributed(rep, root):
+    """Her DB yazmasinin bir SAHIBI var mi -- yani grafik kimin ne yazdigini
+    biliyor mu?
+
+    NEDEN. Bayatlik grafigi "bu adim hangi tablolari yazar" sorusunun
+    cevabina dayaniyor ve cevap uc yerden geliyor: betigin kaynagindan
+    (`static_writes` SQL'i ayristirir), elle beyandan (`DECLARED_WRITES`),
+    ve adim kostugunda OLCULEN degisimden. Ucuncusu birinci ve ikincinin
+    disina tasarsa, o yazmanin SAHIBI bilinmiyor demektir -- ve sahibi
+    bilinmeyen bir degisim herkesin ustune yazilir.
+
+    Olculdu (2026-11-12): `search_index` dort FTS5 GOLGE tablosu yaziyor
+    (`ro_fts_config`, `ro_fts_data`, `ro_fts_docsize`, `ro_fts_idx`).
+    Betik yalnizca `CREATE VIRTUAL TABLE ro_fts` diyor; dordunu SQLite'in
+    kendisi uretiyor, yani hicbir kaynak taramasi onlari bulamaz. Sahipsiz
+    kaldiklari icin `ro_fts_data`'nin degismesi, onu HIC okumayan uc rapor
+    adimini bayat gosteriyordu.
+
+    NE BULAMAZ. Bu kontrol yalnizca OLCULMUS olani sinar: bir adim bu
+    araçla hic kosmadiysa yazmasi henuz gorulmemistir. Yani kontrol
+    "yazma yok" demiyor, "gorulen her yazmanin sahibi var" diyor.
+    """
+    import sys as _sys
+    _sys.path.insert(0, root)
+    try:
+        import rebuild as _rebuild
+    except Exception as err:                          # noqa: BLE001
+        rep.check("graph: her DB yazmasinin bir sahibi var", False, 1,
+                  f"rebuild.py okunamadi: {err}")
+        return
+    state = _rebuild.load_state()
+    orphan = []
+    for name, _out, cmd, _in, _heavy in _rebuild.ARTEFACTS:
+        static = _rebuild.static_writes(cmd[1]) if len(cmd) > 1 else set()
+        declared = _rebuild.DECLARED_WRITES.get(name, set())
+        observed = set((state.get(name) or {}).get("db_writes") or [])
+        for table in sorted(observed - static - declared):
+            orphan.append(f"{name} -> {table}")
+    rep.check("graph: olculen her DB yazmasinin bir sahibi var",
+              not orphan, len(orphan),
+              first(orphan, 4) + (" -- DECLARED_WRITES'a ekle" if orphan else ""))
+
+
 def check_record_kind(rep, con, root, out_dir="analysis_out"):
     """`replicon` tablosunun her satiri gercekten bir replikon mu?
 
@@ -4352,6 +4395,7 @@ def main():
         check_gff3_export(rep, con, ROOT)
         check_substrate_chebi(rep, con, ROOT)
         check_record_kind(rep, con, ROOT)
+        check_db_writes_are_attributed(rep, ROOT)
         check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)

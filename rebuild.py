@@ -660,6 +660,16 @@ DECLARED_WRITES = {
     "substrate_chebi": {"type_substrate_chebi"},
     "replicon_kind": {"replicon_kind"},
     "db_repair": {"replicon"},
+    #  FTS5 GOLGE TABLOLARI. `build_search_index.py` yalnizca
+    #  `CREATE VIRTUAL TABLE ro_fts` diyor; bu dort tabloyu SQLite'in
+    #  kendisi uretiyor, bizim SQL'imiz anmiyor. Dolayisiyla hicbir kaynak
+    #  taramasi onlari bulamaz -- `DECLARED_WRITES` tam olarak bu durum
+    #  icin var. Beyan edilmeyince sahibi bilinmiyordu ve `ro_fts_data`'nin
+    #  degismesi, onu HIC okumayan uc rapor adimini (report_html,
+    #  explorer_html, hub_html) bayat gosteriyordu: bir yazmanin sahibi
+    #  bilinmiyorsa, degisimi herkesin ustune yazilir.
+    "search_index": {"ro_fts", "ro_fts_config", "ro_fts_data",
+                     "ro_fts_docsize", "ro_fts_idx", "ro_search"},
 }
 
 
