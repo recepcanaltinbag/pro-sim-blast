@@ -5067,3 +5067,65 @@ WARN 7 -> 6.
 | his_absent | 31 |
 | carboxylate_absent | 23 |
 | **carboxylate_structure_anchored** | **7** |
+
+### 135.17 — A6'nin ikinci yarisi: cekici yazildi ve OLCULDU, ama cekim TAMAMLANMADI
+
+InterPro / KEGG / MetaCyc tanimlayicilari `cross_references.py`ye eklendi
+(bicim deseni, URL sablonu, dizi-basi birim, ve "bu uclu de birer IDDIA,
+salt adres degil" notu). Veriyi getiren `fetch_uniprot_xrefs.py` yazildi.
+**Cekim bitmedi: 50 partinin 16'si tamamlandi (24.000/73.699 accession).**
+
+**YAYIMLANAN HICBIR SAYI DEGISMEDI** ve bu kasitli. `cross_references.py`
+onbellek tam degilse uc yeni tanimlayiciyi EKLEMIYOR; `ro_xref` eski dort
+veritabaniyla ayni sayilarda duruyor (uniprot 73.699, embl 24.911, refseq
+18.617, ec 3.820) ve rapor `cache_complete: false` ile hangi
+tanimlayicilarin TUTULDUGUNU yaziyor. Gerekce: yarim bir cekim "bu dizinin
+InterPro kaydi yok" gibi gorunur, yani yayimlanan oran VERIYI degil
+cekimin nereye kadar geldigini olcer -- ve hata yonu aleyhte, eksiklik
+eksik oldugunu GIZLER.
+
+**SERVISIN DAVRANISI OLCULDU; BES DENEME, BES AYRI KUSUR.** Dokumanlar duz
+metin olarak alinamadi (yardim sayfasi ve Swagger kabuk dondu), o yuzden
+tasarim problarla belirlendi:
+
+| olcum | sonuc |
+|---|---|
+| 3 kimlik | calisiyor |
+| 1.500 kimlik (govde 19,5 KB) | **3 sayfa, 1.500/1.500 tekil kimlik** |
+| 5.000 (65 KB) / 20.000 (260 KB) / 73.699 (810 KB) | **0 kimlik**, is 1 saniyede "bitiyor" |
+| `/results/stream/` | 1000 satirda KESIYOR (5.000 ve 3.699 kimlikte de 1000) |
+| sayfali `/results/` + `Link: rel="next"` | tam -- AMA araliki olarak Link'i dusurup 1000'de kesiyor (19 partinin 5'i) |
+| cok sayida is, araliksiz | durum yoklamalarina HTTP 400; ~90 isten sonra birikimli |
+
+Yani belgelenen "100.000 kimlige kadar" sinirini HIC OLCMEMISTIM ve
+olcunce yanlis cikti. Servis reddi SESSIZ yapiyor: yine bir `jobId`
+veriyor, durum aninda sonuclara yonleniyor, kume bos.
+
+**BES KORUMA, her biri yapilan bir hataya karsilik:**
+
+1. "Bitti"nin isareti `FINISHED`, sonuclara YONLENME ya da yanitta
+   `results` olmasi. Ilk yazim `jobStatus` ALANININ YOKLUGUNU basari
+   sayiyordu -- hata yanitlari da o alani tasimiyor, ve is hazir olmadan
+   akis cekildi.
+2. SIFIR sonuc onbellege yazilmaz, parti yeniden denenir.
+3. KESIK sonuc da yazilmaz, ve bu AYRI bir kontrol olmak zorundaydi:
+   sifiri reddeden koruma 1000/1500 donen partileri KABUL ediyordu.
+   Ayirt edici: gercek eksiklik (silinmis accession) rastgele bir
+   sayidir, KESILME sayfa boyunun TAM KATIDIR.
+4. Sutun duzeni BASLIKTAN okunur. ID-mapping sonuclari basa bir `From`
+   sutunu ekliyor; ilk yazim `parts[0]`i accession sanip `parts[1:4]`u
+   xref okuyordu, yani veri gelse SESSIZCE yanlis sutunlari okuyacakti.
+5. Partiler TEK TEK, aralarinda bekleyerek (varsayilan 20 s).
+
+Devam edebilir: tamamlanmis partiler atlanir, `_fetch.json` gonderilen /
+donen / eksik sayilarini tasir.
+
+**ACIK IS.** Cekimi UniProt sinirlamasi gecince tamamlamak (kalan 34
+parti). Tamamlaninca `cross_references.py` uc tanimlayiciyi kendiliginden
+ekler -- kapi yalnizca TAMLIGA bakiyor, elle bir bayrak yok.
+
+**KENDI PAYIMA DUSEN DERS.** Bes denemenin kok sebebi tekti: her adimda
+servisin davranisini VARSAYIP sonra olctum, tersi yerine. Alan adlarini
+sinamistim ama AKISI sinamamistim. Veri butunlugu zarar gormedi (grafik
+82/82, kapi 0 FAIL, yayimlanan sayi degismedi); harcanan sey zaman ve
+istek.

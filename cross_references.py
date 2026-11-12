@@ -40,6 +40,7 @@ import json
 import os
 import re
 import sqlite3
+import sys
 from collections import Counter, defaultdict
 
 #  Rieske oksijenazin beklenen EC sinifi: 1.14.* (eslesmis donor, molekuler
@@ -60,6 +61,14 @@ PATTERNS = {
     #  kontrolunun atilan sayiyi RAPORLAMASI bunu yakaladi.
     "embl_nucleotide": re.compile(r"^[A-Z]{1,6}\d{5,10}(\.\d+)?$"),
     "uniprot": re.compile(r"^[A-Z0-9]{6,10}(-\d+)?$"),
+    #  2026-11-12'de eklenen uc tanimlayici (A6'nin yapilmamis yarisi).
+    #  Bunlar `ro_protein_status` sutunlarindan GELMIYOR; UniProt
+    #  ID-mapping ile ayrica cekiliyor (`fetch_uniprot_xrefs.py`).
+    "interpro": re.compile(r"^IPR\d{6}$"),
+    #  KEGG geni `orgkod:lokus` bicimindedir (orn. `sce:YAL001C`).
+    "kegg": re.compile(r"^[a-z0-9]{3,5}:[A-Za-z0-9_.\-]+$"),
+    #  MetaCyc/BioCyc nesnesi `VERITABANI:NESNE` (orn. `MetaCyc:MONOMER-123`).
+    "metacyc": re.compile(r"^[A-Za-z0-9]+:[A-Za-z0-9_.\-]+$"),
 }
 
 URLS = {
@@ -67,6 +76,9 @@ URLS = {
     "refseq_protein": "https://www.ncbi.nlm.nih.gov/protein/{}",
     "embl_nucleotide": "https://www.ebi.ac.uk/ena/browser/view/{}",
     "uniprot": "https://www.uniprot.org/uniprotkb/{}",
+    "interpro": "https://www.ebi.ac.uk/interpro/entry/InterPro/{}/",
+    "kegg": "https://www.genome.jp/entry/{}",
+    "metacyc": "https://biocyc.org/getid?id={}",
 }
 
 
@@ -77,8 +89,61 @@ def split_values(raw):
     return [v.strip() for v in re.split(r"[,;]", raw) if v.strip()]
 
 
-def collect(con):
+def read_fetched_xrefs(out_dir="analysis_out/uniprot_xrefs"):
+    """ID-mapping partilerinden accession -> {db: set(deger)}.
+
+    ONBELLEK YETKILI. Ag erisimi bir kapi adiminin kosulu olamaz (ayni
+    kural `substrate_chebi`, `pin_hmm_libraries` ve
+    `curation_claims_ncbi`de de gecerli); cekim ayri bir betik
+    (`fetch_uniprot_xrefs.py`) ve burada yalnizca diskteki partiler
+    okunur. EKSIK PARTI SESSIZCE GECMEZ: kac parti okundugu ve kac
+    accession goruldugu raporda yazilir, cunku yarim bir cekim
+    "bu dizinin InterPro kaydi yok" gibi gorunur -- yani eksik veri,
+    eksik oldugunu GIZLEYEN yonde hata uretir.
+    """
+    import glob
+    import gzip
+    fields = ("interpro", "kegg", "metacyc")
+    out, batches = defaultdict(lambda: defaultdict(set)), []
+    for path in sorted(glob.glob(os.path.join(out_dir, "page_*.tsv.gz"))):
+        batches.append(os.path.basename(path))
+        with gzip.open(path, "rt", encoding="utf-8", errors="replace") as fh:
+            header = fh.readline()
+            if not header:
+                continue
+            #  SUTUN DUZENI BASLIKTAN OKUNUR, SAYILMAZ. ID-mapping
+            #  sonuclari basa bir `From` sutunu ekliyor
+            #  (From, Entry, InterPro, KEGG, BioCyc) ve ilk yazimda
+            #  `parts[0]`i accession sanip `parts[1:4]`u xref okuyordum --
+            #  veri gelse SESSIZCE yanlis sutunlari okuyacakti. Basligi
+            #  okumak bu varsayimi tamamen kaldiriyor.
+            cols = [c.strip().lower() for c in header.rstrip("\n").split("\t")]
+            want = {"entry": "accession", "interpro": "interpro",
+                    "kegg": "kegg", "biocyc": "metacyc"}
+            index = {want[c]: i for i, c in enumerate(cols) if c in want}
+            if "accession" not in index:
+                print(f"[uyari] {os.path.basename(path)}: baslikta 'Entry' "
+                      f"sutunu yok ({cols}); parti atlandi")
+                continue
+            for line in fh:
+                parts = line.rstrip("\n").split("\t")
+                if len(parts) <= index["accession"]:
+                    continue
+                accession = parts[index["accession"]].strip()
+                if not accession:
+                    continue
+                for db in fields:
+                    i = index.get(db)
+                    if i is None or i >= len(parts):
+                        continue
+                    for value in split_values(parts[i]):
+                        out[accession][db].add(value)
+    return out, batches
+
+
+def collect(con, fetched_xrefs=None):
     """seq_md5 -> {db -> set(identifier)} ve EC'nin inceleme durumu."""
+    fetched_xrefs = fetched_xrefs or {}
     xrefs = defaultdict(lambda: defaultdict(set))
     ec_review = defaultdict(set)      # "reviewed"/"unreviewed" -> seq_md5
     rejected = Counter()
@@ -90,10 +155,14 @@ def collect(con):
          WHERE s.source = 'uniprot'
     """)
     for seq_md5, accession, entry_type, refseq, embl, ec in rows:
+        fetched = fetched_xrefs.get(accession, {})
         pairs = [("uniprot", [accession]),
                  ("refseq_protein", split_values(refseq)),
                  ("embl_nucleotide", split_values(embl)),
-                 ("ec", split_values(ec))]
+                 ("ec", split_values(ec)),
+                 ("interpro", sorted(fetched.get("interpro", ()))),
+                 ("kegg", sorted(fetched.get("kegg", ()))),
+                 ("metacyc", sorted(fetched.get("metacyc", ())))]
         for db, values in pairs:
             for value in values:
                 if PATTERNS[db].match(value):
@@ -169,10 +238,45 @@ def main():
     parser.add_argument("--db", default="roar.sqlite")
     parser.add_argument("--out", default=os.path.join("analysis_out",
                                                       "cross_references.json"))
+    parser.add_argument("--xref-dir",
+                        default=os.path.join("analysis_out", "uniprot_xrefs"),
+                        help="ID-mapping partilerinin dizini (onbellek)")
     args = parser.parse_args()
 
     con = sqlite3.connect(args.db)
-    xrefs, ec_review, rejected = collect(con)
+    fetched, batches = read_fetched_xrefs(args.xref_dir)
+    expected = con.execute(
+        "SELECT COUNT(DISTINCT accession) FROM ro_union_source "
+        "WHERE source = 'uniprot'").fetchone()[0]
+    print(f"[cekilmis] {len(batches)} parti, {len(fetched)}/{expected} accession")
+
+    #  YARIM ONBELLEK UC YENI TANIMLAYICIYI YAYIMLAMAZ.
+    #
+    #  NEDEN BU KAPI BURADA. Yarim bir cekim "bu dizinin InterPro kaydi
+    #  yok" gibi gorunur, yani yayimlanan kapsama orani VERIYI degil
+    #  cekimin nereye kadar geldigini olcer -- ve okuyucu bunu bir
+    #  biyolojik olgu sanir. Ustelik hata yonu aleyhte: eksiklik, eksik
+    #  oldugunu GIZLER.
+    #
+    #  Olculdu (2026-11-12/13): UniProt ID-mapping gonderimi ~1.500
+    #  kimligi geciyorsa sifir sonuc donduruyor, sayfali uc nokta
+    #  `Link: rel="next"`i araliki olarak dusurup 1000 satirda kesiyor, ve
+    #  cok sayida is gonderildikten sonra durum yoklamalari HTTP 400
+    #  veriyor. O gece 16/50 parti tamamlanabildi. Kapi olmasa o 16 parti
+    #  "%33 InterPro kapsamasi" diye yayimlanirdi.
+    #
+    #  Esik TAM degil: silinmis bir accession hakli olarak eslesmeyebilir.
+    #  Ama eksiklik BEYAN edilebilir olmali, ve yuvarlak bir eksiklik
+    #  (sayfa boyunun tam kati) kesilmenin imzasidir.
+    complete = expected and len(fetched) >= expected - 100
+    if not complete:
+        print(f"[ATLANDI] InterPro/KEGG/MetaCyc EKLENMEDI: onbellek "
+              f"{len(fetched)}/{expected} accession. Once "
+              f"`python3 fetch_uniprot_xrefs.py` tamamlanmali.",
+              file=sys.stderr)
+        fetched = {}
+
+    xrefs, ec_review, rejected = collect(con, fetched)
     write_table(con, xrefs)
 
     all_sequences = con.execute("SELECT COUNT(*) FROM ro_union").fetchone()[0]
@@ -193,6 +297,31 @@ def main():
             "url_template": URLS[db],
         }
 
+    #  CEKIMIN KENDISI DE RAPOR EDILIR. Yarim bir cekim "bu dizinin
+    #  InterPro kaydi yok" gibi gorunur, yani eksik veri eksikligini
+    #  GIZLEYEN yonde hata uretir; bu yuzden kac parti okundugu ve kac
+    #  accession goruldugu, kapsama yuzdelerinin YANINDA durur.
+    fetch_state = {
+        "batches_read": batches,
+        "accessions_seen": len(fetched),
+        "cache_complete": bool(complete),
+        "identifiers_withheld_while_incomplete": (
+            [] if complete else ["interpro", "kegg", "metacyc"]),
+        "accessions_expected": con.execute(
+            "SELECT COUNT(DISTINCT accession) FROM ro_union_source "
+            "WHERE source = 'uniprot'").fetchone()[0],
+        "fetched_by": "fetch_uniprot_xrefs.py (UniProt ID-mapping)",
+        "network": ("off here; the cache is authoritative, so a published "
+                    "coverage figure never depends on whether UniProt "
+                    "answers today"),
+        "identifiers_from_the_fetch": ["interpro", "kegg", "metacyc"],
+        "why_it_is_reported": (
+            "a half-finished fetch does not look like missing data, it looks "
+            "like a sequence with no InterPro entry -- the error runs in the "
+            "direction that hides itself, so the fetch's own completeness is "
+            "printed next to the coverage it produces"),
+    }
+
     by_type = ec_against_curation(con, xrefs)
     ec_counts = Counter(ec for by_db in xrefs.values()
                         for ec in by_db.get("ec", ()))
@@ -211,6 +340,13 @@ def main():
             "denominator": ("every identifier here comes from a UniProt-sourced "
                             "sequence, so the denominator is the UniProt-sourced "
                             "set, not the whole union"),
+            "three_are_claims_too": (
+                "the identifiers added in 2026-11 are not all addresses "
+                "either. InterPro is a domain claim, KEGG and MetaCyc are "
+                "pathway claims, and all three are propagated by automatic "
+                "annotation in the same way EC is. They are published as "
+                "links out, never as this database's own statement about "
+                "what a sequence does"),
             "ec_is_a_claim": ("EC is a statement about function, while the other "
                               "three are addresses. Almost every EC here is "
                               "carried by an unreviewed (TrEMBL) entry, which "
@@ -235,6 +371,7 @@ def main():
             "uniprot_sourced_sequences": uniprot_sourced,
         },
         "coverage": coverage,
+        "fetch": fetch_state,
         "ec_review_status": {
             "sequences_with_a_reviewed_ec": n_reviewed,
             "sequences_with_only_an_unreviewed_ec": n_unreviewed,
