@@ -2249,6 +2249,14 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("rieske_ligand_audit.json", "file",
+     "Which cluster ligand is missing in the 139 sequences InterPro calls "
+     "Rieske but this database excludes, and whether the canonical "
+     "cluster-binding motif is present in the raw sequence at all. It is "
+     "absent in 138 of the 139, so the binding site is not displaced but "
+     "gone -- the pattern was validated against 4,000 sequences this "
+     "database does call cluster-intact and all 76 references.",
+     "rieske_ligand_audit.py"),
     ("interpro_agreement.json", "file",
      "Our own Rieske-domain call tested against InterPro's independent "
      "profiles: of the 25,313 sequences InterPro has annotated, every one we "

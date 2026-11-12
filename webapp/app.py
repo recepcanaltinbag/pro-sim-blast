@@ -2154,6 +2154,10 @@ def atlas_quality(request: Request):
                       #  Dis dogrulama: kendi Rieske cagrimiz InterPro'nun
                       #  kendi profillerine karsi (ROADMAP 135.19).
                       ipr=atlas.read_json(apath("interpro_agreement.json")),
+                      #  Ligand ligand denetim: asimetrik 139 dizide hangi
+                      #  kume ligandi yok, ve motif HAM dizide var mi.
+                      ligand=atlas.read_json(
+                          apath("rieske_ligand_audit.json")),
                       downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
     finally:
         con.close()

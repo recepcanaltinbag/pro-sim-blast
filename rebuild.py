@@ -485,6 +485,15 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  rieske_ligand_audit: InterPro'nun Rieske dedigi ama kapinin
+    #  disladigi dizilerde HANGI ligandin yok oldugu, ve kanonik motifin
+    #  HAM dizide bulunup bulunmadigi. `interpro_agreement`den SONRA
+    #  olmali (ayni asimetrik kumeyi tanimliyor). Aga cikmaz; hmmalign
+    #  yerel (ROADMAP 135.20).
+    ("rieske_ligand_audit", [f"{OUT}/rieske_ligand_audit.json"],
+     ["python3", "rieske_ligand_audit.py", "--db", DB,
+      "--out", f"{OUT}/rieske_ligand_audit.json"],
+     ["rieske_ligand_audit.py", "ro_motif.py", MOTIF_HMM, DB], False),
     #  interpro_agreement: kendi Rieske cagrimizi InterPro'nun KENDI
     #  modellerine karsi sinar. Girdisi `ro_xref` (cross_references'in
     #  yazdigi tablo) oldugu icin ONDAN SONRA olmak zorunda. Aga

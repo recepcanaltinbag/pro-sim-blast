@@ -166,16 +166,29 @@ it says.</p>
   database missed are outside it, and no agreement figure can reach them.
 </div>
 
-<p class="note"><b>The disagreement runs one way, and it is worth reading.</b>
+<p class="note"><b>The disagreement runs one way, and it was followed up.</b>
 {{ ipr.interpro_sees_rieske_we_do_not.sequences|fmt }} sequences carry a Rieske domain by
 InterPro's profiles but are dropped by this database's gate, which asks for the four cluster
-ligands rather than for domain similarity. Those are different statements rather than opposed ones:
-a Rieske fold without its cluster cannot do the chemistry. But the drop is published rather than
-silent, because
-{% for t, n in (ipr.interpro_sees_rieske_we_do_not.by_mononuclear_triad_sites_found or {}).items() %}{% if t == '3' %}<b>{{ n }} of them carry all three mononuclear iron ligands</b>{% endif %}{% endfor %} &mdash;
-a substituted cluster ligand with an intact catalytic triad is exactly the kind of sequence a
-curator should see.
-<a href="{{ u('/download/analysis/interpro_agreement.json') }}">Download the full comparison</a></p>
+ligands rather than for domain similarity.
+{% for t, n in (ipr.interpro_sees_rieske_we_do_not.by_mononuclear_triad_sites_found or {}).items() %}{% if t == '3' %}{{ n }} of them carry all three mononuclear iron ligands,{% endif %}{% endfor %}
+which at first reading suggested a substituted cluster ligand on an otherwise working enzyme.
+<b>Measuring it says otherwise.</b>{% if ligand and ligand.canonical_pair_in_raw_sequence %}
+The canonical cluster-binding motif &mdash;
+<code>{{ ligand.canonical_pair_in_raw_sequence.pattern }}</code>, the two C-x-H and C-x-x-H loops
+that hold the iron &mdash; is <b>absent from the raw sequence in
+{{ ligand.canonical_pair_in_raw_sequence.counts.absent }} of the
+{{ ligand.denominator.sequences }}</b>, searched without any alignment or column number at all. So
+these are not displaced ligands that a window missed: the binding site is not in the sequence.
+That pattern was validated before being trusted &mdash; it matches
+{{ ligand.canonical_pair_in_raw_sequence.validated_on.of_those_matching_the_pattern|fmt }} of
+{{ ligand.canonical_pair_in_raw_sequence.validated_on.sequences_we_call_intact|fmt }} sequences this
+database does call cluster-intact, and all 76 curated references.{% endif %}
+The reading is therefore that InterPro places them in the Rieske superfamily on <b>fold
+similarity</b> while the cluster site itself is gone, and that this database's four-ligand
+requirement is right to exclude them. It is the strongest external test the gate has had.
+<a href="{{ u('/download/analysis/interpro_agreement.json') }}">The comparison</a> and
+<a href="{{ u('/download/analysis/rieske_ligand_audit.json') }}">the ligand-by-ligand audit</a>
+are both downloadable.</p>
 {% endif %}
 
 {% if refdup and refdup.totals %}

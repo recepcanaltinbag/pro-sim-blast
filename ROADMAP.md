@@ -5270,3 +5270,63 @@ gorunusu.
 Cikti: `analysis_out/interpro_agreement.json`, betik
 `interpro_agreement.py`, dort kapi kontrolu, kalite sayfasinda
 "A second opinion on the call everything rests on".
+
+### 135.20 — Asimetri izlendi ve 135.19'un YORUMU DUZELTILDI: bagiyici bolge kaymis degil, YOK
+
+135.19'da InterPro'nun Rieske dedigi ama kapinin disladigi 139 dizi icin
+sunu yazmistim: "76'sinda katalitik ucgen tam, yani kume ligandi degismis
+ama merkezi saglam -- kuratorun bakmasi gereken bir kume". **Olcum bunun
+YANLIS oldugunu soyluyor.**
+
+**ADIM 1: HANGI LIGAND?** Diziler motif modeline hizalanip dort Rieske
+kolonu (Cys-1 164, His-1 166, Cys-2 184, His-2 187) tek tek okundu.
+Baskin desen tek bir kalintinin degismesi DEGIL, bir CXH CIFTININ
+BIRLIKTE gitmesi:
+
+| eksik desen | dizi | ucgen 3/3 olanlarda |
+|---|---|---|
+| Cys-1 + His-1 | 50 | 39 |
+| Cys-2 + His-2 | 23 | 12 |
+| yalniz His-2 | 20 | 3 |
+| yalniz His-1 | 19 | 7 |
+| yalniz Cys-1 | 8 | 6 |
+
+Kume iki ayri ilmekle tutulur (C-x-H ve C-x-x-H); bir CIFTIN birlikte
+gitmesi nokta mutasyonu degil, ilmegin yerinde olmamasi demek. 139'un
+73'u, ucgeni tam olan 76'nin 51'i boyle.
+
+**ADIM 2: KAYMIS MI, YOK MU -- ve bu iki okuma ZIT.** Bir ligand iki
+sebeple bulunamaz: gercekten yok, ya da yerinde ama kolon testinin +-2
+penceresinin disina kaymis. Ikisi AYNI sonucu verir, ZIT anlamlari var:
+"bu protein kume baglamaz" ile "bizim hizalamamiz kaciriyor". Ayni ayrim
+bu projede 7_701_AerC'de de karsimiza cikmisti (135.16): "kolon testi
+ulasamiyor" cumlesi protein hakkinda degil HIZALAMA hakkindaydi.
+
+Bu yuzden kanonik Rieske motifi (`C.H.{10,30}C..H`) HAM dizide,
+hizalamadan ve kolon numarasindan BAGIMSIZ arandi:
+
+**139 dizinin 138'inde motif HIC YOK.**
+
+**AYIRT EDICI KULLANILMADAN ONCE DOGRULANDI** -- ve neredeyse
+atlaniyordu. Ayni desen, kume ligandlarini SAGLAM dedigimiz dizilerde ve
+kuratorlu referanslarda sinandi: **4.000/4.000** ve **76/76** tutuyor.
+Yani yokluk bulgusu gercek, desen kusuru degil. Dogrulama rapora GOMULDU
+(`validated_on`), elle kosulan bir kontrol olarak kalmadi.
+
+**DUZELTILMIS OKUMA.** Bagiyici bolge kaymis degil, dizide YOK. InterPro
+bu 139 diziyi Rieske super ailesine KATLANMA BENZERLIGINDEN koyuyor; kume
+bolgesi gitmis. Dolayisiyla bu, kapinin dort-ligand kosulunun simdiye
+kadarki EN GUCLU dis sinavi: kapi onlari dogru disliyor. Kalite
+sayfasindaki yorum duzeltildi.
+
+**KENDI HATAM, ve dersi onemli.** Ilk kosuda 139 dizinin 137'sinde dort
+ligandin HEPSI "bosluk" cikti -- sacma bir sonuc, ve onu yakalatan da
+sacmaligi oldu. Sebep: `hmmalign` ciktisinda insert kolonlari var, yani
+hizalama dizgisindeki 164. konum modelin 164. ESLESME kolonu DEGIL.
+Dogru yol projede ZATEN vardi (`ro_motif.read_stockholm_matchcols`).
+Kolonlari tek sahipten almistim ama HIZALAMAYI OKUMAYI elle yazdim.
+Kural "sabitleri tek sahipten al" degil, **"olcumun TAMAMINI tek
+sahipten al"** olmaliydi.
+
+Cikti: `analysis_out/rieske_ligand_audit.json`, betik
+`rieske_ligand_audit.py`.
