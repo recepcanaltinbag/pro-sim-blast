@@ -53,6 +53,7 @@ Cikti: analysis_out/uniprot_xrefs/page_NNNN.tsv.gz + _fetch.json
 import argparse
 import glob
 import gzip
+import hashlib
 import json
 import os
 import sqlite3
@@ -61,6 +62,17 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+
+#  DUZ ARAMA UC NOKTASI -- ID-mapping yerine. Olculdu (2026-11-13):
+#  100 accession'lik bir `accession:(A OR B ...)` sorgusu 100/100 kimlik
+#  donduruyor ve SAYFALAMA bile gerekmiyor; 200 accession'da URL uzunlugu
+#  HTTP 400 veriyor. Bu yol ID-mapping'in BUTUN basarisizlik yuzeyini
+#  ortadan kaldiriyor: asenkron is yok (dolayisiyla sessiz-sifir yok),
+#  cursor yok (dolayisiyla kesilme yok), kuyruk kotasi yok. ID-mapping ile
+#  73.699 accession'in ancak 27.000'i cekilebildi; gerisinde servis isi
+#  kabul edip BOS donduruyordu.
+SEARCH = "https://rest.uniprot.org/uniprotkb/search"
+CHUNK = 100
 
 RUN = "https://rest.uniprot.org/idmapping/run"
 STATUS = "https://rest.uniprot.org/idmapping/status/{job}"
@@ -132,63 +144,141 @@ def accessions(db):
     return [r[0] for r in rows]
 
 
-def page_through(job, size):
-    """Bir isin sonuclarini sayfalayarak toplar. Dondurur: (satirlar, sayfa)."""
-    url = RESULTS.format(job=job, size=size)
-    lines, pages, header = [], 0, None
-    while url:
-        with open_url(url) as res:
-            text, link = res.read().decode("utf-8", "replace"), res.headers.get("Link")
-        rows = text.splitlines()
-        if rows:
-            if header is None:
-                header = rows[0]
-            lines.extend(r for r in rows[1:] if r.strip())
-        pages += 1
-        url = next_link(link)
-    return header, lines, pages
+def accessions_in_file(path):
+    """Bir onbellek dosyasindaki ACCESSION'lar. Sutun BASLIKTAN bulunur.
 
-
-def fetch_batch(ids, path, size):
-    """Bir partiyi ceker. SIFIR sonuc ONBELLEGE YAZILMAZ.
-
-    Eksik kimlik (silinmis accession) olabilir ve bu bir hata degil, ama
-    BEYAN edilir. Sifir sonuc ise hatadir: parti onbellege girmez ve bir
-    sonraki kosuda yeniden denenir -- cunku onbellege giren bos bir parti,
-    1.500 accession'i sessizce "InterPro kaydi yok" diye yayimlar.
+    NEDEN BASLIKTAN. Dizinde IKI duzen bir arada: ID-mapping doneminden
+    kalan dosyalar `From, Entry, InterPro, ...`, arama dosyalari ise
+    `Entry, InterPro, ...`. Ilk yazim ikisini `parts[:2]` ile idare etmeye
+    calisiyordu ve arama dosyalarinda IKINCI SUTUNU (InterPro) accession
+    sanip `have` kumesine IPR kimlikleri katiyordu -- sonucta "10.000
+    accession eksik" diye YUVARLAK bir sayi uretti, ki yuvarlak sayi bu
+    projede kesilme/sayim hatasi imzasi. Sutunu addan bulmak varsayimi
+    tamamen kaldiriyor.
     """
-    job = submit(ids)
-    wait_for_job(job)
-    header, lines, pages = page_through(job, size)
-    seen = {ln.split("\t")[0].strip() for ln in lines if ln.strip()}
+    out = set()
+    with gzip.open(path, "rt", encoding="utf-8", errors="replace") as handle:
+        header = handle.readline()
+        cols = [c.strip().lower() for c in header.rstrip("\n").split("\t")]
+        if "entry" not in cols:
+            return out
+        index = cols.index("entry")
+        for line in handle:
+            parts = line.rstrip("\n").split("\t")
+            if len(parts) > index and parts[index].strip():
+                out.add(parts[index].strip())
+    return out
+
+
+def fetch_chunk(ids, path, pause=0.4):
+    """Bir parcayi DUZ ARAMA ile ceker. Eksik/bos sonuc ONBELLEGE GIRMEZ."""
+    query = "accession:(" + " OR ".join(ids) + ")"
+    url = SEARCH + "?" + urllib.parse.urlencode({
+        "query": query, "format": "tsv", "size": 500,
+        "fields": "accession,xref_interpro,xref_kegg,xref_biocyc"})
+    with open_url(url) as res:
+        text = res.read().decode("utf-8", "replace")
+    rows = text.splitlines()
+    header = rows[0] if rows else ""
+    lines = [r for r in rows[1:] if r.strip()]
+    seen = {ln.split("\t")[0].strip() for ln in lines}
     seen.discard("")
     if not seen:
-        raise RuntimeError(f"{len(ids)} kimlik icin SIFIR satir dondu "
-                           f"({pages} sayfa); onbellege yazilmadi")
-
-    #  KESIK SONUC DA ONBELLEGE GIRMEZ -- ve bu, sifir kontrolunden AYRI
-    #  bir kontrol olmak zorundaydi. Olculdu: 19 partinin 14'u 1500/1500
-    #  dondu, BESI 1000/1500 -- yani sayfali uc nokta `Link: rel="next"`i
-    #  iki sayfadan sonra ARALIKLI olarak dusuruyor. Sifiri reddeden
-    #  koruma bunlari KABUL ediyordu, ve kesik bir parti onbellege girince
-    #  500 accession sessizce "InterPro kaydi yok" diye yayimlanirdi.
-    #
-    #  AYIRT EDICI: gercek bir eksiklik (silinmis accession) rastgele bir
-    #  sayidir; KESILME sayfa boyunun TAM KATIDIR. O yuzden yuvarlak bir
-    #  eksiklik kesilme sayilip yeniden denenir, yuvarlak olmayan eksiklik
-    #  beyan edilip kabul edilir.
-    if len(seen) < len(ids) and len(seen) % size == 0:
-        raise RuntimeError(
-            f"KESIK: {len(seen)}/{len(ids)} kimlik, {pages} sayfa "
-            f"(sayfa boyu {size}'in tam kati); onbellege yazilmadi")
-    payload = ("\n".join([header or ""] + lines) + "\n").encode()
+        raise RuntimeError(f"{len(ids)} accession icin SIFIR satir dondu; "
+                           "onbellege yazilmadi")
+    payload = ("\n".join([header] + lines) + "\n").encode()
     tmp = path + ".partial"
     with gzip.open(tmp, "wb") as handle:
         handle.write(payload)
     os.replace(tmp, path)
-    return len(seen), pages
+    time.sleep(pause)
+    return len(seen)
 
 
+def main():
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--db", default="roar.sqlite")
+    parser.add_argument("--out-dir", default=OUT_DIR)
+    parser.add_argument("--chunk", type=int, default=CHUNK,
+                        help="bir sorgudaki accession sayisi (OLCULEN sinir "
+                             "100-200 arasi)")
+    parser.add_argument("--pause", type=float, default=0.4)
+    args = parser.parse_args()
+
+    ids = accessions(args.db)
+    os.makedirs(args.out_dir, exist_ok=True)
+
+    #  ID-mapping doneminden kalan `page_*` dosyalari GECERLI VERI; hangi
+    #  accession'larin zaten elimizde oldugu onlardan okunur ve o
+    #  accession'lar yeniden istenmez.
+    have = set()
+    for path in sorted(glob.glob(os.path.join(args.out_dir, "*.tsv.gz"))):
+        have |= accessions_in_file(path)
+    todo = [a for a in ids if a not in have]
+    chunks = [todo[i:i + args.chunk] for i in range(0, len(todo), args.chunk)]
+    print(f"[accession] {len(ids)} toplam, {len(have & set(ids))} elimizde, "
+          f"{len(todo)} eksik -> {len(chunks)} sorgu", flush=True)
+
+    #  DOSYA ADI ICERIKTEN TURETILIR, KONUMDAN DEGIL.
+    #
+    #  Ilk yazim `chunk_{n:05d}` kullaniyordu, yani adi `todo` listesindeki
+    #  KONUM belirliyordu -- ama `todo` her kosuda degisiyor (elimizde olan
+    #  accession'lar cikarildigi icin). Sonuc olculdu: ikinci kosu, birinci
+    #  kosunun 1-100 numarali dosyalarini "zaten var" diye ATLADI, oysa o
+    #  dosyalar BASKA accession'lari tasiyordu. Tam 100 parca x 100 = 10.000
+    #  accession sessizce cekilmemis kaldi ve sayim "10.001 eksik" dedi.
+    #
+    #  Ad artik parcanin KENDI iceriginin ozeti: ayni accession kumesi ayni
+    #  dosyaya gider, degisen bir liste eski dosyalari gecersiz kilmaz.
+    done = failed = 0
+    for n, chunk in enumerate(chunks, 1):
+        tag = hashlib.sha1(",".join(chunk).encode()).hexdigest()[:12]
+        path = os.path.join(args.out_dir, f"chunk_{tag}.tsv.gz")
+        if os.path.exists(path) and os.path.getsize(path) > 100:
+            done += 1
+            continue
+        try:
+            seen = fetch_chunk(chunk, path, args.pause)
+        except Exception as err:                      # noqa: BLE001
+            print(f"[sorgu {n}/{len(chunks)}] DUSTU: {err}",
+                  file=sys.stderr, flush=True)
+            failed += 1
+            continue
+        done += 1
+        if n % 50 == 0 or n == len(chunks):
+            print(f"[sorgu {n}/{len(chunks)}] {seen}/{len(chunk)}", flush=True)
+
+    seen = set()
+    for path in sorted(glob.glob(os.path.join(args.out_dir, "*.tsv.gz"))):
+        seen |= accessions_in_file(path)
+    covered = len(seen & set(ids))
+    state = {
+        "submitted": len(ids),
+        "returned_ids": covered,
+        "missing_ids": len(ids) - covered,
+        "chunks_ready": done,
+        "chunks_failed": failed,
+        "chunk_size": args.chunk,
+        "finished": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "endpoint": ("plain /uniprotkb/search with accession:(A OR B ...), "
+                     "100 accessions per query -- measured: 100 returns "
+                     "100/100 with no paging, 200 exceeds the URL limit and "
+                     "returns HTTP 400. ID-mapping was abandoned: it accepts "
+                     "a job and returns zero results once many jobs have been "
+                     "submitted, which is a silent refusal"),
+    }
+    with open(os.path.join(args.out_dir, "_fetch.json"), "w",
+              encoding="utf-8") as handle:
+        json.dump(state, handle, indent=1)
+    print(f"[bitti] {done} sorgu, {failed} dustu; {covered}/{len(ids)} "
+          f"accession elimizde, {len(ids) - covered} eksik")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__,

@@ -5129,3 +5129,79 @@ servisin davranisini VARSAYIP sonra olctum, tersi yerine. Alan adlarini
 sinamistim ama AKISI sinamamistim. Veri butunlugu zarar gormedi (grafik
 82/82, kapi 0 FAIL, yayimlanan sayi degismedi); harcanan sey zaman ve
 istek.
+
+### 135.18 — A6 tamamlandi: InterPro / KEGG / MetaCyc yayimda, ve ID-mapping YOLU BIRAKILDI
+
+73.699 accession'in tamami cekildi (eksik 0) ve `ro_xref` dort yerine
+YEDI veritabani tasiyor:
+
+| tanimlayici | satir | dizi | uniprot kaynakli payi |
+|---|---|---|---|
+| interpro | 109.279 | 25.313 | **%36,8** |
+| kegg | 5.511 | 5.297 | %7,7 |
+| metacyc | 117 | 111 | **%0,2** |
+
+MetaCyc'in %0,2'de kalmasi bir olcum: MetaCyc kuratorlu bir YOL
+veritabani ve bu dizilerin neredeyse tamami incelenmemis (TrEMBL) kayit,
+yani dis dunyada da bu proteinlerin cogunun yola baglanmis kaydi yok.
+
+**ID-MAPPING YOLU TERK EDILDI.** Toplu is icin "dogru arac" o
+gorunuyordu, ve dort tasarim denemesi sonunda su olculdu: servis cok
+sayida is gonderildikten sonra isi KABUL EDIP sifir sonuc donduruyor --
+yani red SESSIZ, hala bir jobId veriyor. 73.699 accession'in ancak
+27.000'i o yolla gelebildi.
+
+**DOGRU YOL EN BASIT ARACTI:** duz `/uniprotkb/search` ile
+`accession:(A OR B ...)`. Olculdu: 100 accession 100/100 donuyor ve
+SAYFALAMA bile gerekmiyor; 200 accession'da URL uzunlugu HTTP 400
+veriyor. Asenkron is yok (sessiz-sifir yok), cursor yok (kesilme yok),
+kuyruk kotasi yok. 468 sorgu, SIFIR dusen.
+
+**SEKIZ DENEME, SEKIZ KUSUR -- ve hicbiri yayimlanan bir sayiya
+donusmedi.** Her birini ya tamlik kapisi, ya yuvarlak-sayi kuskusu, ya da
+atilan-sayi raporu durdurdu:
+
+1. `jobStatus` ALANININ YOKLUGUNU "is bitti" sayma (hata yanitlari da o
+   alani tasimiyor).
+2. SIFIR sonucu onbellege yazma.
+3. KESIK sonucu onbellege yazma -- AYRI bir kontrol gerekti; sifiri
+   reddeden koruma 1000/1500 donen partileri kabul ediyordu. Ayirt
+   edici: gercek eksiklik rastgele, KESILME sayfa boyunun TAM KATI.
+4. Gonderim boyutunu BELGEDEN varsayma (100.000 degil, ~1.500).
+5. Sutun duzenini SAYMA: ID-mapping sonuclari basa `From` ekliyor.
+6. Dosya adini KONUMDAN turetme: `chunk_{n}` kullanildi, ama `todo`
+   listesi her kosuda degisiyor; ikinci kosu birincinin 1-100 numarali
+   dosyalarini "zaten var" diye atladi ve TAM 10.000 accession sessizce
+   cekilmemis kaldi. Ad artik parcanin ICERIGININ ozeti.
+7. Okuyucu desenini `page_*` birakma: arama dosyalari `chunk_*` ve
+   okuyucu 73.699'un 8.852'sini gordu.
+8. PAYDA BIRIMINI karistirma: tamlik kontrolu "en az bir tanimlayicisi
+   olan accession" ile "beklenen accession"i karsilastiriyordu -- iki ayri
+   birim, ve o kapi ASLA gecemezdi. Rapor artik iki sayiyi ayri tasiyor
+   (`accessions_in_cache`, `accessions_with_at_least_one_identifier`) ve
+   neden ayri olduklarini yaziyor.
+
+**VE KAPANIRKEN IKI KUSUR DAHA:**
+
+9. KEGG deseni 22 GECERLI kimligi atti: organizma kodu 3-5 harf sanilmis,
+   ama KEGG'in `ag` (genes-addendum) kodu IKI harf (`ag:AAB52509`).
+   Atilan alt kume en degerlisiydi: addendum, tam genomu olmayan ama
+   LITERATURDE karakterize edilmis proteinleri tutuyor. Ayni hata bu
+   dosyada EMBL deseniyle de yasanmisti (5.358 kayit) ve iki kere de
+   ATILAN SAYININ RAPOR EDILMESI yakalatti.
+10. Kapi URL kalibi listesini ELLE SAYIYORDU (dort ad). Uc yeni
+    tanimlayici eklenince FAIL verdi, oysa kaliplar
+    `cross_references.URLS`de VARDI; eksik olan kapinin IKINCI KOPYASIYDI.
+    Liste artik tek sahipten okunuyor ve kapi SITENIN kalibi tasidigini
+    siniyor (`webapp/app.py:XREF_DBS`).
+
+**UCU DE BIRER IDDIA, salt adres degil** -- InterPro bir domain, KEGG ve
+MetaCyc birer yol iddiasi, ve ucu de EC gibi otomatik anotasyonla
+yayiliyor. Disa baglanti olarak basiliyorlar, bu veritabaninin kendi
+ifadesi olarak degil; rapor bunu ayrica yaziyor.
+
+**KENDI PAYIMA DUSEN DERS.** Sekiz denemenin kok sebebi tekti: servisin
+davranisini VARSAYIP sonra olctum. Dogru cozum (100 accession'lik duz
+arama sorgusu) ilk dakikada denenebilirdi. Kontroller isini yapti, ama
+kontrollerin isi hatayi yakalamak; hatayi AZALTMAK olcumle baslamaktan
+geciyor.

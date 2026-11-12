@@ -65,8 +65,14 @@ PATTERNS = {
     #  Bunlar `ro_protein_status` sutunlarindan GELMIYOR; UniProt
     #  ID-mapping ile ayrica cekiliyor (`fetch_uniprot_xrefs.py`).
     "interpro": re.compile(r"^IPR\d{6}$"),
-    #  KEGG geni `orgkod:lokus` bicimindedir (orn. `sce:YAL001C`).
-    "kegg": re.compile(r"^[a-z0-9]{3,5}:[A-Za-z0-9_.\-]+$"),
+    #  KEGG geni `orgkod:lokus` bicimindedir (orn. `sce:YAL001C`). Ilk
+    #  desen organizma kodunu 3-5 harf sanmisti ve 22 GECERLI kimligi
+    #  atti: KEGG'in `ag` (genes-addendum) kodu IKI harf -- `ag:AAB52509`
+    #  gibi. Ustelik atilanlar en degerli alt kume: addendum, tam genomu
+    #  olmayan ama LITERATURDE karakterize edilmis proteinleri tutuyor.
+    #  Ayni hata bu dosyada EMBL deseniyle de yasandi (5.358 kayit), ve
+    #  iki kere de ATILAN SAYININ RAPOR EDILMESI yakalatti.
+    "kegg": re.compile(r"^[a-z0-9]{2,5}:[A-Za-z0-9_.\-]+$"),
     #  MetaCyc/BioCyc nesnesi `VERITABANI:NESNE` (orn. `MetaCyc:MONOMER-123`).
     "metacyc": re.compile(r"^[A-Za-z0-9]+:[A-Za-z0-9_.\-]+$"),
 }
@@ -104,8 +110,22 @@ def read_fetched_xrefs(out_dir="analysis_out/uniprot_xrefs"):
     import glob
     import gzip
     fields = ("interpro", "kegg", "metacyc")
-    out, batches = defaultdict(lambda: defaultdict(set)), []
-    for path in sorted(glob.glob(os.path.join(out_dir, "page_*.tsv.gz"))):
+    #  IKI AYRI SAYI, IKI AYRI BIRIM -- ve ilk yazimda karistirdim.
+    #  `out` yalnizca EN AZ BIR tanimlayicisi olan accession'i tasiyor
+    #  (sozluge ancak bir deger varken giriliyor); `seen` ise onbellekte
+    #  GORULEN her accession'i. Tamlik kontrolu `out` uzerinden yapilinca
+    #  "25.648/73.699" cikti ve kapi asla gecemezdi: karsilastirilan sey
+    #  "kaydi olan accession" ile "beklenen accession"di, yani ayni birim
+    #  degil. Bu, bu projenin kendi payda kuralinin ihlali.
+    out, batches, seen = defaultdict(lambda: defaultdict(set)), [], set()
+    #  DESEN TUM ONBELLEK DOSYALARINI KAPSAR. Dizinde iki adlandirma bir
+    #  arada: ID-mapping doneminden `page_*`, arama doneminden `chunk_*`.
+    #  Desen `page_*` kalinca okuyucu 73.699 accession'in yalnizca
+    #  8.852'sini gordu ve tamlik kapisi -- dogru olarak -- yayimlamayi
+    #  reddetti. Ayni sinif hata bu dosyada UCUNCU kez cikti (once sutun
+    #  duzeni, sonra sayim, simdi desen): bir dizinde iki bicim varsa,
+    #  bicimi SAYMA, BEYANDAN oku.
+    for path in sorted(glob.glob(os.path.join(out_dir, "*.tsv.gz"))):
         batches.append(os.path.basename(path))
         with gzip.open(path, "rt", encoding="utf-8", errors="replace") as fh:
             header = fh.readline()
@@ -132,13 +152,14 @@ def read_fetched_xrefs(out_dir="analysis_out/uniprot_xrefs"):
                 accession = parts[index["accession"]].strip()
                 if not accession:
                     continue
+                seen.add(accession)
                 for db in fields:
                     i = index.get(db)
                     if i is None or i >= len(parts):
                         continue
                     for value in split_values(parts[i]):
                         out[accession][db].add(value)
-    return out, batches
+    return out, batches, seen
 
 
 def collect(con, fetched_xrefs=None):
@@ -244,11 +265,13 @@ def main():
     args = parser.parse_args()
 
     con = sqlite3.connect(args.db)
-    fetched, batches = read_fetched_xrefs(args.xref_dir)
+    fetched, batches, cached_ids = read_fetched_xrefs(args.xref_dir)
     expected = con.execute(
         "SELECT COUNT(DISTINCT accession) FROM ro_union_source "
         "WHERE source = 'uniprot'").fetchone()[0]
-    print(f"[cekilmis] {len(batches)} parti, {len(fetched)}/{expected} accession")
+    print(f"[cekilmis] {len(batches)} parti, {len(cached_ids)}/{expected} "
+          f"accession onbellekte, {len(fetched)} tanesinde en az bir "
+          f"tanimlayici var")
 
     #  YARIM ONBELLEK UC YENI TANIMLAYICIYI YAYIMLAMAZ.
     #
@@ -268,10 +291,10 @@ def main():
     #  Esik TAM degil: silinmis bir accession hakli olarak eslesmeyebilir.
     #  Ama eksiklik BEYAN edilebilir olmali, ve yuvarlak bir eksiklik
     #  (sayfa boyunun tam kati) kesilmenin imzasidir.
-    complete = expected and len(fetched) >= expected - 100
+    complete = expected and len(cached_ids) >= expected - 100
     if not complete:
         print(f"[ATLANDI] InterPro/KEGG/MetaCyc EKLENMEDI: onbellek "
-              f"{len(fetched)}/{expected} accession. Once "
+              f"{len(cached_ids)}/{expected} accession. Once "
               f"`python3 fetch_uniprot_xrefs.py` tamamlanmali.",
               file=sys.stderr)
         fetched = {}
@@ -303,7 +326,14 @@ def main():
     #  accession goruldugu, kapsama yuzdelerinin YANINDA durur.
     fetch_state = {
         "batches_read": batches,
-        "accessions_seen": len(fetched),
+        "accessions_in_cache": len(cached_ids),
+        "accessions_with_at_least_one_identifier": len(fetched),
+        "why_two_numbers": (
+            "the cache holds a row for every accession queried, including "
+            "those that carry none of the three identifiers; the second "
+            "number counts only those that carry at least one. Comparing the "
+            "second against the expected total would be comparing two "
+            "different units, and the completeness gate would never pass"),
         "cache_complete": bool(complete),
         "identifiers_withheld_while_incomplete": (
             [] if complete else ["interpro", "kegg", "metacyc"]),

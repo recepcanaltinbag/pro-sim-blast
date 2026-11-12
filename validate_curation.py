@@ -3613,7 +3613,21 @@ def check_cross_references(rep, con, root, out_dir="analysis_out"):
               "hepsi dolu" if not blank else f"{blank} satir bos/bosluklu")
 
     # 3. Bilinmeyen veritabani adi: sayfa onun icin URL kalibi bilmiyor.
-    known = ("uniprot", "refseq_protein", "embl_nucleotide", "ec")
+    #
+    #  AD LISTESI BURADA SAYILMAZ, TEK SAHIPTEN OKUNUR. Once dort ad elle
+    #  yaziliydi ve 2026-11-13'te uc yeni tanimlayici eklenince kapi
+    #  "URL kalibi yok" diye FAIL verdi -- oysa kaliplar
+    #  `cross_references.URLS`de VARDI; eksik olan kapinin ikinci
+    #  kopyasiydi. Ayni olcumun ikinci uygulamasi birincisiyle sessizce
+    #  ayrisir; o yuzden liste sahibinden aliniyor ve kapi artik
+    #  SITENIN kalibi tasidigini sinar (webapp/app.py:XREF_DBS).
+    import sys as _sys2
+    _sys2.path.insert(0, root)
+    _sys2.path.insert(0, os.path.join(root, "webapp"))
+    import cross_references as _xr
+    import app as _webapp
+    site_dbs = {name for name, _label, _tpl in _webapp.XREF_DBS}
+    known = tuple(k for k in _xr.URLS if k in site_dbs)
     unknown = [r[0] for r in con.execute(
         "SELECT DISTINCT db FROM ro_xref") if r[0] not in known]
     rep.check("xref: every database name has a published URL template",

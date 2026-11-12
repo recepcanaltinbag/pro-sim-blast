@@ -2508,6 +2508,15 @@ XREF_DBS = [
      "https://www.ncbi.nlm.nih.gov/protein/{}"),
     ("embl_nucleotide", "ENA nucleotide",
      "https://www.ebi.ac.uk/ena/browser/view/{}"),
+    #  2026-11-13'te eklenen uc tanimlayici. UCU DE BIRER IDDIA, salt
+    #  adres degil: InterPro bir domain iddiasi, KEGG ve MetaCyc birer yol
+    #  iddiasi, ve ucu de EC gibi otomatik anotasyonla yayiliyor. Disa
+    #  baglanti olarak basilirlar, bu veritabaninin kendi ifadesi olarak
+    #  degil.
+    ("interpro", "InterPro",
+     "https://www.ebi.ac.uk/interpro/entry/InterPro/{}/"),
+    ("kegg", "KEGG gene", "https://www.genome.jp/entry/{}"),
+    ("metacyc", "MetaCyc", "https://biocyc.org/getid?id={}"),
 ]
 
 
