@@ -14,12 +14,30 @@ bastan kosturmayi gerektiriyor ve hangi adin tutulacagi bir isimlendirme
 karari. Modul durumu OLCER ve sayfalarda gorunur kilar, cunku bir sayinin
 neden 0 oldugunu soyleyememek daha kotu.
 
+DIZI FAZLALIGI YETMEZ -- MODEL FAZLALIGINA DA BAKILIR (2026-11-12 eklendi).
+Bu modul once yalnizca referans DIZILERININ birbirine benzerligini olcuyordu
+ve ciddi bir vakayi KACIRDI: `3_308_DxnA1` ile `4_407_PbaA1` dizileri yalnizca
+%65,6 benzer (esigin cok altinda), ama ATAMA KUTUPHANESINDEKI iki modelin
+olasilik matrisi BIREBIR AYNI. Sebep hmmbuild degil, homolog TOPLAMASI: iki
+tipin aile profili ayni dort proteinden kurulmus (ABQ71519.1, WP_336975089.1,
+WP_238839196.1, WP_032073055.1). Ayni model ayni skoru verir, berabereyi hep
+ayni isim kazanir, ve bir tip ERISILEMEZ olur.
+
+Olculen bedel: `3_308_DxnA1`'in iki dogrulanmis uyesi var ve IKISI DE
+`4_407_PbaA1` referansiyla %100 benzer (%100 kapsamada), yani ikisi de dizi
+olarak PbaA1. PbaA1 ise 0 uyeli gorunuyor. Iki tipin yayimlanan etiketi ve
+kimyasi bu iki giris icin TERS.
+
+Dolayisiyla atamayi bozan fazlalik dizi duzeyinde gorunmek ZORUNDA DEGIL;
+karar modelden gectigi icin model de olculur.
+
 Cikti:
     analysis_out/reference_redundancy.json
 """
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import sqlite3
@@ -139,6 +157,105 @@ def read_decisions(path):
     return out
 
 
+def read_models(path):
+    """Atama kutuphanesindeki her modelin GOVDE ozeti.
+
+    Ad/accession/tarih satirlari ozete GIRMEZ: iki model farkli ADLA ayni
+    olasilik matrisini tasiyabilir, ve aranan sey tam olarak bu.
+    """
+    models, body, name = {}, [], None
+    if not os.path.exists(path):
+        return models
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            if line.startswith("NAME"):
+                name = line.split()[1]
+            if not line.startswith(("NAME", "ACC", "DESC", "DATE", "CKSUM")):
+                body.append(line)
+            if line.startswith("//"):
+                if name:
+                    models[name] = hashlib.sha256(
+                        "".join(body).encode()).hexdigest()[:16]
+                body, name = [], None
+    return models
+
+
+def identical_model_groups(models):
+    """Govdesi ayni olan model adlari, gruplar halinde."""
+    by_digest = defaultdict(list)
+    for name, digest in models.items():
+        by_digest[digest].append(name)
+    return [sorted(names) for names in by_digest.values() if len(names) > 1]
+
+
+def nearest_ref_profile(connection, cluster):
+    """Bir kumeye atanmis dogrulanmis girislerin KIMLIKCE en yakin referansi.
+
+    Atama HMM skoruyla yapiliyor; bu, ikinci ve BAGIMSIZ olcumun ne dedigi.
+    Ikisi ayrisirsa atama tartismalidir.
+    """
+    rows = connection.execute("""
+        SELECT e.nearest_ref, COUNT(*), ROUND(AVG(e.ref_identity), 1),
+               ROUND(MAX(e.ref_identity), 1)
+          FROM ro r JOIN ro_evidence e USING(candidate_id)
+         WHERE r.is_confirmed = 1 AND r.ro_cluster = ?
+         GROUP BY 1 ORDER BY 2 DESC""", (cluster,)).fetchall()
+    return [{"nearest_ref": n, "entries": k, "mean_identity": avg,
+             "max_identity": mx} for n, k, avg, mx in rows]
+
+
+def zero_member_diagnosis(connection, counts, pair_identity, all_types):
+    """UYESIZ her tip icin: neden uye toplamadi?
+
+    "0 uye" tek bir olgu DEGIL, en az uc ayri durumun ortak belirtisi:
+      (a) rakip profil AYIRT EDILEMEZ -- tipin kendi referansina cok benzer
+          adaylar var, ama hepsi baska bir profile gidiyor;
+      (b) veri gercekten o enzimi icermiyor -- en yakin aday bile uzak;
+      (c) referansin kendisi kutuphanede yok (ayri bir kontrol).
+
+    Ayirt edici DB'den gelir, `aligned/` dizininden DEGIL: o dizin yayima
+    girmiyor ve emekli tiplerin bayat dosyalarini da tasiyor, dolayisiyla
+    bir kapi kontrolunun dayanagi olamaz. Burada kullanilan olcum,
+    `ro_evidence`in KIMLIKCE en yakin referansi: bir tip icin
+    `nearest_ref` satiri olan dogrulanmis giris varsa, o tip veride
+    TEMSIL EDILIYOR ve atama onu baska bir profile vermis demektir.
+    """
+    #  `member_counts` bir GROUP BY sonucu: uyesi OLMAYAN tip anahtar olarak
+    #  hic gorunmez. Ilk yazimda bu sozluk uzerinde dolasiyordum ve sonuc
+    #  "0 uyesiz tip" cikti -- yani aranan seyin tam olarak yok sayildigi
+    #  bir payda. Dolasim TUM tip listesi uzerinde olmak zorunda.
+    out = []
+    for cluster in sorted(all_types):
+        if counts.get(cluster, 0):
+            continue
+        rows = connection.execute("""
+            SELECT r.ro_cluster, COUNT(*), ROUND(AVG(e.ref_identity), 1),
+                   ROUND(MAX(e.ref_identity), 1)
+              FROM ro_evidence e JOIN ro r USING(candidate_id)
+             WHERE e.nearest_ref = ? AND r.is_confirmed = 1
+             GROUP BY 1 ORDER BY 2 DESC""", (cluster,)).fetchall()
+        claimed = sum(k for _c, k, _a, _m in rows)
+        best = max((m for _c, _k, _a, m in rows), default=None)
+        winners = [{"cluster": c, "entries": k, "mean_identity": a,
+                    "max_identity": m,
+                    "reference_identity_to_winner":
+                        pair_identity.get(frozenset((cluster, c)))}
+                   for c, k, a, m in rows[:3]]
+        if claimed and (best or 0) >= 90:
+            verdict = "represented_but_assigned_elsewhere"
+        elif claimed:
+            verdict = "only_distant_candidates_are_nearest_to_it"
+        else:
+            verdict = "no_candidate_is_nearest_to_it"
+        out.append({"cluster": cluster,
+                    "entries": 0,
+                    "candidates_whose_nearest_reference_it_is": claimed,
+                    "best_candidate_identity": best,
+                    "assigned_instead_to": winners,
+                    "verdict": verdict})
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -147,6 +264,8 @@ def main():
     parser.add_argument("--pairs", default=os.path.join("analysis_out", "reference_pairs.csv"))
     parser.add_argument("--chemistry", default="chemistry.csv")
     parser.add_argument("--decisions", default="curation_decisions.csv")
+    parser.add_argument("--library", default="RieskeDB71.hmm",
+                        help="atama profili kutuphanesi")
     parser.add_argument("--out", default=os.path.join("analysis_out",
                                                       "reference_redundancy.json"))
     args = parser.parse_args()
@@ -162,6 +281,18 @@ def main():
               f"{', '.join(unmatched[:4])}")
     connection = sqlite3.connect(args.db)
     counts = member_counts(connection)
+
+    #  Referans-referans kimligi (DIAMOND, sorgu kapsamasi >=%60 ve E<=1e-3;
+    #  bir ciftin TABLODA OLMAMASI o esikte hizalanmadigi anlamina gelir).
+    pair_identity = {}
+    if os.path.exists(args.pairs):
+        with open(args.pairs, newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                try:
+                    pair_identity[frozenset((row["ref_a"], row["ref_b"]))] = \
+                        float(row["identity"])
+                except (TypeError, ValueError):
+                    continue
 
     groups = []
     seen_pairs = set()
@@ -236,6 +367,36 @@ def main():
                     note[field] = pair[field]
             affected.setdefault(name, note)
 
+    #  MODEL FAZLALIGI. Dizi esigi bunu kacirabilir (DxnA1/PbaA1: diziler
+    #  %65,6 benzer, modeller BIREBIR AYNI), cunku atama karari modelden
+    #  geciyor, diziden degil.
+    models = read_models(args.library)
+    model_groups = []
+    for names in identical_model_groups(models):
+        members = []
+        for name in names:
+            members.append({"id": name, "entries": counts.get(name, 0),
+                            "assigned_entries_nearest_ref":
+                                nearest_ref_profile(connection, name)})
+        #  Bir grupta uyesi OLMAYAN tip ERISILEMEZDIR: ayni skor, berabereyi
+        #  hep ayni isim kazanir.
+        unreachable = [m["id"] for m in members if not m["entries"]]
+        model_groups.append({
+            "models": names,
+            "digest": models[names[0]],
+            "members": members,
+            "unreachable_types": unreachable,
+            "sequence_identity": [
+                {"pair": sorted((a, b)),
+                 "identity": pair_identity.get(frozenset((a, b)))}
+                for i, a in enumerate(names) for b in names[i + 1:]],
+            "why_it_matters": (
+                "two names, one probability matrix: every candidate scores the "
+                "same on both, the tie is always broken the same way, and the "
+                "losing type can never recruit a member -- not even a sequence "
+                "identical to its own reference"),
+        })
+
     result = {
         "method": {
             "question": ("how much of the reference set is redundant, and what that does "
@@ -247,10 +408,28 @@ def main():
             "contained": ("one reference sequence occurs exactly inside another, so the "
                           "shorter is a fragment of the longer"),
             "near_identical": f"distinct sequences at or above {NEAR_IDENTICAL} % identity",
+            "identical_models": (
+                "two profiles in the assignment library whose probability matrix "
+                "is byte-identical, compared with the name, accession and date "
+                "lines excluded. This is measured separately from sequence "
+                "identity because the assignment decision passes through the "
+                "model, not the sequence: DxnA1 and PbaA1 are only 65.6 % "
+                "identical as sequences, far below any redundancy threshold, yet "
+                "their models are the same because the two family profiles were "
+                "built from the same four proteins"),
             "not_fixed_here": ("this module measures the problem; repairing it means "
                                "changing the reference set and rebuilding the profile "
                                "library, and which name to keep is a nomenclature decision"),
             "near_identical_threshold": NEAR_IDENTICAL,
+            "zero_member_types": (
+                "a type with no confirmed member. The number alone is not a "
+                "finding, because at least three different situations produce "
+                "it: the type is represented in the data but every candidate "
+                "closest to it is assigned to a competing profile; only distant "
+                "candidates are closest to it; or nothing in the data is "
+                "closest to it at all. The verdict field says which, decided "
+                "from ro_evidence's identity-nearest reference, an "
+                "independent measurement from the HMM assignment"),
             "decisions": ("what the curator decided to do about each near-identical pair, "
                           "read from curation_decisions.csv with its date and reason; a pair "
                           "without a row is reported as awaiting a decision"),
@@ -267,7 +446,16 @@ def main():
             "affected_references": len(affected),
             "entries_under_an_ambiguous_reference": sum(
                 counts.get(name, 0) for name in affected),
+            "models_in_library": len(models),
+            "identical_model_groups": len(model_groups),
+            "types_unreachable_by_a_duplicate_model": sum(
+                len(g["unreachable_types"]) for g in model_groups),
+            "zero_member_types": sum(1 for c in records
+                                     if not counts.get(c, 0)),
         },
+        "identical_model_groups": model_groups,
+        "zero_member_types": zero_member_diagnosis(
+            connection, counts, pair_identity, records),
         "identical_groups": groups,
         "contained_pairs": contained,
         "near_identical_pairs": near,

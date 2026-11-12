@@ -3245,6 +3245,73 @@ def check_record_kind(rep, con, root, out_dir="analysis_out"):
               f"{kept} dogrulanmis giris transkript kayitlarinda duruyor")
 
 
+def check_assignment_library(rep, con, root, out_dir="analysis_out"):
+    """Atama kutuphanesi her tipi ERISILEBILIR kiliyor mu?
+
+    NEDEN. Tip atamasi, kapsama barajini gecen profiller arasinda en yuksek
+    bit skorlusunu secer. Iki profil AYNI olasilik matrisini tasiyorsa her
+    aday ikisinde ayni skoru alir, berabereyi hep ayni isim kazanir, ve
+    kaybeden tip hicbir uye toplayamaz -- kendi referans dizisiyle BIREBIR
+    ayni bir giris bile ona gitmez.
+
+    Olculdu (2026-11-12): `3_308_DxnA1` ile `4_407_PbaA1` modelleri birebir
+    ayni. Sebep hmmbuild degil, homolog TOPLAMASI: iki aile profili ayni
+    dort proteinden kurulmus ve her biri OTEKININ referansini da iceriyor.
+    Bedel kozmetik degil -- DxnA1'in iki dogrulanmis uyesi var ve IKISI DE
+    PbaA1 referansiyla %100 benzer (%100 kapsamada), yani iki girisin
+    yayimlanan tipi ve kimyasi ters.
+
+    NEDEN FAIL DEGIL WARN. Duzeltmek profil kutuphanesini yeniden kurup
+    19.125 girisi yeniden atamak demek, ve "hangi homolog hangi tipe ait"
+    bir KURATOR karari. Bir kapi kuratorun yerine karar veremez; ama sessiz
+    de kalamaz, cunku yayimlanan etiket su an yanlis. FAIL yapmak ayrica
+    bu kusuru DUYURAN sayfanin yayimini da kilitlerdi.
+
+    0 UYE TEK BIR OLGU DEGIL. Ayni belirtinin en az uc sebebi var ve rapor
+    hangisi oldugunu yaziyor: tip veride TEMSIL EDILIYOR ama atamasi
+    baskasina gidiyor / yalnizca UZAK adaylar ona en yakin / hicbir aday ona
+    en yakin degil. Olculdu: 8 uyesiz tipin 6'si birinci, 2'si ikinci --
+    yani bu uyarinin buyuk kismi eksik veri DEGIL, yontem kusuru.
+    """
+    path = os.path.join(root, out_dir, "reference_redundancy.json")
+    if not os.path.exists(path):
+        rep.check("assignment: kutuphane denetimi yazildi", False, 1,
+                  "reference_redundancy.json yok")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+    totals = data.get("totals") or {}
+
+    groups = data.get("identical_model_groups") or []
+    unreachable = [t for g in groups for t in (g.get("unreachable_types") or [])]
+    detail = "; ".join(
+        f"{'/'.join(g['models'])} (dizi kimligi "
+        f"%{(g.get('sequence_identity') or [{}])[0].get('identity')})"
+        for g in groups)
+    rep.check("assignment: hicbir iki profil ayni olasilik matrisini tasimiyor",
+              not groups, len(unreachable),
+              detail + (" -- bir tip ERISILEMEZ" if unreachable else ""),
+              severity="WARN")
+
+    #  Bu kontrol SAYIYI degil, SAYININ ACIKLANMIS olmasini arar. "8 tip 0
+    #  uyeli" bir kusur olmak zorunda degil (veri o enzimi icermiyor
+    #  olabilir); aciklanmamis olmasi kusurdur.
+    zero = data.get("zero_member_types") or []
+    unexplained = [z["cluster"] for z in zero if not z.get("verdict")]
+    rep.check("assignment: uyesiz her tipin bir TESHISI var",
+              not unexplained, len(unexplained), first(unexplained, 4))
+
+    #  En keskin alt kume: tipin kendi referansiyla %=100 benzer bir giris
+    #  var ve yine de o tip bos. Bu bir yorum degil, bir celiski.
+    exact = [f"{z['cluster']} (aday %{z['best_candidate_identity']} -> "
+             f"{(z['assigned_instead_to'] or [{}])[0].get('cluster')})"
+             for z in zero
+             if (z.get("best_candidate_identity") or 0) >= 99.5]
+    rep.check("assignment: kendi referansiyla ayni bir giris varken bos "
+              "kalan tip yok",
+              not exact, len(exact), first(exact, 4), severity="WARN")
+
+
 def check_coverage_audit(rep, con, root, out_dir="analysis_out"):
     """Kapsama denetiminin YAPISI ve TAZELIGI; acigin BUYUKLUGU degil.
 
@@ -4396,6 +4463,7 @@ def main():
         check_substrate_chebi(rep, con, ROOT)
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
+        check_assignment_library(rep, con, ROOT)
         check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)

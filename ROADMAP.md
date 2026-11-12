@@ -4868,3 +4868,77 @@ sahipsiz yazmayi yine elle aramak bu projenin tekrar eden hatasi olurdu.
 Kontrolun SINIRI da yazili: yalnizca OLCULMUS olani sinar -- bir adim bu
 araçla hic kosmadiysa yazmasi henuz gorulmemistir. Yani "yazma yok"
 demiyor, "gorulen her yazmanin sahibi var" diyor.
+
+### 135.13 — "8 referans hic uye toplamiyor" WARN'i acildi: 6'si yontem kusuru, 2'si kapsama olgusu
+
+Aylardir aciklamasiz duran WARN tek bir sayiydi ve IKI AYRI SEYI gizliyordu.
+"0 uye" en az uc ayri durumun ortak belirtisi, ve zit cevaplar gerektiriyorlar:
+enzim bu genomlarda YOK olabilir, ya da VAR ve atamasi rakip bir profile
+gidiyordur. Ayirt edici, atamadan BAGIMSIZ ikinci bir olcum: `ro_evidence`in
+kimlikce en yakin referansi (DIAMOND, kapsama >=%60; HMM skoru degil).
+
+| tip | ona en yakin aday | en iyi aday kimligi | atama kime gitti | ref~ref | hukum |
+|---|---|---|---|---|---|
+| `1_103_CarAa` | 44 | **%99,7** | `1_102_CARDO` | %99,2 | var, baskasina atandi |
+| `3_309_NahAc` | 20 | **%100,0** | `3_303_NBDO` | %82,0 | var, baskasina atandi |
+| `4_407_PbaA1` | 2 | **%100,0** | `3_308_DxnA1` | %65,6 | var, baskasina atandi |
+| `2_206_IpBAa` | 8 | %96,5 | `2_203_cumA1` | %90,8 | var, baskasina atandi |
+| `2_210_XylC1` | 3 | %96,2 | `2_202_EdoA1` | %63,9 | var, baskasina atandi |
+| `3_312_NinA` | 11 | %94,2 | `3_303_NBDO` | %91,3 | var, baskasina atandi |
+| `2_207_BpdC1` | 20 | %47,8 | `2_208_TecA1` | %74,7 | veride yakin bir sey yok |
+| `3_310_DntAc` | 3 | %31,8 | `5_506_Stc2` | %28,1 | veride yakin bir sey yok |
+
+Yani **6'si eksik veri DEGIL**: tip bu genomlarda temsil ediliyor ve atama onu
+baska bir profile veriyor. Yalnizca 2'si gercek bir kapsama olgusu. Ucunde ise
+**kendi referans dizisiyle %99,5+ ayni bir giris var** ve tip yine de bos.
+
+### 135.14 — ATAMA KUTUPHANESINDE IKI AD, BIR MODEL: `3_308_DxnA1` = `4_407_PbaA1`
+
+En keskin vaka mekanik ve bir HATA. `RieskeDB71.hmm` icinde bu iki modelin
+olasilik matrisi **BIREBIR AYNI** (govde ozeti `05868852bb819df5`; ad/accession/
+tarih satirlari haric). Dogrulandi: ayni aday diziye ikisi de **971,1 bit ve
+8.3e-293** veriyor -- farkli iki profil virgulden sonra ayni skoru vermez.
+
+**Sebep hmmbuild degil, homolog TOPLAMASI.** Iki aile profili ayni dort
+proteinden kurulmus (`ABQ71519.1`, `WP_336975089.1`, `WP_238839196.1`,
+`WP_032073055.1`) ve her iki kume OTEKI TIPIN REFERANSINI da iceriyor -- yani
+hicbiri kendi tipine ozgu degil. Iki referans dizisi %65,6 benzer, yani
+DIZI duzeyindeki fazlalik esiginin (>=%99) cok altinda: **bu kusur dizi
+denetimiyle BULUNAMAZ, cunku karar MODELDEN geciyor, diziden degil.**
+
+**Bedeli kozmetik degil.** `3_308_DxnA1`'in iki dogrulanmis uyesi var ve
+**ikisi de `4_407_PbaA1` referansiyla %100 benzer, %100 kapsamada** -- yani
+ikisi de dizi olarak PbaA1. PbaA1 ise 0 uyeli gorunuyor. Iki tipin yayimlanan
+etiketi ve kimyasi bu iki giris icin TERS: dibenzo-p-dioksin dioksijenaz diye
+etiketlenen seyler 3-fenoksibenzoat dioksijenazlari.
+
+**EGITIM KUMESI ORTUSMESI -- ve neden basliga CIKARILMADI.** 66 tipin profil
+hizalamasi karsilastirildi: dort cift BIREBIR ayni kumeden kurulmus
+(`5_502_CmoB`/`5_503_CmoA` 24/24, `3_306_3NTDO`/`3_310_DntAc` 109/109,
+`1_102_CARDO`/`1_103_CarAa` 24/24, `3_308_DxnA1`/`4_407_PbaA1` 4/4) ve 8
+uyesiz tipin HEPSINDE ortusmesi >=0,80 bir rakip var (7'sinde >=0,96).
+Ama bu olcum YAYIMLANMADI ve kapiya BAGLANMADI, cunku dayanagi `aligned/`
+dizini: yayima girmiyor, emekli tiplerin bayat dosyalarini tasiyor (7 dosya),
+10 guncel tipin dosyasi hic yok, ve hizalamalarin kutuphaneyi kurduklarini
+dogrulamaya calistigimda hmmbuild'in match-kolon kuralini birebir yeniden
+ureteMEDIM (66'nin 30'u birebir uyustu, kalani birkac kolon kayik -- benim
+yaklasiklik hatam, bayatlik degil). Kanit DB'den gelmek zorundaydi:
+yayimlanan hukum `ro_evidence` + model ozeti uzerine kurulu, ikisi de
+grafikteki artefaktlardan uretiliyor.
+
+**KAPIDA, VE NEDEN WARN.** Uc kontrol eklendi: hicbir iki profil ayni matrisi
+tasimamali, uyesiz her tipin bir TESHISI olmali (PASS), ve kendi referansiyla
+%99,5+ ayni bir giris varken bos kalan tip olmamali. Ilki ve ucuncusu WARN --
+FAIL degil, cunku (1) duzeltmek profil kutuphanesini yeniden kurup 19.125
+girisi yeniden atamak demek ve "hangi homolog hangi tipe ait" bir KURATOR
+karari, (2) FAIL bu kusuru DUYURAN sayfanin yayimini da kilitlerdi. Kapi
+kuratorun yerine karar vermez, ama sessiz de kalmaz.
+
+Yayimlandi: kalite sayfasinda "Where a type reports no members, and why" --
+teshis tablosu ve iki-ad-bir-model vakasi, okuyucunun aciklanmamis bir sifir
+gormemesi icin.
+
+**ACIK IS (kurator karari).** DxnA1/PbaA1 profillerini ayri homolog
+kumelerinden yeniden kurmak ve atamayi yenilemek; bu bir veri surumu.
+Bu yapilmadan o iki girisin tip etiketi yanlis kalir -- su an sitede
+olcumle beyan ediliyor, ama duzeltilmis degil.

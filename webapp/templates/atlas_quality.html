@@ -224,6 +224,59 @@ arbitrary; the records are not. The reasons, with their dates, travel with the d
   <p class="note">{{ p.rationale }}</p>
 </details>
 {% endfor %}
+{% if refdup.zero_member_types %}
+<h3>Where a type reports no members, and why</h3>
+<p>{{ refdup.totals.zero_member_types }} of the {{ refdup.totals.references }} curated types hold no
+confirmed member. That number on its own is not a finding, because at least three different
+situations produce it, and they call for opposite responses: the enzyme may be <b>absent from the
+genomes</b> read here, or it may be <b>present and assigned to a competing profile</b>. The two are
+told apart by a second, independent measurement &mdash; the reference each candidate is closest to by
+sequence identity, which is computed separately from the HMM assignment that decides the type.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Type</th><th class="num">Candidates closest to it</th>
+<th class="num">Closest one</th><th>Assigned instead to</th><th>Reading</th></tr></thead>
+<tbody>
+{% for z in refdup.zero_member_types %}
+{% set w = (z.assigned_instead_to or [{}])[0] %}
+<tr><td><a href="{{ u('/cluster/' ~ z.cluster) }}">{{ gene(z.cluster) }}</a></td>
+  <td class="num">{{ z.candidates_whose_nearest_reference_it_is }}</td>
+  <td class="num">{% if z.best_candidate_identity %}{{ '%.1f %%' % z.best_candidate_identity }}{% else %}&mdash;{% endif %}</td>
+  <td>{% if w.cluster %}<a href="{{ u('/cluster/' ~ w.cluster) }}">{{ gene(w.cluster) }}</a>
+      <div class="note">{% if w.reference_identity_to_winner %}the two references are
+      {{ '%.1f %%' % w.reference_identity_to_winner }} identical{% else %}the two references do not
+      align at 60 % coverage{% endif %}</div>{% else %}&mdash;{% endif %}</td>
+  <td>{% if z.verdict == 'represented_but_assigned_elsewhere' %}
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      {% elif z.verdict == 'only_distant_candidates_are_nearest_to_it' %}
+      <span class="chip chip--ok">nothing close in the data</span>
+      {% else %}<span class="chip chip--ok">nothing closest to it</span>{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+
+<div class="caveat">
+  <b>The larger part of this warning is a method defect, not missing data.</b>
+  {{ refdup.zero_member_types | selectattr('verdict', 'equalto', 'represented_but_assigned_elsewhere') | list | length }}
+  of the {{ refdup.totals.zero_member_types }} empty types are represented in these genomes and lose
+  every candidate to a competing profile; only
+  {{ refdup.zero_member_types | selectattr('verdict', 'equalto', 'only_distant_candidates_are_nearest_to_it') | list | length }}
+  are empty because nothing in the data resembles them. Three are empty although an entry
+  <b>identical to their own reference sequence</b> is in the database.
+  {% if refdup.identical_model_groups %}The sharpest case is mechanical: for
+  {% for g in refdup.identical_model_groups %}{% for m in g.models %}<a href="{{ u('/cluster/' ~ m) }}">{{ gene(m) }}</a>{% if not loop.last %} and {% endif %}{% endfor %}{% endfor %}
+  the two profiles in the assignment library carry a <b>byte-identical probability matrix</b>,
+  although the two reference sequences are only
+  {% for g in refdup.identical_model_groups %}{{ '%.1f %%' % (g.sequence_identity[0].identity or 0) }}{% endfor %}
+  identical. Both family profiles were built from the same four proteins, each set containing the
+  other type's reference, so the two models cannot tell the types apart: every candidate scores the
+  same on both, the tie falls the same way every time, and one type can never recruit anything.
+  Sequence-level redundancy checks do not catch this, because the sequences sit far below any
+  redundancy threshold &mdash; the decision passes through the model, not the sequence.{% endif %}
+  Repairing it means rebuilding the profile library and re-assigning every entry, and deciding which
+  homologs belong to which type is a curation judgement rather than something a script should settle.
+  It is published here as a measured defect rather than left as an unexplained zero.
+</div>
+{% endif %}
 {% endif %}
 
 <h2>5 · Limits that cannot be measured away</h2>
