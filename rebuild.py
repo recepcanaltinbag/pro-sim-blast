@@ -485,6 +485,17 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  curation_claims_ncbi: accession'i GenBank/RefSeq olan referanslarin
+    #  saklanan dizisi kaynakla uyusuyor mu. `--fetch-ncbi` BURADA YOK --
+    #  ag erisimi bir kapi adiminin kosulu olamaz; onbellek yetkili ve
+    #  `matches_stored` her kosuda `types/`'a karsi yeniden hesaplanir.
+    #  `--skip-uniprot`: ayni betigin oteki ciktisi her kosuda aga
+    #  cikmamali. Bu dosya 2026-11-12'ye kadar hicbir adimin ciktisi
+    #  DEGILDI ve kokeni onu YAZMAYAN bir betigi gosteriyordu (135.15).
+    ("curation_claims_ncbi", [f"{OUT}/curation_claims_ncbi.json"],
+     ["python3", "verify_curation_claims.py", "--skip-uniprot",
+      "--ncbi-out", f"{OUT}/curation_claims_ncbi.json"],
+     ["verify_curation_claims.py", "types"], False),
     #  coverage_audit: dis evrene gore KAPSAMA acigi. `--fetch` BURADA
     #  YOK -- ag erisimi bir kapi adiminin kosulu olamaz (bkz.
     #  substrate_chebi); onbellek yetkili. Girdisi onbellek + DB, cikti

@@ -2379,9 +2379,12 @@ PROVENANCE = [
      "against UniProt and RCSB: organism, protein name and whether the PDB "
      "entry's sequence matches the one stored here.",
      "verify_curation_claims.py"),
-    ("curation_claims_ncbi.json", "file", "The same check for the references "
-     "whose accession is GenBank or RefSeq rather than UniProt.",
-     "verify_curation_claims.py (NCBI efetch pass)"),
+    ("curation_claims_ncbi.json", "file", "The same check for the 12 references "
+     "whose accession is GenBank or RefSeq rather than UniProt: the record's own "
+     "DEFINITION, organism and length against the sequence stored here. The "
+     "earlier version covered only 6 of the 12 and named a script that does not "
+     "write it; both are corrected.",
+     "verify_curation_claims.py --skip-uniprot"),
     ("motif_site_audit.json", "file", "SUPERSEDED, not published: the carboxylate column it audits was wrong (471); regenerate at column 431. Which catalytic columns each confirmed "
      "member actually hits. The database stores only a boolean, so 2/3 and "
      "3/3 are indistinguishable in it; this records the pattern, including "

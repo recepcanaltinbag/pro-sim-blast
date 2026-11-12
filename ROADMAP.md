@@ -4942,3 +4942,66 @@ gormemesi icin.
 kumelerinden yeniden kurmak ve atamayi yenilemek; bu bir veri surumu.
 Bu yapilmadan o iki girisin tip etiketi yanlis kalir -- su an sitede
 olcumle beyan ediliyor, ama duzeltilmis degil.
+
+### 135.15 — Yayimlanan bir dosyanin kokeni onu YAZMAYAN bir betigi gosteriyordu; eksik gecis yazildi
+
+Kapinin "12 yayimlanan dosyanin tazeligi sinanamiyor" uyarisi incelendi ve
+**uyarinin kendi ifadesi ALTISI icin yanlis cikti.** O alti dosya
+(`hmm_pins.json`, `bridging_geometry_audit.json`, `reaction_anchors.json`,
+`oxygen_fate_computed.json`, `reaction_verification.json`,
+`curation_claims.json`) grafigin CIKTISI; yalnizca girdileri veritabani
+degil (HMM dosyalari, YAML, yapi kayitlari), dolayisiyla tablo degisimi
+onlari bayatlatmiyor ve tazelikleri KENDI beyan ettikleri girdilere karsi
+sinaniyor. Yanlis etiketin bedeli: gercekten SAHIPSIZ olan alti dosyayi,
+sahibi olan altinin arasinda GIZLIYORDU. Kontrol ikiye ayrildi; WARN artik
+yalnizca hicbir adimin ciktisi olmayanlar icin, otekiler icin bir BEYAN
+satiri var.
+
+**Ve o sahipsiz altidan biri daha agirdi.** `curation_claims_ncbi.json`'in
+kokeni `verify_curation_claims.py (NCBI efetch pass)` diyordu -- ama o
+betik bu dosyayi YAZMIYOR ve depoda yazan hicbir sey yok. Yani sitede
+**yanlis bir koken iddiasi** yayimlaniyordu.
+
+Yetim dosyayi belgelemek yerine URETILEBILIR kilmak secildi, ve olcunce
+daha buyuk bir bosluk cikti: UniProt gecisinin accession suzgeci (harfle
+baslar, nokta YOK, <=10 karakter) GenBank/RefSeq kimliklerini disarida
+birakiyor. **12 tipin accession'i bu bicimde ve yayimlanan dosya yalnizca
+6'sini kapsiyordu** -- vakalarin yarisi hic kontrol edilmemis. Kapsanmayan
+altidan biri de bugunun bulgusunun merkezindeki `3_308_DxnA1`.
+
+Eksik NCBI gecisi yazildi: GenPept (`rettype=gp`) ayristirmasi, **onbellek
+yetkili** (ag yalnizca `--fetch-ncbi` ile; yayimlanan bir dosyanin icerigi
+servisin o anki erisilebilirligine baglanamaz -- ayni kural
+`substrate_chebi` ve `pin_hmm_libraries`'de de gecerli), ve
+`matches_stored` HER KOSUDA `types/`'a karsi yeniden hesaplaniyor,
+onbellekten kopyalanmiyor: kopyalansa kurasyon degistiginde hukum sessizce
+yanlis olurdu. Dizisi onbellekte olmayan kayit yeniden cekiliyor, cunku
+dizi olmadan hukum cevrimdisi dogrulanamaz ve "dogrulandi" demek
+olculmemis bir guvence olurdu.
+
+**SONUC: 12/12 kapsandi, UYUSMAZLIK YOK.** Hepsi saklanan diziyle birebir.
+
+| tip | accession | kaynak |
+|---|---|---|
+| `3_308_DxnA1` | `CAA51365.1` | "dioxin dioxygenase, large subunit", *Sphingomonas* sp., 435 aa, **birebir** |
+| `4_407_PbaA1` | `A0A059U1S8` (UniProt) | "PbaA1", *Sphingobium wenxiniae*, 435 aa, **birebir** |
+
+Bu, 135.14'u DARALTAN bir negatif sonuc: iki referans da KAYNAKTAN
+dogru, farkli organizmalardan farkli iki enzim. Yani ayni-model kusuru
+kurasyonda DEGIL, yalnizca profil kurulumunda. Duzeltme "hangi dizi
+dogru" sorusunu sormuyor; yalnizca iki aile profilinin ayrik homolog
+kumelerinden kurulmasini gerektiriyor.
+
+**MUHAFIZ KENDI YENI KODUMU YAKALADI -- ve hakliydi.** Cins muhafizi
+`verify_curation_claims.py:54`'u ihlal saydi: satirda hem `organism` hem
+`.split()` var. Yanlis pozitifti (GenBank SOURCE satirinin bosluklarini
+sikistiriyor, cins turetmiyor), ama cozum (a) satiri
+`genus-string-intentional` ile isaretlemek DEGILDI -- o isaret "kasitli
+cins dizgi tahmini" demek, ve yanlis beyan isaretin anlamini zayiflatir;
+(b) muhafizin desenini daraltmak da DEGILDI -- desenin genis olmasi
+kasitli, daha dar bir hali gercek bir ihlali kacirmisti. Islem kendi adi
+olan bir fonksiyona (`collapse_space`) tasindi ve nedeni satirin yanina
+yazildi.
+
+Modularite butcesi 6 -> 5 dusuruldu (her baglanan dosyada dusurulur).
+Kapi: 233 kontrol, 226 PASS, 0 FAIL, 7 WARN.

@@ -2735,13 +2735,40 @@ def check_derived_statistics_are_fresh(rep, con, root, out_dir="analysis_out"):
                  "kosturulmali, yoksa sayfa tablolarin eski icerigiyle "
                  "hesaplanmis sayilar yayimlar"))
 
-    if ungated:
-        rep.check("freshness: every published file is judgeable (is a rebuild "
-                  "step output)",
-                  False, len(ungated),
-                  first(sorted(ungated), 5) + " -- grafikte olmadigi icin "
-                  "tazeligi SINANAMIYOR; modularite kapisina bak",
+    #  IKI AYRI SEBEP, TEK UYARI DEGIL (2026-11-12). Bu kontrol once 12
+    #  dosya icin "grafikte olmadigi icin tazeligi SINANAMIYOR" diyordu ve
+    #  ALTISI ICIN BU YANLISTI: o alti dosya grafigin ciktisi (hmm_pins,
+    #  bridging_geometry_audit, reaction_anchors, oxygen_fate_computed,
+    #  reaction_verification, curation_claims) -- yalnizca girdileri
+    #  veritabani DEGIL (HMM dosyalari, YAML, yapi kayitlari). Tazelikleri
+    #  KENDI beyan ettikleri girdilere karsi sinaniyor; sinanmayan sey
+    #  "tablolar degisti mi" sorusu, cunku o dosyalar tablolardan
+    #  turemiyor. Yanlis etiketin bedeli: gercekten SAHIPSIZ olan alti
+    #  dosyayi, sahibi olan alti dosyanin arasinda gizliyordu.
+    graph_outputs = set()
+    for entry in _rebuild.ARTEFACTS:
+        for out in entry[1]:
+            graph_outputs.add(os.path.normpath(out))
+    orphan, not_db = [], []
+    for name in ungated:
+        rel = os.path.normpath(os.path.join(out_dir, name))
+        (not_db if rel in graph_outputs else orphan).append(name)
+
+    if orphan:
+        rep.check("freshness: every published file is a rebuild step output",
+                  False, len(orphan),
+                  first(sorted(orphan), 5) + " -- hicbir adimin ciktisi DEGIL, "
+                  "tazeligi hic sinanamaz; sebepleri modularite kapisinda "
+                  "dosya dosya yazili",
                   severity="WARN")
+    if not_db:
+        #  Bu bir uyari DEGIL, bir BEYAN: dosya grafikte, ama veritabanindan
+        #  turemedigi icin tablo degisimi onu bayatlatmaz -- ve bunun boyle
+        #  oldugunu soylemek, sessiz birakmaktan iyi.
+        rep.check("freshness: graph outputs that do not derive from the "
+                  "database are judged against their own inputs",
+                  True, 0,
+                  f"{len(not_db)} dosya: {first(sorted(not_db), 4)}")
 
 
 def check_published_files_are_in_rebuild_graph(rep, con, root):
@@ -2797,10 +2824,14 @@ def check_published_files_are_in_rebuild_graph(rep, con, root):
     #                   degil; ciktisi bir istatistik degil, ChEBI formul
     #                   onbellegi. Grafige konmasi "tazelenmeli" demek olur
     #                   ki yanlistir.
-    #   ureticisiz    : curation_claims_ncbi.json -- depoda bu dosyayi YAZAN
-    #                   hicbir betik yok. atlas kokeni
-    #                   "verify_curation_claims.py (NCBI efetch pass)" diyor
-    #                   ama o betik bu dosyayi yazmiyor; koken IDDIASI yanlis.
+    #   ureticisiz    : KAPANDI (2026-11-12). curation_claims_ncbi.json'i
+    #                   yazan betik depoda YOKTU ve atlas kokeni onu
+    #                   YAZMAYAN bir betigi gosteriyordu -- yayimlanan
+    #                   yanlis bir koken iddiasi. Eksik NCBI gecisi
+    #                   `verify_curation_claims.py`e yazildi (onbellek
+    #                   yetkili, ag kapali), dosya artik bir adimin
+    #                   ciktisi, ve kapsama 6/12'den 12/12'ye cikti --
+    #                   eski dosya vakalarin yarisini sessizce atliyordu.
     #   elle kosulmus : motif_gate_B_new.json, motif_single_his_members.json,
     #                   oxygen_role_phylogeny.json, repertoire_matrix.json --
     #                   tek seferlik analizler, betigi yok.
@@ -2810,7 +2841,7 @@ def check_published_files_are_in_rebuild_graph(rep, con, root):
     # ZATEN yapilmiyor. Butce olculen degerin kendisi; her baglanan dosyada
     # DUSURULUR. Yukari hareket, grafige baglanmamis YENI bir yayim dosyasi
     # eklendigi anlamina gelir ve kapi kapanir.
-    BUDGET = 6
+    BUDGET = 5
     rep.check("modularity: every published analysis file is an output of the "
               "rebuild graph",
               len(missing) <= BUDGET, len(missing),
@@ -3243,6 +3274,53 @@ def check_record_kind(rep, con, root, out_dir="analysis_out"):
     rep.check("record_kind: transkript girisleri silinmedi, isaretlendi",
               kept > 0, 0 if kept else 1,
               f"{kept} dogrulanmis giris transkript kayitlarinda duruyor")
+
+
+def check_ncbi_accession_claims(rep, con, root, out_dir="analysis_out"):
+    """accession'i GenBank/RefSeq olan referanslar KAYNAKTAN dogrulanmis mi?
+
+    NEDEN. UniProt gecisinin accession suzgeci (harfle baslar, nokta YOK,
+    <=10 karakter) GenBank/RefSeq kimliklerini disarida birakiyor. Olculdu
+    (2026-11-12): 12 tipin accession'i bu bicimde ve yayimlanan rapor
+    yalnizca 6'sini kapsiyordu -- yani dosya vakalarin YARISINI sessizce
+    atliyordu, ve ustelik kokeni onu YAZMAYAN bir betigi gosteriyordu.
+
+    Bu kontrol UYUSMAZLIK SAYISINI bir kusur saymaz: bir referansin
+    kaynaktan ayrismasi bir kurasyon bulgusudur, kapinin cozecegi bir sey
+    degil. Aradigi sey KAPSAMA: NCBI bicimli her accession'in bir olcumu
+    OLMALI, ve olcumun cevrimdisi dogrulanabilir (dizi onbellekte) olmasi.
+    Kapsanmayan bir accession, "kontrol edildi" izlenimi veren bir dosyada
+    gorunmeyen bir bosluktur.
+    """
+    path = os.path.join(root, out_dir, "curation_claims_ncbi.json")
+    if not os.path.exists(path):
+        rep.check("ncbi: GenBank/RefSeq referanslari kaynaktan olculdu",
+                  False, 1, "curation_claims_ncbi.json yok -- "
+                  "`rebuild.py --run --only curation_claims_ncbi`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+    meta = data.get("_meta") or {}
+
+    uncovered = meta.get("types_not_covered") or []
+    rep.check("ncbi: NCBI bicimli her accession'in bir olcumu var",
+              not uncovered, len(uncovered),
+              f"{meta.get('types_covered')}/"
+              f"{meta.get('types_with_an_ncbi_accession')} tip olculdu"
+              + (f"; kapsanmayan: {first(uncovered, 4)}" if uncovered else ""))
+
+    unverifiable = meta.get("unverifiable_offline") or []
+    rep.check("ncbi: her hukum cevrimdisi yeniden hesaplanabilir",
+              not unverifiable, len(unverifiable),
+              first(unverifiable, 4) or "dizi onbellekte, ag gerekmiyor")
+
+    #  Uyusmazlik FAIL DEGIL: kaynaktan ayrisan bir referans kuratorun
+    #  bakmasi gereken bir bulgudur, kapinin kapatacagi bir sey degil.
+    mismatches = meta.get("mismatches") or []
+    rep.check("ncbi: saklanan dizi kaynakla uyusuyor",
+              not mismatches, len(mismatches),
+              first(mismatches, 4) or "12/12 referans kaynakla birebir",
+              severity="WARN")
 
 
 def check_assignment_library(rep, con, root, out_dir="analysis_out"):
@@ -4464,6 +4542,7 @@ def main():
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
         check_assignment_library(rep, con, ROOT)
+        check_ncbi_accession_claims(rep, con, ROOT)
         check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
