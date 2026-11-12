@@ -2151,6 +2151,9 @@ def atlas_quality(request: Request):
                       validation=atlas.read_json(apath("operon_validation.json")),
                       sens=atlas.read_json(apath("threshold_sensitivity.json")),
                       refdup=reference_redundancy(),
+                      #  Dis dogrulama: kendi Rieske cagrimiz InterPro'nun
+                      #  kendi profillerine karsi (ROADMAP 135.19).
+                      ipr=atlas.read_json(apath("interpro_agreement.json")),
                       downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
     finally:
         con.close()

@@ -485,6 +485,14 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  interpro_agreement: kendi Rieske cagrimizi InterPro'nun KENDI
+    #  modellerine karsi sinar. Girdisi `ro_xref` (cross_references'in
+    #  yazdigi tablo) oldugu icin ONDAN SONRA olmak zorunda. Aga
+    #  CIKMAZ: tablolari okur (ROADMAP 135.19).
+    ("interpro_agreement", [f"{OUT}/interpro_agreement.json"],
+     ["python3", "interpro_agreement.py", "--db", DB,
+      "--out", f"{OUT}/interpro_agreement.json"],
+     ["interpro_agreement.py", DB], False),
     #  curation_claims_ncbi: accession'i GenBank/RefSeq olan referanslarin
     #  saklanan dizisi kaynakla uyusuyor mu. `--fetch-ncbi` BURADA YOK --
     #  ag erisimi bir kapi adiminin kosulu olamaz; onbellek yetkili ve

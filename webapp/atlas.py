@@ -2249,6 +2249,13 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("interpro_agreement.json", "file",
+     "Our own Rieske-domain call tested against InterPro's independent "
+     "profiles: of the 25,313 sequences InterPro has annotated, every one we "
+     "call Rieske-intact it also calls Rieske, and 139 it calls Rieske are "
+     "excluded by our stricter four-ligand test -- 76 of those carry all "
+     "three mononuclear iron ligands.",
+     "interpro_agreement.py"),
     ("coverage_audit.json", "file",
      "How much of the known protein universe carrying this domain (Pfam "
      "PF00848 in UniProtKB) this database covers, measured by taxon rather "

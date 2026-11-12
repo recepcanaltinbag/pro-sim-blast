@@ -5205,3 +5205,68 @@ davranisini VARSAYIP sonra olctum. Dogru cozum (100 accession'lik duz
 arama sorgusu) ilk dakikada denenebilirdi. Kontroller isini yapti, ama
 kontrollerin isi hatayi yakalamak; hatayi AZALTMAK olcumle baslamaktan
 geciyor.
+
+### 135.19 — Dis dogrulama: Rieske cagrisinda InterPro ile uyum 25.174/25.174, ve asimetri bir bulgu
+
+135.18'de cekilen InterPro tanimlayicilari ilk kez BAGIMSIZ bir ikinci
+gorus verdi. Bu veritabaninin en cok yuk tasiyan cagrisi "bu dizi bir
+Rieske proteini"dir -- aday havuzuna girmenin kosulu o -- ve bugune kadar
+yalnizca projenin KENDI modellerine dayaniyordu.
+
+InterPro'nun anotladigi 25.313 dizi uzerinde:
+
+| olcum | dizi |
+|---|---|
+| bizim `rieske_intact` dedigimiz | 25.174 |
+| **InterPro'nun da Rieske dedigi** | **25.174** |
+| bizim deyip InterPro'nun DEMEDIGI | **0** |
+| InterPro'nun deyip kapimizin DISLADIGI | 139 |
+
+Kayit adlari KAYNAKTAN alindi, tahmin edilmedi (InterPro API):
+`IPR017941` = Rieske [2Fe-2S] iron-sulphur domain, `IPR036922` = ayni
+domainin homolog super ailesi.
+
+**BAGIMSIZLIGIN SINIRI YAZILI, ve bu cumle olcumun kendisi kadar onemli.**
+BAGIMSIZ olan: bir dizi VERILDIGINDE InterPro'nun ona Rieske domaini
+koyup koymadigi -- o profiller baska insanlar, baska veri, baska esikle
+kuruldu. BAGIMSIZ OLMAYAN: hangi dizilerin SORULDUGU -- aday havuzu bizim
+kendi Rieske/motif modellerimizle secildi, yani InterPro hic
+koymadigimiz bir dizi hakkinda itiraz EDEMEZ. Dolayisiyla bu olcum
+KESINLIK (precision) hakkinda konusuyor, DUYARLILIK (recall) hakkinda
+HICBIR SEY soylemiyor. Kapi bu beyanin varligini siniyor, cunku beyan
+olmazsa okuyucu orani recall sanir.
+
+**PAYDA DA IKI TANE, ve ikisi ayri yazili.** 73.299 birlesik dizinin
+yalnizca 25.313'u InterPro'da bir kayit tasiyor. Geri kalan 47.986
+CELISMIYOR, ANOTSUZ (cogu yeni, incelenmemis kayit). Tum diziler
+uzerinden okunursa oran "%35 uyum" gibi gorunur ve o sayi veriyi degil
+InterPro'nun KAPSAMASINI olcer.
+
+**ASIMETRI TEK YONLU, VE BIR BULGU.** 139 dizide InterPro Rieske domaini
+goruyor, bizim kapimiz disliyor; hepsi `passes_gate=0`. Celiski DEGIL:
+InterPro'nun olcusu profil benzerligi, bizimki DORT KUME LIGANDININ
+yerinde olmasi, ve kumesiz bir Rieske katlanmasi kimyayi yapamaz. Ama
+dusurme SESSIZ kalmamali -- gorunmeyen bir dusurme bu projenin tekrar
+tekrar buldugu hata bicimi:
+
+| mononukleer ucgen bolgesi | dizi |
+|---|---|
+| **3/3 tam** | **76** |
+| 2/3 | 50 |
+| 1/3 | 7 |
+| 0/3 | 6 |
+
+Yani 76 dizide kume ligandi degismis ama katalitik ucgen SAGLAM. Bu,
+kuratorun bakmasi gereken bir kume ve artik kalite sayfasinda duruyor.
+
+**AILE ADLARI CELISKI DEGIL, GENISLIK.** InterPro ayni kumede
+`IPR050584` kolesterol 7-desaturaz (11.837 dizi), `IPR044043` vanillat
+O-demetilaz, `IPR045605` 3-ketosteroid 9-alfa-monooksijenaz,
+`IPR013626` feoforbid a oksijenaz, `IPR045623` LigXa-benzeri kayitlarini
+da veriyor. Bu veritabani Rieske oksijenazlarin TAMAMINI topluyor,
+yalnizca halka hidroksilleyenleri degil; o adlar bu genisligin disaridan
+gorunusu.
+
+Cikti: `analysis_out/interpro_agreement.json`, betik
+`interpro_agreement.py`, dort kapi kontrolu, kalite sayfasinda
+"A second opinion on the call everything rests on".

@@ -129,6 +129,55 @@ the change, not the absolute count.
 </figure>
 {% endif %}
 
+{% if ipr and ipr.denominators %}
+<h2>3b &middot; A second opinion on the call everything rests on</h2>
+<p class="lede">Every number on this site stands on one judgement: that a sequence carries a
+<b>Rieske [2Fe-2S] domain</b>. That judgement comes from this project's own models. InterPro
+annotates the same sequences with profiles built by other people, from other data, at other
+thresholds &mdash; so for the first time there is an independent second opinion, and this is what
+it says.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Measure</th><th class="num">Sequences</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td>sequences InterPro has annotated at all</td>
+  <td class="num">{{ ipr.denominators.with_any_interpro_entry|fmt }}</td>
+  <td class="note">of {{ ipr.denominators.union_sequences|fmt }}; the rest carry no InterPro entry
+  and so <b>do not contradict us</b> &mdash; they are unannotated, mostly recent unreviewed
+  records</td></tr>
+<tr><td>we call the Rieske cluster intact</td>
+  <td class="num">{{ ipr.rieske_agreement.our_rieske_intact|fmt }}</td>
+  <td class="note">among those InterPro annotated</td></tr>
+<tr><td><b>InterPro agrees on every one of them</b></td>
+  <td class="num">{{ ipr.rieske_agreement.both|fmt }}</td>
+  <td class="note">sequences we call Rieske-intact that InterPro does not:
+  <b>{{ ipr.rieske_agreement.ours_only|fmt }}</b></td></tr>
+<tr><td>InterPro sees a Rieske domain, our gate excludes it</td>
+  <td class="num">{{ ipr.interpro_sees_rieske_we_do_not.sequences|fmt }}</td>
+  <td class="note">all of them fail our four-ligand test</td></tr>
+</tbody></table></div>
+
+<div class="caveat">
+  <b>What this does and does not establish.</b> What is independent is what InterPro says
+  <i>about a sequence we handed it</i>. What is not independent is <b>which sequences get
+  asked</b>: the candidate pool was selected with this project's own Rieske and motif models, so
+  InterPro cannot object to a sequence we never included. The measure therefore speaks to
+  <b>precision</b> and says nothing whatever about <b>recall</b> &mdash; the sequences this
+  database missed are outside it, and no agreement figure can reach them.
+</div>
+
+<p class="note"><b>The disagreement runs one way, and it is worth reading.</b>
+{{ ipr.interpro_sees_rieske_we_do_not.sequences|fmt }} sequences carry a Rieske domain by
+InterPro's profiles but are dropped by this database's gate, which asks for the four cluster
+ligands rather than for domain similarity. Those are different statements rather than opposed ones:
+a Rieske fold without its cluster cannot do the chemistry. But the drop is published rather than
+silent, because
+{% for t, n in (ipr.interpro_sees_rieske_we_do_not.by_mononuclear_triad_sites_found or {}).items() %}{% if t == '3' %}<b>{{ n }} of them carry all three mononuclear iron ligands</b>{% endif %}{% endfor %} &mdash;
+a substituted cluster ligand with an intact catalytic triad is exactly the kind of sequence a
+curator should see.
+<a href="{{ u('/download/analysis/interpro_agreement.json') }}">Download the full comparison</a></p>
+{% endif %}
+
 {% if refdup and refdup.totals %}
 <h2>4 · Where the reference set repeats itself</h2>
 <p>Everything above concerns the members. This section concerns the {{ N_REFS }} curated enzymes they are

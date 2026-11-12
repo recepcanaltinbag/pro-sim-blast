@@ -3316,6 +3316,71 @@ def check_record_kind(rep, con, root, out_dir="analysis_out"):
               f"{kept} dogrulanmis giris transkript kayitlarinda duruyor")
 
 
+def check_interpro_agreement(rep, con, root, out_dir="analysis_out"):
+    """Dis dogrulama iddiasi TAM ve PAYDASI yazili mi?
+
+    NEDEN. Bu rapor bu veritabaninin en guclu dis dayanagini kuruyor:
+    "Rieske dedigimiz her diziye InterPro de Rieske diyor". Boyle bir
+    cumle iki yoldan yanlis olabilir ve ikisi de sessizdir.
+
+    1. PAYDA KAYAR. Oran yalnizca InterPro'nun ANOTLADIGI diziler
+       uzerinde anlamli (25.313/73.299); tum diziler uzerinden okunursa
+       "%35 uyum" gibi gorunur ve bu sayi veriyi degil InterPro'nun
+       kapsamasini olcer. O yuzden iki payda ayri ayri yazili olmak
+       zorunda.
+    2. BAGIMSIZLIK FAZLA OKUNUR. Bagimsiz olan, bir dizi VERILDIGINDE
+       InterPro'nun ne dedigi; hangi dizilerin soruldugu DEGIL -- aday
+       havuzu bizim kendi modellerimizle secildi. Yani olcum KESINLIK
+       hakkinda, DUYARLILIK hakkinda hicbir sey soylemiyor. Bu kayit
+       raporda olmazsa, okuyucu oranı recall sanir.
+
+    AYRICA: kapinin disladigi 139 dizi GORUNUR olmali. Gorunmeyen bir
+    dusurme, bu veritabaninin tekrar tekrar buldugu hata bicimi.
+    """
+    path = os.path.join(root, out_dir, "interpro_agreement.json")
+    if not os.path.exists(path):
+        rep.check("interpro: dis dogrulama raporu yazildi", False, 1,
+                  "interpro_agreement.json yok -- "
+                  "`rebuild.py --run --only interpro_agreement`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    den = data.get("denominators") or {}
+    need = ("union_sequences", "with_any_interpro_entry",
+            "without_any_interpro_entry")
+    missing = [k for k in need if not den.get(k)]
+    rep.check("interpro: iki payda da yazili",
+              not missing, len(missing),
+              f"{den.get('with_any_interpro_entry')} anotlu / "
+              f"{den.get('union_sequences')} dizi"
+              if not missing else f"eksik alan: {missing}")
+
+    ind = data.get("independence") or {}
+    rep.check("interpro: bagimsizligin siniri beyan edilmis",
+              all(ind.get(k) for k in ("independent", "not_independent",
+                                       "therefore")),
+              0 if ind.get("therefore") else 1,
+              "kesinlik olcumu, duyarlilik degil" if ind.get("therefore")
+              else "independence blogu eksik")
+
+    #  Payda TABLODAN yeniden sayilir: raporun kendi sayisina guvenilmez.
+    recount = con.execute(
+        "SELECT COUNT(DISTINCT seq_md5) FROM ro_xref "
+        "WHERE db = 'interpro'").fetchone()[0]
+    claimed = den.get("with_any_interpro_entry")
+    rep.check("interpro: raporun paydasi tabloyla uyusuyor",
+              recount == claimed, abs(recount - (claimed or 0)),
+              f"tabloda {recount}, raporda {claimed}")
+
+    asym = data.get("interpro_sees_rieske_we_do_not") or {}
+    rep.check("interpro: kapinin disladigi diziler gorunur",
+              asym.get("sequences") is not None
+              and bool(asym.get("by_mononuclear_triad_sites_found")),
+              0 if asym.get("sequences") is not None else 1,
+              f"{asym.get('sequences')} dizi, ucgen kirilimiyla")
+
+
 def check_ncbi_accession_claims(rep, con, root, out_dir="analysis_out"):
     """accession'i GenBank/RefSeq olan referanslar KAYNAKTAN dogrulanmis mi?
 
@@ -4597,6 +4662,7 @@ def main():
         check_db_writes_are_attributed(rep, ROOT)
         check_assignment_library(rep, con, ROOT)
         check_ncbi_accession_claims(rep, con, ROOT)
+        check_interpro_agreement(rep, con, ROOT)
         check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
