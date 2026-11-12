@@ -4772,3 +4772,65 @@ kodla uretilmis ve bunu soyleyen tek sey bu bayatlik. Cozumu iki yoldan
 biri: ya agir adimlari kosturmak (saatler), ya her kok icin 135.9b'deki
 gibi KANIT uretip temel kaydini guncellemek. Kanitsiz `--baseline`
 atilmamali: yesil ama yanlis bir grafik, kirmizi bir grafikten kotudur.
+
+### 135.11 — 66 bayat artefaktin 60'i IKI bayat KAYITTI; grafik ilk kez 81/81 yesil
+
+135.10'un sonunda acik is olarak birakilan grafik bayatligi kapatildi --
+ve toptan `--baseline` ile DEGIL. Kok sebepler tek tek sinandi.
+
+**KOK 1: `annotate` (60 adimlik kaskadin basi).** Bayatlik sebebi
+`annotate_ro.py`'nin icerik ozetinin temel kaydindan farkli olmasiydi.
+Commit'e (f31a1074) bakildiginda degisim SAF REFACTOR: satir ici `stale()`
+fonksiyonu `stale_intermediate.stale` importuyla degistirilmis, ve iki
+uygulama BIREBIR ayni mantik (dosya yok/bos -> "yok"; girdi daha yeni ->
+sebep; yoksa None). Hesabin kendisine (hmmsearch cagrisi + ayristirma)
+dokunulmamis.
+
+Kanitla yetinilmedi, TANIK kosturuldu. `annotate`'in kendi atlama kurali
+pahali kismi atliyor (ara dosyalar girdilerinden yeni), dolayisiyla kosu
+ucuz. DB yedeklendi (md5 dogrulandi), `annotate_ro.py` elle kosturuldu ve
+`ro` tablosunun atama sutunlari karsilastirildi:
+
+| | once | sonra |
+|---|---|---|
+| ozet (candidate_id, cluster, group, coverage, score, evalue, is_confirmed) | `807f3cb46fc0e089` | `807f3cb46fc0e089` |
+| satir / dogrulanmis | 26.693 / 19.125 | 26.693 / 19.125 |
+
+**KOK 2: `operons`.** Bayatlik sebebi `build_operons.py` icerigi + uc
+tablo. Bu commit'in etkisi GERCEK ve buyuktu (bilesen taramasi atlama
+hatasi; beta 2.523 -> 4.372). Yani "etkisiz" demek icin tablolarin
+duzeltme SONRASI durumu tasidigini gostermek gerekiyordu. Commit
+mesajinin sayilariyla karsilastirma: besin dordu birebir (beta 4.372,
+ferredoksin 2.736, has_beta 4.333, has_reductase 5.409), ama reductase
+10.394 yerine **10.392** -- iki satir fark. ACIKLANMAYAN bir farkla temel
+kaydi gecilmedi: betik kosturuldu ve bes tablonun hepsi birebir ayni
+cikti (`operon`, `operon_gene`, `neighbor_protein`, `neighbor_component`,
+`neighbor_domain`). Yani bugunun kodu 10.392 uretiyor; commit mesajindaki
+10.394 daha eski bir andan. Tablolar duzeltme sonrasi.
+
+**KOK 3: `bridging_geometry_audit`.** Tek beyan edilen girdisi kendi
+betigi; betik 17:07:48, cikti 17:07:54 ve betige o tarihten sonra
+dokunulmamis. Grafigin kendi kuraliyla cikti guncel.
+
+**KOK 4 -- KODDA GERCEK BIR HATA: `site_freeze` HIC guncel olamiyordu.**
+80/81 guncel oldugunda geride kalan tek bayat buydu, sebebi "girdi icerigi
+degisti: analysis_out". Sebep: `site_freeze` girdi olarak `analysis_out`
+DIZININI beyan ediyor, `dir_digest` o dizindeki her dosyayi okuyor, ve
+grafigin KENDI durum dosyasi (`analysis_out/.rebuild_state.json`) adim
+BITTIKTEN SONRA oraya yaziliyor. Yani adim kendi kaydiyla kendini
+bayatlatiyordu -- hicbir kosu onu guncel yapamazdi. Kapinin grafik sonunda
+olmasi gerektigiyle (135.1d) AYNI aile: **bir adimdan SONRA yazilan bir
+sey o adimin girdisi olamaz.** `dir_digest` artik durum dosyasini atliyor.
+
+Sonuc: **81 artefakt, 81 guncel, 0 BAYAT.** Onemi su: hic yesillenemeyen
+bir kapi okunmayi birakir, ve bu grafik 2026-11-04'ten beri kirmiziydi.
+Ama yesil olmasinin yolu kanitsiz `--baseline` degildi: iki kok gercekten
+kosturulup cikti birebir karsilastirildi, biri mtime+ozet kaniti ile
+kapandi, biri KODDA duzeltildi.
+
+**YAN BULGU (acik is).** `annotate` `ro` tablosunun atama sutunlarini
+(`ro_cluster`, `ro_group`, `model_coverage`, `hmm_score`, `hmm_evalue`,
+`is_confirmed`) UPDATE ediyor ama `DECLARED_WRITES`'ta BEYAN EDILMEMIS.
+Bu, bu DB'nin en merkezi yazma islemi ve grafikte gorunmuyor; yani
+`annotate` kosunca hangi adimlarin bayatladigini grafik tam bilemiyor.
+Beyan eklenmeli, ama eklemek kaskadi degistirecegi icin ayri bir tur isi.

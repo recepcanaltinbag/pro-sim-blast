@@ -827,10 +827,21 @@ def dir_digest(path):
     mtime'a GUVENMEZ (bu dosyanin ucuncu kurali): ad + boyut + icerik ozeti.
     """
     entries, total = [], 0
+    #  GRAFIGIN KENDI KAYDI dizin ozetine GIRMEZ. Olculdu (2026-11-12):
+    #  `site_freeze` girdi olarak `analysis_out` dizinini beyan ediyor ve
+    #  grafigin durum dosyasi (`analysis_out/.rebuild_state.json`) adim
+    #  BITTIKTEN SONRA oraya yaziliyor. Yani adim kendi kaydiyla kendini
+    #  bayatlatiyordu ve HICBIR kosu onu guncel yapamiyordu -- 80/81 guncel
+    #  oldugunda geride kalan tek bayat buydu. Kapinin grafik sonunda olmasi
+    #  gerektigiyle ayni aile: bir adimdan SONRA yazilan bir sey o adimin
+    #  girdisi olamaz.
+    state_file = os.path.abspath(STATE)
     for root, dirs, files in os.walk(path):
         dirs.sort()
         for fn in sorted(files):
             p = os.path.join(root, fn)
+            if os.path.abspath(p) == state_file:
+                continue
             try:
                 size = os.path.getsize(p)
             except OSError:
