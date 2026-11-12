@@ -439,7 +439,19 @@ def main():
         path = os.path.join("analysis_out", name)
         if not os.path.exists(path):
             continue
-        text = open(path, encoding="utf-8", errors="replace").read()
+        #  SIKISTIRILMIS DOSYA ACILIR, baytlari taranmaz. `.gz` bir metin
+        #  dosyasi gibi okununca sikistirma baytlari rastgele harf dizileri
+        #  uretir ve bu kontrol SAHTE Turkce bulur: `roar_genomic_context
+        #  .gff3.gz` icin "ama, az, bu, cok, hem, ise" cikti, oysa dosyanin
+        #  gercek icerigi tamamen Ingilizce. Taramayi ATLAMAK yanlis olurdu
+        #  -- o zaman yayimlanan en buyuk metin dosyasi hic sinanmazdi.
+        if name.endswith(".gz"):
+            import gzip as _gzip
+            with _gzip.open(path, "rt", encoding="utf-8",
+                            errors="replace") as handle:
+                text = handle.read()
+        else:
+            text = open(path, encoding="utf-8", errors="replace").read()
         words = sorted({m.group(1).lower() for m in TURKISH_RE.finditer(strip_residue_codes(text))})
         if words:
             data_turkish.append((name, words))

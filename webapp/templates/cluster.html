@@ -251,6 +251,21 @@
       <svg class="struct" data-smiles="{{ chem.substrate_smiles }}" aria-label="{{ chem.substrate_en }}"></svg>
       {% else %}<div class="struct struct--none">structure<br>not drawn</div>{% endif %}
       <div class="rxn__label">{{ chem.substrate_en }}</div>
+      {#  Substratin KONTROLLU kimligi. Kimlik ile aday ayri gosterilir:
+          bir ad eslesmesi ayni adi tasiyan baska bir molekule denk
+          gelebilir ve okuyucu bunu bilmek zorunda (ROADMAP 135.3).  #}
+      {% if chebi %}
+      <div class="rxn__ids">
+        {% for row in chebi %}
+        <a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId={{ row.chebi }}"
+           class="chebi chebi--{{ 'id' if row.state == 'rhea_equation' else 'cand' }}"
+           title="{{ 'read from the balanced equation of the Rhea reaction of this enzyme type' if row.state == 'rhea_equation' else 'candidate: the curated substrate name matched exactly one ChEBI label, which is not the same as an identity' }}">{{ row.chebi }}</a>{% if row.chebi_label and row.chebi_label|lower != (chem.substrate_en or '')|lower %}
+        <span class="note">{{ row.chebi_label }}</span>{% endif %}
+        {% endfor %}
+        <span class="note">{% if chebi|selectattr('state', 'equalto', 'rhea_equation')|list %}from the
+        balanced equation{% else %}candidate from a name match, not an identity{% endif %}</span>
+      </div>
+      {% endif %}
     </div>
     <div class="rxn__arrow">
       <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>

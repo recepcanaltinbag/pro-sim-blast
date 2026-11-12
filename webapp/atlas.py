@@ -2228,6 +2228,27 @@ def taxonomy_tree(con, max_children=25, min_count=2, max_depth=7):
 
 # ---------------------------------------------------- provenance of downloads
 PROVENANCE = [
+    ("substrate_chebi.json", "file",
+     "A ChEBI identifier for each enzyme type's substrate, separated into what "
+     "was read from a balanced Rhea equation (an identity) and what came from a "
+     "name match (a candidate). Includes the cases where the curated substrate "
+     "and the balanced equation describe different molecules.",
+     "substrate_chebi.py"),
+    ("roar_genomic_context.gff3.gz", "file",
+     "Every called operon and its genes as GFF3, readable directly by IGV, "
+     "JBrowse, bedtools and gffread. Coordinates are converted to 1-based "
+     "inclusive; genes inside the search window but outside a called operon "
+     "are left out, because a window is not context.",
+     "export_gff3.py"),
+    ("roar_genomic_context.json", "file",
+     "The GFF3 export's own structural verification: feature counts, resolved "
+     "Parent links and any coordinate that could not be represented.",
+     "export_gff3.py"),
+    ("hmm_pins.json", "file",
+     "The exact HMM model behind every published domain call: accession with its "
+     "own version plus a digest of the model block. Two libraries sit on "
+     "different Pfam releases and the report says which.",
+     "pin_hmm_libraries.py"),
     ("taxonomy_ids.json", "file",
      "NCBI taxid and rank-based genus for every genome record; the entries that "
      "NCBI assigns no genus at all are counted rather than dropped.",

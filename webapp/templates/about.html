@@ -399,4 +399,63 @@ repository.</p>
   being used on trust.</p>
 </details>
 
+{% if pins %}
+<h2 id="models">11 &middot; Which HMM model produced each domain call</h2>
+<p class="lede">Every statement that a neighbouring gene is a ferredoxin, a reductase, a
+transposase or a regulator comes from an HMM, and Pfam models change version. "A Pfam model was
+used" is therefore not a method: the citable unit is the accession <em>with its own version</em>,
+which is finer than a release label because models version independently inside a release.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Model library</th><th class="num">Models</th>
+<th class="num">Pfam-versioned</th><th>Pinned by</th><th>What it decides</th></tr></thead>
+<tbody>
+{% for lib in pins.libraries %}{% if lib.present %}
+<tr><td><code>{{ lib.library }}</code></td>
+  <td class="num">{{ lib.models }}</td>
+  <td class="num">{{ lib.pfam_versioned_models }}</td>
+  <td class="note">{{ lib.pinned_by }}</td>
+  <td class="note">{{ lib.purpose }}</td></tr>
+{% endif %}{% endfor %}
+</tbody></table></div>
+
+{% set drift = pins.upstream_drift %}
+{% if drift and drift.checked %}
+<p class="plain">Of {{ drift.pfam_models_checked }} Pfam models,
+<b>{{ drift.models_behind_upstream }}</b> are one version behind what InterPro serves today
+(checked {{ drift.checked_utc[:10] }}){% if drift.models_behind_upstream %} &mdash; and all of
+them sit in one library, <code>component_hmms/components.hmm</code>, which is the library that
+decides whether an operon has a beta subunit, a ferredoxin or a reductase. The family libraries
+are current. The two were therefore built against different Pfam releases{% endif %}.</p>
+
+{% if drift.detail %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Model</th><th>Pinned here</th><th>Upstream today</th></tr></thead>
+<tbody>
+{% for row in drift.detail %}
+<tr><td>{{ row.name }}</td><td><code>{{ row.pinned }}</code></td>
+  <td><code>{{ row.upstream_now }}</code></td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endif %}
+
+<div class="caveat">
+  <b>Being behind is not the error; not knowing is.</b> Re-downloading the component library would
+  change every published domain call and so every operon completeness number, which is a new data
+  revision and a full recomputation, not a quiet update. What this page guarantees is the opposite
+  of currency: the model that produced the numbers you are reading is identified exactly, and a
+  gate check fails if a library file changes without the pin changing with it.
+</div>
+{% endif %}
+
+<details class="basis">
+  <summary>Why no Pfam release number is given</summary>
+  <p class="note">An HMM record carries the accession's own version but no release label, so a
+  release number would have to be inferred rather than read. It is left out instead of guessed.
+  {{ pins.project_models|length }} of the models are built by this project rather than fetched from
+  Pfam (<code>ROmotif71</code> and the reference library); they carry no accession version and are
+  pinned by digest alone, listed separately rather than shown as if they were versioned.</p>
+</details>
+{% endif %}
+
 {% endblock %}

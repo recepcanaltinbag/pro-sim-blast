@@ -295,6 +295,36 @@ def _oxygen_fate_view(cluster):
             "transfers": fate in ("product", "leaving_group")}
 
 
+@functools.lru_cache(maxsize=1)
+def _substrate_chebi(db_mtime):
+    """cluster -> [satir]. `type_substrate_chebi`'den okur, tahmin etmez.
+
+    KIMLIK ile ADAY ayri tutulur (`state`): bir ad eslesmesi, ayni adi
+    tasiyan baska bir molekule denk gelebilir, ve sayfa bunu okuyucuya
+    SOYLEMEK zorunda (ROADMAP 135.3).
+    """
+    con = connect()
+    try:
+        out = {}
+        for row in con.execute("""
+                SELECT cluster, chebi, chebi_label, formula, state, rhea,
+                       is_curated_substrate
+                  FROM type_substrate_chebi
+                 ORDER BY state DESC, is_curated_substrate DESC, chebi"""):
+            out.setdefault(row["cluster"], []).append(dict(row))
+        return out
+    except Exception:
+        #  Tablo henuz uretilmemisse sayfa calismaya devam eder; eksik
+        #  bir kimlik, kirik bir sayfadan iyidir.
+        return {}
+    finally:
+        con.close()
+
+
+def substrate_chebi(cluster):
+    return _substrate_chebi(os.path.getmtime(DB_PATH)).get(cluster) or []
+
+
 def cluster_parts(cluster):
     parts = (cluster or "").split("_", 2)
     return {"group": parts[0] if parts else "", "id": parts[1] if len(parts) > 1 else "",
@@ -739,6 +769,7 @@ def cluster_page(request: Request, cluster: str, page: int = 1, q: Optional[str]
                       pages=(total + PAGE_SIZE - 1) // PAGE_SIZE, q=q or "",
                       chem=CHEMISTRY.get(cluster), x=cluster_extras(con, cluster),
                       ofate=_oxygen_fate_view(cluster),
+                      chebi=substrate_chebi(cluster),
                       mrole=METABOLIC_ROLE.get(cluster))
     finally:
         con.close()
@@ -1205,7 +1236,10 @@ def about(request: Request):
                      JOIN ro_protein_status s USING(accession)
                     GROUP BY 1"""))
         return render(request, "about.html", totals=totals(con),
-                      fresh=fresh, freshlink=link)
+                      fresh=fresh, freshlink=link,
+                      #  Model sabitlemesi: hangi HMM surumu yayimlanan
+                      #  domain cagrilarini uretti (ROADMAP 135.5).
+                      pins=atlas.read_json(apath("hmm_pins.json")))
     finally:
         con.close()
 
@@ -2148,8 +2182,17 @@ def dl_analysis(name: str):
     # Izin listesi atlas.PROVENANCE'tan turetilir; bkz. oradaki not.
     if name not in atlas.ANALYSIS_FILES or not os.path.exists(apath(name)):
         raise HTTPException(404, "not available")
-    media = "application/json" if name.endswith(".json") else "text/csv"
-    return Response(open(apath(name)).read(), media_type=media,
+    #  IKILI DOSYA METIN OLARAK OKUNAMAZ. Rota `open(...).read()` ile
+    #  metin modunda okuyordu; bir .gz indirmesi UnicodeDecodeError ile
+    #  500 verirdi. Tur uzantidan secilir ve icerik her zaman ikili
+    #  okunur -- metin dosyalari da ikili olarak dogru gider.
+    media = ("application/json" if name.endswith(".json")
+             else "application/gzip" if name.endswith(".gz")
+             else "text/plain" if name.endswith((".txt", ".gff3"))
+             else "text/csv")
+    with open(apath(name), "rb") as handle:
+        payload = handle.read()
+    return Response(payload, media_type=media,
                     headers={"Content-Disposition": f'attachment; filename="{name}"'})
 
 

@@ -4311,3 +4311,141 @@ rank'lı cins, **614 vekil rank** — beyan edilen sayıyla birebir.
 
 Yayım: `rev-0008`, 204 kontrol / 199 PASS / 0 FAIL / 5 WARN, `check_site.py`
 temiz, 3.483 dosya gh-pages'e gitti, canlıda doğrulandı.
+
+### 135.5 — HMM modelleri sabitlendi: iki kütüphane ayrı Pfam release'inden
+
+**Soru:** yayımlanmış bir HMM isabeti tekrar üretilebilir mi? Bir domain
+çağrısı ("bu komşu bir ferredoksin") modelin kendisine bağlı, ve Pfam
+modelleri sürüm atlıyor. "Pfam modeli kullanıldı" cümlesi bir yöntem
+tarifi değil.
+
+Ölçüm (`pin_hmm_libraries.py --check-upstream`, 2026-11-12, 37 Pfam modeli):
+
+| kütüphane | model | geride | besledigi şey |
+|---|---|---|---|
+| `component_hmms/components.hmm` | 9 | **8** | `has_beta`, `has_ferredoxin`, `has_reductase` — operon türetimi |
+| `family_hmms/mobility.hmm` | 12 | 0 | transpozaz / IS aileleri |
+| `family_hmms/recombinase.hmm` | 7 | 0 | rekombinaz / integraz |
+| `family_hmms/regulator.hmm` | 9 | 0 | düzenleyici aileleri |
+
+Yani iki kütüphane **ayrı release'lerden** gelmiş: aile kütüphaneleri
+güncel, bileşen kütüphanesi bir sürüm geride (`PF00355.33` → upstream
+`PF00355.34`; 9 modelin yalnızca `PF08022.19`'u o release'te bump
+olmamış). Geride olan kütüphane, yayımlanan en çok sayıyı besleyen.
+
+**Geride olmak hata değil; bilmemek hata.** Yeniden indirmek yayımlanmış
+her HMM isabetini değiştirir, yani operon türetiminin tamamının yeniden
+hesabı ve yeni bir veri sürümü demektir — bu bir sürüm içinde sessizce
+yapılacak bir şey değil. O yüzden yapılan şey **sabitlemek**:
+
+- Alıntı birimi `PF00355.33` gibi **accession.sürüm** çifti + model
+  bloğunun özeti. Pfam **release etiketi** HMM kaydının içinde yok, bu
+  yüzden uydurulmuyor; accession sürümü release'ten daha kesin zaten
+  (bir release içinde modeller ayrı ayrı sürüm atlar).
+- `ROmotif71` ve `RieskeDB71` Pfam'dan gelmiyor; accession sürümü
+  olmayan 77 model **ayrı listede**, yalnızca özetle sabitli — sürümsüz
+  bir modeli sürümlü göstermek ölçülmemiş bir güvence olurdu.
+- Kapı kontrolü **ağa çıkmaz**: diskteki dosyanın, sabitlemenin anlattığı
+  dosya olup olmadığına bakar. Bir kapı dış bir servisin erişilebilirliğine
+  bağlı olamaz. Sürüklenme ölçümü `--check-upstream` ile ayrıca koşar ve
+  tarihiyle rapora yazılır.
+
+Okuyucu doğrulaması: kütüphane özetim `fetch_family_hmms.py`'nin kendi
+manifestosuyla birebir aynı çıktı (`regulator` → `a638d9b4b0d098cf`).
+
+### 135.4 — Genomik bağlam GFF3 olarak: standart biçimde yayımlanmayan veri başka bir analize girmez
+
+Bu DB operonları, komşu genleri ve bileşen çağrılarını kendi tablolarında
+tutuyordu; okumak için SQL ya da bizim CSV'lerimiz gerekiyordu. GFF3 ise
+IGV, JBrowse, Artemis, `bedtools` ve `gffread`'in doğrudan okuduğu biçim.
+
+**En kolay yanlış yapılacak yer koordinat.** Veritabanı BioPython'un
+konvansiyonunu tutuyor: `start` 0-tabanlı, `end` dışlayıcı. GFF3 ise
+1-tabanlı ve kapsayıcı. Varsaymak yerine ölçtüm — 4.000 onaylanmış
+girişin **3.996**'sında `end - start == 3 × (aminoasit + 1)`, yani
+yarı-açık aralık ve dur kodonu dahil. Dışa aktarım `start + 1` yazıyor.
+Kalan 21 kayıt (tam sette) bu eşitliğe uymuyor; **sessizce düzeltilmiyor**,
+`partial_coordinates=true` ile işaretleniyor — bir koordinatı "düzeltmek"
+onu uydurmak olurdu.
+
+**Ne yazılmıyor:** çağrılan operona girmeyen komşu genler. Arama
+penceresinin içinde ama operonun dışında kalan bir gen bir *bağlam*
+değil, bir pencere artefaktı; yazılsa dosya 117 bin satırdan bir milyona
+çıkardı.
+
+Üretilen: 11.610 `##sequence-region`, 19.125 `operon`, 86.300 `CDS`
+(19.125 alfa + neighbor'a bağlanan 67.175 operon geni), 105.425 özellik.
+
+**Yazan taraf kendi çıktısını ayrıştırıyor.** Bir dosyanın GFF3 olduğunu
+söylemek onu GFF3 yapmıyor, ve onu okuyacak araç hatayı bizim değil
+kullanıcının ekranında verir. `export_gff3.py` yazdıktan sonra dosyayı
+yeniden okuyup 9 kolon / 1-tabanlı aralık / çözülen her `Parent` /
+`##sequence-region` sınırlarını sınıyor; ihlal varsa dosya geçersiz
+işaretlenip çıkış kodu 1 dönüyor. Ölçüm: 86.300 Parent bağlantısının
+tamamı çözülüyor, 0 ihlal.
+
+Kapı **iki ayrı şeyi** sınıyor, çünkü biri ötekini gizler: biçim bozulması
+(kolon, Parent, koordinat tabanı) *ve* bayatlık — geçerli bir GFF3,
+tabloların eski içeriğiyle hesaplanmış sayıları yayımlayabilir ve onu
+okuyan araç hiç şikâyet etmez. Kapı dosyadaki operon/CDS/replikon
+sayılarını DB'den yeniden sayıp karşılaştırıyor, betiğin kendi raporuna
+güvenmiyor.
+
+Yan düzeltme: `/download/analysis/<ad>` rotası `open(...).read()` ile
+**metin modunda** okuyordu; bir `.gz` indirmesi `UnicodeDecodeError` ile
+500 verirdi. İçerik artık her zaman ikili okunuyor, tür uzantıdan
+seçiliyor.
+
+### 135.3 — Substrat için kontrollü kimlik: ChEBI, ve kimlik ile adayın ayrılması
+
+`chemistry.csv`'de substrat bir dizgiydi ("naphthalene"). Dizgi hiçbir dış
+kaynağa bağlanmaz. Şema kuralımız gereği yeni alan `chemistry.csv`'ye
+**sütun olarak eklenmedi**: türetilmiş tablo (`type_substrate_chebi`) +
+tazelik kontrolü.
+
+İki yol var ve **eşit değiller** — `state` bu ayrımı taşıyor ve sayfa
+görsel olarak ayırıyor (dolu kenarlık kimlik, kesikli kenarlık aday;
+ayrım renge binmiyor, çünkü renk körlüğünde ve basımda renk kaybolur):
+
+| durum | ne | sayı |
+|---|---|---|
+| `rhea_equation` | tipin kendi UniProt→Rhea kaydındaki **dengelenmiş denklemden** okunan ChEBI | **39** çift |
+| `name_match` | kuratörün yazdığı adın ChEBI'de **tam** eşleşmesi — bir **aday**, kimlik değil | 28 çift |
+| çözülmeyen | 20 tip (%26) | — |
+
+Bir tipin birden çok substratı olabilir ve bu bir hata değil: NdmA'nın Rhea
+kayıtları kafein, teofilin ve 1,7-dimetilksantin üzerinde ayrı ayrı
+dengelenmiş denklemler veriyor. Tablonun birimi bu yüzden (tip × substrat).
+Bir ad birden çok ChEBI kaydına **tam** eşleşiyorsa hiçbiri seçilmiyor —
+seçmek, iki molekülden birini rastgele doğru saymak olurdu.
+
+**Yan bulgu, ve bu maddenin asıl değeri.** Kuratörün yazdığı substrat adı
+11 tipte dengelenmiş denklemin substrat adlarıyla aynı değil. Ama bir **ad
+farkı bir uyuşmazlık değildir**: "dicamba" ile
+"3,6-dichloro-2-methoxybenzoate" aynı molekül. Adları karşılaştırmak kurt
+var demek olurdu. Karar **yapıdan** verildi — kuratörün SMILES'inin ağır
+atom sayımı, Rhea katılımcısının formülüne karşı:
+
+| hüküm | sayı | ne demek |
+|---|---|---|
+| `same_molecule` | 8 | adlandırma farkı (trivial ↔ sistematik ad, tuz, stereo) |
+| `generic_rhea_class` | 1 | Rhea jenerik formül yazıyor (`C7H4O2X`, X halojen yerine); atom sayımı karar veremez |
+| `different_molecule` | **2** | kuratörün yapısı denklemin hiçbir substratıyla aynı değil |
+
+İki gerçek uyuşmazlık: `1_114_NdmB` kurasyonda **caffeine** (C₈N₄O₂) ama
+Rhea denklemleri **theobromine / 3-methylxanthine** üzerinde; `2_208_TecA1`
+kurasyonda **1,2,4,5-tetraklorobenzen** (C₆Cl₄) ama denklem
+**klorobenzen** (C₆Cl). Bu tam olarak `reaction_balance.py`'nin var olma
+sebebi olan hata sınıfı: doğru aritmetiğin **yanlış moleküle** uygulanması.
+Kapıda **WARN**, FAIL değil — bir kapı kuratörün yerine karar veremez, ama
+sessiz de kalamaz. Hiçbir kurasyon bu turda değiştirilmedi.
+
+**Atom sayacı doğrulandı:** kuratörün adının Rhea adıyla aynı olduğu 15
+çiftte sayım Rhea formülüyle **15/15** birebir tutuyor, 0 uyuşmazlık. Yani
+çıkan bir uyuşmazlık sayacın değil verinin uyuşmazlığı. (Hidrojen
+sayılmıyor: örtük H'yi doğru saymak valans kuralları ister ve C/N/O/S/halojen
+iki molekülü ayırt etmeye yetiyor. `rdkit` kurulu değil.)
+
+Ağ, kapının koşulu olamaz: `--lookup-names` yalnızca önbellekte olmayan
+adlar için ağa çıkar, boru hattı adımı **önbellekten** aynı 67 çifti
+çevrimdışı üretiyor (doğrulandı).

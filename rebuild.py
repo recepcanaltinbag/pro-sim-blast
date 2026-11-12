@@ -457,6 +457,33 @@ ARTEFACTS = [
                      "family_hmms/regulator.manifest.json"],
      ["python3", "fetch_family_hmms.py", "--library", "all"],
      ["fetch_family_hmms.py"], True),
+    #  substrate_chebi: substrat icin KONTROLLU kimlik. `--lookup-names`
+    #  BURADA YOK -- ag erisimi bir kapi adiminin kosulu olamaz; onbellek
+    #  yetkili ve ayni tabloyu cevrimdisi uretiyor (ROADMAP 135.3).
+    ("substrate_chebi", [f"{OUT}/substrate_chebi.json"],
+     ["python3", "substrate_chebi.py", "--db", DB, "--types", "types",
+      "--out", f"{OUT}/substrate_chebi.json"],
+     ["substrate_chebi.py", DB, "types",
+      f"{OUT}/oxygen_fate_computed.json"], False),
+    #  gff3: genomik baglam STANDART bicimde. Girdisi DB oldugu icin
+    #  tablolar degisince bayat gorunur; kendi ciktisini ayristirip
+    #  dogruladigi icin gecersiz bir degisim dosyasi yayimlanamaz.
+    ("gff3", [f"{OUT}/roar_genomic_context.gff3.gz",
+              f"{OUT}/roar_genomic_context.json"],
+     ["python3", "export_gff3.py", "--db", DB,
+      "--out", f"{OUT}/roar_genomic_context.gff3.gz"],
+     ["export_gff3.py", DB], False),
+    #  hmm_pins: hangi modelin hangi SURUMU yayimlanan isabetleri uretti.
+    #  Kutuphane dosyalarini girdi olarak alir, yani bir model degisirse
+    #  sabitleme bayat gorunur -- model kutuphanesi sessizce degisemez.
+    #  `--check-upstream` KAPIDA KOSMAZ: ag erisimi gerektirir ve bir kapi
+    #  dis bir servisin erisilebilirligine bagli olamaz.
+    ("hmm_pins", [f"{OUT}/hmm_pins.json"],
+     ["python3", "pin_hmm_libraries.py", "--out", f"{OUT}/hmm_pins.json"],
+     ["pin_hmm_libraries.py", "component_hmms/components.hmm",
+      "family_hmms/mobility.hmm", "family_hmms/recombinase.hmm",
+      "family_hmms/regulator.hmm", "ROs_71_Clean/ROmotif71.hmm",
+      "RieskeDB71.hmm"], False),
     ("family_scan", [f"{OUT}/family_scan.json"],
      ["python3", "family_scan.py", "--db", DB, "--out", f"{OUT}/family_scan.json"],
      ["family_scan.py", DB, "family_hmms/mobility.hmm",
@@ -602,6 +629,7 @@ DECLARED_WRITES = {
     "ncbi_hits": {"ro_ncbi_hit"},
     "union": {"ro_union", "ro_union_source"},
     "taxonomy_ids": {"replicon_taxon", "taxon_lineage", "taxon_genus"},
+    "substrate_chebi": {"type_substrate_chebi"},
 }
 
 

@@ -215,6 +215,13 @@ IDENTIFIER_TEXT_FIELDS = {
     ("taxon_genus", "nucleotide_id"),
     ("taxon_genus", "genus_name"), ("taxon_genus", "genus_state"),
     ("taxon_genus", "proxy_rank"), ("taxon_genus", "proxy_name"),
+    #  `type_substrate_chebi`: hepsi TANIMLAYICI ya da kontrollu bir
+    #  vokabulerden gelen etiket, serbest metin degil -- `chebi_label`
+    #  ChEBI'nin kendi adlandirmasi, bizim yazdigimiz bir cumle degil.
+    ("type_substrate_chebi", "cluster"), ("type_substrate_chebi", "chebi"),
+    ("type_substrate_chebi", "chebi_label"),
+    ("type_substrate_chebi", "formula"), ("type_substrate_chebi", "state"),
+    ("type_substrate_chebi", "rhea"),
     ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
     ("gene_category", "category"),
     # 2026-11-11, cross_references.py'nin yazdigi ro_xref. Ucu de KIMLIK:
@@ -2877,11 +2884,29 @@ def check_taxonomy_is_controlled(rep, con, root, out_dir="analysis_out"):
 
     #  1. Her replikonun taxid'i olmali. Olmayan bir replikonun uzerindeki
     #  girisler cins duzeyi hicbir teste giremez.
-    n_rep = con.execute(
-        "SELECT COUNT(*) FROM replicon WHERE nucleotide_id <> ''").fetchone()[0]
+    #  BAYPAS KALDIRILDI. Burada `WHERE nucleotide_id <> ''` yaziyordu,
+    #  cunku kimligi olmayan bir replikon satiri vardi ve bu kontrolu
+    #  dusuruyordu. Baypas satiri duzeltmez, GIZLER: satir geri gelse bu
+    #  kontrol yine sessiz kalirdi. Satir `db_repair.py` ile silindi,
+    #  sebebi `extract_genomic_context.py`'de kapatildi, ve asagidaki
+    #  kontrol kimligin bosluguna artik DOGRUDAN bakiyor.
+    n_rep = con.execute("SELECT COUNT(*) FROM replicon").fetchone()[0]
     n_tax = con.execute("SELECT COUNT(*) FROM replicon_taxon").fetchone()[0]
     rep.check("taxonomy: her replikonun NCBI taxid'i var", n_tax >= n_rep,
               max(0, n_rep - n_tax), f"replikon {n_rep}, taxid'li {n_tax}")
+
+    #  1b. KIMLIGI OLMAYAN REPLIKON OLAMAZ. `replicon` tablosunun birimi
+    #  bir replikon ve birimin kimligi `nucleotide_id`; bos bir kimlik bir
+    #  birim degil, bir ayristirma hatasidir. Bir kez olculdu: 0 baytlik
+    #  bir gbk dosyasi boyle bir satir uretti ve her replikon-basi paydayi
+    #  bir fazla gosterdi.
+    phantom = con.execute(
+        "SELECT COUNT(*) FROM replicon "
+        "WHERE nucleotide_id IS NULL OR TRIM(nucleotide_id) = ''").fetchone()[0]
+    rep.check("replicon: her satirin bir nucleotide_id'si var",
+              phantom == 0, phantom,
+              "kimligi bos replikon satiri: ayristirilamayan dosya replikon "
+              "satiri URETMEMELI (bkz. db_repair.py phantom_replicon)")
 
     #  2. Cins RANK'tan gelmeli: genus_taxid, soyagacinda rank='genus'
     #  olarak gecen ata olmak zorunda.
@@ -2972,6 +2997,223 @@ def check_taxonomy_is_controlled(rep, con, root, out_dir="analysis_out"):
                 previous = stripped
     rep.check("taxonomy: cinsi dizgiden tahmin eden ikinci uygulama yok",
               not offenders, len(offenders), first(offenders, 6))
+
+
+def check_hmm_libraries_are_pinned(rep, con, root, out_dir="analysis_out"):
+    """Yayimlanan her HMM isabeti, kimligi SABITLENMIS bir modelden gelmeli.
+
+    NEDEN. Bir domain cagrisi ("bu komsu bir ferredoksin") modelin kendisine
+    baglidir ve Pfam modelleri surum atlar. Olculdu (2026-11-12):
+    `component_hmms/components.hmm` icindeki 9 modelin 8'i InterPro'nun bugun
+    verdiginden bir surum geride, `family_hmms/` ise tamamen guncel -- yani
+    iki kutuphane AYRI release'lerden gelmis. Geride olmak hata degil;
+    yeniden indirmek yayimlanmis her isabeti degistirirdi. Hata, hangi
+    modelin kullanildiginin YAZILI OLMAMASIDIR.
+
+    Bu kontrol AGA CIKMAZ. Diskteki dosyanin, sabitlemenin anlattigi dosya
+    olup olmadigina bakar: ozet tutmuyorsa kutuphane sabitlemeden SONRA
+    degismis demektir ve yayimlanan isabetler artik tarif edilen modelden
+    gelmiyor.
+    """
+    path = os.path.join(root, out_dir, "hmm_pins.json")
+    if not os.path.exists(path):
+        rep.check("hmm: model kutuphaneleri sabitlendi", False, 1,
+                  "hmm_pins.json yok -- `rebuild.py --run --only hmm_pins`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    import hashlib as _hl
+
+    def digest(full):
+        sha = _hl.sha256()
+        with open(full, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                sha.update(chunk)
+        return sha.hexdigest()[:16]
+
+    libraries = data.get("libraries") or []
+    missing = [lib["library"] for lib in libraries if not lib.get("present")]
+    rep.check("hmm: sabitlenen her kutuphane diskte var",
+              not missing, len(missing), first(missing, 4))
+
+    moved = []
+    for lib in libraries:
+        if not lib.get("present"):
+            continue
+        full = os.path.join(root, lib["library"])
+        if not os.path.exists(full):
+            moved.append(f"{lib['library']} (dosya yok)")
+        elif digest(full) != lib.get("file_digest"):
+            moved.append(f"{lib['library']} ozet {lib.get('file_digest')} "
+                         f"-> {digest(full)}")
+    rep.check("hmm: kutuphane dosyasi sabitlemeden beri degismedi",
+              not moved, len(moved), first(moved, 3))
+
+    #  Pfam'dan gelen her modelin accession'i SURUMLU olmali: `PF00355`
+    #  bir pin degil, `PF00355.33` pindir.
+    unversioned = [f"{m.get('library')}:{m.get('name')}"
+                   for m in data.get("pfam_models") or []
+                   if not re.match(r"^PF\d{5}\.\d+$", m.get("accession", ""))]
+    rep.check("hmm: her Pfam modeli accession SURUMU ile sabitlendi",
+              not unversioned, len(unversioned), first(unversioned, 4))
+
+    #  Proje modelleri ayri listede durmali: accession surumu olmayan bir
+    #  modeli surumlu gostermek, olculmemis bir guvence olur.
+    project = data.get("project_models") or []
+    rep.check("hmm: proje modelleri ayrica beyan edildi",
+              bool(project), 0 if project else 1,
+              f"{len(project)} model yalnizca ozetle sabitlendi")
+
+
+def check_gff3_export(rep, con, root, out_dir="analysis_out"):
+    """GFF3 degisim dosyasi gercekten GFF3 ve DB ile ayni sayilari anlatiyor.
+
+    NEDEN IKI AYRI SEY SINANIYOR. Bir degisim dosyasinin iki bozulma yolu
+    var ve biri otekini gizler: (1) bicim bozulur -- kolon sayisi, cozulmeyen
+    `Parent`, 0-tabanli kalmis bir koordinat; (2) bicim DOGRU kalir ama
+    icerik bayatlar, yani dosya gecerli bir GFF3 olarak eski sayilari
+    yayimlar. Ikincisi daha tehlikeli, cunku dosyayi okuyan arac hic
+    sikayet etmez.
+
+    Ayristirmayi betigin KENDI raporuna guvenerek yapmiyor: dosyayi
+    yeniden okuyup sayiyor. Yazan tarafin "gecerli" demesi bir olcum
+    degil.
+    """
+    gff = os.path.join(root, out_dir, "roar_genomic_context.gff3.gz")
+    if not os.path.exists(gff):
+        rep.check("gff3: degisim dosyasi var", False, 1,
+                  "roar_genomic_context.gff3.gz yok -- "
+                  "`rebuild.py --run --only gff3`")
+        return
+
+    import gzip as _gz
+    regions = {}
+    ids, parents, problems = set(), 0, []
+    types = {}
+    with _gz.open(gff, "rt") as handle:
+        for lineno, line in enumerate(handle, 1):
+            line = line.rstrip("\n")
+            if line.startswith("##sequence-region"):
+                _, seqid, lo, hi = line.split()
+                regions[seqid] = (int(lo), int(hi))
+                continue
+            if line.startswith("#") or not line:
+                continue
+            cols = line.split("\t")
+            if len(cols) != 9:
+                problems.append(f"satir {lineno}: {len(cols)} kolon")
+                continue
+            types[cols[2]] = types.get(cols[2], 0) + 1
+            if not cols[3].isdigit() or int(cols[3]) < 1:
+                problems.append(f"satir {lineno}: start {cols[3]} 1-tabanli degil")
+            for pair in cols[8].split(";"):
+                key, _, value = pair.partition("=")
+                if key == "ID":
+                    ids.add(value)
+                elif key == "Parent":
+                    parents += 1
+                    if value not in ids:
+                        problems.append(f"satir {lineno}: Parent={value} cozulmuyor")
+    rep.check("gff3: bicim gecerli (9 kolon, 1-tabanli, Parent cozuluyor)",
+              not problems, len(problems), first(problems, 4))
+
+    #  2. BAYATLIK: dosyadaki operon sayisi DB'deki onaylanmis operon
+    #  sayisi olmak zorunda. Gecerli bir GFF3, eski sayilari yayimlayabilir.
+    n_operon_db = con.execute("""
+        SELECT COUNT(*) FROM operon o JOIN ro r USING(candidate_id)
+         WHERE r.is_confirmed = 1""").fetchone()[0]
+    n_operon_file = types.get("operon", 0)
+    rep.check("gff3: dosyadaki operon sayisi DB ile ayni",
+              n_operon_file == n_operon_db,
+              abs(n_operon_file - n_operon_db),
+              f"dosya {n_operon_file}, DB {n_operon_db}")
+
+    n_cds_db = con.execute("""
+        SELECT (SELECT COUNT(*) FROM ro WHERE is_confirmed = 1)
+             + (SELECT COUNT(*) FROM operon_gene g
+                  JOIN neighbor n ON n.neighbor_id = g.neighbor_id)""").fetchone()[0]
+    n_cds_file = types.get("CDS", 0)
+    rep.check("gff3: dosyadaki CDS sayisi DB ile ayni",
+              n_cds_file == n_cds_db, abs(n_cds_file - n_cds_db),
+              f"dosya {n_cds_file}, DB {n_cds_db} "
+              f"(alfa + neighbor'a baglanan operon geni)")
+
+    #  3. Her seqid icin bildirilen bolge olmali: bolgesiz bir seqid,
+    #  tarayicida uzunlugu bilinmeyen bir kontig demek.
+    n_rep_db = con.execute("""
+        SELECT COUNT(DISTINCT nucleotide_id) FROM ro WHERE is_confirmed = 1
+        """).fetchone()[0]
+    rep.check("gff3: her replikon icin ##sequence-region var",
+              len(regions) == n_rep_db, abs(len(regions) - n_rep_db),
+              f"dosya {len(regions)}, DB {n_rep_db}")
+
+
+def check_substrate_chebi(rep, con, root, out_dir="analysis_out"):
+    """Substratin kontrollu kimligi: KIMLIK ile ADAY birbirine karismasin.
+
+    NEDEN. `type_substrate_chebi` iki ayri seyi ayni tabloda tutuyor:
+    dengelenmis Rhea denkleminden OKUNAN kimlik, ve kuratorun yazdigi ADIN
+    ChEBI'de bulunmasiyla cikan ADAY. Ikisi esit degil -- bir ad eslesmesi
+    ayni adi tasiyan baska bir molekule denk gelebilir. `state` bu ayrimi
+    tasiyor ve bu kontrol ayrimin KAYBOLMADIGINI sinar: durumsuz bir satir,
+    adayi kimlik gibi gosterir.
+    """
+    path = os.path.join(root, out_dir, "substrate_chebi.json")
+    tables = {r[0] for r in con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'")}
+    if "type_substrate_chebi" not in tables or not os.path.exists(path):
+        rep.check("chebi: substrat kimlik tablosu var", False, 1,
+                  "type_substrate_chebi / substrate_chebi.json yok -- "
+                  "`rebuild.py --run --only substrate_chebi`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    rows = con.execute("""
+        SELECT cluster, chebi, state FROM type_substrate_chebi""").fetchall()
+    allowed = {"rhea_equation", "name_match"}
+    bad_state = [f"{c}:{s}" for c, _x, s in rows if s not in allowed]
+    rep.check("chebi: her satir KIMLIK mi ADAY mi oldugunu soyluyor",
+              not bad_state, len(bad_state), first(bad_state, 4))
+
+    bad_id = [f"{c}:{x}" for c, x, _s in rows
+              if not re.match(r"^CHEBI:\d+$", x or "")]
+    rep.check("chebi: her kimlik CHEBI:<sayi> bicimimde",
+              not bad_id, len(bad_id), first(bad_id, 4))
+
+    #  PAYDA BEYANLI. "76 tipin 37'si bir kimlik tasiyor" cumlesi ancak
+    #  paydanin yaninda bir anlam tasir; rapor onu yazmak zorunda.
+    denom = data.get("denominators") or {}
+    rep.check("chebi: payda beyanli",
+              bool(denom.get("types")) and "by_state" in denom, 0,
+              "denominators.types / by_state eksik")
+
+    #  Tablo ile rapor ayni seyi anlatmali: rapor eski bir kosudan kalmis
+    #  olabilir ve o zaman sayfadaki sayi tablodan baska bir sey soyler.
+    n_table = len(rows)
+    n_report = denom.get("pairs_written")
+    rep.check("chebi: tablo ile rapor ayni sayiyi veriyor",
+              n_table == n_report, abs((n_report or 0) - n_table),
+              f"tablo {n_table}, rapor {n_report}")
+
+    #  YAPISAL AYIRT EDICININ KENDISI. Kurator adi ile denklemin adi
+    #  farkliysa karar atom sayimindan verilir; her satir bir hukum
+    #  tasimak zorunda, yoksa fark "sayilmis ama okunmamis" olur.
+    block = data.get("curated_name_differs_from_equation") or {}
+    rows_of = block.get("rows") or []
+    no_verdict = [r.get("cluster") for r in rows_of if not r.get("verdict")]
+    rep.check("chebi: her ad farki bir hukumle kapatildi",
+              not no_verdict, len(no_verdict), first(no_verdict, 4))
+
+    #  Gercek uyusmazliklar FAIL degil WARN: kurator karari gerektirir,
+    #  ve bir kapi kuratorun yerine karar veremez. Ama SESSIZ de kalamaz.
+    different = [f"{r['cluster']}: '{r.get('curated_substrate')}' vs "
+                 f"{r.get('rhea_substrates')}"
+                 for r in rows_of if r.get("verdict") == "different_molecule"]
+    rep.check("chebi: kurator substrati denklemin substratiyla ayni molekul",
+              not different, len(different), first(different, 4),
+              severity="WARN")
 
 
 def check_cross_references(rep, con, root, out_dir="analysis_out"):
@@ -3978,6 +4220,9 @@ def main():
         check_cross_references(rep, con, ROOT)
         check_taxonomy_is_controlled(rep, con, ROOT)
         check_citation_and_version(rep, con, ROOT)
+        check_hmm_libraries_are_pinned(rep, con, ROOT)
+        check_gff3_export(rep, con, ROOT)
+        check_substrate_chebi(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)

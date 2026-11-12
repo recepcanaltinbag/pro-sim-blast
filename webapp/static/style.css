@@ -1252,6 +1252,19 @@ figure.reaction .rxn {
 }
 .rxn__side { text-align: center; min-width: 168px; }
 .rxn__label { font-size: .8rem; color: var(--dim); margin-top: var(--s1); }
+/*  Substratin kontrollu kimligi. IKI DURUM GORSEL OLARAK AYRI: dolu
+    kenarlik dengelenmis denklemden OKUNAN kimlik, kesikli kenarlik bir ad
+    eslesmesinden gelen ADAY. Ayrim yalnizca renge binmiyor -- kenarlik
+    bicimi tasiyor, cunku renk korlugunde ve basimda renk kaybolur.      */
+.rxn__ids { margin-top: 4px; display: flex; flex-wrap: wrap;
+            gap: 4px 6px; justify-content: center; align-items: baseline; }
+.chebi { font-size: .72rem; font-variant-numeric: tabular-nums;
+         padding: 1px 5px; border-radius: 3px; text-decoration: none;
+         white-space: nowrap; }
+.chebi--id { border: 1px solid var(--rule-2); color: var(--ink-2); }
+.chebi--cand { border: 1px dashed var(--rule-2); color: var(--dim); }
+.chebi:hover { border-color: var(--accent); color: var(--accent); }
+.rxn__ids .note { font-size: .7rem; }
 .rxn__product {
   font-size: .95rem;
   font-weight: 600;
