@@ -117,6 +117,17 @@ ARTEFACTS = [
     ("database", [DB],
      ["python3", "build_db.py", "--context-dir", "genomic_context", "--db", DB],
      ["build_db.py", "genomic_context/neighbors.csv"], True),
+    # db_repair: BILDIRIMLE uygulanan veri duzeltmeleri. `database`'den
+    # HEMEN SONRA olmak zorunda. Sebep kodda kapandi ama ARA ARTEFAKT eski
+    # kodla uretilmis: `genomic_context/replicons.csv` hayalet satiri hala
+    # tasiyor ve `build_db.py` o CSV'yi okuyor -- yani grafikte olmasa bir
+    # sonraki tam yeniden kurulum satiri geri getirir ve onu silecek
+    # hicbir sey olmazdi (ROADMAP 135.9b). Idempotent: uygulanacak bir sey
+    # yoksa yazmaz, hata da vermez.
+    ("db_repair", [f"{OUT}/db_repair.json"],
+     ["python3", "db_repair.py", "--db", DB, "--apply",
+      "--out", f"{OUT}/db_repair.json"],
+     ["db_repair.py", DB], False),
     # annotate'in ciktilari genomic_context/cand_dom.out ve cand_aln.sto'dur ve
     # bunlari IKI HMM uretir. Ikisi de girdi listesinde YOKTU: 2026-10-22'de
     # AerC kutuphaneye eklendiginde protein_filter bayatladi ama annotate
@@ -160,6 +171,15 @@ ARTEFACTS = [
       "--out", f"{OUT}/taxonomy_ids.json"],
      ["taxonomy_ids.py", DB, "gbk_files"], False),
 
+    # replicon_kind: her kaydin NE OLDUGU (genom / transkript). Kaydin
+    # kendi LOCUS beyanindan okunur, accession onekinden degil; onek
+    # yalnizca capraz kontrol. `taxonomy_ids`'dan SONRA ve bu tabloyu
+    # okuyan adimlardan (stats_overview, coverage_audit) ONCE olmali
+    # (ROADMAP 135.7).
+    ("replicon_kind", [f"{OUT}/replicon_kind.json"],
+     ["python3", "replicon_kind.py", "--db", DB, "--gbk", "gbk_files",
+      "--out", f"{OUT}/replicon_kind.json"],
+     ["replicon_kind.py", DB, "gbk_files"], False),
     # Tablo YAZMAZ, yalnizca okur: nereye konursa konsun kimseyi
     # bayatlatmaz (bkz. family_scan'daki not).
     ("promoter_architecture", [f"{OUT}/promoter_architecture.json"],
@@ -465,6 +485,14 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  coverage_audit: dis evrene gore KAPSAMA acigi. `--fetch` BURADA
+    #  YOK -- ag erisimi bir kapi adiminin kosulu olamaz (bkz.
+    #  substrate_chebi); onbellek yetkili. Girdisi onbellek + DB, cikti
+    #  bir rapor; tablo yazmaz, kimseyi bayatlatmaz (ROADMAP 135.9).
+    ("coverage_audit", [f"{OUT}/coverage_audit.json"],
+     ["python3", "coverage_audit.py", "--db", DB,
+      "--out", f"{OUT}/coverage_audit.json"],
+     ["coverage_audit.py", DB, f"{OUT}/pf00848_members.json.gz"], False),
     #  gff3: genomik baglam STANDART bicimde. Girdisi DB oldugu icin
     #  tablolar degisince bayat gorunur; kendi ciktisini ayristirip
     #  dogruladigi icin gecersiz bir degisim dosyasi yayimlanamaz.
@@ -630,6 +658,8 @@ DECLARED_WRITES = {
     "union": {"ro_union", "ro_union_source"},
     "taxonomy_ids": {"replicon_taxon", "taxon_lineage", "taxon_genus"},
     "substrate_chebi": {"type_substrate_chebi"},
+    "replicon_kind": {"replicon_kind"},
+    "db_repair": {"replicon"},
 }
 
 

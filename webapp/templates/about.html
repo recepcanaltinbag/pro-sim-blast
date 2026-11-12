@@ -458,4 +458,83 @@ are current. The two were therefore built against different Pfam releases{% endi
 </details>
 {% endif %}
 
+{% if coverage %}
+<h2 id="coverage">12 &middot; How much of the known universe this database covers</h2>
+<p class="lede">The external universe is every UniProtKB protein carrying the same catalytic
+domain, <a href="https://www.ebi.ac.uk/interpro/entry/pfam/{{ coverage.external_universe.entry }}/"
+rel="noopener">Pfam {{ coverage.external_universe.entry }}</a>
+({{ coverage.external_universe.records_fetched|fmt }} proteins, read
+{{ coverage.external_universe.cache_date }}). Coverage is measured <b>by taxon, not by
+sequence</b>: the two sides do not count the same unit. InterPro counts one record per protein, so
+a hundred strains carrying the same enzyme give a hundred records, while this database counts one
+genome-derived entry. A ratio of two different counting rules is not a coverage figure. A taxid is
+the same thing on both sides.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Unit</th><th class="num">Here</th><th class="num">External</th>
+<th>What it means</th></tr></thead>
+<tbody>
+<tr><td>distinct taxid</td>
+  <td class="num">{{ coverage.denominators.our_taxids|fmt }}</td>
+  <td class="num">{{ coverage.denominators.external_taxids|fmt }}</td>
+  <td class="note">genome records with a confirmed member, against UniProtKB source organisms</td></tr>
+<tr><td>distinct genus</td>
+  <td class="num">{{ coverage.denominators.our_genera|fmt }}</td>
+  <td class="num">{{ coverage.denominators.external_genera|fmt }}</td>
+  <td class="note">genus read from NCBI rank, never guessed from the organism string</td></tr>
+<tr><td>genera in both</td>
+  <td class="num" colspan="2">{{ coverage.gap.genera_shared|fmt }}</td>
+  <td class="note">covered</td></tr>
+<tr><td>genera missing, in scope</td>
+  <td class="num" colspan="2">{{ coverage.gap.genera_missing_in_scope|fmt }}</td>
+  <td class="note">{{ coverage.gap.pfam_proteins_in_missing_genera_in_scope|fmt }} proteins; these
+  are the organisms worth adding</td></tr>
+<tr><td>genera missing, out of scope</td>
+  <td class="num" colspan="2">{{ coverage.missing_genera_out_of_scope|length|fmt }}</td>
+  <td class="note">eukaryotic lineages (<i>Fusarium</i>, <i>Aspergillus</i>, <i>Penicillium</i>
+  &hellip;); this database holds no eukaryotic genome</td></tr>
+</tbody></table></div>
+
+<p class="note"><b>Where the gap is.</b>
+{{ coverage.gap.pfam_proteins_in_shared_genera|fmt }} of the external proteins already sit in
+genera represented here, and only {{ coverage.gap.pfam_proteins_in_missing_genera|fmt }} sit in
+genera that are not. So the gap is not depth &mdash; downloading more sequences from the same
+genera would not move it &mdash; it is <b>breadth</b>: the missing genera are many
+({{ coverage.gap.genera_missing_in_scope|fmt }} in scope) and each carries only a handful of
+proteins. The answer is more organisms, not more sequences.</p>
+
+<p class="note"><b>Why the scope is split.</b> {{ coverage.external_universe.entry }} is not
+bacterial: the same domain occurs in plant and fungal choline monooxygenase. Measured without the
+split, every missing genus counted as in scope and a fungus led the list. The scope is declared by
+counting what is actually here: Eukaryota enters this database only through
+<a href="{{ u('/download/analysis/replicon_kind.json') }}">958 mRNA transcript records</a> and no
+eukaryotic genome at all.</p>
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Missing genus (in scope)</th><th class="num">Proteins</th>
+<th class="num">Taxa</th><th>Example accession</th></tr></thead>
+<tbody>
+{% for row in coverage.missing_genera_in_scope[:10] %}
+<tr><td><i>{{ row.genus_name }}</i></td>
+  <td class="num">{{ row.pfam_proteins|fmt }}</td>
+  <td class="num">{{ row.distinct_taxids|fmt }}</td>
+  <td class="note"><code>{{ row.example_accessions|join(', ') }}</code></td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">The full list is in
+<a href="{{ u('/download/analysis/coverage_audit.json') }}">coverage_audit.json</a>, ordered by how
+many proteins each genus would add.</p>
+
+<div class="caveat">
+  <b>This is a gap, not an error list.</b> A genus absent from
+  {{ coverage.external_universe.entry }} is not a genus without the enzyme: not being represented
+  in UniProtKB is an absence of evidence. And the
+  {{ coverage.gap.genera_ours_only|fmt }} genera present here but absent from the Pfam set are not
+  mistakes &mdash; our hits come from this project's own model at its own threshold, not from the
+  Pfam gathering threshold. The gate checks that the external list was not truncated and that this
+  page's denominator still matches the database; it deliberately does not check that the gap is
+  small, because the size of a gap is a measurement, not a defect.
+</div>
+{% endif %}
+
 {% endblock %}

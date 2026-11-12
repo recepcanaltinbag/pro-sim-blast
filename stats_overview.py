@@ -240,8 +240,10 @@ def load(con, ecology_path):
                s.host_kingdom, s.habitat, s.geo,
                (SELECT COUNT(*) FROM neighbor nb JOIN gene_category c ON c.neighbor_id=nb.neighbor_id
                  AND c.method='regex_v1' WHERE nb.candidate_id=r.candidate_id AND c.category='transposon') transposons,
-               (SELECT COUNT(*) FROM neighbor nb2 WHERE nb2.candidate_id=r.candidate_id) n_neighbors
+               (SELECT COUNT(*) FROM neighbor nb2 WHERE nb2.candidate_id=r.candidate_id) n_neighbors,
+               k.record_kind
         FROM ro r JOIN replicon p USING(nucleotide_id)
+        LEFT JOIN replicon_kind k ON k.nucleotide_id=r.nucleotide_id
         LEFT JOIN operon o ON o.candidate_id=r.candidate_id
         LEFT JOIN ro_evidence e ON e.candidate_id=r.candidate_id
         LEFT JOIN ro_etc t ON t.candidate_id=r.candidate_id
@@ -252,7 +254,7 @@ def load(con, ecology_path):
             "is_plasmid", "cds_count",
             "has_beta", "has_ferredoxin", "has_reductase", "completeness", "tier", "ref_identity",
             "reductase_type", "ferredoxin_type", "domain", "host_kingdom", "habitat",
-            "geo", "transposons", "n_neighbors"]
+            "geo", "transposons", "n_neighbors", "record_kind"]
     data = []
     for r in rows:
         d = dict(zip(cols, r))
@@ -512,15 +514,34 @@ def main():
     # hucre bazinda sinyal haritasina sahip olur.
     groups = sorted({d["group"] for d in data})
     with_context = [d for d in data if d["has_context"]]
-    no_context_n = len(data) - len(with_context)
+    no_context = [d for d in data if not d["has_context"]]
+    no_context_n = len(no_context)
+    #  Baglamsiz girisin IKI AYRI sebebi var ve ayni sayida toplanmalari
+    #  sebebi gizliyordu. Transkript kayitlarinda (XM_/NM_) komsu gen
+    #  diye bir sey YOK -- soru sorulmamis degil, SORULAMAZ; bu bir
+    #  montaj parcaliligi olcusu degil, kayit turunun sonucu
+    #  (ROADMAP 135.7). Geri kalan genom kayitlarinda ise soru gercekten
+    #  sorulabilirdi ve komsu bulunamadi.
+    transcript_n = sum(1 for d in no_context if d.get("record_kind") == "transcript")
+    genome_n = no_context_n - transcript_n
     context_restriction = (
         f"entries whose genomic neighbourhood was retrieved: {len(with_context)} of "
         f"{len(data)}. The {no_context_n} entries with no neighbours at all are "
         "excluded rather than counted as having no partner, because for them the "
-        "question was never asked")
+        f"question was never asked -- and for {transcript_n} of them it cannot be "
+        "asked at all, because the record is an mRNA transcript rather than a "
+        "replicon")
     out["context_coverage"] = {
         "entries": len(data), "with_neighbours": len(with_context),
         "without_neighbours": no_context_n,
+        "without_neighbours_because_transcript": transcript_n,
+        "without_neighbours_on_a_genome_record": genome_n,
+        "why_the_split": (
+            "an mRNA transcript has no neighbouring gene by construction, so "
+            "its empty neighbourhood measures the record type, not how "
+            "fragmented the assembly was. Reported as one number the two "
+            "causes are indistinguishable, and the fragmentation of this "
+            "database's genomes looks worse than it is"),
         "why_it_matters": (
             "an entry with no retrieved neighbourhood scores as having no beta "
             "subunit, no ferredoxin and no reductase. Counted that way it is "

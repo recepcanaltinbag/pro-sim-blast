@@ -4566,3 +4566,209 @@ olduğunu tam olarak söyler — ağır tarama olmadan.
 Sonra eksik taksonlar için **genom** indirilir, çıplak protein değil:
 çıplak protein tam olarak 135.7'deki mRNA sorununu üretir (bağlamsız
 giriş, replikon paydasında duran replikon-olmayan kayıt).
+
+### 135.9 — Kapsama acigi: 1.928 dis cinsin 575'i bizde; eksiklik derinlikte degil genislikte, ama kapsam once DUZELTILDI
+
+Kullanicinin "veriler eksik geliyo" sezgisi olculdu. Dis evren: Pfam
+PF00848'in UniProtKB'deki tum proteinleri, InterPro API'sinden taxid'leriyle
+cekildi (22.620 ayri accession).
+
+**KARAR EKSENI TAKSON, DIZI DEGIL.** Iki tarafin dizi sayisi ayni birim
+degil: InterPro bir UniProtKB kaydini sayiyor (ayni proteini tasiyan yuz
+sus yuz kayit uretir), biz genomdan turetilmis bir girisi. Iki ayri sayma
+kuralinin orani bir kapsama olcusu degildir. Bir taxid ise iki tarafta
+ayni seydir -- bu yuzden 135.8'de yazilan "%71 dizi kapsamasi" rakami
+GERI CEKILIYOR; o bir oran degil, iki paydanin karsilastirilamazligiydi.
+135.8'in "dis evrende 12.532 takson" sayisi da yanlisti: InterPro'nun
+taksonomi sayaci agacin IC dugumlerini de sayiyor. Gercek sayi, kaynak
+organizma taxid'i olarak **8.125**.
+
+| birim | bizde | dis evren | kapsama |
+|---|---|---|---|
+| ayri taxid | 4.251 | 8.125 | — |
+| ayri cins | **720** | 1.928 | **575 ortak** |
+| kapsam ici eksik cins | — | **798** | 3.050 protein |
+| kapsam disi (okaryot) eksik cins | — | 555 | Fusarium, Aspergillus, Penicillium... |
+
+**ACIK NEREDE.** Dis evrenin 22.620 proteininin **15.456'si zaten
+kapsadigimiz cinslerde**; eksik cinslerde duran 6.278, kapsam icinde
+yalnizca 3.050. Yani dizi sayisi bakimindan acik DERINLIKTE degil: cins
+basina daha fazla protein indirmek kapsamayi degistirmez. Acik CINS
+SAYISINDA: 1.373 cinsin 798'i hic temsil edilmiyor, ama her biri ortalama
+4 protein tasiyor. Bu, "daha fazla contig" degil "daha fazla organizma"
+cevabini dogruluyor (kullanicinin contig onerisi 135.7'de ayrica olculup
+dogru cikti, ama acigi kapatan sey o degil).
+
+**KAPSAM AYRIMI ONCE DUZELTILMEK ZORUNDAYDI -- ve ilk kosus bunu gosterdi.**
+PF00848 bakteriyel degil; ayni domain bitki/fungus kolin monooksijenazinda
+da var. Ilk kosusta kapsam "bizde en az bir kayit olan superkingdom" diye
+tanimlanmisti ve o tanimla **1.244 eksik cinsin 1.244'u "kapsam ici"**
+cikti; listenin basi `Clonostachys` (bir fungus, 67 protein) oldu. Sebebi
+ayri bir kusurdu: bu DB'nin okaryot tarafi **958 kayit ve 958'inin TAMAMI
+`XM_`/`NM_` bir mRNA transkripti** (930 + 28); tek bir okaryot genomu yok.
+Yani kapsam tanimi 135.7'deki kusurdan besleniyordu, ve olculen sey
+kapsama acigi olmaktan cikip bir kapsam hatasi oluyordu. Bu yuzden 135.7
+once yapildi (asagida) ve kapsam `record_kind='genome'`'dan turetildi.
+
+**CINS OLMAYAN ANAHTARLAR LISTEDEN CIKARILDI.** Dis evrenin 12 anahtari
+(886 protein) bir cins degil: `rank:...` vekilleri (NCBI o soyagacinda
+cins rank'li dugum tutmuyor) ve cozulemeyen taxid'ler. Bunlar bir INDIRME
+onerisi olamaz -- karsiliginda indirilecek bir cins yok. Sayilari
+dusurulmedi, ayri blokta duruyor.
+
+**SAYFALAMA YONLU KONTROL EDILIYOR.** InterPro ilk sayfada 22.553 beyan
+ediyor, cursor'u sonuna kadar yurumek 22.620 ayri accession veriyor; yani
+`count` bir onbellek tahmini. Kapi bu yuzden esitlik DEGIL **yon** arar:
+tehlikeli yon EKSIK cekmektir, cunku yarim bir dis liste paydayi kucultur
+ve kapsama oranini oldugundan YUKSEK gosterir -- eksik veri, eksik
+oldugunu gizleyen yonde hata uretir.
+
+**CEKIM ARA KAYITLI OLMAK ZORUNDAYDI.** Ilk iki deneme 7.600 ve 2.600
+kayitta InterPro'nun 408'ine takildi ve cekilen her sey cope gitti. 226
+sayfalik bir cekim tek gecici hataya bagli olamaz: her sayfadan sonra
+kayitlar ve siradaki cursor bir ara dosyaya yaziliyor, betik kaldigi
+yerden devam ediyor. Ara dosya bir onbellek DEGIL -- tamamlanmamis bir
+liste kapsama iddiasina girmemeli, o yuzden onbellek yalnizca cekim
+bitince yaziliyor. Sayfa boyu da 200'den 100'e indirildi (sunucu 200'luk
+sorguyu kendi zaman siniri icinde bitiremiyor).
+
+**TLS DOGRULAMASI ACIK.** Bu depodaki eski `download_pfam.py`
+`ssl._create_unverified_context()` kullaniyor; buraya kopyalanmadi (ilk
+yazimda kopyalanmisti ve kaldirildi). Sertifika dogrulamasini kapatmak,
+indirilen listenin KAYNAGINI dogrulanamaz kilardi -- ve bu liste bundan
+sonra hangi genomlarin indirilecegine karar verecek.
+
+**CINS KURALI IKINCI KEZ UYGULANMADI.** Dis evrenin taxid'leri bu DB'nin
+hicbir tablosunda yok, dolayisiyla "o taxid'in cinsi ne" sorusu yeni bir
+cozucu yazmaya cok yakindi. Yazilmadi: karar
+`taxonomy_ids.genus_from_ranks`'a cikarildi ve hem replikon tablosu hem
+dis karsilastirma oradan geciyor. Cikarma sonrasi `taxonomy_ids.py`
+yeniden kosuldu ve `taxon_genus` + `replicon_taxon` + `taxonomy_ids.json`
+**birebir ayni** cikti (ROADMAP 135.1'in dersi: ayni olcumun ikinci
+uygulamasi birincisiyle sessizce ayrisir).
+
+**KAPI ACIGIN BUYUKLUGUNE BAKMIYOR -- kasitli.** Eksik cins sayisi bir
+kusur degil bir olcumdur; onu FAIL yapmak kapiyi veri buyutmeye zorlayan
+bir mekanizmaya cevirirdi. Kapi uc seye bakiyor: dis listenin truncate
+edilmemis olmasi, raporun cins paydasinin `taxon_genus`'tan BAGIMSIZ
+yeniden sayimla uyusmasi, ve kapsamin beyan edilmis olmasi.
+
+**BU SAYI NE DEGIL.** Bir cinsin PF00848'de olmamasi o cinste enzimin
+olmadigini gostermez (UniProtKB'de temsil edilmemek bir kanit yoklugudur).
+Bizde olup PF00848'de olmayan 144 cins hata degil: isabetlerimiz projenin
+kendi modelinden, kendi esiginden geliyor.
+
+Sonraki adim: 798 kapsam ici eksik cins icin **genom** indirmek, ciplak
+protein degil -- ciplak protein tam olarak 135.7'nin uretigi sorunu
+uretir.
+
+Cikti: `analysis_out/coverage_audit.json`, onbellek
+`analysis_out/pf00848_members.json.gz`, betik `coverage_audit.py`.
+
+### 135.7b — `replicon` tablosunun 1.897 satiri replikon degil: kayit turu yazildi
+
+135.7'de acik is olarak birakilan duzeltme yapildi. `replicon` tablosunun
+adi her satirin bir replikon oldugunu soyluyordu; **1.897 kayit `XM_`/`NM_`
+bir mRNA transkripti**, ve bunlarin 958'i dogrulanmis uye tasiyor. Bir
+transkript ne kromozom ne plazmit; bir genin kopyasi. Hayalet replikon
+satiriyla (135.2) ayni hata sinifi, ama daha sessiz ve daha pahali: bu
+satirlar REPLIKON BASINA paydalarda duruyordu, ve bir transkriptin komsu
+geni ya da tam operonu olamayacagi icin her baglam istatistigi 958 kayit
+boyunca sifir toplayip paydada kaliyordu -- yani bir OLCUM EKSIGI, bir
+biyolojik yokluk gibi yayimlaniyordu.
+
+**SATIRLAR SILINMEDI.** Dizileri gercek ve dogrulanmis uye uretiyorlar;
+silmek 958 girisi kaybetmek olurdu. Yapilan sey turu YAZMAK ve baglam
+paydalarindan cikarmak.
+
+**AYIRT EDICI KULLANILMADAN ONCE DOGRULANDI.** Akla gelen ilk olcut
+accession onegiydi (`XM_` -> mRNA) -- ama bir onek bir dizgi, ve bu
+projede bir karar biriminin dizgi isleminden turetilmesi tam olarak
+kacinilan hata (bkz. `ro_taxonomy`, ROADMAP 135.1). Tur, kaydin KENDI
+beyanindan okunuyor: GenBank LOCUS satirinin molekul tipi alani
+(`mRNA` / `DNA`). Onek yalnizca CAPRAZ KONTROL: **17.073 kaydin
+hicbirinde uyusmazlik yok** (0), yani iki olcut birbirini dogruluyor --
+ama dogrulayan sey kaydin beyani, onek degil.
+
+| record_kind | kayit | dogrulanmis giris |
+|---|---|---|
+| genome | 15.176 | 18.167 |
+| transcript | 1.897 | 958 |
+
+Ilk kosus 2.982 kaydi "okunamadi" isaretledi ve 7.758 dogrulanmis giris
+oraya dustu. Sebep kayitlarda degildi: `gbk_files/` IKI BICIMI bir arada
+tutuyor, bir kismi duz `.gbk`, bir kismi `.gbk.gz`. Yalnizca birine
+bakmak, dosya duzeninden gelen bir eksigi kaydin kendi ozelligi gibi
+gosteriyordu. Duzeltildikten sonra siniflandirilamayan satir: 0.
+
+**BAGLAM PAYDASI BOLUNDU.** `stats_overview.py` baglamsiz girisleri zaten
+disliyordu ("soru hic sorulmadi"), yani istatistikler yanli degildi --
+eksik olan SEBEBIN ayrilmasiydi. Yayimlanan sayi artik iki parca:
+`without_neighbours_because_transcript` ve
+`without_neighbours_on_a_genome_record`. Tek sayi olarak iki sebep
+ayirt edilemiyordu ve bu DB'nin genomlarinin parcaliligi oldugundan kotu
+gorunuyordu.
+
+Kapi dort sey ariyor: her replikon satirinin bir turu olmasi,
+siniflandirilamayan satir kalmamasi, onek-beyan uyusmazligi olmamasi, ve
+**transkript girislerinin silinmemis olmasi** -- bu son kontrol,
+duzeltmenin "isaretle" degil "sil"e kaymadiginin muhafizi.
+
+Cikti: `replicon_kind` tablosu, `analysis_out/replicon_kind.json`, betik
+`replicon_kind.py`.
+
+### 135.9b — Bir duzeltme grafikte degilse, duzeltme degil; bir kerelik temizliktir
+
+135.2'de hayalet replikon satiri uc adimda kapatildi: sebep kodda
+(`extract_genomic_context.py` artik satiri uretmiyor), veri bildirimle
+(`db_repair.py`), ve muhafiz kapida. Bugun bulundu: **`db_repair.py`
+yeniden kurulum grafiginde DEGILDI.**
+
+Neden onemli: sebep kodda kapandi ama ARA ARTEFAKT eski kodla uretilmis.
+`genomic_context/replicons.csv` o hayalet satiri hala tasiyor (13087.
+satir, `nucleotide_id` bos, `status=no_annotation`) ve `build_db.py` o
+CSV'yi okuyor. Yani bir sonraki tam yeniden kurulum satiri GERI GETIRIR
+ve onu silecek hicbir sey yoktu. Kapi da onu FAIL ile yakalardi -- yani
+sistem hatayi bulurdu ama kendi kendine kapatamazdi. Elle uygulanan bir
+duzeltme bir KERELIK duzeltmedir; grafige konan bir duzeltme bir KURAL.
+
+`db_repair` artik `database`'den hemen sonra, `--apply` ile grafikte;
+idempotent oldugu icin uygulanacak bir sey yoksa yazmiyor, hata da
+vermiyor, ve bir rapor (`analysis_out/db_repair.json`) uretiyor ki adimin
+grafikte bir ciktisi olsun. Rapor YAYIMLANMIYOR: izin listesi
+`atlas.PROVENANCE`'tan turedigi icin servis edilmiyor, ve icerigi
+Turkce proje notu.
+
+**AGIR ADIMI YENIDEN KOSTURMAK YERINE KANIT.** `genomic_context` adimi
+10:57'deki kod degisiminden beri bayat ve 3,2 GB / 17.074 dosya okuyor.
+Eski ve yeni kodun cikti farki TAM OLARAK o bir satir (olculdu: kimligi
+ayristirilamayan tek dosya var, `NZ_QXDB01000002.1.gbk`, 0 bayt), DB'de o
+satir yok, ve `db_repair` artik grafikte onu kapatiyor. Bu yuzden adimin
+temel kaydi guncellendi, saatlerce yeniden hesap yapilmadi.
+
+### 135.10 — Baglamsiz 959 girisin 958'i transkript: parcalilik sanilan sey kayit turuymus
+
+135.7b'nin olcumu yayimlanan bir sayiyi tersine cevirdi. `stats.json`
+"959 giriste hic komsu yok" diyordu ve bu, montaj parcaliligi olarak
+okunuyordu (sayfa metni de oyle acikliyordu). Kayit turu ayrilinca:
+
+| sebep | giris |
+|---|---|
+| kayit bir mRNA transkripti (komsu gen diye bir sey YOK) | **958** |
+| genom kaydi, komsu gercekten bulunamadi | **1** |
+
+Yani bu DB'nin genomik baglam cikarimi neredeyse kusursuz: **18.167 genom
+girisinin 18.166'sinda komsu var.** Tek sayi olarak yayimlanan 959, bir
+kayit turu olgusunu bir veri kalitesi kusuru gibi gosteriyordu -- ve yon
+yine aleyhte: kendi isimizi oldugundan kotu gosteriyorduk.
+
+### Acik is — grafik bayatligi (bu turda COZULMEDI)
+
+`rebuild.py --check` 81 artefaktin 66'sini bayat gosteriyor ve kok
+sebepler BU TURDAN DEGIL: `annotate_ro.py` icerigi temel kaydindan farkli
+(f31a1074 ve 5d5ee0f8 commit'lerinden), oradan 60'tan fazla adim
+kaskadliyor. Bu bir veri hatasi degil, bir BEYAN hatasi: ciktilar eski
+kodla uretilmis ve bunu soyleyen tek sey bu bayatlik. Cozumu iki yoldan
+biri: ya agir adimlari kosturmak (saatler), ya her kok icin 135.9b'deki
+gibi KANIT uretip temel kaydini guncellemek. Kanitsiz `--baseline`
+atilmamali: yesil ama yanlis bir grafik, kirmizi bir grafikten kotudur.

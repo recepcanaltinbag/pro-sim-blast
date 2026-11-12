@@ -11,14 +11,25 @@ Yoksa bu dosya, pipeline'in her kosusunda ayni satiri yeniden silen bir
 temizlik adimina doner -- yani hatayi gizler. Her duzeltme, hatayi ureten
 yerin de kapandigini soyleyen bir `fixed_in` alani tasir.
 
+GRAFIKTE OLMAK ZORUNDA -- ve 2026-11-12'ye kadar DEGILDI. Sebep kodda
+kapandi (`extract_genomic_context.py` artik satiri uretmiyor), ama ARA
+ARTEFAKT eski kodla uretilmis: `genomic_context/replicons.csv` o hayalet
+satiri hala tasiyor (13087. satir, nucleotide_id bos). `build_db.py` o
+CSV'yi okuyor, yani bir sonraki tam yeniden kurulum hayalet satiri GERI
+GETIRIR ve onu silecek hicbir sey yok. Bir duzeltmeyi elle uygulamak,
+duzeltmeyi bir kerelik yapar; grafige koymak, duzeltmeyi bir KURAL yapar.
+
 Kullanim:
     python3 db_repair.py              # yalnizca rapor
     python3 db_repair.py --apply      # uygula
 """
 
 import argparse
+import json
+import os
 import sqlite3
 import sys
+import time
 
 
 #  Her duzeltme: (ad, neden, fixed_in, on_kosul SQL, beklenen sayi, uygula SQL)
@@ -50,15 +61,20 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--db", default="roar.sqlite")
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--out", default="analysis_out/db_repair.json",
+                    help="rapor dosyasi; adimin grafikteki ciktisi")
     args = ap.parse_args()
 
     con = sqlite3.connect(args.db)
     pending = done = 0
+    log = []
     for name, why, fixed_in, precondition, expected, statement in REPAIRS:
         found = con.execute(precondition).fetchone()[0]
         if found == 0:
             #  Idempotent: zaten uygulanmis. Bu bir hata degil.
             print(f"[uygulanmis] {name}: on kosul 0 satir buluyor")
+            log.append({"repair": name, "state": "already_applied",
+                        "rows_found": 0, "why": why, "fixed_in": fixed_in})
             done += 1
             continue
         if found != expected:
@@ -79,6 +95,9 @@ def main():
                 print(f"[DURDU] {name}: uygulamadan sonra {kalan} satir kaldi")
                 sys.exit(1)
             print(f"[uygulandi] {name}")
+        log.append({"repair": name,
+                    "state": "applied" if args.apply else "pending",
+                    "rows_found": found, "why": why, "fixed_in": fixed_in})
         pending += 1
 
     if pending and not args.apply:
@@ -86,6 +105,22 @@ def main():
               f"python3 db_repair.py --apply")
     elif not pending:
         print(f"\n{done}/{len(REPAIRS)} duzeltme zaten uygulanmis.")
+
+    report = {
+        "question": "Which data repairs does this database carry, and why?",
+        "rule": ("a repair enters this file only after its cause is closed in "
+                 "code; every entry names the place that was fixed. Applying a "
+                 "repair by hand fixes it once; putting it in the rebuild graph "
+                 "makes it a rule, which matters because the intermediate CSV "
+                 "still carries the row the new code no longer produces."),
+        "checked_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "repairs": log,
+        "pending": pending if not args.apply else 0,
+    }
+    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as handle:
+        json.dump(report, handle, indent=2, ensure_ascii=False)
+        handle.write("\n")
     con.close()
 
 

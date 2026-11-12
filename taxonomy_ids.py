@@ -216,6 +216,39 @@ def write_tables(con, rows, lineages, genus_rows):
     con.commit()
 
 
+def nearest_ranks(taxid, nodes, names):
+    """taxid -> {rank: (ata_taxid, ata_adi)}; her rank'in EN YAKIN atasi.
+
+    NEDEN AYRI FONKSIYON. Cins kurali bu dosyanin sahipliginde, ama cins
+    sorusunu yalnizca replikonlar sormuyor: kapsama denetimi (coverage_audit)
+    DIS evrenin taxid'lerini de cinse cevirmek zorunda ve o taxid'ler bu
+    DB'nin hicbir tablosunda yok. Ikinci bir cozucu yazmak, bu dosyanin
+    varlik sebebi olan hatayi (ayni olcumun ikinci uygulamasi birincisiyle
+    sessizce ayrisir) aynen geri getirirdi.
+    """
+    out = {}
+    for anc in lineage_of(taxid, nodes):
+        rank = nodes.get(anc, (None, None))[1]
+        if rank in PUBLISHED_RANKS or rank in PROXY_RANKS:
+            #  lineage_of koke dogru gidiyor: ilk gorulen EN YAKIN olandir.
+            out.setdefault(rank, (anc, names.get(anc)))
+    return out
+
+
+def genus_from_ranks(ranks):
+    """Cins KARARI. Dondurur: (state, genus_taxid, genus_name, proxy_rank,
+    proxy_name). Kurali tek yerde tutan fonksiyon budur; cins soran her
+    yol -- replikon tablosu da, dis evren karsilastirmasi da -- bundan gecer.
+    """
+    got = ranks.get("genus")
+    if got:
+        return "ranked", got[0], got[1], None, None
+    for rank in PROXY_RANKS:
+        if rank in ranks:
+            return "unassigned", None, None, rank, ranks[rank][1]
+    return "unassigned", None, None, None, None
+
+
 def resolve_genus(rows, lineages):
     """Her replikon icin cinsi RANK'tan belirler; yoksa vekili yazar."""
     by_taxid = {}
@@ -226,17 +259,9 @@ def resolve_genus(rows, lineages):
         if current is None:
             out.append((nuc, None, None, None, "no_taxid", None, None))
             continue
-        ranks = by_taxid.get(current, {})
-        got = ranks.get("genus")
-        if got:
-            out.append((nuc, current, got[0], got[1], "ranked", None, None))
-            continue
-        proxy = next(((r,) + ranks[r] for r in PROXY_RANKS if r in ranks), None)
-        if proxy:
-            out.append((nuc, current, None, None, "unassigned",
-                        proxy[0], proxy[2]))
-        else:
-            out.append((nuc, current, None, None, "unassigned", None, None))
+        state, gtaxid, gname, proxy_rank, proxy_name = genus_from_ranks(
+            by_taxid.get(current, {}))
+        out.append((nuc, current, gtaxid, gname, state, proxy_rank, proxy_name))
     return out
 
 

@@ -2249,6 +2249,19 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("coverage_audit.json", "file",
+     "How much of the known protein universe carrying this domain (Pfam "
+     "PF00848 in UniProtKB) this database covers, measured by taxon rather "
+     "than by sequence, with the genera that are absent listed by name. "
+     "Eukaryotic lineages are reported separately, because this database "
+     "holds no eukaryotic genome.",
+     "coverage_audit.py"),
+    ("replicon_kind.json", "file",
+     "What each genome record actually is, read from its own GenBank LOCUS "
+     "molecule type: 1,897 of the records are mRNA transcripts rather than "
+     "replicons, and they are excluded from per-replicon denominators "
+     "instead of being deleted.",
+     "replicon_kind.py"),
     ("taxonomy_ids.json", "file",
      "NCBI taxid and rank-based genus for every genome record; the entries that "
      "NCBI assigns no genus at all are counted rather than dropped.",

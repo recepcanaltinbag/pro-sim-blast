@@ -222,6 +222,11 @@ IDENTIFIER_TEXT_FIELDS = {
     ("type_substrate_chebi", "chebi_label"),
     ("type_substrate_chebi", "formula"), ("type_substrate_chebi", "state"),
     ("type_substrate_chebi", "rhea"),
+    #  `replicon_kind`: dordu de KIMLIK ya da kontrollu sozluk --
+    #  `accession_prefix` NCBI'nin oneki, `moltype` GenBank'in LOCUS
+    #  alani, `record_kind` iki degerli bir sabit. Cevirilecek proza yok.
+    ("replicon_kind", "nucleotide_id"), ("replicon_kind", "accession_prefix"),
+    ("replicon_kind", "moltype"), ("replicon_kind", "record_kind"),
     ("cluster_sdp", "cluster"), ("cluster_sdp", "columns"), ("cluster_sdp", "method"),
     ("gene_category", "category"),
     # 2026-11-11, cross_references.py'nin yazdigi ro_xref. Ucu de KIMLIK:
@@ -3149,6 +3154,129 @@ def check_gff3_export(rep, con, root, out_dir="analysis_out"):
               f"dosya {len(regions)}, DB {n_rep_db}")
 
 
+def check_record_kind(rep, con, root, out_dir="analysis_out"):
+    """`replicon` tablosunun her satiri gercekten bir replikon mu?
+
+    NEDEN. Olculdu: dogrulanmis uyesi olan kayitlarin 958'i `XM_`/`NM_`
+    bir mRNA transkripti, ve bir transkript replikon degil. Bu satirlar
+    SILINMEZ (dizileri gercek), ama REPLIKON BASINA paydalarda duramazlar:
+    bir transkriptin komsu geni ya da tam operonu olamaz, dolayisiyla her
+    baglam istatistigi 958 kayit boyunca sifir toplayip paydada kalir --
+    yani bir OLCUM EKSIGI, bir biyolojik yokluk gibi yayimlanir.
+
+    KONTROL EDILEN: her satirin siniflandirilmis olmasi. Siniflandirilamayan
+    bir satir en tehlikeli durum, cunku hangi paydaya girdigi belirsiz
+    kalir. Ayrica onek ile kaydin kendi LOCUS beyani arasinda uyusmazlik
+    olmamasi: uyusmazlik hata degil ama SINIFLANDIRILMAMIS demektir.
+    """
+    tables = {r[0] for r in con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'")}
+    if "replicon_kind" not in tables:
+        rep.check("record_kind: kayit turleri siniflandirildi", False, 1,
+                  "replicon_kind tablosu yok -- "
+                  "`rebuild.py --run --only replicon_kind`")
+        return
+
+    missing = con.execute("""
+        SELECT COUNT(*) FROM replicon r
+         WHERE NOT EXISTS (SELECT 1 FROM replicon_kind k
+                            WHERE k.nucleotide_id = r.nucleotide_id)""").fetchone()[0]
+    rep.check("record_kind: her replikon satirinin bir turu var",
+              missing == 0, missing,
+              "siniflandirilmamis satir, payda belirsiz kalir")
+
+    unclassified = con.execute(
+        "SELECT COUNT(*) FROM replicon_kind "
+        "WHERE record_kind NOT IN ('genome','transcript')").fetchone()[0]
+    rep.check("record_kind: hicbir satir 'okunamadi'/'uyusmazlik' degil",
+              unclassified == 0, unclassified,
+              "kaydin LOCUS beyani okunamadi ya da onekle celisiyor")
+
+    #  Transkript kayitlari HALA uye uretiyor olmali: bu sayinin sifira
+    #  dusmesi, duzeltmenin satirlari silmeye kaydigi anlamina gelir.
+    kept = con.execute("""
+        SELECT COUNT(*) FROM ro r JOIN replicon_kind k USING(nucleotide_id)
+         WHERE r.is_confirmed = 1 AND k.record_kind = 'transcript'""").fetchone()[0]
+    rep.check("record_kind: transkript girisleri silinmedi, isaretlendi",
+              kept > 0, 0 if kept else 1,
+              f"{kept} dogrulanmis giris transkript kayitlarinda duruyor")
+
+
+def check_coverage_audit(rep, con, root, out_dir="analysis_out"):
+    """Kapsama denetiminin YAPISI ve TAZELIGI; acigin BUYUKLUGU degil.
+
+    NE KONTROL EDILMEZ -- ve bu kasitli. Bu kapi "acik kucuk olsun"
+    DEMEZ. Eksik cins sayisi bir kusur degil bir olcumdur; onu FAIL
+    yapmak, kapiyi veri BUYUTMEYE zorlayan bir mekanizmaya cevirir ve
+    kapinin isi o degil. Ustelik dis evren (UniProtKB'de PF00848) kendi
+    hizinda buyuyor; acigin buyumesi bizim bir seyi bozdugumuz anlamina
+    gelmez.
+
+    NE KONTROL EDILIR
+      1. Dis liste TAM. InterPro'nun beyan ettigi sayi ile cekilen sayi
+         esit olmali. Olculdu: ilk iki cekim 7.600 ve 2.600 kayitta
+         408'e takildi. YARIM bir dis liste, kapsama oranini oldugundan
+         YUKSEK gosterir (payda kuculur) -- yani eksik veri, eksik
+         oldugunu gizleyen yonde hata uretir. En tehlikeli yon bu.
+      2. Rapor BAYAT DEGIL. Raporun yazdigi "bizdeki cins sayisi",
+         `taxon_genus` tablosundan BAGIMSIZ olarak yeniden sayilir.
+         Esit degilse DB denetimden sonra degismistir ve yayimlanan
+         kapsama orani artik baska bir kumeyi anlatiyor.
+      3. KAPSAM BEYAN EDILMIS. PF00848 bakteriyel degil; kapsam ayrimi
+         yazili olmazsa "eksik takson" sayisi bu DB'nin hic hedeflemedigi
+         okaryotlarla sisirilir.
+    """
+    path = os.path.join(root, out_dir, "coverage_audit.json")
+    if not os.path.exists(path):
+        rep.check("coverage: kapsama denetimi yazildi", False, 1,
+                  "coverage_audit.json yok -- "
+                  "`rebuild.py --run --only coverage_audit`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    outside = data.get("external_universe") or {}
+    declared = outside.get("interpro_declared_count")
+    got = outside.get("records_fetched")
+    #  ESITLIK DEGIL YON. Olculdu: InterPro ilk sayfada 22.553 beyan
+    #  ediyor, cursor'u sonuna kadar yurumek 22.620 AYRI accession
+    #  veriyor; `count` bir onbellek tahmini, yurunen liste tukenmis.
+    #  Tehlikeli yon EKSIK cekmek: yarim bir dis liste paydayi kucultur
+    #  ve kapsama oranini oldugundan YUKSEK gosterir.
+    rep.check("coverage: dis protein listesi truncate edilmemis",
+              bool(got) and bool(outside.get("walk_not_truncated")),
+              max(0, (declared or 0) - (got or 0)),
+              f"InterPro {declared} beyan ediyor, yurunen liste {got} kayit")
+
+    #  Raporun kendi sayisina GUVENILMEZ: ayni sayi tablodan yeniden
+    #  uretilir. Iki yol da `taxonomy_ids`'in cins kuralindan geciyor,
+    #  ama biri dis taxid'leri cozen kod (classify), oteki yayimlanmis
+    #  tablo -- ayrisirlarsa biri bayat.
+    import ro_taxonomy
+    genus = ro_taxonomy.genus_map(con)
+    #  PAYDA RAPORUNKIYLE AYNI KAPSAMDA olmali: yalnizca GENOM kayitlari.
+    #  Ilk yazimda bu kisit yoktu ve kapi 950 (tum kayitlar) ile 720
+    #  (genom kayitlari) arasindaki farki bir BAYATLIK sandi. Iki yol
+    #  hala bagimsiz: biri `taxon_genus` tablosu, oteki dis taxid'leri de
+    #  cozen `classify()`.
+    rows = con.execute("""
+        SELECT DISTINCT r.nucleotide_id
+          FROM ro r JOIN replicon_kind k USING(nucleotide_id)
+         WHERE r.is_confirmed = 1 AND k.record_kind = 'genome'""").fetchall()
+    recount = len({genus[r[0]].key for r in rows if r[0] in genus})
+    claimed = (data.get("denominators") or {}).get("our_genera")
+    rep.check("coverage: raporun cins paydasi tabloyla uyusuyor",
+              recount == claimed, abs(recount - (claimed or 0)),
+              f"tabloda {recount} cins, raporda {claimed}")
+
+    scope = ((data.get("method") or {}).get("scope") or {})
+    in_scope = scope.get("in_scope_superkingdoms") or []
+    rep.check("coverage: kapsam beyan edilmis",
+              bool(in_scope) and bool(scope.get("our_side_by_superkingdom")),
+              0 if in_scope else 1,
+              f"kapsam ici superkingdom: {in_scope}")
+
+
 def check_substrate_chebi(rep, con, root, out_dir="analysis_out"):
     """Substratin kontrollu kimligi: KIMLIK ile ADAY birbirine karismasin.
 
@@ -4223,6 +4351,8 @@ def main():
         check_hmm_libraries_are_pinned(rep, con, ROOT)
         check_gff3_export(rep, con, ROOT)
         check_substrate_chebi(rep, con, ROOT)
+        check_record_kind(rep, con, ROOT)
+        check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)
         check_family_scan_is_fresh(rep, con, ROOT)

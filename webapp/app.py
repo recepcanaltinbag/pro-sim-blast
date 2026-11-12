@@ -1239,7 +1239,10 @@ def about(request: Request):
                       fresh=fresh, freshlink=link,
                       #  Model sabitlemesi: hangi HMM surumu yayimlanan
                       #  domain cagrilarini uretti (ROADMAP 135.5).
-                      pins=atlas.read_json(apath("hmm_pins.json")))
+                      pins=atlas.read_json(apath("hmm_pins.json")),
+                      #  Kapsama acigi: dis evrene gore ne kadarini
+                      #  kapsiyoruz, takson ekseninde (ROADMAP 135.9).
+                      coverage=atlas.read_json(apath("coverage_audit.json")))
     finally:
         con.close()
 
