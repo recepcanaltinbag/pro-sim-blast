@@ -659,6 +659,18 @@ ARTEFACTS = [
       "--out-json", f"{OUT}/ingest_gap.json"],
      ["ingest_gap.py", DB], False),
 
+    #  2026-11-14: provenance, validation_gate'in ONUNE tasindi. Kapi
+    #  her yayinlanan dosyanin TAZE oldugunu grafik durumundan yargiliyor
+    #  ve provenance.json o dosyalardan biri; grafikte kapidan SONRA
+    #  siralandigi icin provenance.py degistiginde kapi kendi
+    #  uretilmemis girdisine bayat diyordu. Dongu yok: provenance.py
+    #  kapinin ciktisini okumuyor (onu "artefakt yazmaz" listesinde
+    #  aniyor) ve provenance.json kapinin raporunu listelemiyor
+    #  (olculdu). Bugunun ucuncu ayni sinifi: sirayi beyan eden sey bu
+    #  listenin kendisi.
+    ("provenance", [f"{OUT}/provenance.json"],
+     ["python3", "provenance.py", "--db", DB, "--out-dir", OUT],
+     ["provenance.py", DB], False),
     # YAYIMLANAN SITENIN KENDISI. 2026-11-09'a kadar grafigin disindaydi:
     # her sey taze olsa bile canlidaki kopyanin eski olup olmadigini hicbir
     # sey sormuyordu. Olculen bedel: gh-pages 2026-11-02'de kalmisti ve
@@ -676,9 +688,6 @@ ARTEFACTS = [
      ["python3", "validate_curation.py", "--db", DB, "--ecology", ECO,
       "--chemistry", CHEM, "--out-dir", OUT],
      ["validate_curation.py", DB, ECO, CHEM, "ROs_71_Clean/ROmotif71_hmmaln.sto"], False),
-    ("provenance", [f"{OUT}/provenance.json"],
-     ["python3", "provenance.py", "--db", DB, "--out-dir", OUT],
-     ["provenance.py", DB], False),
 
     # AGIR: ~16 dakika, 3.282 statik sayfa. Hafif zincirde kosmaz; isi
     # bayatligi GORUNUR kilmak, kendiliginden yayim yapmak degil. Yayim
