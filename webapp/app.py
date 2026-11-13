@@ -2252,7 +2252,7 @@ def dl_analysis(name: str):
     #  okunur -- metin dosyalari da ikili olarak dogru gider.
     media = ("application/json" if name.endswith(".json")
              else "application/gzip" if name.endswith(".gz")
-             else "text/plain" if name.endswith((".txt", ".gff3"))
+             else "text/plain" if name.endswith((".txt", ".gff3", ".nwk"))
              else "text/csv")
     with open(apath(name), "rb") as handle:
         payload = handle.read()

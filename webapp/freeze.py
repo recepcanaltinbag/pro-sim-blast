@@ -205,8 +205,15 @@ def main():
     # ya sitede gorunup indirilemiyor ya da indirilip belgelenmemis oluyordu.
     import atlas as _atlas
     for name in sorted(_atlas.ANALYSIS_FILES):
-        if name.endswith(".nwk"):
-            continue          # agac /download/tree_all.nwk yolundan gidiyor
+        #  ATLAMA TEK DOSYAYA OZGU. Kural eskiden ".nwk ile bitenleri atla"
+        #  diyordu ve gerekcesi "agac kendi rotasindan gidiyor"du -- ama o
+        #  gerekce listedeki TEK .nwk olan tree_all.nwk icin gecerliydi.
+        #  2026-11-14'te iki bootstrap agaci da belgelenince genel kural
+        #  onlari da dusurdu: sayfa baglanti veriyor, dista aktarimda dosya
+        #  yok, ve check_site iki cozulmemis baglanti buldu. Kural artik onu
+        #  doguran olguyla ayni genislikte.
+        if name == "tree_all.nwk":
+            continue          # kendi rotasi var: /download/tree_all.nwk
         save("/download/analysis/" + name, "download/analysis/" + name)
     print(f"[pages] {len(clusters)} clusters")
     for c in clusters:
