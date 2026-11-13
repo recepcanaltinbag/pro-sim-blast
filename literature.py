@@ -75,6 +75,21 @@ UA = "ROAR-DB/1.0 (literature.py; mailto:noreply@example.org)"
 #  kuratorun cumlesi noktalama ile bitebiliyor, o yuzden sagdan temizlenir.
 DOI_RE = re.compile(r"\b10\.\d{4,9}/[^\s,;)\]\"']+", re.I)
 PMID_RE = re.compile(r"\bPMID:?\s*(\d{6,8})\b", re.I)
+#  PMC kimligi de bir LITERATUR tanimlayicisidir ve ilk yazim onu
+#  tanimiyordu: `1_107_CndA`'nin kuratorluk kaynagi tek basina
+#  "PMC4135782" yaziyor, ve tip "atfi yok" diye raporlaniyordu. Oysa
+#  NCBI'nin kimlik cevirici servisi onu DOI ve PMID'ye coziyor
+#  (PMC4135782 -> 10.1128/AEM.00659-14, PMID 24928877). Aracin
+#  tanimadigi bir bicim, var olmayan bir kaynak gibi gorunuyordu.
+PMC_RE = re.compile(r"\bPMC(\d{6,9})\b")
+
+#  KURATORUN BEYAN ETTIGI YOKLUK. Bu cumle `chemistry.csv`'de sabit bir
+#  formul olarak geciyor (olculdu: 11 tipte, hepsi source_kind=general,
+#  ve general olup bu cumleyi TASIMAYAN 6 tip var -- yani alanin kendisi
+#  bu sinyali vermiyor, cumle veriyor). "Atif bulunamadi" ile "kurator
+#  tek tek atif OLMADIGINI kaydetti" ayri seylerdir ve sayfada ayri
+#  okunmalari gerekir.
+DECLARED_NONE = "no individual citation recorded"
 UNIPROT_RE = re.compile(r"UniProt[:\s]+([A-Z0-9]{6,10})")
 PDB_RE = re.compile(r"\bPDB\s+([0-9][A-Za-z0-9]{3})")
 
@@ -157,8 +172,24 @@ def anchors(root):
                 "source_kind": row.get("source_kind") or "",
                 "uniprot": sorted(ups),
                 "pdb": sorted(pdbs),
+                "pmc": sorted({"PMC" + m for m in PMC_RE.findall(text)}),
+                #  Beyan YALNIZCA kuratorluk `source` alanindan okunur;
+                #  `notes` icinde gecen ayni cumle bir baska tipin
+                #  duzeltmesinden bahsediyor olabilir.
+                "declared_none": DECLARED_NONE in (row.get("source") or ""),
             }
     return out
+
+
+def sentence_around(text, at, at_end):
+    """Tanimlayicinin GECTIGI cumle. Nokta sinirini tanimlayicinin ICINDEN
+    gecmeyecek sekilde bulur: "nokta + bosluk ya da metin sonu"."""
+    stops = [m.start() for m in re.finditer(r"\.(?=\s|$)", text)]
+    before = [i for i in stops if i < at]
+    after = [i for i in stops if i >= at_end]
+    left = (before[-1] + 1) if before else 0
+    right = after[0] if after else len(text) - 1
+    return re.sub(r"\s+", " ", text[left:right + 1]).strip()[:400]
 
 
 def curated_records(cluster, info):
@@ -174,14 +205,6 @@ def curated_records(cluster, info):
     for match in PMID_RE.finditer(text):
         found.setdefault(("pmid", match.group(1)), (match.start(), match.end()))
 
-    #  CUMLE SINIRI. Ilk yazim ilk noktaya kadar kesiyordu ve nokta
-    #  DOI'nin ICINDE kaliyordu: "doi:10.1016/j.checat." gibi bir baglam
-    #  okuyucuya yardim etmek yerine yanlis bir tanimlayici gosteriyordu.
-    #  Cumle sonu artik "nokta + bosluk ya da metin sonu" olarak okunuyor,
-    #  yani tanimlayicilarin icindeki noktalar sinir sayilmiyor.
-    boundary = re.compile(r"\.(?=\s|$)")
-    stops = [m.start() for m in boundary.finditer(text)]
-
     records = []
     for (kind, value), span in sorted(found.items(), key=lambda kv: kv[1]):
         at, at_end = span
@@ -189,16 +212,11 @@ def curated_records(cluster, info):
         #  metninde bir DUZELTMENIN gerekcesi olarak da gecebiliyor, ve o
         #  zaman "bu tipin makalesi" degildir. Cumleyi yayinlamak, kaydi
         #  okuyanin bunu kendisi gormesini saglar.
-        before = [i for i in stops if i < at]
-        after = [i for i in stops if i >= at_end]
-        left = (before[-1] + 1) if before else 0
-        right = after[0] if after else len(text) - 1
-        sentence = text[left:right + 1].strip()
         records.append({
             "source": "curated",
             "doi": value if kind == "doi" else None,
             "pmid": value if kind == "pmid" else None,
-            "context": re.sub(r"\s+", " ", sentence)[:400],
+            "context": sentence_around(text, at, at_end),
         })
     return records
 
@@ -268,6 +286,41 @@ def uniprot_records(cluster, info, cache):
                 "authors": (cit.get("authors") or [])[:6],
                 "function_evidence": bool(pmid and str(pmid) in evidence),
             })
+    return records
+
+
+def pmc_records(cluster, info, cache):
+    """Kuratorun yazdigi PMC kimligini DOI ve PMID'ye cozer.
+
+    Kaynak `curated` kalir: tanimlayiciyi gosteren sey bu projenin kendi
+    kuratorluk metni. Cozum yalnizca onu okunabilir bir atfa cevirir ve
+    hangi PMC'den geldigi kayitta durur; cozulemezse PMC kimligi YINE DE
+    yayinlanir, cunku kuratorun gosterdigi kaynak odur.
+    """
+    records = []
+    for pmc in info["pmc"]:
+        data = cache.get(
+            "idconv_" + pmc,
+            "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/"
+            "?ids=%s&format=json&tool=roar-db&email=noreply@example.org" % pmc)
+        doi = pmid = None
+        if data:
+            for rec in (data.get("records") or []):
+                if rec.get("requested-id") == pmc or rec.get("pmcid") == pmc:
+                    doi = (rec.get("doi") or "").lower() or None
+                    pmid = str(rec["pmid"]) if rec.get("pmid") else None
+        m = PMC_RE.search(info["text"])
+        records.append({
+            "source": "curated",
+            "anchor": pmc,
+            "doi": doi,
+            "pmid": pmid,
+            #  Baglam, digerleri gibi kuratorun KENDI cumlesi; sabit bir
+            #  cumle yazmak sayfada "Cited in ... as: 'Cited in ... as'"
+            #  diye ikileniyordu.
+            "context": sentence_around(info["text"], m.start(), m.end())
+                       if m else None,
+        })
     return records
 
 
@@ -342,8 +395,10 @@ def main():
 
     types = {}
     flat = []
+    absent = {}
     for cluster in sorted(info):
         recs = curated_records(cluster, info[cluster])
+        recs += pmc_records(cluster, info[cluster], cache)
         recs += pdb_records(cluster, info[cluster], cache)
         recs += uniprot_records(cluster, info[cluster], cache)
         #  Ayni DOI birden fazla kaynaktan gelebilir. BIRLESTIRILMEZ:
@@ -358,6 +413,16 @@ def main():
             rec["cluster"] = cluster
         types[cluster] = recs
         flat += recs
+        if not recs:
+            #  YOKLUK BIR SINIFLANDIRMADIR. `declared_none`: kurator tek
+            #  tek atif olmadigini KAYDETTI, yani bakildi ve yoktu.
+            #  `none_found`: hicbir tanimlayici bulunamadi ve boyle bir
+            #  beyan da yok, yani bu bir ACIK IS. Ikisini tek "atfi yok"
+            #  kovasina koymak, yapilmis bir kuratorluk kararini
+            #  yapilmamis gibi gosterirdi.
+            absent[cluster] = ("declared_none"
+                               if info[cluster]["declared_none"]
+                               else "none_found")
 
     resolved = resolve_dois(flat, cache)
 
@@ -389,6 +454,19 @@ def main():
             "reference list, and only those marked `function_evidence` are "
             "attached by UniProt as evidence for a statement about what the "
             "enzyme does.",
+        "absence_is_classified": {
+            "what_this_means":
+                "A type with no identifier is not one thing. "
+                "`declared_none` means this project's curation explicitly "
+                "records that no individual citation exists for the "
+                "reference enzyme: it was looked for. `none_found` means no "
+                "identifier was found and no such statement was made, so it "
+                "is an open item.",
+            "declared_none": sorted(c for c, k in absent.items()
+                                    if k == "declared_none"),
+            "none_found": sorted(c for c, k in absent.items()
+                                 if k == "none_found"),
+        },
         "coverage": {
             "types": len(types),
             "types_with_any_citation": len(with_any),

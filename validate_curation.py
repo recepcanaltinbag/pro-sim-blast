@@ -3735,23 +3735,42 @@ def check_literature(rep, root, out_dir="analysis_out"):
     for rec in records:
         if rec.get("source") != "curated":
             continue
-        ident = rec.get("doi") or rec.get("pmid")
-        ctx = rec.get("context") or ""
-        if ident and ident.lower() not in ctx.lower():
-            truncated.append(f"{rec.get('cluster')}: {ident}")
+        #  Soru: yayinlanan baglam, KURATORUN YAZDIGI tanimlayiciyi
+        #  iceriyor mu? Bir PMC kaydinda kuratorun yazdigi sey PMC
+        #  kimligidir; DOI ve PMID sonradan NCBI'nin kimlik ceviricisinden
+        #  geliyor ve cumlede gecmezler. Ilk yazim yalnizca doi/pmid'ye
+        #  bakiyordu ve cozulmus bir PMC kaydini "kesilmis cumle" sanip
+        #  FAIL verecekti -- yani kontrolun kendisi yanlis soruyu soruyor
+        #  olacakti.
+        candidates = [v for v in (rec.get("doi"), rec.get("pmid"),
+                                  rec.get("anchor")) if v]
+        ctx = (rec.get("context") or "").lower()
+        if candidates and not any(v.lower() in ctx for v in candidates):
+            truncated.append(f"{rec.get('cluster')}: {candidates[0]}")
     rep.check("literatur: baglam cumlesi tanimlayicisini iceriyor",
               not truncated,
               len([r for r in records if r.get("source") == "curated"]),
               ("cumle tanimlayicinin icinden kesilmis: " + "; ".join(truncated[:4]))
               if truncated else "her kuratorluk baglami kendi tanimlayicisini tasiyor")
 
+    #  YOKLUK SINIFLANDIRILMIS OLARAK SAYILIR. "8 tipte atif yok" demek,
+    #  yapilmis bir kuratorluk kararini yapilmamis gibi gosteriyordu:
+    #  yedisinde kurator tek tek atif OLMADIGINI kaydetmis (bakilmis),
+    #  yalnizca biri gercek acik is. Kapi acik isi sayar, kararı saymaz.
+    absent = data.get("absence_is_classified") or {}
+    declared = absent.get("declared_none") or []
+    open_items = absent.get("none_found") or []
     cov = data.get("coverage") or {}
-    none_count = cov.get("types_with_none")
-    rep.check("literatur: her tipin bir atfi var", not none_count,
-              cov.get("types") or len(types),
-              f"{none_count} tipte hicbir tanimlayici yok: kuratorluk metninde "
-              f"DOI/PMID yazmamis ve referans proteininin UniProt/PDB bagi yok"
-              if none_count else "her tipte en az bir tanimlayici var",
+    rep.check("literatur: atfi olmayan her tip siniflandirilmis",
+              (len(declared) + len(open_items)) == (cov.get("types_with_none") or 0),
+              cov.get("types_with_none") or 0,
+              f"{len(declared)} tipte kurator 'tek tek atif yok' diye kaydetmis, "
+              f"{len(open_items)} tip acik is olarak isaretli")
+    rep.check("literatur: atif icin acik is yok", not open_items,
+              len(open_items),
+              "acik is yok; atfi olmayan tiplerin hepsi kuratorun beyani"
+              if not open_items else
+              f"kuratorluk okumasi bekleyen tip: {', '.join(open_items)}",
               severity="WARN")
 
 

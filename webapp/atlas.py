@@ -185,6 +185,15 @@ def literature_view(cluster, path=None):
         path = os.path.join(_DEFAULT_ANALYSIS_DIR, "literature.json")
     records = _literature_raw(path).get(cluster) or []
     if not records:
+        #  KAYIT YOKSA DA BIR SEY SOYLENIR. Yokluk siniflandirilmis
+        #  (literature.py): `declared_none` kuratorun tek tek atif
+        #  olmadigini KAYDETTIGI durum, `none_found` ise acik is. Bolumu
+        #  hic basmamak ikisini de "sessizlik" yapiyordu, ve yapilmis bir
+        #  kuratorluk karari yapilmamis gibi gorunuyordu.
+        absent = (read_json(path) or {}).get("absence_is_classified") or {}
+        if cluster in (absent.get("declared_none") or []):
+            return {"curated": [], "structure": [], "uniprot": [],
+                    "total": 0, "unresolved": [], "declared_none": True}
         return None
 
     groups = {"curated": {}, "structure": {}, "uniprot": {}}

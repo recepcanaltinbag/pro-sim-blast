@@ -152,6 +152,13 @@
 {%- endmacro %}
 <h2>Literature</h2>
 
+{% if lit.declared_none %}
+<p class="note">This project's curation records <b>no individual citation</b> for this type's
+reference enzyme: the substrate and reaction come from established literature on the enzyme rather
+than from one paper identified during curation. That is a recorded decision, not a gap we have yet
+to look at &mdash; and it is written here so the empty section is not read as silence.</p>
+{% endif %}
+
 {% if lit.curated %}
 <h3>What this project cites for this type</h3>
 <ul class="lit">
