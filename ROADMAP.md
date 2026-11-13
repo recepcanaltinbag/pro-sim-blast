@@ -5722,3 +5722,62 @@ orani) yayimlanacaksa KANIT KADEMESINE gore bolunmek zorunda -- tipki
 reaksiyon sinifina gore bolunmesi gerektigi gibi (135.26). Tek bir oran,
 "%4" ile "%77"yi ayni sayida toplar ve okuyucu onu biyolojik bir olgu
 sanir. Su an hicbir yerde yayimlanmiyor.
+
+### 135.28 — Kullanicinin qxyA sorusu: kimlik hesabi saglam, INGEST acik -- 12.312 kayit
+
+Kullanici `5_505_qxyA` icin "referansa daha yakin homolog cikmasi lazim,
+genel bir bug mi var" diye sordu, ve "NCBI'da blastlayinca %95 ustu
+buluyordum, nukleotid dizileri de vardi" dedi. Uc katman olculdu; ikisi
+temiz, ucuncusu gercek bir acik.
+
+**1. KIMLIK HESABI SAGLAM.** qxyA referansi 15.960 dogrulanmis dizinin
+tamamina karsi dogrudan blastlandi: kendisi haric en iyi isabet **%45,5**
+-- `ro_evidence`in dedigiyle birebir ayni. Kademe hesabinda kusur YOK.
+
+**2. YAKIN HOMOLOGLAR VERIDE VAR, AMA UYE SAYILMIYOR.** Birlesik kumede
+**%97,4** (`A0A1H4ZH95`, *Pseudomonas saponiphila*) ve **%97,1**
+(`A0AAP4RC76`) kimlikli iki dizi var. Ikisi de kapiyi geciyor, Rieske
+saglam, ucgen 3/3, ve `ro_cluster` zaten `5_505_qxyA`. Gorunmemelerinin
+sebebi `has_genomic_context=0`: uye sayilari ve kademe dagilimi yalnizca
+genomik `ro` tablosundan hesaplaniyor. qxyA'da 164 uye gorunurken
+birlesimde 1.293 dizi var (1.145'i baglamsiz); veritabani genelinde
+kapiyi gecen + tipe atanmis + baglamsiz **55.859** dizi.
+
+Bu mimari bir karar ve tip sayfasi birlesim sayisini ZATEN acikliyor
+("N further sequences are not counted here"). Ama **kanit kademesi
+dagilimi aciklamiyor**, ve bu gece 135.27'de tam olarak o tabloya
+dayanmistim -- "qxyA'nin yakin homologu yok" cumlesi kademelerden
+okunursa YANLIS.
+
+**3. GERCEK ACIK: GENOMLAR INDIRILMEMIS.** %97,4'luk homolog
+`FNTJ01000003` contig'inde (FNTJ01 derlemesi). Bizde o turden tek kayit
+var ve BASKA bir derlemeden: `NZ_JAOXCB010000053.1`, 37,5 kb, 32 CDS,
+uzerinde qxyA degil bir `5_508_GbcA`. Yani ingest CONTIG BAZLI -- ilk
+aramada isabet veren contig alinmis, kardesleri ve alternatif derlemeler
+alinmamis.
+
+**OLCEK (`ingest_gap.py`).** Baglamsiz + kapiyi gecen + tipe atanmis
+dizilerin UniProt EMBL capraz referanslari okundu:
+
+| | |
+|---|---|
+| EMBL nukleotid xrefi olan dizi | 17.930 |
+| xref kaydi bizde olan | 501 |
+| **bizde OLMAYAN ayri kayit** | **12.312** |
+| **baglam kazanacak dizi** | **17.528** |
+
+Tip basina kazanc (ilk 5): `5_504_CntA` +2.463, `5_506_Stc2` +1.587,
+`5_507_BmoA` +1.194, `3_313_KshA15` +981, `1_106_TsaM` +957.
+**`5_505_qxyA` +258** -- kullanici "en az bes tane" demisti.
+
+Liste TAHMIN DEGIL: her satirin arkasinda, accession'i bilinen bir
+kayitta duran, kapimizi gecmis ve tiplenmis en az bir dizi var. En
+verimli satir `CP000699`: tek kayit, 23 tipten 51 dizi.
+
+**INDIRILMEDI.** 12.312 kayit almak yayimlanan her sayiyi degistirir
+(yeni veri surumu) ve bu kuratorun karari. Liste
+`analysis_out/ingest_gap.csv`.
+
+**ACIK IS.** Kanit kademesi dagilimini birlesik kume icin de hesaplamak
+ya da en azindan kademe tablosunun hangi paydayi kapsadigini sayfada
+yazmak -- yoksa 135.27'deki gibi bir okuma yine yapilir.

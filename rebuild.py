@@ -485,6 +485,14 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  ingest_gap: kimligi BELLI ama indirilmemis nukleotid kayitlari.
+    #  `cross_references`ten SONRA olmak zorunda -- listeyi `ro_xref`in
+    #  EMBL satirlari uretiyor. Indirmez, yalnizca listeler (135.28).
+    ("ingest_gap", [f"{OUT}/ingest_gap.csv", f"{OUT}/ingest_gap.json"],
+     ["python3", "ingest_gap.py", "--db", DB,
+      "--out-csv", f"{OUT}/ingest_gap.csv",
+      "--out-json", f"{OUT}/ingest_gap.json"],
+     ["ingest_gap.py", DB], False),
     #  residual_beta_audit: kapinin 60'lik artakalan butcesinin NE
     #  oldugunu olcer (psodogen mi, gercek catisma mi). Girdisi DB +
     #  gbk_files; kaynak kayittaki CDS niteliklerini okur (ROADMAP

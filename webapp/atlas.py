@@ -2249,6 +2249,16 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("ingest_gap.csv", "file",
+     "Nucleotide records named in this database's own cross-references but "
+     "never downloaded: 12,312 of them hold 17,528 sequences that already "
+     "pass the gate and carry a type but have no genomic context, so they "
+     "count in no per-type total.",
+     "ingest_gap.py"),
+    ("ingest_gap.json", "file",
+     "The same gap by type: how many sequences each type would gain if those "
+     "records were fetched.",
+     "ingest_gap.py"),
     ("residual_beta_audit.json", "file",
      "Why 60 neighbours the annotation calls a beta subunit are not "
      "classified as one. Measured from the GenBank records: 58 are "
