@@ -205,6 +205,12 @@ EXTERNAL_TEXT_FIELDS = {
 # Kimlik, kod ve olcum sutunlari: serbest metin tasimadiklari icin dil
 # kontrolune girmezler.
 IDENTIFIER_TEXT_FIELDS = {
+    #  2026-11-13, ro_cds_span.py. `candidate_id` aday kimligi,
+    #  `parts` ise "start-end;start-end" biciminde KOORDINAT dizgisi --
+    #  olculdu, en uzunu 80 parca tasiyor ve biri replikonun orijinini
+    #  asiyor (CP060714.1: 0-2596;5167250-5167372). Ikisinde de cevrilecek
+    #  proza yok; cevirmek koordinati bozardi.
+    ("ro_cds_span", "candidate_id"), ("ro_cds_span", "parts"),
     # 2026-11-11, taxonomy_ids.py. Hepsi KIMLIK ya da NCBI'nin kendi
     # terimleri: `rank` NCBI rank sozlugunden sabit bir deger ('genus',
     # 'subgenus', ...), adlar bilimsel ad, `status` dort degerli sabit.
@@ -2524,7 +2530,7 @@ def check_component_scan_is_fresh(rep, con, root):
     #  oluyor, ve ikisi sessizce ayrisabilir: biri bayat kalirsa kapi
     #  "60 psodogen" diye yayimlarken denetim 61 protein sayar. Esitlik
     #  sinanir, boylece hangisinin bayat oldugu belli olur.
-    audit = os.path.join(root, out_dir, "residual_beta_audit.json")
+    audit = os.path.join(root, "analysis_out", "residual_beta_audit.json")
     if os.path.exists(audit):
         with open(audit, encoding="utf-8") as handle:
             counted = len((json.load(handle) or {}).get("proteins") or [])
@@ -3774,6 +3780,24 @@ def check_step_order_matches_reads(rep, root):
     import re as _re
     produced = {"ro_xref": "cross_references", "ro_union": "union",
                 "ro_union_source": "union", "ro_protein_status": "protein_entries"}
+
+    #  MUAFIYETLER, VE MUAFIYETIN KENDISI DE SINANIR. Bir adimin kaynaginda
+    #  bir tablo adi gecmesi, o adimin O CAGRIDA onu okudugu anlamina
+    #  gelmiyor: okuma, grafigin hic vermedigi bir bayragin arkasindaki
+    #  yolda olabilir. `a5_cohort.py` `ro_union`i yalnizca
+    #  `write_manifest()` icinde okuyor ve grafik `--write-manifest`
+    #  bayragini HIC vermiyor, cunku manifesto kohortun TANIMI ve her
+    #  derlemede yeniden turetilmemeli.
+    #
+    #  Muaf tutmak yetmez: sinanmayan bir muafiyet kalici bir kor nokta
+    #  olur. Her muafiyet, muafiyeti gecerli kilan bayragin komutta
+    #  OLMADIGINI sart kosar. Bayrak bir gun eklenirse muafiyet duser ve
+    #  kontrol yeniden FAIL verir.
+    exempt = {
+        ("a5_cohort", "ro_union"): "--write-manifest",
+        ("a5_cohort", "ro_union_source"): "--write-manifest",
+        ("a5_cohort", "ro_protein_status"): "--write-manifest",
+    }
     try:
         src = open(os.path.join(root, "rebuild.py")).read()
     except OSError as err:                                # noqa: BLE001
@@ -3785,6 +3809,8 @@ def check_step_order_matches_reads(rep, root):
     order = [n for n, _o, _c in steps]
     index = {n: i for i, n in enumerate(order)}
     scripts = {n: _re.findall(r'"([A-Za-z0-9_]+\.py)"', c) for n, _o, c in steps}
+    #  Muafiyet sinamasi komutun METNINE bakiyor: bayrak orada mi?
+    commands = {n: c for n, _o, c in steps}
 
     wrong = []
     for name in order:
@@ -3801,9 +3827,20 @@ def check_step_order_matches_reads(rep, root):
                          or _re.search(r"name='%s'" % table, body))
                 if not reads or producer not in index:
                     continue
-                if index[name] < index[producer]:
-                    wrong.append(f"{name} ({fname}) {table} okuyor ama "
-                                 f"{producer}'den ONCE siralanmis")
+                if index[name] >= index[producer]:
+                    continue
+                flag = exempt.get((name, table))
+                if flag is not None:
+                    if flag not in commands.get(name, ""):
+                        #  Muafiyet gecerli: okuma o bayragin arkasinda ve
+                        #  bayrak komutta yok.
+                        continue
+                    wrong.append(f"{name} ({fname}) {table} okuyor, muafiyeti "
+                                 f"{flag} bayraginin YOKLUGUNA dayaniyordu ama "
+                                 f"bayrak artik komutta var")
+                    continue
+                wrong.append(f"{name} ({fname}) {table} okuyor ama "
+                             f"{producer}'den ONCE siralanmis")
     rep.check("graph: adim sirasi okudugu tabloyla uyumlu", not wrong,
               len(order),
               "; ".join(wrong) if wrong

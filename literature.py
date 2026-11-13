@@ -376,18 +376,19 @@ def main():
         "module": "literature.py",
         "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "what_was_measured":
-            "Her kuratorlu tip icin literatur tanimlayicilari, UC AYRI "
-            "kaynaktan ve kaynagi KAYITTA yazili olarak: kendi kuratorluk "
-            "metnimizde yazili olanlar (curated), tipin PDB kaydinin "
-            "birincil atifi (pdb_primary), ve referans proteinin UniProt "
-            "kaydinin atif listesi (uniprot).",
+            "Literature identifiers for each curated type, from THREE "
+            "SEPARATE sources with the source recorded ON EACH RECORD: "
+            "identifiers written in this project's own curation (curated), "
+            "the primary citation of the type's PDB entry (pdb_primary), "
+            "and the reference list of the reference protein's UniProt "
+            "entry (uniprot).",
         "what_this_is_not":
-            "Bir kaydin listede olmasi, o makalenin bu tipin substrat "
-            "atamasini destekledigi anlamina GELMEZ. Yalnizca `curated` "
-            "kayitlari bu projenin gosterdigi gerekcedir; `uniprot` "
-            "kayitlari girisin atif listesidir ve yalnizca "
-            "`function_evidence` isaretli olanlar bir islev iddiasina "
-            "kanit olarak baglanmistir.",
+            "A record appearing here does NOT mean that paper supports this "
+            "type's substrate assignment. Only `curated` records are the "
+            "basis this project cites; `uniprot` records are the entry's "
+            "reference list, and only those marked `function_evidence` are "
+            "attached by UniProt as evidence for a statement about what the "
+            "enzyme does.",
         "coverage": {
             "types": len(types),
             "types_with_any_citation": len(with_any),
@@ -402,7 +403,7 @@ def main():
             "resolved": len([d for d in resolved if resolved[d] is True]),
             "unresolved": unresolved,
             "not_checked": unchecked,
-            "method": "GET https://doi.org/api/handles/<doi>, responseCode 1 kayitli demektir; yayincinin sayfasina GIDILMEZ, cunku bircok yayinci bota 403 donuyor ve o 403 'DOI olu' diye okunuyordu",
+            "method": "GET https://doi.org/api/handles/<doi>; responseCode 1 means the DOI is registered. The publisher's page is NOT opened: many publishers answer an automated request with an error, and reading that error as a dead DOI marked 79 of 125 valid DOIs as broken in the first version of this check",
         },
         "cache": {
             "path": args.cache,
