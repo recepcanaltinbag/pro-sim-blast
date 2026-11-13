@@ -321,6 +321,9 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
   border-left: 1px solid var(--rule);
 }
 .pdbbar__layers label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+/*  Temas katmaninin kirpma uyarisi. Goruntuleyicinin UZERINE degil
+    ANAHTARLARIN yanina yaziliyor: kaplayan bir not figuru gizler.      */
+.pdbtrunc { flex-basis: 100%; color: var(--dim); font-size: .78rem; }
 @media (max-width: 700px) {
   .pdbbar__layers { padding-left: 0; margin-left: 0; border-left: 0; width: 100%; }
 }

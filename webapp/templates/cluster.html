@@ -346,11 +346,14 @@
         cevaplamiyor. Varsayilan secim "ne baglaniyor ve neye" sorusunu
         cevaplayacak kadar, kalabalik etmeyecek kadar.                     #}
     <span class="pdbbar__layers" id="pdblayers" hidden>
-      <label><input type="checkbox" id="lay-pocket" checked> pocket residues</label>
+      <label><input type="checkbox" id="lay-ligating" checked> iron-binding residues</label>
+      <label><input type="checkbox" id="lay-pocket"> rest of the pocket</label>
       <label><input type="checkbox" id="lay-bonds" checked> metal bonds</label>
       <label><input type="checkbox" id="lay-ligand" checked> bound molecules</label>
+      <label><input type="checkbox" id="lay-contacts" checked> ligand contacts</label>
       <label><input type="checkbox" id="lay-labels"> distances</label>
       <label><input type="checkbox" id="lay-chain" checked> protein outline</label>
+      <span class="pdbtrunc" id="pdbtrunc" hidden></span>
     </span>
     {% endif %}
   </div>
@@ -361,7 +364,14 @@
     <p class="note">Distances are measured in {{ x.site.pdb }} from the iron to the nearest atom of
     each residue. The alignment column is the position in the 426-column profile, so the same
     column can be compared between types. The three residues that coordinate the iron are the
-    2-His-1-carboxylate facial triad that defines this family.</p>
+    2-His-1-carboxylate facial triad that defines this family.
+    <b>In the figure</b>, &ldquo;Active site only&rdquo; draws the same residues: the iron-binding
+    ones are a separate layer from the rest of the pocket, so the triad can be seen with the iron
+    and nothing else. Any molecule bound near the iron is its own layer, and
+    <i>ligand contacts</i> draws every heavy-atom distance of 4.0&nbsp;&Aring; or less between that
+    molecule and a nitrogen, oxygen or sulfur of the displayed chain. Those lines are contact
+    distances, not assigned hydrogen bonds: crystal structures rarely place the hydrogens, so the
+    angle cannot be measured and the interpretation is left to the reader.</p>
     <div class="tablewrap"><table class="data compact">
     <thead><tr><th>Residue</th><th class="num">Distance to iron</th>
     <th class="num">Profile column</th><th>Role</th></tr></thead>
@@ -987,20 +997,34 @@ target. A variant is the finest unit at which a distinct function can reasonably
 
     var nums = SITE.residues.map(function (r) { return parseInt(r.number, 10); })
                             .filter(function (n) { return !isNaN(n); });
-    var sel = { chain: SITE.iron_chain, resi: nums };
-    if (layerOn('lay-pocket')) {
-      viewer.setStyle(sel, { stick: { radius: 0.17, colorscheme: 'default' } });
-    }
 
-    /* Demiri tutan uc kalinti vurgulanir: bu grubun tanimi odur. */
+    /*  Demiri TUTAN kalintilar ile cepheyi SARAN kalintilar ayri katman.
+        Ikisi tek anahtarda iken "yalnizca katalitik kalintilari demirle
+        birlikte gor" istegi karsilanamiyordu: yaricap icindeki her kalinti
+        birden aciliyordu ve asil uclu kalabaligin icinde kayboluyordu.
+        Tutanlar `SITE.contacts`ten geliyor, yani listenin kendisinden
+        turetilmiyor -- hangi kalintinin demire BAGLI oldugu sunucuda
+        olculmus bir seydir, burada yeniden tahmin edilmiyor.             */
     var ligNums = (SITE.contacts || []).map(function (c) {
       var m = /\/([A-Z]{3})(\d+):/.exec(c.atom);
       return m ? parseInt(m[2], 10) : null;
     }).filter(Boolean);
-    if (ligNums.length && layerOn('lay-pocket')) {
+
+    var shellNums = nums.filter(function (n) { return ligNums.indexOf(n) < 0; });
+    if (layerOn('lay-pocket') && shellNums.length) {
+      viewer.setStyle({ chain: SITE.iron_chain, resi: shellNums },
+                      { stick: { radius: 0.17, colorscheme: 'default' } });
+    }
+    if (layerOn('lay-ligating') && ligNums.length) {
       viewer.setStyle({ chain: SITE.iron_chain, resi: ligNums },
                       { stick: { radius: 0.24, color: dark ? '#e0a96d' : '#9a5b18' } });
     }
+
+    /*  Yakinlastirma GORUNEN katmana gore: cephe kapaliyken butun yaricapa
+        zoomlamak bos alana zoomlamak olurdu.                              */
+    var zoomNums = layerOn('lay-pocket') ? nums
+                 : (layerOn('lay-ligating') && ligNums.length ? ligNums : nums);
+    var sel = { chain: SITE.iron_chain, resi: zoomNums };
 
     /*  BAGLI MOLEKULLER. Kristalde demirin yakininda duran her protein-disi
         grup gosterilir: bazilarinda substrat analogu, bazilarinda dogrudan
@@ -1008,18 +1032,78 @@ target. A variant is the finest unit at which a distinct function can reasonably
         yani kristalizasyon katkilari uzakta kaldigi icin kendiliginden
         eleniyor; sunucuda ayrica geometri hesaplamak gerekmedi. Su ve basit
         iyonlar acikca disarida. */
+    /*  Secici katmanin DISINDA tanimlaniyor: asagidaki temas katmani da ayni
+        secimi okuyor, ve `var`in blok disindan gorunur olmasina guvenmek
+        sessiz bir kirilganlik olurdu.                                     */
+    var skip = ['HOH', 'WAT', 'NA', 'CL', 'MG', 'CA', 'ZN', 'K', 'SO4', 'PO4',
+                'GOL', 'EDO', 'ACT', 'MPD', 'PEG', 'DMS', 'NO3', 'FE', 'FE2',
+                'FES', 'SF4'];
+    var near = { within: { distance: 9.0, sel: { resn: ['FE', 'FE2'] } },
+                 hetflag: true, not: { resn: skip } };
     if (layerOn('lay-ligand')) {
-      var skip = ['HOH', 'WAT', 'NA', 'CL', 'MG', 'CA', 'ZN', 'K', 'SO4', 'PO4',
-                  'GOL', 'EDO', 'ACT', 'MPD', 'PEG', 'DMS', 'NO3', 'FE', 'FE2',
-                  'FES', 'SF4'];
-      var near = { within: { distance: 9.0, sel: { resn: ['FE', 'FE2'] } },
-                   hetflag: true, not: { resn: skip } };
       viewer.setStyle(near, { stick: { radius: 0.22, colorscheme: 'greenCarbon' } });
       viewer.addStyle(near, { sphere: { scale: 0.22 } });
     }
 
     viewer.setStyle({ resn: ['FE', 'FE2'] }, { sphere: { scale: 0.5, color: '#b5503f' } });
     viewer.setStyle({ resn: ['FES', 'SF4'] }, { sphere: { scale: 0.32 } });
+
+    /*  LIGAND TEMASLARI. Demir koordinasyonu asagida ayri cizilir; burada
+        bagli molekulun KENDISININ proteinle temaslari var. Olcut saf
+        geometri: agir atomlar arasi 4,0 A ve altindaki her mesafe. Bunu
+        "hidrojen bagi" diye adlandirmiyoruz, cunku hidrojen konumlari
+        kristalde cogu zaman yok ve aci olculemiyor; cizilen sey bir temas
+        mesafesidir, yorumu okuyucuya kalir. Hidrojenler ve suyun kendisi
+        disarida. Hesap tarayicida yapiliyor: koordinatlar zaten yuklendi,
+        sunucuda ikinci bir geometri hesabi gerekmiyor.                   */
+    if (layerOn('lay-contacts') && layerOn('lay-ligand')) {
+      var ligAtoms = viewer.selectedAtoms(near).filter(function (a) {
+        return a.elem !== 'H';
+      });
+      var protAtoms = viewer.selectedAtoms({
+        chain: SITE.iron_chain,
+        resi: layerOn('lay-pocket') ? nums : (ligNums.length ? ligNums : nums),
+        hetflag: false
+      }).filter(function (a) { return a.elem !== 'H' && a.elem !== 'C'; });
+
+      /*  Ust sinir var, cunku cok sayida cizgi figuru okunmaz yapar. Sinir
+          GOSTERILEN zincir icin isirmayacak kadar yukari konuldu: 1Z03'te
+          alti zincirin TAMAMINDA 4,0 A altinda 77 temas var, yani tek
+          zincirde ~13. Isirirsa kirpildigi SOYLENIR; sessizce kesilen bir
+          olcum, olculmemis bir olcumden daha kotudur.                    */
+      var CUTOFF = 4.0, CAP = 120, drawn = 0, skipped = 0;
+      ligAtoms.forEach(function (la) {
+        protAtoms.forEach(function (pa) {
+          var dx = la.x - pa.x, dy = la.y - pa.y, dz = la.z - pa.z;
+          var d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (d > CUTOFF) return;
+          if (drawn >= CAP) { skipped++; return; }
+          drawn++;
+          viewer.addLine({ start: { x: la.x, y: la.y, z: la.z },
+                           end: { x: pa.x, y: pa.y, z: pa.z },
+                           dashed: true, linewidth: 1,
+                           color: dark ? '#7fc4a8' : '#1d6b4c' });
+          if (!layerOn('lay-labels')) return;
+          viewer.addLabel(d.toFixed(2) + ' A',
+            { position: { x: (la.x + pa.x) / 2, y: (la.y + pa.y) / 2,
+                          z: (la.z + pa.z) / 2 },
+              fontSize: 9, backgroundOpacity: 0.6,
+              backgroundColor: dark ? '#0e1319' : '#ffffff',
+              fontColor: dark ? '#9fd8c0' : '#14543a' });
+        });
+      });
+      /*  Mesaj KAPLAMAYAN bir satira yaziliyor. `pdbnote` butun
+          goruntuleyicinin uzerine seriliyor; kirpma uyarisini oraya koymak
+          figuru gizlerdi.                                                 */
+      var trunc = document.getElementById('pdbtrunc');
+      if (trunc) {
+        trunc.hidden = !skipped;
+        trunc.textContent = skipped
+          ? drawn + ' of ' + (drawn + skipped) + ' ligand contacts drawn; the rest are '
+            + 'omitted to keep the figure readable.'
+          : '';
+      }
+    }
 
     /* Koordinasyon baglari: demirden her baglanan atoma kesikli cizgi. */
     var ironAtoms = layerOn('lay-bonds')
