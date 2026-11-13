@@ -3526,11 +3526,11 @@ ve premisi (Pfam betalari kaciriyor) CURUDU. Yanlis varsayima dayanan bir
 betigi depoda birakmak, birinin onu kosturmasina davetiyedir. Olcumun
 kendisi bu maddede kayitli.
 
-ACIK (60 protein). Urun metni "dioxygenase small/beta subunit" diyor ama
-hicbir model tutmuyor. Kullanicinin "anotasyon yanlis da olabiliyor"
-tespitinin asil aday kumesi tam bu: ikisinden biri yanlis ve hangisi
-oldugu HENUZ OLCULMEDI. 688'den 60'a dustugu icin artik tek tek bakilabilir
-buyuklukte -- model kurmak degil, incelemek gerekiyor.
+KAPANDI (60 protein) -- bkz. 135.24. Bu madde "ikisinden biri yanlis ve
+hangisi oldugu olculmedi" diyordu. Olculdu: IKISI DE DEGIL. 60'in
+tamaminda `neighbor_protein` satiri yok, cunku 58'i PSODOGEN ve 2'sinde
+kayitta ceviri yok. Taranmamis bir dizi hakkinda hicbir model bir sey
+soyleyemez; anotasyon beta genini DOGRU adlandiriyor, gen bozuk.
 
 ACIK (grup 3). %72,2 beta yoklugu duzeltmeden sonra da yuksek. Naftalin
 tipi dioksijenazlarda beta zorunlu ortaktir; ya grup atamasi bu girislerde
@@ -5498,3 +5498,56 @@ icinde duruyor, yani bir sonraki deneme olcumu tekrarlamadan baslar.
 **Bu madde ACIK kaliyor** -- ama artik "hicbir sey bilinmiyor" degil:
 aranan sey 37 modelin DISINDA, bir alt kumesi recombinase'e esik alti
 benziyor, ve muhtemelen Pfam'da degil NCBIfam'da.
+
+### 135.24 — "60 artakalan beta" bir anotasyon catismasi DEGIL, bozuk gen sayisiymis
+
+Kapinin `check_component_scan_is_fresh` ikinci ayagi 60 proteinlik bir
+artakalan butcesi tasiyor ve madde bunu soyle tarif ediyordu: "urun metni
+beta diyor, hicbir model tutmuyor; **ikisinden biri yanlis** ve hangisi
+oldugu HENUZ OLCULMEDI". Olculdu, ve tarif YANLISTI.
+
+**ILK OLCUM SORUYU DEGISTIRDI.** 60'in TAMAMINDA `neighbor_protein`
+satiri yok -- yani bu proteinler bilesen taramasinin aradigi kumede hic
+bulunmadi. **Taranmamis bir dizi hakkinda hicbir model bir sey
+soyleyemez**, dolayisiyla "hicbir model tutmuyor" cumlesi ne anotasyon ne
+model kumesi hakkinda bir ifade. Dogru soru "hangisi yanlis" degil, "dizi
+neden yok".
+
+**KAYNAK CEVABI VERDI.** Her birinin GenBank kaydindaki CDS niteligi
+okundu:
+
+| hukum | protein |
+|---|---|
+| **psodogen** (`/pseudo`) | **58** |
+| kayitta `/translation` yok | 2 |
+| **dizi var, taranmis, model tutmamis** | **0** |
+
+Ornek: `AB57_RS06925` (`benB`, benzoat 1,2-dioksijenaz beta alt birimi),
+CDS'inde `/pseudo` ve `/note="frameshifted"`. Psodogen CDS'inin cevirisi
+olmaz; o yuzden ne protein satiri olur ne bir HMM onu tutabilir.
+
+**SONUC: ne anotasyon ne modeller yanlis.** Anotasyon beta genini DOGRU
+adlandiriyor, gen BOZUK. Kapinin 60'lik butcesi bir catisma olcusu degil,
+**bozuk gen** sayisi.
+
+**KOORDINAT DONUSUMU OLCUMUN PARCASI.** Ilk aramada kayit BULUNAMADI,
+cunku DB BioPython'un 0-tabanli yari-acik araligini saklarken GenBank
+1-tabanli kapsayici yaziyor (`start+1`). Donusum yapilmadan "kayit yok"
+sonucu cikiyor ve bu, sessizce yanlis cevap veren turden bir hata. Ayni
+donusum GFF3 ihracinda da olculmustu (135.4); betige gerekcesiyle
+yazildi.
+
+**BUTCE ARTIK KESINLIK TASIYOR.** Yeni kontrol
+`check_residual_beta_is_explained` butceyi degil **ACIKLANMAMIS KALANI**
+siniyor: bir artakalan ya psodogen ya cevirisi olmayan olmak zorunda.
+Yarin dizisi olan, taranan ve hicbir modele uymayan bir beta cikarsa
+butce hala 60'in altinda olabilir ama BU kontrol FAIL verir -- cunku o
+zaman gercekten "ikisinden biri yanlis" durumu olusur. Bir butce "kac
+tane" der; bu kontrol "NEDEN" der.
+
+Kapi metni de duzeltildi: "...classified as beta, **or its gene is
+broken**", cunku eski metin okuyani anotasyon-model catismasi oldugunu
+dusunmeye goturuyordu.
+
+Cikti: `analysis_out/residual_beta_audit.json`, betik
+`residual_beta_audit.py`.

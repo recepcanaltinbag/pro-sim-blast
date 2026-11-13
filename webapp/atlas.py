@@ -2249,6 +2249,12 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("residual_beta_audit.json", "file",
+     "Why 60 neighbours the annotation calls a beta subunit are not "
+     "classified as one. Measured from the GenBank records: 58 are "
+     "pseudogenes and 2 carry no translation, so no model was ever given a "
+     "sequence. Neither the annotation nor the model set is at fault.",
+     "residual_beta_audit.py"),
     ("sigma70_enrichment.json", "file",
      "Sigma70 -35/-10 box pairs in real upstream intergenic regions against "
      "two nulls built from the same regions. Enriched 1.7-1.9 times at entry "

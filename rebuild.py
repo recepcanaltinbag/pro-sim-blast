@@ -485,6 +485,14 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  residual_beta_audit: kapinin 60'lik artakalan butcesinin NE
+    #  oldugunu olcer (psodogen mi, gercek catisma mi). Girdisi DB +
+    #  gbk_files; kaynak kayittaki CDS niteliklerini okur (ROADMAP
+    #  135.24). Hicbir siniflandirmayi degistirmez.
+    ("residual_beta_audit", [f"{OUT}/residual_beta_audit.json"],
+     ["python3", "residual_beta_audit.py", "--db", DB, "--gbk", "gbk_files",
+      "--out", f"{OUT}/residual_beta_audit.json"],
+     ["residual_beta_audit.py", DB, "gbk_files"], False),
     #  upstream_regions + sigma70_enrichment: 124.3'un kalan yarisi.
     #  Birincisi intergenik DNA'yi cikarir (ciktisinin uzunlugunu
     #  `ro_regulation.intergenic_bp`e karsi DOGRULAR), ikincisi kutu

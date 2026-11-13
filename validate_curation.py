@@ -2495,14 +2495,58 @@ def check_component_scan_is_fresh(rep, con, root):
              OR lower(nb.product) LIKE '%dioxygenase beta subunit%')
         WHERE pk NOT IN (SELECT protein_key FROM neighbor_component
                          WHERE component = 'beta')""").fetchone()[0]
+    #  BU SAYININ NE OLDUGU OLCULDU (2026-11-13). Metin once "urun metni
+    #  beta diyor ama siniflanmamis" diyordu ve bu, okuyani bir
+    #  ANOTASYON-MODEL CATISMASI oldugunu dusunmeye goturuyordu. Olculdu:
+    #  60'in TAMAMINDA `neighbor_protein` satiri yok, cunku 58'i PSODOGEN
+    #  (cercevesi kaymis) ve 2'sinde kayitta ceviri yok. Taranmamis bir
+    #  dizi hakkinda hicbir model bir sey soyleyemez; yani bu butce bir
+    #  catisma olcusu DEGIL, BOZUK GEN sayisi (ROADMAP 135.24).
     rep.check("components: a neighbour the annotation calls a beta subunit is "
-              "classified as beta",
+              "classified as beta, or its gene is broken",
               unclassified <= BUDGET, unclassified,
               f"{unclassified} protein urun metninde beta diyor ama beta "
-              f"siniflanmamis, butce {BUDGET}"
+              f"siniflanmamis (olculdu: psodogen ya da cevirisi yok), "
+              f"butce {BUDGET}"
               + ("" if unclassified <= BUDGET else
                  " -- bilesen taramasi bayat olabilir; build_operons.py "
                  "--force ile kosturulup sayilar yeniden olculmeli"))
+
+
+def check_residual_beta_is_explained(rep, con, root, out_dir="analysis_out"):
+    """Artakalan her beta ACIKLANMIS mi -- yoksa gercek bir catisma mi?
+
+    NEDEN. Yukaridaki butce (60) tek basina bir sayi, ve bir sayi iki ayri
+    seyi gizleyebilir: BOZUK GEN (psodogen, cevirisi yok -- taranacak dizi
+    hic yok) ya da GERCEK CATISMA (dizi var, taranmis, hicbir model
+    tutmamis). Ikincisi ciddi olurdu: ya anotasyon yanlis ya model kumesi
+    eksik demek. Olculdu (2026-11-13): 60'in 58'i psodogen, 2'sinde kayitta
+    ceviri yok, GERCEK CATISMA SIFIR.
+
+    Bu kontrol butceyi degil ACIKLANMAMIS KALANI sinar. Yarin dizisi olan,
+    taranan ve hicbir modele uymayan bir beta cikarsa butce hala 60'in
+    altinda olabilir ama BU kontrol FAIL verir -- cunku o zaman gercekten
+    "ikisinden biri yanlis" durumu olusmus olur.
+    """
+    path = os.path.join(root, out_dir, "residual_beta_audit.json")
+    if not os.path.exists(path):
+        rep.check("components: artakalan betalar aciklanmis", False, 1,
+                  "residual_beta_audit.json yok -- "
+                  "`rebuild.py --run --only residual_beta_audit`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+    verdicts = data.get("verdicts") or {}
+    unexplained = (verdicts.get("scanned_and_no_model_hit", 0)
+                   + verdicts.get("translation_exists_but_not_extracted", 0))
+    rep.check("components: artakalan her beta BOZUK GEN ile aciklaniyor",
+              unexplained == 0, unexplained,
+              f"psodogen {verdicts.get('pseudogene', 0)}, "
+              f"kayitta ceviri yok {verdicts.get('no_translation_in_record', 0)}"
+              + ("" if not unexplained else
+                 f" -- ACIKLANMAYAN {unexplained}: dizi var ve taranmis ama "
+                 "hicbir model tutmuyor, yani anotasyon ya da model kumesi "
+                 "gercekten sorgulanmali"))
 
 
 def check_same_structure_same_name(rep, chem):
@@ -4724,6 +4768,7 @@ def main():
         check_a5_match_guard(rep, con, ROOT)
         check_ro_footprint_explained(rep, con, ROOT)
         check_component_scan_is_fresh(rep, con, ROOT)
+        check_residual_beta_is_explained(rep, con, ROOT)
         check_cross_references(rep, con, ROOT)
         check_taxonomy_is_controlled(rep, con, ROOT)
         check_citation_and_version(rep, con, ROOT)
