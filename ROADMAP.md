@@ -5446,3 +5446,55 @@ Cikti: `analysis_out/sigma70_enrichment.json`,
 `upstream_regions.{csv,fasta.gz}`, betikler `upstream_regions.py` ve
 `sigma70_enrichment.py`, kalite sayfasinda "Sigma70 boxes: an enrichment,
 not a promoter".
+
+### 135.23 — 725 proteinlik "recombinase-like HTH" ailesi: soru DARALTILDI, cevaplanmadi
+
+124.1'in acik birakti sorusu: "bu ailenin hangi Pfam modeline karsilik
+geldigi bulunmadi". Olculdu ve DARALTILDI; cevaplanmis gibi
+yazilmiyor.
+
+**OLCUM.** Urun metni "recombinase-like helix-turn-helix
+domain-containing protein" olan 744 komsu satiri, 724 tekil protein,
+**438 tekil dizi**. Dort kutuphanenin hepsine (recombinase 7, mobility
+12, regulator 9, components 9 model) **E<=10** gibi cok gevsek bir
+esikle arandi -- onceki olcum E<=1e-5 kullanmisti, yani zayif sinyal
+gorulemezdi.
+
+| kutuphane | isabet alan dizi / 438 | tutan model |
+|---|---|---|
+| recombinase | **50** | **hepsi `Recombinase` (PF07508)** |
+| mobility | 0 | — |
+| regulator | 0 | — |
+| components | 0 | — |
+
+**ZAYIF ISABET BIR ATAMA DEGIL, ve ne kadar zayif oldugu olculdu.** En
+iyi E=1,2e-4, skor **17,1 bit**; 50'nin 26'si E<=1e-3, hepsi E<=0,01.
+Pfam toplama esikleri genelde 20-25 bit, yani bu isabetlerin TAMAMI esik
+ALTI. Dolayisiyla soylenebilen sey: 438 dizinin 50'sinde PF07508'e zayif
+bir HOMOLOJI IPUCU var; bu "bu aile PF07508'dir" DEMEK DEGIL. Kalan 388
+dizi 37 modelin hicbirine E=10'da bile benzemiyor.
+
+**ILK HIPOTEZIM CURUK CIKTI, ve sinamak ucuzdu.** "recombinase-like
+helix-turn-helix" ifadesi Pfam'daki HTH_7 (PF02796, "Helix-turn-helix
+domain of resolvase") tanimina birebir uyuyor -- ama PF02796 ZATEN
+`recombinase.hmm` icinde ve bu dizilerin hicbirini tutmuyor. Yani etiket
+o modelden gelmiyor.
+
+**UNIPROT YOLU KAPALI.** Bu komsu proteinlerin UniProt'ta lokus
+etiketiyle (`BMA_RS22290`, `ACIAD_RS04545`) kaydi yok; dolayisiyla
+135.18'de kurulan xref makinesi burada kullanilamiyor.
+
+**HIPOTEZ (sinanmadi, oyle yazili).** Urun ifadesi NCBI PGAP tarafindan
+uretiliyor ve PGAP ailelerini NCBIfam/TIGRFAM koleksiyonundan cagiriyor.
+Eger etiketi tanimlayan model NCBIfam'da ise, **"hangi Pfam modeli"
+sorusunun cevabi OLMAYABILIR**. Bu bir tahmin; dogrulanmadi.
+
+**CEVABI NE VERIR.** 438 dizi uzerinde TAM bir Pfam-A taramasi ya da
+InterProScan. Ikisi de yerelde yok, ve tek tek Pfam modeli indirip
+denemek yontem degil tahmin olur (bu oturumda ayni aliskanligin bedeli
+defalarca olculdu). Diziler `/media/lin-bio/back2/roar_taxonomy/hth725.fasta`
+icinde duruyor, yani bir sonraki deneme olcumu tekrarlamadan baslar.
+
+**Bu madde ACIK kaliyor** -- ama artik "hicbir sey bilinmiyor" degil:
+aranan sey 37 modelin DISINDA, bir alt kumesi recombinase'e esik alti
+benziyor, ve muhtemelen Pfam'da degil NCBIfam'da.
