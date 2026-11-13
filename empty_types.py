@@ -401,13 +401,22 @@ def main():
         # yalnizca genom kaydina baglanabilmis degil. Sayfa "bu tipin kendine
         # ait uyesi yok" derken bunu soylemek zorunda, yoksa var olan veriyi
         # yok gibi gosteriyor.
-        union = {"members": 0, "gated": 0}
+        #  `measured` artefaktta YAZILI. Tablo yokken sayilar sifir kaliyordu
+        #  ve aciklama cumlesi hic yazilmiyordu; cikti tam gorunuyor, ama
+        #  "olculmedi" ile "yok" ayirt edilemiyordu. Siralama artik dogru
+        #  (validate_curation.check_step_order_matches_reads), yine de
+        #  olcumun yapildigi kaydin KENDISINDE duruyor.
+        union = {"members": 0, "gated": 0, "measured": bool(has_union)}
         if has_union:
             row = con.execute(
                 "SELECT COUNT(*), SUM(COALESCE(passes_gate, 0)) FROM ro_union "
                 "WHERE ro_cluster = ?", (cluster,)).fetchone()
-            union = {"members": row[0] or 0, "gated": row[1] or 0}
-        if union["members"]:
+            union = {"members": row[0] or 0, "gated": row[1] or 0,
+                     "measured": True}
+        if not union["measured"]:
+            note += (" How many sequences of this type exist without genomic"
+                     " context was not measured in this build.")
+        elif union["members"]:
             note += (f" {union['members']:,} sequence"
                      + ("s" if union["members"] != 1 else "")
                      + " assigned to this type do exist in the union, with no"

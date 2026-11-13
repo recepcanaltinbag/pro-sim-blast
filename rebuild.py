@@ -279,9 +279,6 @@ ARTEFACTS = [
      ["python3", "ferredoxin_residue.py", "--db", DB,
       "--out", f"{OUT}/ferredoxin_residue.json"],
      ["ferredoxin_residue.py", "stats_overview.py", DB], False),
-    ("empty_types", [f"{OUT}/empty_types.json"],
-     ["python3", "empty_types.py", "--db", DB, "--out", f"{OUT}/empty_types.json"],
-     ["empty_types.py", DB, CHEM], False),
     ("completeness_audit", [f"{OUT}/completeness_audit.json"],
      ["python3", "completeness_audit.py", "--db", DB, "--chemistry", CHEM,
       "--out", f"{OUT}/completeness_audit.json", "--alphafold-probe", "none"],
@@ -395,6 +392,16 @@ ARTEFACTS = [
     ("union", [],
      ["python3", "build_union.py", "--db", DB, "--fasta", "ro_alpha.fasta"],
      ["build_union.py", DB, "ro_alpha.fasta"], False),
+    #  2026-11-13: BU GIRDILER BURAYA TASINDI. Uretilmemis bir tabloyu okuyan
+    #  bir adim, uretenin ONUNDE duruyordu. Siralamayi bu listenin kendisi
+    #  belirliyor; yorumda "sonra olmak zorunda" yazmasi yetmiyor. Ikisi
+    #  patlayarak durdu, `empty_types` ise SESSIZCE atladi: tablo yokken
+    #  aciklama cumlesini hic yazmiyordu, yani sifirdan kurulan her derlemede
+    #  bos bir tipin dizilerinin NEREDE oldugu kayboluyordu. Tekrarini
+    #  validate_curation.py icindeki check_step_order_matches_reads yakalar.
+    ("empty_types", [f"{OUT}/empty_types.json"],
+     ["python3", "empty_types.py", "--db", DB, "--out", f"{OUT}/empty_types.json"],
+     ["empty_types.py", DB, CHEM], False),
     ("stats", [f"{OUT}/stats.json"],
      ["python3", "stats_overview.py", "--db", DB, "--out", f"{OUT}/stats.json"],
      ["stats_overview.py", DB, CHEM, ECO], False),
@@ -485,14 +492,6 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
-    #  ingest_gap: kimligi BELLI ama indirilmemis nukleotid kayitlari.
-    #  `cross_references`ten SONRA olmak zorunda -- listeyi `ro_xref`in
-    #  EMBL satirlari uretiyor. Indirmez, yalnizca listeler (135.28).
-    ("ingest_gap", [f"{OUT}/ingest_gap.csv", f"{OUT}/ingest_gap.json"],
-     ["python3", "ingest_gap.py", "--db", DB,
-      "--out-csv", f"{OUT}/ingest_gap.csv",
-      "--out-json", f"{OUT}/ingest_gap.json"],
-     ["ingest_gap.py", DB], False),
     #  residual_beta_audit: kapinin 60'lik artakalan butcesinin NE
     #  oldugunu olcer (psodogen mi, gercek catisma mi). Girdisi DB +
     #  gbk_files; kaynak kayittaki CDS niteliklerini okur (ROADMAP
@@ -530,23 +529,6 @@ ARTEFACTS = [
      ["python3", "replicon_sequence_census.py", "--db", DB,
       "--gbk", "gbk_files", "--out", f"{OUT}/replicon_sequence.csv"],
      ["replicon_sequence_census.py", DB, "gbk_files"], False),
-    #  rieske_ligand_audit: InterPro'nun Rieske dedigi ama kapinin
-    #  disladigi dizilerde HANGI ligandin yok oldugu, ve kanonik motifin
-    #  HAM dizide bulunup bulunmadigi. `interpro_agreement`den SONRA
-    #  olmali (ayni asimetrik kumeyi tanimliyor). Aga cikmaz; hmmalign
-    #  yerel (ROADMAP 135.20).
-    ("rieske_ligand_audit", [f"{OUT}/rieske_ligand_audit.json"],
-     ["python3", "rieske_ligand_audit.py", "--db", DB,
-      "--out", f"{OUT}/rieske_ligand_audit.json"],
-     ["rieske_ligand_audit.py", "ro_motif.py", MOTIF_HMM, DB], False),
-    #  interpro_agreement: kendi Rieske cagrimizi InterPro'nun KENDI
-    #  modellerine karsi sinar. Girdisi `ro_xref` (cross_references'in
-    #  yazdigi tablo) oldugu icin ONDAN SONRA olmak zorunda. Aga
-    #  CIKMAZ: tablolari okur (ROADMAP 135.19).
-    ("interpro_agreement", [f"{OUT}/interpro_agreement.json"],
-     ["python3", "interpro_agreement.py", "--db", DB,
-      "--out", f"{OUT}/interpro_agreement.json"],
-     ["interpro_agreement.py", DB], False),
     #  curation_claims_ncbi: accession'i GenBank/RefSeq olan referanslarin
     #  saklanan dizisi kaynakla uyusuyor mu. `--fetch-ncbi` BURADA YOK --
     #  ag erisimi bir kapi adiminin kosulu olamaz; onbellek yetkili ve
@@ -601,6 +583,43 @@ ARTEFACTS = [
      ["python3", "cross_references.py", "--db", DB,
       "--out", f"{OUT}/cross_references.json"],
      ["cross_references.py", DB], False),
+    #  2026-11-13: BU GIRDILER BURAYA TASINDI. Uretilmemis bir tabloyu okuyan
+    #  bir adim, uretenin ONUNDE duruyordu. Siralamayi bu listenin kendisi
+    #  belirliyor; yorumda "sonra olmak zorunda" yazmasi yetmiyor. Ikisi
+    #  patlayarak durdu, `empty_types` ise SESSIZCE atladi: tablo yokken
+    #  aciklama cumlesini hic yazmiyordu, yani sifirdan kurulan her derlemede
+    #  bos bir tipin dizilerinin NEREDE oldugu kayboluyordu. Tekrarini
+    #  validate_curation.py icindeki check_step_order_matches_reads yakalar.
+    #  rieske_ligand_audit: InterPro'nun Rieske dedigi ama kapinin
+    #  disladigi dizilerde HANGI ligandin yok oldugu, ve kanonik motifin
+    #  HAM dizide bulunup bulunmadigi. `interpro_agreement`den SONRA
+    #  olmali (ayni asimetrik kumeyi tanimliyor). Aga cikmaz; hmmalign
+    #  yerel (ROADMAP 135.20).
+    ("rieske_ligand_audit", [f"{OUT}/rieske_ligand_audit.json"],
+     ["python3", "rieske_ligand_audit.py", "--db", DB,
+      "--out", f"{OUT}/rieske_ligand_audit.json"],
+     ["rieske_ligand_audit.py", "ro_motif.py", MOTIF_HMM, DB], False),
+    #  interpro_agreement: kendi Rieske cagrimizi InterPro'nun KENDI
+    #  modellerine karsi sinar. Girdisi `ro_xref` (cross_references'in
+    #  yazdigi tablo) oldugu icin ONDAN SONRA olmak zorunda. Aga
+    #  CIKMAZ: tablolari okur (ROADMAP 135.19).
+    ("interpro_agreement", [f"{OUT}/interpro_agreement.json"],
+     ["python3", "interpro_agreement.py", "--db", DB,
+      "--out", f"{OUT}/interpro_agreement.json"],
+     ["interpro_agreement.py", DB], False),
+    #  ingest_gap: kimligi BELLI ama indirilmemis nukleotid kayitlari.
+    #  `cross_references`ten SONRA olmak zorunda -- listeyi `ro_xref`in
+    #  EMBL satirlari uretiyor. Indirmez, yalnizca listeler (135.28).
+    #  2026-11-13: bu kural YAZIYORDU ama girdi BU LISTEDE cross_references'in
+    #  ONUNDE duruyordu, ve siralamayi bu listenin kendisi belirliyor. `union`
+    #  adimi `ro_xref`i dusurup yeniden kurduktan sonra ingest_gap "no such
+    #  table: ro_xref" ile zinciri durdurdu. Yorum bagimlilik beyan etmez;
+    #  SIRA beyan eder. Girdi buraya tasindi.
+    ("ingest_gap", [f"{OUT}/ingest_gap.csv", f"{OUT}/ingest_gap.json"],
+     ["python3", "ingest_gap.py", "--db", DB,
+      "--out-csv", f"{OUT}/ingest_gap.csv",
+      "--out-json", f"{OUT}/ingest_gap.json"],
+     ["ingest_gap.py", DB], False),
 
     # YAYIMLANAN SITENIN KENDISI. 2026-11-09'a kadar grafigin disindaydi:
     # her sey taze olsa bile canlidaki kopyanin eski olup olmadigini hicbir

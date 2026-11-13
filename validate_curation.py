@@ -3636,6 +3636,67 @@ def check_assignment_library(rep, con, root, out_dir="analysis_out"):
               not exact, len(exact), first(exact, 4), severity="WARN")
 
 
+def check_step_order_matches_reads(rep, root):
+    """Bir adim, OKUDUGU tabloyu ureten adimdan SONRA mi siralanmis?
+
+    NEDEN. Grafigin sirasini `rebuild.py` icindeki listenin KENDISI
+    belirliyor. Bir adim bir tabloyu okur ama o tabloyu ureten adimin
+    onunde durursa, sifirdan kurulan derlemede tablo henuz yoktur. Yorumda
+    "sundan sonra olmak zorunda" yazmasi bir bagimlilik BEYAN ETMEZ.
+
+    Olculdu (2026-11-13): uc adim boyleydi. `rieske_ligand_audit` ve
+    `interpro_agreement` "no such table: ro_xref" ile zinciri durdurdu --
+    gurultulu, yani fark edildi. `empty_types` ise `ro_union`i
+    `table_exists` ile koruyordu ve tablo yokken aciklama cumlesini HIC
+    yazmiyordu: bos bir tipin dizilerinin nerede oldugu sessizce
+    kayboluyordu, cikti tam gorunuyordu, ve kimse bagirmiyordu. Sessiz
+    olani tehlikeli yapan sey tam budur, bu yuzden kontrol patlamayi
+    beklemiyor, SIRAYI olcuyor.
+
+    NE BULAMAZ. Yalnizca asagida adi gecen tablolari tanir ve okumayi
+    kaynak metninden cikarir; bir adim tablo adini degiskende tasiyorsa
+    gorulmez. Yani kontrol "siralama dogru" demiyor, "bilinen tablolarda
+    siralama ters degil" diyor.
+    """
+    import re as _re
+    produced = {"ro_xref": "cross_references", "ro_union": "union",
+                "ro_union_source": "union", "ro_protein_status": "protein_entries"}
+    try:
+        src = open(os.path.join(root, "rebuild.py")).read()
+    except OSError as err:                                # noqa: BLE001
+        rep.check("graph: adim sirasi okudugu tabloyla uyumlu", False, 1,
+                  f"rebuild.py okunamadi: {err}")
+        return
+    steps = _re.findall(r'\n    \("([a-z0-9_]+)",\s*\[(.*?)\],\s*\[(.*?)\],',
+                        src, _re.S)
+    order = [n for n, _o, _c in steps]
+    index = {n: i for i, n in enumerate(order)}
+    scripts = {n: _re.findall(r'"([A-Za-z0-9_]+\.py)"', c) for n, _o, c in steps}
+
+    wrong = []
+    for name in order:
+        for fname in scripts.get(name, []):
+            try:
+                body = open(os.path.join(root, fname)).read()
+            except OSError:
+                continue
+            for table, producer in produced.items():
+                reads = (_re.search(r'\b(FROM|JOIN|INTO|UPDATE)\s+%s\b' % table,
+                                    body, _re.I)
+                         or _re.search(r'table_exists\(\s*con,\s*["\']%s["\']' % table,
+                                       body)
+                         or _re.search(r"name='%s'" % table, body))
+                if not reads or producer not in index:
+                    continue
+                if index[name] < index[producer]:
+                    wrong.append(f"{name} ({fname}) {table} okuyor ama "
+                                 f"{producer}'den ONCE siralanmis")
+    rep.check("graph: adim sirasi okudugu tabloyla uyumlu", not wrong,
+              len(order),
+              "; ".join(wrong) if wrong
+              else f"{len(order)} adimin hicbiri uretilmemis tablo okumuyor")
+
+
 def check_coverage_audit(rep, con, root, out_dir="analysis_out"):
     """Kapsama denetiminin YAPISI ve TAZELIGI; acigin BUYUKLUGU degil.
 
@@ -4802,6 +4863,7 @@ def main():
         check_substrate_chebi(rep, con, ROOT)
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
+        check_step_order_matches_reads(rep, ROOT)
         check_assignment_library(rep, con, ROOT)
         check_ncbi_accession_claims(rep, con, ROOT)
         check_interpro_agreement(rep, con, ROOT)
