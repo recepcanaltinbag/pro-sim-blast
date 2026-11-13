@@ -149,11 +149,11 @@ def _submodel_windows():
     r_first, r_last = RIESKE_SITES[0][0], RIESKE_SITES[3][0]
     return [
         ("RORieske", max(1, r_first - 25), r_last + 32,
-         "Rieske [2Fe-2S] alani -- POZITIF KONTROL, her sette tutmali"),
+         "the Rieske [2Fe-2S] domain -- POSITIVE CONTROL, it must hit in every set"),
         ("ROcatC", max(1, HIS1_COL - 48), CARBOX_COL + 71,
-         "C-terminal katalitik lob -- karboksilat kolonunun icinde oldugu bolge"),
+         "the C-terminal catalytic lobe -- the region the carboxylate column lies in"),
         ("ROcarbox", max(1, CARBOX_COL - 25), CARBOX_COL + 25,
-         "yalnizca karboksilat cevresi -- dar ve hassas yerel sonda"),
+         "the carboxylate surroundings only -- a narrow, sensitive local probe"),
     ]
 
 
@@ -432,7 +432,7 @@ def stage_baseline(entries, index, window, ref_at_column=None):
                 ((rec["stored_residue"] or "") in CARBOX_OK):
             mismatch += 1
     return {
-        "question": "ro_carboxylate ne diyor, ve 'yok' derken neyi goruyor",
+        "question": "what ro_carboxylate reports, and what it is looking at when it says there is none",
         "stored_residue_counts": dict(stored.most_common()),
         "recomputed_residue_counts": dict(recomputed.most_common()),
         "recomputation_disagreements_with_table": mismatch,
@@ -442,20 +442,22 @@ def stage_baseline(entries, index, window, ref_at_column=None):
         "refused_offset_calls": {
             "entries_total": sum(refused.values()),
             "by_type_residue_offset": dict(refused.most_common(30)),
-            "rule": ("kaymis bir pencere cagrisi ancak tipin kuratorlu "
-                     "referansi kolon %d'da AYNI karboksilati tasiyorsa kabul "
-                     "edilir" % CARBOX_COL),
-            "why": ("olculdu: tam kolonda Asp:Glu 130:1, kaymis pencerede "
-                    "1,25:1 -- kaymis okuma ligand yerine yakindaki herhangi "
-                    "bir karboksilati topluyor"),
+            "rule": ("an offset window call is accepted only if the type's "
+                     "curated reference carries the SAME carboxylate at "
+                     "column %d" % CARBOX_COL),
+            "why": ("measured: at the exact column Asp:Glu is 130:1, in the "
+                    "offset window 1.25:1 -- an offset reading picks up any "
+                    "nearby carboxylate instead of the ligand"),
         },
-        "note": ("window_entirely_gapped = kolon ve komsulari HIZALAMADA BOS; "
-                 "orada okunacak kalinti YOK, yani bu bir hizalama olayi. "
-                 "substituted_residue_in_place = kolonda gercek bir kalinti "
-                 "var ama karboksilat degil; bu biyolojik bir iddia. "
-                 "offset_call_unsupported_by_reference = pencere kaymis bir "
-                 "karboksilat buldu ama referans onu dogrulamiyor; okuma "
-                 "reddedildi, capali okumaya dusuruldu."),
+        "note": ("window_entirely_gapped = the column and its neighbours are "
+                 "GAPS IN THE ALIGNMENT; there is NO residue there to read, so "
+                 "this is an alignment event. substituted_residue_in_place = a "
+                 "real residue sits at the column but it is not a carboxylate; "
+                 "this is a biological claim. "
+                 "offset_call_unsupported_by_reference = the window found a "
+                 "carboxylate at an offset but the reference does not confirm "
+                 "it; the reading was refused and fell through to the anchored "
+                 "reading."),
     }
 
 
@@ -487,8 +489,8 @@ def stage_mechanism(entries, index, negatives, positives):
         return round(float(np.mean(vals)), digits) if vals else None
 
     out = {
-        "question": ("karboksilat kolonu (%d) girisin hizalanmis bolgesi icinde "
-                     "mi kaliyor" % CARBOX_COL),
+        "question": ("whether the carboxylate column (%d) falls inside the "
+                     "region of the entry that aligned at all" % CARBOX_COL),
         "model": DEFAULT_MODEL,
         "model_columns": len(MODEL_COLUMNS[DEFAULT_MODEL]["catalytic"]),
         "no_carboxylate": profile(negatives),
@@ -523,11 +525,12 @@ def stage_mechanism(entries, index, negatives, positives):
             anchors["full_D_x2_H_x3_5_H_consensus_intact"] += 1
     out["anchor_integrity_in_the_no_carboxylate_set"] = dict(anchors)
     out["anchor_note"] = (
-        "Parales/Gibson konsensusu D-x(2)-H-x(3-5)-H (Complete_thesis.pdf, "
-        "bol. 3.1, atif [104]) bu girislerin hepsinde tamdir. O konsensustaki "
-        "D KOPRU aspartatidir (kolon %d), facial triad karboksilati degil "
-        "(kolon %d); yani konsensus karboksilatin yerini vermez, capanin "
-        "saglam oldugunu dogrular." % (BRIDGE_COL, CARBOX_COL))
+        "The Parales/Gibson consensus D-x(2)-H-x(3-5)-H (Complete_thesis.pdf, "
+        "sec. 3.1, citation [104]) is intact in every one of these entries. The "
+        "D in that consensus is the BRIDGING aspartate (column %d), not the "
+        "facial-triad carboxylate (column %d); so the consensus does not locate "
+        "the carboxylate, it confirms that the anchor is sound."
+        % (BRIDGE_COL, CARBOX_COL))
     return out
 
 
@@ -551,13 +554,13 @@ def stage_window_widening(entries, index, negatives, widths):
                      "offset_counts": dict(sorted(offsets.items(),
                                                   key=lambda kv: abs(kv[0])))})
     return {
-        "question": ("sabit kolonu MODEL koordinatinda genisletmek karboksilati "
-                     "geri getirir mi"),
+        "question": ("whether widening the fixed column in MODEL coordinates "
+                     "brings the carboxylate back"),
         "n_tested": len(negatives),
         "windows": rows,
-        "note": ("Kolon hizalamada BOSsa genisletmek de bos kolonlari tarar. "
-                 "Bu adimin kurtaramadigi girisler, basit bir registre kaymasiyla "
-                 "aciklanamaz demektir."),
+        "note": ("If the column is a GAP in the alignment then widening only "
+                 "scans more gaps. An entry this step cannot recover is one "
+                 "that a simple register shift does not explain."),
     }
 
 
@@ -610,8 +613,8 @@ def stage_naive_anchor(entries, index, negatives, positives):
         p = sum(1 for ch in seq if ch in CARBOX_OK) / max(1, len(seq))
         expected.append(1.0 - (1.0 - p) ** max(0, len(segment)))
     return {
-        "question": ("His-2'ye gore kalibre edilmis HAM uzaklik penceresinde "
-                     "D/E var mi"),
+        "question": ("whether a D/E sits in a RAW distance window calibrated "
+                     "against His-2"),
         "calibration_n": int(arr.size),
         "his2_to_carboxylate_raw_distance": percentiles,
         "window_used": [lo, hi],
@@ -621,9 +624,9 @@ def stage_naive_anchor(entries, index, negatives, positives):
         "found_fraction": round(found / max(1, tested), 4),
         "expected_by_chance_fraction": round(float(np.mean(expected)), 4)
         if expected else None,
-        "verdict": ("Pencere %d kalinti genisliginde ve sans beklentisi %.1f%%; "
-                    "bu okuma TEK BASINA kanit degildir, adim 6'nin capali "
-                    "okumasina ihtiyac var."
+        "verdict": ("The window is %d residues wide and the chance expectation "
+                    "is %.1f%%; this reading is NOT evidence ON ITS OWN, it "
+                    "needs the anchored reading of step 6."
                     % (hi - lo + 1, 100 * float(np.mean(expected)) if expected else 0)),
     }
 
@@ -703,14 +706,15 @@ def stage_reference_probe(models, sets, workdir, cpu, log):
                    100 * row["sets"][label]["fraction_score_ge_20"]))
         out.append(row)
     return {
-        "question": ("referanstan kurulan alt-modeller bu dizilerin katalitik "
-                     "lobuna erisebiliyor mu"),
+        "question": ("whether sub-models built from the references can reach "
+                     "the catalytic lobe of these sequences at all"),
         "models": out,
-        "control_note": ("rieske_only = 'Rieske tam, katalitik triad elenmis' "
-                         "adaylar; pipeline bunlari RO alpha SAYMIYOR. Bir "
-                         "sondanin bu kontrolde de dustugu bir sinyal, "
-                         "karboksilatsiz setin RO olmadigini DEGIL, sondanin "
-                         "o bolgeye erisemedigini gosterir."),
+        "control_note": ("rieske_only = candidates with 'the Rieske centre "
+                         "intact, the catalytic triad rejected'; the pipeline "
+                         "does NOT count these as RO alpha. A probe that also "
+                         "fails on this control shows NOT that the "
+                         "carboxylate-less set are not ROs, but that the probe "
+                         "cannot reach that region."),
     }
 
 
@@ -989,25 +993,27 @@ def stage_anchored_reread(entries, index, negatives, positives, refs,
             shifts[v["residue_offset_from_expected"]] += 1
     shift_values = [o for o, n in shifts.items() for _ in range(n)]
     return {
-        "question": ("karboksilat, SABIT kolon yerine ayni tipin pozitiflerine "
-                     "capalanarak okundugunda var mi"),
-        "method": ("tip basina mafft --auto ile yeniden hizalama; karboksilat "
-                   "kolonu, pozitiflerin HAM dizideki bilinen karboksilat "
-                   "pozisyonlarinin modu; karboksilatsiz uyeler o kolonda "
-                   "+-%d kolon penceresiyle okunuyor" % window),
+        "question": ("whether the carboxylate is there when it is read "
+                     "anchored to the positives of the same type rather than "
+                     "at a FIXED column"),
+        "method": ("re-alignment per type with mafft --auto; the carboxylate "
+                   "column is the mode of the positives' known carboxylate "
+                   "positions in the RAW sequence; members without a "
+                   "carboxylate are read at that column within a window of "
+                   "+-%d columns" % window),
         "window_columns": window,
         "positive_anchors_per_cluster_max": pos_sample,
         "mafft_threads": mafft_threads,
         "reproducibility": (
-            ("mafft tek parcacikla kosuldu: bu cikti birebir "
-             "tekrarlanabilir."
+            ("mafft was run single-threaded: this output is reproducible "
+             "byte for byte."
              if mafft_threads == 1 else
-             "mafft %d parcacikla kosuldu: yineleyici iyilestirme is "
-             "parcacigi siralamasina duyarli oldugu icin bu cikti bit "
-             "duzeyinde tekrarlanmaz. --thread 6 ile yapilan dort kosuda "
-             "'gercek yokluk' 21-25 arasinda degisti (%%1,5-1,8); karar "
-             "duzeyi her kosuda ayni kaldi. Birebir tekrar icin "
-             "--mafft-threads 1." % mafft_threads)),
+             "mafft was run with %d threads: because iterative refinement "
+             "is sensitive to thread ordering, this output is not "
+             "reproducible bit for bit. Across four runs with --thread 6 the "
+             "'real absences' moved between 21 and 25 (1.5-1.8 %%); the "
+             "conclusion was the same in every run. For byte-for-byte "
+             "reproduction use --mafft-threads 1." % mafft_threads)),
         "totals": dict(totals.most_common()),
         "carboxylate_present_total": sum(
             v for k, v in totals.items() if k.startswith("present")),
@@ -1021,22 +1027,24 @@ def stage_anchored_reread(entries, index, negatives, positives, refs,
             "rows": annotation_check,
         },
         "residue_offset_from_expected": {
-            "definition": ("bulunan karboksilatin His-2'ye HAM uzakligi eksi o "
-                           "tipin pozitiflerindeki medyan uzaklik. Sabit kolona "
-                           "gore kayma bu girisler icin tanimsiz, cunku kolon "
-                           "hizalamada bos; bu yuzden kayma BEKLENEN UZAKLIGA "
-                           "gore olculuyor."),
-            "how_to_read_this": ("Kayit testi offset_distribution'dadir: orada "
-                                 "0, karboksilatin pozitiflerle AYNI hizalama "
-                                 "kolonunda, yani homolog konumda oldugunu "
-                                 "soyler. Buradaki kalinti-uzakligi sapmasi "
-                                 "FARKLI bir seyi olcer: His cifti ile "
-                                 "karboksilat arasindaki ~140 kalintilik "
-                                 "parcada ne kadar indel birikmis. Sapmanin "
-                                 "genis olmasi hatayi degil, SABIT KOLONUN "
-                                 "NEDEN KAYDIGINI gosterir -- bu parcadaki "
-                                 "insersiyon/delesyonlar modelin registresini "
-                                 "kaydiriyor."),
+            "definition": ("the RAW distance from the carboxylate found to "
+                           "His-2, minus the median distance in that type's "
+                           "positives. A shift relative to the fixed column is "
+                           "undefined for these entries, because the column is "
+                           "a gap in the alignment; so the shift is measured "
+                           "against the EXPECTED DISTANCE instead."),
+            "how_to_read_this": ("The register test is in "
+                                 "offset_distribution: a 0 there says the "
+                                 "carboxylate is at the SAME alignment column "
+                                 "as the positives, that is, in the homologous "
+                                 "position. The residue-distance deviation here "
+                                 "measures something DIFFERENT: how much indel "
+                                 "has accumulated in the ~140-residue stretch "
+                                 "between the His pair and the carboxylate. A "
+                                 "wide deviation does not show an error, it "
+                                 "shows WHY THE FIXED COLUMN SLIPS -- the "
+                                 "insertions and deletions in that stretch "
+                                 "shift the model's register."),
             "n": len(shift_values),
             "within_plus_minus_0": shifts.get(0, 0),
             "within_plus_minus_3": sum(1 for o in shift_values if abs(o) <= 3),
@@ -1050,15 +1058,17 @@ def stage_anchored_reread(entries, index, negatives, positives, refs,
         },
         "per_cluster": per_cluster,
         "null_model": {
-            "test": ("her tip icin: capa kolonunda gozlenen D/E sayisi, o grubun "
-                     "KENDI kuyruk D/E sikligina karsi tek yonlu binom; "
-                     "Benjamini-Hochberg ile duzeltilir"),
+            "test": ("per type: the number of D/E observed at the anchor "
+                     "column against that group's OWN tail D/E frequency, a "
+                     "one-sided binomial, corrected with Benjamini-Hochberg"),
             "clusters_tested": len(tested),
             "clusters_beating_the_null": sum(1 for c in tested
                                              if c.get("beats_the_null")),
-            "comparison": ("ayni hizalamada dolulugu >=%80 olan butun kolonlarin "
-                           "D/E orani da raporlanir (median_column_DE_fraction); "
-                           "capa kolonu bu dagilimin icinde kalirsa sinyal yoktur"),
+            "comparison": ("the D/E fraction of every column in the same "
+                           "alignment that is at least 80 % occupied is also "
+                           "reported (median_column_DE_fraction); if the anchor "
+                           "column sits inside that distribution there is no "
+                           "signal"),
         },
     }, calls
 
@@ -1170,7 +1180,8 @@ def stage_real_absences(entries, index, calls, anchored, models, workdir, cpu,
     absent = [cid for cid, v in calls.items() if v["call"] == "absent"]
     untested = [cid for cid, v in calls.items() if v["call"] == "untested"]
     out = {
-        "question": "capali okumadan sonra hala karboksilati olmayanlar nedir",
+        "question": ("what the entries that still have no carboxylate after "
+                     "the anchored reading actually are"),
         "n_absent": len(absent),
         "n_untested": len(untested),
     }
@@ -1225,13 +1236,15 @@ def stage_real_absences(entries, index, calls, anchored, models, workdir, cpu,
         else:
             reach["long_enough_to_hold_the_site"] += 1
     out["c_terminal_reach"] = {
-        "question": ("protein, karboksilatin oturacagi yere kadar uzaniyor mu"),
+        "question": ("whether the protein reaches as far as the place the "
+                     "carboxylate would sit"),
         "counts": dict(reach.most_common()),
         "residues_after_his2_median": int(np.median(tails)) if tails else None,
         "expected_distance_by_type": {k: v for k, v in sorted(expected.items())
                                       if k in out["by_type"]},
-        "note": ("protein_ends_before_the_expected_site = bu girisler icin "
-                 "'karboksilat yok' bir IKAME degil, dizinin bitmesidir."),
+        "note": ("protein_ends_before_the_expected_site = for these entries "
+                 "'no carboxylate' is not a SUBSTITUTION, it is the sequence "
+                 "ending."),
     }
 
     # Dizi uzayinda bir arada mi
@@ -1244,8 +1257,9 @@ def stage_real_absences(entries, index, calls, anchored, models, workdir, cpu,
             n for _, n in leaves.most_common(3)),
         "distinct_genera": len(genera),
         "top_genera": dict(genera.most_common(8)),
-        "reading": ("yaprak sayisi giris sayisina yakinsa dagilmis, tek bir "
-                    "yaprakta yiginlasiyorsa tek bir sapmis klad"),
+        "reading": ("if the number of leaves is close to the number of "
+                    "entries they are scattered; if they pile into one leaf "
+                    "they are a single divergent clade"),
     }
 
     # Alan mimarisi
@@ -1277,14 +1291,15 @@ def stage_real_absences(entries, index, calls, anchored, models, workdir, cpu,
             "library": sorted({m for hits in per.values() for _, m in hits}),
             "sequences_with_any_domain": len(per),
             "architectures": dict(archs.most_common(10)),
-            "limitation": ("Bu kitaplikta halka-hidroksilleyici alpha'nin "
-                           "KATALITIK alani icin model YOK (PF00848 / "
-                           "Ring_hydroxyl_A kitaplikta degil) ve yerelde Pfam-A "
-                           "bulunmuyor; bu yuzden 'sadece Rieske alani var' "
-                           "ciktisi mimari hakkinda tek basina bir sey SOYLEMEZ. "
-                           "SRPBCC (PF03364/PF10604, heliks-tutamaci) de "
-                           "sinanamaz -- NCBI urun dizgileri oldugu gibi "
-                           "by_product altinda raporlanir."),
+            "limitation": ("This library holds NO model for the CATALYTIC "
+                           "domain of the ring-hydroxylating alpha subunit "
+                           "(PF00848 / Ring_hydroxyl_A are not in it) and "
+                           "Pfam-A is not available locally; so an output of "
+                           "'the Rieske domain only' SAYS NOTHING on its own "
+                           "about the architecture. SRPBCC (PF03364/PF10604, "
+                           "the helix-grip fold) cannot be tested either -- the "
+                           "NCBI product strings are reported as they are under "
+                           "by_product."),
         }
     for model in models:
         domtbl = os.path.join(workdir, "%s_absent.dom" % model["name"])
@@ -1302,13 +1317,14 @@ def stage_real_absences(entries, index, calls, anchored, models, workdir, cpu,
 
     # Aile ici son kontrol
     out["residual_family_scan"] = {
-        "question": ("artik girisler KENDI aralarinda hizalandiginda, His-2'ye "
-                     "capalanmis korunmus bir karboksilat kolonu var mi"),
-        "why": ("Adim 6'nin capasi tipin BAKTERIYEL pozitiflerine dayaniyor; "
-                "karboksilat aileye ozgu, homolog olmayan bir konuma tasinmissa "
-                "o capa onu goremez. Bir ailenin butun uyelerinde ayni kolonda "
-                "D/E varsa karboksilat VARDIR, sadece referans setinin "
-                "ulasamadigi bir yerde."),
+        "question": ("whether the residual entries, aligned AMONG THEMSELVES, "
+                     "carry a conserved carboxylate column anchored to His-2"),
+        "why": ("The anchor of step 6 rests on the type's BACTERIAL "
+                "positives; if the carboxylate has moved to a family-specific, "
+                "non-homologous position that anchor cannot see it. If every "
+                "member of a family carries a D/E at the same column then the "
+                "carboxylate IS there, only somewhere the reference set cannot "
+                "reach."),
         "groups": residual_family_scan(absent, entries, index, workdir,
                                        mafft_threads),
     }
@@ -1374,16 +1390,17 @@ def stage_gate_cost(entries, negatives, calls):
     fixed_lost = set(negatives)
     anchored_lost = {c for c, v in calls.items() if v["call"] in ("absent", "untested")}
     return {
-        "question": ("kabul kurali katalitik triad'in 3/3'unu isteseydi ne "
-                     "kaybedilirdi"),
-        "rule_now": "Rieske 4/4 ZORUNLU + katalitik triad >=%d/3, pencere +-%d"
+        "question": ("what would be lost if the admission rule demanded 3/3 "
+                     "of the catalytic triad"),
+        "rule_now": "Rieske 4/4 REQUIRED + catalytic triad >=%d/3, window +-%d"
                     % (2, 2),
         "fixed_column_reading": cost(
-            fixed_lost, "sabit kolon (%d, +-2)" % CARBOX_COL,
-            "ro_carboxylate'in bugunku okumasi -- SISMIS sayi"),
+            fixed_lost, "the fixed column (%d, +-2)" % CARBOX_COL,
+            "what ro_carboxylate reads today -- an INFLATED number"),
         "anchored_reading": cost(
-            anchored_lost, "capali yeniden okuma (adim 6)",
-            "ASIL sayi: karboksilati gercekten bulunamayan girisler"),
+            anchored_lost, "the anchored re-reading (step 6)",
+            "the REAL number: entries whose carboxylate genuinely cannot be "
+            "found"),
     }
 
 
@@ -1459,10 +1476,12 @@ def stage_statistics(entries, negatives, calls):
                 for cid in entries}
     tests = []
     for label, label_of, cols in (
-            ("sabit kolon cagrisi", fixed, ["has_carboxylate", "no_carboxylate"]),
-            ("capali okuma cagrisi", anchored, ["present", "absent"])):
-        for key, name in (("cluster", "enzim tipi"), ("tier", "kanit kademesi"),
-                          ("domain", "taksonomik alan")):
+            ("the fixed-column call", fixed,
+             ["has_carboxylate", "no_carboxylate"]),
+            ("the anchored-reading call", anchored, ["present", "absent"])):
+        for key, name in (("cluster", "enzyme type"),
+                          ("tier", "evidence level"),
+                          ("domain", "taxonomic domain")):
             res = contingency(entries, label_of, key, "%s x %s" % (name, label), cols)
             if res:
                 tests.append(res)
@@ -1513,8 +1532,8 @@ def annotation_verdict(anchored):
         if not hits:
             return None
         row = max(hits, key=lambda r: r["n"])
-        return ("'%s' etiketli %d girisin %d'inde (%%%.1f)"
-                % (row["product"], row["n"], row["carboxylate_present"],
+        return ("%d of the %d entries labelled '%s' (%.1f %%)"
+                % (row["carboxylate_present"], row["n"], row["product"],
                    100 * row["carboxylate_present_fraction"]))
 
     parts = [text for text in (
@@ -1523,12 +1542,14 @@ def annotation_verdict(anchored):
         describe(lambda t: "hypothetical" in t.lower()),
     ) if text]
     if not parts:
-        return "Bu kumede incelenecek bir urun dizgisi yogunlasmasi yok."
-    return ("NCBI urun dizgileri bu girislerin oksijenaz OLMADIGININ kaniti "
-            "degil: capali okuma " + "; ".join(parts) + " katalitik "
-            "karboksilati yerinde buldu. Bu etiketler proteinin yalnizca bir "
-            "parcasina oturan kismi CDD cagrilaridir; o parcanin yaninda tam "
-            "bir mononukleer demir merkezi duruyor.")
+        return ("No product-string concentration in this set is worth "
+                "examining.")
+    return ("The NCBI product strings are not evidence that these entries "
+            "are NOT oxygenases: the anchored reading found the catalytic "
+            "carboxylate in place in " + "; ".join(parts) + ". Those labels "
+            "are partial CDD calls that land on one piece of the protein "
+            "only; next to that piece sits a complete mononuclear iron "
+            "centre.")
 
 
 def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
@@ -1545,25 +1566,27 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
     recovery = [c["method_recovery_on_positives"] for c in tested_clusters]
     return {
         "headline": (
-            "Karboksilatsiz gorunen %d girisin %d'i (%%%.1f) SABIT KOLON "
-            "YANILGISIDIR: karboksilat, ayni tipin pozitiflerine capalanarak "
-            "okundugunda yerinde durmaktadir. Gercek yokluk %d giris (%%%.1f)."
+            "Of the %d entries that appear to have no carboxylate, %d "
+            "(%.1f %%) are an ARTEFACT OF THE FIXED COLUMN: read anchored to "
+            "the positives of the same type, the carboxylate is in place. The "
+            "real absence is %d entries (%.1f %%)."
             % (n_neg, present, 100 * present / max(1, n_neg), absent,
                100 * absent / max(1, n_neg))),
         "how_many_were_an_alignment_artefact": present,
         "how_many_are_a_real_absence": absent,
         "how_many_could_not_be_tested": untested,
         "why_the_fixed_column_failed": (
-            "Eksik cagrilarin %d'i (%%%.1f) kolonun KENDISININ ve komsularinin "
-            "hizalamada BOS olmasindan geliyor, yalnizca %d'inde kolonda "
-            "karboksilat olmayan gercek bir kalinti oturuyor. Sebep bir-iki "
-            "pozisyonluk kayma degil: bu girislerin %d'inde (%%%.1f) ROmotif71 "
-            "hizalamasi karboksilat kolonuna HIC ULASMIYOR -- son dolu match "
-            "kolonu medyani %s, oysa karboksilat kolonu %d. Model kapsami "
-            "ortalama %.2f (karboksilatli sette %.2f) ve hmm skoru %.0f "
-            "(karsisinda %.0f). Yani 426 kolonluk referans modeli bu dizilerin "
-            "C-terminal katalitik lobunu hizalayamiyor; kolon 355 hizalanan "
-            "bolgenin DISINDA kaliyor."
+            "%d of the missing calls (%.1f %%) come from the column ITSELF "
+            "and its neighbours being GAPS in the alignment; in only %d does a "
+            "real residue that is not a carboxylate sit at the column. The "
+            "cause is not a shift of one or two positions: in %d of these "
+            "entries (%.1f %%) the ROmotif71 alignment NEVER REACHES the "
+            "carboxylate column -- the median last filled match column is %s, "
+            "while the carboxylate column is %d. Model coverage averages %.2f "
+            "(against %.2f in the set with a carboxylate) and the hmm score "
+            "%.0f (against %.0f). So the 426-column reference model cannot "
+            "align the C-terminal catalytic lobe of these sequences; the "
+            "column falls OUTSIDE the region that aligned."
             % (gapped, 100 * gapped / max(1, n_neg), substituted, stops,
                100 * stops / max(1, n_neg),
                mechanism["no_carboxylate"]["last_filled_column_median"], CARBOX_COL,
@@ -1571,65 +1594,70 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
                mechanism["with_carboxylate"]["model_coverage_mean"],
                mechanism["no_carboxylate"]["hmm_score_mean"],
                mechanism["with_carboxylate"]["hmm_score_mean"])
-            + (" Referans profil sondasi bunu dogrudan gosteriyor: C-terminal "
-               "katalitik lob modeli (ROcatC, kolon 260-426) bu dizilerin "
-               "yalnizca %%%.1f'inde skor>=20 veriyor, karboksilatli sette "
-               "%%%.1f, pipeline'in RO SAYMADIGI 'Rieske var katalitik yok' "
-               "kontrol setinde %%%.1f. Dar karboksilat sondasi (ROcarbox, "
-               "kolon 330-380) karboksilatsiz sette %%%.1f, karboksilatli "
-               "sette %%%.1f. Rieske alani sondasi ise UC sette de %%100'e "
-               "yakin tutuyor -- yani kaybolan sey Rieske merkezi degil, "
-               "referans modelinin katalitik loba ERISIMI."
+            + (" The reference-profile probe shows this directly: the "
+               "C-terminal catalytic lobe model (ROcatC, columns 260-426) "
+               "scores >=20 in only %.1f %% of these sequences, against "
+               "%.1f %% in the set with a carboxylate and %.1f %% in the "
+               "'Rieske present, catalytic rejected' control set that the "
+               "pipeline does NOT count as RO. The narrow carboxylate probe "
+               "(ROcarbox, columns 330-380) reaches %.1f %% in the "
+               "carboxylate-less set and %.1f %% in the set with one. The "
+               "Rieske-domain probe, by contrast, holds near 100 %% in ALL "
+               "THREE sets -- so what is lost is not the Rieske centre, it is "
+               "the reference model's REACH into the catalytic lobe."
                % _probe_numbers(probe))),
         "why_this_is_not_a_window_problem": (
-            "Ayni sabit kolonu +-%d kolona kadar genisletmek yalnizca %%%.1f'ini "
-            "kurtariyor -- bos kolonlari genisletmek bos kolon taramaktir."
+            "Widening the same fixed column out to +-%d columns recovers only "
+            "%.1f %% of them -- widening over gaps only scans more gaps."
             % (widening["windows"][-1]["window_columns"],
                100 * widening["windows"][-1]["rescued_fraction"])),
         "why_the_naive_anchor_was_not_enough": naive["verdict"],
         "what_the_anchored_reading_did": (
-            "Her tipte karboksilatsiz uyeler, AYNI TIPIN karboksilati bilinen "
-            "uyeleri ve kuratorlu referans dizisiyle birlikte mafft ile yeniden "
-            "hizalandi; karboksilat kolonu sabit bir sayi olarak degil, "
-            "pozitiflerin bilinen pozisyonlarinin oyuyla belirlendi. Yontemin "
-            "kendi dogrulugu ayni hizalamada olculdu: pozitiflerin medyan "
-            "%%%.1f'inde capa dogru kalintiyi geri verdi. Kayma dagilimi "
-            "capanin UZERINDE yiginlasiyor (kolon kaymasi 0: %d giris; beklenen "
-            "His-2 uzakligindan sapma +-3 kalinti icinde: %d / %d), yani "
-            "okunan sey "
-            "rastgele bir D/E degil, HOMOLOG konumdaki karboksilat. Bu, %d "
-            "tipin %d'inde grubun kendi D/E bilesimine karsi binom testini "
-            "geciyor."
+            "In every type the members without a carboxylate were "
+            "re-aligned with mafft together with the members OF THE SAME TYPE "
+            "whose carboxylate is known and with the curated reference "
+            "sequence; the carboxylate column was then decided by the vote of "
+            "the positives' known positions rather than by a fixed number. The "
+            "method's own accuracy was measured in the same alignment: in a "
+            "median %.1f %% of the positives the anchor returned the right "
+            "residue. The shift distribution piles up ON the anchor (column "
+            "shift 0: %d entries; deviation from the expected His-2 distance "
+            "within +-3 residues: %d / %d), so what is being read is not a "
+            "random D/E but the carboxylate in the HOMOLOGOUS position. This "
+            "passes a binomial test against the group's own D/E composition in "
+            "%d of %d types."
             % (100 * float(np.median(recovery)) if recovery else 0,
                anchored["offset_distribution"].get(0, 0),
                anchored["residue_offset_from_expected"]["within_plus_minus_3"],
                anchored["residue_offset_from_expected"]["n"],
-               anchored["null_model"]["clusters_tested"],
-               anchored["null_model"]["clusters_beating_the_null"])),
+               anchored["null_model"]["clusters_beating_the_null"],
+               anchored["null_model"]["clusters_tested"])),
         "what_the_real_absences_appear_to_be": (
             absences.get("note")
-            or ("%d giris, %d tipe dagilmis; capa kolonunda oturan kalintilar %s. "
-                "Bunlarin %d'i hizalamada o kolonda gap, yani 'yoklugu' bile "
-                "hala olcum sinirindan kaynaklanabilir. %d farkli yaprakta "
-                "duruyorlar, yani tek bir sapmis klad DEGIL, dagilmis bir "
-                "artik. Alan mimarisi testi bir ayrim uretemiyor cunku "
-                "component_hmms kitapliginda halka-hidroksilleyici alpha'nin "
-                "katalitik alani icin model yok."
+            or ("%d entries, scattered over %d types; the residues sitting at "
+                "the anchor column are %s. %d of those are a gap at that "
+                "column in the alignment, so even their 'absence' may still "
+                "come from the limit of the measurement. They sit in %d "
+                "different leaves, so they are NOT a single divergent clade "
+                "but a scattered residue. The domain-architecture test cannot "
+                "draw a distinction because the component_hmms library holds "
+                "no model for the catalytic domain of the ring-hydroxylating "
+                "alpha subunit."
                 % (absences["n_absent"], len(absences.get("by_type", {})),
                    absences.get("residue_in_place"),
                    absences.get("residue_in_place", {}).get("-", 0),
                    absences.get("clustering", {}).get("distinct_leaves", 0))
-               + (" C-terminal erisim: %s. AILE ICI son kontrol: artik "
-                  "girisler kendi aralarinda hizalandiginda %d giris aileye "
-                  "OZGU bir konumda korunmus bir karboksilat tasiyor (%s); "
-                  "yani onlarda da karboksilat VAR, sadece 71 bakteriyel "
-                  "referansin ulasamadigi bir yerde. Geri kalan %d giris tek "
-                  "ya da ikili temsil edilen okaryotik Rieske oksijenaz "
-                  "alt aileleri "
-                  "(feoforbid a oksijenaz, klorofillid a oksijenaz, "
-                  "PTC52/TIC55, kolesterol 7-desaturaz/daf-36) oldugu icin bu "
-                  "yontemle cozulemiyor: kalan artik bir YANLIS POZITIF "
-                  "kumesi degil, bir REFERANS SETI BOSLUGUDUR."
+               + (" C-terminal reach: %s. The WITHIN-FAMILY last check: when "
+                  "the residual entries are aligned among themselves, %d of "
+                  "them carry a conserved carboxylate at a family-SPECIFIC "
+                  "position (%s); so they have a carboxylate too, only "
+                  "somewhere the 71 bacterial references cannot reach. The "
+                  "remaining %d entries cannot be resolved by this method "
+                  "because they are eukaryotic Rieske oxygenase subfamilies "
+                  "represented once or twice (pheophorbide a oxygenase, "
+                  "chlorophyllide a oxygenase, PTC52/TIC55, cholesterol "
+                  "7-desaturase/daf-36): what is left is not a set of FALSE "
+                  "POSITIVES but a GAP IN THE REFERENCE SET."
                   % (absences.get("c_terminal_reach", {}).get("counts"),
                      absences.get("residual_family_scan", {}).get(
                          "entries_rescued_by_a_family_specific_site", 0),
@@ -1638,34 +1666,38 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
                                        int(round(g["fraction"] * g["n"])), g["n"])
                          for g in absences.get("residual_family_scan", {}).get(
                              "families_with_a_conserved_carboxylate", []))
-                     or "yok",
+                     or "none",
                      absences["n_absent"]
                      - absences.get("residual_family_scan", {}).get(
                          "entries_rescued_by_a_family_specific_site", 0))))),
         "what_about_the_SRPBCC_annotation": annotation_verdict(anchored),
         "are_they_Rieske_oxygenases": (
-            "Evet, kanitlar bu yonde. Karboksilatsiz gorunen setin HEPSINDE "
-            "Rieske ligandlarinin 4/4'u, iki katalitik histidin ve kopru "
-            "Asp/Glu yerinde -- yani tezin aktardigi D-x(2)-H-x(3-5)-H "
-            "konsensusu tam. Capali okuma uzerine facial triad'in karboksilati "
-            "da %%%.1f'inde bulundu. Bu girislerin RO'luktan uzak gorunmesinin "
-            "sebebi biyolojik degil olcumsel: referans seti 71 BAKTERIYEL "
-            "halka-hidroksilleyici tipten olusuyor ve bu kumenin %d'i okaryot "
-            "(klorofil/steroid yolu Rieske oksijenazlari: feoforbid a "
-            "oksijenaz, TIC55, klorofillid a oksijenaz, kolesterol "
-            "7-desaturaz), onlarin katalitik lobu bakteriyel modele "
-            "hizalanamiyor."
+            "Yes, the evidence points that way. In EVERY member of the set "
+            "that appears to lack a carboxylate, 4/4 of the Rieske ligands, "
+            "both catalytic histidines and the bridging Asp/Glu are in place "
+            "-- that is, the D-x(2)-H-x(3-5)-H consensus the thesis reports is "
+            "intact. On the anchored reading the facial triad's carboxylate "
+            "was found as well, in %.1f %% of them. These entries look far "
+            "from being ROs for a reason that is not biological but "
+            "methodological: the reference set consists of 71 BACTERIAL "
+            "ring-hydroxylating types, while %d of this group are eukaryotic "
+            "(Rieske oxygenases of the chlorophyll and steroid pathways: "
+            "pheophorbide a oxygenase, TIC55, chlorophyllide a oxygenase, "
+            "cholesterol 7-desaturase), and their catalytic lobe cannot be "
+            "aligned to a bacterial model."
             % (100 * present / max(1, n_neg),
                mechanism.get("euk_count", 0))),
         "should_the_admission_rule_change": (
-            "HAYIR, 3/3'e sikilastirilmamali. Sabit-kolon okumasina gore 3/3 "
-            "kurali %d giris (%%%.1f) ve %d tipte uye kaybettirirdi; ama bu sayi "
-            "SISMIS, cunku kayiplarin neredeyse tamami gercek bir biyolojik "
-            "eksiklik degil, modelin menzili. Capali okumaya gore gercek bedel "
-            "%d giris (%%%.2f). Yani 3/3 kurali, karboksilati fiilen OLAN %d "
-            "gercek RO'yu veritabanindan atardi ve en sert vurdugu tipler "
-            "(%s) kuratorlu referansa en uzak, yani en degerli olanlar. "
-            "ro_motif.py'nin 2/3 secimi bu olcumle DOGRULANIYOR."
+            "NO, it should not be tightened to 3/3. On the fixed-column "
+            "reading a 3/3 rule would cost %d entries (%.1f %%) and lose "
+            "members in %d types; but that number is INFLATED, because almost "
+            "all of the loss is not a real biological absence, it is the "
+            "model's reach. On the anchored reading the real cost is %d "
+            "entries (%.2f %%). So a 3/3 rule would throw %d genuine ROs that "
+            "DO have the carboxylate out of the database, and the types it "
+            "would hit hardest (%s) are the ones furthest from a curated "
+            "reference, that is, the most valuable. The 2/3 choice in "
+            "ro_motif.py is CONFIRMED by this measurement."
             % (gate["fixed_column_reading"]["entries_lost"],
                100 * gate["fixed_column_reading"]["entries_lost_fraction"],
                gate["fixed_column_reading"]["types_losing_members"],
@@ -1675,19 +1707,22 @@ def build_verdict(baseline, mechanism, widening, naive, probe, anchored,
                ", ".join(d["type"] for d in
                          gate["fixed_column_reading"]["hardest_hit_types"][:4]))),
         "what_should_change_instead": (
-            "Kural degil OLCUM duzeltilmeli. (1) ro_carboxylate'in "
-            "catalytic_residue/catalytic_offset alanlari sabit kolondan "
-            "okundugunu tasimali: NULL offset 'yok' degil 'pencerede "
-            "okunamadi' demektir ve bugun bu ayrim tabloda YOK. (2) Kapsami "
-            "dusuk girisler icin karboksilat tip ici capali okumayla "
-            "yazilmali. (3) 2026-10-30 GUNCELLEMESI: bu maddede eskiden "
-            "'referans setinde okaryotik RO tipi YOK' yaziyordu. ARTIK VAR -- "
-            "6_601_PAO, 6_602_CAO, 6_603_PTC52 14 Ekim 2026'da eklendi ve "
-            "617 uye topluyor; Nvd ve DAF-36 de sette. Buna RAGMEN kalan "
-            "gercek yokluklarin cogu hala bu tiplerde (PTC52, CAO, DAF36, "
-            "Nvd), yani sorun referansin YOKLUGU degil, bu alt ailelerin "
-            "katalitik lobunun bakteriyel profille hizalanmamasi: cozum "
-            "referans eklemek degil, kolonu tip icinde capalamak."),
+            "The MEASUREMENT should change, not the rule. (1) "
+            "ro_carboxylate's catalytic_residue and catalytic_offset fields "
+            "should carry the fact that they were read at a fixed column: a "
+            "NULL offset means 'could not be read in the window', not 'absent', "
+            "and today the table does NOT make that distinction. (2) For "
+            "entries with low coverage the carboxylate should be written from "
+            "the within-type anchored reading. (3) UPDATE 2026-10-30: this "
+            "item used to say that the reference set held NO eukaryotic RO "
+            "type. It now does -- 6_601_PAO, 6_602_CAO and 6_603_PTC52 were "
+            "added on 14 October 2026 and recruit 617 members; Nvd and DAF-36 "
+            "are in the set as well. EVEN SO most of the remaining real "
+            "absences are still in those types (PTC52, CAO, DAF36, Nvd), so "
+            "the problem is not the ABSENCE of a reference but that the "
+            "catalytic lobe of these subfamilies does not align to a bacterial "
+            "profile: the fix is not to add references, it is to anchor the "
+            "column within the type."),
     }
 
 
