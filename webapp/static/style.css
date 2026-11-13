@@ -129,6 +129,17 @@
 }
 
 /* -------------------------------------------- 2  reset, document, focus  */
+
+/*  HTML `hidden` ozniteligi TARAYICININ stil sayfasindan geliyor, ve yazarin
+    her `display` kurali onu yener. Bu sheet'te `display:flex` tasiyip JS'ten
+    `hidden` ile acilip kapanan uc eleman vardi (.pdbnote, .pdbbar,
+    .pdbbar__layers) ve ucu de gizlenmiyordu: yapi goruntuleyicide "Loading
+    structure ... from RCSB PDB" notu yuklenme bittikten SONRA da yapinin
+    ustunde duruyordu, yani sayfa yuklenmis bir figurun uzerine yuklenmedigini
+    yaziyordu. Tek yerden kapatiliyor, cunku bu tuzak eleman basina degil
+    deyim basina kuruluyor: `hidden` kullanan her yeni eleman ayni sekilde
+    dusecekti.                                                             */
+[hidden] { display: none !important; }
 * { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
