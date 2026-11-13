@@ -6311,3 +6311,38 @@ Açık iş: `carboxylate_audit.py`'nin yayımlanan 32 dizgisini çevir. Not:
 betikte bundan çok daha fazla Türkçe dizgi var ama çoğu **konsol
 çıktısı** ve JSON'a girmiyor — çevrilecek olan yalnızca yayımlanana
 giden kısım.
+
+## 135.37 · Çeviri tamamlandı: denetim yayımlanıyor
+
+135.36'nın açık işi kapandı. `carboxylate_audit.py`'nin yayımlanan
+**47 dizgisi** İngilizceye çevrildi: sabit-kolon yanılgısı paragrafı,
+referans profil sondası sonuçları, "3/3'e sıkılaştırılmamalı" gerekçesi,
+aile içi son kontrol, null modeli, kayma dağılımının nasıl okunacağı.
+
+**Kod dokümanı Türkçe kaldı** — docstring'ler, modül başlığı ve konsol
+çıktıları geliştirici metni, yayımlanan artefakt değil.
+
+**Biçim dizgileri gerçek bir risktı.** Türkçe yüzdeyi başa alıyor
+(`%%%.1f`), İngilizce sona (`%.1f`); bir yerde argüman sırası da
+değişti ("45 tipin 39'u" → "39 of 45 types"). Bu tür bir hata sessiz
+değil, çökme üretir — adım iki kez koşturuldu (1170 s ve 1171 s), ikisi
+de hatasız.
+
+### Kendi doğrulamam eksik ölçüm yaptı
+
+İlk taramamda 45 dizgi buldum, çevirdim, tekrar baktım: **1 tane
+kalmıştı.** Sebep, tarama regex'imi kendim yazmış olmam — "nedir",
+"hâlâ", "kadar" kelimeleri listemde yoktu.
+
+Sonra soruyu **sahibine** sordum: `check_site.py`'nin kendi
+`TURKISH_RE`'si **2** dizgi buldu, benimkinin kaçırdığı bir tane daha.
+Yani bu projenin "deseni uydurma, sahibinden oku" kuralı bu kez benim
+kendi doğrulama adımımı vurdu. İkisi de çevrildi ve son kontrol
+kapının dedektörüyle yapıldı: **sıfır Türkçe.**
+
+`AWAITING_TRANSLATION` kümesi **boş kalıyor ama kaldırılmıyor**:
+mekanizma bir sonraki vaka için duruyor, kapı boşken PASS veriyor, ve üç
+durum ayrı olmaya devam ediyor — belgesiz, geçersiz, çevirisi bekliyor.
+
+Yayımlanan analiz dosyası 86 → **87**; kalite sayfasındaki indirme
+bağlantısı geri geldi.
