@@ -6263,3 +6263,51 @@ verilemez, o yüzden sessizce bir listeye atılmadılar.
 
 Açık iş: 26 dosyanın üç kümesi ayrı ayrı ele alınmalı; 15'i için önce
 "bunu kim üretiyor" sorusu cevaplanmalı.
+
+## 135.36 · Belgelemek yayımlamaktır: üç dosya dil kontrolüne takıldı
+
+135.35'te 10 dosyayı köken listesine ekledim ve **bunu yaparak onları
+yayımlanmış hâle getirdim.** `check_site.py` hemen üçünü yakaladı:
+içleri Türkçeydi. Daha önce iç dosya sayıldıkları için kimse kontrol
+etmiyordu.
+
+Bu, beklenmedik ama doğru bir sonuç: bir dosyayı belgelemek onu
+indirilebilir yapıyor, ve yayımlanan veri dosyaları İngilizce olmak
+zorunda. Üçü ayrı ayrı ele alındı, çünkü üçünün doğru çözümü farklıydı.
+
+**`db_repair.json` — çevrildi.** İki dizgi, onarım kaydının gerekçesi.
+Çeviri JSON'a değil `db_repair.py`'ye yapıldı ki yeniden üretimde
+kalıcı olsun.
+
+**`provenance.json` — yayından çıkarıldı, çevrilmedi.** Türkçesi
+README'nin boru hattı tablosundan **kopyalanıyordu**. README bu projenin
+Türkçe geliştirici dokümanı ve öyle kalması doğru; onu İngilizce bir
+yayın artefaktına taşımak yanlıştı. Çapraz kontrolün sorusu "bu adımı
+hangi betik üretiyor" ve cevabı `scripts` alanında; serbest metin `io`
+alanını **hiçbir tüketici okumuyordu** (ölçüldü). Yayımlanan manifesto
+artık yalnızca betik adlarını taşıyor.
+
+**`carboxylate_audit.json` — belgeli, ama henüz yayımlanmıyor.** 32
+yayımlanan dizgisi Türkçe ve hepsi yoğun bilimsel gerekçe metni (kabul
+kuralı, reddedilen kayma çağrıları, Parales/Gibson konsensüs notu).
+Aceleyle çevirmek yayımlanmış bir denetim kaydında anlam kaybı riski
+taşır, o yüzden çeviri ayrı bir iş olarak **izleniyor**, sessizce
+listeden çıkarılmadı.
+
+**Üç durum artık birbirinden ayrı tutuluyor** ve bu ayrımın kendisi
+asıl kazanç:
+
+| durum | ne demek |
+|---|---|
+| belgesiz | kimse ne olduğunu söylemedi |
+| geçersiz (`SUPERSEDED`) | sayısı yanlış, indirilebilir tutmak onu yayımlamaktır |
+| **çevirisi bekliyor** (`AWAITING_TRANSLATION`) | sayısı doğru, prozası yanlış dilde |
+
+Üçünü tek kovaya koymak yapılacak işi gizlerdi. Kapı artık üçüncüsünü
+**ayrı bir uyarı** olarak sayıyor: "documented results awaiting
+translation before publication".
+
+Açık iş: `carboxylate_audit.py`'nin yayımlanan 32 dizgisini çevir. Not:
+betikte bundan çok daha fazla Türkçe dizgi var ama çoğu **konsol
+çıktısı** ve JSON'a girmiyor — çevrilecek olan yalnızca yayımlanana
+giden kısım.

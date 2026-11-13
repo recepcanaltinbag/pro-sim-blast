@@ -2773,8 +2773,27 @@ INTERNAL_FILES = frozenset({
     "new_reference_candidates.md",
 })
 
+#  BELGELENMIS AMA HENUZ YAYINLANMAYAN: icerigi TURKCE. Yayimlanan veri
+#  dosyalari Ingilizce (check_site bunu sart kosuyor ve hakli), ama bu
+#  dosyayi listeden CIKARMAK da yanlis olurdu -- gercek bir grafik
+#  ciktisi ve gercek bir olcum. Uc durum birbirinden ayri tutuluyor:
+#  "belgesiz" (kimse ne oldugunu soylemedi), "gecersiz" (sayisi yanlis,
+#  SUPERSEDED), ve "cevirisi bekliyor" (sayisi dogru, prozasi yanlis
+#  dilde). Ucunu tek kovaya koymak, yapilacak isi gizler.
+#
+#  carboxylate_audit.json: 32 yayinlanan dizgisi Turkce ve hepsi yogun
+#  bilimsel gerekce metni (kabul kurali, reddedilen kayma cagrilari,
+#  konsensus notu). Aceleyle cevirmek yayinlanmis bir denetim kaydinda
+#  anlam kaybi riski tasir, o yuzden ceviri AYRI bir is olarak
+#  izleniyor (ROADMAP 135.36). Tabloda aciklamasiyla duruyor, indirme
+#  baglantisi verilmiyor.
+AWAITING_TRANSLATION = frozenset({
+    "carboxylate_audit.json",
+})
+
 ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE
-                           if kind == "file") - SUPERSEDED_FILES
+                           if kind == "file") - SUPERSEDED_FILES \
+                           - AWAITING_TRANSLATION
 
 
 def download_table(analysis_dir):

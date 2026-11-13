@@ -4643,9 +4643,22 @@ def check_published_files(rep, out_dir):
     #  duruyor; burada liste tekrar edilmez, sahibinden okunur.
     undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES)
                           - set(getattr(_atlas, "SUPERSEDED_FILES", ()))
-                          - set(getattr(_atlas, "INTERNAL_FILES", ())))
+                          - set(getattr(_atlas, "INTERNAL_FILES", ()))
+                          - set(getattr(_atlas, "AWAITING_TRANSLATION", ())))
     rep.check("analysis files that exist but are not documented",
               not undocumented, len(undocumented), first(undocumented, 6),
+              severity="WARN")
+
+    #  CEVIRI BEKLEYENLER AYRI BIR UYARI. Yukaridaki "belgesiz" kovasina
+    #  karismazlar, cunku ne olduklari BILINIYOR; eksik olan sey proza
+    #  dili. Ayri sayilmazlarsa yapilacak is gorunmez olur.
+    waiting = sorted(set(getattr(_atlas, "AWAITING_TRANSLATION", ()))
+                     & on_disk)
+    rep.check("documented results awaiting translation before publication",
+              not waiting, len(waiting),
+              "hepsi yayinlanabilir dilde" if not waiting else
+              "prozasi Turkce, bu yuzden belgeli ama indirilemez: "
+              + ", ".join(waiting),
               severity="WARN")
 
 

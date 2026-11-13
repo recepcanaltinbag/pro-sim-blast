@@ -36,17 +36,19 @@ import time
 REPAIRS = [
     (
         "phantom_replicon",
-        "Kimligi olmayan replikon satiri. `gbk_files/NZ_QXDB01000002.1.gbk` "
-        "0 bayt (Ara 2024'te yarim kalmis indirme), yani hicbir kayit "
-        "ayristirilamadi; uretilen satir nucleotide_id='' tasiyordu. "
-        "Kimligi olmayan bir sey replikon tablosunun BIRIMI olamaz, ve bu "
-        "satir her replikon-basi paydayi bir fazla gosteriyordu "
-        "(17.074 yerine 17.073). Hicbir ro/neighbor/operon/taxon satiri "
-        "ona bagli degil -- silmek hicbir gozlem kaybetmiyor. Istenen bir "
-        "kaydin hic gelmedigi OLGUSU silinmiyor: artik "
-        "`genomic_context/unreadable_files.csv` icinde beyan ediliyor.",
-        "extract_genomic_context.py: kimlik ayristirilamayan dosya artik "
-        "`status='unreadable'` alir ve replicon satiri URETILMEZ",
+        "A replicon row with no identifier. `gbk_files/NZ_QXDB01000002.1.gbk` "
+        "is 0 bytes (a download that stopped half way in December 2024), so "
+        "no record could be parsed and the row that was written carried "
+        "nucleotide_id=''. Something with no identifier cannot be the UNIT "
+        "of the replicon table, and this row made every per-replicon "
+        "denominator one too large (17,074 instead of 17,073). No "
+        "ro/neighbour/operon/taxon row depends on it, so deleting it loses "
+        "no observation. The FACT that a requested record never arrived is "
+        "not deleted: it is now declared in "
+        "`genomic_context/unreadable_files.csv`.",
+        "extract_genomic_context.py: a file whose identifier cannot be "
+        "parsed is now given `status='unreadable'` and NO replicon row is "
+        "written",
         "SELECT COUNT(*) FROM replicon "
         "WHERE nucleotide_id IS NULL OR TRIM(nucleotide_id) = ''",
         1,

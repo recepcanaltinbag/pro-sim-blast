@@ -882,7 +882,17 @@ def main():
         "source_data": sources,
         "tables": tables,
         "files": files,
-        "readme_pipeline_steps": readme_steps,
+        #  README'nin SERBEST METNI yayinlanmiyor, yalnizca capraz
+        #  kontrolun ihtiyaci olan betik adlari. README bu projenin
+        #  TURKCE gelistirici dokumani; `io` alanini buraya kopyalamak
+        #  Turkce prozayi Ingilizce bir yayin artefaktina tasiyordu ve
+        #  check_site hakli olarak yakaladi. Capraz kontrolun sorusu
+        #  "bu adimi hangi script uretiyor"; cevabi `scripts`te.
+        #  Alani hic okuyan bir tuketici yoktu (2026-11-14'te olculdu).
+        "readme_pipeline_steps": {
+            step: {"scripts": rec.get("scripts", [])}
+            for step, rec in (readme_steps or {}).items()
+        },
         "warnings": man.warnings,
         "counts": {
             "tables": len(tables),
