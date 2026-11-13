@@ -134,6 +134,78 @@
 </figure>
 {% endif %}
 
+{#  LITERATUR. Reaksiyonun HEMEN ARDINDA, cunku okuyucunun "bunu nereden
+    biliyoruz" sorusu tam orada doguyor. Uc kaynak AYRI basliklar altinda
+    duruyor ve birlestirilmiyor: ucu ayni seyi iddia etmiyor. Dosya yoksa
+    bolum hic basilmaz.                                                    #}
+{% if x.literature %}
+{% set lit = x.literature %}
+{% macro cite(r) -%}
+  {% if r.authors %}{{ r.authors[0] }}{% if r.authors|length > 1 %} <i>et al.</i>{% endif %}{% endif %}
+  {% if r.journal %}{{ r.journal }}{% endif %}{% if r.year %} {{ r.year }}{% endif %}{% if r.title %}
+  &mdash; {{ r.title }}{% endif %}
+  {% if r.doi %}<br><a class="mono small" href="https://doi.org/{{ r.doi }}"
+     rel="noopener noreferrer" target="_blank">doi:{{ r.doi }}</a>{% endif %}
+  {%- if r.pmid %} <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/{{ r.pmid }}/"
+     rel="noopener noreferrer" target="_blank">PMID {{ r.pmid }}</a>{% endif %}
+  {%- if r.resolved is false %} <b class="warn">this DOI is not registered</b>{% endif %}
+{%- endmacro %}
+<h2>Literature</h2>
+
+{% if lit.curated %}
+<h3>What this project cites for this type</h3>
+<ul class="lit">
+{% for r in lit.curated %}
+<li>{{ cite(r) }}
+  {% if r.context %}<br><span class="note">Cited in this project's curation as:
+  &ldquo;{{ r.context }}&rdquo;</span>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if lit.structure %}
+<h3>The paper behind the structure</h3>
+<ul class="lit">
+{% for r in lit.structure %}
+<li>{{ cite(r) }}
+  {% if r.anchors %}<br><span class="note">Primary citation of PDB
+  {{ r.anchors|join(', ') }}{% if r.is_assignment_basis %}, which is where this type's
+  substrate assignment comes from{% else %}. The substrate assignment of this type comes
+  from elsewhere; this is the paper that solved the structure{% endif %}.</span>{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if lit.uniprot %}
+<details class="basis">
+  <summary>{{ lit.uniprot|length }} paper{{ '' if lit.uniprot|length == 1 else 's' }}
+    cited by the UniProt entry of the reference protein</summary>
+  <p class="note"><b>These are not claims about this type.</b> They are the reference list of
+  the UniProt entry, which cites a paper for any annotation it carries &mdash; a genome
+  announcement as readily as a characterisation. Where UniProt attaches a paper to its
+  <i>function</i> or <i>catalytic activity</i> annotation as evidence, it is marked below; only
+  that mark says the paper supports a statement about what the enzyme does.</p>
+  <ul class="lit">
+  {% for r in lit.uniprot %}
+  <li>{{ cite(r) }}
+    {% if r.function_evidence %}<br><span class="note"><b>UniProt cites this as evidence for
+    the function or catalytic activity</b> of {{ r.anchors|join(', ') }}.</span>
+    {% elif r.anchors %}<br><span class="note">In the reference list of
+    {{ r.anchors|join(', ') }}.</span>{% endif %}</li>
+  {% endfor %}
+  </ul>
+</details>
+{% endif %}
+
+<p class="note">Every DOI above was checked against the DOI handle registry, not by opening the
+publisher's page: many publishers answer an automated request with an error, and reading that
+error as &ldquo;the DOI is dead&rdquo; marked 79 of 125 valid DOIs as broken in the first
+version of this check.
+{% if lit.unresolved %}<b>{{ lit.unresolved|length }} of the identifiers here are not registered
+in that registry</b> and are shown so they can be corrected.{% endif %}</p>
+{% endif %}
+
+
 {#  UYARI KUTULARI BURADA, BASLIKTA DEGIL. Daha once dordu de h1 ile
     kimyanin ARASINA giriyordu: tipi acan okuyucu once enzimin ne yaptigini
     degil, sayfanin hangi kosullarda yanlis okunabilecegini goruyordu. Sayfa

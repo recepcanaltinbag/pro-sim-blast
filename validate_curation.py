@@ -3636,6 +3636,90 @@ def check_assignment_library(rep, con, root, out_dir="analysis_out"):
               not exact, len(exact), first(exact, 4), severity="WARN")
 
 
+def check_literature(rep, root, out_dir="analysis_out"):
+    """Yayinlanan literatur tanimlayicilari gecerli ve KAYITLI mi?
+
+    NEDEN. Yanlis bir atif, eksik bir atiftan kotudur: okuyucu onu dogru
+    sanip pesine gider ve bulamadiginda hatayi kendinde arar. Bu yuzden
+    kontrol iki ayri seye bakar -- tanimlayicinin BICIMI ve DOI
+    sicilinde KAYITLI olup olmadigi.
+
+    Olculdu (2026-11-13): ilk cozumleyici `HEAD https://doi.org/<doi>` ile
+    yayinciya gidiyordu ve 125 DOI'nin 79'unu olu sayiyordu. Besi tek tek
+    bakildi: yayincidan HTTP 403, handle sicilinden `responseCode 1`.
+    Wiley, Elsevier ve ACS betige 403 donuyor; olculen sey DOI'nin
+    gercekligi degil, yayincinin bot politikasiydi. Soru artik sicile
+    soruluyor ve 125'in 125'i cozuluyor.
+
+    BAGLAM CUMLESI DE SINANIR. `curated` kayitlari kuratorun cumlesini
+    tasiyor ve cumle sinirini bulan kod bir kez tanimlayicinin ICINDEKI
+    noktadan kesti: yayinlanan baglam "doi:10.1016/j.checat." oldu, yani
+    sayfa okuyucuya eksik bir tanimlayici gosterdi. Kontrol her baglam
+    cumlesinin kendi tanimlayicisini ICERDIGINI dogrular.
+
+    NE BULAMAZ. Kayitli bir DOI'nin DOGRU makaleyi gosterdigini
+    gostermez; bunu yalnizca kuratorluk okumasi soyleyebilir. Atfi
+    olmayan tipler de HATA degildir, o yuzden kapsama WARN ile rapor
+    edilir.
+    """
+    path = os.path.join(root, out_dir, "literature.json")
+    if not os.path.exists(path):
+        rep.check("literatur: tanimlayicilar gecerli", True, 0,
+                  "literature.json yok, adim kosmamis", severity="WARN")
+        return
+    with open(path) as handle:
+        data = json.load(handle)
+    types = data.get("types") or {}
+    records = [r for recs in types.values() for r in recs]
+
+    known = {"curated", "pdb_primary", "uniprot"}
+    unknown = sorted({r.get("source") for r in records} - known)
+    rep.check("literatur: her kaydin bilinen bir kaynagi var", not unknown,
+              len(records),
+              ("bilinmeyen kaynak: " + ", ".join(map(str, unknown))) if unknown
+              else f"{len(known)} kaynak ayri tutuluyor")
+
+    bad_form = sorted({r["doi"] for r in records if r.get("doi")
+                       and not re.fullmatch(r"10\.\d{4,9}/\S+", r["doi"])})
+    rep.check("literatur: DOI bicimi gecerli", not bad_form,
+              len({r["doi"] for r in records if r.get("doi")}),
+              ("bicimi bozuk: " + ", ".join(bad_form[:5])) if bad_form
+              else "tum DOI'ler 10.<kayit>/<sonek> biciminde")
+
+    unregistered = sorted({r["doi"] for r in records
+                           if r.get("doi") and r.get("resolved") is False})
+    unchecked = sorted({r["doi"] for r in records
+                        if r.get("doi") and r.get("resolved") is None})
+    rep.check("literatur: yayinlanan her DOI sicilde kayitli", not unregistered,
+              len({r["doi"] for r in records if r.get("doi")}),
+              ("sicilde yok: " + ", ".join(unregistered[:5])) if unregistered
+              else f"{len(unchecked)} DOI henuz bakilmadi"
+                   if unchecked else "hepsi kayitli")
+
+    truncated = []
+    for rec in records:
+        if rec.get("source") != "curated":
+            continue
+        ident = rec.get("doi") or rec.get("pmid")
+        ctx = rec.get("context") or ""
+        if ident and ident.lower() not in ctx.lower():
+            truncated.append(f"{rec.get('cluster')}: {ident}")
+    rep.check("literatur: baglam cumlesi tanimlayicisini iceriyor",
+              not truncated,
+              len([r for r in records if r.get("source") == "curated"]),
+              ("cumle tanimlayicinin icinden kesilmis: " + "; ".join(truncated[:4]))
+              if truncated else "her kuratorluk baglami kendi tanimlayicisini tasiyor")
+
+    cov = data.get("coverage") or {}
+    none_count = cov.get("types_with_none")
+    rep.check("literatur: her tipin bir atfi var", not none_count,
+              cov.get("types") or len(types),
+              f"{none_count} tipte hicbir tanimlayici yok: kuratorluk metninde "
+              f"DOI/PMID yazmamis ve referans proteininin UniProt/PDB bagi yok"
+              if none_count else "her tipte en az bir tanimlayici var",
+              severity="WARN")
+
+
 def check_step_order_matches_reads(rep, root):
     """Bir adim, OKUDUGU tabloyu ureten adimdan SONRA mi siralanmis?
 
@@ -4864,6 +4948,7 @@ def main():
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
         check_step_order_matches_reads(rep, ROOT)
+        check_literature(rep, ROOT)
         check_assignment_library(rep, con, ROOT)
         check_ncbi_accession_claims(rep, con, ROOT)
         check_interpro_agreement(rep, con, ROOT)

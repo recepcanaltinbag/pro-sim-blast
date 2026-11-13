@@ -2304,6 +2304,9 @@ def cluster_extras(con, cluster):
     # olan sayfa degil, uye. empty_types.py bu kaydi uretiyor, dosya yoksa
     # None gelir ve sayfa eskisi gibi calisir.
     x["empty_type"] = atlas.empty_type_view(cluster, apath("empty_types.json"))
+    #  Literatur: tipin DOI/PubMed tanimlayicilari, KAYNAGINA gore ayri.
+    #  Dosya yoksa None gelir ve bolum hic basilmaz.
+    x["literature"] = atlas.literature_view(cluster, apath("literature.json"))
     # Ters yon: bu tipin altinda sayilan, kendi uyesi olmayan kuratorlu adlar.
     x["absorbs"] = atlas.absorbs_view(cluster, apath("empty_types.json"))
     # Atama ile dizi kimliginin UYUSUP uyusmadigi: tip sayfasindaki uye sayisi

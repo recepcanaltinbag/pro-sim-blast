@@ -540,6 +540,13 @@ ARTEFACTS = [
      ["python3", "verify_curation_claims.py", "--skip-uniprot",
       "--ncbi-out", f"{OUT}/curation_claims_ncbi.json"],
      ["verify_curation_claims.py", "types"], False),
+    #  literature: her tipin DOI/PubMed tanimlayicilari. `--fetch` BURADA
+    #  YOK -- ag erisimi bir kapi adiminin kosulu olamaz; onbellek
+    #  yetkili (coverage_audit ile ayni kural). Girdisi kuratorluk metni
+    #  (chemistry.csv + types/) ve onbellek; tablo yazmaz.
+    ("literature", [f"{OUT}/literature.json"],
+     ["python3", "literature.py", "--out", f"{OUT}/literature.json"],
+     ["literature.py", CHEM, "types", f"{OUT}/literature_cache"], False),
     #  coverage_audit: dis evrene gore KAPSAMA acigi. `--fetch` BURADA
     #  YOK -- ag erisimi bir kapi adiminin kosulu olamaz (bkz.
     #  substrate_chebi); onbellek yetkili. Girdisi onbellek + DB, cikti

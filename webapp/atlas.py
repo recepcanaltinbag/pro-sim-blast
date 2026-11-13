@@ -159,6 +159,72 @@ def _empty_types_raw(path):
     return {r.get("cluster"): r for r in records if r.get("cluster")}
 
 
+@functools.lru_cache(maxsize=1)
+def _literature_raw(path):
+    """literature.json'i bir kez oku; dosya yoksa bos sozluk."""
+    data = read_json(path) or {}
+    return data.get("types") or {}
+
+
+def literature_view(cluster, path=None):
+    """Bir tipin literatur kayitlari, KAYNAGINA GORE AYRI gruplanmis.
+
+    Uc grup birlestirilmez, cunku ucu ayni seyi iddia etmiyor: `curated`
+    bu projenin gosterdigi gerekcedir, `structure` yapinin birincil
+    atifidir, `uniprot` ise referans proteinin giris atif listesidir ve
+    "bu enzimin makalesi" DEMEK DEGILDIR. Sayfada ayri okunabilmeleri
+    icin burada da ayri duruyorlar.
+
+    Ayni atif iki PDB kimliginden gelebiliyor (1Z01 ve 1Z03 ayni makale).
+    Tanimlayici basina TEK kayit birakilir ve kimlikler `anchors` altinda
+    toplanir: ayni makaleyi iki kez listelemek iki kanit gibi okunur.
+    """
+    if not cluster:
+        return None
+    if path is None:
+        path = os.path.join(_DEFAULT_ANALYSIS_DIR, "literature.json")
+    records = _literature_raw(path).get(cluster) or []
+    if not records:
+        return None
+
+    groups = {"curated": {}, "structure": {}, "uniprot": {}}
+    for rec in records:
+        bucket = ("curated" if rec.get("source") == "curated"
+                  else "structure" if rec.get("source") == "pdb_primary"
+                  else "uniprot")
+        key = rec.get("doi") or ("pmid:" + rec["pmid"] if rec.get("pmid") else None)
+        if key is None:
+            continue
+        held = groups[bucket].get(key)
+        if held is None:
+            held = dict(rec)
+            held["anchors"] = []
+            groups[bucket][key] = held
+        if rec.get("anchor") and rec["anchor"] not in held["anchors"]:
+            held["anchors"].append(rec["anchor"])
+        #  Bir kayit herhangi bir yoldan ISLEV kaniti ise, isaret korunur.
+        if rec.get("function_evidence"):
+            held["function_evidence"] = True
+        if rec.get("is_assignment_basis"):
+            held["is_assignment_basis"] = True
+
+    def ordered(bucket, by_evidence=False):
+        rows = list(groups[bucket].values())
+        rows.sort(key=lambda r: (
+            0 if (by_evidence and r.get("function_evidence")) else 1,
+            -(int(r["year"]) if str(r.get("year") or "").isdigit() else 0)))
+        return rows
+
+    out = {"curated": ordered("curated"),
+           "structure": ordered("structure"),
+           "uniprot": ordered("uniprot", by_evidence=True)}
+    out["total"] = sum(len(v) for v in out.values() if isinstance(v, list))
+    #  Cozulmeyen bir DOI yanlis bir atiftir ve sayfada SOYLENIR.
+    out["unresolved"] = [r for v in out.values() if isinstance(v, list)
+                         for r in v if r.get("resolved") is False]
+    return out if out["total"] else None
+
+
 def empty_type_view(cluster, path=None):
     """Uyesi olmayan bir tipin SEBEBI -- yoksa None.
 
@@ -2259,6 +2325,12 @@ PROVENANCE = [
      "The same gap by type: how many sequences each type would gain if those "
      "records were fetched.",
      "ingest_gap.py"),
+    ("literature.json", "file",
+     "Literature identifiers for each curated type, kept SEPARATE by source: "
+     "what this project's own curation cites, the primary citation of the "
+     "type's PDB entry, and the reference list of the reference protein's "
+     "UniProt entry. Every DOI is checked against the DOI handle registry.",
+     "literature.py"),
     ("residual_beta_audit.json", "file",
      "Why 60 neighbours the annotation calls a beta subunit are not "
      "classified as one. Measured from the GenBank records: 58 are "

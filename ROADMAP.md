@@ -5907,3 +5907,73 @@ Tahmin alt sınır olarak doğru davrandı.
 Açık karar: 12.312 kaydın tamamı (tahmin +17.528 dizi, gerçekleşme
 oranı bu testte 1,25x) indirilsin mi, yoksa 500'lük bir parti daha mı.
 Mekanizmanın tavanı %32 (135.29).
+
+## 135.30 · Literatür: her tipin DOI'si, kaynağına göre ayrı
+
+Kullanıcı istedi: her enzimin sayfasında literatürdeki makalesinin
+DOI'si olsun.
+
+**Ölçüm önce.** Kuratörlük metnimizde (`chemistry.csv` source/notes +
+`types/*.yaml`) yazılı DOI/PMID yalnızca **15 tipte** var, 61'inde yok.
+Yani sadece kendi metnimizden çıkarmak sorunun altıda birini çözüyor.
+Ama tiplerin **66'sında** bir UniProt erişim numarası ya da PDB kimliği
+var ve ikisi de atıf taşıyor.
+
+**Üç kaynak, üç ayrı iddia — birleştirilmedi.** `literature.py` her
+kaydın hangi yoldan geldiğini taşıyor, çünkü üçü aynı şeyi iddia
+etmiyor:
+
+| kaynak | ne olduğu | kayıt |
+|--------|-----------|-------|
+| `curated` | bu projenin gösterdiği gerekçe, kuratörün cümlesiyle | 17 |
+| `pdb_primary` | tipin PDB kaydının birincil atıfı | 29 |
+| `uniprot` | referans proteinin UniProt atıf listesi | 134 |
+
+Üçünü tek liste yapıp "tipin makalesi" diye yayınlamak kolaydı;
+yapılmadı çünkü o liste ölçümden fazlasını iddia ederdi. Somut örnek:
+`1_116_GdmA`'nın UniProt girişinin tek atıfı bir **genom duyurusu**
+(Miller 2010, *J Bacteriol*), karakterizasyon makalesi değil. Aynı
+sayfada `curated` ve `pdb_primary` kayıtları gerçek karakterizasyonu
+(Bleem 2022, *Chem Catal*) gösteriyor. Birleştirilmiş bir listede ikisi
+yan yana eşit görünecekti.
+
+UniProt bir atıfı FUNCTION ya da CATALYTIC ACTIVITY açıklamasına kanıt
+olarak bağladıysa kayıt `function_evidence` ile işaretli; **yalnızca o
+işaret** makalenin enzimin ne yaptığına dair bir ifadeyi desteklediğini
+söyler.
+
+**Kapsam:** 76 tipin 67'sinde en az bir atıf, 58'inde DOI, 9'unda
+hiçbiri. 9'u hata değil (kapıda WARN): kuratörlük metninde tanımlayıcı
+yazmamış ve referans proteininin UniProt/PDB bağı yok.
+
+### İki kendi hatam, ikisi de "aracın ürettiği yokluk"
+
+**1. RCSB alan adları büyük harfli.** `pdbx_database_id_doi` diye
+sordum, API `pdbx_database_id_DOI` tutuyor. Üç yapının üçünde de `None`
+döndü ve sonuç "bu yapıların DOI'si yok" gibi okunuyordu. Alan adları
+artık modül düzeyinde sabit.
+
+**2. DOI çözümleyicisi yayıncıya soruyordu.** İlk yazım
+`HEAD https://doi.org/<doi>` ile gidiyordu ve **125 DOI'nin 79'unu**
+"çözülmedi" sayıyordu. Rakam inandırıcı olmadığı için beşi tek tek
+ölçüldü: beşinin de yayıncıdan **HTTP 403**, DOI handle sicilinden
+**`responseCode: 1`** dönüyor. Wiley, Elsevier ve ACS betikten gelen
+isteği engelliyor; ölçülen şey "bu DOI gerçek mi" değil, "bu yayıncı
+bota cevap veriyor mu"ymuş. Soru artık sahibine soruluyor: handle
+sicili. **125'in 125'i kayıtlı.**
+
+Bir de bağlam cümlesini bulan kod tanımlayıcının **içindeki** noktadan
+kesiyordu: yayımlanan bağlam `doi:10.1016/j.checat.` oldu, yani sayfa
+okuyucuya eksik bir tanımlayıcı gösterdi. Cümle sonu artık "nokta +
+boşluk ya da metin sonu".
+
+**Kapı (4 FAIL + 1 WARN), ayırt edicileri doğrulanmış.** Bozuk bir
+kopyada dördü de ateşliyor: bilinmeyen kaynak, bozuk DOI biçimi, sicilde
+olmayan DOI, tanımlayıcısını içermeyen bağlam cümlesi. Gerçek veride
+dördü PASS.
+
+Sayfada reaksiyonun hemen ardında, üç kaynak ayrı başlıklar altında;
+UniProt listesi katlanmış (`details`) çünkü en zayıf iddia o.
+
+Açık iş: 9 atıfsız tip için kuratörlük okuması gerekiyor — DOI
+uydurulamaz.

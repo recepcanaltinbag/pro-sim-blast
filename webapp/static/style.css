@@ -321,6 +321,14 @@ button:hover, .btn:hover { border-color: var(--accent-ink); text-decoration: non
   border-left: 1px solid var(--rule);
 }
 .pdbbar__layers label { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+/*  Literatur listesi. Her kayit bir kunye arti bir gerekce satiri; satir
+    araligi kunyeyi bir blok olarak okunur kiliyor, madde isareti yok cunku
+    liste bir sayim degil bir kaynakca.                                   */
+.lit { list-style: none; padding-left: 0; margin: var(--s3) 0; }
+.lit > li { padding: var(--s2) 0; border-top: 1px solid var(--rule); }
+.lit > li:first-child { border-top: 0; }
+.lit .note { display: inline-block; margin-top: 2px; }
+
 /*  Temas katmaninin kirpma uyarisi. Goruntuleyicinin UZERINE degil
     ANAHTARLARIN yanina yaziliyor: kaplayan bir not figuru gizler.      */
 .pdbtrunc { flex-basis: 100%; color: var(--dim); font-size: .78rem; }
