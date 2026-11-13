@@ -173,6 +173,9 @@ USER_FACING_DB_FIELDS = [
     ("ro_etc", "candidate_id", "reductase_type"),
     ("ro_etc", "candidate_id", "ferredoxin_type"),
     ("ro_evidence", "candidate_id", "tier"),
+    #  Kardes tablo: ayni kademe sozlugu, ayni sinif. `tier` kullaniciya
+    #  gorunur (sayfadaki kademe adlari), kimlikler asagidaki listede.
+    ("ro_union_evidence", "seq_md5", "tier"),
     ("ro_regulation", "candidate_id", "upstream_category"),
     ("ro_regulation", "candidate_id", "architecture"),
     ("ro_subfamily", "candidate_id", "assignment_class"),
@@ -323,6 +326,7 @@ IDENTIFIER_TEXT_FIELDS = {
     ("ro_domain", "candidate_id"), ("ro_domain", "cluster"), ("ro_domain", "domain"),
     ("ro_etc", "candidate_id"),
     ("ro_evidence", "candidate_id"), ("ro_evidence", "nearest_ref"),
+    ("ro_union_evidence", "seq_md5"), ("ro_union_evidence", "nearest_ref"),
     ("ro_leaf", "candidate_id"), ("ro_leaf", "cluster"), ("ro_leaf", "leaf_id"),
     ("ro_regulation", "candidate_id"), ("ro_regulation", "upstream_family"),
     ("ro_search", "candidate_id"), ("ro_search", "protein_id"),
