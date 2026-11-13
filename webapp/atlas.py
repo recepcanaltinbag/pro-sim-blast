@@ -2334,6 +2334,63 @@ PROVENANCE = [
      "The same gap by type: how many sequences each type would gain if those "
      "records were fetched.",
      "ingest_gap.py"),
+    #  2026-11-13: ON DOSYA BELGELENDI. Hepsi bir grafik adiminin BEYAN
+    #  EDILMIS ciktisiydi ama bu listede yoktu, yani uretiliyor ve diskte
+    #  duruyor olmalarina ragmen "belgesiz" sayiliyorlardi. Olculerek
+    #  secildiler: `rebuild.ARTEFACTS`in cikti listeleriyle bu listenin
+    #  farki alindi (50 belgesiz dosyanin 10'u cikti, 40'i degil).
+    #  Aciklamalar dosyalarin KENDI `what_was_measured` alanlarindan ya da
+    #  ureten modulun docstring'inden alindi, uydurulmadi.
+    ("empty_types.json", "file",
+     "For every curated type that won no confirmed member of its own, the "
+     "measured reason: its reference was absorbed by a near-identical "
+     "sibling profile, no candidate cleared the coverage gate, or the "
+     "reference sequence was never retrieved from the scanned genomes.",
+     "empty_types.py"),
+    ("completeness_audit.json", "file",
+     "For every curated enzyme type, whether it has a 3D structure, a "
+     "curated substrate and the other fields the pages rely on -- the "
+     "per-type inventory behind the coverage statements.",
+     "completeness_audit.py"),
+    ("db_repair.json", "file",
+     "Which data repairs this database carries and why, with the rule each "
+     "repair follows. A repair that lives only in code would be re-applied "
+     "silently; this file is its record.",
+     "db_repair.py"),
+    ("ro_cds_span.json", "file",
+     "Genomic footprints that min/max coordinates cannot explain, resolved "
+     "into their real CDS parts. A gene crossing the replicon origin has a "
+     "reported span of the whole replicon unless its parts are read.",
+     "ro_cds_span.py"),
+    ("carboxylate_audit.json", "file",
+     "A read-only audit of the carboxylate column baseline: which column "
+     "the triad's carboxylate is read at, and what the mechanism behind "
+     "that choice is.",
+     "carboxylate_audit.py"),
+    ("variant_and_operon.json", "file",
+     "Variants compared at the alignment columns lining the catalytic iron "
+     "rather than over the whole protein, and how variant identity relates "
+     "to operon composition, with the non-independence rule stated.",
+     "variant_and_operon.py"),
+    ("reference_structures.json", "file",
+     "Every PDB id in Table 1 of Miao & Schmidt 2025 resolved against the "
+     "RCSB data API and mapped onto this database's curated types, with the "
+     "architecture validation.",
+     "verify_reference_structures.py"),
+    ("bootstrap_references.nwk", "file",
+     "The reference tree in Newick form, with bootstrap support from 200 "
+     "replicates. Support tests the clade claims that SH-like local support "
+     "cannot carry.",
+     "bootstrap_tree.py"),
+    ("bootstrap_confident.nwk", "file",
+     "The same bootstrap tree for the confidently assigned entries rather "
+     "than the references.",
+     "bootstrap_tree.py"),
+    ("provenance.json", "file",
+     "The manifest of this build: the database, its source data, every "
+     "table with its row count, and every published file. This is the file "
+     "that lets a reader check what a published number was computed from.",
+     "write_provenance.py"),
     ("union_evidence.json", "file",
      "The same evidence tiers computed for the union sequences, split by "
      "whether they carry genomic context. The two pools are NOT comparable "
@@ -2672,6 +2729,48 @@ SUPERSEDED_FILES = frozenset({
     "carboxylate_clade_shift.json",
     "gate_impact_reanchoring.json",
     "motif_site_audit.json",
+})
+
+#  IC DOSYALAR: diskte duruyorlar ama bir SONUC degiller, dolayisiyla
+#  belgelenmemeleri bir eksik degil. Uc kume, ve her birinin gerekcesi
+#  farkli:
+#
+#    GRAFIGIN KENDI DURUMU   bayatlik kayitlari ve surum defteri. Icerigi
+#                            grafigin is bellegidir; yayinlanmasi bir
+#                            olcum degil, bir uygulama ayrintisi yayinlamak
+#                            olurdu.
+#    ONBELLEK                dis servisten cekilmis ham cevaplar. Yetkili
+#                            olan sey onlardan TURETILEN rapor; onbellegin
+#                            kendisi silinse yeniden cekilir.
+#    ARA DOSYA               bir sonraki adimin girdisi. Tek basina bir
+#                            iddia tasimiyor; sonucu okuyan kisi raporu
+#                            okur, .m8 dosyasini degil.
+#    OKUNABILIR IKIZ         ayni olcumun .md hali. Sayi JSON'dan geliyor;
+#                            ikisini ayri ayri yayinlamak ayni sayinin iki
+#                            kaynagi oldugunu ima ederdi.
+#
+#  2026-11-13'te olculerek secildiler: 50 belgesiz dosyanin 10'u grafik
+#  ciktisiydi (artik PROVENANCE'ta), 16'si grafikteki bir betigin YAN
+#  ciktisi, 9'u grafik disi bir aracin, 15'ini hicbir betik anmiyor.
+#  Asagidaki kume yalnizca GEREKCESI KESIN olanlari kapsar; kalanlar
+#  bilerek uyarida DURUYOR, cunku "yayinlanmali mi, silinmeli mi" karari
+#  olculmeden verilemez (ROADMAP 135.35).
+INTERNAL_FILES = frozenset({
+    # grafigin kendi durumu
+    ".rebuild_state.json",
+    "revisions.jsonl",
+    # onbellek
+    "chebi_name_cache.json",
+    "hmm_upstream_cache.json",
+    "pf00848_members.json.gz",
+    # ara dosya (arkeal/fungal tarama)
+    "arch.m8", "fung.m8", "arch_meta.tsv",
+    "arch_pass.fasta", "fung_pass.fasta",
+    # okunabilir ikiz (.md, ayni olcumun JSON'u yayinlaniyor)
+    "completeness_audit.md",
+    "literature_harvest.md",
+    "missing_ro_survey.md",
+    "new_reference_candidates.md",
 })
 
 ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE

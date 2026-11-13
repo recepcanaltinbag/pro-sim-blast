@@ -4637,8 +4637,13 @@ def check_published_files(rep, out_dir):
     # SUPERSEDED_FILES de BELGELENMIS sayilir: yayinlanmiyorlar ama provenance
     # tablosunda neden yayinlanmadiklari yaziyor. Burada sayilmasalar bu
     # uyari "belgesiz" diyerek yanlis bir sey soylerdi.
+    #  IC dosyalar cikarilir: onbellek, ara dosya, grafigin kendi durumu ve
+    #  okunabilir .md ikizler bir SONUC degil, dolayisiyla belgelenmemeleri
+    #  bir eksik degil. Kume `atlas.INTERNAL_FILES` icinde GEREKCELERIYLE
+    #  duruyor; burada liste tekrar edilmez, sahibinden okunur.
     undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES)
-                          - set(getattr(_atlas, "SUPERSEDED_FILES", ())))
+                          - set(getattr(_atlas, "SUPERSEDED_FILES", ()))
+                          - set(getattr(_atlas, "INTERNAL_FILES", ())))
     rep.check("analysis files that exist but are not documented",
               not undocumented, len(undocumented), first(undocumented, 6),
               severity="WARN")

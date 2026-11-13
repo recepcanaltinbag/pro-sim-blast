@@ -6213,3 +6213,53 @@ Sayfada: bağlamsız dizilerin kaçının yakın akraba olduğu yazılıyor.
 VanA'da 731 (2 + 729), OxoO'da 67, qxyA'da 1 — ve sıfır olduğunda cümle
 "bu tipte boş kademeler bağlam şartının değil örneklenmiş çeşitliliğin
 özelliği" diyor.
+
+## 135.35 · "34 belgelenmemiş analiz dosyası" WARN'ı: sayı değil envanter
+
+Kapı aylardır "34 analiz dosyası var ama belgelenmemiş" diye uyarıyordu
+ve bu bir **sayı**ydı; bir sayı burada üç ayrı şeyi gizliyordu. Ölçüldü
+(dosya sayısı bu arada 50'ye çıkmış):
+
+| ne olduğu | kaç | karar |
+|---|---|---|
+| bir grafik adımının **beyan edilmiş çıktısı** | 10 | **belgelendi** |
+| grafikteki bir betiğin **yan çıktısı** | 16 | açık |
+| grafik **dışı** bir aracın çıktısı | 9 | açık |
+| **hiçbir betik adını anmıyor** | 15 | açık |
+
+**Belgelenen 10.** Hepsi `rebuild.ARTEFACTS`'ta çıktı olarak beyan
+edilmişti ama `atlas.PROVENANCE`'ta yoktu — yani üretiliyor, diskte
+duruyor, ve "belgesiz" sayılıyorlardı. Açıklamaları **uydurulmadı**:
+dosyaların kendi `what_was_measured` alanlarından ya da üreten modülün
+docstring'inden alındı. (`empty_types.json`, `completeness_audit.json`,
+`db_repair.json`, `ro_cds_span.json`, `carboxylate_audit.json`,
+`variant_and_operon.json`, `reference_structures.json`,
+`bootstrap_references.nwk`, `bootstrap_confident.nwk`,
+`provenance.json`.)
+
+Ölçüm artık şunu söylüyor: **beyan edilmiş her çıktı belgeli.**
+
+**İç dosyalar beyan edildi (14).** Gerekçesi kesin olanlar
+`atlas.INTERNAL_FILES` içinde, dört ayrı gerekçeyle: grafiğin kendi
+durumu (`.rebuild_state.json`, `revisions.jsonl`), önbellek (dış
+servisten çekilmiş ham cevap; yetkili olan ondan türetilen rapor), ara
+dosya (`.m8`, `_pass.fasta` — bir sonraki adımın girdisi, tek başına
+iddia taşımıyor), ve okunabilir `.md` ikiz (aynı ölçümün JSON'u
+yayımlanıyor; ikisini ayrı yayımlamak aynı sayının iki kaynağı olduğunu
+ima ederdi). Kapı listeyi tekrar etmiyor, **sahibinden okuyor**.
+
+**Kalan 26 bilerek uyarıda duruyor.** Aralarında yayımlanmaya değer
+görünen gerçek tablolar var (`representatives.csv`, `leaves.csv`,
+`subfamilies.csv`, `novel_candidates.csv`, `domain_by_cluster.csv`,
+`transposon_by_genus.csv`, `cluster_variance.csv`) ve 15'ini hiçbir
+betik anmıyor — ya dosya adı bir değişkende duruyor ya da silinmiş bir
+kodun artığı. "Yayımlanmalı mı, silinmeli mi" kararı ölçülmeden
+verilemez, o yüzden sessizce bir listeye atılmadılar.
+
+**Yapısal bulgu:** 16 dosya grafikteki bir betiğin yan çıktısı, yani
+**grafik onları üretiyor ama beyan etmiyor**. Bu, bu oturumda üç kez
+çıkan "üreteni grafikte olmayan tablo" hatasının dosya düzeyindeki hali
+— bir sonraki iş bu 16'nın hangilerinin gerçek sonuç olduğunu ölçmek.
+
+Açık iş: 26 dosyanın üç kümesi ayrı ayrı ele alınmalı; 15'i için önce
+"bunu kim üretiyor" sorusu cevaplanmalı.
