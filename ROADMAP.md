@@ -5781,3 +5781,71 @@ verimli satir `CP000699`: tek kayit, 23 tipten 51 dizi.
 **ACIK IS.** Kanit kademesi dagilimini birlesik kume icin de hesaplamak
 ya da en azindan kademe tablosunun hangi paydayi kapsadigini sayfada
 yazmak -- yoksa 135.27'deki gibi bir okuma yine yapilir.
+
+## 135.29 · qxyA küçük ölçekli yutma testi ve mekanizmanın tavanı
+
+Soru kullanıcıdan geldi: `5_505_qxyA` referansına karşı daha fazla yakın
+homolog çıkması gerekiyordu, NCBI'da blastlayınca %95 üstü isabetler
+görülüyordu, bizde `close_homolog` kademesi boştu. "Genel bir bug mu var?"
+
+Ölçüldü, üç katman çıktı ve hiçbiri hesap hatası değil.
+
+**1. Kimlik matematiği doğru.** Referansın kendisiyle doğrudan blast'ı
+%45,5 veriyor ve `ro_evidence` de %45,5 diyor. Kademe eşikleri
+(`evidence_tiers.py`: characterized >=95, close_homolog >=60) doğru
+uygulanıyor.
+
+**2. Yakın diziler veritabanında var, ama kademe tablosunun
+denominatöründe değil.** `ro_union`'da qxyA'ya atanmış, kapıyı geçen
+1.126 dizi bağlamsız (`has_genomic_context=0`). Üye sayıları ve
+`ro_evidence` kademeleri yalnızca genomik tablodan hesaplanıyor. Yani
+rakamı üreten şey bir hata değil, bir denominatör seçimi — ama sayfa
+hangi denominatörü gösterdiğini söylemiyordu, yanlış okuma oradan
+doğdu.
+
+qxyA'nın en yakın dört birlik dizisi:
+
+| md5 | kimlik | bağlam | EMBL nükleotid | durum |
+|-----|--------|--------|----------------|-------|
+| ac69f52b | %100 | var | — | referansın genomik kopyası |
+| 85204e5d | %97,4 | yok | FNTJ01000003 | **indirildi, bağlam kazanıyor** |
+| 59c35d2c | %97,1 | yok | yok | adlandırılamıyor, bu yolla kurtarılamaz |
+| b113e604 | %48,0 | yok | yok | adlandırılamıyor |
+
+**3. Gerçek boşluk: yutma isabet-başına-kontig.** Aynı organizmanın
+kardeş kontigleri ve alternatif derlemeleri hiç indirilmedi. Kendi çapraz
+referanslarımızdan türetilen liste (`ingest_gap.py`) bizde olmayan
+**12.312** nükleotid kaydı buluyor; indirilirse **17.528** dizi bağlam
+kazanıyor.
+
+**Mekanizmanın tavanı ölçüldü.** Bağlamsız + kapıyı geçen + tipi atanmış
+55.859 dizinin yalnızca **17.930'u (%32)** adlandırılmış bir nükleotid
+kaydına sahip. Kalan 37.929 (%68) çapraz referanslarımızda hiçbir
+nükleotid erişim numarası taşımıyor; bunlar protein-yalnız kayıtlar ve
+bu yolla bağlam kazanamaz. qxyA'da: 1.126 bağlamsızın 273'ü
+adlandırılabilir.
+
+Yani "tüm 12.312'yi indir" bile birliğin yalnızca üçte birini
+bağlamlandırır. Bu, sayfada söylenmesi gereken bir sınır.
+
+**Küçük test (kullanıcının seçimi).** qxyA'ya bağlam kazandıran 251 kayıt
+`fetch_ingest_gap.py --type 5_505_qxyA` ile indirildi (251 inen, 0 düşen).
+İndirme öncesi öncül doğrulandı: FNTJ01000003 397.710 bp, 462 CDS,
+`ORIGIN` bloğu var, referansa %97,4 benzeyen 383 aa'lık çeviri bir tam
+toluat dioksijenaz operonunun yanında duruyor. İzole ön test (canlı
+`genomic_context/` ve veritabanına dokunmadan, `newgbk`/`newctx`):
+1.039 RO adayı, 25.111 komşu kaydı; referansın diamond'ı aday
+fasta'sına karşı en iyi isabet olarak `FNTJ01000003.1:78644-79796:-1`
+**%97,4 kimlik, %100 kapsama** döndürdü, %90 üstü tam 1 isabet.
+
+**Önce sayıları (ölçüm sabitlendi).** qxyA 164 üye: 1 characterized,
+104 distant, 52 family_member, 7 novel, **close_homolog 0**.
+`ro` onaylı toplam 19.125, replicon 17.073.
+
+Açık iş: tam zincir koşuyor (`genomic_context` -> `database` ->
+`annotate` -> `operons` -> alt adımlar -> kapı), sonra sonra-sayıları
+ölçülüp buraya yazılacak ve 500'lük partiye / tamamına geçme kararı
+verilecek.
+
+Açık iş: kademe tablosunun hangi denominatörü kapsadığı sayfada
+yazılmalı; 135.27 yanlış okuması tam olarak bu eksikten doğdu.
