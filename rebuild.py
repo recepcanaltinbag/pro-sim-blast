@@ -485,6 +485,26 @@ ARTEFACTS = [
       "--out", f"{OUT}/substrate_chebi.json"],
      ["substrate_chebi.py", DB, "types",
       f"{OUT}/oxygen_fate_computed.json"], False),
+    #  upstream_regions + sigma70_enrichment: 124.3'un kalan yarisi.
+    #  Birincisi intergenik DNA'yi cikarir (ciktisinin uzunlugunu
+    #  `ro_regulation.intergenic_bp`e karsi DOGRULAR), ikincisi kutu
+    #  ciftini iki null'a karsi olcer. `replicon_sequence_census`'ten
+    #  SONRA olmak zorundalar: hangi replikonun dizisi okunabilir ondan
+    #  geliyor (ROADMAP 135.22).
+    ("upstream_regions", [f"{OUT}/upstream_regions.fasta.gz",
+                          f"{OUT}/upstream_regions.csv"],
+     ["python3", "upstream_regions.py", "--db", DB, "--gbk", "gbk_files",
+      "--census", f"{OUT}/replicon_sequence.csv",
+      "--out-fasta", f"{OUT}/upstream_regions.fasta.gz",
+      "--out-csv", f"{OUT}/upstream_regions.csv"],
+     ["upstream_regions.py", DB, "gbk_files",
+      f"{OUT}/replicon_sequence.csv"], True),
+    ("sigma70_enrichment", [f"{OUT}/sigma70_enrichment.json"],
+     ["python3", "sigma70_enrichment.py", "--db", DB,
+      "--fasta", f"{OUT}/upstream_regions.fasta.gz",
+      "--meta", f"{OUT}/upstream_regions.csv",
+      "--out", f"{OUT}/sigma70_enrichment.json"],
+     ["sigma70_enrichment.py", DB, f"{OUT}/upstream_regions.fasta.gz"], True),
     #  replicon_sequence_census: hangi replikonun NUKLEOTID dizisi
     #  elimizde. ROADMAP 124.3'un kalan yarisi (motif zenginlesmesi)
     #  intergenik DNA gerektiriyor ve kayitlarin cogu CON tipi: anotasyon

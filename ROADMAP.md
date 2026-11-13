@@ -5376,3 +5376,73 @@ edilmelidir.
 
 Cikti: `analysis_out/replicon_sequence.csv`, betik
 `replicon_sequence_census.py`.
+
+### 135.22 — 124.3 KAPANDI: sigma70 kutu cifti eslenmis null'a gore 1,7-2,8 kat zenginlesmis
+
+124.3'un kalan yarisi uc adimda kapandi, ve her adim bir sonrakinin
+yayimlanabilir olup olmadigini belirledi.
+
+**ADIM 1 -- PAYDA (135.21).** Varsayim sinandi: kayitlarin %80'inde dizi
+YOK (CON tipi). Olcum 7.616 bolge / 2.285 replikon uzerinde yapilabilir.
+
+**ADIM 2 -- CIKARMA.** `upstream_regions.py` intergenik DNA'yi cikarir ve
+KENDI CIKTISINI DOGRULAR: bolgenin uzunlugu `ro_regulation.intergenic_bp`
+ile karsilastirilir, ki o sayi BASKA bir betik tarafindan koordinatlardan
+hesaplanmis. **7.616/7.616, sifir uyusmazlik.** Iplik de olcumun parcasi:
+operon eksi iplikteyse bolge ters tumleyen yazilir, yoksa "kutu yok"
+sonucu bir YON hatasindan gelir.
+
+**ADIM 3 -- OLCUM.** Iki null, uc duzey, karari cins verir:
+
+| duzey | gozlenen | beklenen (mono / markov) | oran | p |
+|---|---|---|---|---|
+| giris | 406 | 240,7 / 218,8 | **1,69× / 1,86×** | 6e-23 / 1,6e-30 |
+| dizi | 363 | 218,0 / 197,7 | 1,67× / 1,84× | 8e-20 / 1,2e-26 |
+| **cins** | **184** | **75,0 / 65,1** | **2,46× / 2,83×** | 1,5e-27 / 8,1e-35 |
+
+Iki null birbirini CERCEVELIYOR: dinukleotid kompozisyonunu koruyan
+Markov null'i daha DUSUK beklenti veriyor, yani daha iyi null'a karsi
+zenginlesme daha buyuk. Dort mimarinin hepsi kendi null'unun ustunde
+(1,5-2,0×); duzenleyici gruplarinin hem orani hem null'u dusuk, cunku
+bolgeleri kisa (168 bp vs 247 bp) ve null bunu izliyor. **Mimariler arasi
+zenginlesme farki TEST EDILMEDI ve iddia EDILMIYOR.**
+
+**IKI ISTATISTIK HATASI, ikisi de duzeltildi ve kaydedildi.**
+
+1. ILK TEST YANLIS BIRIMDEYDI. Isaret testi, IKILI bir gozlemle (cift
+   var/yok) SUREKLI bir beklenti (20 kopyanin ortalamasi) arasina
+   konmustu; cift tasimayan bir bolge, null 20'de 1 buldugu icin "null
+   lehte" sayiliyordu, yani -0,05 ile +0,95 ayni agirlikta. Sonuc KENDI
+   ICINDE CELISKILIYDI -- isaret testi null'u, oran karsilastirmasi
+   gercegi kazandiriyordu -- ve yakalatan sey bir kontrol degil
+   CELISKININ KENDISI oldu. Dogru test SAYILAR uzerinde: gozlenen birim
+   sayisi ile null altinda beklenen sayi, iki yonlu binom.
+2. BINOM TASTI. `math.comb(7616, k)` float'a sigmiyor
+   (`OverflowError`). Log uzayina tasindi, ve bu kez KULLANILMADAN ONCE
+   bilinen degerlerle sinandi: n=10/obs=8/p=0,3 -> 0,00318 (elle
+   hesaplanabilir), n=100/obs=50/p=0,5 -> 1,0 (gozlenen beklentiye esit
+   oldugunda p=1 olmali). Araci dogrulamak, ayirt ediciyi dogrulamakla
+   ayni sey.
+
+**YENIDEN URETILEBILIR.** Tohum sabit (`SEED = 20261113`) ve grafikten
+yeniden kosturuldugunda `sigma70_enrichment.json` ile
+`upstream_regions.csv` BIT BIT AYNI cikti (md5 dogrulandi). Rastgele
+null'a dayanan bir iddia icin bu zorunlu.
+
+**KAPI DISIPLINI DENETLIYOR, SONUCU DEGIL.** Bes kontrol: uc duzey var
+mi, her duzeyde iki null var mi, **iki null AYNI YONU gosteriyor mu**
+(betigin yayin kurali buydu; kural yalnizca docstring'de kalirsa bir
+sonraki kosuda ayrisan iki null sessizce yayimlanir), payda uyarisi
+yazili mi, ve ne iddia edilmedigi yazili mi.
+
+**IDDIA EDILMEYEN.** Hicbir promotor bulunmadi ve tahmin edilmedi --
+kutular bilgi bakimindan zayif, rastgele de sik bulunur. Null ayni
+bolgelerden geldigi icin kompozisyon kontrol edildi, ama bolgeler bu
+veritabaninin kendi operon cagrilariyla secildi. Ve olcum yalnizca dizisi
+okunabilir %43'te yapilabildi; okunamayan cogunluga genellenip
+genellenemeyecegi OLCULMEMIS.
+
+Cikti: `analysis_out/sigma70_enrichment.json`,
+`upstream_regions.{csv,fasta.gz}`, betikler `upstream_regions.py` ve
+`sigma70_enrichment.py`, kalite sayfasinda "Sigma70 boxes: an enrichment,
+not a promoter".

@@ -2249,6 +2249,21 @@ PROVENANCE = [
      "own version plus a digest of the model block. Two libraries sit on "
      "different Pfam releases and the report says which.",
      "pin_hmm_libraries.py"),
+    ("sigma70_enrichment.json", "file",
+     "Sigma70 -35/-10 box pairs in real upstream intergenic regions against "
+     "two nulls built from the same regions. Enriched 1.7-1.9 times at entry "
+     "level and 2.5-2.8 at genus level, which is the level that decides. No "
+     "promoter is located or predicted: the boxes are information-poor and "
+     "only the enrichment is publishable.",
+     "sigma70_enrichment.py"),
+    ("upstream_regions.csv", "file",
+     "The 7,616 upstream intergenic regions the enrichment is measured on, "
+     "with length, GC and architecture. Each region's length was verified "
+     "against the intergenic distance computed independently elsewhere.",
+     "upstream_regions.py"),
+    ("upstream_regions.fasta.gz", "file",
+     "The same regions as DNA, written on the strand that drives the operon.",
+     "upstream_regions.py"),
     ("replicon_sequence.csv", "file",
      "Which genome records carry nucleotide sequence and which carry only "
      "annotation. Most are CON-type entries whose sequence is not in the "

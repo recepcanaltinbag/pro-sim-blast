@@ -3316,6 +3316,78 @@ def check_record_kind(rep, con, root, out_dir="analysis_out"):
               f"{kept} dogrulanmis giris transkript kayitlarinda duruyor")
 
 
+def check_sigma70_enrichment(rep, con, root, out_dir="analysis_out"):
+    """Zenginlesme iddiasi DISIPLINI tasiyor mu?
+
+    NEDEN KONTROL SONUCU DEGIL SEKLI SINAR. Bir sonucun yonu veriyle
+    degisebilir; disiplin degisemez. Kapi "zenginlesme olsun" demez --
+    olcumun yayimlanabilir BICIMDE kurulmus olmasini arar. Ayni yaklasim
+    `check_promoter_claim_is_levelled`de de kullanildi.
+
+    ARANAN DORT SEY
+      1. IKI NULL. Tek null bir varsayimdir. Betigin kendi yayin kurali
+         "ancak ikisi de ayni yonu gosterirse" diyor; kapi o kurali
+         DENETLER, yani iki null ayrisirsa FAIL verir ve iddia sessizce
+         yayimlanamaz.
+      2. UC DUZEY. Ayni genomdan gelen bolgeler bagimsiz degil; giris
+         duzeyinde bir p degeri tekrarli ornekleme yuzunden kendiliginden
+         kucuk cikar, o yuzden cins duzeyi de olculmus olmali.
+      3. PAYDA UYARISI. Olcum yalnizca dizisi okunabilir replikonlarda
+         yapilabildi (%43); okunamayan cogunluga genellenip
+         genellenemeyecegi OLCULMEMIS ve oyle yazili olmali.
+      4. NE IDDIA EDILMEDIGI. Hicbir promotor bulunmadi ve tahmin
+         edilmedi; kutular bilgi bakimindan zayif. Bu cumle raporda
+         olmazsa okuyucu zenginlesmeyi "promotor bulundu" sanir.
+    """
+    path = os.path.join(root, out_dir, "sigma70_enrichment.json")
+    if not os.path.exists(path):
+        rep.check("sigma70: zenginlesme olcumu yazildi", False, 1,
+                  "sigma70_enrichment.json yok -- "
+                  "`rebuild.py --run --only sigma70_enrichment`")
+        return
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+
+    levels = data.get("levels") or {}
+    want = ("entry", "sequence", "genus")
+    missing = [k for k in want if k not in levels]
+    rep.check("sigma70: uc duzey de olculmus",
+              not missing, len(missing),
+              "giris / dizi / cins" if not missing else f"eksik: {missing}")
+
+    nulls = ("vs_mononucleotide_shuffle", "vs_markov1_resample")
+    absent = [f"{lvl}:{n}" for lvl in want for n in nulls
+              if n not in (levels.get(lvl) or {})]
+    rep.check("sigma70: her duzeyde IKI null var",
+              not absent, len(absent), first(absent, 3))
+
+    #  IKI NULL AYNI YONU GOSTERMELI. Betigin yayin kurali bu; kapi onu
+    #  denetler, cunku kural yalnizca docstring'de kalirsa bir sonraki
+    #  kosuda ayrisan iki null sessizce yayimlanir.
+    diverging = []
+    for lvl in want:
+        ratios = [(levels.get(lvl, {}).get(n) or {}).get("ratio")
+                  for n in nulls]
+        if any(r is None for r in ratios):
+            continue
+        if (ratios[0] - 1) * (ratios[1] - 1) < 0:
+            diverging.append(f"{lvl}: {ratios[0]} vs {ratios[1]}")
+    rep.check("sigma70: iki null ayni yonu gosteriyor",
+              not diverging, len(diverging),
+              first(diverging, 3) or "ikisi de ayni yonde")
+
+    note = (data.get("denominator") or {}).get("note") or ""
+    rep.check("sigma70: payda uyarisi yazili",
+              "unmeasured" in note or "olculmemis" in note, 0 if note else 1,
+              "okunamayan cogunluga genelleme OLCULMEMIS diye yazili"
+              if note else "payda notu yok")
+
+    rep.check("sigma70: ne iddia edilmedigi yazili",
+              bool(data.get("what_is_not_claimed")), 0,
+              "promotor bulunmadi/tahmin edilmedi beyani var"
+              if data.get("what_is_not_claimed") else "beyan yok")
+
+
 def check_interpro_agreement(rep, con, root, out_dir="analysis_out"):
     """Dis dogrulama iddiasi TAM ve PAYDASI yazili mi?
 
@@ -4663,6 +4735,7 @@ def main():
         check_assignment_library(rep, con, ROOT)
         check_ncbi_accession_claims(rep, con, ROOT)
         check_interpro_agreement(rep, con, ROOT)
+        check_sigma70_enrichment(rep, con, ROOT)
         check_coverage_audit(rep, con, ROOT)
         check_same_structure_same_name(rep, chem)
         check_promoter_claim_is_levelled(rep, ROOT)

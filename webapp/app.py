@@ -2158,6 +2158,10 @@ def atlas_quality(request: Request):
                       #  kume ligandi yok, ve motif HAM dizide var mi.
                       ligand=atlas.read_json(
                           apath("rieske_ligand_audit.json")),
+                      #  124.3'un kalan yarisi: kutu zenginlesmesi, iki
+                      #  null ve uc duzey (ROADMAP 135.22).
+                      sigma=atlas.read_json(
+                          apath("sigma70_enrichment.json")),
                       downloads=atlas.download_table(ANALYSIS_DIR), totals=totals(con))
     finally:
         con.close()

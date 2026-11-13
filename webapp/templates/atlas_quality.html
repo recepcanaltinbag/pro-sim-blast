@@ -129,6 +129,69 @@ the change, not the absolute count.
 </figure>
 {% endif %}
 
+{% if sigma and sigma.levels %}
+<h2>3c &middot; Sigma70 boxes: an enrichment, not a promoter</h2>
+<p class="lede">The &minus;35 and &minus;10 boxes of a bacterial sigma70 promoter are
+<b>information-poor</b>: six bases each, and common by chance in any AT-rich intergenic stretch.
+So no promoter is located here and none is predicted &mdash; a per-operon claim would not be
+defensible. What <i>is</i> measurable is <b>enrichment</b>: are the two boxes paired at plausible
+spacing more often in real upstream regions than in a null built from those same regions?</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Level</th><th>Null</th><th class="num">Observed</th><th class="num">Expected</th>
+<th class="num">Ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+{% for lvl in ['entry', 'sequence', 'genus'] %}
+{% for key, label in [('vs_mononucleotide_shuffle', 'shuffled bases'), ('vs_markov1_resample', 'Markov-1 resample')] %}
+{% set r = sigma.levels[lvl][key] %}
+<tr>
+  <td>{% if loop.first %}<b>{{ lvl }}</b>{% if lvl == 'genus' %} <span class="note">decides</span>{% endif %}{% endif %}</td>
+  <td class="note">{{ label }}</td>
+  <td class="num">{{ r.observed_with_a_pair|fmt }}</td>
+  <td class="num">{{ r.expected_under_null }}</td>
+  <td class="num"><b>{{ r.ratio }}&times;</b></td>
+  <td class="num">{{ '%.0e' % r.binomial_two_sided_p }}</td></tr>
+{% endfor %}
+{% endfor %}
+</tbody></table></div>
+<figcaption class="note">Two nulls, because one null is an assumption. Shuffling the bases keeps
+length and base composition &mdash; so GC &mdash; exactly, but loses dinucleotide composition; the
+Markov-1 resample keeps dinucleotide composition in expectation and closes that gap. Both point the
+same way at all three levels, and the gate fails if they ever diverge. The genus level decides,
+because regions from one genome are not independent and an entry-level p value is small from
+repeated sampling alone.</figcaption>
+
+<div class="caveat">
+  <b>What this does not establish.</b> No promoter is identified, and the enrichment says nothing
+  about any individual region. The null is built from the same regions, so composition is
+  controlled but the regions themselves were chosen by this database's own operon calls. And the
+  measurement could only use the {{ sigma.denominator.regions|fmt }} regions whose replicon carries
+  readable nucleotide sequence &mdash; most records in this set are annotation-only CON entries.
+  Whether the result holds for the unreadable majority is <b>unmeasured</b>.
+</div>
+
+{% if sigma.by_architecture %}
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Upstream architecture</th><th class="num">Regions</th><th class="num">With a pair</th>
+<th class="num">Null (shuffled)</th><th class="num">Null (Markov-1)</th></tr></thead>
+<tbody>
+{% for arch, row in sigma.by_architecture.items() %}
+<tr><td>{{ arch|replace('_', ' ') }}</td>
+  <td class="num">{{ row.regions|fmt }}</td>
+  <td class="num">{{ '%.1f %%' % (100 * row.share_with_a_pair) }}</td>
+  <td class="num note">{{ '%.1f %%' % (100 * row.null_mono) }}</td>
+  <td class="num note">{{ '%.1f %%' % (100 * row.null_markov) }}</td></tr>
+{% endfor %}
+</tbody></table></div>
+<p class="note">Every architecture sits above its own null. The regulator rows show lower shares and
+lower nulls together, which is what shorter regions look like &mdash; a divergent regulator shares a
+median 168 bp with the operon against 247 bp for other upstream genes, so there is less room for a
+pair to occur either way. <b>Whether the enrichment itself differs between architectures is not
+tested here</b>, and the difference in ratio is not claimed.
+<a href="{{ u('/download/analysis/sigma70_enrichment.json') }}">Download the measurement</a></p>
+{% endif %}
+{% endif %}
+
 {% if ipr and ipr.denominators %}
 <h2>3b &middot; A second opinion on the call everything rests on</h2>
 <p class="lede">Every number on this site stands on one judgement: that a sequence carries a
