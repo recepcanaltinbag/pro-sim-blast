@@ -6052,3 +6052,66 @@ close_homolog 0, ve denominatör cümlesi kalan boşluğu dürüstçe yazıyor:
 827 bağlamsız dizi, ama **yalnızca 1'i** bir nükleotid kaydı
 adlandırıyor (135.29'da 273'tü; 251 kaydı indirmek havuzu tüketti).
 Yani qxyA için bu yolla kazanılacak neredeyse bir şey kalmadı.
+
+## 135.32 · Atıfsız 9 tip: ikisi ayrı şeydi, ve liste kapandı
+
+135.30 "9 tipte hiçbir tanımlayıcı yok, kuratörlük okuması gerekiyor"
+diye bırakmıştı. Dokuzu ölçüldü ve üç ayrı şey çıktı.
+
+**1. Bir tanesi benim aracımın boşluğuydu.** `1_107_CndA`'nın kuratörlük
+kaynağı tek başına `PMC4135782` yazıyor — bu *gerçek* bir literatür
+tanımlayıcısı, ama çıkarıcım PMC desenini tanımıyordu, dolayısıyla tip
+"atıfı yok" diye raporlanıyordu. **Aracın tanımadığı bir biçim, var
+olmayan bir kaynak gibi görünüyordu** — bu oturumun tekrar eden hata
+sınıfı. NCBI kimlik çevirici ile çözülüyor:
+`PMC4135782 -> 10.1128/AEM.00659-14, PMID 24928877`.
+
+**2. Yedi tanesi kuratörün BEYAN ETTİĞİ yokluktu.** `source` alanı
+harfi harfine `no individual citation recorded` diyor — yani bakılmış ve
+tek tek atıf yoktu. Dokuzunu tek "atıfı yok" kovasına koymak, yapılmış
+bir kuratörlük kararını yapılmamış gibi gösteriyordu. Yokluk artık
+**sınıflandırılmış**: `declared_none` (karar) ve `none_found` (açık iş).
+Sayfa boş bölümde beyanı yazıyor, sessiz kalmıyor.
+
+Sinyal `source_kind` alanından DEĞİL kuratörün cümlesinden okunuyor,
+çünkü ölçüldü: `general` olup bu cümleyi taşımayan 6 tip var, yani alan
+bu sinyali vermiyor.
+
+**3. Bir tanesi gerçekten eksikti ve tamamlandı.** `3_312_NinA`. Kuratör
+zaten `the 2023 Appl Environ Microbiol paper on 1-nitronaphthalene
+catabolism in this strain` yazmış — makaleyi biliyor, tanımlayıcısını
+yazmamış. Yani yeni bir iddia kurulmadı, var olan atfın kimliği
+tamamlandı:
+
+- Bu dizinin GenBank kaydı (`UZW58199.1`) Li T, Xu J, Xu Z-J, Xu Y,
+  Spain JC, Zhou N-Y'nin JS3065'te 1-nitronaftalen katabolizması üzerine
+  **yayımlanmamış** bir el yazmasını atfediyor (depozit 2022).
+- O suş ve bileşik için PubMed sorgusu tam **bir** kayıt döndürüyor, aynı
+  yazarlarla: PMID 36622195, *Appl Environ Microbiol* 2023,
+  doi `10.1128/aem.01728-22`.
+- Başlık depozit ile yayım arasında değişmiş ("Molecular mechanism and
+  evolution" → "Molecular Basis and Evolutionary Origin"), bu yüzden
+  eşleşme **başlığa değil** yazar + suş + bileşiğe dayanıyor. Gerekçe
+  `chemistry.csv`'nin `source` alanına yazıldı.
+- DOI handle sicilinde kayıtlı.
+- Substrat, ürün ve reaksiyon **DEĞİŞMEDİ**.
+
+**Sonuç:** atıflı tip 67 → **69**, DOI'si olan 58 → **60**, hiçbiri
+olmayan 9 → **7** ve yedisi de kuratörün beyanı. **`none_found` boş**,
+yani bu alandaki açık iş listesi kapandı. 127 DOI'nin 127'si sicilde
+kayıtlı.
+
+Kapı: altı literatür kontrolünün altısı PASS (önceki WARN artık PASS,
+çünkü açık iş kalmadı).
+
+### İki kendi hatam
+
+Cümle çıkarımının **iki uygulaması** olmuştu (yardımcı fonksiyon + satır
+içi kod). Bu projede aynı ölçümün ikinci uygulaması yasak — ikisi
+sessizce ayrışır. Tek fonksiyona indirildi (`sentence_around`).
+
+Kapı kontrolü PMC kayıtlarında **yanlış soruyu** soracaktı: "bağlam
+cümlesi DOI'yi içeriyor mu" diye bakıyordu, oysa bir PMC kaydında
+kuratörün yazdığı tanımlayıcı PMC kimliğidir; DOI sonradan çeviriciden
+geliyor ve cümlede geçmez. Çözülmüş bir kaydı "kesilmiş cümle" sanıp
+FAIL verecekti.
