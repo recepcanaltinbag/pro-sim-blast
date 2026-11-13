@@ -3532,10 +3532,10 @@ tamaminda `neighbor_protein` satiri yok, cunku 58'i PSODOGEN ve 2'sinde
 kayitta ceviri yok. Taranmamis bir dizi hakkinda hicbir model bir sey
 soyleyemez; anotasyon beta genini DOGRU adlandiriyor, gen bozuk.
 
-ACIK (grup 3). %72,2 beta yoklugu duzeltmeden sonra da yuksek. Naftalin
-tipi dioksijenazlarda beta zorunlu ortaktir; ya grup atamasi bu girislerde
-genis, ya beta komsulukta 150 bp esiginin otesinde, ya da anotasyonda yok.
-Olculmedi.
+KAPANDI (grup 3) -- bkz. 135.26. Uc hipotezden hicbiri degil: GRUBUN
+BIRIMI YANLISTI. %72,2 toplami, beta'si OLMAMASI DOGRU KIMYA olan
+desaturaz ve hidroksilazlarca domine ediliyordu. cis-dihidroksilleyen
+tiplerde yokluk %24,8.
 
 ## 123. Anotasyon kalitesi, operon iddialarinin DAYANDIGI bolgede olculmeli (acik)
 
@@ -5610,3 +5610,61 @@ boslugu buldu. Bir BUTCE ("60'in altinda") bunlarin hicbirini
 gostermezdi.
 
 Kapi: 246 kontrol, 239 PASS, 0 FAIL, 7 WARN.
+
+### 135.26 — Grup 3'te "%72,2 beta yoklugu": hipotezlerden hicbiri degil, BIRIM yanlisti
+
+Madde uc hipotez sayip "olculmedi" diyordu: (a) grup atamasi genis, (b)
+beta 150 bp esiginin otesinde, (c) anotasyonda yok. Olculdu: **ucu de
+degil.** Sayinin kendisi dogru, ama BIRIMI yanlis -- "grup basina beta
+yoklugu" farkli kimyalari tek kovaya koyuyor.
+
+**(b) CURUDU, hemen.** `operon.nearby_beta` zaten olculuyor: beta'si
+olmayan 2.390 grup-3 girisinin yalnizca **6'sinda** beta yakinda ama
+operon disinda. Yani beta esigin otesinde degil, komsulukta HIC YOK.
+
+**TIP KIRILIMI SORUYU DAGITTI.** Beta'siz 2.390 girisin **2.190'i (%92)**
+uc tipten geliyor ve ucu de %100 beta'siz:
+
+| tip | beta yok / toplam | ne yapiyor |
+|---|---|---|
+| `3_313_KshA15` | 1.598 / 1.599 | 3-ketosteroid 9-alfa-hidroksilasyonu |
+| `3_322_DAF36` | 319 / 319 | kolesterol C7-C8 desaturasyonu |
+| `3_321_Nvd` | 273 / 273 | kolesterol C7-C8 desaturasyonu |
+
+Ucu de kuratorlu kaydinda `family: terpenoids_steroids`, ve kimyalari
+HIDROKSILASYON / DESATURASYON -- halka cis-dihidroksilasyonu DEGIL.
+Beta alt birimi cis-dihidroksilleyen dioksijenazin ortagidir; bu
+enzimlerde yoklugu beklenen biyoloji, kusur degil. (Bu gece yapilan
+InterPro olcumu de ayni yone isaret etti: `IPR050584` "Cholesterol
+7-desaturase" 11.837 dizide.)
+
+**REAKSIYON SINIFINA GORE OLCUM -- yayimlanacak olan bu:**
+
+| reaksiyon sinifi | beta yok | pay |
+|---|---|---|
+| desaturation | 592 / 592 | **%100** |
+| hydroxylation | 1.610 / 1.931 | %83,4 |
+| **cis_dihydroxylation** | **188 / 758** | **%24,8** |
+| dioxygenation_with_release | 0 / 26 | %0 |
+| angular_dioxygenation | 0 / 2 | %0 |
+
+Yani maddenin ONERMESI DOGRU ("naftalin tipi dioksijenazda beta zorunlu
+ortak"), ve o onermenin gecerli oldugu kumede yokluk **%24,8**, %72,2
+degil. `3_307_NagGH` ayrica gosteriyor ki "hidroksilasyon" da duzgun
+beta'siz degil: 332 girisinin 320'sinde beta VAR (iki bilesenli salisilat
+5-hidroksilaz).
+
+**(a) KISMEN DOGRU, ve olculdu.** Beta'siz girisler referansa medyan
+%45,2 kimlik tasiyor, beta'lilar %68,4 -- birkac ayri aileyi kapsayan bir
+grupta beklenen fark.
+
+**KALAN GERCEK SORU, bir buyukluk mertebesi kucuk.** cis-dihidroksilleyen
+tiplerde %24,8, ve iki tipte yogunlasiyor: `3_316_NarAa` 38/48 (%79),
+`3_319_PhdA` 74/140 (%53). Ayrica beta'siz 2.390 girisin **206'sinda hic
+komsu yok** -- olcum yoklugu, biyolojik yokluk degil (135.10'un sinifi).
+
+**YAYIMLANAN SAYI YOK, ve kayda gecen kural bu:** %72,2 sitede hicbir
+yerde basilmiyordu, yani duzeltilecek bir yayin yok. Ama **grup basina
+beta yoklugu bir daha YAYIMLANMAMALI**: dogru birim reaksiyon sinifi (ya
+da tip). Bir grup, kimyasi farkli enzimleri tasiyorsa, grup basina bir
+ortak-varligi orani iki ayri olguyu tek sayida toplar.
