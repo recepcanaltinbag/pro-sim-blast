@@ -593,7 +593,7 @@ def clusters(request: Request):
 
 
 def union_gap(con, cluster):
-    """Bu tipin kapiyi gecen ama GENOMIK BAGLAMI OLMAYAN birlik dizileri.
+    """Kapiyi gecen ama GENOMIK BAGLAMI OLMAYAN birlik dizileri.
 
     Uye sayilari ve `ro_evidence` kademeleri yalnizca genomik tablodan
     hesaplaniyor. Sayfa bunu soylemedigi surece okuyucu kademe tablosunu
@@ -602,22 +602,24 @@ def union_gap(con, cluster):
     cumle "baglamiyla bilinen yakin homolog yok"du. `nameable`, nukleotid
     erisim numarasi tasiyan ve dolayisiyla indirilerek baglam
     kazandirilabilecek olan alt kumedir; kalani protein-yalniz kayittir
-    ve bu yolla kurtarilamaz.
+    ve bu yolla kurtarilamaz. `cluster` None verilirse sayim veritabani
+    geneli olur.
     """
-    try:
-        row = con.execute("""
-            SELECT COUNT(*) total,
-                   SUM(EXISTS(SELECT 1 FROM ro_xref x
-                              WHERE x.seq_md5 = u.seq_md5
-                                AND x.db = 'embl_nucleotide')) nameable
-            FROM ro_union u
-            WHERE u.ro_cluster = ? AND u.passes_gate = 1
-              AND u.has_genomic_context = 0""", (cluster,)).fetchone()
-    except sqlite3.OperationalError:
-        # Birlik tablosu yoksa (yeniden kuruluyor olabilir) olcum YAPILMAMIS
-        # demektir, SIFIR demek degil. Ikisini ayni gostermek bu sayfanin
-        # duzeltmeye calistigi hatanin aynisi olurdu.
+    # Birlik tablosu yoksa (yeniden kuruluyor olabilir) olcum YAPILMAMIS
+    # demektir, SIFIR demek degil. Ikisini ayni gostermek bu sayfanin
+    # duzeltmeye calistigi hatanin aynisi olurdu.
+    import atlas as _atlas   # tembel: atlas bu dosyanin sonunda import ediliyor
+    if not (_atlas.table_exists(con, "ro_union")
+            and _atlas.table_exists(con, "ro_xref")):
         return {"measured": False, "total": 0, "nameable": 0}
+    row = con.execute("""
+        SELECT COUNT(*) total,
+               SUM(EXISTS(SELECT 1 FROM ro_xref x
+                          WHERE x.seq_md5 = u.seq_md5
+                            AND x.db = 'embl_nucleotide')) nameable
+        FROM ro_union u
+        WHERE u.passes_gate = 1 AND u.has_genomic_context = 0
+          AND (? IS NULL OR u.ro_cluster = ?)""", (cluster, cluster)).fetchone()
     return {"measured": True,
             "total": row["total"] or 0, "nameable": row["nameable"] or 0}
 
@@ -1966,7 +1968,7 @@ def atlas_evidence(request: Request):
             "n_diff_over_60": sum(1 for p in diff if float(p["identity"]) >= 60),
             "n_diff": len(diff), "n_same": len(same)}
         return render(request, "atlas_evidence.html", over=over, tot=tot, mism=mism,
-                      sweep=sweep, calib=calib,
+                      sweep=sweep, calib=calib, gap=union_gap(con, None),
                       xref=atlas.read_json(apath("cross_references.json")),
                       genes={c: (CHEMISTRY.get(c) or {}).get("gene") or c
                              for c in CHEMISTRY},

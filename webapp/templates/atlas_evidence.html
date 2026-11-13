@@ -32,7 +32,20 @@ level additionally requiring 90 % query coverage.
 <b>Consequence.</b> A substrate taken from the literature transfers to roughly
 {{ pct(tot['characterized'] + tot['close_homolog'], total) }} of members. For the remainder the
 database presents the label as the nearest characterised type, and entry pages state this
-explicitly. <a href="{{ u('/download/analysis/evidence_by_cluster.csv') }}">Download per-type table</a></figcaption>
+explicitly.
+{% if gap and gap.measured and gap.total %}
+<b>Denominator.</b> This table counts the {{ total|fmt }} members with genomic context, because a
+level can only be computed for a sequence we hold in a genome. The union holds a further
+{{ gap.total|fmt }} gate-passing sequences that carry a type but no genomic context, and they
+appear nowhere above; {{ gap.nameable|fmt }} of those name a nucleotide record and could be given
+context by downloading it, while the rest are protein-only entries and cannot. An empty level on a
+type page therefore means &ldquo;none known <em>with context</em>&rdquo;, not &ldquo;none
+known&rdquo;.
+{% elif gap and not gap.measured %}
+<b>Denominator.</b> This table counts the {{ total|fmt }} members with genomic context. How many
+further sequences are known without context was <em>not measured</em> when this page was built:
+the union table was unavailable. That is not the same as none.
+{% endif %} <a href="{{ u('/download/analysis/evidence_by_cluster.csv') }}">Download per-type table</a></figcaption>
 </figure>
 
 {% if calib and calib.max_diff %}
