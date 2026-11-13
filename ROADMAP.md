@@ -6144,3 +6144,72 @@ kendiliğinden doluyor. 251 kayıt bir tipi doldurdu.
 
 **Yayın:** 255 kontrol, 247 PASS, 0 FAIL, 8 WARN (9'du; literatür açık
 işi PASS'e döndü). 3.495 dosya yayınlandı.
+
+## 135.34 · Birlik dizileri için de kademe: gizli yakın akrabalar ölçüldü
+
+135.28'in açık işinin ikinci yarısı. Denominatör cümlesi yazılmıştı ama
+kademeler hâlâ yalnızca genomik tablodan geliyordu, yani "bu tipin
+yakın homologu var mı" sorusu bağlamsız diziler için **hiç
+hesaplanmamıştı**.
+
+**Ölçüm tek yerden geliyor.** `evidence_tiers.py` içindeki diamond
+çağrısı `best_hits()` olarak çıkarıldı ve `union_evidence.py` onu
+**import ediyor**. Kopyalanmadı: diamond'ın çağrılma biçimi (`-k 1`,
+`--max-hsps 1`, `--ultra-sensitive`, `-e 1e-5`) ve kaplamanın
+`qcovhsp`'den okunması ölçümün parçası; ikinci bir uygulama eşikler aynı
+kalsa bile sessizce ayrışırdı. Bu projede tam bu hata birkaç kez oldu
+(hmmalign kolonları, sigma70 null'u, DOI çözümleyicisi).
+
+**Refaktörün davranışı koruduğu kanıtlandı:** `ro_evidence` tablosunun
+sha256'sı ve `evidence_by_cluster.csv` + `reference_pairs.csv` md5'leri
+refaktör öncesi ve sonrası birebir aynı.
+
+### Sonuç: 69.245 birlik dizisi
+
+| havuz | n | characterized | close_homolog | family | distant | novel |
+|---|---|---|---|---|---|---|
+| tümü | 69.245 | 473 | 10.051 | 12.178 | 45.008 | 1.535 |
+| bağlamlı | 17.638 | 197 | 3.625 | 2.998 | 10.452 | 366 |
+| **bağlamsız** | 51.607 | **276** | **6.426** | 9.180 | 34.556 | 1.169 |
+
+**Yayımlanan kademe tablolarında hiç görünmeyen 6.702 yakın akraba var**
+(276 characterized + 6.426 close_homolog). Kullanıcının "daha fazla
+yakın homolog çıkması lazım" sezgisi veritabanı genelinde **doğruydu**.
+
+### Ama qxyA'da değil — ve ikisi ayrı ölçüm
+
+qxyA'nın birlik kademeleri, bağlama göre:
+
+| | characterized | close_homolog | family | distant | novel |
+|---|---|---|---|---|---|
+| bağlamlı | 2 | **0** | 79 | 305 | 61 |
+| bağlamsız | 1 | **0** | 152 | 597 | 77 |
+
+İki havuzda da `close_homolog` **sıfır**. Yani 135.29b'de ölçülen iki
+modluluk birlikte de geçerli: qxyA'da %60–95 bandının boş olmasının
+sebebi bağlam şartı değil, örneklenmiş çeşitlilik. Bağlamsız tek
+`characterized` dizi, EMBL çapraz referansı olmayan %97,1'lik dizi —
+yani bu yolla kurtarılamayan.
+
+**Genel cevap ile tip-özel cevabın farklı olması bu işin özeti:** aynı
+soru veritabanı genelinde "evet, 6.702 tanesi gizli", qxyA'da "hayır,
+bir tane bile yok" diye cevaplanıyor, ve ikisi de ölçülmüş.
+
+### İki sayı aynı birim değil
+
+`ro` **girişleri** sayar (aynı protein yüz genomda yüz satır),
+`ro_union` **farklı dizileri**. 21.046 ile 69.245 toplamları
+karşılaştırılamaz, oranları da değil — ROADMAP'ten geri çekilen "%71
+dizi kapsaması" iddiası tam bu hataydı. Rapor bunu yazıyor ve kapı
+kontrolü **toplamları karşılaştırmayarak** saygı gösteriyor: yalnızca
+kademe sözlüğünün aynı olduğunu, her satırın sınıflandırıldığını ve
+ortak dizilerde iki hesabın uyuştuğunu ölçüyor.
+
+Ortak dizi kontrolü güçlü bir sonuç verdi: **17.638 ortak dizide iki
+hesap aynı kademeyi veriyor**, yani eşiklerin import edilmesi gerçekten
+tek bir ölçüm üretiyor.
+
+Sayfada: bağlamsız dizilerin kaçının yakın akraba olduğu yazılıyor.
+VanA'da 731 (2 + 729), OxoO'da 67, qxyA'da 1 — ve sıfır olduğunda cümle
+"bu tipte boş kademeler bağlam şartının değil örneklenmiş çeşitliliğin
+özelliği" diyor.

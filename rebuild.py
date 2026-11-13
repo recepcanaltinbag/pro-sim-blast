@@ -415,6 +415,14 @@ ARTEFACTS = [
     ("union", [],
      ["python3", "build_union.py", "--db", DB, "--fasta", "ro_alpha.fasta"],
      ["build_union.py", DB, "ro_alpha.fasta"], False),
+    #  union_evidence: AYNI kademeler birlik dizileri icin. `union`dan
+    #  SONRA olmak zorunda (ro_union'i okuyor) ve esikleri
+    #  evidence_tiers.py'den import ediyor, yeniden yazmiyor. 69 bin
+    #  dizilik bir diamond kosusu oldugu icin AGIR.
+    ("union_evidence", [f"{OUT}/union_evidence.json"],
+     ["python3", "union_evidence.py", "--db", DB,
+      "--out", f"{OUT}/union_evidence.json"],
+     ["union_evidence.py", "evidence_tiers.py", DB, REFS], True),
     #  2026-11-13: BU GIRDILER BURAYA TASINDI. Uretilmemis bir tabloyu okuyan
     #  bir adim, uretenin ONUNDE duruyordu. Siralamayi bu listenin kendisi
     #  belirliyor; yorumda "sonra olmak zorunda" yazmasi yetmiyor. Ikisi
@@ -783,6 +791,7 @@ DECLARED_WRITES = {
     "replicon_kind": {"replicon_kind"},
     "db_repair": {"replicon"},
     "a5_cohort": {"replicon_cohort"},
+    "union_evidence": {"ro_union_evidence"},
     "ro_cds_span": {"ro_cds_span"},
     #  DOSYANIN SAHIBI. `build_db.py` veritabani DOSYASINI sifirdan kuruyor,
     #  yani baska adimlarin sahibi oldugu her tabloyu da mesru olarak

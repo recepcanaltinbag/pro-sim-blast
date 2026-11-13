@@ -614,7 +614,23 @@ in that registry</b> and are shown so they can be corrected.{% endif %}</p>
     {{ c.union_gap.nameable|fmt }} of those name a nucleotide record and could
     be given context by downloading it, the rest are protein-only entries and
     cannot. An empty level therefore reads &ldquo;none known <em>with
-    context</em>&rdquo;, not &ldquo;none known&rdquo;.{% endif %}</p>
+    context</em>&rdquo;, not &ldquo;none known&rdquo;.
+    {% if c.union_gap.near is not none %}
+    {%- set nc = c.union_gap.near.get('characterized', 0) %}
+    {%- set nh = c.union_gap.near.get('close_homolog', 0) %}
+    {% if nc or nh %}Of those context-less sequences,
+    <b>{{ (nc + nh)|fmt }}
+    {{- ' is a near relative' if (nc + nh) == 1 else ' are near relatives' }}</b>
+    on the same scale used above
+    ({{ nc|fmt }} at 95&nbsp;% identity or more, {{ nh|fmt }} between 60 and
+    95&nbsp;%);
+    {{ 'it would sit' if (nc + nh) == 1 else 'they would sit' }} in the table
+    above if we held {{ 'it' if (nc + nh) == 1 else 'them' }} in a genome.
+    {% else %}<b>None of those context-less sequences is a near relative</b>
+    &mdash; measured on the same scale, not one of them reaches 60&nbsp;%
+    identity to a curated reference. For this type the empty levels above are
+    a property of the sampled diversity, not of the context requirement.
+    {% endif %}{% endif %}{% endif %}</p>
     <p class="note"><a href="{{ u('/atlas/evidence') }}">How these levels are defined</a></p>
     {% endif %}
 

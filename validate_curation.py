@@ -3671,6 +3671,84 @@ def check_assignment_library(rep, con, root, out_dir="analysis_out"):
               not exact, len(exact), first(exact, 4), severity="WARN")
 
 
+def _atlas_table(con, name):
+    """Tablo var mi -- tek yerden."""
+    return bool(con.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+        (name,)).fetchone())
+
+
+def check_union_evidence(rep, con, root, out_dir="analysis_out"):
+    """Birlik kademeleri ayni ESIKLERLE mi hesaplanmis, ve payda ayri mi?
+
+    NEDEN. Iki ayri kademe hesabi var (genomik ve birlik) ve ikisinin
+    esikleri AYRISIRSA sayfa iki farkli olcegi ayni adla gosterir.
+    `union_evidence.py` esikleri `evidence_tiers.py`'den import ediyor;
+    kontrol bunu DOGRULAR, yani iki tablonun ayni kademe sozlugunu
+    kullandigini ve aralarinda ortak dizi varsa kademelerin tutarli
+    oldugunu sinar.
+
+    IKI SAYI AYNI BIRIM DEGIL -- ve kontrol bunu TOPLAMLARI
+    KARSILASTIRMAYARAK saygi gosterir. `ro` girisleri sayar, `ro_union`
+    farkli dizileri; ikisinin toplamini bolmek ROADMAP'ten geri cekilen
+    "yuzde 71 dizi kapsamasi" iddiasinin ayni hatasi olurdu. Bu yuzden
+    kontrol yalnizca (a) kademe sozlugunun ayni oldugunu, (b) her satirin
+    siniflandirildigini, (c) baglam sutununun dolu oldugunu olcer.
+    """
+    import evidence_tiers as _et
+    if not _atlas_table(con, "ro_union_evidence"):
+        rep.check("birlik kademeleri: tablo var", True, 0,
+                  "ro_union_evidence yok, adim kosmamis", severity="WARN")
+        return
+
+    tiers = {r[0] for r in con.execute(
+        "SELECT DISTINCT tier FROM ro_union_evidence")}
+    unknown = sorted(tiers - set(_et.TIER_ORDER))
+    rep.check("birlik kademeleri: kademe sozlugu evidence_tiers ile ayni",
+              not unknown, len(unknown),
+              ("bilinmeyen kademe: " + ", ".join(unknown)) if unknown
+              else f"{len(tiers)} kademe, hepsi evidence_tiers.TIER_ORDER'da")
+
+    nulls = con.execute(
+        "SELECT COUNT(*) FROM ro_union_evidence "
+        "WHERE tier IS NULL OR has_genomic_context IS NULL").fetchone()[0]
+    total = con.execute("SELECT COUNT(*) FROM ro_union_evidence").fetchone()[0]
+    rep.check("birlik kademeleri: her satir siniflandirilmis ve paydasi belli",
+              nulls == 0, nulls,
+              f"{total:,} satirin hepsi bir kademe ve bir baglam degeri tasiyor"
+              if not nulls else
+              f"{nulls} satirda kademe ya da baglam sutunu bos, payda "
+              f"belirsiz kalir")
+
+    #  ORTAK DIZILERDE TUTARLILIK. Genomik baglami olan bir birlik dizisi
+    #  ayni zamanda `ro`da bir giris olarak duruyor. Ayni diziye iki ayri
+    #  kademe verilmesi, iki hesabin ayrismaya basladigini gosterir --
+    #  esikler import edildigi halde bir gun bir taraf degisirse bu
+    #  kontrol bagirir. Dizi uzerinden eslenir, kimlik uzerinden degil.
+    mismatch = con.execute("""
+        SELECT COUNT(*) FROM (
+          SELECT DISTINCT ue.seq_md5
+          FROM ro_union_evidence ue
+          JOIN ro_union u ON u.seq_md5 = ue.seq_md5
+          JOIN ro r ON r.candidate_id = u.genomic_candidate_id
+          JOIN ro_evidence e ON e.candidate_id = r.candidate_id
+          WHERE ue.has_genomic_context = 1 AND e.tier <> ue.tier)
+    """).fetchone()[0]
+    paired = con.execute("""
+        SELECT COUNT(DISTINCT ue.seq_md5)
+        FROM ro_union_evidence ue
+        JOIN ro_union u ON u.seq_md5 = ue.seq_md5
+        JOIN ro r ON r.candidate_id = u.genomic_candidate_id
+        JOIN ro_evidence e ON e.candidate_id = r.candidate_id
+        WHERE ue.has_genomic_context = 1
+    """).fetchone()[0]
+    rep.check("birlik kademeleri: ortak dizilerde genomik hesapla ayni",
+              mismatch == 0, mismatch,
+              f"{paired:,} ortak dizi eslendi, kademeler ayni" if not mismatch
+              else f"{mismatch} dizide iki hesap ayri kademe veriyor "
+                   f"({paired:,} eslenen dizide) -- esikler ayrismis")
+
+
 def check_literature(rep, root, out_dir="analysis_out"):
     """Yayinlanan literatur tanimlayicilari gecerli ve KAYITLI mi?
 
@@ -5034,6 +5112,7 @@ def main():
         check_db_writes_are_attributed(rep, ROOT)
         check_step_order_matches_reads(rep, ROOT)
         check_literature(rep, ROOT)
+        check_union_evidence(rep, con, ROOT)
         check_assignment_library(rep, con, ROOT)
         check_ncbi_accession_claims(rep, con, ROOT)
         check_interpro_agreement(rep, con, ROOT)

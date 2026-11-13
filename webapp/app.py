@@ -620,8 +620,24 @@ def union_gap(con, cluster):
         FROM ro_union u
         WHERE u.passes_gate = 1 AND u.has_genomic_context = 0
           AND (? IS NULL OR u.ro_cluster = ?)""", (cluster, cluster)).fetchone()
-    return {"measured": True,
-            "total": row["total"] or 0, "nameable": row["nameable"] or 0}
+    out = {"measured": True,
+           "total": row["total"] or 0, "nameable": row["nameable"] or 0,
+           "near": None}
+    #  ASIL SORU: tabloda gorunmeyenlerin arasinda YAKIN olan var mi?
+    #  Sayi tek basina "827 dizi daha var" diyor ve okuyucu bunlarin ne
+    #  kadar yakin oldugunu bilemiyor. `union_evidence.py` ayni kademeleri
+    #  birlik icin de hesapliyor, o yuzden burada sayilabiliyor.
+    if _atlas.table_exists(con, "ro_union_evidence"):
+        near = con.execute("""
+            SELECT e.tier, COUNT(*) n
+            FROM ro_union_evidence e
+            JOIN ro_union u ON u.seq_md5 = e.seq_md5
+            WHERE u.ro_cluster = ? AND u.passes_gate = 1
+              AND e.has_genomic_context = 0
+              AND e.tier IN ('characterized', 'close_homolog')
+            GROUP BY e.tier""", (cluster,)).fetchall()
+        out["near"] = {r["tier"]: r["n"] for r in near}
+    return out
 
 
 def cluster_detail(con, cluster):

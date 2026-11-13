@@ -2334,6 +2334,12 @@ PROVENANCE = [
      "The same gap by type: how many sequences each type would gain if those "
      "records were fetched.",
      "ingest_gap.py"),
+    ("union_evidence.json", "file",
+     "The same evidence tiers computed for the union sequences, split by "
+     "whether they carry genomic context. The two pools are NOT comparable "
+     "as totals: the genomic table counts entries, the union counts distinct "
+     "sequences.",
+     "union_evidence.py"),
     ("literature.json", "file",
      "Literature identifiers for each curated type, kept SEPARATE by source: "
      "what this project's own curation cites, the primary citation of the "
