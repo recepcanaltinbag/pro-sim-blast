@@ -5668,3 +5668,57 @@ yerde basilmiyordu, yani duzeltilecek bir yayin yok. Ama **grup basina
 beta yoklugu bir daha YAYIMLANMAMALI**: dogru birim reaksiyon sinifi (ya
 da tip). Bir grup, kimyasi farkli enzimleri tasiyorsa, grup basina bir
 ortak-varligi orani iki ayri olguyu tek sayida toplar.
+
+### 135.27 — 135.26'nin kalani: beta yoklugu KANIT UZAKLIGINI izliyor, ve iki okuma da acik birakiliyor
+
+135.26 artik soyle tanimli bir soru birakmisti: cis-dihidroksilleyen
+tiplerde %24,8 beta yoklugu, `3_316_NarAa` (38/48) ve `3_319_PhdA`
+(74/140) uzerinde yogun. Uc aday sinandi.
+
+**PARCALILIK CURUDU.** Beta'siz girisler kisa contig'lerde DEGIL -- tam
+tersi, PhdA'da beta'siz girisler medyan 1.864 kb replikonda, beta'lilar
+1.738 kb'de. Komsu sayilari da ayni (19 vs 21). Beta baska contig'de
+kalmis degil.
+
+**ANOTASYON BOSLUGU CURUDU.** Beta'siz NarAa/PhdA girislerinin
+komsulugunda urun metni "small/beta subunit" diyen **sifir** gen var. Beta
+boyunda (150-200 aa) ANOTASYONSUZ bir komsu da yok denecek kadar az:
+NarAa 3/38, PhdA 1/74.
+
+**KALAN: KANIT UZAKLIGI -- ve iliski tek yonlu.** cis-dihidroksilleyen
+TUM tiplerde (3.487 giris), kanit kademesine gore:
+
+| kademe | beta yok | pay |
+|---|---|---|
+| characterized (>=%95) | 9 / 224 | **%4,0** |
+| close_homolog (>=%60) | 177 / 1.266 | %14,0 |
+| family_member (>=%40) | 136 / 866 | %15,7 |
+| **distant (>=%25)** | **861 / 1.117** | **%77,1** |
+| novel | 11 / 14 | %78,6 |
+
+NarAa ve PhdA'nin beta'siz girisleri referanslarina medyan **%32,1** ve
+**%33,2** kimlikte; beta'lilar %44,0 ve %38,1.
+
+**OLCUM EKSIKLIGI DEGIL -- kontrol edildi.** Komsuluk zenginligi
+kademeler arasinda AYNI: her kademede medyan 20-21 komsu, komsusu hic
+olmayan 1.117 uzak giriste yalnizca 1. Yani uzak girislerin komsulugu da
+ayni derecede iyi okunmus; beta orada yok cunku YOK, okunamadigi icin
+degil.
+
+**IKI OKUMA, VE VERI IKISINI AYIRMIYOR.** Bu yuzden birini secmiyorum:
+  (a) UZAK Rieske oksijenazlari gercekten sik sik beta ortagi olmadan
+      calisiyor olabilir;
+  (b) %25-40 kimlikte tip etiketi bir KIMLIK TESPITI degil, EN YAKIN
+      REFERANS ifadesidir -- yani "bu bir naftalin dioksijenazi, o halde
+      beta'si olmali" cikarimi o girisler icin GECERSIZ olabilir.
+Ikisi de ayni veriyle uyumlu ve ayirmak icin burada hicbir sey yok.
+
+Bu, bu veritabaninin kendi kaydettigi uyarinin yeni bir alana
+uygulanmasi: "substrat etiketi REFERANS enzime aittir, uyesine degil".
+Ayni sey ORTAK GEREKSINIMI icin de gecerli.
+
+**KAYDA GECEN KURAL.** Beta yoklugu (ya da herhangi bir ortak-varligi
+orani) yayimlanacaksa KANIT KADEMESINE gore bolunmek zorunda -- tipki
+reaksiyon sinifina gore bolunmesi gerektigi gibi (135.26). Tek bir oran,
+"%4" ile "%77"yi ayni sayida toplar ve okuyucu onu biyolojik bir olgu
+sanir. Su an hicbir yerde yayimlanmiyor.
