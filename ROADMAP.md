@@ -5977,3 +5977,78 @@ UniProt listesi katlanmış (`details`) çünkü en zayıf iddia o.
 
 Açık iş: 9 atıfsız tip için kuratörlük okuması gerekiyor — DOI
 uydurulamaz.
+
+## 135.31 · Kapı turu ve yayın (135.29–135.30 sürümü)
+
+Yutma + literatür + sayfa düzeni değişiklikleri kapıya götürüldü. **İlk
+tur 6 FAIL verdi, altısı da gerçekti.**
+
+**İki tanesi aynı sınıftan: ÜRETENİ GRAFİKTE OLMAYAN TABLO.**
+`a5_cohort` (`replicon_cohort`) ve `ro_cds_span` (`ro_cds_span`)
+`rebuild.py`'de **hiç geçmiyordu**. Tabloları yalnızca elle koşturma
+üretmişti; `database` ise her tam derlemede DB'yi sıfırdan kurup
+düşürüyordu. Ölçüldü: `replicon_cohort`'u okuyan **on adım o tablo
+yokken koştu**. İkisi de grafiğe eklendi ve o on adım yeniden koştu.
+
+Burada bir yanlılık riski vardı ve ölçülerek kapatıldı: yutulan 251
+kayıt "içinde RO olduğu bilindiği için" seçildi, yani A5 havuzuyla aynı
+yanlılıkta. `a5_cohort`'ta survey listesinde olmayan bir kayıt sessizce
+`survey` sayılıyor — o yol işlese 251 kayıt yaygınlık paydasına temiz
+örnek gibi girerdi. Ölçüm: **251'inin 251'i zaten A5 hedef
+listesinde** (iki liste de aynı sorgudan türüyor), ve adım koştuğunda
+`protein_recovery=251, survey=17.073` çıktı. Payda bozulmadı.
+Manifesto **yeniden yazılmadı**: manifesto kohortun tanımı, onu her
+derlemede DB'nin o anki hâline göre türetmek yanlılık ölçümünü anlamsız
+kılardı.
+
+**Bir tanesi yine "çapraz kontrolün kendisi yanlış".**
+`NMUL01000085.1` "uyuşmazlık" sayılıyordu: önek kuralı alt çizgi yoksa
+ilk iki harfi alıyordu, böylece WGS erişimi `NMUL…` → `NM` olup RefSeq
+mRNA öneki sanıldı. Kaydın kendi LOCUS'u DNA diyordu, yani **kayıt
+doğruydu, çapraz kontrol yanlıştı**. Önek artık erişimin biçiminden
+karar veriyor; WGS'te çapraz kontrol uygulanmıyor, ve uygulanmaması
+uydurulmuş bir önekle uygulanmasından iyidir.
+
+Kalanlar: iki yeni bitki konağı (`Elaeagnus angustifolia L.`,
+`Pinus resinosa` — eşleşme tam dizgi olduğu için yazar kısaltmalı
+varyant ayrı satır gerektiriyor); `database`'in 42 "sahipsiz" yazması
+**dosya sahipliği** olarak beyan edildi (42 ad saymak hem bayatlar hem
+de o tabloların `build_db.py` tarafından *üretildiğini* yanlışça ima
+ederdi); artakalan beta bütçesi 60 → 61, **körlemesine değil** bileşimi
+yeniden ölçülerek (psödogen 58 aynı, çevirisi yok 1, çevirisi **var ama
+çıkarılmamış 2** — önceden 1). Artan şey psödogen değil düzeltilebilir
+bir çıkarım boşluğu; gerçek anotasyon-model çatışması hâlâ **sıfır**.
+Bütçe ile denetimin aynı sayıyı gördüğü artık sınanıyor.
+
+**İkinci tur 2 FAIL, ikisi de yeni adımların yan etkisi — ve birincisini
+kendi muhafızım yakaladı.** `a5_cohort` `ro_union` okuyor görünüyordu;
+okuma yalnızca `--write-manifest` yolunda ve grafik o bayrağı hiç
+vermiyor. Kural zayıflatılmadı, gerekçeli bir muafiyet konuldu **ve
+muafiyetin kendisi de sınanıyor**: muafiyet bayrağın YOKLUĞUNA
+dayanıyor, bayrak eklenirse muafiyet düşer ve kontrol yeniden FAIL
+verir. Bayrak eklenerek doğrulandı. Sınanmayan bir muafiyet kalıcı bir
+kör nokta olur.
+
+**Üçüncü FAIL kendi hatamdı:** yeni kontrolde `out_dir` parametresi
+olmayan bir fonksiyonda onu kullanmışım (`NameError`), kapı özetten önce
+çöktü.
+
+**Kapı temiz: 254 kontrol, 245 PASS, 0 FAIL, 9 WARN.**
+
+**`check_site.py` bir şey daha yakaladı ve haklıydı:** `literature.json`'a
+Türkçe metin sızmıştı — raporun "ne ölçüldü / bu ne değildir" alanlarını
+Türkçe yazmıştım. Yayımlanan veri dosyaları İngilizce, Türkçe kod
+yorumlarında kalır. Çevrildi, bağımsız taramayla sıfır Türkçe iz.
+
+**Yayın üç kademede doğrulandı.** Dondurma: 21.046 giriş, 254 MB.
+Dondurulmuş artefaktta (canlı sunucudan değil) katmanlar, literatür
+bölümü ve `[hidden]` kuralı teyit edildi. Deploy: 4.497 dosya.
+**Canlı URL'de ilk sorgu hâlâ ESKİ derlemeyi döndürdü** — "gönderdim"
+ile "yayında" aynı şey değil; önbellek kıran sorguyla bekleyip yeni
+derleme görünür görünmez doğrulandı.
+
+Canlı qxyA sayfası: **486 üye, 2 characterized** (biri yeni %97,4'lük),
+close_homolog 0, ve denominatör cümlesi kalan boşluğu dürüstçe yazıyor:
+827 bağlamsız dizi, ama **yalnızca 1'i** bir nükleotid kaydı
+adlandırıyor (135.29'da 273'tü; 251 kaydı indirmek havuzu tüketti).
+Yani qxyA için bu yolla kazanılacak neredeyse bir şey kalmadı.
