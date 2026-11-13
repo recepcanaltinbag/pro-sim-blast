@@ -5849,3 +5849,61 @@ verilecek.
 
 Açık iş: kademe tablosunun hangi denominatörü kapsadığı sayfada
 yazılmalı; 135.27 yanlış okuması tam olarak bu eksikten doğdu.
+
+### 135.29b · Sonra sayıları: close_homolog boşluğu bir hata değil, ölçülmüş bir uçurum
+
+251 kayıt yutuldu, zincir koştu (`genomic_context` 636 s, `database`
+57 s, `annotate` 2.118 s, `operons` 417 s, `evidence_tiers` 33 s).
+
+| | önce | sonra |
+|---|---|---|
+| replicon | 17.073 | 17.324 |
+| `ro` aday | — | 34.159 |
+| `ro` onaylı | 19.125 | 21.046 |
+| qxyA üye | 164 | **486** |
+| qxyA characterized | 1 | **2** |
+| qxyA family_member | 52 | 86 |
+| qxyA distant | 104 | 326 |
+| qxyA novel | 7 | 72 |
+| qxyA close_homolog | 0 | **0** |
+
+Aranan dizi geldi ve bağlamını kazandı:
+
+```
+candidate_id  FNTJ01000003.1:78644-79796:-1
+nearest_ref   5_505_qxyA
+ref_identity  97.4      ref_qcov 100.0
+same_as_hmm   1         tier     characterized
+model_coverage 1.0      hmm_score 901.9
+```
+
+**Ama `close_homolog` hâlâ 0, ve sebebi ölçüldü.** qxyA üyelerinin
+kimlik dağılımı katı biçimde iki modlu:
+
+| bant | üye |
+|------|-----|
+| %95–100 | 2 |
+| %50–95 | **0** |
+| %40–50 | 86 |
+| <%40 | 398 |
+
+En yüksek üçü: %100,0 — %97,4 — **%47,2**. Yani ikinci ve üçüncü üye
+arasında 50 puanlık bir uçurum var ve `close_homolog` bandı (%60–95)
+bu uçurumun tam ortasına düşüyor. Kademe boş çünkü o aralıkta
+örneklenmiş çeşitlilik yok; eşik yanlış uygulanmıyor.
+
+**Kullanıcının sorusunun cevabı:** genel bir bug yok. NCBI'da görülen
+%95 üstü isabetler gerçekti, bizde de vardı, ama (a) bağlamsız
+oldukları için üye sayılarına girmiyorlardı ve (b) %95 üstü oldukları
+için girdiklerinde `close_homolog` değil `characterized` oluyorlar.
+"Yakın homolog yok" görüntüsü iki ayrı şeyin üst üste binmesiydi:
+bir denominatör seçimi ve bir eşik bandının gerçekten boş olması.
+
+Yutmanın verimi: 251 kayıt -> qxyA'ya +322 üye, veritabanına +1.921
+onaylı dizi. `ingest_gap` tahmini qxyA için +258 diziydi; gerçekleşen
++322, çünkü kayıt başına birden fazla qxyA kopyası çıkabiliyor.
+Tahmin alt sınır olarak doğru davrandı.
+
+Açık karar: 12.312 kaydın tamamı (tahmin +17.528 dizi, gerçekleşme
+oranı bu testte 1,25x) indirilsin mi, yoksa 500'lük bir parti daha mı.
+Mekanizmanın tavanı %32 (135.29).
