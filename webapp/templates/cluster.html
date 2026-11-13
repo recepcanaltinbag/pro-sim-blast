@@ -7,6 +7,139 @@
   <a href="{{ u('/atlas/groups') }}">{{ group_label(c.group) }}</a></span></h1>
 <div class="numbered" data-contents>
 
+
+{% set tiers = x.tiers %}
+{% set tier_total = tiers.values()|sum if tiers else 0 %}
+{% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}
+<div class="caveat">
+  <b>{{ c.substrate or (chem.substrate_en if chem else '') or 'substrate under curation' }}</b>
+  {% if c.sclass %}<span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>{% endif %}
+  {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
+  <br>
+  Determined experimentally for this type's <b>curated reference enzyme</b>.
+  {% if tier_total %}<b>{{ pct(near, tier_total) }}</b> of the {{ c.n|fmt }} members here are at
+  least 60 % identical to a characterised reference, so the substrate label carries over to
+  them.{% endif %}
+  <details class="basis">
+    <summary>What this label does and does not cover</summary>
+    <p class="note">It is the compound the reference enzyme was <em>tested on</em>, not the limit of
+    what it accepts: one Rieske oxygenase commonly turns over several related compounds, and most
+    have been assayed against only a few.
+    {% if tier_total %}The evidence level behind the share above records the best match across all
+    76 curated references, not a match to this type specifically. The remaining members are more
+    distant relatives whose function is unknown.{% endif %}</p>
+  </details>
+  {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
+  {% if chem and chem.source %}
+  <br><span class="note"><b>Curated from:</b> {{ chem.source|cite|safe }}
+    {%- if chem.source_kind %} ·
+      {% if chem.source_kind == 'general' %}no individual citation was recorded for this type
+      {% elif chem.source_kind == 'paper' %}from a published paper
+      {% elif chem.source_kind == 'structure' %}from a deposited structure
+      {% elif chem.source_kind in ('paper+structure', 'structure+paper') %}from a paper and a deposited structure
+      {% elif chem.source_kind == 'paper+curator' %}from a paper with a curator's judgement
+      {% elif chem.source_kind == 'curator' %}a curator's judgement
+      {% elif chem.source_kind == 'none' %}no source recorded
+      {% else %}{{ chem.source_kind }}{% endif %}
+    {%- endif %}
+    {%- if chem.curation_confidence and chem.curation_confidence != 'high' %} ·
+      <b>curation confidence: {{ chem.curation_confidence }}</b>
+    {%- endif %}</span>
+  {% endif %}
+</div>
+
+{% if chem and chem.reaction_class != 'unknown' %}
+<figure class="fig reaction">
+  <div class="rxn">
+    {#  DENKLEM TEK PARCA. Eskiden sira substrat - ok - SEMA - urun idi:
+        genel reaksiyon semasi okla urunun ARASINA giriyordu, ve substrat
+        SVG'si genis oldugunda urun kutusu alt satira sarip oktan kopuyordu
+        (2026-11-01 gorsel denetimi, qxyA'da belirgin: sagda ~280 px bosluk).
+        Simdi substrat, ok ve urun tek bir kapsayicida; sema kendi blogu
+        olarak sona gecti ve yer kalmazsa kendi satirina iner.          #}
+    <div class="rxn__eq">
+    <div class="rxn__side">
+      {% if chem.substrate_smiles %}
+      <svg class="struct" data-smiles="{{ chem.substrate_smiles }}" aria-label="{{ chem.substrate_en }}"></svg>
+      {% else %}<div class="struct struct--none">structure<br>not drawn</div>{% endif %}
+      <div class="rxn__label">{{ chem.substrate_en }}</div>
+      {#  Substratin KONTROLLU kimligi. Kimlik ile aday ayri gosterilir:
+          bir ad eslesmesi ayni adi tasiyan baska bir molekule denk
+          gelebilir ve okuyucu bunu bilmek zorunda (ROADMAP 135.3).  #}
+      {% if chebi %}
+      <div class="rxn__ids">
+        {% for row in chebi %}
+        <a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId={{ row.chebi }}"
+           class="chebi chebi--{{ 'id' if row.state == 'rhea_equation' else 'cand' }}"
+           title="{{ 'read from the balanced equation of the Rhea reaction of this enzyme type' if row.state == 'rhea_equation' else 'candidate: the curated substrate name matched exactly one ChEBI label, which is not the same as an identity' }}">{{ row.chebi }}</a>{% if row.chebi_label and row.chebi_label|lower != (chem.substrate_en or '')|lower %}
+        <span class="note">{{ row.chebi_label }}</span>{% endif %}
+        {% endfor %}
+        <span class="note">{% if chebi|selectattr('state', 'equalto', 'rhea_equation')|list %}from the
+        balanced equation{% else %}candidate from a name match, not an identity{% endif %}</span>
+      </div>
+      {% endif %}
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">{{ chem.reaction }}</div>
+    </div>
+    <div class="rxn__side">
+      <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
+      <div class="rxn__label">product</div>
+    </div>
+    </div>{#  /.rxn__eq -- denklem burada biter  #}
+    <div class="rxn__scheme">{{ reaction_scheme_svg(chem.reaction_class)|safe }}
+      {% if REACTION_SCHEME_NOTE.get(chem.reaction_class) %}
+      <div class="rxnote">{{ REACTION_SCHEME_NOTE[chem.reaction_class] }}</div>
+      {% endif %}
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+  </div>
+  {#  OKSIJENIN KADERI. Aile adi "oksijenaz" ama ailede urune hic oksijen
+      sokmayan uyeler var; o yuzden bu, sayfanin soylemesi gereken bir sey. #}
+  {% if ofate %}
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> {{ ofate.label }}.
+    {#  SIRA ONEMLI. `transfers` oxidant_only icin False ve
+        "oksidaz, oksijenaz degil" dali once yazilinca CMO sayfasinda YANLIS
+        metin cikti: CMO gercek bir monooksijenazdir, oksijeni sokar ama urun
+        onu kazanmaz.                    #}
+    {% if not ofate.transfers %}
+    O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
+    mechanistically an oxidase rather than an oxygenase. It is in this database
+    because it carries the Rieske cluster and the mononuclear iron site: the
+    name is a statement of family membership, not of mechanism.
+    {% elif ofate.fate == 'leaving_group' %}
+    The principal product keeps the oxygen count of the substrate; the oxygen
+    from O<sub>2</sub> leaves in the small released fragment.
+    {% endif %}
+    {% if ofate.basis %}<br><span class="small">{{ ofate.basis }}</span>{% endif %}
+    {% if ofate.from_type %}<br><span class="small note">Declared for this type:
+      its reaction class covers more than one oxygen fate.</span>{% endif %}
+  </div>
+  {% endif %}
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. Whether a given member catalyses it depends on that member's evidence level.
+  {% if chem.notes %}<br><b>Note.</b> {{ chem.notes }}{% endif %}
+  <details class="basis">
+    <summary>Why the product is named and not drawn</summary>
+    <p class="note">The substrate is drawn from its SMILES string; drawing the product would
+    require assuming which ring positions are attacked in every member, so it is given by
+    name.</p>
+  </details></figcaption>
+</figure>
+{% endif %}
+
+{#  UYARI KUTULARI BURADA, BASLIKTA DEGIL. Daha once dordu de h1 ile
+    kimyanin ARASINA giriyordu: tipi acan okuyucu once enzimin ne yaptigini
+    degil, sayfanin hangi kosullarda yanlis okunabilecegini goruyordu. Sayfa
+    artik reaksiyonla aciliyor. Kutular geriye alindi ama asagidaki sayi
+    kutularinin ONUNDE kaldi, cunku her biri o sayilari aciklar: gerekcesi
+    okunmadan "0 uye" eksik veri gibi anlasiliyor.                        #}
 {#  Uyesi olmayan tip: sayfa onceden SESSIZCE bos kaliyordu. Aciklama en uste
     gelmeli, cunku altindaki her kutu "0" gosteriyor ve bunun sebebi
     okunmadan sayfa yanlis anlasiliyor. Kayit empty_types.py'den geliyor;
@@ -194,132 +327,6 @@
     <a href="{{ u('/atlas/quality') }}">data quality page</a>.</p>
   </details>
 </div>
-{% endif %}
-
-{% set tiers = x.tiers %}
-{% set tier_total = tiers.values()|sum if tiers else 0 %}
-{% set near = (tiers['characterized'] + tiers['close_homolog']) if tiers else 0 %}
-<div class="caveat">
-  <b>{{ c.substrate or (chem.substrate_en if chem else '') or 'substrate under curation' }}</b>
-  {% if c.sclass %}<span class="chip chip--{{ c.sclass }}">{{ c.sclass }}</span>{% endif %}
-  {% if c.confidence %}<span class="note">literature confidence: {{ c.confidence }}</span>{% endif %}
-  <br>
-  Determined experimentally for this type's <b>curated reference enzyme</b>.
-  {% if tier_total %}<b>{{ pct(near, tier_total) }}</b> of the {{ c.n|fmt }} members here are at
-  least 60 % identical to a characterised reference, so the substrate label carries over to
-  them.{% endif %}
-  <details class="basis">
-    <summary>What this label does and does not cover</summary>
-    <p class="note">It is the compound the reference enzyme was <em>tested on</em>, not the limit of
-    what it accepts: one Rieske oxygenase commonly turns over several related compounds, and most
-    have been assayed against only a few.
-    {% if tier_total %}The evidence level behind the share above records the best match across all
-    76 curated references, not a match to this type specifically. The remaining members are more
-    distant relatives whose function is unknown.{% endif %}</p>
-  </details>
-  {% if c.note %}<br><span class="note">{{ c.note }}</span>{% endif %}
-  {% if chem and chem.source %}
-  <br><span class="note"><b>Curated from:</b> {{ chem.source|cite|safe }}
-    {%- if chem.source_kind %} ·
-      {% if chem.source_kind == 'general' %}no individual citation was recorded for this type
-      {% elif chem.source_kind == 'paper' %}from a published paper
-      {% elif chem.source_kind == 'structure' %}from a deposited structure
-      {% elif chem.source_kind in ('paper+structure', 'structure+paper') %}from a paper and a deposited structure
-      {% elif chem.source_kind == 'paper+curator' %}from a paper with a curator's judgement
-      {% elif chem.source_kind == 'curator' %}a curator's judgement
-      {% elif chem.source_kind == 'none' %}no source recorded
-      {% else %}{{ chem.source_kind }}{% endif %}
-    {%- endif %}
-    {%- if chem.curation_confidence and chem.curation_confidence != 'high' %} ·
-      <b>curation confidence: {{ chem.curation_confidence }}</b>
-    {%- endif %}</span>
-  {% endif %}
-</div>
-
-{% if chem and chem.reaction_class != 'unknown' %}
-<figure class="fig reaction">
-  <div class="rxn">
-    {#  DENKLEM TEK PARCA. Eskiden sira substrat - ok - SEMA - urun idi:
-        genel reaksiyon semasi okla urunun ARASINA giriyordu, ve substrat
-        SVG'si genis oldugunda urun kutusu alt satira sarip oktan kopuyordu
-        (2026-11-01 gorsel denetimi, qxyA'da belirgin: sagda ~280 px bosluk).
-        Simdi substrat, ok ve urun tek bir kapsayicida; sema kendi blogu
-        olarak sona gecti ve yer kalmazsa kendi satirina iner.          #}
-    <div class="rxn__eq">
-    <div class="rxn__side">
-      {% if chem.substrate_smiles %}
-      <svg class="struct" data-smiles="{{ chem.substrate_smiles }}" aria-label="{{ chem.substrate_en }}"></svg>
-      {% else %}<div class="struct struct--none">structure<br>not drawn</div>{% endif %}
-      <div class="rxn__label">{{ chem.substrate_en }}</div>
-      {#  Substratin KONTROLLU kimligi. Kimlik ile aday ayri gosterilir:
-          bir ad eslesmesi ayni adi tasiyan baska bir molekule denk
-          gelebilir ve okuyucu bunu bilmek zorunda (ROADMAP 135.3).  #}
-      {% if chebi %}
-      <div class="rxn__ids">
-        {% for row in chebi %}
-        <a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId={{ row.chebi }}"
-           class="chebi chebi--{{ 'id' if row.state == 'rhea_equation' else 'cand' }}"
-           title="{{ 'read from the balanced equation of the Rhea reaction of this enzyme type' if row.state == 'rhea_equation' else 'candidate: the curated substrate name matched exactly one ChEBI label, which is not the same as an identity' }}">{{ row.chebi }}</a>{% if row.chebi_label and row.chebi_label|lower != (chem.substrate_en or '')|lower %}
-        <span class="note">{{ row.chebi_label }}</span>{% endif %}
-        {% endfor %}
-        <span class="note">{% if chebi|selectattr('state', 'equalto', 'rhea_equation')|list %}from the
-        balanced equation{% else %}candidate from a name match, not an identity{% endif %}</span>
-      </div>
-      {% endif %}
-    </div>
-    <div class="rxn__arrow">
-      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
-      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
-        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
-          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
-        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
-      </svg>
-      <div class="rxn__below">{{ chem.reaction }}</div>
-    </div>
-    <div class="rxn__side">
-      <div class="rxn__product">{{ chem.product_en or 'product not recorded' }}</div>
-      <div class="rxn__label">product</div>
-    </div>
-    </div>{#  /.rxn__eq -- denklem burada biter  #}
-    <div class="rxn__scheme">{{ reaction_scheme_svg(chem.reaction_class)|safe }}
-      {% if REACTION_SCHEME_NOTE.get(chem.reaction_class) %}
-      <div class="rxnote">{{ REACTION_SCHEME_NOTE[chem.reaction_class] }}</div>
-      {% endif %}
-      <div class="rxn__label">how this reaction class works, in general</div></div>
-  </div>
-  {#  OKSIJENIN KADERI. Aile adi "oksijenaz" ama ailede urune hic oksijen
-      sokmayan uyeler var; o yuzden bu, sayfanin soylemesi gereken bir sey. #}
-  {% if ofate %}
-  <div class="rxnote rxnote--fate">
-    <b>Where the O<sub>2</sub> oxygen ends up:</b> {{ ofate.label }}.
-    {#  SIRA ONEMLI. `transfers` oxidant_only icin False ve
-        "oksidaz, oksijenaz degil" dali once yazilinca CMO sayfasinda YANLIS
-        metin cikti: CMO gercek bir monooksijenazdir, oksijeni sokar ama urun
-        onu kazanmaz.                    #}
-    {% if not ofate.transfers %}
-    O<sub>2</sub> is the oxidant here, not an oxygen donor, so this enzyme is
-    mechanistically an oxidase rather than an oxygenase. It is in this database
-    because it carries the Rieske cluster and the mononuclear iron site: the
-    name is a statement of family membership, not of mechanism.
-    {% elif ofate.fate == 'leaving_group' %}
-    The principal product keeps the oxygen count of the substrate; the oxygen
-    from O<sub>2</sub> leaves in the small released fragment.
-    {% endif %}
-    {% if ofate.basis %}<br><span class="small">{{ ofate.basis }}</span>{% endif %}
-    {% if ofate.from_type %}<br><span class="small note">Declared for this type:
-      its reaction class covers more than one oxygen fate.</span>{% endif %}
-  </div>
-  {% endif %}
-  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
-  literature. Whether a given member catalyses it depends on that member's evidence level.
-  {% if chem.notes %}<br><b>Note.</b> {{ chem.notes }}{% endif %}
-  <details class="basis">
-    <summary>Why the product is named and not drawn</summary>
-    <p class="note">The substrate is drawn from its SMILES string; drawing the product would
-    require assuming which ring positions are attacked in every member, so it is given by
-    name.</p>
-  </details></figcaption>
-</figure>
 {% endif %}
 
 {#  Three-dimensional structure of the reference enzyme, where one has been
