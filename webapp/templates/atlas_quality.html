@@ -487,6 +487,10 @@ with <code>bash run_all.sh</code>.</p>
       it is served by its own route. Sending it to the generic analysis URL
       produced the only broken link on the site.                            #}
   <td>{% if d.superseded %}{{ d.name }} <span class="note">(superseded, not published)</span>
+      {% elif d.awaiting_translation %}{{ d.name }}
+      <span class="note">(not yet published: its prose is being translated into
+      English, which is a separate job from the measurement &mdash; the numbers
+      it reports are current)</span>
       {% elif d.kind == 'route' or d.name == 'tree_all.nwk' %}<a href="{{ u('/download/' ~ d.name) }}">{{ d.name }}</a>
       {% else %}<a href="{{ u('/download/analysis/' ~ d.name) }}">{{ d.name }}</a>{% endif %}</td>
   <td class="num">{{ d.rows|fmt if d.rows is not none else '–' }}</td>

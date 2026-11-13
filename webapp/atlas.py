@@ -2806,7 +2806,12 @@ def download_table(analysis_dir):
         # baglanti olusur.
         entry = {"name": name, "kind": kind, "description": description, "script": script,
                  "size": None, "rows": None, "exists": kind == "route",
-                 "superseded": name in SUPERSEDED_FILES}
+                 "superseded": name in SUPERSEDED_FILES,
+                 #  Ceviri bekleyen dosya da BAGLANTI ALMAZ: ANALYSIS_FILES
+                 #  disinda oldugu icin /download/analysis/... 404 doner ve
+                 #  kirik baglanti olusur. Superseded ile ayni mekanizma,
+                 #  ayri sebep -- tabloda sebebi yaziliyor.
+                 "awaiting_translation": name in AWAITING_TRANSLATION}
         if kind == "file":
             path = os.path.join(analysis_dir, name)
             if os.path.exists(path):
