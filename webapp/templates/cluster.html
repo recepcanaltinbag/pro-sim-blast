@@ -503,6 +503,22 @@
       </tbody>
     </table>
     </div>
+    {# DENOMINATOR. Tablo yalnizca GENOMIK BAGLAMI OLAN uyeleri sayiyor.
+       Bunu yazmadigimiz surece bos bir kademe satiri "boyle dizi yok" diye
+       okunuyor; dogru cumle "boyle dizi baglamiyla bilinmiyor". #}
+    <p class="note">These levels count the {{ c.n|fmt }} members with genomic
+    context &mdash; the only sequences for which a level can be computed.
+    {% if c.union_gap and not c.union_gap.measured %}How many further
+    sequences of this type are known without genomic context is <em>not
+    measured here</em>: the union table was unavailable when this page was
+    built. That is not the same as none.{% elif c.union_gap and c.union_gap.total %}The union holds
+    {{ c.union_gap.total|fmt }} further sequence{{ '' if c.union_gap.total == 1 else 's' }}
+    assigned to this type that pass the gate but carry no genomic context, so
+    they are absent from the table above;
+    {{ c.union_gap.nameable|fmt }} of those name a nucleotide record and could
+    be given context by downloading it, the rest are protein-only entries and
+    cannot. An empty level therefore reads &ldquo;none known <em>with
+    context</em>&rdquo;, not &ldquo;none known&rdquo;.{% endif %}</p>
     <p class="note"><a href="{{ u('/atlas/evidence') }}">How these levels are defined</a></p>
     {% endif %}
 

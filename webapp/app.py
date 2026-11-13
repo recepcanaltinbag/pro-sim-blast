@@ -592,6 +592,36 @@ def clusters(request: Request):
         con.close()
 
 
+def union_gap(con, cluster):
+    """Bu tipin kapiyi gecen ama GENOMIK BAGLAMI OLMAYAN birlik dizileri.
+
+    Uye sayilari ve `ro_evidence` kademeleri yalnizca genomik tablodan
+    hesaplaniyor. Sayfa bunu soylemedigi surece okuyucu kademe tablosunu
+    "bu tipin bilinen tum dizileri" diye okuyor; qxyA'da tam bu oldu:
+    close_homolog=0 satiri "yakin homolog yok" gibi okundu, oysa dogru
+    cumle "baglamiyla bilinen yakin homolog yok"du. `nameable`, nukleotid
+    erisim numarasi tasiyan ve dolayisiyla indirilerek baglam
+    kazandirilabilecek olan alt kumedir; kalani protein-yalniz kayittir
+    ve bu yolla kurtarilamaz.
+    """
+    try:
+        row = con.execute("""
+            SELECT COUNT(*) total,
+                   SUM(EXISTS(SELECT 1 FROM ro_xref x
+                              WHERE x.seq_md5 = u.seq_md5
+                                AND x.db = 'embl_nucleotide')) nameable
+            FROM ro_union u
+            WHERE u.ro_cluster = ? AND u.passes_gate = 1
+              AND u.has_genomic_context = 0""", (cluster,)).fetchone()
+    except sqlite3.OperationalError:
+        # Birlik tablosu yoksa (yeniden kuruluyor olabilir) olcum YAPILMAMIS
+        # demektir, SIFIR demek degil. Ikisini ayni gostermek bu sayfanin
+        # duzeltmeye calistigi hatanin aynisi olurdu.
+        return {"measured": False, "total": 0, "nameable": 0}
+    return {"measured": True,
+            "total": row["total"] or 0, "nameable": row["nameable"] or 0}
+
+
 def cluster_detail(con, cluster):
     n = con.execute("SELECT COUNT(*) FROM ro WHERE is_confirmed=1 AND ro_cluster=?",
                     (cluster,)).fetchone()[0]
@@ -615,7 +645,8 @@ def cluster_detail(con, cluster):
                 "domains": [], "genera": [], "top_genera": [], "genera_n": 0,
                 "neighborhood": [], "regulators": [], "layouts": [], "layouts_distant": [],
                 "leaves": [],
-                "classes": [], "empty": True}
+                "classes": [], "empty": True,
+                "union_gap": union_gap(con, cluster)}
     eco = ECOLOGY.get(cluster, {})
     info = {"cluster": cluster, "n": n, **cluster_parts(cluster),
             "substrate": eco.get("substrate", ""), "sclass": eco.get("substrate_class", ""),
@@ -626,6 +657,7 @@ def cluster_detail(con, cluster):
         FROM ro r JOIN replicon p USING(nucleotide_id)
         WHERE r.is_confirmed=1 AND r.ro_cluster=?""", (cluster,)).fetchone()
     info.update(dict(row))
+    info["union_gap"] = union_gap(con, cluster)
     info["operon"] = dict(con.execute("""
         SELECT SUM(has_beta) beta, SUM(has_ferredoxin) ferredoxin, SUM(has_reductase) reductase,
                SUM(completeness=3) complete, SUM(nearby_beta) nb_beta,
