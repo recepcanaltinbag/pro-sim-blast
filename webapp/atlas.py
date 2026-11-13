@@ -2781,15 +2781,13 @@ INTERNAL_FILES = frozenset({
 #  SUPERSEDED), ve "cevirisi bekliyor" (sayisi dogru, prozasi yanlis
 #  dilde). Ucunu tek kovaya koymak, yapilacak isi gizler.
 #
-#  carboxylate_audit.json: 32 yayinlanan dizgisi Turkce ve hepsi yogun
-#  bilimsel gerekce metni (kabul kurali, reddedilen kayma cagrilari,
-#  konsensus notu). Aceleyle cevirmek yayinlanmis bir denetim kaydinda
-#  anlam kaybi riski tasir, o yuzden ceviri AYRI bir is olarak
-#  izleniyor (ROADMAP 135.36). Tabloda aciklamasiyla duruyor, indirme
-#  baglantisi verilmiyor.
-AWAITING_TRANSLATION = frozenset({
-    "carboxylate_audit.json",
-})
+#  2026-11-14: carboxylate_audit.json BU KUMEDEN CIKTI -- 47 yayinlanan
+#  dizgisi cevrildi ve kapinin kendi TURKISH_RE'si ile sifir Turkce
+#  dogrulandi, yani artik indirilebilir. Kume BOS KALIYOR, kaldirilmiyor:
+#  mekanizma bir sonraki vaka icin duruyor ve kapi bos oldugunda PASS
+#  veriyor. "Belgesiz", "gecersiz" ve "cevirisi bekliyor" ayri durumlar
+#  olmaya devam ediyor (ROADMAP 135.36).
+AWAITING_TRANSLATION = frozenset()
 
 ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE
                            if kind == "file") - SUPERSEDED_FILES \
