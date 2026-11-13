@@ -2537,16 +2537,41 @@ def check_residual_beta_is_explained(rep, con, root, out_dir="analysis_out"):
     with open(path, encoding="utf-8") as handle:
         data = json.load(handle)
     verdicts = data.get("verdicts") or {}
-    unexplained = (verdicts.get("scanned_and_no_model_hit", 0)
-                   + verdicts.get("translation_exists_but_not_extracted", 0))
-    rep.check("components: artakalan her beta BOZUK GEN ile aciklaniyor",
-              unexplained == 0, unexplained,
+
+    #  IKI AYRI ACIKLANMAMISLIK, IKI AYRI SEVIYE -- ve ilk yazimda ikisini
+    #  tek kovaya koyup ikisine de ayni mesaji verdim, ki mesaj biri icin
+    #  YANLISTI.
+    #
+    #  `scanned_and_no_model_hit`: dizi var, TARANMIS, hicbir model
+    #  tutmamis. Bu, maddenin iddia ettigi GERCEK CATISMA -- ya anotasyon
+    #  yanlis ya model kumesi eksik. FAIL.
+    #
+    #  `translation_exists_but_not_extracted`: dizi KAYITTA var ama
+    #  `neighbor_protein`e hic girmemis, yani TARANMAMIS. Bu bir catisma
+    #  degil, bir CIKARIM BOSLUGU. Olculdu (2026-11-13): komsu satiri olan
+    #  12.122 replikonun 1.472'sinde (%12) hic ceviri yok, 474.724 komsu
+    #  satirinin 40.733'u (%8,6) etkilenmis -- ama o replikonlarda
+    #  DOGRULANMIS giris yalnizca 1, cunku cikarim dogrulanmis girisi olan
+    #  replikonlara odaklanmis. Yayimlanan operon tamlik sayilari 19.125
+    #  giris uzerinden hesaplandigi icin etki 1/19.125. WARN: gercek bir
+    #  eksik, ama kapiyi kalici kirmizi yapmayi hak etmiyor (kalici
+    #  kirmizi bir kapi okunmayi birakir).
+    conflict = verdicts.get("scanned_and_no_model_hit", 0)
+    gap = verdicts.get("translation_exists_but_not_extracted", 0)
+    rep.check("components: artakalan beta ile anotasyon-model CATISMASI yok",
+              conflict == 0, conflict,
               f"psodogen {verdicts.get('pseudogene', 0)}, "
               f"kayitta ceviri yok {verdicts.get('no_translation_in_record', 0)}"
-              + ("" if not unexplained else
-                 f" -- ACIKLANMAYAN {unexplained}: dizi var ve taranmis ama "
-                 "hicbir model tutmuyor, yani anotasyon ya da model kumesi "
-                 "gercekten sorgulanmali"))
+              + ("" if not conflict else
+                 f" -- {conflict} dizi taranmis ve hicbir model tutmamis; "
+                 "anotasyon ya da model kumesi gercekten sorgulanmali"))
+    rep.check("components: artakalan betalarda cikarim boslugu yok",
+              gap == 0, gap,
+              "hepsi taranabilir kumede" if not gap else
+              f"{gap} protein kayitta cevirisi VAR ama neighbor_protein'e "
+              "girmemis, yani taranmamis -- replikon duzeyinde bir cikarim "
+              "boslugu (olculdu: 1.472 replikon, dogrulanmis giris etkisi 1)",
+              severity="WARN")
 
 
 def check_same_structure_same_name(rep, chem):

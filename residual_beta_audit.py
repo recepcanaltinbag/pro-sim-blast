@@ -56,18 +56,26 @@ def read_feature(gbk_dir, nucleotide_id, start, end):
     if handle is None:
         return {"record": "missing"}
     want = f"{start + 1}..{end}"
-    found, attrs, block = False, {"record": "read"}, []
+
+    #  AYNI KOORDINATTA IKI OZELLIK VAR: once `gene`, sonra `CDS`. Ilk
+    #  yazim ilkini toplayip ikincisine gecerken DURUYORDU, yani `/pseudo`
+    #  (gene blogunda) okunuyor ama `/note="frameshifted..."` (CDS
+    #  blogunda) HIC okunmuyordu. Sonuc: yayimlanan dosyada 60/60 not
+    #  BOS, ve bos bir alan "frameshift notu yok" diye okunur -- aracin
+    #  urettigi bir yokluk, veride yokluk gibi gorunuyor. Artik
+    #  koordinata uyan TUM bloklar toplanir.
+    found, attrs, blocks = False, {"record": "read"}, []
     with handle:
         for line in handle:
-            if line.startswith("     ") and not line.startswith("      "):
-                if found and block:
-                    break
+            header = line.startswith("     ") and not line.startswith("      ")
+            if header:
                 found = want in line
                 if found:
-                    block = [line]
+                    blocks.append(line)
                 continue
             if found:
-                block.append(line)
+                blocks.append(line)
+    block = blocks
     text = "".join(block)
     attrs["pseudo"] = "/pseudo" in text
     attrs["has_translation"] = "/translation=" in text

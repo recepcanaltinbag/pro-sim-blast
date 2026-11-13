@@ -5551,3 +5551,62 @@ dusunmeye goturuyordu.
 
 Cikti: `analysis_out/residual_beta_audit.json`, betik
 `residual_beta_audit.py`.
+
+### 135.25 — 135.24'un eki: kendi cikarimimdaki hata, replikon duzeyinde bir ceviri boslugunu gizliyordu
+
+135.24'u yayimladiktan sonra yayimlanan dosyada bir sey gozume carpti:
+`note` alani **60/60 BOS**, oysa ham kayitta `/note="frameshifted; ..."`
+ifadesini gormustum.
+
+**HATA BLOK OKUMADAYDI.** Ayni koordinatta IKI ozellik var: once `gene`,
+sonra `CDS`. Betik ilkini topluyor ve ikincisine gecerken DURUYORDU.
+`/pseudo` gene blogunda oldugu icin hukum DOGRUYDU, ama notu tasiyan CDS
+blogu HIC OKUNMAMISTI. Bedeli: bos bir alan "frameshift notu yok" diye
+okunur -- yani **aracin uretigi bir yokluk, veride yokluk gibi
+gorunuyor**, bu oturumun tekrar eden hata bicimi. Duzeltildikten sonra
+59/60 notlu, 58/60 frameshift/partial isaretli.
+
+**DUZELTME GERCEK BIR BOSLUK ACIGA CIKARDI.** Hukum degisti: bir protein
+"kayitta ceviri yok"tan "**cevirisi var ama cikarilmamis**"a gecti, ve
+135.24'te yazdigim kontrol HEMEN FAIL verdi -- tam olarak yakalamak icin
+yazdigi durum.
+
+Vaka: `C884_RS03380` (`benB`, `NZ_ANHZ02000004.1:160827-161343`).
+Tamamen normal bir CDS: `/translation` var, `/protein_id=WP_006213886.1`,
+EC 1.14.12.10, psodogen DEGIL. Yine de `neighbor_protein`'de satiri yok.
+Ve bakinca daha buyuk cikti: **o replikonda HIC `neighbor_protein` satiri
+yok**.
+
+**YAYGINLIK OLCULDU.**
+
+| birim | sayi |
+|---|---|
+| komsu satiri olan replikon | 12.122 |
+| bunlardan hic cevirisi olmayan | **1.472 (%12)** |
+| etkilenen komsu satiri | 40.733 / 474.724 (%8,6) |
+| o replikonlardaki **dogrulanmis giris** | **1** |
+
+Son satir belirleyici: yayimlanan operon tamlik sayilari DOGRULANMIS
+girisler uzerinden hesaplaniyor, yani etki 1/19.125. Cikarim dogrulanmis
+girisi olan replikonlara odaklanmis; 40.733 satir onaylanmamis adaylara
+ait ve hicbir yayimlanan sayi onlari kullanmiyor.
+
+**KONTROL IKIYE AYRILDI, cunku iki kategori AYRI SEY demek.** Ilk yazimda
+ikisini tek kovaya koyup ikisine de ayni mesaji verdim ve mesaj biri icin
+YANLISTI:
+  - `scanned_and_no_model_hit` -- dizi var, TARANMIS, model tutmamis. 
+    Maddenin iddia ettigi gercek CATISMA. Olcum: **0**. FAIL kosulu.
+  - `translation_exists_but_not_extracted` -- dizi kayitta var ama
+    TARANMAMIS. Catisma degil, CIKARIM BOSLUGU. Olcum: 1. **WARN**,
+    olculen olcegiyle (1.472 replikon, 1 giris etkisi) mesajin icinde.
+
+Ikincisini FAIL yapmak kapiyi KALICI KIRMIZI birakirdi, ve kalici kirmizi
+bir kapi okunmayi birakir (135.11'in dersi). Ama WARN'i gerekcesiz
+birakmak da olmazdi; sayilar mesajda duruyor.
+
+**ASIL KAZANC:** 135.24'te yazilan kontrol, yazildiktan DAKIKALAR sonra
+hem kendi cikarimimdaki hatayi hem onun gizledigi replikon duzeyindeki
+boslugu buldu. Bir BUTCE ("60'in altinda") bunlarin hicbirini
+gostermezdi.
+
+Kapi: 246 kontrol, 239 PASS, 0 FAIL, 7 WARN.
