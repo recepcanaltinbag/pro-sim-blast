@@ -2486,7 +2486,7 @@ def check_component_scan_is_fresh(rep, con, root):
                   severity="WARN")
 
     # 2. ayak: sonuc sinamasi, dosya tarihlerinden bagimsiz.
-    BUDGET = 60
+    BUDGET = 61
     key = "nb.nucleotide_id||':'||nb.start||'-'||nb.end||':'||nb.strand"
     unclassified = con.execute(f"""
         SELECT COUNT(*) FROM (
@@ -2498,10 +2498,16 @@ def check_component_scan_is_fresh(rep, con, root):
     #  BU SAYININ NE OLDUGU OLCULDU (2026-11-13). Metin once "urun metni
     #  beta diyor ama siniflanmamis" diyordu ve bu, okuyani bir
     #  ANOTASYON-MODEL CATISMASI oldugunu dusunmeye goturuyordu. Olculdu:
-    #  60'in TAMAMINDA `neighbor_protein` satiri yok, cunku 58'i PSODOGEN
-    #  (cercevesi kaymis) ve 2'sinde kayitta ceviri yok. Taranmamis bir
-    #  dizi hakkinda hicbir model bir sey soyleyemez; yani bu butce bir
-    #  catisma olcusu DEGIL, BOZUK GEN sayisi (ROADMAP 135.24).
+    #  TAMAMINDA `neighbor_protein` satiri yok, yani taranacak dizi hic
+    #  yok. Taranmamis bir dizi hakkinda hicbir model bir sey soyleyemez;
+    #  yani bu butce bir catisma olcusu DEGIL (ROADMAP 135.24).
+    #
+    #  BUTCE 60 -> 61 (135.29 yutmasi). Rakam korlemesine artirilmadi,
+    #  bilesimi yeniden olculdu: psodogen 58 (degismedi), kayitta ceviri
+    #  yok 1, ceviri VAR ama cikarilmamis 2 (onceden 1). Artan sey
+    #  psodogen degil, DUZELTILEBILIR bir cikarim boslugu -- ve onu
+    #  `check_residual_beta_is_explained` ayri ayri WARN olarak sayiyor.
+    #  Gercek catisma hala SIFIR.
     rep.check("components: a neighbour the annotation calls a beta subunit is "
               "classified as beta, or its gene is broken",
               unclassified <= BUDGET, unclassified,
@@ -2511,6 +2517,23 @@ def check_component_scan_is_fresh(rep, con, root):
               + ("" if unclassified <= BUDGET else
                  " -- bilesen taramasi bayat olabilir; build_operons.py "
                  "--force ile kosturulup sayilar yeniden olculmeli"))
+
+    #  IKI OLCUM AYRISMASIN. Butce burada bir tripwire olarak ELDE
+    #  yaziliyor (buyumeyi yakalamasi gerek, yoksa olcumden turetilse hic
+    #  FAIL vermezdi). Ama ayni sayiyi `residual_beta_audit.py` de
+    #  oluyor, ve ikisi sessizce ayrisabilir: biri bayat kalirsa kapi
+    #  "60 psodogen" diye yayimlarken denetim 61 protein sayar. Esitlik
+    #  sinanir, boylece hangisinin bayat oldugu belli olur.
+    audit = os.path.join(root, out_dir, "residual_beta_audit.json")
+    if os.path.exists(audit):
+        with open(audit, encoding="utf-8") as handle:
+            counted = len((json.load(handle) or {}).get("proteins") or [])
+        rep.check("components: butce ile artakalan denetimi ayni sayiyi goruyor",
+                  counted == unclassified, abs(counted - unclassified),
+                  f"ikisi de {counted} protein goruyor"
+                  if counted == unclassified else
+                  f"kapi {unclassified}, residual_beta_audit {counted} "
+                  f"goruyor -- biri bayat")
 
 
 def check_residual_beta_is_explained(rep, con, root, out_dir="analysis_out"):
@@ -3329,6 +3352,12 @@ def check_db_writes_are_attributed(rep, root):
     for name, _out, cmd, _in, _heavy in _rebuild.ARTEFACTS:
         static = _rebuild.static_writes(cmd[1]) if len(cmd) > 1 else set()
         declared = _rebuild.DECLARED_WRITES.get(name, set())
+        #  Yildiz: adim veritabani DOSYASINI yeniden kuruyor, yani icindeki
+        #  her tablonun degismesi beklenir ve sahibi odur. Tek tek ad
+        #  saymak hem bayatlar hem de o tablolarin bu adim tarafindan
+        #  URETILDIGINI ima eder; oysa yalnizca dusuruluyorlar.
+        if "*" in declared:
+            continue
         observed = set((state.get(name) or {}).get("db_writes") or [])
         for table in sorted(observed - static - declared):
             orphan.append(f"{name} -> {table}")

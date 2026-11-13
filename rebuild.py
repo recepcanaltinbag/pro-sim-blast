@@ -128,6 +128,29 @@ ARTEFACTS = [
      ["python3", "db_repair.py", "--db", DB, "--apply",
       "--out", f"{OUT}/db_repair.json"],
      ["db_repair.py", DB], False),
+    #  ro_cds_span: aciklanamaz ayak izlerini GERCEK PARCALARINA cozer.
+    #  `a5_cohort` ile ayni hikaye: 2026-11-13'e kadar grafikte YOKTU,
+    #  tabloyu elle kosturma uretmisti, ve `database` dosyayi yeniden
+    #  kurunca tablo dustu. Kapi ayak izlerinin cozulmus olmasini sart
+    #  kostugu icin derleme kapandi. Tum replikonlari okumaz, yalnizca
+    #  aciklanamaz ayak izi olanlari.
+    ("ro_cds_span", [f"{OUT}/ro_cds_span.json"],
+     ["python3", "ro_cds_span.py", "--db", DB,
+      "--fasta", "genomic_context/ro_candidates.fasta",
+      "--gbk-dir", "gbk_files", "--out", f"{OUT}/ro_cds_span.json"],
+     ["ro_cds_span.py", DB, "gbk_files"], False),
+    #  a5_cohort: `replicon_cohort`. 2026-11-13'e kadar GRAFIKTE HIC YOKTU:
+    #  tabloyu yalnizca elle kosturma uretiyordu, `database` ise her tam
+    #  derlemede DB'yi yeniden kurup onu dusuruyordu. Kapi tabloyu sart
+    #  kostugu icin derleme orada kapaniyordu, ve sebebi "bir adim
+    #  basarisiz" degil "ureteni yok"tu. Manifesto YENIDEN YAZILMAZ
+    #  (`--write-manifest` burada yok): manifesto kohortun TANIMI, ve
+    #  tanimi her derlemede DB'nin o anki haline gore yeniden turetmek
+    #  yanlilik olcumunu anlamsiz kilardi.
+    ("a5_cohort", [], 
+     ["python3", "a5_cohort.py", "--db", DB],
+     ["a5_cohort.py", DB, "cohorts/a5_protein_recovery.tsv",
+      "cohorts/survey.txt"], False),
     # annotate'in ciktilari genomic_context/cand_dom.out ve cand_aln.sto'dur ve
     # bunlari IKI HMM uretir. Ikisi de girdi listesinde YOKTU: 2026-10-22'de
     # AerC kutuphaneye eklendiginde protein_filter bayatladi ama annotate
@@ -759,6 +782,18 @@ DECLARED_WRITES = {
     "substrate_chebi": {"type_substrate_chebi"},
     "replicon_kind": {"replicon_kind"},
     "db_repair": {"replicon"},
+    "a5_cohort": {"replicon_cohort"},
+    "ro_cds_span": {"ro_cds_span"},
+    #  DOSYANIN SAHIBI. `build_db.py` veritabani DOSYASINI sifirdan kuruyor,
+    #  yani baska adimlarin sahibi oldugu her tabloyu da mesru olarak
+    #  dusuruyor. Olculen yazma listesi bu yuzden 42 turetilmis tabloyu
+    #  (cluster_sdp, leaf, leaf_profile, ...) `database`'e yaziyordu ve
+    #  hicbirinin sahibi bulunamiyordu. Kirk iki adi tek tek beyan etmek
+    #  iki kere yanlis olurdu: liste bayatlar, ve o tablolarin build_db.py
+    #  TARAFINDAN URETILDIGINI ima ederdi -- oysa yalnizca siliniyorlar.
+    #  Yildiz "bu adim dosyanin tamaminin sahibi" demektir ve kontrol onu
+    #  boyle okur; yalnizca dosyayi yeniden kuran bir adim icin mesrudur.
+    "database": {"*"},
     #  FTS5 GOLGE TABLOLARI. `build_search_index.py` yalnizca
     #  `CREATE VIRTUAL TABLE ro_fts` diyor; bu dort tabloyu SQLite'in
     #  kendisi uretiyor, bizim SQL'imiz anmiyor. Dolayisiyla hicbir kaynak

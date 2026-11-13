@@ -84,10 +84,32 @@ def read_locus(handle):
             match.group(3).decode())
 
 
+#  Erisim numarasinin BICIMI, onegin ne anlama geldigini belirler.
+#  RefSeq erisimleri her zaman alt cizgi tasir (NC_, NZ_, NM_ ...).
+#  Alt cizgisiz olanlar INSDC'dir ve iki ayri bicimi var: bir-iki harf
+#  arti rakam (CP012345), ve DORT harf arti rakam (NMUL01000085, WGS).
+#  Ilk yazim alt cizgi yoksa ILK IKI HARFI onek sayiyordu; `NMUL...`
+#  boylece "NM" olup RefSeq mRNA oneki sanildi ve kaydin LOCUS'u DNA
+#  dedigi halde "uyusmazlik" uretildi. Kaydin kendisi dogruydu, capraz
+#  kontrol yanlisti. WGS'in dort harfli oneki PREFIX_KIND'in sozlugunde
+#  hic gecmiyor, yani o erisimler icin capraz kontrol UYGULANMAZ -- ve
+#  uygulanmamasi, uydurulmus bir onekle uygulanmasindan iyidir.
+INSDC_SHORT = re.compile(r"^[A-Z]{1,2}\d+$")
+
+
+def accession_prefix(base):
+    """Capraz kontrolde kullanilabilecek onek, yoksa None."""
+    if "_" in base:
+        return base.split("_")[0]
+    if INSDC_SHORT.match(base):
+        return base[:2]
+    return None
+
+
 def classify(nucleotide_id, gbk_dir):
     base = nucleotide_id.split(".")[0]
-    prefix = base.split("_")[0] if "_" in base else base[:2]
-    by_prefix = PREFIX_KIND.get(prefix)
+    prefix = accession_prefix(base)
+    by_prefix = PREFIX_KIND.get(prefix) if prefix else None
 
     handle = open_record(gbk_dir, nucleotide_id)
     if handle is None:
