@@ -48,6 +48,52 @@ def tier_of(identity, qcov):
     return "novel"
 
 
+def ref_model(sseqid):
+    """Referans basligi -> model adi: "1_101_OxoO_monooxygenase_pro" -> "1_101_OxoO"."""
+    return "_".join(sseqid.split("_")[:3]) if sseqid else None
+
+
+def best_hits(sequences, refs, threads):
+    """Her sorgu icin EN IYI referans isabeti: {id: (sseqid, pident, qcovhsp)}.
+
+    TEK UYGULAMA. Birlik dizileri icin de ayni kademeler hesaplaniyor
+    (`union_evidence.py`) ve bu blok orada KOPYALANMADI: diamond'in
+    cagrilma bicimi (-k 1, --max-hsps 1, --ultra-sensitive, -e 1e-5) ve
+    kaplamanin hangi alandan okundugu (`qcovhsp`) olcumun PARCASIDIR.
+    Ikinci bir uygulama, esikler ayni kalsa bile sessizce ayrisirdi --
+    bu projede tam bu hata birkac kez olctu.
+
+    `sequences`: (id, seq) ureten herhangi bir iterable.
+    """
+    best = {}
+    with tempfile.TemporaryDirectory() as tmp:
+        q = os.path.join(tmp, "q.fa")
+        n = 0
+        with open(q, "w") as fh:
+            for qid, seq in sequences:
+                if not seq:
+                    continue
+                fh.write(f">{qid}\n{seq}\n")
+                n += 1
+        if not n:
+            return best
+        db = os.path.join(tmp, "refs")
+        subprocess.run(["diamond", "makedb", "--in", refs, "-d", db, "--quiet"],
+                       check=True)
+        out = os.path.join(tmp, "hits.tsv")
+        subprocess.run(["diamond", "blastp", "-q", q, "-d", db, "-o", out, "--quiet",
+                        "-p", str(threads), "-k", "1", "--max-hsps", "1",
+                        "--ultra-sensitive", "-e", "1e-5",
+                        "--outfmt", "6", "qseqid", "sseqid", "pident", "qcovhsp",
+                        "bitscore"],
+                       check=True)
+        with open(out) as fh:
+            for line in fh:
+                qid, sid, pid, qcov, _bits = line.rstrip("\n").split("\t")
+                best[qid] = (sid, float(pid), float(qcov))
+    return best
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -75,34 +121,18 @@ def main():
             tier            TEXT
         );""")
 
-    with tempfile.TemporaryDirectory() as tmp:
-        q = os.path.join(tmp, "q.fa")
-        with open(q, "w") as fh:
-            for cid, seq in con.execute(
-                    "SELECT candidate_id, sequence FROM ro WHERE is_confirmed=1 AND sequence IS NOT NULL"):
-                fh.write(f">{cid}\n{seq}\n")
-        db = os.path.join(tmp, "refs")
-        subprocess.run(["diamond", "makedb", "--in", args.refs, "-d", db, "--quiet"], check=True)
-        out = os.path.join(tmp, "hits.tsv")
-        subprocess.run(["diamond", "blastp", "-q", q, "-d", db, "-o", out, "--quiet",
-                        "-p", str(args.threads), "-k", "1", "--max-hsps", "1",
-                        "--ultra-sensitive", "-e", "1e-5",
-                        "--outfmt", "6", "qseqid", "sseqid", "pident", "qcovhsp", "bitscore"],
-                       check=True)
-        best = {}
-        with open(out) as fh:
-            for line in fh:
-                qid, sid, pid, qcov, bits = line.rstrip("\n").split("\t")
-                best[qid] = (sid, float(pid), float(qcov))
+    best = best_hits(
+        con.execute("SELECT candidate_id, sequence FROM ro "
+                    "WHERE is_confirmed=1 AND sequence IS NOT NULL"),
+        args.refs, args.threads)
 
     rows = []
     hmm_cluster = dict(con.execute("SELECT candidate_id, ro_cluster FROM ro WHERE is_confirmed=1"))
     for cid, cluster in hmm_cluster.items():
         sid, pid, qcov = best.get(cid, (None, None, 0.0))
-        # referans basligi "1_101_OxoO_monooxygenase_pro" -> model adi ilk 3 parca
-        ref_model = "_".join(sid.split("_")[:3]) if sid else None
-        rows.append((cid, ref_model, pid, qcov,
-                     int(ref_model == cluster) if ref_model else 0, tier_of(pid, qcov)))
+        model = ref_model(sid)
+        rows.append((cid, model, pid, qcov,
+                     int(model == cluster) if model else 0, tier_of(pid, qcov)))
     con.execute("DELETE FROM ro_evidence")
     con.executemany("INSERT INTO ro_evidence VALUES (?,?,?,?,?,?)", rows)
     con.commit()
