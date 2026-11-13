@@ -6115,3 +6115,32 @@ cümlesi DOI'yi içeriyor mu" diye bakıyordu, oysa bir PMC kaydında
 kuratörün yazdığı tanımlayıcı PMC kimliğidir; DOI sonradan çeviriciden
 geliyor ve cümlede geçmez. Çözülmüş bir kaydı "kesilmiş cümle" sanıp
 FAIL verecekti.
+
+## 135.33 · Yutmanın yan kazancı: DxnA1 artık boş değil
+
+135.32 yayını sırasında kapı bir şey gösterdi: üyesiz referans sayısı
+**8 → 7**, ve listeden düşen `3_308_DxnA1`.
+
+Ölçüldü: **2 üye, ikisi de `characterized`, en yüksek kimlik %100,0.**
+Yani 135.29'da yutulan kayıtların içinde DxnA1'in **kendi referans
+dizisi** vardı ve profil onu topladı.
+
+**Bu, açık bir kararı gereksiz kıldı.** DxnA1 ve `4_407_PbaA1` için
+"profili ayrık homolog kümelerinden yeniden kur" sorusu bekliyordu
+(ikisinin referansı kaynakta doğruydu, kusur profil kurulumundaydı).
+DxnA1'de artık profil cerrahisine gerek yok: eksik olan şey profilin
+ayırt etme gücü değil, **veriydi**. `4_407_PbaA1` hâlâ boş, yani soru
+yalnızca onun için duruyor.
+
+Kayda değer olan şey şu: boş bir tipin sebebi "profil rekabeti
+kaybediyor" diye okunduğunda yapılacak iş profil değiştirmek olur. Bu
+vakada doğru iş veri indirmekti ve ikisi ayırt edilmeden karar
+verilemezdi. `empty_types.py`'nin vaka ayrımı (`reference_absorbed`,
+`gate_rejected`, referans hiç çekilmemiş) tam bu yüzden var.
+
+Ayrıca: 12.312 kaydın tamamını indirmenin görünmeyen bir faydası
+ölçülmüş oldu — boş tiplerin bir kısmı profil değişikliği olmadan
+kendiliğinden doluyor. 251 kayıt bir tipi doldurdu.
+
+**Yayın:** 255 kontrol, 247 PASS, 0 FAIL, 8 WARN (9'du; literatür açık
+işi PASS'e döndü). 3.495 dosya yayınlandı.
