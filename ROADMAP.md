@@ -6506,3 +6506,21 @@ proje bu konuda genel olarak disiplinliydi.
 **Kalan 15 dosya** hiçbir sayfa tarafından okunmuyor; başka betiklerin
 (`make_report.py`, `provenance.py`, `extract_representatives.py`...)
 girdisi olan ara dosyalar. Yayımlanmamaları doğru.
+
+### 135.40b · 129'un açık maddesi artık muhafızlı
+
+129 şunu açık bırakmıştı: `control_elements.json`'daki transpozon
+sayıları hâlâ ürün adı okuması; model okuması `family_scan.json`'da ayrı
+yayımlanıyor, ve ikisini birleştirmek için `family_scan` adımının
+`control_elements`in önüne taşınması gerekiyor.
+
+**Taşıma yapılmadı**, çünkü tek başına hiçbir çıktıyı değiştirmez
+(`control_elements.py` yine ürün adı okur) ve bedeli hafif zincirin
+yeniden koşması. Asıl iş — okumayı modele çevirmek — **yayımlanan bir
+iddiayı değiştirir** ve bu bir kuratörlük kararı.
+
+Ama engel artık **sessiz değil**: bugün eklenen
+`check_step_order_matches_reads`, `control_elements.py` bir gün
+`family_scan`'in tablosunu okumaya başlarsa FAIL verir, çünkü üreten
+adım sonra sıralanmış. Yani "önce sırayı taşı" kuralı artık yoruma değil
+kapıya yazılı.
