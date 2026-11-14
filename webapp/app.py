@@ -1730,7 +1730,12 @@ def _carboxylate_spread():
     out = {"column": column, "testable": testable, "at_column": at_col,
            "at_next": at_next, "within_one": within_one,
            "outliers": testable - within_one,
-           "bands": " and ".join(sorted(bands))}
+           "bands": " and ".join(sorted(bands)),
+           #  Denetimin TARIHI dosyadan okunuyor. Sayfaya elle yazmak
+           #  bayatlayacak bir sayi yazmak olurdu ve kapi
+           #  (check_carboxylate_claim_is_measured) onu hakli olarak
+           #  reddediyor: bu paragraftaki her sayi bir olcumden gelmeli.
+           "audit_date": audit.get("_date")}
     if dists:
         out.update({"dist_n": len(dists), "dist_min": min(dists),
                     "dist_max": max(dists), "dist_unmeasured": sentinel,

@@ -132,7 +132,9 @@ operon, and the organisms that carry it.</p>
     audit of the reference structures that the pipeline <b>cannot
     reproduce</b>: no rebuild step produces it. The column ranges are
     corroborated by a second file, but the counts cannot be re-derived, so
-    read them as a 2026-11 snapshot rather than as a current measurement.</span> The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
+    read them as a snapshot{% if cs.audit_date %} of
+    {{ cs.audit_date }}{% endif %} rather than as a current
+    measurement.</span> The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
     structural test, and it splits {{ brg.asp|fmt }} Asp to {{ brg.glu|fmt }} Glu, and the
     glutamate is not scattered: it marks the group-5 enzymes that cleave carbon–nitrogen bonds or
     demethylate open-chain quaternary amines{% if glu_top %}, measured as

@@ -2045,7 +2045,14 @@ def check_carboxylate_claim_is_measured(rep, con, root):
                   severity="WARN")
         return
     window = flat[i:i + 1800]
-    bare = _re3.sub(r"\{\{.*?\}\}|\{%.*?%\}", " ", window)
+    #  JINJA YORUMLARI DA SILINIR. Desen yalnizca {{ }} ve {% %} siliyordu,
+    #  {# #} yorumlarini sayfa METNI sayiyordu -- oysa onlar render
+    #  EDILMIYOR, yani icindeki bir sayi sayfada bayatlayamaz.
+    #  2026-11-14'te bu kontrol, paragrafin basina konulan bir koken notunun
+    #  TURKCE YORUMUNDAKI sayilari (471, 431, 26) elle yazilmis sayi diye
+    #  FAIL etti. Kontrolun amaci dogru, kapsami fazlaydi: yorum kod
+    #  dokumanidir.
+    bare = _re3.sub(r"\{#.*?#\}|\{\{.*?\}\}|\{%.*?%\}", " ", window)
     nums = _re3.findall(r"(?<![\w.])\d{2,}(?![\w%])", bare)
     rep.check("carboxylate claim: every number comes from a measurement",
               not nums, len(nums),

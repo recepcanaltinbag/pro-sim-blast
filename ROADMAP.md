@@ -6456,3 +6456,22 @@ dizindeki `*.py`'leri taradım ve `webapp/app.py`'nin okuduğu iki dosyayı
 sınıflandırma değişti (8 + 2 yerine 10 + 0). Bu oturumda üçüncü kez:
 **aracın kapsamı, ölçümün kapsamıdır.** (Diğer ikisi: DOI çözümleyicisi
 yayıncıya soruyordu, Türkçe tarama regex'im kelime listesi eksikti.)
+
+### 135.39c · Kapı, yazdığım köken notunu reddetti — ve haklıydı
+
+135.39'un uyarı cümlesini sayfaya koyunca
+`check_carboxylate_claim_is_measured` FAIL verdi: "paragrafta elle
+yazılmış sayı". İki ayrı sorun çıktı ve ikisi de gerçekti.
+
+**1. Kontrolün kapsamı fazlaydı.** Desen `{{ }}` ve `{% %}` siliyor ama
+`{# #}` Jinja yorumlarını silmiyordu, yani benim Türkçe yorumumdaki
+sayıları (471, 431, 26) sayfa metni sayıyordu. Yorum render edilmiyor,
+dolayısıyla içindeki bir sayı sayfada bayatlayamaz. Desen düzeltildi.
+
+**2. Benim cümlem gerçekten elle yazılmış bir sayı taşıyordu — ve o sayı
+YANLIŞTI.** "2026-11 anlık görüntüsü" yazmıştım; denetimin kendi `_date`
+alanı **2026-10-28** diyor. Bir ay yanlış. Tarih artık dosyadan okunuyor.
+
+Yani kural ("bu paragraftaki her sayı bir ölçümden gelmeli") bir stil
+tercihi değil: yanlış bir tarihi yayımlamamı engelledi. Elle yazılan
+sayı yalnızca bayatlamakla kalmıyor, yazıldığı anda da yanlış olabiliyor.
