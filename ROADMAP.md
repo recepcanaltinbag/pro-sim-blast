@@ -6433,3 +6433,26 @@ yeniden üretilebilir, doğrulanabilir ve `SUPERSEDED`'dan çıkarılabilir;
 değerli ve bantlar bağımsız olarak doğrulanıyor — ama bu, yapısal
 referans setine karşı yeniden koşturulacak bir analiz yazmak demek ve
 sonucun ne çıkacağını bilmiyorum.
+
+### 135.39b · Envanter dörde ayrıldı
+
+135.35'in "34 belgesiz dosya" sayısı artık dört ayrı ifade, çünkü
+dördünün yapılacak işi farklı:
+
+| uyarı | n | ne demek | yapılacak |
+|---|---|---|---|
+| belgesiz | 13 | bir betiğin yan çıktısı, kimse ne olduğunu söylemedi | yayımlanmalı mı kararı |
+| **sayfa okuyor, üreteni yok** | **2** | yayımlanan iddia yeniden üretilemez | **kuratörlük kararı (135.39)** |
+| ne üreteni ne okuyanı var | 8 | eski oturumların tek seferlik çıktısı | kayıt; hiçbir şey dayanmıyor |
+| çevirisi bekliyor | 0 | — | PASS |
+
+Silinmiyorlar: ölçülmüş bir çıktıyı silmek sahibinin kararı. Ama
+"belgesiz" kovasına atılmıyorlar, çünkü ne oldukları **biliniyor** —
+ve bir kovada saklamak yapılacak işi gizler.
+
+**Kendi ölçümüm iki kez eksik kapsam verdi.** İlk taramada yalnızca kök
+dizindeki `*.py`'leri taradım ve `webapp/app.py`'nin okuduğu iki dosyayı
+"hiç anılmıyor" saydım; kapsamı `webapp/` ve alt dizinlere açınca
+sınıflandırma değişti (8 + 2 yerine 10 + 0). Bu oturumda üçüncü kez:
+**aracın kapsamı, ölçümün kapsamıdır.** (Diğer ikisi: DOI çözümleyicisi
+yayıncıya soruyordu, Türkçe tarama regex'im kelime listesi eksikti.)

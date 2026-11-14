@@ -4704,7 +4704,9 @@ def check_published_files(rep, out_dir):
     undocumented = sorted(on_disk - set(_atlas.ANALYSIS_FILES)
                           - set(getattr(_atlas, "SUPERSEDED_FILES", ()))
                           - set(getattr(_atlas, "INTERNAL_FILES", ()))
-                          - set(getattr(_atlas, "AWAITING_TRANSLATION", ())))
+                          - set(getattr(_atlas, "AWAITING_TRANSLATION", ()))
+                          - set(getattr(_atlas, "READ_BUT_UNPRODUCED", ()))
+                          - set(getattr(_atlas, "ORPHANED_FILES", ())))
     rep.check("analysis files that exist but are not documented",
               not undocumented, len(undocumented), first(undocumented, 6),
               severity="WARN")
@@ -4712,6 +4714,26 @@ def check_published_files(rep, out_dir):
     #  CEVIRI BEKLEYENLER AYRI BIR UYARI. Yukaridaki "belgesiz" kovasina
     #  karismazlar, cunku ne olduklari BILINIYOR; eksik olan sey proza
     #  dili. Ayri sayilmazlarsa yapilacak is gorunmez olur.
+    #  UC AYRI DURUM, UC AYRI UYARI. Tek kovaya koymak yapilacak isi
+    #  gizler: biri bir KURATORLUK karari bekliyor (sayfa okuyor ama
+    #  ureteni yok), biri yalnizca bir kayit (ne ureteni ne okuyani var),
+    #  biri ceviri bekliyor.
+    unproduced = sorted(set(getattr(_atlas, "READ_BUT_UNPRODUCED", ())) & on_disk)
+    rep.check("published pages read files that no rebuild step produces",
+              not unproduced, len(unproduced),
+              "yok" if not unproduced else
+              "sayfa okuyor ama grafikte ureteni yok, yani yayimlanan iddia "
+              "yeniden uretilemez: " + ", ".join(unproduced),
+              severity="WARN")
+
+    orphaned = sorted(set(getattr(_atlas, "ORPHANED_FILES", ())) & on_disk)
+    rep.check("analysis files with neither a producer nor a consumer",
+              not orphaned, len(orphaned),
+              "yok" if not orphaned else
+              f"{len(orphaned)} dosya diskte duruyor ama depoda adi hic "
+              f"gecmiyor; hicbir sey onlara dayanmiyor",
+              severity="WARN")
+
     waiting = sorted(set(getattr(_atlas, "AWAITING_TRANSLATION", ()))
                      & on_disk)
     rep.check("documented results awaiting translation before publication",

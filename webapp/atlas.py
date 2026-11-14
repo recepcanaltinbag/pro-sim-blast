@@ -2789,6 +2789,35 @@ INTERNAL_FILES = frozenset({
 #  olmaya devam ediyor (ROADMAP 135.36).
 AWAITING_TRANSLATION = frozenset()
 
+#  SAYFA OKUYOR AMA URETENI YOK. Bu iki dosya `app.py` tarafindan
+#  okunuyor ve atlas ana sayfasindaki karboksilat paragrafini besliyor,
+#  ama hicbir grafik adimi onlari uretmiyor (2026-11-14'te olculdu:
+#  rebuild.py'de hic gecmiyorlar). Yani yayimlanan bir iddia yeniden
+#  uretilemez bir dosyaya dayaniyor. Sayfa bu sinirı YAZIYOR; burada da
+#  beyan ediliyorlar, cunku "belgesiz" kovasina atilirlarsa yapilacak is
+#  gorunmez olur. Cozum bir KURATORLUK karari: denetimi grafik adimina
+#  cevirmek ya da paragrafi geri cekmek (ROADMAP 135.39).
+READ_BUT_UNPRODUCED = frozenset({
+    "carboxylate_column_audit.json",
+    "carboxylate_column_audit_raw.json",
+})
+
+#  NE URETENI NE OKUYANI VAR. Diskte duruyorlar ama depoda adlari hicbir
+#  yerde gecmiyor: eski oturumlarin tek seferlik ciktilari. SILINMIYORLAR,
+#  cunku olculmus bir ciktiyi silmek sahibinin karari; ve "belgesiz"
+#  sayilmiyorlar, cunku ne olduklari BILINIYOR -- hicbir sey onlara
+#  dayanmiyor. Uretimi geri gelirse bu kumeden cikarilmalari gerekir.
+ORPHANED_FILES = frozenset({
+    "candidate_rieske_audit.json",
+    "carboxylate_column_by_clade.json",
+    "citation_findings.json",
+    "citation_todo.json",
+    "missing_ro_survey.json",
+    "new_reference_candidates.json",
+    "reaction_anchors_computed.json",
+    "reference_provenance.json",
+})
+
 ANALYSIS_FILES = frozenset(name for name, kind, _desc, _script in PROVENANCE
                            if kind == "file") - SUPERSEDED_FILES \
                            - AWAITING_TRANSLATION
