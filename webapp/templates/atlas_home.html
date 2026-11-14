@@ -117,7 +117,22 @@ operon, and the organisms that carry it.</p>
     {{ cs.dist_no_iron }} structure carries no mononuclear iron. The range is therefore a
     measurement on {{ cs.dist_n }} structures, not on {{ cs.testable }}.{% endif %}
     Either way that column's Asp-to-Glu ratio is not a measurement of the ligand and is not
-    published here. The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
+    published here.
+    {#  KOKEN SINIRI. Bu cumlenin sayilari (26 yapi, 431+-1 penceresi, mesafe
+        araligi, bant adlari) UC dosyadan geliyor ve ucunun de pipeline'da
+        ureteni YOK -- 2026-11-14'te olculdu: rebuild.py'de hic gecmiyorlar ve
+        hicbir betik adlarini anmiyor. Bant adlarini tasiyan dosya ayrica
+        SUPERSEDED, cunku sayilari karboksilat kolonunun 471'den 431'e
+        duzeltilmesinden ONCE uretildi; bant adlari geceri denetimin kendi
+        notunda da gectigi icin birbirini dogruluyor, ama sayilar yeniden
+        uretilemiyor. Bu projenin kurali "yanlis bir sayiyi indirilebilir
+        tutmak onu yayimlamaktir" -- bir sayfada gostermek daha da fazlasi.
+        Sinir YAZILIYOR, cunku bir iddiayi sessizce tasimak ondan kotudur.  #}
+    <span class="note">The structural figures in this item come from a one-off
+    audit of the reference structures that the pipeline <b>cannot
+    reproduce</b>: no rebuild step produces it. The column ranges are
+    corroborated by a second file, but the counts cannot be re-derived, so
+    read them as a 2026-11 snapshot rather than as a current measurement.</span> The inter-subunit bridging carboxylate (column {{ brg.column }}) does pass the same
     structural test, and it splits {{ brg.asp|fmt }} Asp to {{ brg.glu|fmt }} Glu, and the
     glutamate is not scattered: it marks the group-5 enzymes that cleave carbon–nitrogen bonds or
     demethylate open-chain quaternary amines{% if glu_top %}, measured as

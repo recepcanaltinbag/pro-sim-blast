@@ -6385,3 +6385,51 @@ Not: bugün belgelenen 10 dosyanın her biri yayına girerken bir kural
 daha açığa çıkardı — dil kontrolü, indirme bağlantısı, statik aktarım,
 türev tazeliği. Dördünü de kapı ya da site kontrolü yakaladı; hiçbiri
 sessizce geçmedi.
+
+## 135.39 · Yayımlanan bir paragraf, yeniden üretilemeyen üç dosyaya dayanıyor
+
+Belgelenmemiş dosya envanterini (135.35) sürdürürken üreteni bilinmeyen
+15 dosyanın ne olduğu ölçüldü, ve biri ciddi bir şey açtı.
+
+**Atlas ana sayfasındaki karboksilat paragrafı üç dosyadan besleniyor:**
+
+| dosya | sayfaya verdiği | grafikte üreteni |
+|---|---|---|
+| `carboxylate_column_audit.json` | 26 yapı, 431±1 penceresinde 18+2 | **yok** |
+| `carboxylate_column_audit_raw.json` | demire mesafe aralığı | **yok** |
+| `carboxylate_clade_shift.json` | bant adları (407-411, 449-451) | **yok**, ayrıca `SUPERSEDED` |
+
+Üçü de `rebuild.py`'de hiç geçmiyor ve **hiçbir betik adlarını anmıyor**
+— eski bir oturumun tek seferlik çıktıları. Yani bu paragraf
+**yeniden üretilemez**.
+
+Üçüncüsü ayrıca geçersiz ilan edilmiş: `SUPERSEDED_FILES`'ın kendi notu
+"sayıları karboksilat kolonunun 471'den 431'e düzeltilmesinden önce,
+yanlış kolonda üretildi" diyor ve dosya indirmeden çekilmiş. Gerekçe
+şuydu: **"yanlış bir sayıyı indirilebilir tutmak, onu yayımlamaktır."**
+Ama aynı dosyanın içeriği bir sayfada gösteriliyor — ki bu indirmeden
+daha güçlü bir yayımlamadır. `SUPERSEDED`'ın öngördüğü çözüm ("yeniden
+üretildiğinde kümeden çıkarılır") **ulaşılamaz**, çünkü üreten kod yok.
+
+**Bir şey lehine çalışıyor:** bant adları geçersiz dosyanın tekelinde
+değil. Geçerli denetimin kendi notu da aynı aralıkları veriyor
+("Geri kalan 6'sı 407-411 ve 449-451 aralıklarına dağılıyor"). Yani
+bant adları geçersiz *sayıların* ürünü değil, birbirini doğruluyor.
+Uygulama o notu **ayrıştırmıyor** (düz yazıdan değer okumamak bu
+projenin kuralı), o yüzden bantları yapısal alandan, yani geçersiz
+dosyadan alıyor.
+
+**Şimdilik yapılan:** sınır sayfaya yazıldı. Paragraf artık kendi
+köken sınırını söylüyor — figürlerin pipeline tarafından yeniden
+üretilemediğini, bant aralıklarının ikinci bir dosyayla doğrulandığını,
+ama sayıların yeniden türetilemediğini ve 2026-11 anlık görüntüsü
+olarak okunması gerektiğini. Bir iddiayı sessizce taşımak, sınırını
+yazmaktan kötüdür.
+
+**Kullanıcı kararı gerekiyor.** İki seçenek var ve ikisi de kuratörlük
+kararı: (a) denetimi düzgün bir grafik adımına çevir — o zaman sayılar
+yeniden üretilebilir, doğrulanabilir ve `SUPERSEDED`'dan çıkarılabilir;
+(b) paragrafı geri çek. Ben (a)'yı öneriyorum çünkü ölçümün kendisi
+değerli ve bantlar bağımsız olarak doğrulanıyor — ama bu, yapısal
+referans setine karşı yeniden koşturulacak bir analiz yazmak demek ve
+sonucun ne çıkacağını bilmiyorum.
