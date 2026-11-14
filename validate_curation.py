@@ -3753,6 +3753,66 @@ def check_union_evidence(rep, con, root, out_dir="analysis_out"):
                    f"({paired:,} eslenen dizide) -- esikler ayrismis")
 
 
+def check_published_files_precede_the_gate(rep, root):
+    """Yayimlanan her dosya, KAPIDAN ONCE uretiliyor mu?
+
+    NEDEN. Kapi "yayimlanan her istatistik guncel tablo icerigiyle
+    hesaplanmis mi" diye soruyor ve bu soruyu grafigin durumundan
+    yargiliyor. Kapidan SONRA siralanan bir adimin ciktisi, kapi
+    kostugunda henuz uretilmemis olur: kapi kendi uretilmemis girdisine
+    bayat der ve derleme, hicbir sey bozulmamisken kapanir.
+
+    Olculdu (2026-11-14): `provenance` tam bu durumdaydi.
+    `provenance.json` yayimlanan bir dosya ve `provenance` adimi
+    grafikte kapidan SONRA duruyordu; `provenance.py` degistigi an kapi
+    FAIL verdi. Dongu yoktu (provenance.py kapinin ciktisini okumuyor,
+    provenance.json kapinin raporunu listelemiyor), yani sira
+    keyfiydi -- ve keyfi bir sira bir gun isirir.
+
+    Bu, ayni sinifin DORDUNCU ornegi. Ilk ucu TABLO okuyordu ve
+    `check_step_order_matches_reads` onlari yakaliyor; bu dorduncusu bir
+    DOSYANIN TAZELIGINI yargiliyor, o yuzden ayri bir kontrol gerekti.
+
+    NE BULAMAZ. Ureteni bilinmeyen yayimlanan dosyalari (bir baska
+    kontrol onlari WARN olarak sayiyor) ve grafikte hic gecmeyen
+    uretimleri. Yani kontrol "sira dogru" demiyor, "ureteni BILINEN her
+    yayimlanan dosya kapidan once uretiliyor" diyor.
+    """
+    import sys as _sys
+    _sys.path.insert(0, root)
+    try:
+        import rebuild as _rebuild
+        import atlas as _atlas_mod
+    except Exception as err:                                  # noqa: BLE001
+        rep.check("graph: yayimlanan her dosya kapidan once uretiliyor",
+                  False, 1, f"modul yuklenemedi: {err}")
+        return
+
+    order = [n for n, *_ in _rebuild.ARTEFACTS]
+    index = {n: i for i, n in enumerate(order)}
+    if "validation_gate" not in index:
+        rep.check("graph: yayimlanan her dosya kapidan once uretiliyor",
+                  False, 1, "validation_gate grafikte yok")
+        return
+    gate = index["validation_gate"]
+
+    producer = {}
+    for name, outs, _cmd, _ins, _heavy in _rebuild.ARTEFACTS:
+        for out in outs:
+            producer[os.path.basename(out)] = name
+
+    late = sorted(
+        "%s <- %s (%d > %d)" % (f, producer[f], index[producer[f]], gate)
+        for f in _atlas_mod.ANALYSIS_FILES
+        if producer.get(f) and index[producer[f]] > gate)
+    known = sum(1 for f in _atlas_mod.ANALYSIS_FILES if f in producer)
+    rep.check("graph: yayimlanan her dosya kapidan once uretiliyor",
+              not late, len(late),
+              "; ".join(late) if late else
+              f"ureteni bilinen {known} yayimlanan dosyanin hepsi kapidan "
+              f"once uretiliyor")
+
+
 def check_literature(rep, root, out_dir="analysis_out"):
     """Yayinlanan literatur tanimlayicilari gecerli ve KAYITLI mi?
 
@@ -5133,6 +5193,7 @@ def main():
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
         check_step_order_matches_reads(rep, ROOT)
+        check_published_files_precede_the_gate(rep, ROOT)
         check_literature(rep, ROOT)
         check_union_evidence(rep, con, ROOT)
         check_assignment_library(rep, con, ROOT)
