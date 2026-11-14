@@ -3760,6 +3760,49 @@ def check_union_evidence(rep, con, root, out_dir="analysis_out"):
                    f"({paired:,} eslenen dizide) -- esikler ayrismis")
 
 
+def check_descriptions_do_not_cite_unpublished_files(rep, root):
+    """Yayimlanan bir aciklama, yayimlanmayan bir dosyaya ISARET ETMEMELI.
+
+    NEDEN. `atlas.PROVENANCE`'in aciklamalari sitede okunuyor. Bir
+    aciklama "(see X.json)" diyorsa okuyucu X'i arayacak; X yayimlanmiyorsa
+    isaret bos cikar. Bir kaynak gostermek, onu bulunabilir kilmayi vaat
+    etmektir.
+
+    Olculdu (2026-11-14): bir sarkan atif vardi. `triad_anchor_his.json`'in
+    aciklamasi "(see aerc_resolution.json)" diyordu; o dosya ne
+    yayimlaniyor ne de bir grafik adiminin ciktisi. Yayimlamak sorunu
+    cozmezdi -- yeniden uretilemez bir dosyaya dayanan bir yayin olurdu --
+    o yuzden aciklama kararı KAYDEDIYOR ama dosya VAAT ETMIYOR.
+
+    NE BULAMAZ. Yalnizca dosya ADI gibi gorunen dizgileri tanir
+    (`ad.uzanti`); "bkz. su analiz" gibi serbest bir gonderme yakalanmaz.
+    """
+    import re as _re
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(root, "webapp"))
+    try:
+        import atlas as _atlas_mod
+    except Exception as err:                                  # noqa: BLE001
+        rep.check("provenance: aciklamalar yayimlanmayan dosya anmiyor",
+                  False, 1, f"atlas yuklenemedi: {err}")
+        return
+    published = set(_atlas_mod.ANALYSIS_FILES)
+    pattern = _re.compile(
+        r"\b([a-z0-9_]+\.(?:json|csv|tsv|txt|fasta|nwk|gz|m8|gff3))\b")
+    dangling = []
+    for name, _kind, desc, _script in _atlas_mod.PROVENANCE:
+        for match in pattern.finditer(desc or ""):
+            cited = match.group(1)
+            if cited == name or cited in published:
+                continue
+            dangling.append(f"{name} -> {cited}")
+    rep.check("provenance: aciklamalar yayimlanmayan dosya anmiyor",
+              not dangling, len(dangling),
+              "; ".join(sorted(set(dangling))[:4]) if dangling else
+              f"{len(_atlas_mod.PROVENANCE)} aciklamanin hicbiri "
+              f"yayimlanmayan bir dosyaya isaret etmiyor")
+
+
 def check_published_files_precede_the_gate(rep, root):
     """Yayimlanan her dosya, KAPIDAN ONCE uretiliyor mu?
 
@@ -5223,6 +5266,7 @@ def main():
         check_db_writes_are_attributed(rep, ROOT)
         check_step_order_matches_reads(rep, ROOT)
         check_published_files_precede_the_gate(rep, ROOT)
+        check_descriptions_do_not_cite_unpublished_files(rep, ROOT)
         check_literature(rep, ROOT)
         check_union_evidence(rep, con, ROOT)
         check_assignment_library(rep, con, ROOT)

@@ -2497,7 +2497,8 @@ PROVENANCE = [
      "genuine enzymes, so column homology decides and the spacing is "
      "reported. The seven AerC entries stay untested on purpose: that "
      "architecture has no counterpart for the model region the carboxylate "
-     "column sits in (see aerc_resolution.json).",
+     "column sits in; that decision was taken in a one-off resolution of "
+     "the AerC architecture which is not published here.",
      "triad_anchor_his.py"),
     ("triad_gate.json", "file", "The 2-His-1-carboxylate triad called with "
      "all three ligands required -- the definition the literature uses, and "

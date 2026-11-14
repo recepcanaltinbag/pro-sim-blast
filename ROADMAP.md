@@ -6475,3 +6475,34 @@ alanı **2026-10-28** diyor. Bir ay yanlış. Tarih artık dosyadan okunuyor.
 Yani kural ("bu paragraftaki her sayı bir ölçümden gelmeli") bir stil
 tercihi değil: yanlış bir tarihi yayımlamamı engelledi. Elle yazılan
 sayı yalnızca bayatlamakla kalmıyor, yazıldığı anda da yanlış olabiliyor.
+
+## 135.40 · Sarkan atıf: yayımlanan bir açıklama yayımlanmayan bir dosyaya işaret ediyordu
+
+Belgesiz 13 dosyayı daha ayırmaya çalışırken (hangisini bir sayfa
+okuyor?) bir şey çıktı — ama önce **kendi ölçümüm yanlıştı.**
+
+`aerc_resolution.json`'ı "sayfa okuyor" diye sınıflandırdım. Okumuyordu:
+adı yalnızca `atlas.py`'deki bir **açıklama metninde** geçiyor. **Dosya
+adının bir metinde eşleşmesi, dosyanın okunması demek değil** —
+`read_json(apath(...))` bir okumadır, açıklamada anılmak bir atıftır. Bu
+oturumdaki altıncı kapsam/yöntem hatam.
+
+Ama düzeltince asıl sorun göründü: `triad_anchor_his.json`'in yayımlanan
+açıklaması **"(see aerc_resolution.json)"** diyordu ve o dosya
+yayımlanmıyor. Okuyucu işaret edilen yere gidince hiçbir şey bulamıyor.
+**Bir kaynak göstermek, onu bulunabilir kılmayı vaat etmektir.**
+
+Yayımlamak çözüm değildi: dosyanın grafikte üreteni yok, yani 135.39'da
+işaretlediğim "yeniden üretilemez bir dosyaya dayanan yayın" sorununu
+doğururdu. Açıklama artık kararı **kaydediyor** ama dosya **vaat
+etmiyor**: "that decision was taken in a one-off resolution of the AerC
+architecture which is not published here."
+
+**Muhafız eklendi** ve ayırt edicisi doğrulandı: eski metinde FAIL
+(atfı adlandırarak), yeni metinde PASS — 94 açıklamanın hiçbiri
+yayımlanmayan bir dosyaya işaret etmiyor. Tek sarkan atıf bu bir taneydi;
+proje bu konuda genel olarak disiplinliydi.
+
+**Kalan 15 dosya** hiçbir sayfa tarafından okunmuyor; başka betiklerin
+(`make_report.py`, `provenance.py`, `extract_representatives.py`...)
+girdisi olan ara dosyalar. Yayımlanmamaları doğru.
