@@ -6346,3 +6346,42 @@ durum ayrı olmaya devam ediyor — belgesiz, geçersiz, çevirisi bekliyor.
 
 Yayımlanan analiz dosyası 86 → **87**; kalite sayfasındaki indirme
 bağlantısı geri geldi.
+
+## 135.38 · Yayın disiplini gönderilecek kopyayı değil öncekini doğruluyordu
+
+135.37'nin yayını iki kez kapandı ve ikinci sebep disiplinin kendisiydi.
+
+**Birinci sebep — kural, onu doğuran olgudan geniş yazılmış.**
+`freeze.py` "`.nwk` ile bitenleri atla" diyordu, gerekçesi "ağaç kendi
+rotasından gidiyor"du. O gerekçe listedeki **tek** `.nwk` olan
+`tree_all.nwk` için geçerliydi; iki bootstrap ağacı belgelenince genel
+kural onları da düşürdü ve sayfa var olmayan dosyalara bağlantı verdi.
+Atlama tek dosyaya özgü hâle getirildi. (Bu desen bu oturumda birkaç kez
+çıktı: `NM` öneki, `.nwk` uzantısı, `source_kind=general`.)
+
+Yanında: `.nwk` indirmesi `text/csv` olarak gidiyordu. Newick metindir.
+
+**İkinci sebep — denetim sırası.** Düzeltmeden sonra kontrol **aynı iki
+bağlantıyı** yine buldu. Sebep düzeltme değil, sıraydı:
+`check_site.py → freeze.py → deploy` disiplininde `check_site` statik
+dışa aktarımı denetliyor, ama aktarım ondan **sonra** üretiliyor. Yani
+dışa aktarım düzeyindeki kontroller her zaman **bir yayın geride**: bu
+koşuda denetlenen kopya, düzeltmenin girmediği eski kopyaydı.
+
+Mevcut sıranın bir mantığı var — pahalı dondurmadan (~16 dk) önce ucuz
+başarısızlık iyi tasarımdır, ve uygulama/veri kontrolleri dondurmaya
+ihtiyaç duymuyor. Ama **aktarım kusurları bu sırayla yayına çıkabilir**,
+ve bugün tam bu olacaktı.
+
+Bu koşu `freeze → check_site → deploy` sırasıyla yapıldı, yani
+**gönderilecek kopya** doğrulandı: temiz geçti, 3.492 dosya.
+
+**Kural (bundan sonrası için):** ucuz kontroller dondurmadan önce,
+**dışa aktarım kontrolü dondurmadan sonra**. `check_site` iki kez
+koşmanın maliyeti dakikalar; aktarımı denetlenmemiş bir yayının maliyeti
+kırık bir sitedir.
+
+Not: bugün belgelenen 10 dosyanın her biri yayına girerken bir kural
+daha açığa çıkardı — dil kontrolü, indirme bağlantısı, statik aktarım,
+türev tazeliği. Dördünü de kapı ya da site kontrolü yakaladı; hiçbiri
+sessizce geçmedi.
