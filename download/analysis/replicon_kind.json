@@ -1,0 +1,30 @@
+{
+  "question": "Is every row of the replicon table actually a replicon?",
+  "answer": "No: records whose own LOCUS line declares an mRNA molecule are transcripts, not replicons. They are kept, because their sequences are real and recruit confirmed members, but they are not a per-replicon denominator.",
+  "method": {
+    "discriminator": "the record's own declaration, the GenBank LOCUS molecule type field",
+    "why_not_the_accession_prefix": "an accession prefix is a string, and in this project a decision unit derived from a string operation is an unmeasured decision (see ro_taxonomy). The prefix is used only as a cross-check; where the two disagree the row is left unclassified rather than silently assigned.",
+    "cross_check": "NCBI's own documented accession prefix vocabulary compared against the LOCUS molecule type"
+  },
+  "record_kinds": {
+    "genome": 15427,
+    "transcript": 1897
+  },
+  "moltypes": {
+    "DNA": 15427,
+    "mRNA": 1897
+  },
+  "prefix_and_moltype_disagree": 0,
+  "unclassified_rows": [],
+  "confirmed_members_by_record_kind": {
+    "records": {
+      "genome": 11362,
+      "transcript": 967
+    },
+    "entries": {
+      "genome": 20079,
+      "transcript": 967
+    }
+  },
+  "what_changes": "per-replicon context statistics take their denominator from record_kind='genome'; a transcript cannot have a neighbouring gene or a complete operon, so counting it in the denominator reports a measurement failure as a biological absence."
+}

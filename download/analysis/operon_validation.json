@@ -1,0 +1,262 @@
+{
+ "n_neighbour_genes": 381367,
+ "max_gap_bp": 150,
+ "background": {
+  "same_strand_rate": 0.5685,
+  "near_rate": 0.2091,
+  "near_definition": "|gene offset| <= 2"
+ },
+ "components": {
+  "beta": {
+   "n": 5282,
+   "strand": {
+    "rate": 0.9214,
+    "background_rate": 0.5685,
+    "ratio": 1.621,
+    "odds_ratio": 8.9,
+    "p": 0.0,
+    "n": 5282,
+    "n_background": 381367
+   },
+   "position": {
+    "rate": 0.8396,
+    "background_rate": 0.2091,
+    "ratio": 4.016,
+    "odds_ratio": 19.809,
+    "p": 0.0,
+    "n": 5282,
+    "n_background": 381367
+   },
+   "offsets": {
+    "-10": 26,
+    "-9": 34,
+    "-8": 63,
+    "-7": 29,
+    "-6": 70,
+    "-5": 71,
+    "-4": 30,
+    "-3": 72,
+    "-2": 55,
+    "-1": 2138,
+    "1": 2191,
+    "2": 51,
+    "3": 78,
+    "4": 39,
+    "5": 79,
+    "6": 59,
+    "7": 40,
+    "8": 80,
+    "9": 35,
+    "10": 19
+   },
+   "gap_median": 0,
+   "gap_quartiles": [
+    0,
+    16
+   ],
+   "gap_under_max": 0.8872
+  },
+  "ferredoxin": {
+   "n": 3167,
+   "strand": {
+    "rate": 0.8058,
+    "background_rate": 0.5685,
+    "ratio": 1.417,
+    "odds_ratio": 3.149,
+    "p": 3.4174393964631714e-174,
+    "n": 3167,
+    "n_background": 381367
+   },
+   "position": {
+    "rate": 0.6271,
+    "background_rate": 0.2091,
+    "ratio": 2.999,
+    "odds_ratio": 6.362,
+    "p": 0.0,
+    "n": 3167,
+    "n_background": 381367
+   },
+   "offsets": {
+    "-10": 27,
+    "-9": 30,
+    "-8": 60,
+    "-7": 51,
+    "-6": 57,
+    "-5": 117,
+    "-4": 102,
+    "-3": 103,
+    "-2": 823,
+    "-1": 173,
+    "1": 185,
+    "2": 805,
+    "3": 96,
+    "4": 104,
+    "5": 87,
+    "6": 83,
+    "7": 63,
+    "8": 52,
+    "9": 32,
+    "10": 21
+   },
+   "gap_median": 522,
+   "gap_quartiles": [
+    359,
+    1776
+   ],
+   "gap_under_max": 0.1148
+  },
+  "reductase": {
+   "n": 11594,
+   "strand": {
+    "rate": 0.7107,
+    "background_rate": 0.5685,
+    "ratio": 1.25,
+    "odds_ratio": 1.864,
+    "p": 1.73526228615778e-212,
+    "n": 11594,
+    "n_background": 381367
+   },
+   "position": {
+    "rate": 0.479,
+    "background_rate": 0.2091,
+    "ratio": 2.291,
+    "odds_ratio": 3.477,
+    "p": 0.0,
+    "n": 11594,
+    "n_background": 381367
+   },
+   "offsets": {
+    "-10": 224,
+    "-9": 216,
+    "-8": 286,
+    "-7": 244,
+    "-6": 296,
+    "-5": 391,
+    "-4": 649,
+    "-3": 590,
+    "-2": 1327,
+    "-1": 1469,
+    "1": 1389,
+    "2": 1368,
+    "3": 578,
+    "4": 640,
+    "5": 439,
+    "6": 289,
+    "7": 238,
+    "8": 230,
+    "9": 229,
+    "10": 211
+   },
+   "gap_median": 789,
+   "gap_quartiles": [
+    149,
+    2855
+   ],
+   "gap_under_max": 0.2504
+  },
+  "alpha_other": {
+   "n": 3544,
+   "strand": {
+    "rate": 0.6024,
+    "background_rate": 0.5685,
+    "ratio": 1.06,
+    "odds_ratio": 1.15,
+    "p": 4.982879538002809e-05,
+    "n": 3544,
+    "n_background": 381367
+   },
+   "position": {
+    "rate": 0.235,
+    "background_rate": 0.2091,
+    "ratio": 1.124,
+    "odds_ratio": 1.162,
+    "p": 0.00018789529751221196,
+    "n": 3544,
+    "n_background": 381367
+   },
+   "offsets": {
+    "-10": 58,
+    "-9": 124,
+    "-8": 138,
+    "-7": 256,
+    "-6": 284,
+    "-5": 117,
+    "-4": 144,
+    "-3": 181,
+    "-2": 190,
+    "-1": 236,
+    "1": 215,
+    "2": 192,
+    "3": 182,
+    "4": 144,
+    "5": 116,
+    "6": 285,
+    "7": 250,
+    "8": 138,
+    "9": 126,
+    "10": 59
+   },
+   "gap_median": 3072,
+   "gap_quartiles": [
+    1010,
+    5365
+   ],
+   "gap_under_max": 0.1499
+  }
+ },
+ "threshold_sensitivity": {
+  "n_ro": 21046,
+  "thresholds": [
+   50,
+   100,
+   150,
+   200,
+   300,
+   500
+  ],
+  "counts": {
+   "50": {
+    "beta": 4158,
+    "ferredoxin": 1543,
+    "reductase": 4040,
+    "alpha_other": 572,
+    "any": 6764
+   },
+   "100": {
+    "beta": 4352,
+    "ferredoxin": 1895,
+    "reductase": 5389,
+    "alpha_other": 896,
+    "any": 7755
+   },
+   "150": {
+    "beta": 4398,
+    "ferredoxin": 2037,
+    "reductase": 5859,
+    "alpha_other": 1027,
+    "any": 8023
+   },
+   "200": {
+    "beta": 4412,
+    "ferredoxin": 2130,
+    "reductase": 6053,
+    "alpha_other": 1129,
+    "any": 8175
+   },
+   "300": {
+    "beta": 4425,
+    "ferredoxin": 2182,
+    "reductase": 6195,
+    "alpha_other": 1255,
+    "any": 8306
+   },
+   "500": {
+    "beta": 4430,
+    "ferredoxin": 2235,
+    "reductase": 6263,
+    "alpha_other": 1312,
+    "any": 8372
+   }
+  }
+ }
+}

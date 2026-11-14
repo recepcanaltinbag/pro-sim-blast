@@ -1,0 +1,1679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/groups.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="page">Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class=""
+     >Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class=""
+     >Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/disagreements.html" class=""
+     >Disagreements</a>
+  
+  <a href="/pro-sim-blast/atlas/predictions.html" class=""
+     >Predictions</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class=""
+     >Data quality</a>
+  
+  
+</nav>
+
+
+<h1>How much is actually known about each member</h1>
+<p class="lede">Profile assignment answers one question: which characterised enzyme does this protein
+resemble most? It does not answer the question users care about, which is what the protein does.
+This page quantifies the gap between the two, so that every substrate label in the database can be
+read with the right amount of confidence.</p>
+
+
+<h2>1 · Evidence levels</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Level</th><th>Criterion</th><th>What may be claimed</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+<tbody>
+
+<tr>
+  <td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+  <td>characterized reference (≥95 % identity)</td>
+  <td class="small">Essentially the experimentally characterized reference enzyme (or a strain variant). The substrate label applies.</td>
+  <td class="num">370</td>
+  <td class="num">1.8%</td>
+</tr>
+
+<tr>
+  <td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+  <td>close homolog (≥60 %)</td>
+  <td class="small">Close homolog of a characterized enzyme. Same reaction is likely, but substrate range may differ.</td>
+  <td class="num">4,644</td>
+  <td class="num">22.1%</td>
+</tr>
+
+<tr>
+  <td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+  <td>family member (40–60 %)</td>
+  <td class="small">Same enzyme family as the reference type. Substrate cannot be transferred with confidence; the label is a hypothesis.</td>
+  <td class="num">3,580</td>
+  <td class="num">17.0%</td>
+</tr>
+
+<tr>
+  <td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+  <td>distant (25–40 %): type by homology only</td>
+  <td class="small">Rieske oxygenase alpha subunit assigned to its nearest type by profile score only. Function unknown; treat the substrate label as the nearest characterized relative, not as an annotation.</td>
+  <td class="num">12,016</td>
+  <td class="num">57.1%</td>
+</tr>
+
+<tr>
+  <td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+  <td>novel (&lt;25 %): no close reference</td>
+  <td class="small">Confirmed RO alpha subunit with no close characterized relative. Candidate for a new enzyme type.</td>
+  <td class="num">436</td>
+  <td class="num">2.1%</td>
+</tr>
+
+</tbody></table></div>
+<figcaption><b>Method.</b> Every confirmed alpha subunit was compared with DIAMOND blastp against
+the 76 curated reference proteins; the level follows from identity to the best hit, with the top
+level additionally requiring 90 % query coverage.
+<b>Consequence.</b> A substrate taken from the literature transfers to roughly
+23.8% of members. For the remainder the
+database presents the label as the nearest characterised type, and entry pages state this
+explicitly.
+
+<b>Denominator.</b> This table counts the 21,046 members with genomic context, because a
+level can only be computed for a sequence we hold in a genome. The union holds a further
+51,607 gate-passing sequences that carry a type but no genomic context, and they
+appear nowhere above; 16,900 of those name a nucleotide record and could be given
+context by downloading it, while the rest are protein-only entries and cannot. An empty level on a
+type page therefore means &ldquo;none known <em>with context</em>&rdquo;, not &ldquo;none
+known&rdquo;.
+ <a href="/pro-sim-blast/download/analysis/evidence_by_cluster.csv">Download per-type table</a></figcaption>
+</figure>
+
+
+<h2>2 · Why the levels are about enzyme type, not substrate</h2>
+<div class="caveat">
+  Among the characterised references themselves, the most similar pair with <b>different</b>
+  substrates is <b>2_202_EdoA1</b> and <b>2_203_cumA1</b> at
+  99.8 % identity
+  (ethylbenzene against cumene), while the
+  least similar pair that <b>shares</b> a substrate is
+  <b>3_301_PhnA1a</b> and <b>3_319_PhdA</b> at
+  32.4 %.
+  58 of 897 reference pairs with different substrates exceed
+  60 % identity. No global identity cut-off can therefore certify a substrate in this family;
+  specificity is set by a few active-site positions. The levels above express confidence that two
+  proteins are the <em>same kind of enzyme</em>, which is a weaker and defensible claim.
+  <a href="/pro-sim-blast/atlas/network.html">See the full calibration table</a>
+</div>
+
+
+
+
+<h2>3 · How well does identity actually predict the substrate?</h2>
+<p>The claim above rests on one example. Tested across all
+920 reference pairs whose substrates are both known, the
+rule "if two proteins are more than X % identical they act on the same substrate" performs as
+follows. Only 2.5 % of pairs share a substrate
+to begin with, so precision has to be read against that base rate; the lift column does that.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Identity threshold</th><th class="num">Pairs at or above</th>
+<th class="num">Same substrate</th><th class="num">Different</th><th class="num">Precision</th>
+<th class="num">Lift over base rate</th><th class="num">Recall</th></tr></thead>
+<tbody>
+
+<tr class="">
+  <td class="num">25 %</td><td class="num">870</td>
+  <td class="num">23</td><td class="num">847</td>
+  <td class="num">2.6 %</td>
+  <td class="num">1.1×</td>
+  <td class="num">100 %</td></tr>
+
+<tr class="">
+  <td class="num">30 %</td><td class="num">562</td>
+  <td class="num">23</td><td class="num">539</td>
+  <td class="num">4.1 %</td>
+  <td class="num">1.6×</td>
+  <td class="num">100 %</td></tr>
+
+<tr class="">
+  <td class="num">35 %</td><td class="num">309</td>
+  <td class="num">21</td><td class="num">288</td>
+  <td class="num">6.8 %</td>
+  <td class="num">2.7×</td>
+  <td class="num">91 %</td></tr>
+
+<tr class="">
+  <td class="num">40 %</td><td class="num">159</td>
+  <td class="num">15</td><td class="num">144</td>
+  <td class="num">9.4 %</td>
+  <td class="num">3.8×</td>
+  <td class="num">65 %</td></tr>
+
+<tr class="">
+  <td class="num">45 %</td><td class="num">107</td>
+  <td class="num">14</td><td class="num">93</td>
+  <td class="num">13.1 %</td>
+  <td class="num">5.2×</td>
+  <td class="num">61 %</td></tr>
+
+<tr class="">
+  <td class="num">50 %</td><td class="num">83</td>
+  <td class="num">11</td><td class="num">72</td>
+  <td class="num">13.2 %</td>
+  <td class="num">5.3×</td>
+  <td class="num">48 %</td></tr>
+
+<tr class="">
+  <td class="num">55 %</td><td class="num">72</td>
+  <td class="num">9</td><td class="num">63</td>
+  <td class="num">12.5 %</td>
+  <td class="num">5.0×</td>
+  <td class="num">39 %</td></tr>
+
+<tr class="">
+  <td class="num">60 %</td><td class="num">67</td>
+  <td class="num">9</td><td class="num">58</td>
+  <td class="num">13.4 %</td>
+  <td class="num">5.4×</td>
+  <td class="num">39 %</td></tr>
+
+<tr class="">
+  <td class="num">65 %</td><td class="num">45</td>
+  <td class="num">8</td><td class="num">37</td>
+  <td class="num">17.8 %</td>
+  <td class="num">7.1×</td>
+  <td class="num">35 %</td></tr>
+
+<tr class="">
+  <td class="num">70 %</td><td class="num">34</td>
+  <td class="num">5</td><td class="num">29</td>
+  <td class="num">14.7 %</td>
+  <td class="num">5.9×</td>
+  <td class="num">22 %</td></tr>
+
+<tr class="">
+  <td class="num">75 %</td><td class="num">26</td>
+  <td class="num">3</td><td class="num">23</td>
+  <td class="num">11.5 %</td>
+  <td class="num">4.6×</td>
+  <td class="num">13 %</td></tr>
+
+<tr class="">
+  <td class="num">80 %</td><td class="num">20</td>
+  <td class="num">1</td><td class="num">19</td>
+  <td class="num">5.0 %</td>
+  <td class="num">2.0×</td>
+  <td class="num">4 %</td></tr>
+
+<tr class="">
+  <td class="num">85 %</td><td class="num">16</td>
+  <td class="num">1</td><td class="num">15</td>
+  <td class="num">6.2 %</td>
+  <td class="num">2.5×</td>
+  <td class="num">4 %</td></tr>
+
+<tr class="hl">
+  <td class="num">90 %</td><td class="num">11</td>
+  <td class="num">1</td><td class="num">10</td>
+  <td class="num">9.1 %</td>
+  <td class="num">3.6×</td>
+  <td class="num">4 %</td></tr>
+
+<tr class="">
+  <td class="num">95 %</td><td class="num">2</td>
+  <td class="num">1</td><td class="num">1</td>
+  <td class="num">50.0 %</td>
+  <td class="num">20.0×</td>
+  <td class="num">4 %</td></tr>
+
+<tr class="">
+  <td class="num">99 %</td><td class="num">2</td>
+  <td class="num">1</td><td class="num">1</td>
+  <td class="num">50.0 %</td>
+  <td class="num">20.0×</td>
+  <td class="num">4 %</td></tr>
+
+</tbody></table></div>
+<figcaption><b>Identity is informative but not reliable.</b> As a ranking signal it works: the area
+under the ROC curve is 0.869, well above the 0.5 of no
+information, and at 90 % identity a pair is 3.6 times
+more likely to share a substrate than a random pair. As a <em>decision rule</em> it fails: at 90 %
+identity only 1 of
+11 pairs actually share one, and
+<b>no threshold reaches 90 %
+precision at all</b> on a set of ten pairs or more. The most similar pair with different
+substrates is 2_202_EdoA1 and
+2_203_cumA1 at
+99.8 %
+(ethylbenzene against
+cumene); the least similar pair sharing a substrate
+is 3_301_PhnA1a and 3_319_PhdA
+at 32.4 %.</figcaption>
+</figure>
+
+<h3>At the coarser level of substrate class</h3>
+<p class="note">One might expect the broad class, xenobiotic against natural, to be more
+predictable. It is not, and the reason is instructive:
+81 % of pairs already share a class because
+most characterised enzymes act on xenobiotics. Precision therefore looks excellent at every
+threshold while the lift never exceeds
+1.2×,
+so the threshold is adding almost nothing. The area under the curve,
+0.681, is the honest summary.
+<a href="/pro-sim-blast/download/analysis/substrate_predictability.json">Download the full curves</a></p>
+
+
+<h2>4 · Sensitivity to the threshold</h2>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Identity to nearest reference</th><th class="num">Members at or above</th><th class="num">Share</th></tr></thead>
+<tbody>
+
+<tr><td class="num">25 %</td><td class="num">20,610</td><td class="num">97.9%</td></tr>
+
+<tr><td class="num">30 %</td><td class="num">16,963</td><td class="num">80.6%</td></tr>
+
+<tr><td class="num">35 %</td><td class="num">11,511</td><td class="num">54.7%</td></tr>
+
+<tr><td class="num">40 %</td><td class="num">8,594</td><td class="num">40.8%</td></tr>
+
+<tr><td class="num">50 %</td><td class="num">6,355</td><td class="num">30.2%</td></tr>
+
+<tr><td class="num">60 %</td><td class="num">5,014</td><td class="num">23.8%</td></tr>
+
+<tr><td class="num">70 %</td><td class="num">3,516</td><td class="num">16.7%</td></tr>
+
+<tr><td class="num">80 %</td><td class="num">1,569</td><td class="num">7.5%</td></tr>
+
+<tr><td class="num">90 %</td><td class="num">687</td><td class="num">3.3%</td></tr>
+
+<tr><td class="num">95 %</td><td class="num">371</td><td class="num">1.8%</td></tr>
+
+</tbody></table></div>
+<figcaption><b>Why this table is here.</b> Choosing a different boundary moves large numbers of
+members between levels, so any statement of the form "most members are well characterised" depends
+entirely on where the line is drawn. The thresholds used here are configurable in the pipeline, and
+the counts above let a reader re-derive the figures under their own choice.</figcaption>
+</figure>
+
+<h2>5 · Evidence composition of each type</h2>
+<figure class="fig">
+<div id="ev" class="chart" style="height:1500px"></div>
+<figcaption><b>Reading it.</b> A type coloured mostly dark green is a well-sampled enzyme whose
+substrate annotation extends to its members. A type coloured mostly orange or purple is a profile
+that recruits distant homologues: real Rieske oxygenases, but with unknown function. Those are the
+types where naming members after the reference enzyme would be misleading.</figcaption>
+</figure>
+
+<h2>6 · Types dominated by distant members</h2>
+<div class="tablewrap"><table class="data compact" data-filter="Filter types by name or substrate…">
+<thead><tr><th>Type</th><th>Reference substrate</th><th class="num">Members</th>
+<th>Evidence composition</th><th class="num">Characterised or close</th></tr></thead>
+<tbody>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_504_CntA.html"><b>CntA</b></a> <span class="note">5_504_CntA</span></td>
+  <td>L-carnitine</td>
+  <td class="num" data-v="2562">2,562</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:2.07%" title="characterized: 53"></i><i style="background:#7fb069;width:9.76%" title="close_homolog: 250"></i><i style="background:#f2c14e;width:0.82%" title="family_member: 21"></i><i style="background:#f78154;width:83.06%" title="distant: 2128"></i><i style="background:#8e44ad;width:4.29%" title="novel: 110"></i></span></td>
+  <td class="num" data-v="11.83">11.8%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_104_VanA.html"><b>VanA</b></a> <span class="note">1_104_VanA</span></td>
+  <td>vanillate</td>
+  <td class="num" data-v="1772">1,772</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:36.96%" title="close_homolog: 655"></i><i style="background:#f2c14e;width:14.33%" title="family_member: 254"></i><i style="background:#f78154;width:47.69%" title="distant: 845"></i><i style="background:#8e44ad;width:1.02%" title="novel: 18"></i></span></td>
+  <td class="num" data-v="36.96">37.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html"><b>Stc2</b></a> <span class="note">5_506_Stc2</span></td>
+  <td>stachydrine</td>
+  <td class="num" data-v="1768">1,768</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.4%" title="characterized: 7"></i><i style="background:#7fb069;width:4.3%" title="close_homolog: 76"></i><i style="background:#f2c14e;width:43.04%" title="family_member: 761"></i><i style="background:#f78154;width:46.61%" title="distant: 824"></i><i style="background:#8e44ad;width:5.66%" title="novel: 100"></i></span></td>
+  <td class="num" data-v="4.69">4.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html"><b>KshA15</b></a> <span class="note">3_313_KshA15</span></td>
+  <td>3-ketosteroid</td>
+  <td class="num" data-v="1712">1,712</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.58%" title="characterized: 10"></i><i style="background:#7fb069;width:36.86%" title="close_homolog: 631"></i><i style="background:#f2c14e;width:30.26%" title="family_member: 518"></i><i style="background:#f78154;width:31.78%" title="distant: 544"></i><i style="background:#8e44ad;width:0.53%" title="novel: 9"></i></span></td>
+  <td class="num" data-v="37.44">37.4%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html"><b>BmoA</b></a> <span class="note">5_507_BmoA</span></td>
+  <td>glycine betaine</td>
+  <td class="num" data-v="1160">1,160</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.17%" title="characterized: 2"></i><i style="background:#7fb069;width:5.78%" title="close_homolog: 67"></i><i style="background:#f2c14e;width:9.48%" title="family_member: 110"></i><i style="background:#f78154;width:80.69%" title="distant: 936"></i><i style="background:#8e44ad;width:3.88%" title="novel: 45"></i></span></td>
+  <td class="num" data-v="5.95">5.9%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html"><b>TsaM</b></a> <span class="note">1_106_TsaM</span></td>
+  <td>4-toluenesulfonate</td>
+  <td class="num" data-v="1089">1,089</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:0.18%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:7.53%" title="family_member: 82"></i><i style="background:#f78154;width:91.92%" title="distant: 1001"></i><i style="background:#8e44ad;width:0.37%" title="novel: 4"></i></span></td>
+  <td class="num" data-v="0.18">0.2%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html"><b>TdnA1</b></a> <span class="note">4_404_TdnA1</span></td>
+  <td>aniline</td>
+  <td class="num" data-v="795">795</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.25%" title="characterized: 2"></i><i style="background:#7fb069;width:1.38%" title="close_homolog: 11"></i><i style="background:#f2c14e;width:2.14%" title="family_member: 17"></i><i style="background:#f78154;width:96.23%" title="distant: 765"></i></span></td>
+  <td class="num" data-v="1.64">1.6%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_411_XylX.html"><b>XylX</b></a> <span class="note">4_411_XylX</span></td>
+  <td>toluate and benzoate</td>
+  <td class="num" data-v="734">734</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.23%" title="characterized: 9"></i><i style="background:#7fb069;width:85.69%" title="close_homolog: 629"></i><i style="background:#f2c14e;width:12.94%" title="family_member: 95"></i><i style="background:#f78154;width:0.14%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="86.92">86.9%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html"><b>CdnA</b></a> <span class="note">1_113_CdnA</span></td>
+  <td>caffeine and methylxanthines</td>
+  <td class="num" data-v="689">689</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:0.58%" title="close_homolog: 4"></i><i style="background:#f78154;width:99.27%" title="distant: 684"></i><i style="background:#8e44ad;width:0.15%" title="novel: 1"></i></span></td>
+  <td class="num" data-v="0.58">0.6%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html"><b>GbcA</b></a> <span class="note">5_508_GbcA</span></td>
+  <td>glycine betaine</td>
+  <td class="num" data-v="505">505</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:2.38%" title="characterized: 12"></i><i style="background:#7fb069;width:97.43%" title="close_homolog: 492"></i><i style="background:#f78154;width:0.2%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="99.8">99.8%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html"><b>qxyA</b></a> <span class="note">5_505_qxyA</span></td>
+  <td>benzalkonium chloride and other quaternary ammonium compounds</td>
+  <td class="num" data-v="486">486</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.41%" title="characterized: 2"></i><i style="background:#f2c14e;width:17.7%" title="family_member: 86"></i><i style="background:#f78154;width:67.08%" title="distant: 326"></i><i style="background:#8e44ad;width:14.81%" title="novel: 72"></i></span></td>
+  <td class="num" data-v="0.41">0.4%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html"><b>TPDO</b></a> <span class="note">4_409_TPDO</span></td>
+  <td>terephthalate</td>
+  <td class="num" data-v="475">475</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:3.37%" title="characterized: 16"></i><i style="background:#7fb069;width:11.37%" title="close_homolog: 54"></i><i style="background:#f2c14e;width:66.74%" title="family_member: 317"></i><i style="background:#f78154;width:18.53%" title="distant: 88"></i></span></td>
+  <td class="num" data-v="14.74">14.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html"><b>CmoS</b></a> <span class="note">5_501_CmoS</span></td>
+  <td>choline</td>
+  <td class="num" data-v="461">461</td>
+  <td><span class="tierbar"><i style="background:#f2c14e;width:19.96%" title="family_member: 92"></i><i style="background:#f78154;width:75.27%" title="distant: 347"></i><i style="background:#8e44ad;width:4.77%" title="novel: 22"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_410_CbdC.html"><b>CbdC</b></a> <span class="note">4_410_CbdC</span></td>
+  <td>2-halobenzoate</td>
+  <td class="num" data-v="429">429</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:67.6%" title="close_homolog: 290"></i><i style="background:#f2c14e;width:23.78%" title="family_member: 102"></i><i style="background:#f78154;width:8.62%" title="distant: 37"></i></span></td>
+  <td class="num" data-v="67.6">67.6%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html"><b>DdmC</b></a> <span class="note">1_105_DdmC</span></td>
+  <td>dicamba</td>
+  <td class="num" data-v="409">409</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:0.24%" title="close_homolog: 1"></i><i style="background:#f2c14e;width:10.02%" title="family_member: 41"></i><i style="background:#f78154;width:89.49%" title="distant: 366"></i><i style="background:#8e44ad;width:0.24%" title="novel: 1"></i></span></td>
+  <td class="num" data-v="0.24">0.2%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html"><b>ROCH34</b></a> <span class="note">4_405_ROCH34</span></td>
+  <td>phthalate</td>
+  <td class="num" data-v="375">375</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.27%" title="characterized: 1"></i><i style="background:#7fb069;width:5.33%" title="close_homolog: 20"></i><i style="background:#f2c14e;width:16.8%" title="family_member: 63"></i><i style="background:#f78154;width:77.6%" title="distant: 291"></i></span></td>
+  <td class="num" data-v="5.6">5.6%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_307_NagGH.html"><b>NagGH</b></a> <span class="note">3_307_NagGH</span></td>
+  <td>naphthalene-2-sulfonate</td>
+  <td class="num" data-v="345">345</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.16%" title="characterized: 4"></i><i style="background:#7fb069;width:61.16%" title="close_homolog: 211"></i><i style="background:#f2c14e;width:37.39%" title="family_member: 129"></i><i style="background:#f78154;width:0.29%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="62.32">62.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/6_601_PAO.html"><b>PAO</b></a> <span class="note">6_601_PAO</span></td>
+  <td>pheophorbide a</td>
+  <td class="num" data-v="342">342</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.88%" title="characterized: 3"></i><i style="background:#7fb069;width:19.3%" title="close_homolog: 66"></i><i style="background:#f2c14e;width:0.88%" title="family_member: 3"></i><i style="background:#f78154;width:78.95%" title="distant: 270"></i></span></td>
+  <td class="num" data-v="20.18">20.2%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html"><b>DAF36</b></a> <span class="note">3_322_DAF36</span></td>
+  <td>cholesterol</td>
+  <td class="num" data-v="333">333</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.3%" title="characterized: 1"></i><i style="background:#7fb069;width:1.2%" title="close_homolog: 4"></i><i style="background:#f2c14e;width:25.53%" title="family_member: 85"></i><i style="background:#f78154;width:71.47%" title="distant: 238"></i><i style="background:#8e44ad;width:1.5%" title="novel: 5"></i></span></td>
+  <td class="num" data-v="1.5">1.5%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_408_AntA.html"><b>AntA</b></a> <span class="note">4_408_AntA</span></td>
+  <td>anthranilate</td>
+  <td class="num" data-v="305">305</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.31%" title="characterized: 4"></i><i style="background:#7fb069;width:97.38%" title="close_homolog: 297"></i><i style="background:#f78154;width:1.31%" title="distant: 4"></i></span></td>
+  <td class="num" data-v="98.69">98.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_406_PDO.html"><b>PDO</b></a> <span class="note">4_406_PDO</span></td>
+  <td>phthalate</td>
+  <td class="num" data-v="286">286</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.4%" title="characterized: 4"></i><i style="background:#7fb069;width:34.97%" title="close_homolog: 100"></i><i style="background:#f2c14e;width:15.03%" title="family_member: 43"></i><i style="background:#f78154;width:48.6%" title="distant: 139"></i></span></td>
+  <td class="num" data-v="36.36">36.4%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html"><b>Nvd</b></a> <span class="note">3_321_Nvd</span></td>
+  <td>cholesterol</td>
+  <td class="num" data-v="278">278</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.36%" title="characterized: 1"></i><i style="background:#7fb069;width:4.32%" title="close_homolog: 12"></i><i style="background:#f2c14e;width:18.71%" title="family_member: 52"></i><i style="background:#f78154;width:74.1%" title="distant: 206"></i><i style="background:#8e44ad;width:2.52%" title="novel: 7"></i></span></td>
+  <td class="num" data-v="4.68">4.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_217_HcaE.html"><b>HcaE</b></a> <span class="note">2_217_HcaE</span></td>
+  <td>3-phenylpropionate</td>
+  <td class="num" data-v="259">259</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:46.72%" title="characterized: 121"></i><i style="background:#7fb069;width:53.28%" title="close_homolog: 138"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html"><b>CmtAb</b></a> <span class="note">4_401_CmtAb</span></td>
+  <td>p-cumate</td>
+  <td class="num" data-v="246">246</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.22%" title="characterized: 3"></i><i style="background:#7fb069;width:2.85%" title="close_homolog: 7"></i><i style="background:#f2c14e;width:32.93%" title="family_member: 81"></i><i style="background:#f78154;width:59.35%" title="distant: 146"></i><i style="background:#8e44ad;width:3.66%" title="novel: 9"></i></span></td>
+  <td class="num" data-v="4.07">4.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html"><b>PhtAa</b></a> <span class="note">3_311_PhtAa</span></td>
+  <td>phthalate</td>
+  <td class="num" data-v="226">226</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:3.54%" title="characterized: 8"></i><i style="background:#7fb069;width:68.14%" title="close_homolog: 154"></i><i style="background:#f78154;width:27.43%" title="distant: 62"></i><i style="background:#8e44ad;width:0.88%" title="novel: 2"></i></span></td>
+  <td class="num" data-v="71.68">71.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html"><b>SxtT</b></a> <span class="note">1_110_SxtT</span></td>
+  <td>saxitoxin pathway intermediate</td>
+  <td class="num" data-v="225">225</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:0.89%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:2.67%" title="family_member: 6"></i><i style="background:#f78154;width:96.44%" title="distant: 217"></i></span></td>
+  <td class="num" data-v="0.89">0.9%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html"><b>AtdA</b></a> <span class="note">4_403_AtdA</span></td>
+  <td>aniline</td>
+  <td class="num" data-v="190">190</td>
+  <td><span class="tierbar"><i style="background:#f2c14e;width:0.53%" title="family_member: 1"></i><i style="background:#f78154;width:88.95%" title="distant: 169"></i><i style="background:#8e44ad;width:10.53%" title="novel: 20"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_108_PobA.html"><b>PobA</b></a> <span class="note">1_108_PobA</span></td>
+  <td>4-hydroxybenzoate</td>
+  <td class="num" data-v="174">174</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:1.15%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:44.25%" title="family_member: 77"></i><i style="background:#f78154;width:54.6%" title="distant: 95"></i></span></td>
+  <td class="num" data-v="1.15">1.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html"><b>GxtA</b></a> <span class="note">1_111_GxtA</span></td>
+  <td>gonyautoxin pathway intermediate</td>
+  <td class="num" data-v="174">174</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:1.72%" title="close_homolog: 3"></i><i style="background:#f2c14e;width:0.57%" title="family_member: 1"></i><i style="background:#f78154;width:97.13%" title="distant: 169"></i><i style="background:#8e44ad;width:0.57%" title="novel: 1"></i></span></td>
+  <td class="num" data-v="1.72">1.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html"><b>PrnD</b></a> <span class="note">1_117_PrnD</span></td>
+  <td>aminopyrrolnitrin</td>
+  <td class="num" data-v="161">161</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:3.73%" title="characterized: 6"></i><i style="background:#7fb069;width:37.27%" title="close_homolog: 60"></i><i style="background:#f2c14e;width:2.48%" title="family_member: 4"></i><i style="background:#f78154;width:55.28%" title="distant: 89"></i><i style="background:#8e44ad;width:1.24%" title="novel: 2"></i></span></td>
+  <td class="num" data-v="40.99">41.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_218_BphA1.html"><b>BphA1</b></a> <span class="note">2_218_BphA1</span></td>
+  <td>biphenyl</td>
+  <td class="num" data-v="153">153</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:6.54%" title="close_homolog: 10"></i><i style="background:#f2c14e;width:48.37%" title="family_member: 74"></i><i style="background:#f78154;width:45.1%" title="distant: 69"></i></span></td>
+  <td class="num" data-v="6.54">6.5%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html"><b>PhnA1a</b></a> <span class="note">3_301_PhnA1a</span></td>
+  <td>phenanthrene</td>
+  <td class="num" data-v="149">149</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:3.36%" title="close_homolog: 5"></i><i style="background:#f2c14e;width:39.6%" title="family_member: 59"></i><i style="background:#f78154;width:55.7%" title="distant: 83"></i><i style="background:#8e44ad;width:1.34%" title="novel: 2"></i></span></td>
+  <td class="num" data-v="3.36">3.4%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html"><b>PhdA</b></a> <span class="note">3_319_PhdA</span></td>
+  <td>phenanthrene</td>
+  <td class="num" data-v="147">147</td>
+  <td><span class="tierbar"><i style="background:#f2c14e;width:12.24%" title="family_member: 18"></i><i style="background:#f78154;width:87.07%" title="distant: 128"></i><i style="background:#8e44ad;width:0.68%" title="novel: 1"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/6_603_PTC52.html"><b>PTC52</b></a> <span class="note">6_603_PTC52</span></td>
+  <td>protochlorophyllide a</td>
+  <td class="num" data-v="140">140</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.43%" title="characterized: 2"></i><i style="background:#7fb069;width:35.71%" title="close_homolog: 50"></i><i style="background:#f2c14e;width:35.0%" title="family_member: 49"></i><i style="background:#f78154;width:27.86%" title="distant: 39"></i></span></td>
+  <td class="num" data-v="37.14">37.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/6_602_CAO.html"><b>CAO</b></a> <span class="note">6_602_CAO</span></td>
+  <td>chlorophyllide a</td>
+  <td class="num" data-v="138">138</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:3.62%" title="characterized: 5"></i><i style="background:#7fb069;width:73.19%" title="close_homolog: 101"></i><i style="background:#f2c14e;width:3.62%" title="family_member: 5"></i><i style="background:#f78154;width:19.57%" title="distant: 27"></i></span></td>
+  <td class="num" data-v="76.81">76.8%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html"><b>bfzA</b></a> <span class="note">2_211_bfzA</span></td>
+  <td>benzene and fluorene</td>
+  <td class="num" data-v="118">118</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:0.85%" title="characterized: 1"></i><i style="background:#f2c14e;width:5.08%" title="family_member: 6"></i><i style="background:#f78154;width:94.07%" title="distant: 111"></i></span></td>
+  <td class="num" data-v="0.85">0.8%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html"><b>CARDO</b></a> <span class="note">1_102_CARDO</span></td>
+  <td>carbazole</td>
+  <td class="num" data-v="114">114</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:4.39%" title="characterized: 5"></i><i style="background:#7fb069;width:2.63%" title="close_homolog: 3"></i><i style="background:#f2c14e;width:23.68%" title="family_member: 27"></i><i style="background:#f78154;width:69.3%" title="distant: 79"></i></span></td>
+  <td class="num" data-v="7.02">7.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_302_DitA.html"><b>DitA</b></a> <span class="note">3_302_DitA</span></td>
+  <td>dehydroabietate</td>
+  <td class="num" data-v="112">112</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.79%" title="characterized: 2"></i><i style="background:#7fb069;width:64.29%" title="close_homolog: 72"></i><i style="background:#f2c14e;width:33.04%" title="family_member: 37"></i><i style="background:#f78154;width:0.89%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="66.07">66.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_109_LigX.html"><b>LigX</b></a> <span class="note">1_109_LigX</span></td>
+  <td>5,5&#39;-dehydrodivanillate</td>
+  <td class="num" data-v="93">93</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:1.08%" title="close_homolog: 1"></i><i style="background:#f2c14e;width:54.84%" title="family_member: 51"></i><i style="background:#f78154;width:44.09%" title="distant: 41"></i></span></td>
+  <td class="num" data-v="1.08">1.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_107_CndA.html"><b>CndA</b></a> <span class="note">1_107_CndA</span></td>
+  <td>chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</td>
+  <td class="num" data-v="74">74</td>
+  <td><span class="tierbar"><i style="background:#f2c14e;width:12.16%" title="family_member: 9"></i><i style="background:#f78154;width:87.84%" title="distant: 65"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_317_NidA.html"><b>NidA</b></a> <span class="note">3_317_NidA</span></td>
+  <td>pyrene</td>
+  <td class="num" data-v="65">65</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:10.77%" title="characterized: 7"></i><i style="background:#7fb069;width:1.54%" title="close_homolog: 1"></i><i style="background:#f2c14e;width:56.92%" title="family_member: 37"></i><i style="background:#f78154;width:30.77%" title="distant: 20"></i></span></td>
+  <td class="num" data-v="12.31">12.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_118_RedG.html"><b>RedG</b></a> <span class="note">1_118_RedG</span></td>
+  <td>undecylprodigiosin</td>
+  <td class="num" data-v="64">64</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:10.94%" title="characterized: 7"></i><i style="background:#7fb069;width:9.38%" title="close_homolog: 6"></i><i style="background:#f2c14e;width:9.38%" title="family_member: 6"></i><i style="background:#f78154;width:70.31%" title="distant: 45"></i></span></td>
+  <td class="num" data-v="20.31">20.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_214_TftA.html"><b>TftA</b></a> <span class="note">2_214_TftA</span></td>
+  <td>2,4,5-trichlorophenoxyacetate</td>
+  <td class="num" data-v="58">58</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:1.72%" title="close_homolog: 1"></i><i style="background:#f2c14e;width:39.66%" title="family_member: 23"></i><i style="background:#f78154;width:58.62%" title="distant: 34"></i></span></td>
+  <td class="num" data-v="1.72">1.7%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_116_GdmA.html"><b>GdmA</b></a> <span class="note">1_116_GdmA</span></td>
+  <td>guaiacol (2-methoxyphenol)</td>
+  <td class="num" data-v="57">57</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:1.75%" title="characterized: 1"></i><i style="background:#7fb069;width:42.11%" title="close_homolog: 24"></i><i style="background:#f2c14e;width:3.51%" title="family_member: 2"></i><i style="background:#f78154;width:52.63%" title="distant: 30"></i></span></td>
+  <td class="num" data-v="43.86">43.9%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html"><b>Dpe</b></a> <span class="note">2_204_Dpe</span></td>
+  <td>diphenyl ether</td>
+  <td class="num" data-v="57">57</td>
+  <td><span class="tierbar"><i style="background:#f2c14e;width:100.0%" title="family_member: 57"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html"><b>ArhA1</b></a> <span class="note">3_305_ArhA1</span></td>
+  <td>polycyclic aromatic hydrocarbons</td>
+  <td class="num" data-v="50">50</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:4.0%" title="characterized: 2"></i><i style="background:#7fb069;width:4.0%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:14.0%" title="family_member: 7"></i><i style="background:#f78154;width:78.0%" title="distant: 39"></i></span></td>
+  <td class="num" data-v="8.0">8.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html"><b>NarAa</b></a> <span class="note">3_316_NarAa</span></td>
+  <td>naphthalene</td>
+  <td class="num" data-v="50">50</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:4.0%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:16.0%" title="family_member: 8"></i><i style="background:#f78154;width:80.0%" title="distant: 40"></i></span></td>
+  <td class="num" data-v="4.0">4.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html"><b>EdoA1</b></a> <span class="note">2_202_EdoA1</span></td>
+  <td>ethylbenzene</td>
+  <td class="num" data-v="48">48</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:45.83%" title="characterized: 22"></i><i style="background:#7fb069;width:37.5%" title="close_homolog: 18"></i><i style="background:#f78154;width:16.67%" title="distant: 8"></i></span></td>
+  <td class="num" data-v="83.33">83.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_112_NdmA.html"><b>NdmA</b></a> <span class="note">1_112_NdmA</span></td>
+  <td>caffeine</td>
+  <td class="num" data-v="43">43</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:4.65%" title="characterized: 2"></i><i style="background:#7fb069;width:2.33%" title="close_homolog: 1"></i><i style="background:#f78154;width:93.02%" title="distant: 40"></i></span></td>
+  <td class="num" data-v="6.98">7.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_101_OxoO.html"><b>OxoO</b></a> <span class="note">1_101_OxoO</span></td>
+  <td>2-oxo-1,2-dihydroquinoline</td>
+  <td class="num" data-v="36">36</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:47.22%" title="close_homolog: 17"></i><i style="background:#f2c14e;width:50.0%" title="family_member: 18"></i><i style="background:#f78154;width:2.78%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="47.22">47.2%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_502_CmoB.html"><b>CmoB</b></a> <span class="note">5_502_CmoB</span></td>
+  <td>choline</td>
+  <td class="num" data-v="35">35</td>
+  <td><span class="tierbar"><i style="background:#f78154;width:85.71%" title="distant: 30"></i><i style="background:#8e44ad;width:14.29%" title="novel: 5"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html"><b>BedC1</b></a> <span class="note">2_212_BedC1</span></td>
+  <td>benzene</td>
+  <td class="num" data-v="33">33</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:6.06%" title="close_homolog: 2"></i><i style="background:#f2c14e;width:18.18%" title="family_member: 6"></i><i style="background:#f78154;width:75.76%" title="distant: 25"></i></span></td>
+  <td class="num" data-v="6.06">6.1%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_216_BPDO.html"><b>BPDO</b></a> <span class="note">2_216_BPDO</span></td>
+  <td>biphenyl</td>
+  <td class="num" data-v="29">29</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:20.69%" title="characterized: 6"></i><i style="background:#7fb069;width:79.31%" title="close_homolog: 23"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html"><b>PsbAb</b></a> <span class="note">4_402_PsbAb</span></td>
+  <td>4-sulfobenzoate</td>
+  <td class="num" data-v="29">29</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:3.45%" title="characterized: 1"></i><i style="background:#7fb069;width:37.93%" title="close_homolog: 11"></i><i style="background:#f2c14e;width:58.62%" title="family_member: 17"></i></span></td>
+  <td class="num" data-v="41.38">41.4%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/1_114_NdmB.html"><b>NdmB</b></a> <span class="note">1_114_NdmB</span></td>
+  <td>caffeine</td>
+  <td class="num" data-v="28">28</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:7.14%" title="characterized: 2"></i><i style="background:#7fb069;width:17.86%" title="close_homolog: 5"></i><i style="background:#f2c14e;width:17.86%" title="family_member: 5"></i><i style="background:#f78154;width:57.14%" title="distant: 16"></i></span></td>
+  <td class="num" data-v="25.0">25.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_303_NBDO.html"><b>NBDO</b></a> <span class="note">3_303_NBDO</span></td>
+  <td>nitrobenzene</td>
+  <td class="num" data-v="24">24</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:37.5%" title="characterized: 9"></i><i style="background:#7fb069;width:62.5%" title="close_homolog: 15"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html"><b>NidA3</b></a> <span class="note">3_320_NidA3</span></td>
+  <td>polycyclic aromatic hydrocarbons</td>
+  <td class="num" data-v="22">22</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:50.0%" title="characterized: 11"></i><i style="background:#7fb069;width:45.45%" title="close_homolog: 10"></i><i style="background:#f78154;width:4.55%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="95.45">95.5%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html"><b>BphA1A2</b></a> <span class="note">2_213_BphA1A2</span></td>
+  <td>biphenyl</td>
+  <td class="num" data-v="21">21</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:14.29%" title="close_homolog: 3"></i><i style="background:#f2c14e;width:61.9%" title="family_member: 13"></i><i style="background:#f78154;width:23.81%" title="distant: 5"></i></span></td>
+  <td class="num" data-v="14.29">14.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_318_NidA.html"><b>NidA</b></a> <span class="note">3_318_NidA</span></td>
+  <td>pyrene</td>
+  <td class="num" data-v="20">20</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:50.0%" title="characterized: 10"></i><i style="background:#7fb069;width:10.0%" title="close_homolog: 2"></i><i style="background:#f78154;width:40.0%" title="distant: 8"></i></span></td>
+  <td class="num" data-v="60.0">60.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html"><b>TecA1</b></a> <span class="note">2_208_TecA1</span></td>
+  <td>1,2,4,5-tetrachlorobenzene</td>
+  <td class="num" data-v="19">19</td>
+  <td><span class="tierbar"><i style="background:#f78154;width:100.0%" title="distant: 19"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_215_cadA.html"><b>cadA</b></a> <span class="note">2_215_cadA</span></td>
+  <td>2,4-dichlorophenoxyacetate (2,4-D)</td>
+  <td class="num" data-v="14">14</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:21.43%" title="characterized: 3"></i><i style="background:#7fb069;width:42.86%" title="close_homolog: 6"></i><i style="background:#f2c14e;width:35.71%" title="family_member: 5"></i></span></td>
+  <td class="num" data-v="64.29">64.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/5_503_CmoA.html"><b>CmoA</b></a> <span class="note">5_503_CmoA</span></td>
+  <td>choline</td>
+  <td class="num" data-v="12">12</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:8.33%" title="characterized: 1"></i><i style="background:#f78154;width:91.67%" title="distant: 11"></i></span></td>
+  <td class="num" data-v="8.33">8.3%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/7_701_AerC.html"><b>AerC</b></a> <span class="note">7_701_AerC</span></td>
+  <td>N4-isopentenylagmatine</td>
+  <td class="num" data-v="9">9</td>
+  <td><span class="tierbar"><i style="background:#f78154;width:100.0%" title="distant: 9"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_203_cumA1.html"><b>cumA1</b></a> <span class="note">2_203_cumA1</span></td>
+  <td>cumene</td>
+  <td class="num" data-v="8">8</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:87.5%" title="close_homolog: 7"></i><i style="background:#f78154;width:12.5%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="87.5">87.5%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_209_TDO.html"><b>TDO</b></a> <span class="note">2_209_TDO</span></td>
+  <td>toluene</td>
+  <td class="num" data-v="6">6</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:100.0%" title="close_homolog: 6"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_306_3NTDO.html"><b>3NTDO</b></a> <span class="note">3_306_3NTDO</span></td>
+  <td>3-nitrotoluene</td>
+  <td class="num" data-v="2">2</td>
+  <td><span class="tierbar"><i style="background:#7fb069;width:100.0%" title="close_homolog: 2"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/3_308_DxnA1.html"><b>DxnA1</b></a> <span class="note">3_308_DxnA1</span></td>
+  <td>dibenzo-p-dioxin</td>
+  <td class="num" data-v="2">2</td>
+  <td><span class="tierbar"><i style="background:#1f7a4d;width:100.0%" title="characterized: 2"></i></span></td>
+  <td class="num" data-v="100.0">100.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_201_BphA1.html"><b>BphA1</b></a> <span class="note">2_201_BphA1</span></td>
+  <td>biphenyl</td>
+  <td class="num" data-v="1">1</td>
+  <td><span class="tierbar"><i style="background:#f78154;width:100.0%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+
+<tr>
+  <td><a href="/pro-sim-blast/cluster/2_207_BpdC1.html"><b>BpdC1</b></a> <span class="note">2_207_BpdC1</span></td>
+  <td>biphenyl</td>
+  <td class="num" data-v="1">1</td>
+  <td><span class="tierbar"><i style="background:#f78154;width:100.0%" title="distant: 1"></i></span></td>
+  <td class="num" data-v="0.0">0.0%</td>
+</tr>
+
+</tbody></table></div>
+
+
+<h2>7 · When the profile and the nearest sequence disagree</h2>
+<p>For a share of members the best-scoring profile belongs to one type while the most similar
+individual reference protein belongs to another. This is expected at low identity, where a profile
+built from many homologues outscores any single sequence, but it marks pairs of types that are
+better treated as one lineage.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Assigned by profile</th><th>Nearest reference protein</th><th class="num">Members</th><th class="num">Mean identity</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">5_507_BmoA</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">5_508_GbcA</a></td>
+    <td class="num">460</td>
+    <td class="num">35.2 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">5_506_Stc2</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">5_507_BmoA</a></td>
+    <td class="num">448</td>
+    <td class="num">36.0 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">5_501_CmoS</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_502_CmoB.html">5_502_CmoB</a></td>
+    <td class="num">320</td>
+    <td class="num">28.2 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">5_506_Stc2</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">5_508_GbcA</a></td>
+    <td class="num">310</td>
+    <td class="num">34.2 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">1_113_CdnA</a></td>
+    <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td>
+    <td class="num">257</td>
+    <td class="num">30.2 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">3_313_KshA15</a></td>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">3_322_DAF36</a></td>
+    <td class="num">214</td>
+    <td class="num">27.2 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">5_504_CntA</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">5_507_BmoA</a></td>
+    <td class="num">190</td>
+    <td class="num">33.3 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a></td>
+    <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">1_105_DdmC</a></td>
+    <td class="num">179</td>
+    <td class="num">36.1 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">1_113_CdnA</a></td>
+    <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">1_110_SxtT</a></td>
+    <td class="num">170</td>
+    <td class="num">29.9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">1_110_SxtT</a></td>
+    <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a></td>
+    <td class="num">124</td>
+    <td class="num">31.7 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">1_113_CdnA</a></td>
+    <td><a href="/pro-sim-blast/cluster/1_112_NdmA.html">1_112_NdmA</a></td>
+    <td class="num">123</td>
+    <td class="num">31.9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">3_313_KshA15</a></td>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">3_321_Nvd</a></td>
+    <td class="num">106</td>
+    <td class="num">29.9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">4_401_CmtAb</a></td>
+    <td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html">4_402_PsbAb</a></td>
+    <td class="num">104</td>
+    <td class="num">41.6 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">5_504_CntA</a></td>
+    <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">5_508_GbcA</a></td>
+    <td class="num">103</td>
+    <td class="num">30.6 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_410_CbdC.html">4_410_CbdC</a></td>
+    <td><a href="/pro-sim-blast/cluster/4_411_XylX.html">4_411_XylX</a></td>
+    <td class="num">101</td>
+    <td class="num">48.6 %</td></tr>
+
+</tbody></table></div>
+
+
+
+<h2>8 &middot; What other databases call the same protein</h2>
+<p>Everything above is this database measuring itself. This section reports the identifiers that
+other databases attach to the same sequences, and &mdash; for the one identifier that is a claim
+rather than an address &mdash; whether their answer agrees with the curation here.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Database</th><th>What it identifies</th><th class="num">Sequences</th>
+<th class="num">Share of the UniProt-sourced set</th></tr></thead>
+<tbody>
+
+
+<tr><td><b>UniProt</b></td><td>the protein record itself</td>
+    <td class="num">68,747</td>
+    <td class="num">100.0 %</td></tr>
+
+
+<tr><td><b>RefSeq protein</b></td><td>the same protein in NCBI</td>
+    <td class="num">18,600</td>
+    <td class="num">27.1 %</td></tr>
+
+
+<tr><td><b>ENA nucleotide</b></td><td>the DNA record it was translated from</td>
+    <td class="num">24,608</td>
+    <td class="num">35.8 %</td></tr>
+
+
+<tr><td><b>EC</b></td><td>the reaction it is expected to catalyse</td>
+    <td class="num">3,813</td>
+    <td class="num">5.5 %</td></tr>
+
+</tbody></table></div>
+<figcaption><b>The denominator is declared.</b> Every identifier here reaches this database through
+a UniProt record, so the share is taken over the
+68,747 sequences that have a UniProt source, not over
+all 70,317 sequences in the union. Taken over the whole union the
+EC share would read lower and would be measuring the wrong thing: the absence of a UniProt record,
+not the absence of an EC number.
+<details class="basis">
+  <summary>Why an EC number is not treated like the other three</summary>
+  <p class="note">UniProt, RefSeq and ENA identifiers are <em>addresses</em>: they point at the same
+  sequence in another archive and can be checked by comparing the sequence. An EC number is a
+  statement about <b>function</b>, and it is only as good as the entry that carries it. Measured
+  here: of the sequences with an EC number,
+  <b>87</b> carry one from a reviewed
+  (Swiss-Prot) entry and
+  <b>3,726</b> only from an
+  unreviewed (TrEMBL) entry &mdash; that is
+  97.7 % propagated by automatic
+  annotation rather than measured on the protein. Each entry page prints the review status beside
+  its EC number for exactly this reason.</p>
+</details>
+</figcaption>
+</figure>
+
+
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Type</th><th class="num">EC readings</th><th class="num">Distinct EC</th>
+<th>Most frequent</th><th class="num">Its share</th><th>Outside class 1.14</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">5_504_CntA</a>
+    <div class="note">5_504_CntA</div></td>
+    <td class="num">1,120</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">92 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">3_322_DAF36</a>
+    <div class="note">3_322_DAF36</div></td>
+    <td class="num">703</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">99 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/3.1.1.13" rel="noopener">3.1.1.13</a>, <a href="https://enzyme.expasy.org/EC/3.1.1.6" rel="noopener">3.1.1.6</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">3_313_KshA15</a>
+    <div class="note">3_313_KshA15</div></td>
+    <td class="num">559</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">50 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">5_501_CmoS</a>
+    <div class="note">5_501_CmoS</div></td>
+    <td class="num">458</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">3_321_Nvd</a>
+    <div class="note">3_321_Nvd</div></td>
+    <td class="num">451</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">5_506_Stc2</a>
+    <div class="note">5_506_Stc2</div></td>
+    <td class="num">294</td>
+    <td class="num">5</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">99 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/2.5.1.32" rel="noopener">2.5.1.32</a>, <a href="https://enzyme.expasy.org/EC/5.5.1.19" rel="noopener">5.5.1.19</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_217_HcaE.html">2_217_HcaE</a>
+    <div class="note">2_217_HcaE</div></td>
+    <td class="num">63</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.19" rel="noopener">1.14.12.19</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">5_507_BmoA</a>
+    <div class="note">5_507_BmoA</div></td>
+    <td class="num">34</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">97 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_503_CmoA.html">5_503_CmoA</a>
+    <div class="note">5_503_CmoA</div></td>
+    <td class="num">16</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">3_303_NBDO</a>
+    <div class="note">3_303_NBDO</div></td>
+    <td class="num">13</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.12" rel="noopener">1.14.12.12</a></td>
+    <td class="num">85 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_601_PAO.html">6_601_PAO</a>
+    <div class="note">6_601_PAO</div></td>
+    <td class="num">10</td>
+    <td class="num">5</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.11.1.7" rel="noopener">1.11.1.7</a></td>
+    <td class="num">50 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/1.1.1.179" rel="noopener">1.1.1.179</a>, <a href="https://enzyme.expasy.org/EC/1.11.1.7" rel="noopener">1.11.1.7</a>, <a href="https://enzyme.expasy.org/EC/2.1.1.319" rel="noopener">2.1.1.319</a>, <a href="https://enzyme.expasy.org/EC/3.1.3.16" rel="noopener">3.1.3.16</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">2_202_EdoA1</a>
+    <div class="note">2_202_EdoA1</div></td>
+    <td class="num">8</td>
+    <td class="num">4</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.18" rel="noopener">1.14.12.18</a></td>
+    <td class="num">50 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">4_401_CmtAb</a>
+    <div class="note">4_401_CmtAb</div></td>
+    <td class="num">6</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">83 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">5_505_qxyA</a>
+    <div class="note">5_505_qxyA</div></td>
+    <td class="num">5</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_104_VanA.html">1_104_VanA</a>
+    <div class="note">1_104_VanA</div></td>
+    <td class="num">5</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.82" rel="noopener">1.14.13.82</a></td>
+    <td class="num">40 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/2.7.1.26" rel="noopener">2.7.1.26</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">1_106_TsaM</a>
+    <div class="note">1_106_TsaM</div></td>
+    <td class="num">5</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">60 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_602_CAO.html">6_602_CAO</a>
+    <div class="note">6_602_CAO</div></td>
+    <td class="num">4</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.122" rel="noopener">1.14.13.122</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">3_305_ArhA1</a>
+    <div class="note">3_305_ArhA1</div></td>
+    <td class="num">4</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.19" rel="noopener">1.14.12.19</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_502_CmoB.html">5_502_CmoB</a>
+    <div class="note">5_502_CmoB</div></td>
+    <td class="num">4</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_411_XylX.html">4_411_XylX</a>
+    <div class="note">4_411_XylX</div></td>
+    <td class="num">3</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.-" rel="noopener">1.14.12.-</a></td>
+    <td class="num">33 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">5_508_GbcA</a>
+    <div class="note">5_508_GbcA</div></td>
+    <td class="num">3</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.251" rel="noopener">1.14.13.251</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">4_409_TPDO</a>
+    <div class="note">4_409_TPDO</div></td>
+    <td class="num">3</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.15" rel="noopener">1.14.12.15</a></td>
+    <td class="num">67 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_410_CbdC.html">4_410_CbdC</a>
+    <div class="note">4_410_CbdC</div></td>
+    <td class="num">3</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">67 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_218_BphA1.html">2_218_BphA1</a>
+    <div class="note">2_218_BphA1</div></td>
+    <td class="num">3</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">67 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">2_204_Dpe</a>
+    <div class="note">2_204_Dpe</div></td>
+    <td class="num">3</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/7_701_AerC.html">7_701_AerC</a>
+    <div class="note">7_701_AerC</div></td>
+    <td class="num">3</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/4.1.1.96" rel="noopener">4.1.1.96</a></td>
+    <td class="num">100 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/4.1.1.96" rel="noopener">4.1.1.96</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_108_PobA.html">1_108_PobA</a>
+    <div class="note">1_108_PobA</div></td>
+    <td class="num">3</td>
+    <td class="num">3</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.229" rel="noopener">1.14.13.229</a></td>
+    <td class="num">33 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">1_117_PrnD</a>
+    <div class="note">1_117_PrnD</div></td>
+    <td class="num">3</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">67 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">1_113_CdnA</a>
+    <div class="note">1_113_CdnA</div></td>
+    <td class="num">3</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.8.1.2" rel="noopener">1.8.1.2</a></td>
+    <td class="num">67 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/1.8.1.2" rel="noopener">1.8.1.2</a>, <a href="https://enzyme.expasy.org/EC/7.2.1.1" rel="noopener">7.2.1.1</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_603_PTC52.html">6_603_PTC52</a>
+    <div class="note">6_603_PTC52</div></td>
+    <td class="num">3</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.-" rel="noopener">1.14.15.-</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_408_AntA.html">4_408_AntA</a>
+    <div class="note">4_408_AntA</div></td>
+    <td class="num">2</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.1" rel="noopener">1.14.12.1</a></td>
+    <td class="num">50 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">3_301_PhnA1a</a>
+    <div class="note">3_301_PhnA1a</div></td>
+    <td class="num">2</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.19" rel="noopener">1.14.12.19</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">1_102_CARDO</a>
+    <div class="note">1_102_CARDO</div></td>
+    <td class="num">2</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.22" rel="noopener">1.14.12.22</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">2_212_BedC1</a>
+    <div class="note">2_212_BedC1</div></td>
+    <td class="num">2</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_307_NagGH.html">3_307_NagGH</a>
+    <div class="note">3_307_NagGH</div></td>
+    <td class="num">2</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.172" rel="noopener">1.14.13.172</a></td>
+    <td class="num">50 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">1_105_DdmC</a>
+    <div class="note">1_105_DdmC</div></td>
+    <td class="num">2</td>
+    <td class="num">2</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.-" rel="noopener">1.14.15.-</a></td>
+    <td class="num">50 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_406_PDO.html">4_406_PDO</a>
+    <div class="note">4_406_PDO</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.7" rel="noopener">1.14.12.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">3_311_PhtAa</a>
+    <div class="note">3_311_PhtAa</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">3_319_PhdA</a>
+    <div class="note">3_319_PhdA</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.38" rel="noopener">1.14.15.38</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">2_211_bfzA</a>
+    <div class="note">2_211_bfzA</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.14" rel="noopener">1.14.12.14</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_203_cumA1.html">2_203_cumA1</a>
+    <div class="note">2_203_cumA1</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.12.18" rel="noopener">1.14.12.18</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_207_BpdC1.html">2_207_BpdC1</a>
+    <div class="note">2_207_BpdC1</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.7" rel="noopener">1.14.15.7</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">1_111_GxtA</a>
+    <div class="note">1_111_GxtA</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.-.-.-" rel="noopener">1.-.-.-</a></td>
+    <td class="num">100 %</td>
+    <td>
+        <a href="https://enzyme.expasy.org/EC/1.-.-.-" rel="noopener">1.-.-.-</a>
+        </td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_107_CndA.html">1_107_CndA</a>
+    <div class="note">1_107_CndA</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.15.23" rel="noopener">1.14.15.23</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_112_NdmA.html">1_112_NdmA</a>
+    <div class="note">1_112_NdmA</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.178" rel="noopener">1.14.13.178</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">4_405_ROCH34</a>
+    <div class="note">4_405_ROCH34</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.-.-" rel="noopener">1.14.-.-</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_114_NdmB.html">1_114_NdmB</a>
+    <div class="note">1_114_NdmB</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.179" rel="noopener">1.14.13.179</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_109_LigX.html">1_109_LigX</a>
+    <div class="note">1_109_LigX</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.13.-" rel="noopener">1.14.13.-</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">1_110_SxtT</a>
+    <div class="note">1_110_SxtT</div></td>
+    <td class="num">1</td>
+    <td class="num">1</td>
+    <td><a href="https://enzyme.expasy.org/EC/1.14.19.21" rel="noopener">1.14.19.21</a></td>
+    <td class="num">100 %</td>
+    <td><span class="note">none</span></td></tr>
+
+</tbody></table></div>
+<figcaption><b>Does the external annotation agree with this database's types?</b> Mostly, and where
+it does not the disagreement is informative rather than alarming. A share near 100 % means every
+sequence of that type carries the same EC number, so the two classifications are telling the same
+story. A lower share means one curated type collects sequences that UniProt labels with several
+different reactions &mdash; which is the same lesson as section 3, that identity does not determine
+substrate, arriving from an independent direction.
+<b>An EC outside class 1.14 does not contradict the assignment.</b> Class 1.14 is the expected one
+(paired donors, incorporation of molecular oxygen), but a UniProt entry can describe a multi-domain
+protein and the EC number belongs to the whole record, not to the Rieske oxygenase domain inside it.
+That is why these are listed rather than counted as errors.
+Across the database
+13 distinct EC numbers fall outside class 1.14.
+<a href="/pro-sim-blast/download/analysis/cross_references.json">Download the full table</a></figcaption>
+</figure>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.35.2/dist/plotly-cartesian.min.js"></script>
+<script>
+const OVER = [{"beta": 0, "cluster": "5_504_CntA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 249, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 18, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 511, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1678, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 40, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 32}, "euk": 198, "fd": 27, "gene": "CntA", "genera": ["Achromobacter", "Acidithiobacillus", "Acidomonas", "Acidovorax", "Acinetobacter", "Actinomadura", "Ahrensia", "Allomesorhizobium", "Allopontixanthobacter", "Altererythrobacter", "Alternaria", "Alteromonas", "Amycolatopsis", "Aneurinibacillus", "Aphanomyces", "Aquabacterium", "Aquitalea", "Aspergillus", "Asticcacaulis", "Aurantiacibacter", "Aurantimonas", "Aureimonas", "Aureobasidium", "Aureococcus", "Azoarcus", "Azospirillum", "Bacillus", "Beauveria", "Bipolaris", "Blastomonas", "Blastomyces", "Bradyrhizobium", "Brevibacillus", "Brevundimonas", "Burkholderia", "Caballeronia", "Caenibius", "Caenimonas", "Caldimonas", "Campylobacter", "Candida", "Candidatus Micropelagius", "Candidatus Pelagibacter", "Candidatus Phaeomarinibacter", "Candidozyma", "Capronia", "Catenulispora", "Caulobacter", "Chromobacterium", "Chromohalobacter"], "genera_n": 302, "group": "5", "leaves": 433, "n": 2562, "phyla": {"Actinomycetota": 877, "Bacillota": 48, "Bacteroidota": 6, "Campylobacterota": 2, "Cyanobacteriota": 11, "Fungi": 191, "Haptista": 2, "Methanobacteriota": 45, "Planctomycetota": 4, "Pseudomonadota": 1370, "Sar": 4, "Spirochaetota": 1, "Viridiplantae": 1}, "plasmid": 45, "red": 546, "sclass": "natural_specialized", "substrate": "L-carnitine", "tiers": {"characterized": 53, "close_homolog": 250, "distant": 2128, "family_member": 21, "novel": 110}, "transposon": 249}, {"beta": 0, "cluster": "1_104_VanA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 245, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 21, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 126, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 869, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 461, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 16}, "euk": 2, "fd": 473, "gene": "VanA", "genera": ["Acidocella", "Acidovorax", "Acinetobacter", "Actibacterium", "Actinomadura", "Advenella", "Aeromonas", "Affinirhizobium", "Agrobacterium", "Alcaligenes", "Aliterella", "Allobosea", "Allostigmatella", "Alteromonas", "Alysiella", "Amycolatopsis", "Antarctobacter", "Arthrobacter", "Asticcacaulis", "Aureimonas", "Auxenochlorella", "Azospirillum", "Bacillus", "Bergeriella", "Blastomonas", "Bradyrhizobium", "Budvicia", "Burkholderia", "Caballeronia", "Caenibius", "Caenimonas", "Calothrix", "Castellaniella", "Catenulispora", "Caulobacter", "Cedecea", "Celeribacter", "Chamaesiphon", "Chania", "Chromohalobacter", "Chroococcidiopsis", "Chroogloeocystis", "Collimonas", "Comamonas", "Corallococcus", "Corynebacterium", "Croceicoccus", "Cryptosporangium", "Crystallibacter", "Cupriavidus"], "genera_n": 189, "group": "1", "leaves": 119, "n": 1772, "phyla": {"Actinomycetota": 185, "Bacillota": 1, "Cyanobacteriota": 46, "Myxococcota": 12, "Pseudomonadota": 1525, "Thermoproteota": 1, "Viridiplantae": 2}, "plasmid": 20, "red": 683, "sclass": "natural_aromatic", "substrate": "vanillate", "tiers": {"characterized": 0, "close_homolog": 655, "distant": 845, "family_member": 254, "novel": 18}, "transposon": 738}, {"beta": 0, "cluster": "5_506_Stc2", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 480, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 347, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 155, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 607, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 139, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 15}, "euk": 24, "fd": 37, "gene": "Stc2", "genera": ["Acetobacter", "Achromobacter", "Acidiphilium", "Acidovorax", "Actinomadura", "Actinoplanes", "Actinosynnema", "Advenella", "Affinirhizobium", "Agrobacterium", "Ahrensia", "Alicycliphilus", "Allgaiera", "Alloalcanivorax", "Allokutzneria", "Altererythrobacter", "Aminobacter", "Amycolatopsis", "Ancylobacter", "Antarctobacter", "Aquamicrobium", "Aquitalea", "Arthrobacter", "Aspergillus", "Asticcacaulis", "Atopomonas", "Aurantimonas", "Aureimonas", "Azoarcus", "Azorhizobium", "Azospirillum", "Basilea", "Bdellovibrio", "Bermanella", "Bordetella", "Brachybacterium", "Brevibacterium", "Brucella", "Burkholderia", "Caballeronia", "Caenibius", "Caulobacter", "Celeribacter", "Cereibacter", "Chondromyces", "Chromobacterium", "Chryseolinea", "Citromicrobium", "Cladophialophora", "Colletotrichum"], "genera_n": 255, "group": "5", "leaves": 234, "n": 1768, "phyla": {"Actinomycetota": 552, "Bacteroidota": 2, "Bdellovibrionota": 1, "Cyanobacteriota": 8, "Fungi": 24, "Myxococcota": 5, "Planctomycetota": 1, "Pseudomonadota": 1173, "Spirochaetota": 2}, "plasmid": 46, "red": 885, "sclass": "natural_specialized", "substrate": "stachydrine", "tiers": {"characterized": 7, "close_homolog": 76, "distant": 824, "family_member": 761, "novel": 100}, "transposon": 126}, {"beta": 1, "cluster": "3_313_KshA15", "complete": 1, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 129, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 33, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 433, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1085, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:FNR": 10, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 9}, "euk": 0, "fd": 1, "gene": "KshA15", "genera": ["Actinoallomurus", "Actinomadura", "Actinophytocola", "Actinoplanes", "Actinosynnema", "Aequoribacter", "Aeromicrobium", "Aliiglaciecola", "Alloactinosynnema", "Amycolatopsis", "Arthrobacter", "Burkholderia", "Caenibius", "Candidatus Micropelagius", "Candidatus Neomicrothrix", "Caulobacter", "Comamonas", "Couchioplanes", "Croceicoccus", "Cryptosporangium", "Cupriavidus", "Dietzia", "Edaphosphingomonas", "Endozoicomonas", "Erythrobacter", "Glutamicibacter", "Gordonia", "Hoyosella", "Hydrocarboniphaga", "Kibdelosporangium", "Kutzneria", "Lentzea", "Marinobacter", "Marinobacterium", "Metapseudomonas", "Microbacterium", "Microbispora", "Mycobacterium", "Mycobacterium (subgen. Mycolicibacter)", "Mycobacteroides", "Myxococcus", "Nocardia", "Nocardioides", "Novosphingobium", "Paeniglutamicibacter", "Paraburkholderia", "Parafrankia", "Phytohabitans", "Pimelobacter", "Planomonospora"], "genera_n": 76, "group": "3", "leaves": 144, "n": 1712, "phyla": {"Actinomycetota": 1453, "Cyanobacteriota": 1, "Myxococcota": 2, "Pseudomonadota": 256}, "plasmid": 10, "red": 129, "sclass": "natural_specialized", "substrate": "3-ketosteroid", "tiers": {"characterized": 10, "close_homolog": 631, "distant": 544, "family_member": 518, "novel": 9}, "transposon": 109}, {"beta": 1, "cluster": "5_507_BmoA", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 65, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 125, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 205, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 547, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 161, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 19}, "euk": 11, "fd": 118, "gene": "BmoA", "genera": ["Acanthamoeba", "Achromobacter", "Acidithiobacillus", "Acidovorax", "Acinetobacter", "Actinoalloteichus", "Actinomadura", "Actinoplanes", "Aestuariivirga", "Afipia", "Albidovulum", "Alcaligenes", "Alicycliphilus", "Allgaiera", "Allobosea", "Allopontixanthobacter", "Allostigmatella", "Altererythrobacter", "Aminobacter", "Amphritea", "Amycolatopsis", "Aphanomyces", "Aporhodopirellula", "Aquibium", "Aquimarina", "Aquitalea", "Arthrobacter", "Aurantiacibacter", "Azoarcus", "Bacillus", "Blastococcus", "Blastomonas", "Blastopirellula", "Bordetella", "Brumicola", "Burkholderia", "Caballeronia", "Caenibius", "Candidatus Korobacter", "Candidatus Micropelagius", "Candidatus Pelagibacter", "Candidatus Viadribacter", "Capronia", "Caulobacter", "Celeribacter", "Chloroflexus", "Chromobacterium", "Chromohalobacter", "Cladophialophora", "Cobetia"], "genera_n": 212, "group": "5", "leaves": 230, "n": 1160, "phyla": {"Acidobacteriota": 1, "Actinomycetota": 463, "Amoebozoa": 1, "Bacillota": 18, "Bacteroidota": 2, "Chloroflexota": 4, "Cyanobacteriota": 6, "Fungi": 4, "Haptista": 1, "Myxococcota": 2, "Planctomycetota": 4, "Pseudomonadota": 635, "Sar": 5, "Spirochaetota": 12, "Thermomicrobiota": 2}, "plasmid": 25, "red": 330, "sclass": "natural_specialized", "substrate": "glycine betaine", "tiers": {"characterized": 2, "close_homolog": 67, "distant": 936, "family_member": 110, "novel": 45}, "transposon": 104}, {"beta": 0, "cluster": "1_106_TsaM", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 223, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 23, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 137, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 636, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 23, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 18}, "euk": 5, "fd": 12, "gene": "TsaM", "genera": ["Acanthamoeba", "Acetobacter", "Achromobacter", "Acidovorax", "Acinetobacter", "Actinacidiphila", "Actinomadura", "Advenella", "Afipia", "Agrobacterium", "Alcaligenes", "Alicyclobacillus", "Aliishimia", "Alloalcanivorax", "Allobosea", "Allocoleopsis", "Altererythrobacter", "Amycolatopsis", "Anabaena", "Antarctobacter", "Archangium", "Aureimonas", "Bacteriovorax", "Bdellovibrio", "Bradyrhizobium", "Brevundimonas", "Burkholderia", "Buttiauxella", "Caballeronia", "Caenimonas", "Candidatus Viadribacter", "Caulobacter", "Chromohalobacter", "Chroogloeocystis", "Chryseolinea", "Coccomyxa", "Collimonas", "Comamonas", "Croceibacterium", "Croceicoccus", "Crocosphaera", "Cryptosporangium", "Crystallibacter", "Cupriavidus", "Cyanobium", "Cylindrospermopsis", "Cylindrospermum", "Cystobacter", "Dactylococcopsis", "Delftia"], "genera_n": 199, "group": "1", "leaves": 274, "n": 1089, "phyla": {"Actinomycetota": 219, "Amoebozoa": 1, "Apusozoa": 2, "Bacillota": 2, "Bacteroidota": 1, "Bdellovibrionota": 3, "Cyanobacteriota": 68, "Myxococcota": 12, "Planctomycetota": 1, "Pseudomonadota": 778, "Viridiplantae": 2}, "plasmid": 21, "red": 225, "sclass": "xenobiotic", "substrate": "4-toluenesulfonate", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 1001, "family_member": 82, "novel": 4}, "transposon": 249}, {"beta": 780, "cluster": "4_404_TdnA1", "complete": 10, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 12, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 89, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 33, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 612, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:GR": 19, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:none": 15}, "euk": 1, "fd": 21, "gene": "TdnA1", "genera": ["Acetobacter", "Achromobacter", "Acinetobacter", "Actinophytocola", "Alcaligenes", "Amycolatopsis", "Aurantiacibacter", "Azoarcus", "Azospirillum", "Bacillus", "Bordetella", "Bradyrhizobium", "Burkholderia", "Buttiauxella", "Caballeronia", "Caenibius", "Caenimonas", "Celeribacter", "Comamonas", "Corynebacterium", "Cycloclasticus", "Delftia", "Derxia", "Ectopseudomonas", "Erythrobacter", "Escherichia", "Frankia", "Gluconobacter", "Gordonia", "Gossypium", "Halomonas", "Herbaspirillum", "Hydrogenophaga", "Hylemonella", "Ilumatobacter", "Immundisolibacter", "Isoalcanivorax", "Klebsiella", "Leclercia", "Luminiphilus", "Mangrovibacter", "Marinobacterium", "Marinomonas", "Marisediminitalea", "Martelella", "Massilia", "Metapseudomonas", "Methylobacterium", "Mycobacterium", "Mycobacteroides"], "genera_n": 93, "group": "4", "leaves": 71, "n": 795, "phyla": {"Actinomycetota": 165, "Bacillota": 3, "Pseudomonadota": 626, "Viridiplantae": 1}, "plasmid": 20, "red": 96, "sclass": "xenobiotic", "substrate": "aniline", "tiers": {"characterized": 2, "close_homolog": 11, "distant": 765, "family_member": 17, "novel": 0}, "transposon": 97}, {"beta": 671, "cluster": "4_411_XylX", "complete": 16, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 57, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 508, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR+GR": 87, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 13, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:FNR": 33, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 21}, "euk": 0, "fd": 18, "gene": "XylX", "genera": ["Acidiphilium", "Acinetobacter", "Actibacterium", "Agrobacterium", "Alishewanella", "Allobosea", "Aminobacter", "Amycolatopsis", "Aquipseudomonas", "Arthrobacter", "Aureimonas", "Azospirillum", "Azotobacter", "Burkholderia", "Celeribacter", "Corynebacterium", "Crenobacter", "Croceicoccus", "Crystallibacter", "Cupriavidus", "Cycloclasticus", "Dietzia", "Ectopseudomonas", "Enteractinococcus", "Geodermatophilus", "Glutamicibacter", "Gordonia", "Immundisolibacter", "Intrasporangium", "Janthinobacterium", "Kocuria", "Marinobacter", "Marinobacterium", "Marinomonas", "Martinezella", "Massilia", "Metapseudomonas", "Methylobacterium", "Moraxella", "Mycobacterium", "Nocardioides", "Novosphingobium", "Paraburkholderia", "Phaeobacter", "Photorhabdus", "Polaromonas", "Polynucleobacter", "Prauserella", "Pseudarthrobacter", "Pseudogulbenkiania"], "genera_n": 73, "group": "4", "leaves": 1, "n": 734, "phyla": {"Actinomycetota": 170, "Pseudomonadota": 564}, "plasmid": 16, "red": 681, "sclass": "xenobiotic", "substrate": "toluate and benzoate", "tiers": {"characterized": 9, "close_homolog": 629, "distant": 1, "family_member": 95, "novel": 0}, "transposon": 76}, {"beta": 0, "cluster": "1_113_CdnA", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 34, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 113, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 508, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 4, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 14, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 7}, "euk": 0, "fd": 8, "gene": "CdnA", "genera": ["Acetobacter", "Acidihalobacter", "Acidomonas", "Acidovorax", "Acinetobacter", "Actibacterium", "Actinomadura", "Actinoplanes", "Afipia", "Alcaligenes", "Alloalcanivorax", "Aminobacter", "Archangium", "Asaia", "Asticcacaulis", "Bacillus", "Bradyrhizobium", "Burkholderia", "Caballeronia", "Caenibius", "Calothrix", "Caulobacter", "Chamaesiphon", "Chlorogloeopsis", "Chondromyces", "Coleofasciculus", "Comamonas", "Corynebacterium", "Crinalium", "Cupriavidus", "Cystobacter", "Dactylosporangium", "Derxia", "Desertifilum", "Dickeya", "Enterobacter", "Erwinia", "Floridanema", "Frankia", "Frateuria", "Gluconobacter", "Granulibacter", "Granulicella", "Grimontia", "Herbaspirillum", "Hydrogenophaga", "Intrasporangium", "Jannaschia", "Janthinobacterium", "Kaistia"], "genera_n": 116, "group": "1", "leaves": 111, "n": 689, "phyla": {"Acidobacteriota": 4, "Actinomycetota": 26, "Bacillota": 63, "Bacteroidota": 1, "Cyanobacteriota": 23, "Myxococcota": 9, "Pseudomonadota": 560, "Varidnaviria": 1, "Verrucomicrobiota": 2}, "plasmid": 12, "red": 46, "sclass": "natural_specialized", "substrate": "caffeine and methylxanthines", "tiers": {"characterized": 0, "close_homolog": 4, "distant": 684, "family_member": 0, "novel": 1}, "transposon": 97}, {"beta": 0, "cluster": "5_508_GbcA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 85, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 417, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1}, "euk": 0, "fd": 0, "gene": "GbcA", "genera": ["Ectopseudomonas", "Erwinia", "Halotalea", "Metapseudomonas", "Mycobacterium", "Phytopseudomonas", "Pseudomonas", "Stutzerimonas", "Ventosimonas"], "genera_n": 9, "group": "5", "leaves": 1, "n": 505, "phyla": {"Actinomycetota": 1, "Pseudomonadota": 504}, "plasmid": 0, "red": 1, "sclass": "natural_specialized", "substrate": "glycine betaine", "tiers": {"characterized": 12, "close_homolog": 492, "distant": 1, "family_member": 0, "novel": 0}, "transposon": 55}, {"beta": 0, "cluster": "5_505_qxyA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 58, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 416, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 3, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 2}, "euk": 2, "fd": 4, "gene": "qxyA", "genera": ["Achromobacter", "Acidovorax", "Actibacterium", "Actinoallomurus", "Actinophytocola", "Advenella", "Aestuariivirga", "Albidovulum", "Alcaligenes", "Aliishimia", "Allopontixanthobacter", "Allosphingosinicella", "Altererythrobacter", "Amycolatopsis", "Antarctobacter", "Aquibium", "Asanoa", "Azospirillum", "Blastococcus", "Caenimonas", "Castellaniella", "Chrysophaeum", "Comamonas", "Crateriforma", "Cryptosporangium", "Cupriavidus", "Cypionkella", "Dactylosporangium", "Dasania", "Delftia", "Diaphorobacter", "Dinoroseobacter", "Ectopseudomonas", "Erythrobacter", "Falsiruegeria", "Ferirhizobium", "Fertoeibacter", "Frankia", "Gemmobacter", "Goekera", "Gordonia", "Halioglobus", "Halothiobacillus", "Hydrogenophaga", "Hypericibacter", "Hyphomicrobium", "Jannaschia", "Kerstersia", "Kribbella", "Ktedonosporobacter"], "genera_n": 145, "group": "5", "leaves": 106, "n": 486, "phyla": {"Actinomycetota": 100, "Chloroflexota": 1, "Planctomycetota": 1, "Pseudomonadota": 380, "Sar": 2, "Thermomicrobiota": 1, "Verrucomicrobiota": 1}, "plasmid": 2, "red": 20, "sclass": "xenobiotic", "substrate": "benzalkonium chloride and other quaternary ammonium compounds", "tiers": {"characterized": 2, "close_homolog": 0, "distant": 326, "family_member": 86, "novel": 72}, "transposon": 20}, {"beta": 448, "cluster": "4_409_TPDO", "complete": 162, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 69, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 28, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 61, "\u03b13\u03b23 \u00b7 Fd:plant+rieske \u00b7 Red:none": 31, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 159, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 54}, "euk": 0, "fd": 221, "gene": "TPDO", "genera": ["Achromobacter", "Acidovorax", "Actinomadura", "Advenella", "Afipia", "Archangium", "Aurantiacibacter", "Azospirillum", "Bordetella", "Bradyrhizobium", "Burkholderia", "Caballeronia", "Caenibius", "Celeribacter", "Collimonas", "Comamonas", "Croceicoccus", "Crystallibacter", "Cycloclasticus", "Domibacillus", "Ectopseudomonas", "Erythrobacter", "Filomicrobium", "Goekera", "Herbaspirillum", "Hydrogenophaga", "Hylemonella", "Hyphomonas", "Immundisolibacter", "Komagataeibacter", "Methylocella", "Muricoccus", "Mycobacterium", "Nocardia", "Novosphingobium", "Pacificitalea", "Paenibacillus", "Paraburkholderia", "Parafrankia", "Pseudacidovorax", "Pseudideonella", "Pseudofrankia", "Pseudomonas", "Pseudonocardia", "Pseudorhodoferax", "Pseudoxanthomonas", "Ramlibacter", "Rhizobium", "Rhizorhabdus", "Rhodococcus"], "genera_n": 61, "group": "4", "leaves": 52, "n": 475, "phyla": {"Actinomycetota": 52, "Bacillota": 3, "Myxococcota": 3, "Pseudomonadota": 417}, "plasmid": 35, "red": 243, "sclass": "xenobiotic", "substrate": "terephthalate", "tiers": {"characterized": 16, "close_homolog": 54, "distant": 88, "family_member": 317, "novel": 0}, "transposon": 105}, {"beta": 0, "cluster": "5_501_CmoS", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 5, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 231, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 222, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 1}, "euk": 108, "fd": 3, "gene": "CmoS", "genera": ["Abrus", "Acanthamoeba", "Alteromonas", "Amantichitinum", "Amborella", "Ananas", "Arabidopsis", "Arachis", "Arenimonas", "Aromatoleum", "Asticcacaulis", "Azospirillum", "Bathycoccus", "Beta", "Bordetella", "Brachypodium", "Bradyrhizobium", "Branchiostoma", "Brassica", "Burkholderia", "Caballeronia", "Caldilinea", "Candidatus Methylopumilus", "Capsella", "Chlorella", "Chryseolinea", "Cicer", "Citrus", "Coccomyxa", "Coffea", "Cucumis", "Cucurbita", "Cupriavidus", "Dactylococcopsis", "Daucus", "Duganella", "Durio", "Dyella", "Elaeis", "Erythranthe", "Eucalyptus", "Eutrema", "Ferriphaselus", "Flavihumibacter", "Gallionella", "Gemmata", "Gemmatimonas", "Glycine", "Gossypium", "Haliscomenobacter"], "genera_n": 122, "group": "5", "leaves": 87, "n": 461, "phyla": {"Amoebozoa": 1, "Bacteroidota": 11, "Chloroflexota": 3, "Cyanobacteriota": 2, "Gemmatimonadota": 1, "Metazoa": 10, "Planctomycetota": 5, "Pseudomonadota": 331, "Viridiplantae": 97}, "plasmid": 1, "red": 11, "sclass": "natural_specialized", "substrate": "choline", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 347, "family_member": 92, "novel": 22}, "transposon": 26}, {"beta": 425, "cluster": "4_410_CbdC", "complete": 8, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 323, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR+GR": 22, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 6, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 32, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:GR": 7, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 16}, "euk": 0, "fd": 12, "gene": "CbdC", "genera": ["Achromobacter", "Acidocella", "Acidovorax", "Acinetobacter", "Agrobacterium", "Alcaligenes", "Alteromonas", "Aurantiacibacter", "Blastomonas", "Bordetella", "Burkholderia", "Buttiauxella", "Caballeronia", "Chryseobacterium", "Citrobacter", "Comamonas", "Croceicoccus", "Cupriavidus", "Edaphosphingomonas", "Ensifer", "Erythrobacter", "Escherichia", "Flavobacterium", "Gillisella", "Gordonia", "Halomonas", "Halopseudomonas", "Herbaspirillum", "Hyphomonas", "Immundisolibacter", "Isoalcanivorax", "Klebsiella", "Litchfieldella", "Luteimonas", "Marinobacter", "Marinobacterium", "Marisediminitalea", "Modicisalibacter", "Novosphingobium", "Oceanimonas", "Oceanisphaera", "Oligella", "Pandoraea", "Paraburkholderia", "Paracoccus", "Parvibaculum", "Phytopseudomonas", "Pluralibacter", "Pseudoalteromonas", "Pseudomonas"], "genera_n": 72, "group": "4", "leaves": 21, "n": 429, "phyla": {"Actinomycetota": 1, "Bacteroidota": 4, "Pseudomonadota": 424}, "plasmid": 10, "red": 364, "sclass": "xenobiotic", "substrate": "2-halobenzoate", "tiers": {"characterized": 0, "close_homolog": 290, "distant": 37, "family_member": 102, "novel": 0}, "transposon": 55}, {"beta": 0, "cluster": "1_105_DdmC", "complete": 0, "confidence": "low", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 6, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 31, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 351, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 6, "\u03b13 \u00b7 Fd:plant+rieske \u00b7 Red:FNR": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 8}, "euk": 3, "fd": 5, "gene": "DdmC", "genera": ["Acetobacter", "Agrobacterium", "Aliterella", "Allobosea", "Allocoleopsis", "Allostigmatella", "Aminobacter", "Anabaena", "Archangium", "Asticcacaulis", "Aurantiacibacter", "Aureococcus", "Azospirillum", "Bacteriovorax", "Bdellovibrio", "Blastomonas", "Bradyrhizobium", "Brevundimonas", "Burkholderia", "Caballeronia", "Calothrix", "Caulobacter", "Chondromyces", "Coleofasciculus", "Corallococcus", "Croceibacterium", "Croceicoccus", "Crocosphaera", "Cupriavidus", "Cyanobacterium", "Cylindrospermopsis", "Cystobacter", "Ectopseudomonas", "Eikenella", "Emiliania", "Erythrobacter", "Floridanema", "Geitlerinema", "Geminocystis", "Gemmata", "Gloeobacter", "Gloeothece", "Gluconacetobacter", "Gluconobacter", "Granulicella", "Gynuella", "Halobacteriovorax", "Halomonas", "Halothece", "Hyphomonas"], "genera_n": 111, "group": "1", "leaves": 129, "n": 409, "phyla": {"Acidobacteriota": 1, "Actinomycetota": 7, "Bacillota": 2, "Bdellovibrionota": 6, "Cyanobacteriota": 52, "Haptista": 2, "Myxococcota": 25, "Planctomycetota": 1, "Pseudomonadota": 312, "Sar": 1}, "plasmid": 6, "red": 16, "sclass": "xenobiotic", "substrate": "dicamba", "tiers": {"characterized": 0, "close_homolog": 1, "distant": 366, "family_member": 41, "novel": 1}, "transposon": 96}, {"beta": 0, "cluster": "4_405_ROCH34", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 54, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 18, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 183, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 40, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 29, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:FNR": 10}, "euk": 0, "fd": 67, "gene": "ROCH34", "genera": ["Acetobacter", "Acidovorax", "Actibacterium", "Actinokineospora", "Actinomadura", "Advenella", "Agromyces", "Alicyclobacillus", "Amycolatopsis", "Antarctobacter", "Aquibium", "Asanoa", "Asticcacaulis", "Bordetella", "Bradyrhizobium", "Brevirhabdus", "Burkholderia", "Caballeronia", "Caenimonas", "Celeribacter", "Comamonas", "Croceibacterium", "Croceicoccus", "Crystallibacter", "Cupriavidus", "Delftia", "Devosia", "Domibacillus", "Erythrobacter", "Gordonia", "Hydrogenophaga", "Hylemonella", "Immundisolibacter", "Kerstersia", "Labrenzia", "Leptolyngbya", "Limnohabitans", "Marinobacter", "Maritimibacter", "Methylobacterium", "Microbacterium", "Micromonospora", "Muricoccus", "Nocardia", "Novosphingobium", "Paenibacillus", "Pandoraea", "Paraburkholderia", "Paradevosia", "Patulibacter"], "genera_n": 77, "group": "4", "leaves": 73, "n": 375, "phyla": {"Actinomycetota": 50, "Bacillota": 11, "Bacteroidota": 1, "Cyanobacteriota": 1, "Pseudomonadota": 312}, "plasmid": 5, "red": 78, "sclass": "xenobiotic", "substrate": "phthalate", "tiers": {"characterized": 1, "close_homolog": 20, "distant": 291, "family_member": 63, "novel": 0}, "transposon": 59}, {"beta": 333, "cluster": "3_307_NagGH", "complete": 208, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 6, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 24, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 98, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR+GR": 17, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 124, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 69}, "euk": 0, "fd": 305, "gene": "NagGH", "genera": ["Achromobacter", "Acidovorax", "Actinoalloteichus", "Advenella", "Alcaligenes", "Alteromonas", "Azoarcus", "Azospirillum", "Blastomonas", "Bordetella", "Burkholderia", "Caballeronia", "Caenimonas", "Chromobacterium", "Comamonas", "Cupriavidus", "Herbaspirillum", "Hoeflea", "Hydrocarboniphaga", "Hydrogenophaga", "Kluyvera", "Leptothrix", "Limnohabitans", "Malikia", "Marinomonas", "Massilia", "Oceanibaculum", "Octadecabacter", "Pacificispira", "Pandoraea", "Paraburkholderia", "Paracidovorax", "Photorhabdus", "Polaromonas", "Pseudacidovorax", "Pseudoalteromonas", "Pseudomonas", "Pseudorhodoferax", "Pusillimonas", "Ralstonia", "Ramlibacter", "Rhizobacter", "Rhodoferax", "Roseateles", "Shimwellia", "Sphaerotilus", "Sphingobium", "Sphingorhabdus", "Teredinibacter", "Tistrella"], "genera_n": 53, "group": "3", "leaves": 18, "n": 345, "phyla": {"Actinomycetota": 1, "Pseudomonadota": 344}, "plasmid": 13, "red": 214, "sclass": "xenobiotic", "substrate": "naphthalene-2-sulfonate", "tiers": {"characterized": 4, "close_homolog": 211, "distant": 1, "family_member": 129, "novel": 0}, "transposon": 40}, {"beta": 0, "cluster": "6_601_PAO", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 5, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 330, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 6, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 1}, "euk": 187, "fd": 2, "gene": "PAO", "genera": ["Abrus", "Acaryochloris", "Aliterella", "Allocoleopsis", "Amborella", "Anabaena", "Ananas", "Aphanizomenon", "Arabidopsis", "Arachis", "Aureococcus", "Auxenochlorella", "Bathycoccus", "Beta", "Brachypodium", "Brassica", "Calothrix", "Capsella", "Capsicum", "Chamaesiphon", "Chlorella", "Chlorogloeopsis", "Chondrus", "Chroococcidiopsis", "Cicer", "Citrus", "Coccomyxa", "Coffea", "Coleofasciculus", "Crinalium", "Crocosphaera", "Cucumis", "Cucurbita", "Cyanobium", "Cylindrospermum", "Daucus", "Desertifilum", "Dolichospermum", "Durio", "Elaeis", "Emiliania", "Eutrema", "Fischerella", "Floridanema", "Geitlerinema", "Gloeocapsa", "Gloeothece", "Glycine", "Gossypium", "Guillardia"], "genera_n": 111, "group": "6", "leaves": 100, "n": 342, "phyla": {"Cryptophyceae": 3, "Cyanobacteriota": 155, "Haptista": 4, "Rhodophyta": 3, "Sar": 3, "Viridiplantae": 174}, "plasmid": 0, "red": 0, "sclass": "natural_specialized", "substrate": "pheophorbide a", "tiers": {"characterized": 3, "close_homolog": 66, "distant": 270, "family_member": 3, "novel": 0}, "transposon": 48}, {"beta": 0, "cluster": "3_322_DAF36", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 16, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 32, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 273, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 103, "fd": 3, "gene": "DAF36", "genera": ["Acanthamoeba", "Acanthaster", "Actinia", "Alligator", "Amphimedon", "Apteryx", "Aureococcus", "Austrofundulus", "Aythya", "Betta", "Biomphalaria", "Branchiostoma", "Burkholderia", "Caenorhabditis", "Callorhinchus", "Candidatus Micropelagius", "Capsaspora", "Carassius", "Catenulispora", "Chanos", "Chrysemys", "Ciona", "Clupea", "Cottoperca", "Crassostrea", "Cynoglossus", "Cyprinodon", "Cyprinus", "Danio", "Edaphosphingomonas", "Erythrobacter", "Esox", "Eublepharis", "Frankia", "Geotrypetes", "Gordonia", "Gymnodraco", "Haliea", "Halioglobus", "Haplochromis", "Helobdella", "Hyalella", "Hydrocarboniphaga", "Ictalurus", "Ixodes", "Kitasatospora", "Kryptolebias", "Lates", "Latimeria", "Lepidothrix"], "genera_n": 99, "group": "3", "leaves": 79, "n": 333, "phyla": {"Actinomycetota": 178, "Amoebozoa": 1, "Choanoflagellata": 1, "Cyanobacteriota": 1, "Filasterea": 3, "Metazoa": 96, "Myxococcota": 2, "Pseudomonadota": 49, "Sar": 2}, "plasmid": 3, "red": 6, "sclass": "natural_specialized", "substrate": "cholesterol", "tiers": {"characterized": 1, "close_homolog": 4, "distant": 238, "family_member": 85, "novel": 5}, "transposon": 14}, {"beta": 302, "cluster": "4_408_AntA", "complete": 2, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 281, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR+GR": 10, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 4, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR+GR": 3}, "euk": 0, "fd": 2, "gene": "AntA", "genera": ["Acinetobacter", "Afipia", "Burkholderia", "Chania", "Chromobacterium", "Ectopseudomonas", "Flavobacterium", "Gordonia", "Marinobacter", "Marinobacterium", "Metapseudomonas", "Paraburkholderia", "Phytopseudomonas", "Pseudogulbenkiania", "Pseudomonas", "Pseudonocardia", "Serratia", "Shimwellia", "Trinickia", "Vibrio", "Vreelandella"], "genera_n": 21, "group": "4", "leaves": 1, "n": 305, "phyla": {"Actinomycetota": 2, "Bacteroidota": 1, "Pseudomonadota": 302}, "plasmid": 3, "red": 279, "sclass": "natural_aromatic", "substrate": "anthranilate", "tiers": {"characterized": 4, "close_homolog": 297, "distant": 4, "family_member": 0, "novel": 0}, "transposon": 20}, {"beta": 0, "cluster": "4_406_PDO", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 73, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 23, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 121, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 17, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 13, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 10}, "euk": 0, "fd": 22, "gene": "PDO", "genera": ["Acetobacter", "Achromobacter", "Acidisphaera", "Acidovorax", "Acinetobacter", "Advenella", "Afipia", "Allobosea", "Altererythrobacter", "Anaerobacillus", "Aneurinibacillus", "Aquibium", "Bordetella", "Bradyrhizobium", "Brevirhabdus", "Burkholderia", "Caballeronia", "Celeribacter", "Comamonas", "Croceicoccus", "Cupriavidus", "Devosia", "Domibacillus", "Gordonia", "Halalkalibacter", "Haliea", "Halomonas", "Hoeflea", "Hydrogenophaga", "Jannaschia", "Komagataeibacter", "Leisingera", "Limnohabitans", "Marinibacterium", "Marinomonas", "Maritimibacter", "Martelella", "Massilia", "Muricoccus", "Neptunicoccus", "Nocardioides", "Novosphingobium", "Paenibacillus", "Paenirhodobacter", "Pandoraea", "Paraburkholderia", "Pelagimonas", "Peribacillus", "Phaeobacter", "Phenylobacterium"], "genera_n": 79, "group": "4", "leaves": 44, "n": 286, "phyla": {"Actinomycetota": 9, "Bacillota": 9, "Pseudomonadota": 268}, "plasmid": 14, "red": 67, "sclass": "xenobiotic", "substrate": "phthalate", "tiers": {"characterized": 4, "close_homolog": 100, "distant": 139, "family_member": 43, "novel": 0}, "transposon": 98}, {"beta": 0, "cluster": "3_321_Nvd", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 3, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 1, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 27, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 240, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 4, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 106, "fd": 3, "gene": "Nvd", "genera": ["Acanthamoeba", "Achromobacter", "Actinophytocola", "Acyrthosiphon", "Aedes", "Aequoribacter", "Anopheles", "Apis", "Atta", "Bicyclus", "Bombus", "Bombyx", "Burkholderia", "Caenibius", "Camponotus", "Cephus", "Ceratina", "Ceratosolen", "Culex", "Cyphomyrmex", "Dermatophagoides", "Diaphorina", "Dinoponera", "Drosophila", "Ectopseudomonas", "Edaphosphingomonas", "Endozoicomonas", "Fopius", "Frankliniella", "Frateuria", "Glossina", "Gordonia", "Harpegnathos", "Ilumatobacter", "Ixodes", "Janibacter", "Kitasatospora", "Limnoraphis", "Lingula", "Lyngbya", "Metapseudomonas", "Micromonospora", "Mycobacterium", "Neodiprion", "Nocardia", "Novosphingobium", "Papilio", "Paramecium", "Pediculus", "Phenylobacterium"], "genera_n": 79, "group": "3", "leaves": 88, "n": 278, "phyla": {"Actinomycetota": 98, "Amoebozoa": 1, "Cyanobacteriota": 3, "Metazoa": 99, "Myxococcota": 4, "Pseudomonadota": 67, "Sar": 6}, "plasmid": 0, "red": 6, "sclass": "natural_specialized", "substrate": "cholesterol", "tiers": {"characterized": 1, "close_homolog": 12, "distant": 206, "family_member": 52, "novel": 7}, "transposon": 29}, {"beta": 259, "cluster": "2_217_HcaE", "complete": 226, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR+GR": 38, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 204, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 14}, "euk": 0, "fd": 255, "gene": "HcaE", "genera": ["Acinetobacter", "Alcaligenes", "Burkholderia", "Citrobacter", "Escherichia", "Insolitispirillum", "Kerstersia", "Klebsiella", "Kluyvera", "Lampropedia", "Novosphingobium", "Photorhabdus", "Pseudomonas", "Serratia", "Shigella", "Vibrio"], "genera_n": 16, "group": "2", "leaves": 1, "n": 259, "phyla": {"Pseudomonadota": 259}, "plasmid": 0, "red": 226, "sclass": "natural_aromatic", "substrate": "3-phenylpropionate", "tiers": {"characterized": 121, "close_homolog": 138, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 28}, {"beta": 125, "cluster": "4_401_CmtAb", "complete": 35, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 7, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 98, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 16, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 56, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 12, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 18}, "euk": 1, "fd": 50, "gene": "CmtAb", "genera": ["Achromobacter", "Acidovorax", "Acinetobacter", "Actinomadura", "Allostigmatella", "Altererythrobacter", "Asticcacaulis", "Azospirillum", "Bacillus", "Bordetella", "Bradyrhizobium", "Burkholderia", "Caenibius", "Caenimonas", "Comamonas", "Croceicoccus", "Cryptosporangium", "Cycloclasticus", "Erythrobacter", "Exophiala", "Falsiruegeria", "Flavobacterium", "Halobacillus", "Helicobacter", "Hypericibacter", "Hyphomonas", "Immundisolibacter", "Ktedonobacter", "Lacicoccus", "Lentibacillus", "Maritimibacter", "Methylibium", "Methylosinus", "Methyloversatilis", "Microcystis", "Micromonospora", "Mycobacterium", "Nocardia", "Noviherbaspirillum", "Novosphingobium", "Paenibacillus", "Pandoraea", "Paraburkholderia", "Paracoccus", "Parafrankia", "Pseudacidovorax", "Pseudofrankia", "Pseudomonas", "Pseudonocardia", "Pseudovibrio"], "genera_n": 71, "group": "4", "leaves": 78, "n": 246, "phyla": {"Actinomycetota": 79, "Bacillota": 5, "Bacteroidota": 3, "Campylobacterota": 1, "Chloroflexota": 1, "Cyanobacteriota": 4, "Deinococcota": 1, "Fungi": 1, "Myxococcota": 2, "Planctomycetota": 6, "Pseudomonadota": 143}, "plasmid": 11, "red": 47, "sclass": "xenobiotic", "substrate": "p-cumate", "tiers": {"characterized": 3, "close_homolog": 7, "distant": 146, "family_member": 81, "novel": 9}, "transposon": 25}, {"beta": 162, "cluster": "3_311_PhtAa", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 37, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 22, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 3, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR+GR": 11, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 62, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 89}, "euk": 0, "fd": 0, "gene": "PhtAa", "genera": ["Actinomadura", "Alcaligenes", "Allokutzneria", "Arthrobacter", "Asticcacaulis", "Blastomonas", "Bordetella", "Crystallibacter", "Dietzia", "Erythrobacter", "Geodermatophilus", "Gordonia", "Knoellia", "Kocuria", "Microbacterium", "Microcella", "Mycobacterium", "Mycobacterium (subgen. Mycolicibacter)", "Nocardia", "Novosphingobium", "Parafrankia", "Pseudarthrobacter", "Pseudofrankia", "Pseudonocardia", "Rhodococcoides", "Rhodococcus", "Saccharomonospora", "Sphingobium", "Sphingopyxis", "Streptomyces", "Trebonia"], "genera_n": 31, "group": "3", "leaves": 1, "n": 226, "phyla": {"Actinomycetota": 212, "Pseudomonadota": 14}, "plasmid": 12, "red": 108, "sclass": "xenobiotic", "substrate": "phthalate", "tiers": {"characterized": 8, "close_homolog": 154, "distant": 62, "family_member": 0, "novel": 2}, "transposon": 51}, {"beta": 0, "cluster": "1_110_SxtT", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 25, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 11, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 183, "\u03b13 \u00b7 Fd:plant \u00b7 Red:FNR": 1, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 4, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 1}, "euk": 1, "fd": 1, "gene": "SxtT", "genera": ["Acetobacterium", "Acinetobacter", "Actinoplanes", "Allocoleopsis", "Alysiella", "Andreesenia", "Archangium", "Bacillus", "Bradyrhizobium", "Brevibacillus", "Caballeronia", "Chondromyces", "Chromobacterium", "Coleofasciculus", "Collimonas", "Comamonas", "Cupriavidus", "Cyanobium", "Cylindrospermopsis", "Cytobacillus", "Delftia", "Derxia", "Diaphorobacter", "Dolichospermum", "Domibacillus", "Duganella", "Ectopseudomonas", "Ferrithrix", "Frankia", "Gluconobacter", "Hahella", "Halalkalibacter", "Herbaspirillum", "Hydrogenophaga", "Hylemonella", "Hyphomicrobium", "Ilumatobacter", "Ktedonosporobacter", "Lederbergia", "Legionella", "Leptolyngbya", "Lysobacter", "Mesobacillus", "Methylobacterium", "Modestobacter", "Moorena", "Mycetohabitans", "Mycobacterium", "Myxococcus", "Nocardia"], "genera_n": 90, "group": "1", "leaves": 87, "n": 225, "phyla": {"Actinomycetota": 41, "Bacillota": 64, "Chloroflexota": 1, "Cyanobacteriota": 15, "Myxococcota": 6, "Pseudomonadota": 94, "Thermoproteota": 3, "Viridiplantae": 1}, "plasmid": 3, "red": 27, "sclass": "natural_specialized", "substrate": "saxitoxin pathway intermediate", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 217, "family_member": 6, "novel": 0}, "transposon": 24}, {"beta": 99, "cluster": "4_403_AtdA", "complete": 3, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 7, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 76, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 34, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 3, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 56}, "euk": 0, "fd": 3, "gene": "AtdA", "genera": ["Achromobacter", "Acidovorax", "Advenella", "Alcaligenes", "Allopontixanthobacter", "Alteromonas", "Aurantiacibacter", "Azoarcus", "Bordetella", "Bradyrhizobium", "Burkholderia", "Caballeronia", "Croceicoccus", "Cryptosporangium", "Domibacillus", "Frankia", "Fuerstiella", "Gemmobacter", "Gordonia", "Hoeflea", "Immundisolibacter", "Jannaschia", "Marinobacter", "Mycobacterium", "Mycobacterium (subgen. Mycolicibacter)", "Nitratireductor", "Nocardia", "Novosphingobium", "Paraburkholderia", "Paracoccus", "Parahoeflea", "Phaeobacter", "Poindextera", "Pseudacidovorax", "Pseudomonas", "Pseudovibrio", "Ramlibacter", "Rhodococcus", "Rhodoferax", "Roseibium", "Roseivivax", "Ruegeria", "Rugositalea", "Sphingopyxis", "Streptomyces", "Sulfitobacter", "Thalassospira", "Verminephrobacter"], "genera_n": 48, "group": "4", "leaves": 33, "n": 190, "phyla": {"Actinomycetota": 86, "Bacillota": 1, "Planctomycetota": 1, "Pseudomonadota": 102}, "plasmid": 1, "red": 39, "sclass": "xenobiotic", "substrate": "aniline", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 169, "family_member": 1, "novel": 20}, "transposon": 25}, {"beta": 0, "cluster": "1_108_PobA", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 18, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 17, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 126, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 3, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 3}, "euk": 0, "fd": 5, "gene": "PobA", "genera": ["Achromobacter", "Acidovorax", "Actinophytocola", "Advenella", "Alcaligenes", "Bordetella", "Bradyrhizobium", "Burkholderia", "Caballeronia", "Candidatus Pelagibacter", "Caulobacter", "Cupriavidus", "Diaphorobacter", "Hydrogenophaga", "Leisingera", "Maritimibacter", "Massilia", "Mesorhizobium", "Methylibium", "Methylobacterium", "Microbacterium", "Mycobacterium", "Nocardia", "Novosphingobium", "Paraburkholderia", "Pelagerythrobacter", "Polynucleobacter", "Pseudacidovorax", "Pseudomonas", "Pseudothioglobus (SeqCode)", "Puniceispirillum (SeqCode)", "Ramlibacter", "Rhizorhabdus", "Rhodoferax", "Ruegeria", "Sphingobium", "Sphingomonas", "Streptomyces", "Tabrizicola", "Thauera", "Trinickia", "Variovorax"], "genera_n": 42, "group": "1", "leaves": 31, "n": 174, "phyla": {"Actinomycetota": 21, "Pseudomonadota": 153}, "plasmid": 2, "red": 23, "sclass": "natural_aromatic", "substrate": "4-hydroxybenzoate", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 95, "family_member": 77, "novel": 0}, "transposon": 30}, {"beta": 0, "cluster": "1_111_GxtA", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 1, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 8, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 158, "\u03b13 \u00b7 Fd:plant \u00b7 Red:FNR": 1, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 6}, "euk": 0, "fd": 4, "gene": "GxtA", "genera": ["Acidianus", "Acidobacterium", "Acidovorax", "Aliterella", "Alloalcanivorax", "Asticcacaulis", "Bacillus", "Bacteriovorax", "Bradyrhizobium", "Brevibacillus", "Burkholderia", "Caballeronia", "Calothrix", "Candidatus Atelocyanobacterium", "Candidatus Berkiella", "Candidatus Phaeomarinibacter", "Chamaesiphon", "Chondromyces", "Chroococcidiopsis", "Comamonas", "Crinalium", "Crocosphaera", "Cyanobacterium", "Cylindrospermopsis", "Cytobacillus", "Dactylococcopsis", "Dolichospermum", "Erythrobacter", "Ferroacidibacillus", "Geodermatophilus", "Gloeocapsa", "Gloeothece", "Granulicella", "Herbaspirillum", "Hydrocarboniphaga", "Hydrococcus", "Ktedonobacter", "Legionella", "Leptolyngbya", "Leptospira", "Mastigocoleus", "Methylacidiphilum (ex Ratnadevi et al. 2023)", "Methylibium", "Methylobacterium", "Neisseria", "Neobacillus", "Niallia", "Nitrospira", "Nocardia", "Nonomuraea"], "genera_n": 78, "group": "1", "leaves": 71, "n": 174, "phyla": {"Acidobacteriota": 5, "Actinomycetota": 19, "Bacillota": 25, "Bacteroidota": 3, "Bdellovibrionota": 1, "Chloroflexota": 1, "Cyanobacteriota": 33, "Myxococcota": 1, "Nitrospirota": 1, "Pseudomonadota": 82, "Spirochaetota": 1, "Thermoproteota": 1, "Verrucomicrobiota": 1}, "plasmid": 0, "red": 3, "sclass": "natural_specialized", "substrate": "gonyautoxin pathway intermediate", "tiers": {"characterized": 0, "close_homolog": 3, "distant": 169, "family_member": 1, "novel": 1}, "transposon": 20}, {"beta": 0, "cluster": "1_117_PrnD", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 9, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 115, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 34, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:none": 1}, "euk": 0, "fd": 14, "gene": "PrnD", "genera": ["Acaryochloris", "Aliterella", "Allocoleopsis", "Anabaena", "Burkholderia", "Calothrix", "Candidatus Berkiella", "Caulobacter", "Chlorogloeopsis", "Chroococcidiopsis", "Chthoniobacter", "Crinalium", "Cyanobacterium", "Cylindrospermopsis", "Cylindrospermum", "Fischerella", "Floridanema", "Frankia", "Geitlerinema", "Gloeothece", "Halobacteriovorax", "Leptolyngbya", "Mastigocoleus", "Mesorhizobium", "Microcystis", "Mycobacterium", "Nodularia", "Nostoc", "Oxynema", "Pedosphaera", "Planktothrix", "Pseudomonas", "Rhizorhabdus", "Rivularia", "Scytonema", "Serratia", "Sphingobium", "Stanieria", "Streptomyces", "Synechocystis", "Tolypothrix", "Trichormus", "Yersinia"], "genera_n": 43, "group": "1", "leaves": 43, "n": 161, "phyla": {"Actinomycetota": 21, "Bdellovibrionota": 2, "Cyanobacteriota": 61, "Pseudomonadota": 75, "Verrucomicrobiota": 2}, "plasmid": 0, "red": 8, "sclass": "natural_specialized", "substrate": "aminopyrrolnitrin", "tiers": {"characterized": 6, "close_homolog": 60, "distant": 89, "family_member": 4, "novel": 2}, "transposon": 37}, {"beta": 86, "cluster": "2_218_BphA1", "complete": 62, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 23, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 6, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 29, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 3, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 11, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 77}, "euk": 0, "fd": 75, "gene": "BphA1", "genera": ["Actibacterium", "Actinomadura", "Congregibacter", "Corynebacterium", "Croceicoccus", "Cryptosporangium", "Dietzia", "Frankia", "Gordonia", "Halioglobus", "Ilumatobacter", "Immundisolibacter", "Metapseudomonas", "Microbacterium", "Mycobacterium", "Mycobacterium (subgen. Mycolicibacter)", "Mycobacteroides", "Nocardia", "Nocardiopsis", "Novosphingobium", "Oryzisolibacter", "Parafrankia", "Pseudofrankia", "Pseudonocardia", "Pusillimonas", "Rhizorhabdus", "Rhodococcus", "Sphingopyxis", "Streptomyces", "Williamsia"], "genera_n": 30, "group": "2", "leaves": 30, "n": 153, "phyla": {"Actinomycetota": 137, "Pseudomonadota": 16}, "plasmid": 4, "red": 80, "sclass": "xenobiotic", "substrate": "biphenyl", "tiers": {"characterized": 0, "close_homolog": 10, "distant": 69, "family_member": 74, "novel": 0}, "transposon": 12}, {"beta": 130, "cluster": "3_301_PhnA1a", "complete": 22, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 12, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 25, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:FNR+GR": 32, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 22, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 13, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 14}, "euk": 0, "fd": 46, "gene": "PhnA1a", "genera": ["Actinomadura", "Alcaligenes", "Asticcacaulis", "Azotobacter", "Burkholderia", "Conexibacter", "Croceicoccus", "Cupriavidus", "Cycloclasticus", "Erythrobacter", "Hyphomonas", "Immundisolibacter", "Marisediminitalea", "Nocardia", "Novosphingobium", "Pandoraea", "Pannonibacter", "Paraburkholderia", "Pelagerythrobacter", "Pseudoalteromonas", "Pseudomonas", "Psychrobacter", "Rhizobium", "Rhizorhabdus", "Rhodococcus", "Sphingobium", "Sphingopyxis", "Sphingorhabdus", "Tardibacter", "Tistrella"], "genera_n": 30, "group": "3", "leaves": 28, "n": 149, "phyla": {"Actinomycetota": 10, "Pseudomonadota": 139}, "plasmid": 20, "red": 58, "sclass": "xenobiotic", "substrate": "phenanthrene", "tiers": {"characterized": 0, "close_homolog": 5, "distant": 83, "family_member": 59, "novel": 2}, "transposon": 48}, {"beta": 66, "cluster": "3_319_PhdA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 10, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 58, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 3, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 23, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 43}, "euk": 0, "fd": 9, "gene": "PhdA", "genera": ["Acinetobacter", "Alicyclobacillus", "Altererythrobacter", "Azoarcus", "Bacillus", "Blastococcus", "Burkholderia", "Caballeronia", "Candidatus Micropelagius", "Croceicoccus", "Cupriavidus", "Cytobacillus", "Erythrobacter", "Halioglobus", "Halococcus", "Haloferax", "Hypericibacter", "Hyphomonas", "Ilumatobacter", "Immundisolibacter", "Kyrpidia", "Luminiphilus", "Metallosphaera", "Mycobacterium", "Natronococcus", "Natronolimnohabitans", "Nocardia", "Nocardioides", "Novosphingobium", "Oceanicoccus", "Paraburkholderia", "Parasphingorhabdus", "Poindextera", "Porphyrobacter", "Rhizorhabdus", "Rhodococcus", "Rippkaea", "Saccharolobus", "Sandaracinobacteroides", "Schinkia", "Sphingobium", "Sphingomonas", "Sphingopyxis", "Streptomyces", "Sulfolobus", "Sulfuracidifex", "Tardibacter", "Thalassomonas"], "genera_n": 48, "group": "3", "leaves": 68, "n": 147, "phyla": {"Actinomycetota": 46, "Bacillota": 8, "Cyanobacteriota": 1, "Methanobacteriota": 6, "Pseudomonadota": 74, "Thermoproteota": 12}, "plasmid": 3, "red": 17, "sclass": "xenobiotic", "substrate": "phenanthrene", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 128, "family_member": 18, "novel": 1}, "transposon": 40}, {"beta": 0, "cluster": "6_603_PTC52", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 137, "\u03b13 \u00b7 Fd:plant \u00b7 Red:GR": 1}, "euk": 105, "fd": 0, "gene": "PTC52", "genera": ["Abrus", "Acaryochloris", "Amborella", "Ananas", "Arabidopsis", "Arachis", "Bathycoccus", "Brassica", "Capsella", "Chlorogloeopsis", "Cicer", "Citrus", "Coffea", "Crocosphaera", "Cucumis", "Cucurbita", "Cyanobacterium", "Durio", "Elaeis", "Eutrema", "Geminocystis", "Gloeothece", "Glycine", "Gossypium", "Juglans", "Kratosvirus", "Lyngbya", "Medicago", "Microcystis", "Momordica", "Morus", "Musa", "Nelumbo", "Nicotiana", "Oryza", "Phaseolus", "Phoenix", "Populus", "Prunus", "Punica", "Raphanus", "Rhodamnia", "Ricinus", "Rippkaea", "Rivularia", "Scytonema", "Selaginella", "Sesamum", "Solanum", "Sorghum"], "genera_n": 57, "group": "6", "leaves": 51, "n": 140, "phyla": {"Cyanobacteriota": 34, "Varidnaviria": 1, "Viridiplantae": 105}, "plasmid": 1, "red": 0, "sclass": "natural_specialized", "substrate": "protochlorophyllide a", "tiers": {"characterized": 2, "close_homolog": 50, "distant": 39, "family_member": 49, "novel": 0}, "transposon": 9}, {"beta": 0, "cluster": "6_602_CAO", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 137, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 1}, "euk": 110, "fd": 0, "gene": "CAO", "genera": ["Abrus", "Amborella", "Ananas", "Arabidopsis", "Arachis", "Brachypodium", "Brassica", "Capsella", "Capsicum", "Chlamydomonas", "Chlorella", "Cicer", "Citrus", "Coccomyxa", "Coffea", "Cucumis", "Cucurbita", "Daucus", "Durio", "Elaeis", "Erythranthe", "Eucalyptus", "Eutrema", "Glycine", "Gossypium", "Jatropha", "Juglans", "Lupinus", "Medicago", "Microcystis", "Microscilla", "Momordica", "Monoraphidium", "Morus", "Musa", "Nelumbo", "Nicotiana", "Oryza", "Phaseolus", "Phoenix", "Phormidesmis", "Populus", "Prochlorothrix", "Prunus", "Punica", "Raphanus", "Rhodamnia", "Selaginella", "Sesamum", "Setaria"], "genera_n": 59, "group": "6", "leaves": 1, "n": 138, "phyla": {"Bacteroidota": 1, "Cyanobacteriota": 27, "Fungi": 1, "Viridiplantae": 109}, "plasmid": 0, "red": 0, "sclass": "natural_specialized", "substrate": "chlorophyllide a", "tiers": {"characterized": 5, "close_homolog": 101, "distant": 27, "family_member": 5, "novel": 0}, "transposon": 15}, {"beta": 11, "cluster": "2_211_bfzA", "complete": 4, "confidence": "low", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 10, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 6, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 50, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 10, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 17}, "euk": 0, "fd": 16, "gene": "bfzA", "genera": ["Actinomadura", "Advenella", "Amycolatopsis", "Blastomonas", "Bordetella", "Burkholderia", "Caballeronia", "Croceicoccus", "Cupriavidus", "Erythrobacter", "Frankia", "Gordonia", "Herbaspirillum", "Immundisolibacter", "Leisingera", "Methylobacterium", "Methylorubrum", "Mycobacterium", "Mycobacterium (subgen. Mycolicibacter)", "Myxococcus", "Novosphingobium", "Paraburkholderia", "Parafrankia", "Porphyrobacter", "Pseudofrankia", "Pseudomonas", "Pseudonocardia", "Qipengyuania", "Ramlibacter", "Rhodococcus", "Sphingobium", "Sphingomonas", "Sphingorhabdus", "Stakelama", "Streptomyces", "Thauera", "Variovorax"], "genera_n": 37, "group": "2", "leaves": 34, "n": 118, "phyla": {"Actinomycetota": 41, "Myxococcota": 1, "Pseudomonadota": 76}, "plasmid": 5, "red": 29, "sclass": "xenobiotic", "substrate": "benzene and fluorene", "tiers": {"characterized": 1, "close_homolog": 0, "distant": 111, "family_member": 6, "novel": 0}, "transposon": 16}, {"beta": 6, "cluster": "1_102_CARDO", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 15, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 33, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 27, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:FNR": 9, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 7}, "euk": 0, "fd": 22, "gene": "CARDO", "genera": ["Actinomadura", "Amycolatopsis", "Bradyrhizobium", "Corynebacterium", "Cycloclasticus", "Frankia", "Gordonia", "Hoyosella", "Immundisolibacter", "Metapseudomonas", "Mycobacterium", "Nocardia", "Nocardioides", "Novosphingobium", "Pacificimonas", "Pandoraea", "Paraburkholderia", "Parafrankia", "Pseudofrankia", "Pseudomonas", "Pseudonocardia", "Pseudoxanthomonas", "Rhodococcoides", "Rhodococcus", "Rugositalea", "Sphingobium", "Sphingomonas", "Streptomyces", "Teredinibacter"], "genera_n": 29, "group": "1", "leaves": 23, "n": 114, "phyla": {"Actinomycetota": 80, "Pseudomonadota": 34}, "plasmid": 10, "red": 29, "sclass": "xenobiotic", "substrate": "carbazole", "tiers": {"characterized": 5, "close_homolog": 3, "distant": 79, "family_member": 27, "novel": 0}, "transposon": 42}, {"beta": 111, "cluster": "3_302_DitA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 29, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 70, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:GR": 12}, "euk": 0, "fd": 0, "gene": "DitA", "genera": ["Acidovorax", "Blastomonas", "Caulobacter", "Comamonas", "Croceicoccus", "Cupriavidus", "Ectopseudomonas", "Halopseudomonas", "Hyphomonas", "Janibacter", "Marinobacter", "Marinobacterium", "Massilia", "Metapseudomonas", "Mycobacterium", "Novosphingobium", "Paraburkholderia", "Pseudomonas", "Simplicispira", "Sphingobium", "Sphingomonas", "Stutzerimonas"], "genera_n": 22, "group": "3", "leaves": 8, "n": 112, "phyla": {"Actinomycetota": 10, "Pseudomonadota": 102}, "plasmid": 4, "red": 27, "sclass": "natural_specialized", "substrate": "dehydroabietate", "tiers": {"characterized": 2, "close_homolog": 72, "distant": 1, "family_member": 37, "novel": 0}, "transposon": 12}, {"beta": 0, "cluster": "1_109_LigX", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 6, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 12, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 58, "\u03b13 \u00b7 Fd:plant \u00b7 Red:FNR": 3, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 8, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 2}, "euk": 0, "fd": 1, "gene": "LigX", "genera": ["Acinetobacter", "Alkalilimnicola", "Alloactinosynnema", "Asanoa", "Bordetella", "Brevirhabdus", "Burkholderia", "Caballeronia", "Candidatus Glomeribacter", "Candidatus Viadribacter", "Croceibacterium", "Cupriavidus", "Domibacillus", "Halalkalibacter", "Janibacter", "Kitasatospora", "Limnohabitans", "Methylosinus", "Mycobacterium", "Pandoraea", "Paraburkholderia", "Pseudonocardia", "Pseudorhodoferax", "Pusillimonas", "Ramlibacter", "Rhodococcus", "Rugositalea", "Sphingobium", "Sphingomonas", "Streptomyces", "Thalassospira", "Variovorax"], "genera_n": 32, "group": "1", "leaves": 38, "n": 93, "phyla": {"Actinomycetota": 18, "Bacillota": 8, "Pseudomonadota": 67}, "plasmid": 2, "red": 11, "sclass": "natural_aromatic", "substrate": "5,5\u0027-dehydrodivanillate", "tiers": {"characterized": 0, "close_homolog": 1, "distant": 41, "family_member": 51, "novel": 0}, "transposon": 15}, {"beta": 0, "cluster": "1_107_CndA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 11, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 41, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 2, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 17, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 1}, "euk": 1, "fd": 2, "gene": "CndA", "genera": ["Actinomadura", "Bradyrhizobium", "Burkholderia", "Emiliania", "Gordonia", "Metapseudomonas", "Methylibium", "Methylobacterium", "Noviherbaspirillum", "Novosphingobium", "Paraburkholderia", "Pseudomonas", "Pseudonocardia", "Rhizorhabdus", "Roseivirga", "Rugositalea", "Sandaracinus", "Sphingobium", "Sphingomonas", "Sphingopyxis", "Tepidicaulis"], "genera_n": 21, "group": "1", "leaves": 37, "n": 74, "phyla": {"Actinomycetota": 5, "Bacteroidota": 4, "Haptista": 1, "Myxococcota": 1, "Pseudomonadota": 63}, "plasmid": 0, "red": 19, "sclass": "xenobiotic", "substrate": "chloroacetanilide herbicides (alachlor, acetochlor, butachlor)", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 65, "family_member": 9, "novel": 0}, "transposon": 15}, {"beta": 50, "cluster": "3_317_NidA", "complete": 2, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 12, "\u03b13 \u00b7 Fd:plant+rieske \u00b7 Red:FNR": 1, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 11, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 34}, "euk": 0, "fd": 3, "gene": "NidA", "genera": ["Acidiplasma", "Aeribacillus", "Alkalihalophilus", "Bacillus", "Brevibacillus", "Burkholderia", "Caenibius", "Croceicoccus", "Cytobacillus", "Geobacillus", "Halalkalibacter", "Hydrogenibacillus", "Immundisolibacter", "Meiothermus", "Mycobacteroides", "Neobacillus", "Novosphingobium", "Paenibacillus", "Pandoraea", "Parageobacillus", "Peribacillus", "Priestia", "Pseudobacillus", "Rhodococcus", "Rhodoglobus", "Sphingobium", "Streptomonospora", "Streptomyces", "Thermomicrobium", "Thermus"], "genera_n": 30, "group": "3", "leaves": 26, "n": 65, "phyla": {"Actinomycetota": 19, "Bacillota": 24, "Deinococcota": 3, "Pseudomonadota": 14, "Thermomicrobiota": 1, "Thermoplasmatota": 4}, "plasmid": 9, "red": 4, "sclass": "xenobiotic", "substrate": "pyrene", "tiers": {"characterized": 7, "close_homolog": 1, "distant": 20, "family_member": 37, "novel": 0}, "transposon": 15}, {"beta": 0, "cluster": "1_118_RedG", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 14, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 50}, "euk": 0, "fd": 0, "gene": "RedG", "genera": ["Acetobacterium", "Actinomadura", "Alkaliphilus", "Anaerolinea", "Bellilinea", "Brachyspira", "Caldisericum", "Clostridium", "Fervidobacterium", "Longilinea", "Mastigocoleus", "Ornatilinea", "Plesiocystis", "Pseudoalteromonas", "Sorangium", "Sphaerochaeta", "Streptomyces", "Thermoanaerobacterium", "Thermosipho", "Thermotoga"], "genera_n": 20, "group": "1", "leaves": 18, "n": 64, "phyla": {"Actinomycetota": 19, "Bacillota": 4, "Caldisericota/Cryosericota group": 1, "Chloroflexota": 5, "Cyanobacteriota": 2, "Myxococcota": 4, "Pseudomonadota": 2, "Spirochaetota": 13, "Thermotogota": 14}, "plasmid": 0, "red": 6, "sclass": "natural_specialized", "substrate": "undecylprodigiosin", "tiers": {"characterized": 7, "close_homolog": 6, "distant": 45, "family_member": 6, "novel": 0}, "transposon": 15}, {"beta": 40, "cluster": "2_214_TftA", "complete": 1, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 12, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 5, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 5, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 28}, "euk": 0, "fd": 1, "gene": "TftA", "genera": ["Achromobacter", "Asticcacaulis", "Blastomonas", "Bordetella", "Bradyrhizobium", "Burkholderia", "Flavobacterium", "Hyalangium", "Immundisolibacter", "Janibacter", "Metallosphaera", "Methylovorus", "Nocardia", "Novosphingobium", "Paraburkholderia", "Planctomyces", "Plesiocystis", "Pusillimonas", "Ramlibacter", "Rhizorhabdus", "Ruegeria", "Sphingobium", "Sphingomonas", "Variovorax"], "genera_n": 24, "group": "2", "leaves": 30, "n": 58, "phyla": {"Actinomycetota": 3, "Bacteroidota": 1, "Myxococcota": 2, "Planctomycetota": 1, "Pseudomonadota": 49, "Thermoproteota": 2}, "plasmid": 1, "red": 9, "sclass": "xenobiotic", "substrate": "2,4,5-trichlorophenoxyacetate", "tiers": {"characterized": 0, "close_homolog": 1, "distant": 34, "family_member": 23, "novel": 0}, "transposon": 8}, {"beta": 0, "cluster": "1_116_GdmA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 7, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 5, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 33, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:FNR": 1, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 2}, "euk": 0, "fd": 1, "gene": "GdmA", "genera": ["Acinetobacter", "Candidatus Phaeomarinibacter", "Corallococcus", "Croceicoccus", "Cupriavidus", "Erythrobacter", "Geitlerinema", "Herbaspirillum", "Hydrocarboniphaga", "Hydrogenophaga", "Marinobacter", "Methylibium", "Methylobacterium", "Methylorubrum", "Methyloversatilis", "Myxococcus", "Novosphingobium", "Polaromonas", "Pseudomonas", "Pusillimonas", "Rhizorhabdus", "Sphingobium", "Sphingomonas"], "genera_n": 23, "group": "1", "leaves": 27, "n": 57, "phyla": {"Cyanobacteriota": 1, "Myxococcota": 2, "Pseudomonadota": 54}, "plasmid": 1, "red": 9, "sclass": "natural_aromatic", "substrate": "guaiacol (2-methoxyphenol)", "tiers": {"characterized": 1, "close_homolog": 24, "distant": 30, "family_member": 2, "novel": 0}, "transposon": 10}, {"beta": 52, "cluster": "2_204_Dpe", "complete": 14, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 10, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR+GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 4, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 19, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:GR": 21}, "euk": 0, "fd": 14, "gene": "Dpe", "genera": ["Achromobacter", "Acinetobacter", "Advenella", "Arthrobacter", "Bordetella", "Bradyrhizobium", "Burkholderia", "Escherichia", "Immundisolibacter", "Mycobacterium", "Nocardia", "Pseudarthrobacter", "Pusillimonas", "Ramlibacter", "Rhizorhabdus", "Rhodococcus", "Rugositalea", "Sphingomonas", "Sphingopyxis", "Variovorax"], "genera_n": 20, "group": "2", "leaves": 13, "n": 57, "phyla": {"Actinomycetota": 18, "Pseudomonadota": 39}, "plasmid": 2, "red": 29, "sclass": "xenobiotic", "substrate": "diphenyl ether", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 0, "family_member": 57, "novel": 0}, "transposon": 9}, {"beta": 11, "cluster": "3_305_ArhA1", "complete": 3, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 10, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 20, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 5, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 6, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 3}, "euk": 0, "fd": 15, "gene": "ArhA1", "genera": ["Acidovorax", "Asticcacaulis", "Burkholderia", "Caballeronia", "Caenibius", "Croceicoccus", "Hydrocarboniphaga", "Ilumatobacter", "Luminiphilus", "Massilia", "Mycobacterium", "Nocardia", "Novosphingobium", "Paraburkholderia", "Parasphingorhabdus", "Rhizorhabdus", "Sphingobium", "Sphingomonas", "Sphingorhabdus", "Stakelama", "Tardibacter"], "genera_n": 21, "group": "3", "leaves": 20, "n": 50, "phyla": {"Actinomycetota": 5, "Pseudomonadota": 45}, "plasmid": 1, "red": 4, "sclass": "xenobiotic", "substrate": "polycyclic aromatic hydrocarbons", "tiers": {"characterized": 2, "close_homolog": 2, "distant": 39, "family_member": 7, "novel": 0}, "transposon": 11}, {"beta": 10, "cluster": "3_316_NarAa", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 6, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 29, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 4, "\u03b13 \u00b7 Fd:plant+rieske \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 8}, "euk": 0, "fd": 0, "gene": "NarAa", "genera": ["Amycolatopsis", "Bacillus", "Brevibacillus", "Brumicola", "Burkholderia", "Comamonas", "Croceicoccus", "Erythrobacter", "Frankia", "Ilumatobacter", "Luminiphilus", "Nocardia", "Novosphingobium", "Parafrankia", "Peribacillus", "Porphyrobacter", "Pseudofrankia", "Pseudonocardia", "Qipengyuania", "Rhodococcus", "Saccharomonospora", "Sphingobium", "Sphingopyxis"], "genera_n": 23, "group": "3", "leaves": 23, "n": 50, "phyla": {"Actinomycetota": 12, "Bacillota": 4, "Pseudomonadota": 34}, "plasmid": 0, "red": 2, "sclass": "xenobiotic", "substrate": "naphthalene", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 40, "family_member": 8, "novel": 0}, "transposon": 5}, {"beta": 33, "cluster": "2_202_EdoA1", "complete": 24, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 3, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 4, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 4, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 35}, "euk": 0, "fd": 32, "gene": "EdoA1", "genera": ["Achromobacter", "Acidovorax", "Comamonas", "Cupriavidus", "Cycloclasticus", "Ectopseudomonas", "Hyphomonas", "Janthinobacterium", "Metapseudomonas", "Pandoraea", "Paraburkholderia", "Paraurantiacibacter", "Peribacillus", "Polaromonas", "Pseudoalteromonas", "Pseudomonas", "Pseudoxanthomonas", "Rhodococcus", "Sphingobium", "Stakelama"], "genera_n": 20, "group": "2", "leaves": 4, "n": 48, "phyla": {"Actinomycetota": 4, "Bacillota": 2, "Pseudomonadota": 42}, "plasmid": 9, "red": 24, "sclass": "xenobiotic", "substrate": "ethylbenzene", "tiers": {"characterized": 22, "close_homolog": 18, "distant": 8, "family_member": 0, "novel": 0}, "transposon": 26}, {"beta": 0, "cluster": "1_112_NdmA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 40, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 1}, "euk": 0, "fd": 1, "gene": "NdmA", "genera": ["Alicyclobacillus", "Alloalcanivorax", "Archangium", "Bacillus", "Caballeronia", "Calothrix", "Frankia", "Ilumatobacter", "Methylobacterium", "Myxococcus", "Pseudanabaena", "Pseudofrankia", "Pseudomonas", "Sphingomonas"], "genera_n": 14, "group": "1", "leaves": 14, "n": 43, "phyla": {"Actinomycetota": 7, "Bacillota": 6, "Cyanobacteriota": 3, "Myxococcota": 5, "Pseudomonadota": 22}, "plasmid": 0, "red": 0, "sclass": "natural_specialized", "substrate": "caffeine", "tiers": {"characterized": 2, "close_homolog": 1, "distant": 40, "family_member": 0, "novel": 0}, "transposon": 4}, {"beta": 0, "cluster": "1_101_OxoO", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 19, "\u03b13 \u00b7 Fd:none \u00b7 Red:FNR+GR": 10, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 3, "\u03b13 \u00b7 Fd:plant \u00b7 Red:FNR": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 2}, "euk": 0, "fd": 0, "gene": "OxoO", "genera": ["Alcanivorax", "Alkalilimnicola", "Azoarcus", "Cupriavidus", "Marinobacter", "Massilia", "Nocardia", "Novosphingobium", "Paraburkholderia", "Pseudomonas", "Pseudonocardia", "Rhodococcus", "Sphingobium", "Tardibacter"], "genera_n": 14, "group": "1", "leaves": 5, "n": 36, "phyla": {"Actinomycetota": 12, "Pseudomonadota": 24}, "plasmid": 0, "red": 23, "sclass": "natural_aromatic", "substrate": "2-oxo-1,2-dihydroquinoline", "tiers": {"characterized": 0, "close_homolog": 17, "distant": 1, "family_member": 18, "novel": 0}, "transposon": 10}, {"beta": 0, "cluster": "5_502_CmoB", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 10, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 25}, "euk": 0, "fd": 0, "gene": "CmoB", "genera": ["Allomeiothermus", "Alteromonas", "Azospira", "Chromobacterium", "Derxia", "Ferrovum", "Fimbriimonas", "Flavihumibacter", "Hypericibacter", "Legionella", "Leptothrix", "Meiothermus", "Pandoraea", "Paraburkholderia", "Polynucleobacter", "Pseudoalteromonas", "Roseateles", "Tepidiphilus", "Tistrella"], "genera_n": 19, "group": "5", "leaves": 16, "n": 35, "phyla": {"Armatimonadota": 1, "Bacteroidota": 1, "Deinococcota": 3, "Pseudomonadota": 30}, "plasmid": 0, "red": 0, "sclass": "natural_specialized", "substrate": "choline", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 30, "family_member": 0, "novel": 5}, "transposon": 6}, {"beta": 14, "cluster": "2_212_BedC1", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 5, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 13, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 10, "\u03b13\u03b23 \u00b7 Fd:plant+rieske \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 0, "fd": 17, "gene": "BedC1", "genera": ["Brumicola", "Candidatus Viadribacter", "Croceicoccus", "Cycloclasticus", "Kyrpidia", "Luminiphilus", "Mycobacterium", "Novosphingobium", "Puniceibacterium", "Rugositalea", "Salipiger", "Sphingobium", "Stakelama", "Streptomyces"], "genera_n": 14, "group": "2", "leaves": 15, "n": 33, "phyla": {"Actinomycetota": 16, "Bacillota": 1, "Pseudomonadota": 16}, "plasmid": 2, "red": 1, "sclass": "xenobiotic", "substrate": "benzene", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 25, "family_member": 6, "novel": 0}, "transposon": 10}, {"beta": 29, "cluster": "2_216_BPDO", "complete": 0, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 24, "\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:none": 4}, "euk": 0, "fd": 0, "gene": "BPDO", "genera": ["Aurantiacibacter", "Croceicoccus", "Erythrobacter", "Hyphomonas", "Novosphingobium", "Sphingobium", "Sphingomonas"], "genera_n": 7, "group": "2", "leaves": 1, "n": 29, "phyla": {"Pseudomonadota": 29}, "plasmid": 6, "red": 0, "sclass": "xenobiotic", "substrate": "biphenyl", "tiers": {"characterized": 6, "close_homolog": 23, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 27}, {"beta": 21, "cluster": "4_402_PsbAb", "complete": 11, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 3, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR+GR": 2, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 20, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 0, "fd": 15, "gene": "PsbAb", "genera": ["Amycolatopsis", "Bradyrhizobium", "Gordonia", "Immundisolibacter", "Marinovum", "Maritimibacter", "Nocardioides", "Paenibacillus", "Pseudonocardia", "Pseudosulfitobacter", "Rhodopseudomonas", "Streptomyces", "Variovorax", "Zhongshania"], "genera_n": 14, "group": "4", "leaves": 7, "n": 29, "phyla": {"Actinomycetota": 13, "Bacillota": 1, "Pseudomonadota": 15}, "plasmid": 2, "red": 14, "sclass": "xenobiotic", "substrate": "4-sulfobenzoate", "tiers": {"characterized": 1, "close_homolog": 11, "distant": 0, "family_member": 17, "novel": 0}, "transposon": 6}, {"beta": 0, "cluster": "1_114_NdmB", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 21, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:GR": 1, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 3}, "euk": 0, "fd": 3, "gene": "NdmB", "genera": ["Acetobacter", "Afipia", "Caballeronia", "Cupriavidus", "Cystobacter", "Gluconobacter", "Halioglobus", "Janthinobacterium", "Mesorhizobium", "Methylacidiphilum (ex Ratnadevi et al. 2023)", "Microbulbifer", "Microvirga", "Novosphingobium", "Paracoccus", "Prasinovirus", "Pseudomonas", "Rhizorhabdus", "Stutzerimonas", "Variovorax"], "genera_n": 19, "group": "1", "leaves": 14, "n": 28, "phyla": {"Myxococcota": 1, "Pseudomonadota": 24, "Varidnaviria": 1, "Verrucomicrobiota": 2}, "plasmid": 0, "red": 2, "sclass": "natural_specialized", "substrate": "caffeine", "tiers": {"characterized": 2, "close_homolog": 5, "distant": 16, "family_member": 5, "novel": 0}, "transposon": 6}, {"beta": 24, "cluster": "3_303_NBDO", "complete": 22, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 22, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 0, "fd": 24, "gene": "NBDO", "genera": ["Burkholderia", "Diaphorobacter", "Malikia", "Pandoraea", "Paraburkholderia", "Polaromonas", "Pseudomonas", "Stutzerimonas"], "genera_n": 8, "group": "3", "leaves": 1, "n": 24, "phyla": {"Pseudomonadota": 24}, "plasmid": 9, "red": 22, "sclass": "xenobiotic", "substrate": "nitrobenzene", "tiers": {"characterized": 9, "close_homolog": 15, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 21}, {"beta": 21, "cluster": "3_320_NidA3", "complete": 0, "confidence": "medium", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 19, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 1}, "euk": 0, "fd": 0, "gene": "NidA3", "genera": ["Mycobacterium"], "genera_n": 1, "group": "3", "leaves": 3, "n": 22, "phyla": {"Actinomycetota": 22}, "plasmid": 0, "red": 1, "sclass": "xenobiotic", "substrate": "polycyclic aromatic hydrocarbons", "tiers": {"characterized": 11, "close_homolog": 10, "distant": 1, "family_member": 0, "novel": 0}, "transposon": 10}, {"beta": 21, "cluster": "2_213_BphA1A2", "complete": 15, "confidence": "medium", "etc": {"\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 4, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:FNR": 1, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 14, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 1}, "euk": 0, "fd": 16, "gene": "BphA1A2", "genera": ["Burkholderia", "Caenibius", "Corynebacterium", "Edaphosphingomonas", "Endozoicomonas", "Immundisolibacter", "Neomicrococcus", "Nitrincola", "Paenibacillus", "Paeniglutamicibacter", "Sphingobium", "Sphingomonas"], "genera_n": 12, "group": "2", "leaves": 10, "n": 21, "phyla": {"Actinomycetota": 5, "Bacillota": 2, "Pseudomonadota": 14}, "plasmid": 1, "red": 15, "sclass": "xenobiotic", "substrate": "biphenyl", "tiers": {"characterized": 0, "close_homolog": 3, "distant": 5, "family_member": 13, "novel": 0}, "transposon": 4}, {"beta": 12, "cluster": "3_318_NidA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 8, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 11}, "euk": 0, "fd": 0, "gene": "NidA", "genera": ["Hyphomonas", "Mycobacterium", "Novosphingobium", "Rhodococcus"], "genera_n": 4, "group": "3", "leaves": 4, "n": 20, "phyla": {"Actinomycetota": 16, "Pseudomonadota": 4}, "plasmid": 0, "red": 0, "sclass": "xenobiotic", "substrate": "pyrene", "tiers": {"characterized": 10, "close_homolog": 2, "distant": 8, "family_member": 0, "novel": 0}, "transposon": 9}, {"beta": 13, "cluster": "2_208_TecA1", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 3, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 2, "\u03b13 \u00b7 Fd:plant \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:FNR": 1, "\u03b13\u03b23 \u00b7 Fd:none \u00b7 Red:none": 12}, "euk": 0, "fd": 1, "gene": "TecA1", "genera": ["Croceicoccus", "Mycobacterium", "Pandoraea", "Paraburkholderia", "Sphingobium", "Sphingomonas"], "genera_n": 6, "group": "2", "leaves": 7, "n": 19, "phyla": {"Actinomycetota": 12, "Pseudomonadota": 7}, "plasmid": 0, "red": 1, "sclass": "xenobiotic", "substrate": "1,2,4,5-tetrachlorobenzene", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 19, "family_member": 0, "novel": 0}, "transposon": 7}, {"beta": 14, "cluster": "2_215_cadA", "complete": 3, "confidence": "low", "etc": {"\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 8, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 6}, "euk": 0, "fd": 10, "gene": "cadA", "genera": ["Afipia", "Bradyrhizobium", "Sphingobium", "Sphingomonas", "Sphingopyxis"], "genera_n": 5, "group": "2", "leaves": 4, "n": 14, "phyla": {"Pseudomonadota": 14}, "plasmid": 2, "red": 7, "sclass": "xenobiotic", "substrate": "2,4-dichlorophenoxyacetate (2,4-D)", "tiers": {"characterized": 3, "close_homolog": 6, "distant": 0, "family_member": 5, "novel": 0}, "transposon": 6}, {"beta": 0, "cluster": "5_503_CmoA", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:FNR": 1, "\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 3, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 7, "\u03b13 \u00b7 Fd:rieske \u00b7 Red:none": 1}, "euk": 1, "fd": 0, "gene": "CmoA", "genera": ["Alteromonas", "Azonexus", "Chitinimonas", "Chromobacterium", "Legionella", "Oceanibaculum", "Paraburkholderia", "Pseudogulbenkiania", "Sphingomonas", "Spinacia", "Vogesella"], "genera_n": 11, "group": "5", "leaves": 7, "n": 12, "phyla": {"Pseudomonadota": 11, "Viridiplantae": 1}, "plasmid": 0, "red": 2, "sclass": "natural_specialized", "substrate": "choline", "tiers": {"characterized": 1, "close_homolog": 0, "distant": 11, "family_member": 0, "novel": 0}, "transposon": 0}, {"beta": 0, "cluster": "7_701_AerC", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:GR": 2, "\u03b13 \u00b7 Fd:none \u00b7 Red:none": 7}, "euk": 0, "fd": 0, "gene": "AerC", "genera": ["Burkholderia", "Hypericibacter"], "genera_n": 2, "group": "7", "leaves": 1, "n": 9, "phyla": {"Pseudomonadota": 9}, "plasmid": 0, "red": 0, "sclass": "natural_specialized", "substrate": "N4-isopentenylagmatine", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 9, "family_member": 0, "novel": 0}, "transposon": 0}, {"beta": 7, "cluster": "2_203_cumA1", "complete": 6, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:plant+rieske \u00b7 Red:GR": 1, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 6}, "euk": 0, "fd": 7, "gene": "cumA1", "genera": ["Aromatoleum", "Comamonas", "Hydrogenophaga", "Metapseudomonas", "Pseudoalteromonas", "Zoogloea"], "genera_n": 6, "group": "2", "leaves": 1, "n": 8, "phyla": {"Pseudomonadota": 8}, "plasmid": 0, "red": 6, "sclass": "xenobiotic", "substrate": "cumene", "tiers": {"characterized": 0, "close_homolog": 7, "distant": 1, "family_member": 0, "novel": 0}, "transposon": 4}, {"beta": 6, "cluster": "2_209_TDO", "complete": 1, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:plant+rieske \u00b7 Red:none": 1, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:GR": 2, "\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 3}, "euk": 0, "fd": 6, "gene": "TDO", "genera": ["Actibacterium", "Celeribacter", "Martelella", "Polymorphum", "Sphingomonas", "Thioclava"], "genera_n": 6, "group": "2", "leaves": 1, "n": 6, "phyla": {"Pseudomonadota": 6}, "plasmid": 0, "red": 1, "sclass": "xenobiotic", "substrate": "toluene", "tiers": {"characterized": 0, "close_homolog": 6, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 5}, {"beta": 2, "cluster": "3_306_3NTDO", "complete": 0, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:rieske \u00b7 Red:none": 2}, "euk": 0, "fd": 2, "gene": "3NTDO", "genera": ["Alteromonas", "Marinomonas"], "genera_n": 2, "group": "3", "leaves": 1, "n": 2, "phyla": {"Pseudomonadota": 2}, "plasmid": 0, "red": 0, "sclass": "xenobiotic", "substrate": "3-nitrotoluene", "tiers": {"characterized": 0, "close_homolog": 2, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 2}, {"beta": 2, "cluster": "3_308_DxnA1", "complete": 0, "confidence": "high", "etc": {"\u03b13\u03b23 \u00b7 Fd:plant \u00b7 Red:none": 2}, "euk": 0, "fd": 2, "gene": "DxnA1", "genera": ["Sphingobium"], "genera_n": 1, "group": "3", "leaves": 1, "n": 2, "phyla": {"Pseudomonadota": 2}, "plasmid": 1, "red": 0, "sclass": "xenobiotic", "substrate": "dibenzo-p-dioxin", "tiers": {"characterized": 2, "close_homolog": 0, "distant": 0, "family_member": 0, "novel": 0}, "transposon": 2}, {"beta": 0, "cluster": "2_201_BphA1", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1}, "euk": 0, "fd": 0, "gene": "BphA1", "genera": ["Sphingobium"], "genera_n": 1, "group": "2", "leaves": 1, "n": 1, "phyla": {"Pseudomonadota": 1}, "plasmid": 1, "red": 0, "sclass": "xenobiotic", "substrate": "biphenyl", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 1, "family_member": 0, "novel": 0}, "transposon": 0}, {"beta": 0, "cluster": "2_207_BpdC1", "complete": 0, "confidence": "high", "etc": {"\u03b13 \u00b7 Fd:none \u00b7 Red:none": 1}, "euk": 0, "fd": 0, "gene": "BpdC1", "genera": ["Oceanicoccus"], "genera_n": 1, "group": "2", "leaves": 1, "n": 1, "phyla": {"Pseudomonadota": 1}, "plasmid": 0, "red": 0, "sclass": "xenobiotic", "substrate": "biphenyl", "tiers": {"characterized": 0, "close_homolog": 0, "distant": 1, "family_member": 0, "novel": 0}, "transposon": 0}], TIERS = ["characterized", "close_homolog", "family_member", "distant", "novel"], TC = {"characterized": "#1f7a4d", "close_homolog": "#7fb069", "distant": "#f78154", "family_member": "#f2c14e", "novel": "#8e44ad"};
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+const y = OVER.map(d => d.gene + ' (' + d.n + ')').reverse();
+Plotly.newPlot('ev', TIERS.map(t => ({type:'bar', orientation:'h', name:t.replace('_',' '), y,
+  x:OVER.map(d => 100*(d.tiers[t]||0)/d.n).reverse(), marker:{color:TC[t]},
+  hovertemplate:t + ': %{x:.1f} %<extra></extra>'})),
+  {barmode:'stack', margin: plotMargin(180, {r: 24, t: 10, b: 64}), xaxis:{title:'share of members (%)', range:[0,100]},
+   yaxis:{tickfont:{size:10}}, legend:{orientation:'h', y:1.015, font:{size:10}},
+   font:{color: dark ? '#e8e6e1' : '#15202b'},
+   paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)'}, {responsive:true, displaylogo:false});
+bindPlotMargin('ev', 180, {r: 24, t: 10, b: 64});
+</script>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+</body>
+</html>

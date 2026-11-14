@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groups · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/groups.html" class="on"
+     aria-current="true">Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="Sequence pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/groups.html" class="on"
+     aria-current="page">Groups</a>
+  
+  <a href="/pro-sim-blast/atlas/phylogeny.html" class=""
+     >Phylogeny</a>
+  
+  <a href="/pro-sim-blast/atlas/network.html" class=""
+     >Sequence space</a>
+  
+  <a href="/pro-sim-blast/atlas/taxonomy.html" class=""
+     >Taxonomy</a>
+  
+  <a href="/pro-sim-blast/atlas/structure.html" class=""
+     >Active site</a>
+  
+  <a href="/pro-sim-blast/atlas/closeness.html" class=""
+     >Closeness</a>
+  
+  
+</nav>
+
+
+
+
+<h1>What the group numbers mean</h1>
+<p class="lede">A group here is a <strong>clustering of alpha subunit sequences</strong> in this set, and
+nothing else. It is not a classification of the enzyme system, it says nothing about the domain of
+life, and it is not a reduced form of any scheme in the literature. The numbers are internal
+identifiers: this page exists so that a number on another page can be read as a definition rather
+than guessed at.</p>
+
+<div class="caveat">
+  <b>These are not Batie's five classes, and the shared count of five is a coincidence.</b>
+  Batie's scheme partitions the <em>electron transport chain</em> &mdash; the type of the reductase
+  and of the ferredoxin &mdash; so it is a property of the whole multi-component system in a given
+  strain, not of the alpha subunit. The two schemes cut the space differently, and the clearest
+  demonstration is in the data: Batie class IB contains both OMO and BZDO, which here are
+  <a href="/pro-sim-blast/cluster/1_101_OxoO.html">1_101_OxoO</a> in group 1 and
+  <a href="/pro-sim-blast/cluster/4_411_XylX.html">4_411_XylX</a> in group 4. One class, two groups.
+  A Batie class is also not a property of the enzyme: CARDO appears in three different classes
+  depending on the strain, which is why no Batie column is published on the type pages of this site.
+  Kweon's five types (2008) are a third, separate axis, again built on electron transport components.
+  This database assigns neither, and claims nothing about either.
+</div>
+
+<p class="note">21,046 entries are distributed over 7 groups.
+Two of them are not literature groups and are never published as numbers &mdash; they are shown as
+<em>ungrouped</em> everywhere on the site, and they appear here with their reason, because a reader
+who meets the word "ungrouped" is owed the measurement that put them there.</p>
+
+
+
+<div class="tablewrap">
+<table class="data">
+  <caption>Groups, measured against the confirmed set. Label, architecture and reasoning come from
+  <code>groups.yaml</code>; member and type counts are measured from the database on every build.</caption>
+  <thead><tr>
+    <th>Published as</th><th>What it is</th><th>Architecture</th>
+    <th class="num">Beta</th><th class="num">Types</th><th class="num">Entries</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><b>group 1</b>
+      </td>
+    <td>Alkaloid and aryl-ether monooxygenases
+      <br><span class="note">hydroxylation, N demethylation</span>
+      <br><span class="note">alkaloids, biaryls ethers</span></td>
+    <td>alpha3</td>
+    <td class="num">1 %</td>
+    <td class="num">16</td>
+    <td class="num">5,202</td>
+  </tr>
+  
+  <tr>
+    <td><b>group 2</b>
+      </td>
+    <td>Biphenyl and alkylbenzene dioxygenases
+      <br><span class="note">cis dihydroxylation, dioxygenation with release</span>
+      <br><span class="note">biaryls ethers, alkylbenzenes</span></td>
+    <td>alpha3beta3</td>
+    <td class="num">80 %</td>
+    <td class="num">15</td>
+    <td class="num">825</td>
+  </tr>
+  
+  <tr>
+    <td><b>group 3</b>
+      </td>
+    <td>Polycyclic aromatic and nitroarene dioxygenases
+      <br><span class="note">cis dihydroxylation, dioxygenation with release</span>
+      <br><span class="note">pah, nitroaromatics</span></td>
+    <td>mixed</td>
+    <td class="num">27 %</td>
+    <td class="num">16</td>
+    <td class="num">3,537</td>
+  </tr>
+  
+  <tr>
+    <td><b>group 4</b>
+      </td>
+    <td>Aromatic acid and aniline dioxygenases
+      <br><span class="note">cis dihydroxylation, dioxygenation with release</span>
+      <br><span class="note">aromatic acids, anilines</span></td>
+    <td>alpha3beta3</td>
+    <td class="num">76 %</td>
+    <td class="num">10</td>
+    <td class="num">3,864</td>
+  </tr>
+  
+  <tr>
+    <td><b>group 5</b>
+      </td>
+    <td>Quaternary amine oxygenases
+      <br><span class="note">hydroxylation, N demethylation, C N cleavage</span>
+      <br><span class="note">quaternary amines</span></td>
+    <td>alpha3</td>
+    <td class="num">0 %</td>
+    <td class="num">8</td>
+    <td class="num">6,989</td>
+  </tr>
+  
+  <tr>
+    <td><b>ungrouped (plant chlorophyll ROs: PAO, CAO, PTC52)</b>
+      <br><span class="note">internally 6;
+      not published as a number</span></td>
+    <td>Plastid chlorophyll-pathway oxygenases
+      <br><span class="note">oxygenolytic ring opening, hydroxylation</span>
+      <br><span class="note">chlorophyll pathway</span></td>
+    <td>alpha3</td>
+    <td class="num">&mdash;</td>
+    <td class="num">3</td>
+    <td class="num">620</td>
+  </tr>
+  
+  <tr>
+    <td><b>ungrouped (AerC)</b>
+      <br><span class="note">internally 7;
+      not published as a number</span></td>
+    <td>Long Rieske oxygenases with an inserted catalytic lobe
+      <br><span class="note">C C cleavage, C C bond formation</span>
+      <br><span class="note">alkaloids</span></td>
+    <td>unknown</td>
+    <td class="num">&mdash;</td>
+    <td class="num">1</td>
+    <td class="num">9</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+<h2>Why each group is a group</h2>
+
+
+
+
+
+
+
+
+
+
+<section class="groupnote">
+  <h3>group 5 &mdash; Quaternary amine oxygenases</h3>
+  
+  <p>The cleanest group in the set: all eight types act on quaternary amines, and not one member carries a beta subunit. It also holds the plant choline monooxygenases, which is why membership of a group is not a statement about the domain of life.</p>
+</section>
+
+
+
+<section class="groupnote">
+  <h3>ungrouped (plant chlorophyll ROs: PAO, CAO, PTC52) &mdash; Plastid chlorophyll-pathway oxygenases</h3>
+  <p class="note">Added 2026-10-14.
+    Published as &ldquo;ungrouped (plant chlorophyll ROs: PAO, CAO, PTC52)&rdquo;.</p>
+  <p>Added for pheophorbide a oxygenase, chlorophyllide a oxygenase and PTC52 -- plastid enzymes of chlorophyll metabolism.
+Separated on ALIGNABILITY, not on domain of life. No existing reference aligns to them beyond the Rieske domain: the best hits cover only 30-34 % of the query, which is the sequence-level form of what the carboxylate audit found structurally, where a C-terminal catalytic-lobe probe scored on 2.7 % of this set against 57.7 % of ordinary members. Folding them into group 1 would redefine that group&#39;s alignment columns using sequences that cannot be aligned over the catalytic lobe, which is the exact fault that made 1,388 carboxylates read as absent when they were present.
+They are 23-32 % identical to one another over 57-87 % of their length, so they form a family rather than a set of singletons, and none carries a beta subunit.
+NOT called &#34;the eukaryotic group&#34; on purpose: CmoS, CmoB and CmoA are eukaryotic and belong to group 5, and Nvd and DAF-36 are animal sterol desaturases that align full length to group 3. A label by domain of life would contradict the data.</p>
+</section>
+
+
+
+<section class="groupnote">
+  <h3>ungrouped (AerC) &mdash; Long Rieske oxygenases with an inserted catalytic lobe</h3>
+  <p class="note">Added 2026-10-21.
+    Published as &ldquo;ungrouped (AerC)&rdquo;.</p>
+  <p>Added for AerC (7_701_AerC), the aeruginosin-pathway Rieske oxygenase of Kalymmatonema gypsitolerans NIES-4073, which performs oxidative carbocyclisation and C-C bond cleavage in one active site (doi:10.1021/jacs.5c01994).
+Separated on ALIGNABILITY, the same ground as group 6 and a more extreme case of it. AerC is 717 aa, far outside the 330-460 aa range of the other references, and the Rieske domain sits at residue 146 while the mononuclear site sits at 511; in an ordinary alpha subunit that spacing is about 80 to 210. There is a large insertion between the two, so a global alignment to the catalytic-centre model covers only 18.9 % of the model and stops at column 231, never reaching the catalytic columns. Folding AerC into any existing group would redefine that group&#39;s alignment columns using a sequence that cannot be aligned across the catalytic lobe.
+THE GROUP IS NOT A SINGLETON, and this was measured before the type was admitted. A single-sequence AerC profile run against the 26,693 candidate proteins passes the 0.45 coverage gate on 18 of them and covers those 18 at 0.84-1.00 (median 0.98). Those same 18 are currently assigned to 5_507_BmoA (426 aa) and 3_311_PhtAa (462 aa) at coverage 0.21-0.33, that is over roughly a fifth of their length. So admitting AerC does not take members on a technicality; it repairs 18 assignments whose present reference matches a fragment of the protein. The Nodularia sphaerocarpa orthologue ULP74381.1 (720 aa, SuoC) carries the same ligands at the same columns.
+OPEN: the mononuclear carboxylate is present on biochemical grounds (the paper measures 3.00 +/- 0.02 Fe per monomer, that is 2 Fe Rieske plus 1 Fe mononuclear) but its RESIDUE could not be located, because the model region that holds that column has no counterpart in AerC. Recorded as roadmap item 68; see analysis_out/aerc_resolution.json.
+members and beta_rate are null until the pipeline has been rerun with this reference in the library; they are not guesses.</p>
+</section>
+
+
+
+<p class="note">Whether these groups are recovered as clades is a different question, and it is
+measured rather than asserted: see <a href="/pro-sim-blast/atlas/phylogeny.html">Phylogeny</a>, where only
+group 5 forms a single clade and its bootstrap support falls from 0.995 among the references to 0.49
+in the larger set.</p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+</body>
+</html>

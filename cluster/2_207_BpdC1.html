@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BpdC1 · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 2_207_BpdC1</nav>
+
+<h1>BpdC1 <span class="note">· type 2_207_BpdC1 ·
+  <a href="/pro-sim-blast/atlas/groups.html">group 2</a></span></h1>
+<div class="numbered" data-contents>
+
+
+
+
+
+<div class="caveat">
+  <b>biphenyl</b>
+  <span class="chip chip--xenobiotic">xenobiotic</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  Determined experimentally for this type's <b>curated reference enzyme</b>.
+  <b>0.0%</b> of the 1 members here are at
+  least 60 % identical to a characterised reference, so the substrate label carries over to
+  them.
+  <details class="basis">
+    <summary>What this label does and does not cover</summary>
+    <p class="note">It is the compound the reference enzyme was <em>tested on</em>, not the limit of
+    what it accepts: one Rieske oxygenase commonly turns over several related compounds, and most
+    have been assayed against only a few.
+    The evidence level behind the share above records the best match across all
+    76 curated references, not a match to this type specifically. The remaining members are more
+    distant relatives whose function is unknown.</p>
+  </details>
+  <br><span class="note">Rhodococcus bph pathway</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt Q53086 (Q53086_9NOCA, unreviewed (TrEMBL)), Rhodococcus sp. M5; stored sequence verified byte-identical to that entry (461 aa) on 2026-10-28. Identified by gene name, not from a recorded citation -- the enzyme&#x27;s primary paper is still unlinked ·
+      a curator's judgement
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    
+    <div class="rxn__eq">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="c1ccc(-c2ccccc2)cc1" aria-label="biphenyl"></svg>
+      
+      <div class="rxn__label">biphenyl</div>
+      
+      
+      <div class="rxn__ids">
+        
+        <a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:17097"
+           class="chebi chebi--cand"
+           title="candidate: the curated substrate name matched exactly one ChEBI label, which is not the same as an identity">CHEBI:17097</a>
+        
+        <span class="note">candidate from a name match, not an identity</span>
+      </div>
+      
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">cis-dihydroxylation</div>
+    </div>
+    <div class="rxn__side">
+      <div class="rxn__product">cis-2,3-dihydro-2,3-dihydroxybiphenyl</div>
+      <div class="rxn__label">product</div>
+    </div>
+    </div>
+    <div class="rxn__scheme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-cis-dihydroxylation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="34.0,27.0 17.5,36.5 17.5,55.5 34.0,65.0 50.5,55.5 50.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="34" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="62" y1="46" x2="120" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-cis-dihydroxylation)"/><text x="91.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="150.0,27.0 133.5,36.5 133.5,55.5 150.0,65.0 166.5,55.5 166.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="151.8" y1="30.1" x2="135.4" y2="39.6" stroke="currentColor" stroke-width="1.1"/><line x1="135.4" y1="52.4" x2="151.8" y2="61.9" stroke="currentColor" stroke-width="1.1"/><text x="175.5" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text><text x="175.5" y="34.8" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">Both oxygen atoms are added to the same face of the ring, giving a cis-diol. The ring is no longer aromatic.</div>
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> into the product.
+    
+    
+    <br><span class="small">naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. Whether a given member catalyses it depends on that member's evidence level.
+  
+  <details class="basis">
+    <summary>Why the product is named and not drawn</summary>
+    <p class="note">The substrate is drawn from its SMILES string; drawing the product would
+    require assuming which ring positions are attacked in every member, so it is given by
+    name.</p>
+  </details></figcaption>
+</figure>
+
+
+
+
+
+
+<h2>Literature</h2>
+
+
+
+
+
+
+
+
+<details class="basis">
+  <summary>1 paper
+    cited by the UniProt entry of the reference protein</summary>
+  <p class="note"><b>These are not claims about this type.</b> They are the reference list of
+  the UniProt entry, which cites a paper for any annotation it carries &mdash; a genome
+  announcement as readily as a characterisation. Where UniProt attaches a paper to its
+  <i>function</i> or <i>catalytic activity</i> annotation as evidence, it is marked below; only
+  that mark says the paper supports a statement about what the enzyme does.</p>
+  <ul class="lit">
+  
+  <li>Wang Y. <i>et al.</i>
+  Gene 1995
+  &mdash; Sequence and expression of the bpdC1C2BADE genes involved in the initial steps of biphenyl/chlorobiphenyl degradation by Rhodococcus sp. M5.
+  <br><a class="mono small" href="https://doi.org/10.1016/0378-1119(95)00448-f"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/0378-1119(95)00448-f</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7590299/"
+     rel="noopener noreferrer" target="_blank">PMID 7590299</a>
+    <br><span class="note">In the reference list of
+    Q53086.</span></li>
+  
+  </ul>
+</details>
+
+
+<p class="note">Every DOI above was checked against the DOI handle registry, not by opening the
+publisher's page: many publishers answer an automated request with an error, and reading that
+error as &ldquo;the DOI is dead&rdquo; marked 79 of 125 valid DOIs as broken in the first
+version of this check.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>1 confirmed alpha subunits
+        
+        <details class="basis">
+          <summary>11 further sequences are not counted here</summary>
+          <p class="note">Counted by <b>sequence</b> instead of by entry &mdash; several
+          entries can carry the same sequence &mdash; the
+          <a href="/pro-sim-blast/atlas/groups.html">union</a> holds
+          12 distinct sequences of this type, and
+          11 of them have no genomic context at all. Those carry no
+          operon, neighbourhood or replicon, so they are counted neither above nor in any
+          figure below. <a href="/pro-sim-blast/download/all_union.csv">Union table</a>.</p>
+        </details></dd>
+      <dt>Variants</dt><dd>1 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>1 replicons, 1 genera</dd>
+      <dt>On plasmids</dt><dd>0.0% (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>0.0%</dd>
+      <dt>Profile match</dt><dd>mean score 122 bits, mean coverage 0.63</dd>
+      
+      
+      <dt>Bridging carboxylate <span class="note">column 286</span></dt>
+      <dd><b>Glu branch.</b> Glutamate in 1 of
+          1 members (100.0%). Glutamate here marks the quaternary-amine enzymes.
+          </dd>
+      
+      
+      
+      <dt>Catalytic carboxylate <span class="note">first-shell ligand</span></dt>
+      <dd><b>Not readable from a fixed column.</b> The carboxylate that coordinates the
+          mononuclear iron is aspartate in 26 of 26 curated structures, but no single profile
+          column holds it, and the residue column
+          431 calls sits 10.9–14.7 Å from the iron in every
+          one of those structures. No per-member count is reported for this site.
+          <a href="/pro-sim-blast/index.html#main">How the two columns were tested</a></dd>
+      
+      <dt>Domains of life</dt><dd>Bacteria / Bacteria 1</dd>
+      <dt>Phyla</dt><dd class="small">Pseudomonadota 1</dd>
+      <dt>Top genera</dt><dd><span class="chip">Oceanicoccus 1</span> </dd>
+    </dl>
+    
+<details class="basis">
+  <summary>What counts as a genus here, and what is left out</summary>
+  <p class="note">A genus is read from the <b>NCBI taxonomy rank</b> of the genome record that
+  carries the entry: the nearest ancestor whose rank is exactly <code>genus</code>. It is not
+  taken from the first word of the organism name. That difference is measured, not cosmetic:
+  the first word merges every <i>Candidatus</i> organism into one bucket that actually holds
+  17 separate genera, it
+  carries over quoting and bracketing from the source string (<code>'Nostoc</code>,
+  <code>[Enterobacter]</code>), and it misses renamings
+  &mdash; 360
+  confirmed entries change genus when the rank is used
+  (<i>Sinorhizobium</i> &rarr; <b>Ensifer</b>, <i>Rhizobium rhizogenes</i> &rarr;
+  <b>Martinezella</b>).</p>
+  <p class="note"><b>What is left out of every genus count on this page.</b>
+  867
+  confirmed entries (4.1%) have <b>no genus-rank ancestor at all</b> in the current
+  NCBI taxonomy. The largest case is <i>Mycolicibacterium</i>, which the organism strings still
+  name and which would be this database's seventh largest &ldquo;genus&rdquo;: NCBI now holds it
+  as a <b>subgenus</b>, <code>Mycobacterium (subgen. Mycolicibacterium)</code>, and that lineage
+  runs from species straight to the family. Those entries are neither dropped nor given an
+  invented genus; they are carried with the state <code>unassigned</code> and the nearest named
+  rank beside them, and they are excluded from the genus counts shown here. The
+  <a href="/pro-sim-blast/atlas/taxonomy.html#genus">taxonomy page</a> gives the full measurement.</p>
+</details>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/2_207_BpdC1.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/2_207_BpdC1.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+    <h3>Evidence for the members</h3>
+    <span class="tierbar" style="width:100%"><i style="background:#f78154;width:100.0%" title="distant: 1"></i></span>
+    <div class="tablewrap">
+    <table class="data compact">
+      <tbody>
+      
+      
+      <tr class="muted"><td><span class="chip chip--data" style="--chip:#1f7a4d">characterized</span></td>
+          <td class="small">characterized reference (≥95 % identity)</td>
+          <td class="num">0</td><td class="num">0.0%</td></tr>
+      
+      <tr class="muted"><td><span class="chip chip--data" style="--chip:#7fb069">close homolog</span></td>
+          <td class="small">close homolog (≥60 %)</td>
+          <td class="num">0</td><td class="num">0.0%</td></tr>
+      
+      <tr class="muted"><td><span class="chip chip--data" style="--chip:#f2c14e">family member</span></td>
+          <td class="small">family member (40–60 %)</td>
+          <td class="num">0</td><td class="num">0.0%</td></tr>
+      
+      <tr><td><span class="chip chip--data" style="--chip:#f78154">distant</span></td>
+          <td class="small">distant (25–40 %): type by homology only</td>
+          <td class="num">1</td><td class="num">100.0%</td></tr>
+      
+      <tr class="muted"><td><span class="chip chip--data" style="--chip:#8e44ad">novel</span></td>
+          <td class="small">novel (&lt;25 %): no close reference</td>
+          <td class="num">0</td><td class="num">0.0%</td></tr>
+      
+      </tbody>
+    </table>
+    </div>
+    
+    <p class="note">These levels count the 1 members with genomic
+    context &mdash; the only sequences for which a level can be computed.
+    The union holds
+    11 further sequences
+    assigned to this type that pass the gate but carry no genomic context, so
+    they are absent from the table above;
+    5 of those name a nucleotide record and could
+    be given context by downloading it, the rest are protein-only entries and
+    cannot. An empty level therefore reads &ldquo;none known <em>with
+    context</em>&rdquo;, not &ldquo;none known&rdquo;.
+    
+    <b>None of those context-less sequences is a near relative</b>
+    &mdash; measured on the same scale, not one of them reaches 60&nbsp;%
+    identity to a curated reference. For this type the empty levels above are
+    a property of the sampled diversity, not of the context requirement.
+    </p>
+    <p class="note"><a href="/pro-sim-blast/atlas/evidence.html">How these levels are defined</a></p>
+    
+
+    
+    <h3>Nearest other types</h3>
+    <p class="note">Identity between <b>this type's curated reference sequence and another's</b>.
+      Above roughly 40 % two types are not reliably separable by sequence.</p>
+    <details class="basis">
+      <summary>How this identity is measured</summary>
+      <p class="note">Read over the columns where both references carry a residue in the common
+      alignment of all 76. Pairwise identity taken from a multiple alignment runs a few points
+      below what an optimal alignment of the two sequences alone would give, so these values
+      understate rather than overstate.</p>
+    </details>
+    <div class="tablewrap">
+    <table class="data compact"><tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">2_213_BphA1A2</a></td><td class="num">75.8 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_209_TDO.html">2_209_TDO</a></td><td class="num">70.8 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">2_208_TecA1</a></td><td class="num">70.5 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">2_212_BedC1</a></td><td class="num">68.9 %</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_201_BphA1.html">2_201_BphA1</a></td><td class="num">63.9 %</td></tr>
+      
+    </tbody></table>
+    </div>
+    
+    <h3>Members that collide with another type</h3>
+    <p class="note"><b>This is not a similarity measure.</b> Each row is one sequence assigned to
+      this type that is nearly identical to a sequence assigned to a different type &mdash; so one
+      of the two assignments is probably wrong, or the two types overlap at their boundary.</p>
+    <details class="basis">
+      <summary>Read the evidence level with it</summary>
+      <p class="note">A collision between two <i>distant</i> members, each only distantly related
+      to its own reference, says far less than one between two characterised entries.</p>
+    </details>
+    <div class="tablewrap"><table class="data compact">
+      <thead><tr><th>Other type</th><th class="num">Identity</th>
+        <th>This type's sequence</th><th>Its level</th>
+        <th>The other sequence</th><th>Its level</th></tr></thead>
+      <tbody>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">2_213_BphA1A2</a></td>
+        <td class="num">79.2 %</td>
+        <td class="small">REF|2_207_BpdC1</td><td class="small">?</td>
+        <td class="small">REF|2_213_BphA1A2</td><td class="small">?</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_208_TecA1.html">2_208_TecA1</a></td>
+        <td class="num">74.7 %</td>
+        <td class="small">REF|2_207_BpdC1</td><td class="small">?</td>
+        <td class="small">REF|2_208_TecA1</td><td class="small">?</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_209_TDO.html">2_209_TDO</a></td>
+        <td class="num">72.7 %</td>
+        <td class="small">REF|2_207_BpdC1</td><td class="small">?</td>
+        <td class="small">REF|2_209_TDO</td><td class="small">?</td></tr>
+      
+      <tr><td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">2_212_BedC1</a></td>
+        <td class="num">72.7 %</td>
+        <td class="small">REF|2_207_BpdC1</td><td class="small">?</td>
+        <td class="small">REF|2_212_BedC1</td><td class="small">?</td></tr>
+      
+      </tbody>
+    </table></div>
+    
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <div class="tablewrap">
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">0.0%</td><td class="num">0.0%</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">0.0%</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    
+    <h3>Electron-transport configurations</h3>
+    <div class="tablewrap">
+    <table class="data compact"><tbody>
+      <tr><td class="mono small">α3 · Fd:none · Red:none</td><td class="num">1</td></tr>
+    </tbody></table>
+    </div>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">No member of this type is close enough to the curated enzyme for its gene
+    order to describe this enzyme. Only the distant arrangements below are available.</p>
+    
+    
+    <details class="sitelist">
+      <summary>Gene order among the more distant members (1 entries)</summary>
+      <p class="note">These members are under 60 % identical to the curated enzyme and their
+      reaction is unknown. A shared gene name here does not mean a shared function, so a run that
+      looks similar may be coincidence rather than a conserved operon.</p>
+      <div class="tablewrap">
+      <table class="data compact"><tbody>
+        
+        <tr><td><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 34" height="34" width="108" class="oplayout"><polygon points="5,4 42,4 51,14.0 42,24 5,24" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="23.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="54,7 91,7 100,14.0 91,21 54,21" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="72.5" y="17.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text></svg><div class="note mono">[alpha] &gt; hypothetical</div></td><td class="num">1</td></tr>
+        
+      </tbody></table>
+      </div>
+    </details>
+    
+  </div>
+</div>
+
+
+<h2>Regulation and promoter region</h2>
+
+
+<figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 513 72" height="72" width="513" class="oplayout"><polygon points="52,20 15,20 6,32.0 15,44 52,44" fill="#9aa0a6" stroke="#5f6368" stroke-width="0.9"><title>typical upstream gene of this type; not a recognised regulator</title></polygon><text x="29.0" y="35.5" font-size="9" text-anchor="middle" fill="#fff" font-weight="600">gene</text><text x="29.0" y="14.0" font-size="9" text-anchor="middle" fill="currentColor">divergent</text><text x="38.4" y="58.0" font-size="8" text-anchor="middle" fill="currentColor">not a regulator</text><rect x="55" y="18" width="54" height="28" fill="none" stroke="#8c2f22" stroke-dasharray="4,3" stroke-width="0.9"/><text x="82.0" y="58.0" font-size="9" text-anchor="middle" fill="currentColor">157 bp</text><polygon points="112,18 149,18 158,32.0 149,46 112,46" fill="#c0392b" stroke="#111" stroke-width="1.4"><title>[alpha]</title></polygon><text x="130.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">α</text><polygon points="161,20 198,20 207,32.0 198,44 161,44" fill="#d8dcdd" stroke="#5a5a5a" stroke-width="0.7"><title>hypothetical</title></polygon><text x="179.5" y="35.5" font-size="10" text-anchor="middle" fill="#fff" font-weight="600">?</text><text x="6" y="68" font-size="9" fill="currentColor">operon drawn 5′ to 3′; dashed box is the measured intergenic region — no regulator was identified in it</text></svg>
+<figcaption><b>Most frequent operon gene order among the members that resemble the
+reference &mdash; or, here, among all members, because too few
+resemble it closely enough to count
+&mdash; 100 %
+(1 of 1).</b>
+
+Preceded by what lies 5&prime; of the operon in most of its members
+(1 of 1): the gene immediately 5′ of the operon lies on the opposite strand but is not a recognised regulator — the intergenic region is measured, not shown to be regulatory.
+
+The dashed box is <b>a measured distance, not a demonstrated promoter.</b>
+
+<details class="basis">
+  <summary>How this figure is counted, and what the dashed box is</summary>
+  <p class="note">
+  
+  
+  
+  The dashed box is the median length of the intergenic region. No regulator was identified next to
+  the operon in most members, so the figure must not be read as showing a promoter. A regulator
+  described for the characterised reference, if there is one, is shown in its own figure above and
+  belongs to that entry, not to the type.
+  </p>
+</details></figcaption>
+</figure>
+
+<div class="cols">
+  <div>
+    <div class="tablewrap">
+    <table class="data compact">
+      <thead><tr><th>Gene upstream of the operon</th><th class="num">Members</th><th class="num">Share</th></tr></thead>
+      <tbody>
+      
+      
+      <tr><td>non-regulator, divergent
+          </td>
+        <td class="num">1</td><td class="num">100.0%</td></tr>
+      
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div>
+    
+    
+    <p class="note"><a href="/pro-sim-blast/atlas/regulation.html">What the promoter region does and does not tell us</a></p>
+  </div>
+</div>
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody><tr><td>hypothetical</td><td class="num">100.0%</td><td class="num">8</td></tr></tbody>
+</table></div>
+
+
+
+
+
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  <tr><td><a href="/pro-sim-blast/leaf/2_207_BpdC1-0.html">2_207_BpdC1#0</a></td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v=""><span class="note" title="a single sequence has no pair to measure an identity over">&ndash;</span></td>
+    <td class="small">Oceanicoccus:1</td>
+    <td class="small">–</td>
+    <td class="num" data-v="0">0</td>
+    <td>
+      <span class="chip chip--warn" title="Splitting stopped because a single sequence, so there is no pair to measure an identity over.">heterogeneous</span>
+      <span class="note">unexplained</span>
+      </td></tr>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">1</span></h2>
+
+
+
+
+<div class="caveat caveat--warn">
+  
+  <b>No member of this type is a close homologue of the reference enzyme.</b>
+  All 1 members are below 60 % identical to it,
+  the closest at 34 %.
+  <details class="basis">
+    <summary>How to read the table below</summary>
+    <p class="note">Nothing here should be read as doing the reaction the reference does. What the
+    profile has collected is the surrounding region of sequence space, and the function of
+    everything in it is unknown. If you came here for the characterised enzyme, it is described
+    above; the table below is a list of relatives, not of examples.</p>
+  </details>
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/entry.html?id=CP019343.1_3809938-3811297_1">ARN75710.1</a>
+        </td>
+    <td><i>Oceanicoccus sagamiensis</i></td>
+    <td class="small">(2Fe-2S)-binding protein</td>
+    <td><a href="/pro-sim-blast/cluster/2_207_BpdC1.html">BpdC1</a></td>
+    
+    <td><span class="chip chip--data" style="--chip:#f78154">distant (25–40 %): type by homology only</span>
+        <div class="note">34 % to TecA1</div>
+        </td>
+    <td><a href="/pro-sim-blast/leaf/2_207_BpdC1-0.html">0</a></td>
+    <td><span class="chip chip--core">core</span></td>
+    <td class="num" data-v="122.5">122</td>
+    <td class="small mono">[alpha] &gt; hypothetical</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

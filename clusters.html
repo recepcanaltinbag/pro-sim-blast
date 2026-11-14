@@ -1,0 +1,1974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enzyme types · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<h1>Reference RO types</h1>
+<p class="lede">Each confirmed entry is assigned to the reference type whose profile scores highest,
+by bit score rather than E-value. One row is one characterised enzyme type.</p>
+<p class="note">Click any column header to sort it; click again to reverse. The filter box matches
+anything in a row, and the chips narrow the table to one RO group, substrate class or literature
+confidence. Percentages are shares of that type's own members, so they are comparable down a column
+but not additive. A type with a low β, ferredoxin or reductase share is one whose partners are
+usually encoded elsewhere in the genome, not one that works without them.
+7 of the 76 curated types have
+<b>no members of their own</b>; they are listed here with a
+<span class="chip chip--warn">no members</span> mark and the type their reference is counted
+under, because assignment is competitive and a profile with a near-identical sibling can win
+nothing at all.</p>
+
+<div class="tablewrap">
+<table class="data" id="clusters" data-filter="Filter types by name, substrate or genus…">
+  <thead><tr>
+    <th>Type</th>
+    <th class="num" data-facet="RO group">Group</th>
+    <th>Substrate</th>
+    <th data-facet="Substrate class">Class</th>
+    <th data-facet="Chemical family">Family</th>
+    <th data-facet="Reaction">Reaction</th>
+    
+    <th data-facet="O&#8322; fate">O&#8322; ends up</th>
+    
+    <th data-facet="O&#8322; role">O&#8322; role</th>
+    
+    <th data-facet="Metabolic role">Role</th>
+    <th data-facet="Confidence">Confidence</th>
+    <th class="num">Members</th>
+    <th class="num">Genera</th>
+    <th class="num">Variants</th>
+    <th class="num">Plasmid<span class="unit">%</span></th>
+    <th class="num">β in operon<span class="unit">%</span></th>
+    <th class="num">Ferredoxin<span class="unit">%</span></th>
+    <th class="num">Reductase<span class="unit">%</span></th>
+    <th class="num">Eukaryotic<span class="unit">%</span></th>
+  </tr></thead>
+  <tbody>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_504_CntA.html"><b>CntA</b></a>
+        <span class="note small">5_504_CntA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>L-carnitine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">C N cleavage</td>
+    <td class="small" title="L-carnitine C7H15NO3 -&gt; trimethylamine C3H9N + malic semialdehyde C4H6O4. Sum of products = C7H15NO4 = substrate + one O, and that oxygen is on the four-carbon product, not on the amine.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="L-carnitine -&gt; trimethylamine: carnitine catabolism.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="2562">2,562</td>
+    <td class="num" data-v="302">302</td>
+    <td class="num" data-v="433">433</td>
+    <td class="num" data-v="1.756440281030445">1.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.053864168618267">1.1</td>
+    <td class="num" data-v="21.311475409836067">21.3</td>
+    <td class="num" data-v="7.7283372365339575">7.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_104_VanA.html"><b>VanA</b></a>
+        <span class="note small">1_104_VanA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>vanillate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">O demethylation</td>
+    <td class="small" title="guaiacol C7H8O2 -&gt; catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -&gt; protocatechuate C7H6O4 + CH2O gives the same result.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1772">1,772</td>
+    <td class="num" data-v="189">189</td>
+    <td class="num" data-v="119">119</td>
+    <td class="num" data-v="1.1286681715575622">1.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="26.693002257336342">26.7</td>
+    <td class="num" data-v="38.544018058690746">38.5</td>
+    <td class="num" data-v="0.11286681715575621">0.1</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html"><b>Stc2</b></a>
+        <span class="note small">5_506_Stc2</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>stachydrine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="stachydrine catabolism.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1768">1,768</td>
+    <td class="num" data-v="255">255</td>
+    <td class="num" data-v="234">234</td>
+    <td class="num" data-v="2.6018099547511313">2.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.0927601809954752">2.1</td>
+    <td class="num" data-v="50.05656108597285">50.1</td>
+    <td class="num" data-v="1.3574660633484164">1.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_313_KshA15.html"><b>KshA15</b></a>
+        <span class="note small">3_313_KshA15</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>3-ketosteroid</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="3-ketosteroid 9-alpha-hydroxylation: a ring-opening step of steroid CATABOLISM, the route by which cholesterol is consumed.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1712">1,712</td>
+    <td class="num" data-v="76">76</td>
+    <td class="num" data-v="144">144</td>
+    <td class="num" data-v="0.5841121495327103">0.6</td>
+    <td class="num" data-v="0.05841121495327103">0.1</td>
+    <td class="num" data-v="0.05841121495327103">0.1</td>
+    <td class="num" data-v="7.535046728971962">7.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_507_BmoA.html"><b>BmoA</b></a>
+        <span class="note small">5_507_BmoA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>glycine betaine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="glycine betaine -&gt; dimethylglycine: betaine DEGRADATION, the opposite direction from the plant CMO enzymes.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="1160">1,160</td>
+    <td class="num" data-v="212">212</td>
+    <td class="num" data-v="230">230</td>
+    <td class="num" data-v="2.1551724137931036">2.2</td>
+    <td class="num" data-v="0.08620689655172414">0.1</td>
+    <td class="num" data-v="10.172413793103448">10.2</td>
+    <td class="num" data-v="28.448275862068964">28.4</td>
+    <td class="num" data-v="0.9482758620689655">0.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_106_TsaM.html"><b>TsaM</b></a>
+        <span class="note small">1_106_TsaM</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>4-toluenesulfonate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">sulfoaromatics</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1089">1,089</td>
+    <td class="num" data-v="199">199</td>
+    <td class="num" data-v="274">274</td>
+    <td class="num" data-v="1.9283746556473829">1.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.1019283746556474">1.1</td>
+    <td class="num" data-v="20.66115702479339">20.7</td>
+    <td class="num" data-v="0.4591368227731864">0.5</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html"><b>TdnA1</b></a>
+        <span class="note small">4_404_TdnA1</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>aniline</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">anilines</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="as AtdA: aniline carries no oxygen, so both catechol oxygens are O2-derived.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="795">795</td>
+    <td class="num" data-v="93">93</td>
+    <td class="num" data-v="71">71</td>
+    <td class="num" data-v="2.5157232704402515">2.5</td>
+    <td class="num" data-v="98.11320754716981">98.1</td>
+    <td class="num" data-v="2.641509433962264">2.6</td>
+    <td class="num" data-v="12.075471698113208">12.1</td>
+    <td class="num" data-v="0.12578616352201258">0.1</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_411_XylX.html"><b>XylX</b></a>
+        <span class="note small">4_411_XylX</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>toluate and benzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="734">734</td>
+    <td class="num" data-v="73">73</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="2.1798365122615806">2.2</td>
+    <td class="num" data-v="91.41689373297002">91.4</td>
+    <td class="num" data-v="2.4523160762942777">2.5</td>
+    <td class="num" data-v="92.77929155313352">92.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_113_CdnA.html"><b>CdnA</b></a>
+        <span class="note small">1_113_CdnA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>caffeine and methylxanthines</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="caffeine and methylxanthine catabolism.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="689">689</td>
+    <td class="num" data-v="116">116</td>
+    <td class="num" data-v="111">111</td>
+    <td class="num" data-v="1.741654571843251">1.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.1611030478955007">1.2</td>
+    <td class="num" data-v="6.6763425253991295">6.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_508_GbcA.html"><b>GbcA</b></a>
+        <span class="note small">5_508_GbcA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>glycine betaine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="glycine betaine degradation, as BmoA.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="505">505</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.19801980198019803">0.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_505_qxyA.html"><b>qxyA</b></a>
+        <span class="note small">5_505_qxyA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>benzalkonium chloride and other quaternary ammonium compounds</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">C N cleavage</td>
+    <td class="small" title="the N-C bond is hydroxylated and breaks, leaving the amine unchanged and the oxygen on the released carbon fragment.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="486">486</td>
+    <td class="num" data-v="145">145</td>
+    <td class="num" data-v="106">106</td>
+    <td class="num" data-v="0.411522633744856">0.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.823045267489712">0.8</td>
+    <td class="num" data-v="4.11522633744856">4.1</td>
+    <td class="num" data-v="0.411522633744856">0.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_409_TPDO.html"><b>TPDO</b></a>
+        <span class="note small">4_409_TPDO</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>terephthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="475">475</td>
+    <td class="num" data-v="61">61</td>
+    <td class="num" data-v="52">52</td>
+    <td class="num" data-v="7.368421052631579">7.4</td>
+    <td class="num" data-v="94.3157894736842">94.3</td>
+    <td class="num" data-v="46.526315789473685">46.5</td>
+    <td class="num" data-v="51.1578947368421">51.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_501_CmoS.html"><b>CmoS</b></a>
+        <span class="note small">5_501_CmoS</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="one oxygen atom from O2 IS incorporated into the product. BRENDA gives the reaction of EC 1.14.15.7 as &#39;choline + O2 + 2 reduced ferredoxin + 2 H+ = betaine aldehyde HYDRATE + H2O + 2 oxidized ferredoxin&#39;, and that balances as choline C5H14NO+ + O2 -&gt; hydrate C5H14NO2+ + H2O: one oxygen into the product, one into water, the ordinary monooxygenase stoichiometry. EC class 1.14.15 is defined as &#39;incorporation of one atom of oxygen into the other donor&#39;. The free aldehyde C5H12NO+ is the DEHYDRATED equilibrium form, not what the enzyme releases; computing the balance from it gives a loss of two hydrogens and no oxygen gain, which is how this field was twice recorded wrongly before the reaction was checked against BRENDA on 2026-10-28.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="choline -&gt; betaine aldehyde: the first step of glycine betaine SYNTHESIS, an osmoprotectant the plant makes. The opposite direction from BmoA and GbcA, which degrade glycine betaine.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="461">461</td>
+    <td class="num" data-v="122">122</td>
+    <td class="num" data-v="87">87</td>
+    <td class="num" data-v="0.21691973969631237">0.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.6507592190889371">0.7</td>
+    <td class="num" data-v="2.386117136659436">2.4</td>
+    <td class="num" data-v="23.427331887201735">23.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_410_CbdC.html"><b>CbdC</b></a>
+        <span class="note small">4_410_CbdC</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>2-halobenzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="the ring gains both hydroxyls while halide and CO2 leave.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="429">429</td>
+    <td class="num" data-v="72">72</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="2.331002331002331">2.3</td>
+    <td class="num" data-v="99.06759906759906">99.1</td>
+    <td class="num" data-v="2.797202797202797">2.8</td>
+    <td class="num" data-v="84.84848484848484">84.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_105_DdmC.html"><b>DdmC</b></a>
+        <span class="note small">1_105_DdmC</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>dicamba</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">O demethylation</td>
+    <td class="small" title="guaiacol C7H8O2 -&gt; catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -&gt; protocatechuate C7H6O4 + CH2O gives the same result.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>low</td>
+    <td class="num" data-v="409">409</td>
+    <td class="num" data-v="111">111</td>
+    <td class="num" data-v="129">129</td>
+    <td class="num" data-v="1.466992665036675">1.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.2224938875305624">1.2</td>
+    <td class="num" data-v="3.9119804400977993">3.9</td>
+    <td class="num" data-v="0.7334963325183375">0.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html"><b>ROCH34</b></a>
+        <span class="note small">4_405_ROCH34</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="375">375</td>
+    <td class="num" data-v="77">77</td>
+    <td class="num" data-v="73">73</td>
+    <td class="num" data-v="1.3333333333333333">1.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="17.866666666666667">17.9</td>
+    <td class="num" data-v="20.8">20.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_307_NagGH.html"><b>NagGH</b></a>
+        <span class="note small">3_307_NagGH</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>salicylate (2-hydroxybenzoate)</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="345">345</td>
+    <td class="num" data-v="53">53</td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="3.7681159420289854">3.8</td>
+    <td class="num" data-v="96.52173913043478">96.5</td>
+    <td class="num" data-v="88.40579710144928">88.4</td>
+    <td class="num" data-v="62.028985507246375">62.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/6_601_PAO.html"><b>PAO</b></a>
+        <span class="note small">6_601_PAO</span>
+        
+        </td>
+    <td class="num">6</td>
+    <td>pheophorbide a</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">tetrapyrroles</td>
+    <td class="small">oxygenolytic ring opening</td>
+    <td class="small" title="PAO: oxygen is incorporated into the ring-opened product as the chlorin macrocycle is cleaved.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="pheophorbide a -&gt; red chlorophyll catabolite: chlorophyll BREAKDOWN during senescence. Catabolic although it sits beside the biosynthetic CAO and PTC52 in the same ungrouped plant chlorophyll set.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="342">342</td>
+    <td class="num" data-v="111">111</td>
+    <td class="num" data-v="100">100</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.5847953216374269">0.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="54.67836257309941">54.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_322_DAF36.html"><b>DAF36</b></a>
+        <span class="note small">3_322_DAF36</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>cholesterol</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">desaturation</td>
+    <td class="small" title="cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor.">not incorporated</td>
+    <td class="small">oxidant only</td>
+    <td class="small" title="cholesterol -&gt; 7-dehydrocholesterol in the dafachronic acid (hormone) pathway.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="333">333</td>
+    <td class="num" data-v="99">99</td>
+    <td class="num" data-v="79">79</td>
+    <td class="num" data-v="0.9009009009009009">0.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.9009009009009009">0.9</td>
+    <td class="num" data-v="1.8018018018018018">1.8</td>
+    <td class="num" data-v="30.93093093093093">30.9</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_408_AntA.html"><b>AntA</b></a>
+        <span class="note small">4_408_AntA</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>anthranilate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="the ring gains both hydroxyls while ammonia and CO2 leave; the CO2 carries the carboxylate&#39;s own oxygens.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="305">305</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.9836065573770492">1.0</td>
+    <td class="num" data-v="99.01639344262296">99.0</td>
+    <td class="num" data-v="0.6557377049180327">0.7</td>
+    <td class="num" data-v="91.47540983606558">91.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_406_PDO.html"><b>PDO</b></a>
+        <span class="note small">4_406_PDO</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="286">286</td>
+    <td class="num" data-v="79">79</td>
+    <td class="num" data-v="44">44</td>
+    <td class="num" data-v="4.895104895104895">4.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="7.6923076923076925">7.7</td>
+    <td class="num" data-v="23.426573426573427">23.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_321_Nvd.html"><b>Nvd</b></a>
+        <span class="note small">3_321_Nvd</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>cholesterol</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">desaturation</td>
+    <td class="small" title="cholesterol C27H46O -&gt; 7-dehydrocholesterol C27H44O: two hydrogens lost, no oxygen gained. O2 is the oxidant here, not an oxygen donor.">not incorporated</td>
+    <td class="small">oxidant only</td>
+    <td class="small" title="cholesterol -&gt; 7-dehydrocholesterol: the committed step toward ecdysteroid hormone biosynthesis.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="278">278</td>
+    <td class="num" data-v="79">79</td>
+    <td class="num" data-v="88">88</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.079136690647482">1.1</td>
+    <td class="num" data-v="2.158273381294964">2.2</td>
+    <td class="num" data-v="38.1294964028777">38.1</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_217_HcaE.html"><b>HcaE</b></a>
+        <span class="note small">2_217_HcaE</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>3-phenylpropionate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="259">259</td>
+    <td class="num" data-v="16">16</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="98.45559845559846">98.5</td>
+    <td class="num" data-v="87.25868725868726">87.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html"><b>CmtAb</b></a>
+        <span class="note small">4_401_CmtAb</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>p-cumate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="246">246</td>
+    <td class="num" data-v="71">71</td>
+    <td class="num" data-v="78">78</td>
+    <td class="num" data-v="4.471544715447155">4.5</td>
+    <td class="num" data-v="50.8130081300813">50.8</td>
+    <td class="num" data-v="20.32520325203252">20.3</td>
+    <td class="num" data-v="19.10569105691057">19.1</td>
+    <td class="num" data-v="0.4065040650406504">0.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html"><b>PhtAa</b></a>
+        <span class="note small">3_311_PhtAa</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phthalate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="226">226</td>
+    <td class="num" data-v="31">31</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="5.3097345132743365">5.3</td>
+    <td class="num" data-v="71.68141592920354">71.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="47.78761061946903">47.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_110_SxtT.html"><b>SxtT</b></a>
+        <span class="note small">1_110_SxtT</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>beta-saxitoxinol</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="beta-saxitoxinol -&gt; saxitoxin: a tailoring step in saxitoxin biosynthesis, not degradation.">biosynthetic</td>
+    <td>medium</td>
+    <td class="num" data-v="225">225</td>
+    <td class="num" data-v="90">90</td>
+    <td class="num" data-v="87">87</td>
+    <td class="num" data-v="1.3333333333333333">1.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.4444444444444444">0.4</td>
+    <td class="num" data-v="12.0">12.0</td>
+    <td class="num" data-v="0.4444444444444444">0.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_403_AtdA.html"><b>AtdA</b></a>
+        <span class="note small">4_403_AtdA</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>aniline</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">anilines</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="aniline C6H7N -&gt; catechol C6H6O2: aniline carries no oxygen at all, so both catechol oxygens must be O2-derived; ammonia is released.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="190">190</td>
+    <td class="num" data-v="48">48</td>
+    <td class="num" data-v="33">33</td>
+    <td class="num" data-v="0.5263157894736842">0.5</td>
+    <td class="num" data-v="52.10526315789474">52.1</td>
+    <td class="num" data-v="1.5789473684210527">1.6</td>
+    <td class="num" data-v="20.526315789473685">20.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_108_PobA.html"><b>PobA</b></a>
+        <span class="note small">1_108_PobA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>4-carboxydiphenyl ether (phenoxybenzoate)</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="174">174</td>
+    <td class="num" data-v="42">42</td>
+    <td class="num" data-v="31">31</td>
+    <td class="num" data-v="1.1494252873563218">1.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.8735632183908044">2.9</td>
+    <td class="num" data-v="13.218390804597702">13.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_111_GxtA.html"><b>GxtA</b></a>
+        <span class="note small">1_111_GxtA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>saxitoxin (also accepts beta-saxitoxinol)</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="saxitoxin -&gt; 11-beta-hydroxysaxitoxin: a tailoring step on the saxitoxin scaffold.">biosynthetic</td>
+    <td>medium</td>
+    <td class="num" data-v="174">174</td>
+    <td class="num" data-v="78">78</td>
+    <td class="num" data-v="71">71</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.2988505747126435">2.3</td>
+    <td class="num" data-v="1.7241379310344827">1.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_117_PrnD.html"><b>PrnD</b></a>
+        <span class="note small">1_117_PrnD</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>aminopyrrolnitrin (3-chloro-4-(2-amino-3-chlorophenyl)pyrrole)</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">N oxygenation</td>
+    <td class="small" title="PrnD: amine -&gt; nitro; the oxygen stays on the nitrogen of the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="aminopyrrolnitrin -&gt; pyrrolnitrin: the last step of pyrrolnitrin (antibiotic) biosynthesis.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="161">161</td>
+    <td class="num" data-v="43">43</td>
+    <td class="num" data-v="43">43</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="8.695652173913043">8.7</td>
+    <td class="num" data-v="4.968944099378882">5.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_218_BphA1.html"><b>BphA1</b></a>
+        <span class="note small">2_218_BphA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="153">153</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="2.6143790849673203">2.6</td>
+    <td class="num" data-v="56.209150326797385">56.2</td>
+    <td class="num" data-v="49.01960784313726">49.0</td>
+    <td class="num" data-v="52.287581699346404">52.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html"><b>PhnA1a</b></a>
+        <span class="note small">3_301_PhnA1a</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phenanthrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="149">149</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="28">28</td>
+    <td class="num" data-v="13.422818791946309">13.4</td>
+    <td class="num" data-v="87.24832214765101">87.2</td>
+    <td class="num" data-v="30.87248322147651">30.9</td>
+    <td class="num" data-v="38.92617449664429">38.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_319_PhdA.html"><b>PhdA</b></a>
+        <span class="note small">3_319_PhdA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>phenanthrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="147">147</td>
+    <td class="num" data-v="48">48</td>
+    <td class="num" data-v="68">68</td>
+    <td class="num" data-v="2.0408163265306123">2.0</td>
+    <td class="num" data-v="44.89795918367347">44.9</td>
+    <td class="num" data-v="6.122448979591836">6.1</td>
+    <td class="num" data-v="11.564625850340136">11.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/6_603_PTC52.html"><b>PTC52</b></a>
+        <span class="note small">6_603_PTC52</span>
+        
+        </td>
+    <td class="num">6</td>
+    <td>protochlorophyllide a</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">tetrapyrroles</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="protochlorophyllide a -&gt; b, on the biosynthetic side of the chlorophyll pathway.">biosynthetic</td>
+    <td>medium</td>
+    <td class="num" data-v="140">140</td>
+    <td class="num" data-v="57">57</td>
+    <td class="num" data-v="51">51</td>
+    <td class="num" data-v="0.7142857142857143">0.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="75.0">75.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/6_602_CAO.html"><b>CAO</b></a>
+        <span class="note small">6_602_CAO</span>
+        
+        </td>
+    <td class="num">6</td>
+    <td>chlorophyllide a</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">tetrapyrroles</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="chlorophyllide a -&gt; chlorophyllide b: chlorophyll b BIOSYNTHESIS. Note the contrast with PAO in the same group, which breaks chlorophyll down.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="138">138</td>
+    <td class="num" data-v="59">59</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="79.71014492753623">79.7</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_211_bfzA.html"><b>bfzA</b></a>
+        <span class="note small">2_211_bfzA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>buprofezin</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">anilines</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>low</td>
+    <td class="num" data-v="118">118</td>
+    <td class="num" data-v="37">37</td>
+    <td class="num" data-v="34">34</td>
+    <td class="num" data-v="4.237288135593221">4.2</td>
+    <td class="num" data-v="9.322033898305085">9.3</td>
+    <td class="num" data-v="13.559322033898304">13.6</td>
+    <td class="num" data-v="24.576271186440678">24.6</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html"><b>CARDO</b></a>
+        <span class="note small">1_102_CARDO</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>carbazole</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="114">114</td>
+    <td class="num" data-v="29">29</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="8.771929824561404">8.8</td>
+    <td class="num" data-v="5.2631578947368425">5.3</td>
+    <td class="num" data-v="19.29824561403509">19.3</td>
+    <td class="num" data-v="25.43859649122807">25.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_302_DitA.html"><b>DitA</b></a>
+        <span class="note small">3_302_DitA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>dehydroabietate</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">terpenoids steroids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="dehydroabietate -&gt; diterpenoid diol: diterpenoid resin acid catabolism.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="112">112</td>
+    <td class="num" data-v="22">22</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="3.5714285714285716">3.6</td>
+    <td class="num" data-v="99.10714285714286">99.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="24.107142857142858">24.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_109_LigX.html"><b>LigX</b></a>
+        <span class="note small">1_109_LigX</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>5,5&#39;-dehydrodivanillate</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">O demethylation</td>
+    <td class="small" title="guaiacol C7H8O2 -&gt; catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -&gt; protocatechuate C7H6O4 + CH2O gives the same result.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="93">93</td>
+    <td class="num" data-v="32">32</td>
+    <td class="num" data-v="38">38</td>
+    <td class="num" data-v="2.150537634408602">2.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.075268817204301">1.1</td>
+    <td class="num" data-v="11.827956989247312">11.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_107_CndA.html"><b>CndA</b></a>
+        <span class="note small">1_107_CndA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>chloroacetanilide herbicides (alachlor, acetochlor, butachlor)</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="74">74</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="37">37</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.7027027027027026">2.7</td>
+    <td class="num" data-v="25.675675675675677">25.7</td>
+    <td class="num" data-v="1.3513513513513513">1.4</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_317_NidA.html"><b>NidA</b></a>
+        <span class="note small">3_317_NidA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>pyrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="65">65</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="26">26</td>
+    <td class="num" data-v="13.846153846153847">13.8</td>
+    <td class="num" data-v="76.92307692307692">76.9</td>
+    <td class="num" data-v="4.615384615384615">4.6</td>
+    <td class="num" data-v="6.153846153846154">6.2</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_118_RedG.html"><b>RedG</b></a>
+        <span class="note small">1_118_RedG</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>undecylprodigiosin</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">C C bond formation</td>
+    <td class="small" title="undecylprodigiosin C25H35N3O -&gt; streptorubin B C25H33N3O: two hydrogens lost, no oxygen gained.">not incorporated</td>
+    <td class="small">oxidant only</td>
+    <td class="small" title="undecylprodigiosin -&gt; streptorubin B: oxidative carbocyclisation in prodigiosin biosynthesis.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="64">64</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="18">18</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="9.375">9.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_214_TftA.html"><b>TftA</b></a>
+        <span class="note small">2_214_TftA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>2,4,5-trichlorophenoxyacetate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="2,4,5-trichlorophenoxyacetate ether cleavage: the phenol keeps the original ether oxygen and the O2-derived oxygen leaves in glyoxylate, exactly as for cadA (2,4-D C8H6Cl2O3 -&gt; C6H4Cl2O + C2H2O3).">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="58">58</td>
+    <td class="num" data-v="24">24</td>
+    <td class="num" data-v="30">30</td>
+    <td class="num" data-v="1.7241379310344827">1.7</td>
+    <td class="num" data-v="68.96551724137932">69.0</td>
+    <td class="num" data-v="1.7241379310344827">1.7</td>
+    <td class="num" data-v="15.517241379310345">15.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_116_GdmA.html"><b>GdmA</b></a>
+        <span class="note small">1_116_GdmA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>guaiacol (2-methoxyphenol)</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">O demethylation</td>
+    <td class="small" title="guaiacol C7H8O2 -&gt; catechol C6H6O2 + CH2O. Catechol holds the SAME number of oxygens as guaiacol (2); the added oxygen is in the formaldehyde. Vanillate C8H8O4 -&gt; protocatechuate C7H6O4 + CH2O gives the same result.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="57">57</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="27">27</td>
+    <td class="num" data-v="1.7543859649122806">1.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="1.7543859649122806">1.8</td>
+    <td class="num" data-v="15.789473684210526">15.8</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_204_Dpe.html"><b>Dpe</b></a>
+        <span class="note small">2_204_Dpe</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>diphenyl ether</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="57">57</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="13">13</td>
+    <td class="num" data-v="3.508771929824561">3.5</td>
+    <td class="num" data-v="91.2280701754386">91.2</td>
+    <td class="num" data-v="24.56140350877193">24.6</td>
+    <td class="num" data-v="50.87719298245614">50.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html"><b>ArhA1</b></a>
+        <span class="note small">3_305_ArhA1</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>polycyclic aromatic hydrocarbons</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="50">50</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="2.0">2.0</td>
+    <td class="num" data-v="22.0">22.0</td>
+    <td class="num" data-v="30.0">30.0</td>
+    <td class="num" data-v="8.0">8.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_316_NarAa.html"><b>NarAa</b></a>
+        <span class="note small">3_316_NarAa</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="50">50</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="23">23</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="20.0">20.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="4.0">4.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html"><b>EdoA1</b></a>
+        <span class="note small">2_202_EdoA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>ethylbenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="48">48</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="18.75">18.8</td>
+    <td class="num" data-v="68.75">68.8</td>
+    <td class="num" data-v="66.66666666666667">66.7</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_112_NdmA.html"><b>NdmA</b></a>
+        <span class="note small">1_112_NdmA</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>caffeine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="caffeine N1-demethylation in caffeine catabolism.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="43">43</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="2.3255813953488373">2.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_101_OxoO.html"><b>OxoO</b></a>
+        <span class="note small">1_101_OxoO</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>2-oxo-1,2-dihydroquinoline</td>
+    <td><span class="chip chip--natural_aromatic">natural_aromatic</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="a single oxygen atom is inserted into the product skeleton.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;natural_aromatic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="36">36</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="63.888888888888886">63.9</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_502_CmoB.html"><b>CmoB</b></a>
+        <span class="note small">5_502_CmoB</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="one oxygen atom from O2 IS incorporated into the product. BRENDA gives the reaction of EC 1.14.15.7 as &#39;choline + O2 + 2 reduced ferredoxin + 2 H+ = betaine aldehyde HYDRATE + H2O + 2 oxidized ferredoxin&#39;, and that balances as choline C5H14NO+ + O2 -&gt; hydrate C5H14NO2+ + H2O: one oxygen into the product, one into water, the ordinary monooxygenase stoichiometry. EC class 1.14.15 is defined as &#39;incorporation of one atom of oxygen into the other donor&#39;. The free aldehyde C5H12NO+ is the DEHYDRATED equilibrium form, not what the enzyme releases; computing the balance from it gives a loss of two hydrogens and no oxygen gain, which is how this field was twice recorded wrongly before the reaction was checked against BRENDA on 2026-10-28.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="as CmoS: glycine betaine synthesis in beet.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="35">35</td>
+    <td class="num" data-v="19">19</td>
+    <td class="num" data-v="16">16</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_212_BedC1.html"><b>BedC1</b></a>
+        <span class="note small">2_212_BedC1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>benzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="33">33</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="15">15</td>
+    <td class="num" data-v="6.0606060606060606">6.1</td>
+    <td class="num" data-v="42.42424242424242">42.4</td>
+    <td class="num" data-v="51.515151515151516">51.5</td>
+    <td class="num" data-v="3.0303030303030303">3.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_216_BPDO.html"><b>BPDO</b></a>
+        <span class="note small">2_216_BPDO</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="29">29</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="20.689655172413794">20.7</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html"><b>PsbAb</b></a>
+        <span class="note small">4_402_PsbAb</span>
+        
+        </td>
+    <td class="num">4</td>
+    <td>p-cumate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">aromatic acids</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="the oxygens enter the protocatechuate ring while the substituent leaves as sulfite.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="29">29</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="6.896551724137931">6.9</td>
+    <td class="num" data-v="72.41379310344827">72.4</td>
+    <td class="num" data-v="51.724137931034484">51.7</td>
+    <td class="num" data-v="48.275862068965516">48.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_114_NdmB.html"><b>NdmB</b></a>
+        <span class="note small">1_114_NdmB</span>
+        
+        </td>
+    <td class="num">1</td>
+    <td>theobromine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">N demethylation</td>
+    <td class="small" title="caffeine C8H10N4O2 -&gt; theobromine C7H8N4O2 + CH2O. Theobromine holds the SAME number of oxygens as caffeine (2); the added oxygen is in the formaldehyde.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="theobromine N3-demethylation in caffeine catabolism.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="28">28</td>
+    <td class="num" data-v="19">19</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="10.714285714285714">10.7</td>
+    <td class="num" data-v="7.142857142857143">7.1</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_303_NBDO.html"><b>NBDO</b></a>
+        <span class="note small">3_303_NBDO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>nitrobenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="nitrobenzene C6H5NO2 -&gt; catechol C6H6O2: both catechol oxygens are O2-derived; the original two leave as nitrite.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="24">24</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="37.5">37.5</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="91.66666666666667">91.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_320_NidA3.html"><b>NidA3</b></a>
+        <span class="note small">3_320_NidA3</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>polycyclic aromatic hydrocarbons</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="22">22</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="3">3</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="95.45454545454545">95.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="4.545454545454546">4.5</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html"><b>BphA1A2</b></a>
+        <span class="note small">2_213_BphA1A2</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="21">21</td>
+    <td class="num" data-v="12">12</td>
+    <td class="num" data-v="10">10</td>
+    <td class="num" data-v="4.761904761904762">4.8</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="76.19047619047619">76.2</td>
+    <td class="num" data-v="71.42857142857143">71.4</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_318_NidA.html"><b>NidA</b></a>
+        <span class="note small">3_318_NidA</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>pyrene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="20">20</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="60.0">60.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_208_TecA1.html"><b>TecA1</b></a>
+        <span class="note small">2_208_TecA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>chlorobenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="19">19</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="68.42105263157895">68.4</td>
+    <td class="num" data-v="5.2631578947368425">5.3</td>
+    <td class="num" data-v="5.2631578947368425">5.3</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_215_cadA.html"><b>cadA</b></a>
+        <span class="note small">2_215_cadA</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>2,4-dichlorophenoxyacetate (2,4-D)</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">haloaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="2,4-D C8H6Cl2O3 -&gt; 2,4-dichlorophenol C6H4Cl2O + glyoxylate C2H2O3. The phenol&#39;s single oxygen is the original ether oxygen; the added oxygen is in the glyoxylate.">into the leaving group</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>low</td>
+    <td class="num" data-v="14">14</td>
+    <td class="num" data-v="5">5</td>
+    <td class="num" data-v="4">4</td>
+    <td class="num" data-v="14.285714285714286">14.3</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="71.42857142857143">71.4</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/5_503_CmoA.html"><b>CmoA</b></a>
+        <span class="note small">5_503_CmoA</span>
+        
+        </td>
+    <td class="num">5</td>
+    <td>choline</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">quaternary amines</td>
+    <td class="small">hydroxylation</td>
+    <td class="small" title="one oxygen atom from O2 IS incorporated into the product. BRENDA gives the reaction of EC 1.14.15.7 as &#39;choline + O2 + 2 reduced ferredoxin + 2 H+ = betaine aldehyde HYDRATE + H2O + 2 oxidized ferredoxin&#39;, and that balances as choline C5H14NO+ + O2 -&gt; hydrate C5H14NO2+ + H2O: one oxygen into the product, one into water, the ordinary monooxygenase stoichiometry. EC class 1.14.15 is defined as &#39;incorporation of one atom of oxygen into the other donor&#39;. The free aldehyde C5H12NO+ is the DEHYDRATED equilibrium form, not what the enzyme releases; computing the balance from it gives a loss of two hydrogens and no oxygen gain, which is how this field was twice recorded wrongly before the reaction was checked against BRENDA on 2026-10-28.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="as CmoS: glycine betaine synthesis in Amaranthus.">biosynthetic</td>
+    <td>high</td>
+    <td class="num" data-v="12">12</td>
+    <td class="num" data-v="11">11</td>
+    <td class="num" data-v="7">7</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="16.666666666666668">16.7</td>
+    <td class="num" data-v="8.333333333333334">8.3</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/7_701_AerC.html"><b>AerC</b></a>
+        <span class="note small">7_701_AerC</span>
+        
+        </td>
+    <td class="num">7</td>
+    <td>N4-isopentenylagmatine</td>
+    <td><span class="chip chip--natural_specialized">natural_specialized</span></td>
+    <td class="small">alkaloids</td>
+    <td class="small">C C cleavage</td>
+    <td class="small" title="the oxygen fate of the C-C cleavage that gives Aeap was not determined. No value is guessed: the reference itself only reaches this set through a documented motif exception, and a wrong claim here would be worse than an absent one.">unknown</td>
+    <td class="small">unknown</td>
+    <td class="small" title="the pathway context of the N4-isopentenylagmatine cleavage was not established here, so no role is assigned. The reference itself only enters this set through a documented motif exception.">unknown</td>
+    <td>high</td>
+    <td class="num" data-v="9">9</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_203_cumA1.html"><b>cumA1</b></a>
+        <span class="note small">2_203_cumA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>cumene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="8">8</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="87.5">87.5</td>
+    <td class="num" data-v="87.5">87.5</td>
+    <td class="num" data-v="75.0">75.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_209_TDO.html"><b>TDO</b></a>
+        <span class="note small">2_209_TDO</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>toluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="6">6</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="16.666666666666668">16.7</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_306_3NTDO.html"><b>3NTDO</b></a>
+        <span class="note small">3_306_3NTDO</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>3-nitrotoluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="as NBDO: both new oxygens enter the methylcatechol, the nitro group leaves as nitrite.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_308_DxnA1.html"><b>DxnA1</b></a>
+        <span class="note small">3_308_DxnA1</span>
+        
+        </td>
+    <td class="num">3</td>
+    <td>dibenzo-p-dioxin</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="2">2</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="50.0">50.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_201_BphA1.html"><b>BphA1</b></a>
+        <span class="note small">2_201_BphA1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="100.0">100.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_207_BpdC1.html"><b>BpdC1</b></a>
+        <span class="note small">2_207_BpdC1</span>
+        
+        </td>
+    <td class="num">2</td>
+    <td>biphenyl</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="1">1</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+    <td class="num" data-v="0.0">0.0</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/1_103_CarAa.html"><b>CarAa</b></a>
+        <span class="note small">1_103_CarAa</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of CarAa never came out of the scanned genome set. Its profile still competes on 1,683 candidates that clear the coverage gate, but it is outscored every time, most often by CARDO. The proteins this type would describe are therefore counted under 1_102_CARDO. The two references are 99.2 % identical, so the split between the names is a naming decision rather than a biological one.">no members · counted under CARDO</span></td>
+    <td class="num">1</td>
+    <td>carbazole</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_206_IpBAa.html"><b>IpBAa</b></a>
+        <span class="note small">2_206_IpBAa</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of IpBAa never came out of the scanned genome set. Its profile still competes on 5,565 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1.">no members · counted under EdoA1</span></td>
+    <td class="num">2</td>
+    <td>isopropylbenzene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/2_210_XylC1.html"><b>XylC1</b></a>
+        <span class="note small">2_210_XylC1</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of XylC1 never came out of the scanned genome set. Its profile still competes on 5,676 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1. 3 sequences assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position.">no members · counted under EdoA1</span></td>
+    <td class="num">2</td>
+    <td>xylene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">alkylbenzenes</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_309_NahAc.html"><b>NahAc</b></a>
+        <span class="note small">3_309_NahAc</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of NahAc is present in the database (WP_011117400.1, 5 genomic copies), but every copy scores higher on the NBDO profile, so the assignment step filed it under 3_303_NBDO. Two curated names have collapsed onto one model: this is a merge, not missing data. 1 sequence assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>naphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">pah</td>
+    <td class="small">cis dihydroxylation</td>
+    <td class="small" title="naphthalene C10H8 -&gt; cis-1,2-dihydroxy-1,2-dihydronaphthalene C10H10O2: both oxygens are new and both are in the product.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_310_DntAc.html"><b>DntAc</b></a>
+        <span class="note small">3_310_DntAc</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of DntAc never came out of the scanned genome set. Its profile still competes on 4,993 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>2,4-dinitrotoluene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="as NBDO: the oxygens enter the nitrocatechol ring, one nitro group leaves as nitrite.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/3_312_NinA.html"><b>NinA</b></a>
+        <span class="note small">3_312_NinA</span>
+        
+        <span class="chip chip--warn"
+          title="The exact reference sequence of NinA never came out of the scanned genome set. Its profile still competes on 3,879 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO. 1 sequence assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position.">no members · counted under NBDO</span></td>
+    <td class="num">3</td>
+    <td>1-nitronaphthalene</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">nitroaromatics</td>
+    <td class="small">dioxygenation with release</td>
+    <td class="small" title="as NBDO: the oxygens enter the hydroxylated arene, nitrite is released.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>medium</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  <tr>
+    <td><a href="/pro-sim-blast/cluster/4_407_PbaA1.html"><b>PbaA1</b></a>
+        <span class="note small">4_407_PbaA1</span>
+        
+        <span class="chip chip--warn"
+          title="The curated reference protein of PbaA1 is present in the database (WP_032073055.1, 1 genomic copy), but every copy scores higher on the DxnA1 profile, so the assignment step filed it under 3_308_DxnA1. Two curated names have collapsed onto one model: this is a merge, not missing data.">no members · counted under DxnA1</span></td>
+    <td class="num">4</td>
+    <td>3-phenoxybenzoate</td>
+    <td><span class="chip chip--xenobiotic">xenobiotic</span></td>
+    <td class="small">biaryls ethers</td>
+    <td class="small">angular dioxygenation</td>
+    <td class="small" title="two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.">into the product</td>
+    <td class="small">oxidant + O donor</td>
+    <td class="small" title="assigned from the substrate class &#39;xenobiotic&#39;, for which the direction is unambiguous: the pathway degrades the compound.">catabolic (degradation)</td>
+    <td>high</td>
+    <td class="num" data-v="0"><span class="verdict verdict--none">0</span></td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="0">0</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+    <td class="num" data-v="-1">–</td>
+  </tr>
+  
+  </tbody>
+</table>
+</div>
+
+<details class="basis">
+  <summary>What counts as a genus here, and what is left out</summary>
+  <p class="note">A genus is read from the <b>NCBI taxonomy rank</b> of the genome record that
+  carries the entry: the nearest ancestor whose rank is exactly <code>genus</code>. It is not
+  taken from the first word of the organism name. That difference is measured, not cosmetic:
+  the first word merges every <i>Candidatus</i> organism into one bucket that actually holds
+  17 separate genera, it
+  carries over quoting and bracketing from the source string (<code>'Nostoc</code>,
+  <code>[Enterobacter]</code>), and it misses renamings
+  &mdash; 360
+  confirmed entries change genus when the rank is used
+  (<i>Sinorhizobium</i> &rarr; <b>Ensifer</b>, <i>Rhizobium rhizogenes</i> &rarr;
+  <b>Martinezella</b>).</p>
+  <p class="note"><b>What is left out of every genus count on this page.</b>
+  867
+  confirmed entries (4.1%) have <b>no genus-rank ancestor at all</b> in the current
+  NCBI taxonomy. The largest case is <i>Mycolicibacterium</i>, which the organism strings still
+  name and which would be this database's seventh largest &ldquo;genus&rdquo;: NCBI now holds it
+  as a <b>subgenus</b>, <code>Mycobacterium (subgen. Mycolicibacterium)</code>, and that lineage
+  runs from species straight to the family. Those entries are neither dropped nor given an
+  invented genus; they are carried with the state <code>unassigned</code> and the nearest named
+  rank beside them, and they are excluded from the genus counts shown here. The
+  <a href="/pro-sim-blast/atlas/taxonomy.html#genus">taxonomy page</a> gives the full measurement.</p>
+</details>
+<p class="note">Substrate and substrate class come from <code>cluster_ecology.csv</code>, curated
+from the literature on each type's reference enzyme; they describe that enzyme, not every member.
+<a href="/pro-sim-blast/atlas/evidence.html">How far the label carries</a> ·
+<a href="/pro-sim-blast/download/all_confirmed.csv">Download every entry (CSV)</a></p>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+</body>
+</html>

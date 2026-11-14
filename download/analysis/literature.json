@@ -1,0 +1,3359 @@
+{
+ "module": "literature.py",
+ "generated_utc": "2026-11-13T18:29:12Z",
+ "what_was_measured": "Literature identifiers for each curated type, from THREE SEPARATE sources with the source recorded ON EACH RECORD: identifiers written in this project's own curation (curated), the primary citation of the type's PDB entry (pdb_primary), and the reference list of the reference protein's UniProt entry (uniprot).",
+ "what_this_is_not": "A record appearing here does NOT mean that paper supports this type's substrate assignment. Only `curated` records are the basis this project cites; `uniprot` records are the entry's reference list, and only those marked `function_evidence` are attached by UniProt as evidence for a statement about what the enzyme does.",
+ "absence_is_classified": {
+  "what_this_means": "A type with no identifier is not one thing. `declared_none` means this project's curation explicitly records that no individual citation exists for the reference enzyme: it was looked for. `none_found` means no identifier was found and no such statement was made, so it is an open item.",
+  "declared_none": [
+   "1_109_LigX",
+   "3_308_DxnA1",
+   "4_410_CbdC",
+   "5_501_CmoS",
+   "5_502_CmoB",
+   "5_503_CmoA",
+   "5_507_BmoA"
+  ],
+  "none_found": []
+ },
+ "coverage": {
+  "types": 76,
+  "types_with_any_citation": 69,
+  "types_with_a_doi": 60,
+  "types_with_none": 7,
+  "records": 183,
+  "records_by_source": {
+   "pdb_primary": 29,
+   "uniprot": 134,
+   "curated": 20
+  },
+  "distinct_dois": 127
+ },
+ "doi_resolution": {
+  "checked": 127,
+  "resolved": 127,
+  "unresolved": [],
+  "not_checked": [],
+  "method": "GET https://doi.org/api/handles/<doi>; responseCode 1 means the DOI is registered. The publisher's page is NOT opened: many publishers answer an automated request with an error, and reading that error as a dead DOI marked 79 of 125 valid DOIs as broken in the first version of this check"
+ },
+ "cache": {
+  "path": "analysis_out/literature_cache",
+  "hits": 77,
+  "misses_without_fetch": 0,
+  "fetch_errors": {}
+ },
+ "types": {
+  "1_101_OxoO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1Z01",
+    "doi": "10.1016/j.str.2005.03.008",
+    "pmid": "15893671",
+    "title": "2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S] Center Oxidation/Reduction",
+    "journal": "Structure",
+    "year": 2005,
+    "authors": [
+     "Martins, B.M.",
+     "Svetlitchnaia, T.",
+     "Dobbek, H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_101_OxoO",
+    "resolved": true
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "1Z03",
+    "doi": "10.1016/j.str.2005.03.008",
+    "pmid": "15893671",
+    "title": "2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S] Center Oxidation/Reduction",
+    "journal": "Structure",
+    "year": 2005,
+    "authors": [
+     "Martins, B.M.",
+     "Svetlitchnaia, T.",
+     "Dobbek, H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_101_OxoO",
+    "resolved": true
+   }
+  ],
+  "1_102_CARDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1WW9",
+    "doi": "10.1016/j.jmb.2005.05.059",
+    "pmid": "16005887",
+    "title": "Structure of the terminal oxygenase component of angular dioxygenase, carbazole 1,9a-dioxygenase",
+    "journal": "J Mol Biol",
+    "year": 2005,
+    "authors": [
+     "Nojiri, H.",
+     "Ashikawa, Y.",
+     "Noguchi, H.",
+     "Nam, J.-W.",
+     "Urata, M.",
+     "Fujimoto, Z."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": "10.1271/bbb.68.1467",
+    "pmid": "15277751",
+    "title": "Divergent structures of carbazole degradative car operons isolated from gram-negative bacteria.",
+    "journal": "Biosci. Biotechnol. Biochem.",
+    "year": "2004",
+    "authors": [
+     "Inoue K.",
+     "Widada J.",
+     "Nakai S.",
+     "Endoh T.",
+     "Urata M.",
+     "Ashikawa Y."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": "10.1016/j.jmb.2005.05.059",
+    "pmid": "16005887",
+    "title": "Structure of the terminal oxygenase component of angular dioxygenase, carbazole 1,9a-dioxygenase.",
+    "journal": "J. Mol. Biol.",
+    "year": "2005",
+    "authors": [
+     "Nojiri H.",
+     "Ashikawa Y.",
+     "Noguchi H.",
+     "Nam J.W.",
+     "Urata M.",
+     "Fujimoto Z."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": "10.1016/j.str.2006.10.004",
+    "pmid": "17161368",
+    "title": "Electron transfer complex formation between oxygenase and ferredoxin components in Rieske nonheme iron oxygenase system.",
+    "journal": "Structure",
+    "year": "2006",
+    "authors": [
+     "Ashikawa Y.",
+     "Fujimoto Z.",
+     "Noguchi H.",
+     "Habe H.",
+     "Omori T.",
+     "Yamane H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": "10.1186/1472-6807-12-15",
+    "pmid": "22727022",
+    "title": "Structural insight into the substrate- and dioxygen-binding manner in the catalytic cycle of rieske nonheme iron oxygenase system, carbazole 1,9a-dioxygenase.",
+    "journal": "BMC Struct. Biol.",
+    "year": "2012",
+    "authors": [
+     "Ashikawa Y.",
+     "Fujimoto Z.",
+     "Usami Y.",
+     "Inoue K.",
+     "Noguchi H.",
+     "Yamane H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": "10.1128/aem.04000-13",
+    "pmid": "24584240",
+    "title": "Structural basis of the divergent oxygenation reactions catalyzed by the rieske nonheme iron oxygenase carbazole 1,9a-dioxygenase.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2014",
+    "authors": [
+     "Inoue K.",
+     "Usami Y.",
+     "Ashikawa Y.",
+     "Noguchi H.",
+     "Umeda T.",
+     "Yamagami-Ashikawa A."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q84II6",
+    "doi": null,
+    "pmid": null,
+    "title": "Biphenyl-2,2',3-triol-soaked resting complex of Oxy and Fd in carbazole 1,9a-dioxygenase.",
+    "journal": null,
+    "year": "DEC-",
+    "authors": [
+     "Wang Y.X.",
+     "Suzuki-Minakuchi C.",
+     "Nojiri H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_102_CARDO"
+   }
+  ],
+  "1_103_CarAa": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1WW9",
+    "doi": "10.1016/j.jmb.2005.05.059",
+    "pmid": "16005887",
+    "title": "Structure of the terminal oxygenase component of angular dioxygenase, carbazole 1,9a-dioxygenase",
+    "journal": "J Mol Biol",
+    "year": 2005,
+    "authors": [
+     "Nojiri, H.",
+     "Ashikawa, Y.",
+     "Noguchi, H.",
+     "Nam, J.-W.",
+     "Urata, M.",
+     "Fujimoto, Z."
+    ],
+    "is_assignment_basis": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.179.15.4841-4849.1997",
+    "pmid": "9244273",
+    "title": "Cloning of genes involved in carbazole degradation of Pseudomonas sp. strain CA10: nucleotide sequences of genes and characterization of meta-cleavage enzymes and hydrolase.",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Sato S.I.",
+     "Ouchiyama N.",
+     "Kimura T.",
+     "Nojiri H.",
+     "Yamane H.",
+     "Omori T."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.179.15.4850-4858.1997",
+    "pmid": "9244274",
+    "title": "Identification and characterization of genes encoding carbazole 1,9a-dioxygenase in Pseudomonas sp. strain CA10.",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Sato S.I.",
+     "Nam J.W.",
+     "Kasuga K.",
+     "Nojiri H.",
+     "Yamane H.",
+     "Omori T."
+    ],
+    "function_evidence": true,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.183.12.3663-3679.2001",
+    "pmid": "11371531",
+    "title": "Genetic characterization and evolutionary implications of a car gene cluster in the carbazole degrader Pseudomonas sp. strain CA10.",
+    "journal": "J. Bacteriol.",
+    "year": "2001",
+    "authors": [
+     "Nojiri H.",
+     "Sekiguchi H.",
+     "Maeda K.",
+     "Urata M.",
+     "Nakai S.",
+     "Yoshida T."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1016/s0022-2836(02)01400-6",
+    "pmid": "12547188",
+    "title": "Complete nucleotide sequence of carbazole/dioxin-degrading plasmid pCAR1 in Pseudomonas resinovorans strain CA10 indicates its mosaicity and the presence of large catabolic transposon Tn4676.",
+    "journal": "J. Mol. Biol.",
+    "year": "2003",
+    "authors": [
+     "Maeda K.",
+     "Nojiri H.",
+     "Shintani M.",
+     "Yoshida T.",
+     "Habe H.",
+     "Omori T."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.186.20.6815-6823.2004",
+    "pmid": "15466034",
+    "title": "Transcriptional regulation of the ant operon, encoding two-component anthranilate 1,2-dioxygenase, on the carbazole-degradative plasmid pCAR1 of Pseudomonas resinovorans strain CA10.",
+    "journal": "J. Bacteriol.",
+    "year": "2004",
+    "authors": [
+     "Urata M.",
+     "Miyakoshi M.",
+     "Kai S.",
+     "Maeda K.",
+     "Habe H.",
+     "Omori T."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/aem.72.5.3206-3216.2006",
+    "pmid": "16672459",
+    "title": "Characterization of the replication, maintenance, and transfer features of the IncP-7 plasmid pCAR1, which carries genes involved in carbazole and dioxin degradation.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2006",
+    "authors": [
+     "Shintani M.",
+     "Yano H.",
+     "Habe H.",
+     "Omori T.",
+     "Yamane H.",
+     "Tsuda M."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.00684-07",
+    "pmid": "17675379",
+    "title": "Transcriptome analysis of Pseudomonas putida KT2440 harboring the completely sequenced IncP-7 plasmid pCAR1.",
+    "journal": "J. Bacteriol.",
+    "year": "2007",
+    "authors": [
+     "Miyakoshi M.",
+     "Shintani M.",
+     "Terabayashi T.",
+     "Kai S.",
+     "Yamane H.",
+     "Nojiri H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/aem.02373-08",
+    "pmid": "19376894",
+    "title": "Carbazole-degradative IncP-7 plasmid pCAR1.2 is structurally unstable in Pseudomonas fluorescens Pf0-1, which accumulates catechol, the intermediate of the carbazole degradation pathway.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2009",
+    "authors": [
+     "Takahashi Y.",
+     "Shintani M.",
+     "Li L.",
+     "Yamane H.",
+     "Nojiri H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1271/bbb.80665",
+    "pmid": "19270415",
+    "title": "The complete nucleotide sequence of pCAR2: pCAR2 and pCAR1 were structurally identical IncP-7 carbazole degradative plasmids.",
+    "journal": "Biosci. Biotechnol. Biochem.",
+    "year": "2009",
+    "authors": [
+     "Takahashi Y.",
+     "Shintani M.",
+     "Yamane H.",
+     "Nojiri H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1186/1471-2164-10-12",
+    "pmid": "19134166",
+    "title": "High-resolution mapping of plasmid transcriptomes in different host bacteria.",
+    "journal": "BMC Genomics",
+    "year": "2009",
+    "authors": [
+     "Miyakoshi M.",
+     "Nishida H.",
+     "Shintani M.",
+     "Yamane H.",
+     "Nojiri H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1111/j.1462-2920.2009.02110.x",
+    "pmid": "19930443",
+    "title": "Response of the Pseudomonas host chromosomal transcriptome to carriage of the IncP-7 plasmid pCAR1.",
+    "journal": "Environ. Microbiol.",
+    "year": "2010",
+    "authors": [
+     "Shintani M.",
+     "Takahashi Y.",
+     "Tokumaru H.",
+     "Kadota K.",
+     "Hara H.",
+     "Miyakoshi M."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/jb.00591-10",
+    "pmid": "20639326",
+    "title": "Pmr, a histone-like protein H1 (H-NS) family protein encoded by the IncP-7 plasmid pCAR1, is a key global regulator that alters host function.",
+    "journal": "J. Bacteriol.",
+    "year": "2010",
+    "authors": [
+     "Yun C.S.",
+     "Suzuki C.",
+     "Naito K.",
+     "Takeda T.",
+     "Takahashi Y.",
+     "Sai F."
+    ],
+    "function_evidence": false,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8G8B6",
+    "doi": "10.1128/aem.68.12.5882-5890.2002",
+    "pmid": "12450807",
+    "title": "Purification and characterization of carbazole 1,9a-dioxygenase, a three-component dioxygenase system of Pseudomonas resinovorans strain CA10.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2002",
+    "authors": [
+     "Nam J.W.",
+     "Nojiri H.",
+     "Noguchi H.",
+     "Uchimura H.",
+     "Yoshida T.",
+     "Habe H."
+    ],
+    "function_evidence": true,
+    "cluster": "1_103_CarAa",
+    "resolved": true
+   }
+  ],
+  "1_104_VanA": [
+   {
+    "source": "uniprot",
+    "anchor": "O05616",
+    "doi": "10.1128/jb.179.8.2595-2607.1997",
+    "pmid": "9098058",
+    "title": "Molecular characterization of genes of Pseudomonas sp. strain HR199 involved in bioconversion of vanillin to protocatechuate.",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Priefert H.",
+     "Rabenhorst J.",
+     "Steinbuechel A."
+    ],
+    "function_evidence": false,
+    "cluster": "1_104_VanA",
+    "resolved": true
+   }
+  ],
+  "1_105_DdmC": [
+   {
+    "source": "pdb_primary",
+    "anchor": "3GKE",
+    "doi": "10.1016/j.jmb.2009.07.021",
+    "pmid": "19616011",
+    "title": "Crystal structure of dicamba monooxygenase: a Rieske nonheme oxygenase that catalyzes oxidative demethylation.",
+    "journal": "J Mol Biol",
+    "year": 2009,
+    "authors": [
+     "Dumitru, R.",
+     "Jiang, W.Z.",
+     "Weeks, D.P.",
+     "Wilson, M.A."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_105_DdmC",
+    "resolved": true
+   }
+  ],
+  "1_106_TsaM": [
+   {
+    "source": "uniprot",
+    "anchor": "P94679",
+    "doi": "10.1128/jb.179.3.919-927.1997",
+    "pmid": "9006050",
+    "title": "Characterization of the p-toluenesulfonate operon tsaMBCD and tsaR in Comamonas testosteroni T-2.",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Junker F.",
+     "Kiewitz R.",
+     "Cook A.M."
+    ],
+    "function_evidence": false,
+    "cluster": "1_106_TsaM",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P94679",
+    "doi": "10.1128/aem.67.4.1508-1516.2001",
+    "pmid": "11282598",
+    "title": "Map of the IncP1beta plasmid pTSA encoding the widespread genes (tsa) for p-toluenesulfonate degradation in Comamonas testosteroni T-2.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2001",
+    "authors": [
+     "Tralau T.",
+     "Cook A.M.",
+     "Ruff J."
+    ],
+    "function_evidence": false,
+    "cluster": "1_106_TsaM",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P94679",
+    "doi": "10.1042/bj20040652",
+    "pmid": "15176949",
+    "title": "A novel outer-membrane anion channel (porin) as part of a putatively two-component transport system for 4-toluenesulphonate in Comamonas testosteroni T-2.",
+    "journal": "Biochem. J.",
+    "year": "2004",
+    "authors": [
+     "Mampel J.",
+     "Maier E.",
+     "Tralau T.",
+     "Ruff J.",
+     "Benz R.",
+     "Cook A.M."
+    ],
+    "function_evidence": false,
+    "cluster": "1_106_TsaM",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P94679",
+    "doi": "10.1128/jb.173.12.3741-3748.1991",
+    "pmid": "2050632",
+    "title": "4-Toluene sulfonate methyl-monooxygenase from Comamonas testosteroni T-2: purification and some properties of the oxygenase component.",
+    "journal": "J. Bacteriol.",
+    "year": "1991",
+    "authors": [
+     "Locher H.H.",
+     "Leisinger T.",
+     "Cook A.M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_106_TsaM",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P94679",
+    "doi": "10.1099/00221287-137-9-2201",
+    "pmid": null,
+    "title": "Degradation of p-toluic acid (p-toluenecarboxylic acid) and p-toluenesulphonic acid via oxygenation of the methyl sidechain is initiated by the same set of enzymes in Comamonas testosteroni T-2.",
+    "journal": "J. Gen. Microbiol.",
+    "year": "1991",
+    "authors": [
+     "Locher H.H.",
+     "Malli C.",
+     "Hooper S.W.",
+     "Vorherr T.",
+     "Leisinger T.",
+     "Cook A.M."
+    ],
+    "function_evidence": false,
+    "cluster": "1_106_TsaM",
+    "resolved": true
+   }
+  ],
+  "1_107_CndA": [
+   {
+    "source": "curated",
+    "anchor": "PMC4135782",
+    "doi": "10.1128/aem.00659-14",
+    "pmid": "24928877",
+    "context": "PMC4135782 (Sphingomonads DC-6 and DC-2) Three-component system; the oxygenase gene cndA sits in a transposable element conserved between strains, while its ferredoxin and GR-type reductase are encoded elsewhere.",
+    "cluster": "1_107_CndA",
+    "resolved": true
+   }
+  ],
+  "1_108_PobA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q52185",
+    "doi": "10.1007/bf00262201",
+    "pmid": "7710319",
+    "title": "Cloning, nucleotide sequence, and expression of the gene encoding a novel dioxygenase involved in metabolism of carboxydiphenyl ethers in Pseudomonas pseudoalcaligenes POB310.",
+    "journal": "Arch. Microbiol.",
+    "year": "1995",
+    "authors": [
+     "Dehmel U.",
+     "Engesser K.-H.",
+     "Timmis K.N.",
+     "Dwyer D.F."
+    ],
+    "function_evidence": false,
+    "cluster": "1_108_PobA",
+    "resolved": true
+   }
+  ],
+  "1_109_LigX": [],
+  "1_110_SxtT": [
+   {
+    "source": "pdb_primary",
+    "anchor": "6WN3",
+    "doi": "10.1038/s41467-020-16729-0",
+    "pmid": "32532989",
+    "title": "Structural basis for divergent C-H hydroxylation selectivity in two Rieske oxygenases.",
+    "journal": "Nat Commun",
+    "year": 2020,
+    "authors": [
+     "Lukowski, A.L.",
+     "Liu, J.",
+     "Bridwell-Rabb, J.",
+     "Narayan, A.R.H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_110_SxtT",
+    "resolved": true
+   }
+  ],
+  "1_111_GxtA": [
+   {
+    "source": "pdb_primary",
+    "anchor": "6WNC",
+    "doi": "10.1038/s41467-020-16729-0",
+    "pmid": "32532989",
+    "title": "Structural basis for divergent C-H hydroxylation selectivity in two Rieske oxygenases.",
+    "journal": "Nat Commun",
+    "year": 2020,
+    "authors": [
+     "Lukowski, A.L.",
+     "Liu, J.",
+     "Bridwell-Rabb, J.",
+     "Narayan, A.R.H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_111_GxtA",
+    "resolved": true
+   }
+  ],
+  "1_112_NdmA": [
+   {
+    "source": "pdb_primary",
+    "anchor": "6ICK",
+    "doi": "10.1016/j.jmb.2019.08.004",
+    "pmid": "31412262",
+    "title": "Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.",
+    "journal": "J Mol Biol",
+    "year": 2019,
+    "authors": [
+     "Kim, J.H.",
+     "Kim, B.H.",
+     "Brooks, S.",
+     "Kang, S.Y.",
+     "Summers, R.M.",
+     "Song, H.K."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_112_NdmA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "H9N289",
+    "doi": "10.1128/jb.06637-11",
+    "pmid": "22328667",
+    "title": "Novel, highly specific N-demethylases enable bacteria to live on caffeine and related purine alkaloids.",
+    "journal": "J. Bacteriol.",
+    "year": "2012",
+    "authors": [
+     "Summers R.M.",
+     "Louie T.M.",
+     "Yu C.L.",
+     "Gakhar L.",
+     "Louie K.C.",
+     "Subramanian M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_112_NdmA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "H9N289",
+    "doi": "10.1099/mic.0.043612-0",
+    "pmid": "20966097",
+    "title": "Characterization of a broad-specificity non-haem iron N-demethylase from Pseudomonas putida CBB5 capable of utilizing several purine alkaloids as sole carbon and nitrogen source.",
+    "journal": "Microbiology",
+    "year": "2011",
+    "authors": [
+     "Summers R.M.",
+     "Louie T.M.",
+     "Yu C.L.",
+     "Subramanian M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_112_NdmA",
+    "resolved": true
+   }
+  ],
+  "1_113_CdnA": [
+   {
+    "source": "uniprot",
+    "anchor": "A0A290LJR1",
+    "doi": "10.1099/ijsem.0.003276",
+    "pmid": "30832757",
+    "title": "The Global Catalogue of Microorganisms (GCM) 10K type strain sequencing project: providing services to taxonomists for standard genome sequencing and annotation.",
+    "journal": "Int. J. Syst. Evol. Microbiol.",
+    "year": "2019",
+    "authors": [
+     "Wu L.",
+     "Ma J."
+    ],
+    "function_evidence": false,
+    "cluster": "1_113_CdnA",
+    "resolved": true
+   }
+  ],
+  "1_114_NdmB": [
+   {
+    "source": "pdb_primary",
+    "anchor": "6ICL",
+    "doi": "10.1016/j.jmb.2019.08.004",
+    "pmid": "31412262",
+    "title": "Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.",
+    "journal": "J Mol Biol",
+    "year": 2019,
+    "authors": [
+     "Kim, J.H.",
+     "Kim, B.H.",
+     "Brooks, S.",
+     "Kang, S.Y.",
+     "Summers, R.M.",
+     "Song, H.K."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_114_NdmB",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "H9N290",
+    "doi": "10.1128/jb.06637-11",
+    "pmid": "22328667",
+    "title": "Novel, highly specific N-demethylases enable bacteria to live on caffeine and related purine alkaloids.",
+    "journal": "J. Bacteriol.",
+    "year": "2012",
+    "authors": [
+     "Summers R.M.",
+     "Louie T.M.",
+     "Yu C.L.",
+     "Gakhar L.",
+     "Louie K.C.",
+     "Subramanian M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_114_NdmB",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "H9N290",
+    "doi": "10.1099/mic.0.043612-0",
+    "pmid": "20966097",
+    "title": "Characterization of a broad-specificity non-haem iron N-demethylase from Pseudomonas putida CBB5 capable of utilizing several purine alkaloids as sole carbon and nitrogen source.",
+    "journal": "Microbiology",
+    "year": "2011",
+    "authors": [
+     "Summers R.M.",
+     "Louie T.M.",
+     "Yu C.L.",
+     "Subramanian M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_114_NdmB",
+    "resolved": true
+   }
+  ],
+  "1_116_GdmA": [
+   {
+    "source": "curated",
+    "doi": "10.1016/j.checat.2022.04.019",
+    "pmid": null,
+    "context": "PDB 7QWT, Rieske non-heme iron monooxygenase for guaiacol O-demethylation, Rhizorhabdus wittichii RW1; doi:10.1016/j.checat.2022.04.019; listed as unmapped in this repo's reference_structures.csv (best existing reference 1_107_CndA at 34.5%) The best-evidenced candidate in this batch: a deposited structure, a primary paper, and a UniProt sequence.",
+    "cluster": "1_116_GdmA",
+    "resolved": true
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "7QWT",
+    "doi": "10.1016/j.checat.2022.04.019",
+    "pmid": null,
+    "title": "Discovery, characterization, and metabolic engineering of Rieske non-heme iron monooxygenases for guaiacol O-demethylation",
+    "journal": "Chem Catal",
+    "year": 2022,
+    "authors": [
+     "Bleem, A.",
+     "Kuatsjah, E.",
+     "Presley, G.N.",
+     "Hinchen, D.J.",
+     "Zahn, M.",
+     "Garcia, D.C."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "1_116_GdmA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "A0A9J9HDN6",
+    "doi": "10.1128/jb.01030-10",
+    "pmid": "20833805",
+    "title": "Genome sequence of the dioxin-mineralizing bacterium Sphingomonas wittichii RW1.",
+    "journal": "J. Bacteriol.",
+    "year": "2010",
+    "authors": [
+     "Miller T.R.",
+     "Delcher A.L.",
+     "Salzberg S.L.",
+     "Saunders E.",
+     "Detter J.C.",
+     "Halden R.U."
+    ],
+    "function_evidence": false,
+    "cluster": "1_116_GdmA",
+    "resolved": true
+   }
+  ],
+  "1_117_PrnD": [
+   {
+    "source": "curated",
+    "doi": "10.33612/diss.1175898687",
+    "pmid": null,
+    "context": "UniProt P95483 (PRND_PSEFL, reviewed), Pseudomonas fluorescens aminopyrrolnitrin oxygenase PrnD; proposed as a new type during this project's literature harvest (Runda 2024 thesis, doi:10.33612/diss.1175898687), primary work Lee J, Simurdiak M, Zhao H, J Biol Chem 2005, 280, 36719-36728 Harvest NT-01 could not pin an accession or a strain; this reviewed UniProt entry supplies both the sequence and",
+    "cluster": "1_117_PrnD",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P95483",
+    "doi": "10.1128/aem.63.6.2147-2154.1997",
+    "pmid": "9172332",
+    "title": "Four genes from Pseudomonas fluorescens that encode the biosynthesis of pyrrolnitrin.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "1997",
+    "authors": [
+     "Hammer P.E.",
+     "Hill D.S.",
+     "Lam S.T.",
+     "Van Pee K.H.",
+     "Ligon J.M."
+    ],
+    "function_evidence": true,
+    "cluster": "1_117_PrnD",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P95483",
+    "doi": "10.1128/jb.180.7.1939-1943.1998",
+    "pmid": "9537395",
+    "title": "Functions encoded by pyrrolnitrin biosynthetic genes from Pseudomonas fluorescens.",
+    "journal": "J. Bacteriol.",
+    "year": "1998",
+    "authors": [
+     "Kirner S.",
+     "Hammer P.E.",
+     "Hill D.S.",
+     "Altmann A.",
+     "Fischer I.",
+     "Weislo L.J."
+    ],
+    "function_evidence": true,
+    "cluster": "1_117_PrnD",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P95483",
+    "doi": "10.1074/jbc.m505334200",
+    "pmid": "16150698",
+    "title": "Reconstitution and characterization of aminopyrrolnitrin oxygenase, a Rieske N-oxygenase that catalyzes unusual arylamine oxidation.",
+    "journal": "J. Biol. Chem.",
+    "year": "2005",
+    "authors": [
+     "Lee J.",
+     "Simurdiak M.",
+     "Zhao H."
+    ],
+    "function_evidence": true,
+    "cluster": "1_117_PrnD",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P95483",
+    "doi": "10.1002/anie.200502903",
+    "pmid": "16342311",
+    "title": "Mechanistic studies on the conversion of arylamines into arylnitro compounds by aminopyrrolnitrin oxygenase: identification of intermediates and kinetic studies.",
+    "journal": "Angew. Chem. Int. Ed.",
+    "year": "2006",
+    "authors": [
+     "Lee J.",
+     "Zhao H."
+    ],
+    "function_evidence": true,
+    "cluster": "1_117_PrnD",
+    "resolved": true
+   }
+  ],
+  "1_118_RedG": [
+   {
+    "source": "uniprot",
+    "anchor": "O54095",
+    "doi": "10.1046/j.1365-2958.1996.6191336.x",
+    "pmid": "8843436",
+    "title": "A set of ordered cosmids and a detailed genetic and physical map for the 8 Mb Streptomyces coelicolor A3(2) chromosome.",
+    "journal": "Mol. Microbiol.",
+    "year": "1996",
+    "authors": [
+     "Redenbach M.",
+     "Kieser H.M.",
+     "Denapaite D.",
+     "Eichner A.",
+     "Cullum J.",
+     "Kinashi H."
+    ],
+    "function_evidence": false,
+    "cluster": "1_118_RedG",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O54095",
+    "doi": "10.1038/417141a",
+    "pmid": "12000953",
+    "title": "Complete genome sequence of the model actinomycete Streptomyces coelicolor A3(2).",
+    "journal": "Nature",
+    "year": "2002",
+    "authors": [
+     "Bentley S.D.",
+     "Chater K.F.",
+     "Cerdeno-Tarraga A.M.",
+     "Challis G.L.",
+     "Thomson N.R.",
+     "James K.D."
+    ],
+    "function_evidence": false,
+    "cluster": "1_118_RedG",
+    "resolved": true
+   }
+  ],
+  "2_201_BphA1": [
+   {
+    "source": "pdb_primary",
+    "anchor": "2XR8",
+    "doi": "10.1016/j.jmb.2010.11.009",
+    "pmid": "21073881",
+    "title": "Structural Insight Into the Expanded Pcb-Degrading Abilities of a Biphenyl Dioxygenase Obtained by Directed Evolution.",
+    "journal": "J Mol Biol",
+    "year": 2011,
+    "authors": [
+     "Kumar, P.",
+     "Mohammadi, M.",
+     "Viger, J.F.",
+     "Barriault, D.",
+     "Gomez-Gil, L.",
+     "Eltis, L.D."
+    ],
+    "is_assignment_basis": false,
+    "cluster": "2_201_BphA1",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q52028",
+    "doi": "10.1016/s0021-9258(18)42908-0",
+    "pmid": "1537863",
+    "title": "Analysis of bph operon from the polychlorinated biphenyl-degrading strain of Pseudomonas pseudoalcaligenes KF707.",
+    "journal": "J. Biol. Chem.",
+    "year": "1992",
+    "authors": [
+     "Taira K.",
+     "Hirose J.",
+     "Hayashida S.",
+     "Furukawa K."
+    ],
+    "function_evidence": false,
+    "cluster": "2_201_BphA1",
+    "resolved": true
+   }
+  ],
+  "2_202_EdoA1": [
+   {
+    "source": "uniprot",
+    "anchor": "Q9R956",
+    "doi": "10.1111/j.1574-6968.1998.tb13886.x",
+    "pmid": "9770272",
+    "title": "Reverse transcription-PCR analysis of the regulation of ethylbenzene dioxygenase gene expression in Pseudomonas fluorescens CA-4.",
+    "journal": "FEMS Microbiol. Lett.",
+    "year": "1998",
+    "authors": [
+     "Corkery D.M.",
+     "Dobson A.D."
+    ],
+    "function_evidence": false,
+    "cluster": "2_202_EdoA1",
+    "resolved": true
+   }
+  ],
+  "2_203_cumA1": [
+   {
+    "source": "curated",
+    "doi": "10.1021/jacsau.5c01130",
+    "pmid": null,
+    "context": "Berger et al., JACS Au 2026;6:847-857, doi:10.1021/jacsau.5c01130.",
+    "cluster": "2_203_cumA1",
+    "resolved": true
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "1WQL",
+    "doi": "10.1128/jb.187.7.2483-2490.2005",
+    "pmid": "15774891",
+    "title": "Crystal Structure of the Terminal Oxygenase Component of Cumene Dioxygenase from Pseudomonas fluorescens IP01",
+    "journal": "J Bacteriol",
+    "year": 2005,
+    "authors": [
+     "Dong, X.",
+     "Fushinobu, S.",
+     "Fukuda, E.",
+     "Terada, T.",
+     "Nakamura, S.",
+     "Shimizu, K."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "2_203_cumA1",
+    "resolved": true
+   }
+  ],
+  "2_204_Dpe": [
+   {
+    "source": "uniprot",
+    "anchor": "A0A1B1VV77",
+    "doi": null,
+    "pmid": null,
+    "title": "The DpeA1A2 gene is responsible for the angular dioxygenation of diphenyl ether in Sphingobium phenoxybenzoativorans SC_3.",
+    "journal": null,
+    "year": "JUL-",
+    "authors": [
+     "Cai S.",
+     "He J."
+    ],
+    "function_evidence": false,
+    "cluster": "2_204_Dpe"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "A0A1B1VV77",
+    "doi": null,
+    "pmid": "28283519",
+    "title": "Degradation of diphenyl ether in Sphingobium phenoxybenzoativorans SC_3 is initiated by a novel ring-cleavage dioxygenase.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2017",
+    "authors": [
+     "Cai S.",
+     "Chen L.W.",
+     "Ai Y.C.",
+     "Qiu J.G.",
+     "Wang C.H.",
+     "Shi C."
+    ],
+    "function_evidence": false,
+    "cluster": "2_204_Dpe"
+   }
+  ],
+  "2_206_IpBAa": [
+   {
+    "source": "uniprot",
+    "anchor": "O51848",
+    "doi": null,
+    "pmid": "3019995",
+    "title": "Characterization of a plasmid-specified pathway for catabolism of isopropylbenzene in Pseudomonas putida RE204.",
+    "journal": "J. Bacteriol.",
+    "year": "1986",
+    "authors": [
+     "Eaton R.W.",
+     "Timmis K.N."
+    ],
+    "function_evidence": false,
+    "cluster": "2_206_IpBAa"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O51848",
+    "doi": null,
+    "pmid": null,
+    "title": "Isopropylbenzene catabolic pathway in Pseudomonas putida RE204: sequence analysis of the ipb operon and neighboring DNA from pRE4.",
+    "journal": null,
+    "year": "JUN-",
+    "authors": [
+     "Eaton R.W.",
+     "Selifonova O.V.",
+     "Gedney R.M."
+    ],
+    "function_evidence": false,
+    "cluster": "2_206_IpBAa"
+   }
+  ],
+  "2_207_BpdC1": [
+   {
+    "source": "uniprot",
+    "anchor": "Q53086",
+    "doi": "10.1016/0378-1119(95)00448-f",
+    "pmid": "7590299",
+    "title": "Sequence and expression of the bpdC1C2BADE genes involved in the initial steps of biphenyl/chlorobiphenyl degradation by Rhodococcus sp. M5.",
+    "journal": "Gene",
+    "year": "1995",
+    "authors": [
+     "Wang Y.",
+     "Garnon J.",
+     "Labbe D.",
+     "Bergeron H.",
+     "Lau P.C."
+    ],
+    "function_evidence": false,
+    "cluster": "2_207_BpdC1",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q53086",
+    "doi": null,
+    "pmid": null,
+    "title": null,
+    "journal": null,
+    "year": "MAY-",
+    "authors": [
+     "Lau P.C.K."
+    ],
+    "function_evidence": false,
+    "cluster": "2_207_BpdC1"
+   }
+  ],
+  "2_208_TecA1": [
+   {
+    "source": "curated",
+    "doi": null,
+    "pmid": "9249026",
+    "context": "the primary characterisation is beil1997_TecA1 (Eur J Biochem 247:190, PMID 9249026), linked in citations UniProt O24676 is named Chlorobenzene dioxygenase subunit alpha and balances one reaction, on chlorobenzene (RHEA:57512); the primary paper (Beil 1997) is titled for the broad-spectrum chlorobenzene dioxygenase.",
+    "cluster": "2_208_TecA1"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O24676",
+    "doi": "10.1111/j.1432-1033.1997.00190.x",
+    "pmid": "9249026",
+    "title": "Genetic and biochemical characterization of the broad spectrum chlorobenzene dioxygenase from Burkholderia sp. strain PS12--dechlorination of 1,2,4,5-tetrachlorobenzene.",
+    "journal": "Eur. J. Biochem.",
+    "year": "1997",
+    "authors": [
+     "Beil S.",
+     "Happe B.",
+     "Timmis K.N.",
+     "Pieper D.H."
+    ],
+    "function_evidence": true,
+    "cluster": "2_208_TecA1",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O24676",
+    "doi": "10.1128/jb.180.21.5520-5528.1998",
+    "pmid": "9791099",
+    "title": "Identification of chlorobenzene dioxygenase sequence elements involved in dechlorination of 1,2,4,5-tetrachlorobenzene.",
+    "journal": "J. Bacteriol.",
+    "year": "1998",
+    "authors": [
+     "Beil S.",
+     "Mason J.R.",
+     "Timmis K.N.",
+     "Pieper D.H."
+    ],
+    "function_evidence": true,
+    "cluster": "2_208_TecA1",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O24676",
+    "doi": "10.1128/aem.67.9.4057-4063.2001",
+    "pmid": "11526005",
+    "title": "Transformation of chlorinated benzenes and toluenes by Ralstonia sp. strain PS12 tecA (tetrachlorobenzene dioxygenase) and tecB (chlorobenzene dihydrodiol dehydrogenase) gene products.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2001",
+    "authors": [
+     "Pollmann K.",
+     "Beil S.",
+     "Pieper D.H."
+    ],
+    "function_evidence": true,
+    "cluster": "2_208_TecA1",
+    "resolved": true
+   }
+  ],
+  "2_209_TDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "3EN1",
+    "doi": "10.1107/s0907444908036524",
+    "pmid": "19153463",
+    "title": "Structures of the multicomponent Rieske non-heme iron toluene 2,3-dioxygenase enzyme system",
+    "journal": "Acta Crystallogr D Biol Crystallogr",
+    "year": 2009,
+    "authors": [
+     "Friemann, R.",
+     "Lee, K.",
+     "Brown, E.N.",
+     "Gibson, D.T.",
+     "Eklund, H.",
+     "Ramaswamy, S."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "2_209_TDO",
+    "resolved": true
+   }
+  ],
+  "2_210_XylC1": [
+   {
+    "source": "uniprot",
+    "anchor": "Q46155",
+    "doi": null,
+    "pmid": "8787414",
+    "title": "A marine oligobacterium harboring genes known to be part of aromatic hydrocarbon degradation pathways of soil pseudomonads.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "1996",
+    "authors": [
+     "Wang Y.",
+     "Lau P.C.",
+     "Button D.K."
+    ],
+    "function_evidence": false,
+    "cluster": "2_210_XylC1"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q46155",
+    "doi": null,
+    "pmid": null,
+    "title": null,
+    "journal": null,
+    "year": "MAR-",
+    "authors": [
+     "Lau P.C.K."
+    ],
+    "function_evidence": false,
+    "cluster": "2_210_XylC1"
+   }
+  ],
+  "2_211_bfzA": [
+   {
+    "source": "curated",
+    "doi": "10.1128/aem.00868-17",
+    "pmid": null,
+    "context": "Functional basis: Chen et al., Appl Environ Microbiol 2017, doi:10.1128/aem.00868-17 SUBSTRATE CORRECTED 2026-10-28.",
+    "cluster": "2_211_bfzA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "A0A221J3D8",
+    "doi": null,
+    "pmid": "28710269",
+    "title": "Molecular mechanism and genetic determinants of buprofezin degradation.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2017",
+    "authors": [
+     "Chen X.",
+     "Ji J.",
+     "Zhao L.",
+     "Qiu J.",
+     "Dai C.",
+     "Wang W."
+    ],
+    "function_evidence": false,
+    "cluster": "2_211_bfzA"
+   }
+  ],
+  "2_212_BedC1": [
+   {
+    "source": "uniprot",
+    "anchor": "Q07944",
+    "doi": "10.1016/0378-1119(93)90343-2",
+    "pmid": "8344526",
+    "title": "The Pseudomonas putida ML2 plasmid-encoded genes for benzene dioxygenase are unusual in codon usage and low in G+C content.",
+    "journal": "Gene",
+    "year": "1993",
+    "authors": [
+     "Tan H.-M.",
+     "Tang H.-Y.",
+     "Joannou C.",
+     "Abdel-Wahab N.H.",
+     "Mason J.R."
+    ],
+    "function_evidence": false,
+    "cluster": "2_212_BedC1",
+    "resolved": true
+   }
+  ],
+  "2_213_BphA1A2": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1ULI",
+    "doi": "10.1016/j.jmb.2004.07.062",
+    "pmid": "15342255",
+    "title": "Crystal Structure of the Terminal Oxygenase Component of Biphenyl Dioxygenase Derived from Rhodococcus sp. Strain RHA1",
+    "journal": "J Mol Biol",
+    "year": 2004,
+    "authors": [
+     "Furusawa, Y.",
+     "Nagarajan, V.",
+     "Tanokura, M.",
+     "Masai, E.",
+     "Fukuda, M.",
+     "Senda, T."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "2_213_BphA1A2",
+    "resolved": true
+   }
+  ],
+  "2_214_TftA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q51592",
+    "doi": null,
+    "pmid": "7527626",
+    "title": "Nucleotide sequence and functional analysis of the genes encoding 2,4,5-trichlorophenoxyacetic acid oxygenase in Pseudomonas cepacia AC1100.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "1994",
+    "authors": [
+     "Danganan C.E.",
+     "Ye R.W.",
+     "Daubaras D.L.",
+     "Xun L.",
+     "Chakrabarty A.M."
+    ],
+    "function_evidence": false,
+    "cluster": "2_214_TftA"
+   }
+  ],
+  "2_215_cadA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q8VUZ2",
+    "doi": "10.1128/jb.184.2.509-518.2002",
+    "pmid": "11751829",
+    "title": "Novel 2,4-dichlorophenoxyacetic acid degradation genes from oligotrophic Bradyrhizobium sp. strain HW13 isolated from a pristine environment.",
+    "journal": "J. Bacteriol.",
+    "year": "2002",
+    "authors": [
+     "Kitagawa W.",
+     "Takami S.",
+     "Miyauchi K.",
+     "Masai E.",
+     "Kamagata Y.",
+     "Tiedje J.M."
+    ],
+    "function_evidence": false,
+    "cluster": "2_215_cadA",
+    "resolved": true
+   }
+  ],
+  "2_216_BPDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "2GBW",
+    "doi": "10.1186/1472-6807-7-10",
+    "pmid": "17349044",
+    "title": "Structural investigations of the ferredoxin and terminal oxygenase components of the biphenyl 2,3-dioxygenase from Sphingobium yanoikuyae B1.",
+    "journal": "BMC Struct Biol",
+    "year": 2007,
+    "authors": [
+     "Ferraro, D.J.",
+     "Brown, E.N.",
+     "Yu, C.L.",
+     "Parales, R.E.",
+     "Gibson, D.T.",
+     "Ramaswamy, S."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "2_216_BPDO",
+    "resolved": true
+   }
+  ],
+  "2_217_HcaE": [
+   {
+    "source": "pdb_primary",
+    "anchor": "8K0A",
+    "doi": null,
+    "pmid": null,
+    "title": "CryoEM structure of 3-phenylpropionate/cinnamic acid dioxygenase HcaE-HcaF complex",
+    "journal": "To be published",
+    "year": null,
+    "authors": [
+     "Jiang, W.X.",
+     "Cheng, X.Q.",
+     "Wu, M.",
+     "Ma, L.X.",
+     "Xing, Q."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "2_217_HcaE"
+   }
+  ],
+  "2_218_BphA1": [
+   {
+    "source": "uniprot",
+    "anchor": "O69363",
+    "doi": null,
+    "pmid": "9251216",
+    "title": "Three of the seven bphC genes of Rhodococcus erythropolis TA421, isolated from a termite ecosystem, are located on an indigenous plasmid associated with biphenyl degradation.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "1997",
+    "authors": [
+     "Kosono S.",
+     "Maeda M.",
+     "Fuji F.",
+     "Arai H.",
+     "Kudo T."
+    ],
+    "function_evidence": false,
+    "cluster": "2_218_BphA1"
+   }
+  ],
+  "3_301_PhnA1a": [
+   {
+    "source": "pdb_primary",
+    "anchor": "2CKF",
+    "doi": "10.1016/j.bbrc.2006.11.117",
+    "pmid": "17157819",
+    "title": "The Catalytic Pocket of the Ring-Hydroxylating Dioxygenase from Sphingomonas Chy-1.",
+    "journal": "Biochem Biophys Res Commun",
+    "year": 2007,
+    "authors": [
+     "Jakoncic, J.",
+     "Jouanneau, Y.",
+     "Meyer, C.",
+     "Stojanoff, V."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_301_PhnA1a",
+    "resolved": true
+   }
+  ],
+  "3_302_DitA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q9X4W9",
+    "doi": null,
+    "pmid": null,
+    "title": null,
+    "journal": null,
+    "year": "OCT-",
+    "authors": [
+     "Varghese N.",
+     "Submissions S."
+    ],
+    "function_evidence": false,
+    "cluster": "3_302_DitA"
+   }
+  ],
+  "3_303_NBDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "2BMO",
+    "doi": "10.1016/j.jmb.2005.03.052",
+    "pmid": "15854650",
+    "title": "Structural insight into the dioxygenation of nitroarene compounds: the crystal structure of nitrobenzene dioxygenase.",
+    "journal": "J Mol Biol",
+    "year": 2005,
+    "authors": [
+     "Friemann, R.",
+     "Ivkovic-Jensen, M.M.",
+     "Lessner, D.J.",
+     "Yu, C.L.",
+     "Gibson, D.T.",
+     "Parales, R.E."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_303_NBDO",
+    "resolved": true
+   }
+  ],
+  "3_305_ArhA1": [
+   {
+    "source": "uniprot",
+    "anchor": "Q6BDD0",
+    "doi": "10.1016/j.femsle.2004.07.048",
+    "pmid": "15358414",
+    "title": "Isolation and characterization of genes encoding polycyclic aromatic hydrocarbon dioxygenase from acenaphthene and acenaphthylene degrading Sphingomonas sp. strain A4.",
+    "journal": "FEMS Microbiol. Lett.",
+    "year": "2004",
+    "authors": [
+     "Pinyakong O.",
+     "Habe H.",
+     "Kouzuma A.",
+     "Nojiri H.",
+     "Yamane H.",
+     "Omori T."
+    ],
+    "function_evidence": false,
+    "cluster": "3_305_ArhA1",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q6BDD0",
+    "doi": null,
+    "pmid": null,
+    "title": "Functional and transcriptional analyses of the initial oxygenase genes for acenaphthene degradation from Sphingomonas sp. strain A4.",
+    "journal": "Microbiology (Mosc.)",
+    "year": "2006",
+    "authors": [
+     "Kouzuma A.",
+     "Pinyakong O.",
+     "Nojiri H.",
+     "Omori T.",
+     "Yamane H.",
+     "Habe H."
+    ],
+    "function_evidence": false,
+    "cluster": "3_305_ArhA1"
+   }
+  ],
+  "3_306_3NTDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "5XBP",
+    "doi": "10.1371/journal.pone.0176398",
+    "pmid": "28448625",
+    "title": "Structural and functional studies of ferredoxin and oxygenase components of 3-nitrotoluene dioxygenase from Diaphorobacter sp. strain DS2.",
+    "journal": "PLoS One",
+    "year": 2017,
+    "authors": [
+     "Kumari, A.",
+     "Singh, D.",
+     "Ramaswamy, S.",
+     "Ramanathan, G."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_306_3NTDO",
+    "resolved": true
+   }
+  ],
+  "3_307_NagGH": [
+   {
+    "source": "curated",
+    "doi": "10.33612/diss.1175898687",
+    "pmid": null,
+    "context": "U2); doi:10.33612/diss.1175898687 Table 3 and p.58 Salicylate 5-hydroxylase.",
+    "cluster": "3_307_NagGH",
+    "resolved": true
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "7C8Z",
+    "doi": "10.1128/aem.01629-20",
+    "pmid": "33452034",
+    "title": "Structural and Biochemical Analysis Reveals a Distinct Catalytic Site of Salicylate 5-Monooxygenase NagGH from Rieske Dioxygenases.",
+    "journal": "Appl Environ Microbiol",
+    "year": 2021,
+    "authors": [
+     "Hou, Y.J.",
+     "Guo, Y.",
+     "Li, D.F.",
+     "Zhou, N.Y."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_307_NagGH",
+    "resolved": true
+   }
+  ],
+  "3_308_DxnA1": [],
+  "3_309_NahAc": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1NDO",
+    "doi": "10.1016/s0969-2126(98)00059-8",
+    "pmid": "9634695",
+    "title": "Structure of an aromatic-ring-hydroxylating dioxygenase-naphthalene 1,2-dioxygenase.",
+    "journal": "Structure",
+    "year": 1998,
+    "authors": [
+     "Kauppi, B.",
+     "Lee, K.",
+     "Carredano, E.",
+     "Parales, R.E.",
+     "Gibson, D.T.",
+     "Eklund, H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_309_NahAc",
+    "resolved": true
+   }
+  ],
+  "3_310_DntAc": [
+   {
+    "source": "uniprot",
+    "anchor": "Q8VUD4",
+    "doi": "10.1007/s002039900111",
+    "pmid": "10795678",
+    "title": "Properties of the trihydroxytoluene oxygenase from Burkholderia cepacia R34: an extradiol dioxygenase from the 2,4-dinitrotoluene pathway.",
+    "journal": "Arch. Microbiol.",
+    "year": "2000",
+    "authors": [
+     "Johnson G.R.",
+     "Jain R.K.",
+     "Spain J.C."
+    ],
+    "function_evidence": false,
+    "cluster": "3_310_DntAc",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8VUD4",
+    "doi": "10.1128/jb.184.15.4219-4232.2002",
+    "pmid": "12107140",
+    "title": "Origins of the 2,4-dinitrotoluene pathway.",
+    "journal": "J. Bacteriol.",
+    "year": "2002",
+    "authors": [
+     "Johnson G.R.",
+     "Jain R.K.",
+     "Spain J.C."
+    ],
+    "function_evidence": false,
+    "cluster": "3_310_DntAc",
+    "resolved": true
+   }
+  ],
+  "3_311_PhtAa": [
+   {
+    "source": "curated",
+    "doi": "10.1099/mic.0.27263-0",
+    "pmid": null,
+    "context": "Characterised in Stingley et al., Microbiology 2004;150:3749-3761, doi:10.1099/mic.0.27263-0 (phthalate degradation operon of Mycobacterium vanbaalenii PYR-1).",
+    "cluster": "3_311_PhtAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q6UP13",
+    "doi": "10.1016/j.bbrc.2004.07.089",
+    "pmid": "15313184",
+    "title": "Molecular characterization of a phenanthrene degradation pathway in Mycobacterium vanbaalenii PYR-1.",
+    "journal": "Biochem. Biophys. Res. Commun.",
+    "year": "2004",
+    "authors": [
+     "Stingley R.L.",
+     "Khan A.A.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_311_PhtAa",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q6UP13",
+    "doi": "10.1099/mic.0.27263-0",
+    "pmid": "15528661",
+    "title": "Novel organization of genes in a phthalate degradation operon of Mycobacterium vanbaalenii PYR-1.",
+    "journal": "Microbiology",
+    "year": "2004",
+    "authors": [
+     "Stingley R.L.",
+     "Brezna B.",
+     "Khan A.A.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_311_PhtAa",
+    "resolved": true
+   }
+  ],
+  "3_312_NinA": [
+   {
+    "source": "curated",
+    "doi": null,
+    "pmid": "36622195",
+    "context": "Functional basis: the 2023 Appl Environ Microbiol paper on 1-nitronaphthalene catabolism in this strain, identified as PMID:36622195, doi:10.1128/aem.01728-22 on 2026-11-13.",
+    "cluster": "3_312_NinA"
+   },
+   {
+    "source": "curated",
+    "doi": "10.1128/aem.01728-22",
+    "pmid": null,
+    "context": "Functional basis: the 2023 Appl Environ Microbiol paper on 1-nitronaphthalene catabolism in this strain, identified as PMID:36622195, doi:10.1128/aem.01728-22 on 2026-11-13.",
+    "cluster": "3_312_NinA",
+    "resolved": true
+   }
+  ],
+  "3_313_KshA15": [
+   {
+    "source": "pdb_primary",
+    "anchor": "2ZYL",
+    "doi": "10.1074/jbc.m900719200",
+    "pmid": "19234303",
+    "title": "Characterization of 3-ketosteroid 9{alpha}-hydroxylase, a Rieske oxygenase in the cholesterol degradation pathway of Mycobacterium tuberculosis",
+    "journal": "J Biol Chem",
+    "year": 2009,
+    "authors": [
+     "Capyk, J.K.",
+     "D'Angelo, I.",
+     "Strynadka, N.C.",
+     "Eltis, L.D."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_313_KshA15",
+    "resolved": true
+   }
+  ],
+  "3_316_NarAa": [
+   {
+    "source": "pdb_primary",
+    "anchor": "1NDO",
+    "doi": "10.1016/s0969-2126(98)00059-8",
+    "pmid": "9634695",
+    "title": "Structure of an aromatic-ring-hydroxylating dioxygenase-naphthalene 1,2-dioxygenase.",
+    "journal": "Structure",
+    "year": 1998,
+    "authors": [
+     "Kauppi, B.",
+     "Lee, K.",
+     "Carredano, E.",
+     "Parales, R.E.",
+     "Gibson, D.T.",
+     "Eklund, H."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_316_NarAa",
+    "resolved": true
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "2B1X",
+    "doi": "10.1128/jb.187.21.7222-7231.2005",
+    "pmid": "16237006",
+    "title": "Structure and Increased Thermostability of Rhodococcus sp. Naphthalene 1,2-Dioxygenase.",
+    "journal": "J Bacteriol",
+    "year": 2005,
+    "authors": [
+     "Gakhar, L.",
+     "Malik, Z.A.",
+     "Allen, C.C.",
+     "Lipscomb, D.A.",
+     "Larkin, M.J.",
+     "Ramaswamy, S."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "3_316_NarAa",
+    "resolved": true
+   }
+  ],
+  "3_317_NidA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q9X593",
+    "doi": "10.1007/s002530051463",
+    "pmid": "10422226",
+    "title": "Isolation and characterization of indene bioconversion genes from Rhodococcus strain I24.",
+    "journal": "Appl. Microbiol. Biotechnol.",
+    "year": "1999",
+    "authors": [
+     "Treadway S.L.",
+     "Yanagimachi K.S.",
+     "Lankenau E.",
+     "Lessard P.A.",
+     "Stephanopoulos G.",
+     "Sinskey A.J."
+    ],
+    "function_evidence": false,
+    "cluster": "3_317_NidA",
+    "resolved": true
+   }
+  ],
+  "3_318_NidA": [
+   {
+    "source": "uniprot",
+    "anchor": "A1T2D3",
+    "doi": null,
+    "pmid": null,
+    "title": "Complete sequence of Mycobacterium vanbaalenii PYR-1.",
+    "journal": null,
+    "year": "DEC-",
+    "authors": [
+     "Copeland A.",
+     "Lucas S.",
+     "Lapidus A.",
+     "Barry K.",
+     "Detter J.C.",
+     "Glavina del Rio T."
+    ],
+    "function_evidence": false,
+    "cluster": "3_318_NidA"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9KHU1",
+    "doi": "10.1128/aem.67.8.3577-3585.2001",
+    "pmid": "11472934",
+    "title": "Molecular cloning, nucleotide sequence, and expression of genes encoding a polycyclic aromatic ring dioxygenase from Mycobacterium sp. strain PYR-1.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2001",
+    "authors": [
+     "Wang R.F.",
+     "Khan A.A.",
+     "Cao W.W.",
+     "Doerge D.R.",
+     "Wennerstrom D.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_318_NidA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9KHU1",
+    "doi": "10.1016/j.bbrc.2004.07.089",
+    "pmid": "15313184",
+    "title": "Molecular characterization of a phenanthrene degradation pathway in Mycobacterium vanbaalenii PYR-1.",
+    "journal": "Biochem. Biophys. Res. Commun.",
+    "year": "2004",
+    "authors": [
+     "Stingley R.L.",
+     "Khan A.A.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_318_NidA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9KHU1",
+    "doi": "10.1099/mic.0.27263-0",
+    "pmid": "15528661",
+    "title": "Novel organization of genes in a phthalate degradation operon of Mycobacterium vanbaalenii PYR-1.",
+    "journal": "Microbiology",
+    "year": "2004",
+    "authors": [
+     "Stingley R.L.",
+     "Brezna B.",
+     "Khan A.A.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_318_NidA",
+    "resolved": true
+   }
+  ],
+  "3_319_PhdA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q7DJF2",
+    "doi": "10.1128/jb.182.8.2134-2141.2000",
+    "pmid": "10735855",
+    "title": "A novel phenanthrene dioxygenase from Nocardioides sp. Strain KP7: expression in Escherichia coli.",
+    "journal": "J. Bacteriol.",
+    "year": "2000",
+    "authors": [
+     "Saito A.",
+     "Iwabuchi T.",
+     "Harayama S."
+    ],
+    "function_evidence": false,
+    "cluster": "3_319_PhdA",
+    "resolved": true
+   }
+  ],
+  "3_320_NidA3": [
+   {
+    "source": "uniprot",
+    "anchor": "Q2FBP3",
+    "doi": null,
+    "pmid": null,
+    "title": null,
+    "journal": null,
+    "year": "MAY-",
+    "authors": [
+     "Kim S.-J.",
+     "Kweon O.",
+     "Cerniglia C.E."
+    ],
+    "function_evidence": false,
+    "cluster": "3_320_NidA3"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q2FBP3",
+    "doi": "10.1128/aem.72.2.1045-1054.2006",
+    "pmid": "16461648",
+    "title": "Molecular cloning and expression of genes encoding a novel dioxygenase involved in low- and high-molecular-weight polycyclic aromatic hydrocarbon degradation in Mycobacterium vanbaalenii PYR-1.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2006",
+    "authors": [
+     "Kim S.J.",
+     "Kweon O.",
+     "Freeman J.P.",
+     "Jones R.C.",
+     "Adjei M.D.",
+     "Jhoo J.W."
+    ],
+    "function_evidence": false,
+    "cluster": "3_320_NidA3",
+    "resolved": true
+   }
+  ],
+  "3_321_Nvd": [
+   {
+    "source": "curated",
+    "doi": "10.33612/diss.1175898687",
+    "pmid": null,
+    "context": "UniProt Q1JUZ1 (NVD_DROME, reviewed), Drosophila melanogaster cholesterol 7-desaturase Neverland, EC 1.14.19.21; proposed independently as a new type during this project's literature harvest (Runda 2024 thesis, doi:10.33612/diss.1175898687) The one candidate both documented gaps point at: the audit names \"cholesterol 7-desaturase / DAF-36\" among the eukaryotic families with no reference, and harve",
+    "cluster": "3_321_Nvd",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1JUZ1",
+    "doi": "10.1242/dev.02428",
+    "pmid": "16763204",
+    "title": "Neverland is an evolutionally conserved Rieske-domain protein that is essential for ecdysone synthesis and insect growth.",
+    "journal": "Development",
+    "year": "2006",
+    "authors": [
+     "Yoshiyama T.",
+     "Namiki T.",
+     "Mita K.",
+     "Kataoka H.",
+     "Niwa R."
+    ],
+    "function_evidence": true,
+    "cluster": "3_321_Nvd",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1JUZ1",
+    "doi": "10.1126/science.287.5461.2185",
+    "pmid": "10731132",
+    "title": "The genome sequence of Drosophila melanogaster.",
+    "journal": "Science",
+    "year": "2000",
+    "authors": [
+     "Adams M.D.",
+     "Celniker S.E.",
+     "Holt R.A.",
+     "Evans C.A.",
+     "Gocayne J.D.",
+     "Amanatides P.G."
+    ],
+    "function_evidence": false,
+    "cluster": "3_321_Nvd",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1JUZ1",
+    "doi": "10.1186/gb-2002-3-12-research0083",
+    "pmid": "12537572",
+    "title": "Annotation of the Drosophila melanogaster euchromatic genome: a systematic review.",
+    "journal": "Genome Biol.",
+    "year": "2002",
+    "authors": [
+     "Misra S.",
+     "Crosby M.A.",
+     "Mungall C.J.",
+     "Matthews B.B.",
+     "Campbell K.S.",
+     "Hradecky P."
+    ],
+    "function_evidence": false,
+    "cluster": "3_321_Nvd",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1JUZ1",
+    "doi": null,
+    "pmid": null,
+    "title": null,
+    "journal": null,
+    "year": "MAR-",
+    "authors": [
+     "Stapleton M.",
+     "Carlson J.",
+     "Chavez C.",
+     "Frise E.",
+     "George R.",
+     "Pacleb J."
+    ],
+    "function_evidence": false,
+    "cluster": "3_321_Nvd"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1JUZ1",
+    "doi": "10.1074/jbc.m111.244384",
+    "pmid": "21632547",
+    "title": "The conserved Rieske oxygenase DAF-36/Neverland is a novel cholesterol-metabolizing enzyme.",
+    "journal": "J. Biol. Chem.",
+    "year": "2011",
+    "authors": [
+     "Yoshiyama-Yanagawa T.",
+     "Enya S.",
+     "Shimada-Niwa Y.",
+     "Yaguchi S.",
+     "Haramoto Y.",
+     "Matsuya T."
+    ],
+    "function_evidence": true,
+    "cluster": "3_321_Nvd",
+    "resolved": true
+   }
+  ],
+  "3_322_DAF36": [
+   {
+    "source": "uniprot",
+    "anchor": "Q17938",
+    "doi": "10.1126/science.282.5396.2012",
+    "pmid": "9851916",
+    "title": "Genome sequence of the nematode C. elegans: a platform for investigating biology.",
+    "journal": "Science",
+    "year": "1998",
+    "authors": [],
+    "function_evidence": false,
+    "cluster": "3_322_DAF36",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q17938",
+    "doi": "10.1016/j.devcel.2006.02.008",
+    "pmid": "16563875",
+    "title": "Hormonal control of C. elegans dauer formation and life span by a Rieske-like oxygenase.",
+    "journal": "Dev. Cell",
+    "year": "2006",
+    "authors": [
+     "Rottiers V.",
+     "Motola D.L.",
+     "Gerisch B.",
+     "Cummins C.L.",
+     "Nishiwaki K.",
+     "Mangelsdorf D.J."
+    ],
+    "function_evidence": true,
+    "cluster": "3_322_DAF36",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q17938",
+    "doi": "10.1111/j.1474-9726.2011.00733.x",
+    "pmid": "21749634",
+    "title": "The Rieske oxygenase DAF-36 functions as a cholesterol 7-desaturase in steroidogenic pathways governing longevity.",
+    "journal": "Aging Cell",
+    "year": "2011",
+    "authors": [
+     "Wollam J.",
+     "Magomedova L.",
+     "Magner D.B.",
+     "Shen Y.",
+     "Rottiers V.",
+     "Motola D.L."
+    ],
+    "function_evidence": true,
+    "cluster": "3_322_DAF36",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q17938",
+    "doi": "10.1074/jbc.m111.244384",
+    "pmid": "21632547",
+    "title": "The conserved Rieske oxygenase DAF-36/Neverland is a novel cholesterol-metabolizing enzyme.",
+    "journal": "J. Biol. Chem.",
+    "year": "2011",
+    "authors": [
+     "Yoshiyama-Yanagawa T.",
+     "Enya S.",
+     "Shimada-Niwa Y.",
+     "Yaguchi S.",
+     "Haramoto Y.",
+     "Matsuya T."
+    ],
+    "function_evidence": true,
+    "cluster": "3_322_DAF36",
+    "resolved": true
+   }
+  ],
+  "4_401_CmtAb": [
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1128/jb.178.5.1351-1362.1996",
+    "pmid": "8631713",
+    "title": "p-cumate catabolic pathway in Pseudomonas putida F1: cloning and characterization of DNA carrying the cmt operon.",
+    "journal": "J. Bacteriol.",
+    "year": "1996",
+    "authors": [
+     "Eaton R.W."
+    ],
+    "function_evidence": true,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1128/jb.179.10.3171-3180.1997",
+    "pmid": "9150211",
+    "title": "p-Cymene catabolic pathway in Pseudomonas putida F1: cloning and characterization of DNA encoding conversion of p-cymene to p-cumate.",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Eaton R.W."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1016/s0378-1119(99)00113-4",
+    "pmid": "10333523",
+    "title": "Toluene metabolism by the solvent-tolerant Pseudomonas putida DOT-T1 strain, and its role in solvent impermeabilization.",
+    "journal": "Gene",
+    "year": "1999",
+    "authors": [
+     "Mosqueda G.",
+     "Ramos-Gonzalez M.I.",
+     "Ramos J.L."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1128/jb.182.4.937-943.2000",
+    "pmid": "10648517",
+    "title": "A set of genes encoding a second toluene efflux system in Pseudomonas putida DOT-T1 is linked to the tod genes for toluene metabolism.",
+    "journal": "J. Bacteriol.",
+    "year": "2000",
+    "authors": [
+     "Mosqueda G.",
+     "Ramos J.L."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1099/00221287-147-1-31",
+    "pmid": "11160798",
+    "title": "Pseudomonas putida CE2010 can degrade biphenyl by a mosaic pathway encoded by the tod operon and cmtE, which are identical to those of P. putida F1 except for a single base difference in the operator-promoter region of the cmt operon.",
+    "journal": "Microbiology",
+    "year": "2001",
+    "authors": [
+     "Ohta Y.",
+     "Maeda M.",
+     "Kudo T."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1046/j.1365-2958.2001.02310.x",
+    "pmid": "11251828",
+    "title": "Global and cognate regulators control the expression of the organic solvent efflux pumps TtgABC and TtgDEF of Pseudomonas putida.",
+    "journal": "Mol. Microbiol.",
+    "year": "2001",
+    "authors": [
+     "Duque E.",
+     "Segura A.",
+     "Mosqueda G.",
+     "Ramos J.L."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": null,
+    "pmid": "16728956",
+    "title": "Identification and expression of the cym, cmt, and tod catabolic genes from Pseudomonas putida KL47: expression of the regulatory todST genes as a factor for catabolic adaptation.",
+    "journal": "J. Microbiol.",
+    "year": "2006",
+    "authors": [
+     "Lee K.",
+     "Ryu E.K.",
+     "Choi K.S.",
+     "Cho M.C.",
+     "Jeong J.J.",
+     "Choi E.N."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": null,
+    "pmid": null,
+    "title": "Global regulation of food supply by Pseudomonas putida DOT-T1E.",
+    "journal": null,
+    "year": "AUG-",
+    "authors": [
+     "Daniels C.",
+     "Godoy P.",
+     "Duque E.",
+     "Molina-Henares M.A.",
+     "de la Torre J.",
+     "Del Arco J.M."
+    ],
+    "function_evidence": false,
+    "cluster": "4_401_CmtAb"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1128/jb.129.3.1356-1364.1977",
+    "pmid": "845117",
+    "title": "p-cymene pathway in Pseudomonas putida: initial reactions.",
+    "journal": "J. Bacteriol.",
+    "year": "1977",
+    "authors": [
+     "DeFrank J.J.",
+     "Ribbons D.W."
+    ],
+    "function_evidence": true,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q51974",
+    "doi": "10.1128/jb.177.23.6983-6988.1995",
+    "pmid": "7592495",
+    "title": "Formation of indigo and related compounds from indolecarboxylic acids by aromatic acid-degrading bacteria: chromogenic reactions for cloning genes encoding dioxygenases that act on aromatic acids.",
+    "journal": "J. Bacteriol.",
+    "year": "1995",
+    "authors": [
+     "Eaton R.W.",
+     "Chapman P.J."
+    ],
+    "function_evidence": true,
+    "cluster": "4_401_CmtAb",
+    "resolved": true
+   }
+  ],
+  "4_402_PsbAb": [
+   {
+    "source": "curated",
+    "doi": "10.3109/10425170009033965",
+    "pmid": null,
+    "context": "Functional context: Pusks et al., DNA Sequence 2000, doi:10.3109/10425170009033965, which cloned the p-cumate degradation gene cluster this gene belongs to 4-sulfobenzoate 3,4-dioxygenase.",
+    "cluster": "4_402_PsbAb",
+    "resolved": true
+   },
+   {
+    "source": "curated",
+    "doi": null,
+    "pmid": "8828208",
+    "context": "The record gave the substrate as 4-sulfobenzoate and cited PMID:8828208 (Comamonas testosteroni PSB-4 and T-2).",
+    "cluster": "4_402_PsbAb"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9XDW6",
+    "doi": null,
+    "pmid": "10902905",
+    "title": "Cloning of genes participating in aerobic biodegradation of p-cumate from Rhodopseudomonas palustris.",
+    "journal": "DNA Seq.",
+    "year": "2000",
+    "authors": [
+     "Puskas L.G.",
+     "Inui M.",
+     "Kele Z.",
+     "Yukawa H."
+    ],
+    "function_evidence": false,
+    "cluster": "4_402_PsbAb"
+   }
+  ],
+  "4_403_AtdA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q44251",
+    "doi": null,
+    "pmid": null,
+    "title": "Plasmid-encoded genes specifying aniline oxidation from Acinetobacter sp. strain YAA.",
+    "journal": "Microbiology (Mosc.)",
+    "year": "1997",
+    "authors": [
+     "Fujii T.",
+     "Takeo M.",
+     "Maeda Y."
+    ],
+    "function_evidence": false,
+    "cluster": "4_403_AtdA"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q44251",
+    "doi": "10.1128/jb.00397-13",
+    "pmid": "23893114",
+    "title": "Function of a glutamine synthetase-like protein in bacterial aniline oxidation via gamma-glutamylanilide.",
+    "journal": "J. Bacteriol.",
+    "year": "2013",
+    "authors": [
+     "Takeo M.",
+     "Ohara A.",
+     "Sakae S.",
+     "Okamoto Y.",
+     "Kitamura C.",
+     "Kato D."
+    ],
+    "function_evidence": false,
+    "cluster": "4_403_AtdA",
+    "resolved": true
+   }
+  ],
+  "4_404_TdnA1": [
+   {
+    "source": "uniprot",
+    "anchor": "P95531",
+    "doi": null,
+    "pmid": "8990291",
+    "title": "Nucleotide sequences and regulational analysis of genes involved in conversion of aniline to catechol in Pseudomonas putida UCC22(pTDN1).",
+    "journal": "J. Bacteriol.",
+    "year": "1997",
+    "authors": [
+     "Fukumori F.",
+     "Saint C.P."
+    ],
+    "function_evidence": false,
+    "cluster": "4_404_TdnA1"
+   }
+  ],
+  "4_405_ROCH34": [
+   {
+    "source": "pdb_primary",
+    "anchor": "7FHR",
+    "doi": "10.1016/j.jbc.2021.101416",
+    "pmid": "34800435",
+    "title": "Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.",
+    "journal": "J Biol Chem",
+    "year": 2021,
+    "authors": [
+     "Mahto, J.K.",
+     "Neetu, N.",
+     "Waghmode, B.",
+     "Kuatsjah, E.",
+     "Sharma, M.",
+     "Sircar, D."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "4_405_ROCH34",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1LBR9",
+    "doi": "10.1371/journal.pone.0010433",
+    "pmid": "20463976",
+    "title": "The complete genome sequence of Cupriavidus metallidurans strain CH34, a master survivalist in harsh and anthropogenic environments.",
+    "journal": "PLoS ONE",
+    "year": "2010",
+    "authors": [
+     "Janssen P.J.",
+     "Van Houdt R.",
+     "Moors H.",
+     "Monsieurs P.",
+     "Morin N.",
+     "Michaux A."
+    ],
+    "function_evidence": false,
+    "cluster": "4_405_ROCH34",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q1LBR9",
+    "doi": "10.1016/j.jbc.2021.101416",
+    "pmid": "34800435",
+    "title": "Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.",
+    "journal": "J. Biol. Chem.",
+    "year": "2021",
+    "authors": [
+     "Mahto J.K.",
+     "Neetu N.",
+     "Waghmode B.",
+     "Kuatsjah E.",
+     "Sharma M.",
+     "Sircar D."
+    ],
+    "function_evidence": false,
+    "cluster": "4_405_ROCH34",
+    "resolved": true
+   }
+  ],
+  "4_406_PDO": [
+   {
+    "source": "curated",
+    "doi": null,
+    "pmid": "873893",
+    "context": "Comamonas testosteroni KF1 is Gram-negative and its PhtA/PhtB pair (PDO/PDR) catalyses the 4,5-dihydroxylation of phthalate; 4,5-dihydroxyphthalate from this organism was described as early as Ribbons & Evans (PMID 873893).",
+    "cluster": "4_406_PDO"
+   },
+   {
+    "source": "pdb_primary",
+    "anchor": "7FJL",
+    "doi": "10.1016/j.jbc.2021.101416",
+    "pmid": "34800435",
+    "title": "Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.",
+    "journal": "J Biol Chem",
+    "year": 2021,
+    "authors": [
+     "Mahto, J.K.",
+     "Neetu, N.",
+     "Waghmode, B.",
+     "Kuatsjah, E.",
+     "Sharma, M.",
+     "Sircar, D."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "4_406_PDO",
+    "resolved": true
+   }
+  ],
+  "4_407_PbaA1": [
+   {
+    "source": "uniprot",
+    "anchor": "A0A059U1S8",
+    "doi": null,
+    "pmid": "24747891",
+    "title": "A Novel Angular Dioxygenase Gene Cluster Encoding 3-Phenoxybenzoate 1',2'-Dioxygenase in Sphingobium wenxiniae JZ-1.",
+    "journal": "Appl. Environ. Microbiol.",
+    "year": "2014",
+    "authors": [
+     "Wang C.",
+     "Chen Q.",
+     "Wang R.",
+     "Shi C.",
+     "Yan X.",
+     "He J."
+    ],
+    "function_evidence": false,
+    "cluster": "4_407_PbaA1"
+   }
+  ],
+  "4_408_AntA": [
+   {
+    "source": "uniprot",
+    "anchor": "O85673",
+    "doi": "10.1128/jb.180.17.4466-4474.1998",
+    "pmid": "9721284",
+    "title": "Similarities between the antABC-encoded anthranilate dioxygenase and the benABC-encoded benzoate dioxygenase of Acinetobacter sp. strain ADP1.",
+    "journal": "J. Bacteriol.",
+    "year": "1998",
+    "authors": [
+     "Bundy B.M.",
+     "Campbell A.L.",
+     "Neidle E.L."
+    ],
+    "function_evidence": false,
+    "cluster": "4_408_AntA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O85673",
+    "doi": "10.1093/nar/gkh910",
+    "pmid": "15514110",
+    "title": "Unique features revealed by the genome sequence of Acinetobacter sp. ADP1, a versatile and naturally transformation competent bacterium.",
+    "journal": "Nucleic Acids Res.",
+    "year": "2004",
+    "authors": [
+     "Barbe V.",
+     "Vallenet D.",
+     "Fonknechten N.",
+     "Kreimeyer A.",
+     "Oztas S.",
+     "Labarre L."
+    ],
+    "function_evidence": false,
+    "cluster": "4_408_AntA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O85673",
+    "doi": "10.1128/jb.183-1.109-118.2001",
+    "pmid": "11114907",
+    "title": "Characterization and evolution of anthranilate 1,2-dioxygenase from Acinetobacter sp. strain ADP1.",
+    "journal": "J. Bacteriol.",
+    "year": "2001",
+    "authors": [
+     "Eby D.M.",
+     "Beharry Z.M.",
+     "Coulter E.D.",
+     "Kurtz D.M. Jr.",
+     "Neidle E.L."
+    ],
+    "function_evidence": true,
+    "cluster": "4_408_AntA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "O85673",
+    "doi": "10.1021/bi035385n",
+    "pmid": "14622009",
+    "title": "Histidine ligand protonation and redox potential in the Rieske dioxygenases: role of a conserved aspartate in anthranilate 1,2-dioxygenase.",
+    "journal": "Biochemistry",
+    "year": "2003",
+    "authors": [
+     "Beharry Z.M.",
+     "Eby D.M.",
+     "Coulter E.D.",
+     "Viswanathan R.",
+     "Neidle E.L.",
+     "Phillips R.S."
+    ],
+    "function_evidence": false,
+    "cluster": "4_408_AntA",
+    "resolved": true
+   }
+  ],
+  "4_409_TPDO": [
+   {
+    "source": "pdb_primary",
+    "anchor": "7VJU",
+    "doi": "10.1128/jb.00543-21",
+    "pmid": "35007143",
+    "title": "Structural Insights into Dihydroxylation of Terephthalate, a Product of Polyethylene Terephthalate Degradation.",
+    "journal": "J Bacteriol",
+    "year": 2022,
+    "authors": [
+     "Mahto, J.K.",
+     "Neetu, N.",
+     "Sharma, M.",
+     "Dubey, M.",
+     "Vellanki, B.P.",
+     "Kumar, P."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "4_409_TPDO",
+    "resolved": true
+   }
+  ],
+  "4_410_CbdC": [],
+  "4_411_XylX": [
+   {
+    "source": "uniprot",
+    "anchor": "P23099",
+    "doi": "10.1111/j.1432-1033.1992.tb16612.x",
+    "pmid": "1740120",
+    "title": "Cis-diol dehydrogenases encoded by the TOL pWW0 plasmid xylL gene and the Acinetobacter calcoaceticus chromosomal benD gene are members of the short-chain alcohol dehydrogenase superfamily.",
+    "journal": "Eur. J. Biochem.",
+    "year": "1992",
+    "authors": [
+     "Neidle E.L.",
+     "Hartnett C.",
+     "Ornston L.N.",
+     "Bairoch A.",
+     "Rekik M.",
+     "Harayama S."
+    ],
+    "function_evidence": false,
+    "cluster": "4_411_XylX",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "P23099",
+    "doi": "10.1128/jb.173.23.7540-7548.1991",
+    "pmid": "1938949",
+    "title": "Potential DNA slippage structures acquired during evolutionary divergence of Acinetobacter calcoaceticus chromosomal benABC and Pseudomonas putida TOL pWW0 plasmid xylXYZ, genes encoding benzoate dioxygenases.",
+    "journal": "J. Bacteriol.",
+    "year": "1991",
+    "authors": [
+     "Harayama S.",
+     "Rekik M.",
+     "Bairoch A.",
+     "Neidle E.L.",
+     "Ornston L.N."
+    ],
+    "function_evidence": false,
+    "cluster": "4_411_XylX",
+    "resolved": true
+   }
+  ],
+  "5_501_CmoS": [],
+  "5_502_CmoB": [],
+  "5_503_CmoA": [],
+  "5_504_CntA": [
+   {
+    "source": "pdb_primary",
+    "anchor": "6Y9C",
+    "doi": "10.1111/febs.16722",
+    "pmid": "36617384",
+    "title": "Characterisation of an unusual cysteine pair in the Rieske carnitine monooxygenase CntA catalytic site.",
+    "journal": "FEBS J",
+    "year": 2023,
+    "authors": [
+     "Quareshy, M.",
+     "Shanmugam, M.",
+     "Cameron, A.D.",
+     "Bugg, T.D.H.",
+     "Chen, Y."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "5_504_CntA",
+    "resolved": true
+   }
+  ],
+  "5_505_qxyA": [
+   {
+    "source": "curated",
+    "doi": null,
+    "pmid": "27792326",
+    "context": "PMID:27792326, doi:10.1021/acs.est.6b03705 (Pseudomonas sp.",
+    "cluster": "5_505_qxyA"
+   },
+   {
+    "source": "curated",
+    "doi": "10.1021/acs.est.6b03705",
+    "pmid": null,
+    "context": "PMID:27792326, doi:10.1021/acs.est.6b03705 (Pseudomonas sp.",
+    "cluster": "5_505_qxyA",
+    "resolved": true
+   }
+  ],
+  "5_506_Stc2": [
+   {
+    "source": "pdb_primary",
+    "anchor": "3VCA",
+    "doi": "10.1021/ja2111898",
+    "pmid": "22224443",
+    "title": "Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman, and UV-Visible Spectroscopic Analysis of a Rieske-Type Demethylase.",
+    "journal": "J Am Chem Soc",
+    "year": 2012,
+    "authors": [
+     "Daughtry, K.D.",
+     "Xiao, Y.",
+     "Stoner-Ma, D.",
+     "Cho, E.",
+     "Orville, A.M.",
+     "Liu, P."
+    ],
+    "is_assignment_basis": true,
+    "cluster": "5_506_Stc2",
+    "resolved": true
+   }
+  ],
+  "5_507_BmoA": [],
+  "5_508_GbcA": [
+   {
+    "source": "uniprot",
+    "anchor": "Q9HTF4",
+    "doi": "10.1038/35023079",
+    "pmid": "10984043",
+    "title": "Complete genome sequence of Pseudomonas aeruginosa PAO1, an opportunistic pathogen.",
+    "journal": "Nature",
+    "year": "2000",
+    "authors": [
+     "Stover C.K.",
+     "Pham X.-Q.T.",
+     "Erwin A.L.",
+     "Mizoguchi S.D.",
+     "Warrener P.",
+     "Hickey M.J."
+    ],
+    "function_evidence": false,
+    "cluster": "5_508_GbcA",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9HTF4",
+    "doi": "10.1128/jb.01393-07",
+    "pmid": "17951379",
+    "title": "Identification of two gene clusters and a transcriptional regulator required for Pseudomonas aeruginosa glycine betaine catabolism.",
+    "journal": "J. Bacteriol.",
+    "year": "2008",
+    "authors": [
+     "Wargo M.J.",
+     "Szwergold B.S.",
+     "Hogan D.A."
+    ],
+    "function_evidence": true,
+    "cluster": "5_508_GbcA",
+    "resolved": true
+   }
+  ],
+  "6_601_PAO": [
+   {
+    "source": "curated",
+    "doi": "10.1073/pnas.2036571100",
+    "pmid": null,
+    "context": "UniProt Q9FYC2 (PAO_ARATH, reviewed), Arabidopsis thaliana pheophorbide a oxygenase / ACD1 / LLS1 homolog, EC 1.14.15.17 Islevsel karakterizasyon: Pruzinska et al., Proc Natl Acad Sci U S A 2003;100:15259-15264, doi:10.1073/pnas.2036571100 (PAO'nun Rieske-tipi demir-sulfur proteini oldugunu gosteren makale) Candidate reference for the plastid chlorophyll-catabolism branch of the Rieske oxygenases,",
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1016/s0092-8674(00)80179-8",
+    "pmid": "9094711",
+    "title": "A novel suppressor of cell death in plants encoded by the Lls1 gene of maize.",
+    "journal": "Cell",
+    "year": "1997",
+    "authors": [
+     "Gray J.",
+     "Close P.S.",
+     "Briggs S.P.",
+     "Johal G.S."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1104/pp.008441",
+    "pmid": "12481072",
+    "title": "Light-dependent death of maize lls1 cells is mediated by mature chloroplasts.",
+    "journal": "Plant Physiol.",
+    "year": "2002",
+    "authors": [
+     "Gray J.",
+     "Janick-Buckner D.",
+     "Buckner B.",
+     "Close P.S.",
+     "Johal G.S."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1023/b:plan.0000028789.51807.6a",
+    "pmid": "15159621",
+    "title": "The wound-inducible Lls1 gene from maize is an orthologue of the Arabidopsis Acd1 gene, and the LLS1 protein is present in non-photosynthetic tissues.",
+    "journal": "Plant Mol. Biol.",
+    "year": "2004",
+    "authors": [
+     "Yang M.",
+     "Wardzala E.",
+     "Johal G.S.",
+     "Gray J."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1038/35048706",
+    "pmid": "11130713",
+    "title": "Sequence and analysis of chromosome 3 of the plant Arabidopsis thaliana.",
+    "journal": "Nature",
+    "year": "2000",
+    "authors": [
+     "Salanoubat M.",
+     "Lemcke K.",
+     "Rieger M.",
+     "Ansorge W.",
+     "Unseld M.",
+     "Fartmann B."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1111/tpj.13415",
+    "pmid": "27862469",
+    "title": "Araport11: a complete reannotation of the Arabidopsis thaliana reference genome.",
+    "journal": "Plant J.",
+    "year": "2017",
+    "authors": [
+     "Cheng C.Y.",
+     "Krishnakumar V.",
+     "Chan A.P.",
+     "Thibaud-Nissen F.",
+     "Schobel S.",
+     "Town C.D."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": null,
+    "pmid": null,
+    "title": "Community-consensus reference genome of Arabidopsis thaliana Col-0.",
+    "journal": null,
+    "year": "FEB-",
+    "authors": [],
+    "function_evidence": false,
+    "cluster": "6_601_PAO"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1126/science.1088305",
+    "pmid": "14593172",
+    "title": "Empirical analysis of transcriptional activity in the Arabidopsis genome.",
+    "journal": "Science",
+    "year": "2003",
+    "authors": [
+     "Yamada K.",
+     "Lim J.",
+     "Dale J.M.",
+     "Chen H.",
+     "Shinn P.",
+     "Palm C.J."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1073/pnas.2036571100",
+    "pmid": "14657372",
+    "title": "Chlorophyll breakdown: pheophorbide a oxygenase is a Rieske-type iron-sulfur protein, encoded by the accelerated cell death 1 gene.",
+    "journal": "Proc. Natl. Acad. Sci. U.S.A.",
+    "year": "2003",
+    "authors": [
+     "Pruzinska A.",
+     "Tanner G.",
+     "Anders I.",
+     "Roca M.",
+     "Hortensteiner S."
+    ],
+    "function_evidence": true,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1093/pcp/pcg172",
+    "pmid": "14701922",
+    "title": "The Arabidopsis-accelerated cell death gene ACD1 is involved in oxygenation of pheophorbide a: inhibition of the pheophorbide a oxygenase activity does not lead to the 'Stay-Green' phenotype in Arabidopsis.",
+    "journal": "Plant Cell Physiol.",
+    "year": "2003",
+    "authors": [
+     "Tanaka R.",
+     "Hirashima M.",
+     "Satoh S.",
+     "Tanaka A."
+    ],
+    "function_evidence": true,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1105/tpc.111.089474",
+    "pmid": "22366162",
+    "title": "STAY-GREEN and chlorophyll catabolic enzymes interact at light-harvesting complex II for chlorophyll detoxification during leaf senescence in Arabidopsis.",
+    "journal": "Plant Cell",
+    "year": "2012",
+    "authors": [
+     "Sakuraba Y.",
+     "Schelbert S.",
+     "Park S.Y.",
+     "Han S.H.",
+     "Lee B.D.",
+     "Andres C.B."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9FYC2",
+    "doi": "10.1016/j.bbrc.2012.11.050",
+    "pmid": "23200839",
+    "title": "7-Hydroxymethyl chlorophyll a reductase functions in metabolic channeling of chlorophyll breakdown intermediates during leaf senescence.",
+    "journal": "Biochem. Biophys. Res. Commun.",
+    "year": "2013",
+    "authors": [
+     "Sakuraba Y.",
+     "Kim Y.S.",
+     "Yoo S.C.",
+     "Hortensteiner S.",
+     "Paek N.C."
+    ],
+    "function_evidence": false,
+    "cluster": "6_601_PAO",
+    "resolved": true
+   }
+  ],
+  "6_602_CAO": [
+   {
+    "source": "curated",
+    "doi": "10.1046/j.1365-313x.2000.00672.x",
+    "pmid": null,
+    "context": "UniProt Q9MBA1 (CAO_ARATH, reviewed), Arabidopsis thaliana chlorophyllide a oxygenase / chlorophyll b synthase, EC 1.14.13.122 Islevsel karakterizasyon: Oster et al., Plant J 2000;21:305-310, doi:10.1046/j.1365-313x.2000.00672.x The chlorophyll b branch; 6 database entries are annotated \"chlorophyllide a oxygenase\" by NCBI and the audit could not read their catalytic lobe.",
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1038/22101",
+    "pmid": "10408441",
+    "title": "Chlorophyll b and phycobilins in the common ancestor of cyanobacteria and chloroplasts.",
+    "journal": "Nature",
+    "year": "1999",
+    "authors": [
+     "Tomitani A.",
+     "Okada K.",
+     "Miyashita H.",
+     "Matthijs H.C.P.",
+     "Ohno T.",
+     "Tanaka A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1073/pnas.96.18.10507",
+    "pmid": "10468639",
+    "title": "The AtCAO gene, encoding chlorophyll a oxygenase, is required for chlorophyll b synthesis in Arabidopsis thaliana.",
+    "journal": "Proc. Natl. Acad. Sci. U.S.A.",
+    "year": "1999",
+    "authors": [
+     "Espineda C.E.",
+     "Linford A.S.",
+     "Devine D.",
+     "Brusslan J.A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1046/j.1365-313x.2000.00672.x",
+    "pmid": "10758481",
+    "title": "Cloning and functional expression of the gene encoding the key enzyme for chlorophyll b biosynthesis (CAO) from Arabidopsis thaliana.",
+    "journal": "Plant J.",
+    "year": "2000",
+    "authors": [
+     "Oster U.",
+     "Tanaka R.",
+     "Tanaka A.",
+     "Ruediger W."
+    ],
+    "function_evidence": true,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1038/35048500",
+    "pmid": "11130712",
+    "title": "Sequence and analysis of chromosome 1 of the plant Arabidopsis thaliana.",
+    "journal": "Nature",
+    "year": "2000",
+    "authors": [
+     "Theologis A.",
+     "Ecker J.R.",
+     "Palm C.J.",
+     "Federspiel N.A.",
+     "Kaul S.",
+     "White O."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1111/tpj.13415",
+    "pmid": "27862469",
+    "title": "Araport11: a complete reannotation of the Arabidopsis thaliana reference genome.",
+    "journal": "Plant J.",
+    "year": "2017",
+    "authors": [
+     "Cheng C.Y.",
+     "Krishnakumar V.",
+     "Chan A.P.",
+     "Thibaud-Nissen F.",
+     "Schobel S.",
+     "Town C.D."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": null,
+    "pmid": null,
+    "title": "Community-consensus reference genome of Arabidopsis thaliana Col-0.",
+    "journal": null,
+    "year": "FEB-",
+    "authors": [],
+    "function_evidence": false,
+    "cluster": "6_602_CAO"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1126/science.1088305",
+    "pmid": "14593172",
+    "title": "Empirical analysis of transcriptional activity in the Arabidopsis genome.",
+    "journal": "Science",
+    "year": "2003",
+    "authors": [
+     "Yamada K.",
+     "Lim J.",
+     "Dale J.M.",
+     "Chen H.",
+     "Shinn P.",
+     "Palm C.J."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1007/s00425-003-1181-6",
+    "pmid": "14716565",
+    "title": "Domain structures of chlorophyllide a oxygenase of green plants and Prochlorothrix hollandica in relation to catalytic functions.",
+    "journal": "Planta",
+    "year": "2004",
+    "authors": [
+     "Nagata N.",
+     "Satoh S.",
+     "Tanaka R.",
+     "Tanaka A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1186/1471-2229-4-5",
+    "pmid": "15086960",
+    "title": "Synthesis of chlorophyll b: localization of chlorophyllide a oxygenase and discovery of a stable radical in the catalytic subunit.",
+    "journal": "BMC Plant Biol.",
+    "year": "2004",
+    "authors": [
+     "Eggink L.L.",
+     "LoBrutto R.",
+     "Brune D.C.",
+     "Brusslan J.",
+     "Yamasato A.",
+     "Tanaka A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1105/tpc.105.031518",
+    "pmid": "15805480",
+    "title": "The N-terminal domain of chlorophyllide a oxygenase confers protein instability in response to chlorophyll b accumulation in Arabidopsis.",
+    "journal": "Plant Cell",
+    "year": "2005",
+    "authors": [
+     "Yamasato A.",
+     "Nagata N.",
+     "Tanaka R.",
+     "Tanaka A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q9MBA1",
+    "doi": "10.1074/jbc.m109.008144",
+    "pmid": "19843523",
+    "title": "Determination of a chloroplast degron in the regulatory domain of chlorophyllide a oxygenase.",
+    "journal": "J. Biol. Chem.",
+    "year": "2009",
+    "authors": [
+     "Sakuraba Y.",
+     "Tanaka R.",
+     "Yamasato A.",
+     "Tanaka A."
+    ],
+    "function_evidence": false,
+    "cluster": "6_602_CAO",
+    "resolved": true
+   }
+  ],
+  "6_603_PTC52": [
+   {
+    "source": "curated",
+    "doi": "10.1073/pnas.0800378105",
+    "pmid": null,
+    "context": "UniProt Q8W496 (PTC52_ARATH, reviewed), Arabidopsis thaliana protochlorophyllide-dependent translocon component 52 / ACD1-like / TIC55-IV, EC 1.14.15.- Islevsel karakterizasyon: Bartsch et al., Proc Natl Acad Sci U S A 2008;105:4933-4938, doi:10.1073/pnas.0800378105 This is the family behind the largest eukaryotic block in the audit (NCBI calls them \"protochlorophyllide-dependent translocon compon",
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1104/pp.008441",
+    "pmid": "12481072",
+    "title": "Light-dependent death of maize lls1 cells is mediated by mature chloroplasts.",
+    "journal": "Plant Physiol.",
+    "year": "2002",
+    "authors": [
+     "Gray J.",
+     "Janick-Buckner D.",
+     "Buckner B.",
+     "Close P.S.",
+     "Johal G.S."
+    ],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1038/47134",
+    "pmid": "10617198",
+    "title": "Sequence and analysis of chromosome 4 of the plant Arabidopsis thaliana.",
+    "journal": "Nature",
+    "year": "1999",
+    "authors": [
+     "Mayer K.F.X.",
+     "Schueller C.",
+     "Wambutt R.",
+     "Murphy G.",
+     "Volckaert G.",
+     "Pohl T."
+    ],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1111/tpj.13415",
+    "pmid": "27862469",
+    "title": "Araport11: a complete reannotation of the Arabidopsis thaliana reference genome.",
+    "journal": "Plant J.",
+    "year": "2017",
+    "authors": [
+     "Cheng C.Y.",
+     "Krishnakumar V.",
+     "Chan A.P.",
+     "Thibaud-Nissen F.",
+     "Schobel S.",
+     "Town C.D."
+    ],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": null,
+    "pmid": null,
+    "title": "Community-consensus reference genome of Arabidopsis thaliana Col-0.",
+    "journal": null,
+    "year": "FEB-",
+    "authors": [],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52"
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1126/science.1088305",
+    "pmid": "14593172",
+    "title": "Empirical analysis of transcriptional activity in the Arabidopsis genome.",
+    "journal": "Science",
+    "year": "2003",
+    "authors": [
+     "Yamada K.",
+     "Lim J.",
+     "Dale J.M.",
+     "Chen H.",
+     "Shinn P.",
+     "Palm C.J."
+    ],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1073/pnas.0800378105",
+    "pmid": "18349143",
+    "title": "Three thioredoxin targets in the inner envelope membrane of chloroplasts function in protein import and chlorophyll metabolism.",
+    "journal": "Proc. Natl. Acad. Sci. U.S.A.",
+    "year": "2008",
+    "authors": [
+     "Bartsch S.",
+     "Monnet J.",
+     "Selbach K.",
+     "Quigley F.",
+     "Gray J.",
+     "von Wettstein D."
+    ],
+    "function_evidence": true,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   },
+   {
+    "source": "uniprot",
+    "anchor": "Q8W496",
+    "doi": "10.1093/mp/ssp079",
+    "pmid": "19995737",
+    "title": "In vivo studies on the roles of Tic55-related proteins in chloroplast protein import in Arabidopsis thaliana.",
+    "journal": "Mol. Plant",
+    "year": "2009",
+    "authors": [
+     "Boij P.",
+     "Patel R.",
+     "Garcia C.",
+     "Jarvis P.",
+     "Aronsson H."
+    ],
+    "function_evidence": false,
+    "cluster": "6_603_PTC52",
+    "resolved": true
+   }
+  ],
+  "7_701_AerC": [
+   {
+    "source": "curated",
+    "doi": "10.1021/jacs.5c01994",
+    "pmid": null,
+    "context": "NIES-4073; characterised as ScAerC by Zhang W, Ushimaru R, Kanaida M, Abe I, J Am Chem Soc 2025;147:10853-10858, doi:10.1021/jacs.5c01994 First C-C bond cleavage reference in this set.",
+    "cluster": "7_701_AerC",
+    "resolved": true
+   }
+  ]
+ }
+}

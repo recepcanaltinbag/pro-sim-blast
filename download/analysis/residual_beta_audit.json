@@ -1,0 +1,566 @@
+{
+  "question": "the gate carries a residual budget of 60 proteins the annotation calls a beta subunit but which are not classified as beta. Why?",
+  "what_the_roadmap_said": "that one of the two was wrong -- the annotation or the model set -- and that which one had not been measured",
+  "what_the_measurement_says": "neither. None of the 60 has a row in neighbor_protein, so no model was ever given a sequence to match. A statement about an unscanned sequence is not a statement about the annotation",
+  "method": {
+    "source": "the CDS feature in the GenBank record itself",
+    "coordinates": "the database stores BioPython's 0-based half-open range while GenBank writes 1-based inclusive, so the feature is looked up at start+1..end; without that conversion the record is not found at all, which is what happened on the first attempt",
+    "changes_nothing": "classification, gate budget and tables are untouched; this measures and reports"
+  },
+  "verdicts": {
+    "pseudogene": 58,
+    "translation_exists_but_not_extracted": 2,
+    "no_translation_in_record": 1
+  },
+  "proteins": [
+    {
+      "protein_key": "NC_011586.2:1438494-1439014:-1",
+      "locus_tag": "AB57_RS06925",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NC_014259.1:2840126-2840646:1",
+      "locus_tag": "AOLE_RS13350",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_AMSS01000034.1:119598-120118:1",
+      "locus_tag": "ACINWC141_RS05865",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_ANHZ02000004.1:160827-161343:1",
+      "locus_tag": "C884_RS03380",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "translation_exists_but_not_extracted",
+      "pseudo": false,
+      "frameshift_or_partial": false,
+      "note": "Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_BANU01000028.1:24434-24969:1",
+      "locus_tag": "GSI01S_RS19860",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_BBQU01000014.1:59026-59546:1",
+      "locus_tag": "P23_RS14800",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_CBSD020000075.1:29340-29902:-1",
+      "locus_tag": "ANICBIBUN_RS34890",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_CP001172.1:2505484-2506004:1",
+      "locus_tag": "ABBFA_RS11890",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_CP102934.1:1308695-1309215:-1",
+      "locus_tag": "MKL45_RS06215",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JASCAI010000030.1:315736-316247:1",
+      "locus_tag": "QLG01_RS18965",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "no_translation_in_record",
+      "pseudo": false,
+      "frameshift_or_partial": false,
+      "note": null
+    },
+    {
+      "protein_key": "NZ_JBBCPR010000002.1:341454-341974:1",
+      "locus_tag": "WFK58_RS04230",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JBDKZE010000001.1:1768578-1769098:1",
+      "locus_tag": "ABFO71_RS08425",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEWG01000023.1:4031-4551:-1",
+      "locus_tag": "J507_RS16870",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEWH01000053.1:15285-15805:1",
+      "locus_tag": "J512_RS20880",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEWU01000037.1:14089-14609:-1",
+      "locus_tag": "J551_RS19385",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEXD01000032.1:16207-16727:1",
+      "locus_tag": "J506_RS19710",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEXG01000024.1:47659-48179:1",
+      "locus_tag": "J536_RS17275",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEXJ01000038.1:6224-6744:-1",
+      "locus_tag": "J529_RS18010",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JEYA01000002.1:137460-137980:1",
+      "locus_tag": "J580_RS09695",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JFEL02000012.1:16623-17143:1",
+      "locus_tag": "J622_RS15710",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JFXV01000014.1:12002-12522:-1",
+      "locus_tag": "J687_RS16090",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JFYC01000016.1:49555-50075:-1",
+      "locus_tag": "J690_RS20050",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JFYD01000006.1:300494-301014:1",
+      "locus_tag": "J663_RS14385",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JMNZ01000044.1:20268-20788:1",
+      "locus_tag": "J584_RS18730",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JMOA01000016.1:14670-15190:-1",
+      "locus_tag": "J572_RS13120",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JMOD01000034.1:14682-15202:-1",
+      "locus_tag": "J596_RS15905",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JPHZ01000021.1:13936-14456:-1",
+      "locus_tag": "T630_RS09830",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JRKP01000056.1:16865-17384:1",
+      "locus_tag": "IX57_RS09615",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "internal stop; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_JVTF01000144.1:1707-2227:1",
+      "locus_tag": "ADA36_RS04565",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB849609.1:93434-93934:1",
+      "locus_tag": "F953_RS07270",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB849947.1:1990264-1990784:1",
+      "locus_tag": "F913_RS18785",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB851200.1:1832843-1833363:1",
+      "locus_tag": "F985_RS16150",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB944475.1:10261-10779:1",
+      "locus_tag": "C265_RS12870",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB976987.1:1764282-1764802:1",
+      "locus_tag": "F931_RS12150",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_KB976991.1:1707974-1708494:-1",
+      "locus_tag": "F929_RS13920",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_LBHY02000029.1:14201-14721:-1",
+      "locus_tag": "YA64_RS12585",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_LFZS01000001.1:141591-142111:-1",
+      "locus_tag": "AC058_RS00625",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_NGIR01000008.1:276294-276814:1",
+      "locus_tag": "CAT59_RS02005",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_QKWF01000043.1:3230-3750:-1",
+      "locus_tag": "DOL94_RS05510",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_QUZJ01000013.1:16583-17103:-1",
+      "locus_tag": "DZ985_RS17125",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_RFES01000007.1:206563-207083:1",
+      "locus_tag": "EA756_RS12180",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_RKJG01000005.1:3774190-3774710:-1",
+      "locus_tag": "EGS71_RS19725",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_RKJH01000001.1:3721862-3722382:-1",
+      "locus_tag": "EGT34_RS17940",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_SGTH01000007.1:174869-175389:-1",
+      "locus_tag": "EXD98_RS15765",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_SGTQ01000010.1:10403-10923:1",
+      "locus_tag": "EXD89_RS12165",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_UFOY01000002.1:146608-147128:-1",
+      "locus_tag": "DVZ10_RS05300",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VEIH01000016.1:42876-43396:1",
+      "locus_tag": "FS719_RS12335",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VHGG01000064.1:3243-3763:-1",
+      "locus_tag": "FJU50_RS15325",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VLUI01000008.1:95102-95664:-1",
+      "locus_tag": "G4922_RS06620",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VLVU01000054.1:3273-3793:-1",
+      "locus_tag": "G4902_RS17445",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VMDZ01000007.1:133736-134256:1",
+      "locus_tag": "FPK62_RS07425",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_VYTL01000009.1:13880-14400:-1",
+      "locus_tag": "F4T81_RS06930",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WJNU01000004.1:213655-214175:-1",
+      "locus_tag": "GFB79_RS07240",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WMOZ01000003.1:365958-366443:-1",
+      "locus_tag": "HZ882_RS06675",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WTZM01000028.1:46822-47342:1",
+      "locus_tag": "AB71198_RS15425",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WTZO01000007.1:79556-80076:1",
+      "locus_tag": "AB71191_RS05155",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WWCH01000001.1:1487065-1487585:-1",
+      "locus_tag": "GSE42_RS06965",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WXZR01000001.1:370206-370726:-1",
+      "locus_tag": "GUK58_RS01650",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WYAO01000019.1:139471-139991:-1",
+      "locus_tag": "GUK65_RS16140",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "NZ_WYAT01000011.1:316144-316664:1",
+      "locus_tag": "GUK66_RS08810",
+      "product": "benzoate 1,2-dioxygenase small subunit",
+      "verdict": "pseudogene",
+      "pseudo": true,
+      "frameshift_or_partial": true,
+      "note": "frameshifted; Derived by automated computational analysis using gene prediction method: Protein Homology."
+    },
+    {
+      "protein_key": "SOCP01000003.1:728181-728973:1",
+      "locus_tag": "CLV71_103658",
+      "product": "protocatechuate 3,4-dioxygenase beta subunit",
+      "verdict": "translation_exists_but_not_extracted",
+      "pseudo": false,
+      "frameshift_or_partial": false,
+      "note": null
+    }
+  ]
+}

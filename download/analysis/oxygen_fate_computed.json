@@ -1,0 +1,1482 @@
+{
+ "_about": "The fate of the two oxygen atoms COMPUTED from the Rhea anchor in the manifest, set against the value resolved in the database. A reaction whose atoms the count cannot follow is returned as ambiguous.",
+ "_counts": {
+  "anchored": 28,
+  "computed": 18,
+  "agree": 18,
+  "disagree": 0,
+  "ambiguous": 10
+ },
+ "rows": [
+  {
+   "cluster": "1_103_CarAa",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:27838",
+     "equation": "9H-carbazole + NADH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product 2'-aminobiphenyl-2,3-diol (C12H11NO2) carries 2 more oxygen than the substrate 9H-carbazole (C12H9N)",
+     "substrate": {
+      "name": "9H-carbazole",
+      "chebi": "CHEBI:27543",
+      "formula": "C12H9N",
+      "C": 12,
+      "O": 0
+     },
+     "main_product": {
+      "name": "2'-aminobiphenyl-2,3-diol",
+      "chebi": "CHEBI:29010",
+      "formula": "C12H11NO2",
+      "C": 12,
+      "O": 2
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:27842",
+     "equation": "9H-carbazole + NADPH + O2 + H(+) = 2'-aminobiphenyl-2,3-diol + NADP(+)",
+     "fate": "product",
+     "why": "the main product 2'-aminobiphenyl-2,3-diol (C12H11NO2) carries 2 more oxygen than the substrate 9H-carbazole (C12H9N)",
+     "substrate": {
+      "name": "9H-carbazole",
+      "chebi": "CHEBI:27543",
+      "formula": "C12H9N",
+      "C": 12,
+      "O": 0
+     },
+     "main_product": {
+      "name": "2'-aminobiphenyl-2,3-diol",
+      "chebi": "CHEBI:29010",
+      "formula": "C12H11NO2",
+      "C": 12,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "1_104_VanA",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:13021",
+     "equation": "vanillate + NADH + O2 + H(+) = 3,4-dihydroxybenzoate + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (vanillate C8 -> 3,4-dihydroxybenzoate C7) and the substrate already carries 4 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "vanillate",
+      "chebi": "CHEBI:16632",
+      "formula": "C8H7O4",
+      "C": 8,
+      "O": 4
+     },
+     "main_product": {
+      "name": "3,4-dihydroxybenzoate",
+      "chebi": "CHEBI:36241",
+      "formula": "C7H5O4",
+      "C": 7,
+      "O": 4
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "1_105_DdmC",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:57016",
+     "equation": "3,6-dichloro-2-methoxybenzoate + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 3,6-dichlorosalicylate + formaldehyde + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (3,6-dichloro-2-methoxybenzoate C8 -> 3,6-dichlorosalicylate C7) and the substrate already carries 3 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "3,6-dichloro-2-methoxybenzoate",
+      "chebi": "CHEBI:141349",
+      "formula": "C8H5Cl2O3",
+      "C": 8,
+      "O": 3
+     },
+     "main_product": {
+      "name": "3,6-dichlorosalicylate",
+      "chebi": "CHEBI:141350",
+      "formula": "C7H3Cl2O3",
+      "C": 7,
+      "O": 3
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "1_106_TsaM",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:51024",
+     "equation": "toluene-4-sulfonate + NADH + O2 + H(+) = 4-(hydroxymethyl)benzenesulfonate + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 4-(hydroxymethyl)benzenesulfonate (C7H7O4S) carries 1 more oxygen than the substrate toluene-4-sulfonate (C7H7O3S)",
+     "substrate": {
+      "name": "toluene-4-sulfonate",
+      "chebi": "CHEBI:27023",
+      "formula": "C7H7O3S",
+      "C": 7,
+      "O": 3
+     },
+     "main_product": {
+      "name": "4-(hydroxymethyl)benzenesulfonate",
+      "chebi": "CHEBI:11944",
+      "formula": "C7H7O4S",
+      "C": 7,
+      "O": 4
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "1_107_CndA",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:52204",
+     "equation": "butachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = butyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (butachlor C17 -> N-(2,6-diethylphenyl)-2-chloroacetamide C12) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "butachlor",
+      "chebi": "CHEBI:3230",
+      "formula": "C17H26ClNO2",
+      "C": 17,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N-(2,6-diethylphenyl)-2-chloroacetamide",
+      "chebi": "CHEBI:136492",
+      "formula": "C12H16ClNO",
+      "C": 12,
+      "O": 1
+     },
+     "other_products": [
+      {
+       "name": "butyl formate",
+       "chebi": "CHEBI:88514",
+       "formula": "C5H10O2",
+       "C": 5,
+       "O": 2
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:52208",
+     "equation": "alachlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = methyl formate + N-(2,6-diethylphenyl)-2-chloroacetamide + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (alachlor C14 -> N-(2,6-diethylphenyl)-2-chloroacetamide C12) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "alachlor",
+      "chebi": "CHEBI:2533",
+      "formula": "C14H20ClNO2",
+      "C": 14,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N-(2,6-diethylphenyl)-2-chloroacetamide",
+      "chebi": "CHEBI:136492",
+      "formula": "C12H16ClNO",
+      "C": 12,
+      "O": 1
+     },
+     "other_products": [
+      {
+       "name": "methyl formate",
+       "chebi": "CHEBI:77699",
+       "formula": "C2H4O2",
+       "C": 2,
+       "O": 2
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:52212",
+     "equation": "acetochlor + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = N-(2-ethyl-6-methylphenyl)-2-chloroacetamide + ethyl formate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (acetochlor C14 -> N-(2-ethyl-6-methylphenyl)-2-chloroacetamide C11) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "acetochlor",
+      "chebi": "CHEBI:2394",
+      "formula": "C14H20ClNO2",
+      "C": 14,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N-(2-ethyl-6-methylphenyl)-2-chloroacetamide",
+      "chebi": "CHEBI:136494",
+      "formula": "C11H14ClNO",
+      "C": 11,
+      "O": 1
+     },
+     "other_products": [
+      {
+       "name": "ethyl formate",
+       "chebi": "CHEBI:52342",
+       "formula": "C3H6O2",
+       "C": 3,
+       "O": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "1_112_NdmA",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:36267",
+     "equation": "caffeine + NADH + O2 + H(+) = theobromine + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (caffeine C8 -> theobromine C7) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "caffeine",
+      "chebi": "CHEBI:27732",
+      "formula": "C8H10N4O2",
+      "C": 8,
+      "O": 2
+     },
+     "main_product": {
+      "name": "theobromine",
+      "chebi": "CHEBI:28946",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:36271",
+     "equation": "caffeine + NADPH + O2 + H(+) = theobromine + formaldehyde + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (caffeine C8 -> theobromine C7) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "caffeine",
+      "chebi": "CHEBI:27732",
+      "formula": "C8H10N4O2",
+      "C": 8,
+      "O": 2
+     },
+     "main_product": {
+      "name": "theobromine",
+      "chebi": "CHEBI:28946",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:36275",
+     "equation": "theophylline + NADPH + O2 + H(+) = 3-methylxanthine + formaldehyde + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (theophylline C7 -> 3-methylxanthine C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "theophylline",
+      "chebi": "CHEBI:28177",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "3-methylxanthine",
+      "chebi": "CHEBI:62208",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:36279",
+     "equation": "theophylline + NADH + O2 + H(+) = 3-methylxanthine + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (theophylline C7 -> 3-methylxanthine C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "theophylline",
+      "chebi": "CHEBI:28177",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "3-methylxanthine",
+      "chebi": "CHEBI:62208",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "1_114_NdmB",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:30319",
+     "equation": "theobromine + NADH + O2 + H(+) = 7-methylxanthine + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (theobromine C7 -> 7-methylxanthine C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "theobromine",
+      "chebi": "CHEBI:28946",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "7-methylxanthine",
+      "chebi": "CHEBI:48991",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:30447",
+     "equation": "3-methylxanthine + NADH + O2 + H(+) = xanthine + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (3-methylxanthine C6 -> xanthine C5) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "3-methylxanthine",
+      "chebi": "CHEBI:62208",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "main_product": {
+      "name": "xanthine",
+      "chebi": "CHEBI:17712",
+      "formula": "C5H4N4O2",
+      "C": 5,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:36287",
+     "equation": "theobromine + NADPH + O2 + H(+) = 7-methylxanthine + formaldehyde + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (theobromine C7 -> 7-methylxanthine C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "theobromine",
+      "chebi": "CHEBI:28946",
+      "formula": "C7H8N4O2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "7-methylxanthine",
+      "chebi": "CHEBI:48991",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:36291",
+     "equation": "3-methylxanthine + NADPH + O2 + H(+) = xanthine + formaldehyde + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (3-methylxanthine C6 -> xanthine C5) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "3-methylxanthine",
+      "chebi": "CHEBI:62208",
+      "formula": "C6H6N4O2",
+      "C": 6,
+      "O": 2
+     },
+     "main_product": {
+      "name": "xanthine",
+      "chebi": "CHEBI:17712",
+      "formula": "C5H4N4O2",
+      "C": 5,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "2_201_BphA1",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:18165",
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol (C12H12O2) carries 2 more oxygen than the substrate biphenyl (C12H10)",
+     "substrate": {
+      "name": "biphenyl",
+      "chebi": "CHEBI:17097",
+      "formula": "C12H10",
+      "C": 12,
+      "O": 0
+     },
+     "main_product": {
+      "name": "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol",
+      "chebi": "CHEBI:32922",
+      "formula": "C12H12O2",
+      "C": 12,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "2_208_TecA1",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:57512",
+     "equation": "chlorobenzene + NADH + O2 + H(+) = (1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product (1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol (C6H7ClO2) carries 2 more oxygen than the substrate chlorobenzene (C6H5Cl)",
+     "substrate": {
+      "name": "chlorobenzene",
+      "chebi": "CHEBI:28097",
+      "formula": "C6H5Cl",
+      "C": 6,
+      "O": 0
+     },
+     "main_product": {
+      "name": "(1R,2R)-3-chlorocyclohexa-3,5-diene-1,2-diol",
+      "chebi": "CHEBI:19981",
+      "formula": "C6H7ClO2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "2_209_TDO",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:13813",
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product cis-1,2-dihydrobenzene-1,2-diol (C6H8O2) carries 2 more oxygen than the substrate benzene (C6H6)",
+     "substrate": {
+      "name": "benzene",
+      "chebi": "CHEBI:16716",
+      "formula": "C6H6",
+      "C": 6,
+      "O": 0
+     },
+     "main_product": {
+      "name": "cis-1,2-dihydrobenzene-1,2-diol",
+      "chebi": "CHEBI:16190",
+      "formula": "C6H8O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:16737",
+     "equation": "toluene + NADH + O2 + H(+) = (1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product (1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol (C7H10O2) carries 2 more oxygen than the substrate toluene (C7H8)",
+     "substrate": {
+      "name": "toluene",
+      "chebi": "CHEBI:17578",
+      "formula": "C7H8",
+      "C": 7,
+      "O": 0
+     },
+     "main_product": {
+      "name": "(1S,2R)-3-methylcyclohexa-3,5-diene-1,2-diol",
+      "chebi": "CHEBI:15565",
+      "formula": "C7H10O2",
+      "C": 7,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "2_212_BedC1",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:13813",
+     "equation": "benzene + NADH + O2 + H(+) = cis-1,2-dihydrobenzene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product cis-1,2-dihydrobenzene-1,2-diol (C6H8O2) carries 2 more oxygen than the substrate benzene (C6H6)",
+     "substrate": {
+      "name": "benzene",
+      "chebi": "CHEBI:16716",
+      "formula": "C6H6",
+      "C": 6,
+      "O": 0
+     },
+     "main_product": {
+      "name": "cis-1,2-dihydrobenzene-1,2-diol",
+      "chebi": "CHEBI:16190",
+      "formula": "C6H8O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "2_213_BphA1A2",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:18165",
+     "equation": "biphenyl + NADH + O2 + H(+) = (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product (2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol (C12H12O2) carries 2 more oxygen than the substrate biphenyl (C12H10)",
+     "substrate": {
+      "name": "biphenyl",
+      "chebi": "CHEBI:17097",
+      "formula": "C12H10",
+      "C": 12,
+      "O": 0
+     },
+     "main_product": {
+      "name": "(2R,3S)-3-phenylcyclohexa-3,5-diene-1,2-diol",
+      "chebi": "CHEBI:32922",
+      "formula": "C12H12O2",
+      "C": 12,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "2_217_HcaE",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:20357",
+     "equation": "3-phenylpropanoate + NADH + O2 + H(+) = 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate + NAD(+)",
+     "fate": "product",
+     "why": "the main product 3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate (C9H11O4) carries 2 more oxygen than the substrate 3-phenylpropanoate (C9H9O2)",
+     "substrate": {
+      "name": "3-phenylpropanoate",
+      "chebi": "CHEBI:51057",
+      "formula": "C9H9O2",
+      "C": 9,
+      "O": 2
+     },
+     "main_product": {
+      "name": "3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)propanoate",
+      "chebi": "CHEBI:60087",
+      "formula": "C9H11O4",
+      "C": 9,
+      "O": 4
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:25058",
+     "equation": "(E)-cinnamate + NADH + O2 + H(+) = (2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate + NAD(+)",
+     "fate": "product",
+     "why": "the main product (2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate (C9H9O4) carries 2 more oxygen than the substrate (E)-cinnamate (C9H7O2)",
+     "substrate": {
+      "name": "(E)-cinnamate",
+      "chebi": "CHEBI:15669",
+      "formula": "C9H7O2",
+      "C": 9,
+      "O": 2
+     },
+     "main_product": {
+      "name": "(2E)-3-(cis-5,6-dihydroxycyclohexa-1,3-dien-1-yl)prop-2-enoate",
+      "chebi": "CHEBI:61451",
+      "formula": "C9H9O4",
+      "C": 9,
+      "O": 4
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "3_309_NahAc",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:19173",
+     "equation": "naphthalene + NADH + O2 + H(+) = (1R,2S)-1,2-dihydronaphthalene-1,2-diol + NAD(+)",
+     "fate": "product",
+     "why": "the main product (1R,2S)-1,2-dihydronaphthalene-1,2-diol (C10H10O2) carries 2 more oxygen than the substrate naphthalene (C10H8)",
+     "substrate": {
+      "name": "naphthalene",
+      "chebi": "CHEBI:16482",
+      "formula": "C10H8",
+      "C": 10,
+      "O": 0
+     },
+     "main_product": {
+      "name": "(1R,2S)-1,2-dihydronaphthalene-1,2-diol",
+      "chebi": "CHEBI:44343",
+      "formula": "C10H10O2",
+      "C": 10,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "3_313_KshA15",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:32199",
+     "equation": "androsta-1,4-diene-3,17-dione + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = 9alpha-hydroxyandrosta-1,4-diene-3,17-dione + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxyandrosta-1,4-diene-3,17-dione (C19H24O3) carries 1 more oxygen than the substrate androsta-1,4-diene-3,17-dione (C19H24O2)",
+     "substrate": {
+      "name": "androsta-1,4-diene-3,17-dione",
+      "chebi": "CHEBI:40799",
+      "formula": "C19H24O2",
+      "C": 19,
+      "O": 2
+     },
+     "main_product": {
+      "name": "9alpha-hydroxyandrosta-1,4-diene-3,17-dione",
+      "chebi": "CHEBI:63641",
+      "formula": "C19H24O3",
+      "C": 19,
+      "O": 3
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:45968",
+     "equation": "androst-4-ene-3,17-dione + NADH + O2 + H(+) = 9alpha-hydroxy-androst-4-ene-3,17-dione + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxy-androst-4-ene-3,17-dione (C19H26O3) carries 1 more oxygen than the substrate androst-4-ene-3,17-dione (C19H26O2)",
+     "substrate": {
+      "name": "androst-4-ene-3,17-dione",
+      "chebi": "CHEBI:16422",
+      "formula": "C19H26O2",
+      "C": 19,
+      "O": 2
+     },
+     "main_product": {
+      "name": "9alpha-hydroxy-androst-4-ene-3,17-dione",
+      "chebi": "CHEBI:85549",
+      "formula": "C19H26O3",
+      "C": 19,
+      "O": 3
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:45972",
+     "equation": "3-oxochol-4-en-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oate + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxy-3-oxochol-4-en-22-oate (C22H31O4) carries 1 more oxygen than the substrate 3-oxochol-4-en-22-oate (C22H31O3)",
+     "substrate": {
+      "name": "3-oxochol-4-en-22-oate",
+      "chebi": "CHEBI:83777",
+      "formula": "C22H31O3",
+      "C": 22,
+      "O": 3
+     },
+     "main_product": {
+      "name": "9alpha-hydroxy-3-oxochol-4-en-22-oate",
+      "chebi": "CHEBI:85550",
+      "formula": "C22H31O4",
+      "C": 22,
+      "O": 4
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:45976",
+     "equation": "3-oxochola-1,4-dien-22-oate + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oate + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxy-3-oxochola-1,4-dien-22-oate (C22H29O4) carries 1 more oxygen than the substrate 3-oxochola-1,4-dien-22-oate (C22H29O3)",
+     "substrate": {
+      "name": "3-oxochola-1,4-dien-22-oate",
+      "chebi": "CHEBI:85551",
+      "formula": "C22H29O3",
+      "C": 22,
+      "O": 3
+     },
+     "main_product": {
+      "name": "9alpha-hydroxy-3-oxochola-1,4-dien-22-oate",
+      "chebi": "CHEBI:85553",
+      "formula": "C22H29O4",
+      "C": 22,
+      "O": 4
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:45980",
+     "equation": "3-oxochol-4-en-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA (C43H62N7O19P3S) carries 1 more oxygen than the substrate 3-oxochol-4-en-22-oyl-CoA (C43H62N7O18P3S)",
+     "substrate": {
+      "name": "3-oxochol-4-en-22-oyl-CoA",
+      "chebi": "CHEBI:83792",
+      "formula": "C43H62N7O18P3S",
+      "C": 43,
+      "O": 18
+     },
+     "main_product": {
+      "name": "9alpha-hydroxy-3-oxochol-4-en-22-oyl-CoA",
+      "chebi": "CHEBI:85548",
+      "formula": "C43H62N7O19P3S",
+      "C": 43,
+      "O": 19
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:45984",
+     "equation": "3-oxochola-1,4-dien-22-oyl-CoA + NADH + O2 + H(+) = 9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA + NAD(+) + H2O",
+     "fate": "product",
+     "why": "the main product 9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA (C43H60N7O19P3S) carries 1 more oxygen than the substrate 3-oxochola-1,4-dien-22-oyl-CoA (C43H60N7O18P3S)",
+     "substrate": {
+      "name": "3-oxochola-1,4-dien-22-oyl-CoA",
+      "chebi": "CHEBI:83793",
+      "formula": "C43H60N7O18P3S",
+      "C": 43,
+      "O": 18
+     },
+     "main_product": {
+      "name": "9alpha-hydroxy-3-oxochola-1,4-dien-22-oyl-CoA",
+      "chebi": "CHEBI:85547",
+      "formula": "C43H60N7O19P3S",
+      "C": 43,
+      "O": 19
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "3_321_Nvd",
+   "resolved_in_db": "oxidant_only",
+   "computed": [
+    "oxidant_only"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:45024",
+     "equation": "cholesterol + NADPH + O2 + H(+) = 7-dehydrocholesterol + NADP(+) + 2 H2O",
+     "fate": "oxidant_only",
+     "why": "no product gains oxygen: cholesterol (C27H46O) -> 7-dehydrocholesterol (C27H44O)",
+     "substrate": {
+      "name": "cholesterol",
+      "chebi": "CHEBI:16113",
+      "formula": "C27H46O",
+      "C": 27,
+      "O": 1
+     },
+     "main_product": {
+      "name": "7-dehydrocholesterol",
+      "chebi": "CHEBI:17759",
+      "formula": "C27H44O",
+      "C": 27,
+      "O": 1
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:51644",
+     "equation": "cholesterol + NADH + O2 + H(+) = 7-dehydrocholesterol + NAD(+) + 2 H2O",
+     "fate": "oxidant_only",
+     "why": "no product gains oxygen: cholesterol (C27H46O) -> 7-dehydrocholesterol (C27H44O)",
+     "substrate": {
+      "name": "cholesterol",
+      "chebi": "CHEBI:16113",
+      "formula": "C27H46O",
+      "C": 27,
+      "O": 1
+     },
+     "main_product": {
+      "name": "7-dehydrocholesterol",
+      "chebi": "CHEBI:17759",
+      "formula": "C27H44O",
+      "C": 27,
+      "O": 1
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "3_322_DAF36",
+   "resolved_in_db": "oxidant_only",
+   "computed": [
+    "oxidant_only"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:45024",
+     "equation": "cholesterol + NADPH + O2 + H(+) = 7-dehydrocholesterol + NADP(+) + 2 H2O",
+     "fate": "oxidant_only",
+     "why": "no product gains oxygen: cholesterol (C27H46O) -> 7-dehydrocholesterol (C27H44O)",
+     "substrate": {
+      "name": "cholesterol",
+      "chebi": "CHEBI:16113",
+      "formula": "C27H46O",
+      "C": 27,
+      "O": 1
+     },
+     "main_product": {
+      "name": "7-dehydrocholesterol",
+      "chebi": "CHEBI:17759",
+      "formula": "C27H44O",
+      "C": 27,
+      "O": 1
+     },
+     "other_products": []
+    },
+    {
+     "rhea": "RHEA:51644",
+     "equation": "cholesterol + NADH + O2 + H(+) = 7-dehydrocholesterol + NAD(+) + 2 H2O",
+     "fate": "oxidant_only",
+     "why": "no product gains oxygen: cholesterol (C27H46O) -> 7-dehydrocholesterol (C27H44O)",
+     "substrate": {
+      "name": "cholesterol",
+      "chebi": "CHEBI:16113",
+      "formula": "C27H46O",
+      "C": 27,
+      "O": 1
+     },
+     "main_product": {
+      "name": "7-dehydrocholesterol",
+      "chebi": "CHEBI:17759",
+      "formula": "C27H44O",
+      "C": 27,
+      "O": 1
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "4_401_CmtAb",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:42344",
+     "equation": "p-cumate + NADH + O2 + H(+) = (2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate + NAD(+)",
+     "fate": "product",
+     "why": "the main product (2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate (C10H13O4) carries 2 more oxygen than the substrate p-cumate (C10H11O2)",
+     "substrate": {
+      "name": "p-cumate",
+      "chebi": "CHEBI:25822",
+      "formula": "C10H11O2",
+      "C": 10,
+      "O": 2
+     },
+     "main_product": {
+      "name": "(2R,3S)-2,3-dihydroxy-2,3-dihydro-p-cumate",
+      "chebi": "CHEBI:58420",
+      "formula": "C10H13O4",
+      "C": 10,
+      "O": 4
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "4_408_AntA",
+   "resolved_in_db": "product",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:11072",
+     "equation": "anthranilate + NADPH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NADP(+)",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (anthranilate C7 -> catechol C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "anthranilate",
+      "chebi": "CHEBI:16567",
+      "formula": "C7H6NO2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "catechol",
+      "chebi": "CHEBI:18135",
+      "formula": "C6H6O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "CO2",
+       "chebi": "CHEBI:16526",
+       "formula": "CO2",
+       "C": 1,
+       "O": 2
+      },
+      {
+       "name": "NH4(+)",
+       "chebi": "CHEBI:28938",
+       "formula": "H4N",
+       "C": 0,
+       "O": 0
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:11076",
+     "equation": "anthranilate + NADH + O2 + 3 H(+) = catechol + NH4(+) + CO2 + NAD(+)",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (anthranilate C7 -> catechol C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "anthranilate",
+      "chebi": "CHEBI:16567",
+      "formula": "C7H6NO2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "catechol",
+      "chebi": "CHEBI:18135",
+      "formula": "C6H6O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "CO2",
+       "chebi": "CHEBI:16526",
+       "formula": "CO2",
+       "C": 1,
+       "O": 2
+      },
+      {
+       "name": "NH4(+)",
+       "chebi": "CHEBI:28938",
+       "formula": "H4N",
+       "C": 0,
+       "O": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "4_410_CbdC",
+   "resolved_in_db": "product",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:53736",
+     "equation": "a 2-halobenzoate + NADH + O2 + H(+) = a halide anion + catechol + CO2 + NAD(+)",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (a 2-halobenzoate C7 -> catechol C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "a 2-halobenzoate",
+      "chebi": "CHEBI:70856",
+      "formula": "C7H4O2X",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "catechol",
+      "chebi": "CHEBI:18135",
+      "formula": "C6H6O2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "CO2",
+       "chebi": "CHEBI:16526",
+       "formula": "CO2",
+       "C": 1,
+       "O": 2
+      },
+      {
+       "name": "a halide anion",
+       "chebi": "CHEBI:16042",
+       "formula": "X",
+       "C": 0,
+       "O": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "5_501_CmoS",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:17769",
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "product",
+     "why": "the main product betaine aldehyde hydrate (C5H14NO2) carries 1 more oxygen than the substrate choline (C5H14NO)",
+     "substrate": {
+      "name": "choline",
+      "chebi": "CHEBI:15354",
+      "formula": "C5H14NO",
+      "C": 5,
+      "O": 1
+     },
+     "main_product": {
+      "name": "betaine aldehyde hydrate",
+      "chebi": "CHEBI:15870",
+      "formula": "C5H14NO2",
+      "C": 5,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "5_502_CmoB",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:17769",
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "product",
+     "why": "the main product betaine aldehyde hydrate (C5H14NO2) carries 1 more oxygen than the substrate choline (C5H14NO)",
+     "substrate": {
+      "name": "choline",
+      "chebi": "CHEBI:15354",
+      "formula": "C5H14NO",
+      "C": 5,
+      "O": 1
+     },
+     "main_product": {
+      "name": "betaine aldehyde hydrate",
+      "chebi": "CHEBI:15870",
+      "formula": "C5H14NO2",
+      "C": 5,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "5_503_CmoA",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:17769",
+     "equation": "choline + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = betaine aldehyde hydrate + 2 oxidized [2Fe-2S]-[ferredoxin] + H2O",
+     "fate": "product",
+     "why": "the main product betaine aldehyde hydrate (C5H14NO2) carries 1 more oxygen than the substrate choline (C5H14NO)",
+     "substrate": {
+      "name": "choline",
+      "chebi": "CHEBI:15354",
+      "formula": "C5H14NO",
+      "C": 5,
+      "O": 1
+     },
+     "main_product": {
+      "name": "betaine aldehyde hydrate",
+      "chebi": "CHEBI:15870",
+      "formula": "C5H14NO2",
+      "C": 5,
+      "O": 2
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "5_504_CntA",
+   "resolved_in_db": "product",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:55368",
+     "equation": "(R)-carnitine + NADPH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments ((R)-carnitine C7 -> (3R)-3-hydroxy-4-oxobutanoate C4) and the substrate already carries 3 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "(R)-carnitine",
+      "chebi": "CHEBI:16347",
+      "formula": "C7H15NO3",
+      "C": 7,
+      "O": 3
+     },
+     "main_product": {
+      "name": "(3R)-3-hydroxy-4-oxobutanoate",
+      "chebi": "CHEBI:138809",
+      "formula": "C4H5O4",
+      "C": 4,
+      "O": 4
+     },
+     "other_products": [
+      {
+       "name": "trimethylamine",
+       "chebi": "CHEBI:58389",
+       "formula": "C3H10N",
+       "C": 3,
+       "O": 0
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:55396",
+     "equation": "(R)-carnitine + NADH + O2 + H(+) = (3R)-3-hydroxy-4-oxobutanoate + trimethylamine + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments ((R)-carnitine C7 -> (3R)-3-hydroxy-4-oxobutanoate C4) and the substrate already carries 3 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "(R)-carnitine",
+      "chebi": "CHEBI:16347",
+      "formula": "C7H15NO3",
+      "C": 7,
+      "O": 3
+     },
+     "main_product": {
+      "name": "(3R)-3-hydroxy-4-oxobutanoate",
+      "chebi": "CHEBI:138809",
+      "formula": "C4H5O4",
+      "C": 4,
+      "O": 4
+     },
+     "other_products": [
+      {
+       "name": "trimethylamine",
+       "chebi": "CHEBI:58389",
+       "formula": "C3H10N",
+       "C": 3,
+       "O": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "5_506_Stc2",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:19357",
+     "equation": "L-proline betaine + NADPH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NADP(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (L-proline betaine C7 -> N-methyl-L-proline C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "L-proline betaine",
+      "chebi": "CHEBI:35280",
+      "formula": "C7H13NO2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N-methyl-L-proline",
+      "chebi": "CHEBI:133743",
+      "formula": "C6H11NO2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    },
+    {
+     "rhea": "RHEA:61616",
+     "equation": "L-proline betaine + NADH + O2 + H(+) = N-methyl-L-proline + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (L-proline betaine C7 -> N-methyl-L-proline C6) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "L-proline betaine",
+      "chebi": "CHEBI:35280",
+      "formula": "C7H13NO2",
+      "C": 7,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N-methyl-L-proline",
+      "chebi": "CHEBI:133743",
+      "formula": "C6H11NO2",
+      "C": 6,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "5_508_GbcA",
+   "resolved_in_db": "leaving_group",
+   "computed": [
+    "ambiguous"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:45700",
+     "equation": "glycine betaine + NADH + O2 + H(+) = N,N-dimethylglycine + formaldehyde + NAD(+) + H2O",
+     "fate": "ambiguous",
+     "why": "the skeleton fragments (glycine betaine C5 -> N,N-dimethylglycine C4) and the substrate already carries 2 oxygen, so a flat count in the main product cannot tell a retained oxygen from a new one; atom counting cannot resolve this reaction",
+     "substrate": {
+      "name": "glycine betaine",
+      "chebi": "CHEBI:17750",
+      "formula": "C5H11NO2",
+      "C": 5,
+      "O": 2
+     },
+     "main_product": {
+      "name": "N,N-dimethylglycine",
+      "chebi": "CHEBI:58251",
+      "formula": "C4H9NO2",
+      "C": 4,
+      "O": 2
+     },
+     "other_products": [
+      {
+       "name": "formaldehyde",
+       "chebi": "CHEBI:16842",
+       "formula": "CH2O",
+       "C": 1,
+       "O": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cluster": "6_601_PAO",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:48140",
+     "equation": "pheophorbide a + 2 reduced [2Fe-2S]-[ferredoxin] + O2 + 2 H(+) = red chlorophyll catabolite + 2 oxidized [2Fe-2S]-[ferredoxin]",
+     "fate": "product",
+     "why": "the main product red chlorophyll catabolite (C35H36N4O7) carries 2 more oxygen than the substrate pheophorbide a (C35H34N4O5)",
+     "substrate": {
+      "name": "pheophorbide a",
+      "chebi": "CHEBI:58687",
+      "formula": "C35H34N4O5",
+      "C": 35,
+      "O": 5
+     },
+     "main_product": {
+      "name": "red chlorophyll catabolite",
+      "chebi": "CHEBI:58716",
+      "formula": "C35H36N4O7",
+      "C": 35,
+      "O": 7
+     },
+     "other_products": []
+    }
+   ]
+  },
+  {
+   "cluster": "6_602_CAO",
+   "resolved_in_db": "product",
+   "computed": [
+    "product"
+   ],
+   "details": [
+    {
+     "rhea": "RHEA:30359",
+     "equation": "chlorophyllide a + 2 NADPH + 2 O2 + 2 H(+) = chlorophyllide b + 2 NADP(+) + 3 H2O",
+     "fate": "product",
+     "why": "the main product chlorophyllide b (C35H30MgN4O6) carries 1 more oxygen than the substrate chlorophyllide a (C35H32MgN4O5)",
+     "substrate": {
+      "name": "chlorophyllide a",
+      "chebi": "CHEBI:83348",
+      "formula": "C35H32MgN4O5",
+      "C": 35,
+      "O": 5
+     },
+     "main_product": {
+      "name": "chlorophyllide b",
+      "chebi": "CHEBI:83356",
+      "formula": "C35H30MgN4O6",
+      "C": 35,
+      "O": 6
+     },
+     "other_products": []
+    }
+   ]
+  }
+ ]
+}

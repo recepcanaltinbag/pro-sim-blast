@@ -1,0 +1,319 @@
+{
+ "method": {
+  "question": "how much of the reference set is redundant, and what that does to type assignment",
+  "identical": "byte-identical amino acid sequences under different reference names; each becomes its own profile, so which one recruits a member is decided by small numerical differences in score rather than by biology",
+  "contained": "one reference sequence occurs exactly inside another, so the shorter is a fragment of the longer",
+  "near_identical": "distinct sequences at or above 99.0 % identity",
+  "identical_models": "two profiles in the assignment library whose probability matrix is byte-identical, compared with the name, accession and date lines excluded. This is measured separately from sequence identity because the assignment decision passes through the model, not the sequence: DxnA1 and PbaA1 are only 65.6 % identical as sequences, far below any redundancy threshold, yet their models are the same because the two family profiles were built from the same four proteins",
+  "not_fixed_here": "this module measures the problem; repairing it means changing the reference set and rebuilding the profile library, and which name to keep is a nomenclature decision",
+  "near_identical_threshold": 99.0,
+  "zero_member_types": "a type with no confirmed member. The number alone is not a finding, because at least three different situations produce it: the type is represented in the data but every candidate closest to it is assigned to a competing profile; only distant candidates are closest to it; or nothing in the data is closest to it at all. The verdict field says which, decided from ro_evidence's identity-nearest reference, an independent measurement from the HMM assignment",
+  "decisions": "what the curator decided to do about each near-identical pair, read from curation_decisions.csv with its date and reason; a pair without a row is reported as awaiting a decision"
+ },
+ "totals": {
+  "references": 76,
+  "distinct_sequences": 76,
+  "identical_groups": 0,
+  "references_in_identical_groups": 0,
+  "contained_pairs": 0,
+  "near_identical_pairs": 2,
+  "near_identical_pairs_with_a_recorded_decision": 2,
+  "affected_references": 4,
+  "entries_under_an_ambiguous_reference": 170,
+  "models_in_library": 76,
+  "identical_model_groups": 1,
+  "types_unreachable_by_a_duplicate_model": 1,
+  "zero_member_types": 7
+ },
+ "identical_model_groups": [
+  {
+   "models": [
+    "3_308_DxnA1",
+    "4_407_PbaA1"
+   ],
+   "digest": "05868852bb819df5",
+   "members": [
+    {
+     "id": "3_308_DxnA1",
+     "entries": 2,
+     "assigned_entries_nearest_ref": [
+      {
+       "nearest_ref": "4_407_PbaA1",
+       "entries": 2,
+       "mean_identity": 100.0,
+       "max_identity": 100.0
+      }
+     ]
+    },
+    {
+     "id": "4_407_PbaA1",
+     "entries": 0,
+     "assigned_entries_nearest_ref": []
+    }
+   ],
+   "unreachable_types": [
+    "4_407_PbaA1"
+   ],
+   "sequence_identity": [
+    {
+     "pair": [
+      "3_308_DxnA1",
+      "4_407_PbaA1"
+     ],
+     "identity": 65.6
+    }
+   ],
+   "why_it_matters": "two names, one probability matrix: every candidate scores the same on both, the tie is always broken the same way, and the losing type can never recruit a member -- not even a sequence identical to its own reference"
+  }
+ ],
+ "zero_member_types": [
+  {
+   "cluster": "1_103_CarAa",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 45,
+   "best_candidate_identity": 99.7,
+   "assigned_instead_to": [
+    {
+     "cluster": "1_102_CARDO",
+     "entries": 35,
+     "mean_identity": 50.7,
+     "max_identity": 99.7,
+     "reference_identity_to_winner": 99.2
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "entries": 10,
+     "mean_identity": 32.5,
+     "max_identity": 32.9,
+     "reference_identity_to_winner": null
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  },
+  {
+   "cluster": "2_206_IpBAa",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 9,
+   "best_candidate_identity": 96.5,
+   "assigned_instead_to": [
+    {
+     "cluster": "2_203_cumA1",
+     "entries": 4,
+     "mean_identity": 84.9,
+     "max_identity": 85.2,
+     "reference_identity_to_winner": 90.8
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 2,
+     "mean_identity": 96.5,
+     "max_identity": 96.5,
+     "reference_identity_to_winner": 90.6
+    },
+    {
+     "cluster": "3_318_NidA",
+     "entries": 1,
+     "mean_identity": 35.5,
+     "max_identity": 35.5,
+     "reference_identity_to_winner": 33.3
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  },
+  {
+   "cluster": "2_210_XylC1",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 3,
+   "best_candidate_identity": 96.2,
+   "assigned_instead_to": [
+    {
+     "cluster": "2_202_EdoA1",
+     "entries": 3,
+     "mean_identity": 95.5,
+     "max_identity": 96.2,
+     "reference_identity_to_winner": 63.9
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  },
+  {
+   "cluster": "3_309_NahAc",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 20,
+   "best_candidate_identity": 100.0,
+   "assigned_instead_to": [
+    {
+     "cluster": "3_303_NBDO",
+     "entries": 17,
+     "mean_identity": 94.7,
+     "max_identity": 100.0,
+     "reference_identity_to_winner": 82.0
+    },
+    {
+     "cluster": "5_504_CntA",
+     "entries": 2,
+     "mean_identity": 34.2,
+     "max_identity": 37.2,
+     "reference_identity_to_winner": null
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "mean_identity": 36.4,
+     "max_identity": 36.4,
+     "reference_identity_to_winner": null
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  },
+  {
+   "cluster": "3_310_DntAc",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 3,
+   "best_candidate_identity": 31.8,
+   "assigned_instead_to": [
+    {
+     "cluster": "5_506_Stc2",
+     "entries": 2,
+     "mean_identity": 30.4,
+     "max_identity": 30.6,
+     "reference_identity_to_winner": 28.1
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "entries": 1,
+     "mean_identity": 31.8,
+     "max_identity": 31.8,
+     "reference_identity_to_winner": null
+    }
+   ],
+   "verdict": "only_distant_candidates_are_nearest_to_it"
+  },
+  {
+   "cluster": "3_312_NinA",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 11,
+   "best_candidate_identity": 94.2,
+   "assigned_instead_to": [
+    {
+     "cluster": "3_303_NBDO",
+     "entries": 6,
+     "mean_identity": 92.6,
+     "max_identity": 94.2,
+     "reference_identity_to_winner": 91.3
+    },
+    {
+     "cluster": "3_306_3NTDO",
+     "entries": 2,
+     "mean_identity": 62.2,
+     "max_identity": 62.4,
+     "reference_identity_to_winner": 92.6
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "entries": 1,
+     "mean_identity": 36.0,
+     "max_identity": 36.0,
+     "reference_identity_to_winner": 31.5
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  },
+  {
+   "cluster": "4_407_PbaA1",
+   "entries": 0,
+   "candidates_whose_nearest_reference_it_is": 2,
+   "best_candidate_identity": 100.0,
+   "assigned_instead_to": [
+    {
+     "cluster": "3_308_DxnA1",
+     "entries": 2,
+     "mean_identity": 100.0,
+     "max_identity": 100.0,
+     "reference_identity_to_winner": 65.6
+    }
+   ],
+   "verdict": "represented_but_assigned_elsewhere"
+  }
+ ],
+ "identical_groups": [],
+ "contained_pairs": [],
+ "near_identical_pairs": [
+  {
+   "ref_a": "2_202_EdoA1",
+   "ref_b": "2_203_cumA1",
+   "identity": 99.8,
+   "substrate_a": "ethylbenzene",
+   "substrate_b": "cumene",
+   "same_substrate": false,
+   "entries_a": 48,
+   "entries_b": 8,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "The two references carry different substrate labels, ethylbenzene and cumene, because each was assayed on one compound. Merging them would pick one label and discard the other, which asserts more than the assays support: a Rieske oxygenase commonly turns over both. Keeping both records keeps both measurements, and the arbitrary split of members is stated on every affected page."
+  },
+  {
+   "ref_a": "1_102_CARDO",
+   "ref_b": "1_103_CarAa",
+   "identity": 99.2,
+   "substrate_a": "carbazole",
+   "substrate_b": "carbazole",
+   "same_substrate": true,
+   "entries_a": 114,
+   "entries_b": 0,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "Both records are separately characterised carbazole 1,9a-dioxygenases in the literature. Merging them would delete one published experimental record to tidy a member count, and the count is already published with its caveat on both pages. The split of members between the two profiles is arbitrary; the two records are not."
+  }
+ ],
+ "affected": {
+  "2_202_EdoA1": {
+   "kind": "near_identical",
+   "others": [
+    "2_203_cumA1"
+   ],
+   "identity": 99.8,
+   "entries": 48,
+   "entries_total": 56,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "The two references carry different substrate labels, ethylbenzene and cumene, because each was assayed on one compound. Merging them would pick one label and discard the other, which asserts more than the assays support: a Rieske oxygenase commonly turns over both. Keeping both records keeps both measurements, and the arbitrary split of members is stated on every affected page."
+  },
+  "2_203_cumA1": {
+   "kind": "near_identical",
+   "others": [
+    "2_202_EdoA1"
+   ],
+   "identity": 99.8,
+   "entries": 8,
+   "entries_total": 56,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "The two references carry different substrate labels, ethylbenzene and cumene, because each was assayed on one compound. Merging them would pick one label and discard the other, which asserts more than the assays support: a Rieske oxygenase commonly turns over both. Keeping both records keeps both measurements, and the arbitrary split of members is stated on every affected page."
+  },
+  "1_102_CARDO": {
+   "kind": "near_identical",
+   "others": [
+    "1_103_CarAa"
+   ],
+   "identity": 99.2,
+   "entries": 114,
+   "entries_total": 114,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "Both records are separately characterised carbazole 1,9a-dioxygenases in the literature. Merging them would delete one published experimental record to tidy a member count, and the count is already published with its caveat on both pages. The split of members between the two profiles is arbitrary; the two records are not."
+  },
+  "1_103_CarAa": {
+   "kind": "near_identical",
+   "others": [
+    "1_102_CARDO"
+   ],
+   "identity": 99.2,
+   "entries": 0,
+   "entries_total": 114,
+   "decision": "keep_separate",
+   "decided_on": "2026-11-10",
+   "rationale": "Both records are separately characterised carbazole 1,9a-dioxygenases in the literature. Merging them would delete one published experimental record to tidy a member count, and the count is already published with its caveat on both pages. The split of members between the two profiles is arbitrary; the two records are not."
+  }
+ }
+}

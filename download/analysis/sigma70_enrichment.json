@@ -1,0 +1,117 @@
+{
+  "question": "are sigma70 -35/-10 box pairs more frequent in real upstream intergenic regions than in a null built from the same regions?",
+  "what_is_not_claimed": "no promoter is located and none is predicted. The boxes are information-poor and occur often by chance, so a per-operon statement would not be publishable; only the enrichment is",
+  "method": {
+    "boxes": {
+      "minus_35": "TTGACA",
+      "minus_10": "TATAAT",
+      "spacer_bp": [
+        15,
+        19
+      ],
+      "mismatches_allowed_per_box": 1
+    },
+    "nulls": {
+      "mononucleotide_shuffle": "bases of the same region shuffled: length and base composition, so GC, are exactly preserved; dinucleotide composition is not",
+      "markov1_resample": "transition probabilities learned from the same region, a new sequence of the same length generated: dinucleotide composition preserved in expectation, which closes the first null's gap",
+      "why_two": "one null is an assumption. The claim is published only if both point the same way; if they diverge, the divergence is the finding"
+    },
+    "replicates_per_region": 20,
+    "seed": 20261113,
+    "statistic": "observed number of units carrying at least one pair against the number expected under the null (the sum of the null probabilities), tested with a two-sided binomial. A sign test on per-unit differences was tried first and was wrong: the real value is binary while the null value is a mean over replicates, so a region with no pair counted against the real data whenever the null found one in a single replicate",
+    "levels": "entry, sequence and genus. Regions from one genome are not independent, so an entry-level p value is small by repeated sampling alone; the genus level decides",
+    "strand": "regions were written on the strand that drives the operon by upstream_regions.py; nothing is re-complemented here"
+  },
+  "denominator": {
+    "regions": 8750,
+    "note": "only replicons whose nucleotide sequence is readable could contribute; see replicon_sequence.csv and ROADMAP 135.21. Whether the result generalises to the unreadable majority is unmeasured"
+  },
+  "levels": {
+    "entry": {
+      "vs_mononucleotide_shuffle": {
+        "regions": 8750,
+        "observed_with_a_pair": 431,
+        "expected_under_null": 252.85,
+        "observed_share": 0.0493,
+        "null_share": 0.0289,
+        "ratio": 1.705,
+        "binomial_two_sided_p": 4.90158106587854e-25
+      },
+      "vs_markov1_resample": {
+        "regions": 8750,
+        "observed_with_a_pair": 431,
+        "expected_under_null": 227.0,
+        "observed_share": 0.0493,
+        "null_share": 0.0259,
+        "ratio": 1.899,
+        "binomial_two_sided_p": 2.6392078749375733e-34
+      }
+    },
+    "sequence": {
+      "vs_mononucleotide_shuffle": {
+        "regions": 7823,
+        "observed_with_a_pair": 387,
+        "expected_under_null": 226.79,
+        "observed_share": 0.0495,
+        "null_share": 0.029,
+        "ratio": 1.706,
+        "binomial_two_sided_p": 1.0142676851557206e-22
+      },
+      "vs_markov1_resample": {
+        "regions": 7823,
+        "observed_with_a_pair": 387,
+        "expected_under_null": 204.29,
+        "observed_share": 0.0495,
+        "null_share": 0.0261,
+        "ratio": 1.894,
+        "binomial_two_sided_p": 8.770521604011106e-31
+      }
+    },
+    "genus": {
+      "vs_mononucleotide_shuffle": {
+        "regions": 2232,
+        "observed_with_a_pair": 202,
+        "expected_under_null": 79.16,
+        "observed_share": 0.0905,
+        "null_share": 0.0355,
+        "ratio": 2.552,
+        "binomial_two_sided_p": 3.8370142687547224e-32
+      },
+      "vs_markov1_resample": {
+        "regions": 2232,
+        "observed_with_a_pair": 202,
+        "expected_under_null": 70.96,
+        "observed_share": 0.0905,
+        "null_share": 0.0318,
+        "ratio": 2.847,
+        "binomial_two_sided_p": 2.0743487665342442e-38
+      }
+    }
+  },
+  "by_architecture": {
+    "codirectional_other": {
+      "regions": 1785,
+      "share_with_a_pair": 0.0532,
+      "null_mono": 0.0341,
+      "null_markov": 0.0289
+    },
+    "codirectional_regulator": {
+      "regions": 415,
+      "share_with_a_pair": 0.0458,
+      "null_mono": 0.0283,
+      "null_markov": 0.0245
+    },
+    "divergent_other": {
+      "regions": 4212,
+      "share_with_a_pair": 0.052,
+      "null_mono": 0.0277,
+      "null_markov": 0.0254
+    },
+    "divergent_regulator": {
+      "regions": 2338,
+      "share_with_a_pair": 0.0419,
+      "null_mono": 0.0272,
+      "null_markov": 0.0249
+    }
+  }
+}

@@ -1,0 +1,884 @@
+{
+ "question": "Which exact model produced each published HMM call, and can that call be reproduced?",
+ "method": {
+  "unit": "one HMM model inside one library file",
+  "citable_pin": "the accession with its own version (e.g. PF00355.33) plus a digest of the model block; models version independently, so this is finer than a Pfam release label",
+  "no_release_label": "The Pfam release (e.g. 37.0) is not written inside an HMM record, so no release label is invented here.",
+  "project_models": "ROmotif71 and RieskeDB71 are built by this project, not fetched from Pfam. They carry no accession version and are pinned by digest only; they are listed separately rather than being shown as if they were versioned."
+ },
+ "libraries": [
+  {
+   "library": "component_hmms/components.hmm",
+   "purpose": "operon components (beta, ferredoxin, reductase) -- input of operon derivation",
+   "present": true,
+   "file_digest": "0bbc6b8ffd21ea48",
+   "models": 9,
+   "pfam_versioned_models": 9,
+   "pinned_by": "accession version and digest"
+  },
+  {
+   "library": "family_hmms/mobility.hmm",
+   "purpose": "transposase and IS families of neighbouring genes",
+   "present": true,
+   "file_digest": "268ffb44a58538a6",
+   "models": 12,
+   "pfam_versioned_models": 12,
+   "pinned_by": "accession version and digest"
+  },
+  {
+   "library": "family_hmms/recombinase.hmm",
+   "purpose": "recombinase and integrase families",
+   "present": true,
+   "file_digest": "1ea4303f4904fe1b",
+   "models": 7,
+   "pfam_versioned_models": 7,
+   "pinned_by": "accession version and digest"
+  },
+  {
+   "library": "family_hmms/regulator.hmm",
+   "purpose": "transcriptional regulator families",
+   "present": true,
+   "file_digest": "a638d9b4b0d098cf",
+   "models": 9,
+   "pfam_versioned_models": 9,
+   "pinned_by": "accession version and digest"
+  },
+  {
+   "library": "ROs_71_Clean/ROmotif71.hmm",
+   "purpose": "project-built motif model of the Rieske alpha subunit",
+   "present": true,
+   "file_digest": "b36cde0c4acc4219",
+   "models": 1,
+   "pfam_versioned_models": 0,
+   "pinned_by": "digest only (not a Pfam library)"
+  },
+  {
+   "library": "RieskeDB71.hmm",
+   "purpose": "project-built library of the 76 curated reference types, used for type assignment by bit score",
+   "present": true,
+   "file_digest": "8746e457b214017d",
+   "models": 76,
+   "pfam_versioned_models": 0,
+   "pinned_by": "digest only (not a Pfam library)"
+  }
+ ],
+ "pfam_models": [
+  {
+   "digest": "c172d86430d6c8c2",
+   "name": "Fer2",
+   "accession": "PF00111.33",
+   "description": "2Fe-2S iron-sulfur cluster binding domain",
+   "length": 77,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "45a8ee2bc4ca3d39",
+   "name": "HTH_1",
+   "accession": "PF00126.35",
+   "description": "Bacterial regulatory helix-turn-helix protein, lysR family",
+   "length": 60,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "d1180175296f52af",
+   "name": "NAD_binding_1",
+   "accession": "PF00175.27",
+   "description": "Oxidoreductase NAD-binding domain",
+   "length": 109,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "d4890156c8d32575",
+   "name": "Resolvase",
+   "accession": "PF00239.28",
+   "description": "Resolvase, N terminal domain",
+   "length": 146,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "74808c637eecd286",
+   "name": "Rieske",
+   "accession": "PF00355.33",
+   "description": "Rieske [2Fe-2S] domain",
+   "length": 89,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "6a08ef42d103058a",
+   "name": "GntR",
+   "accession": "PF00392.29",
+   "description": "Bacterial regulatory proteins, gntR family",
+   "length": 64,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "d6ec331e806812ee",
+   "name": "TetR_N",
+   "accession": "PF00440.30",
+   "description": "Bacterial regulatory proteins, tetR family",
+   "length": 47,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "6f5adfa5036412ab",
+   "name": "Phage_integrase",
+   "accession": "PF00589.28",
+   "description": "Phage integrase family",
+   "length": 172,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "83b6a71b8feae44f",
+   "name": "rve",
+   "accession": "PF00665.34",
+   "description": "Integrase core domain",
+   "length": 155,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "2e9d798ec7f9e059",
+   "name": "Ring_hydroxyl_B",
+   "accession": "PF00866.25",
+   "description": "Ring hydroxylating beta subunit",
+   "length": 144,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "ef3f557161377bb8",
+   "name": "Transposase_mut",
+   "accession": "PF00872.25",
+   "description": "Transposase, Mutator family",
+   "length": 379,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "92960b31b0e156fe",
+   "name": "FAD_binding_6",
+   "accession": "PF00970.31",
+   "description": "Oxidoreductase FAD-binding domain",
+   "length": 99,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "e86fdff7131db497",
+   "name": "MarR",
+   "accession": "PF01047.29",
+   "description": "MarR family",
+   "length": 59,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "c77951b4ce59e498",
+   "name": "Transposase_1",
+   "accession": "PF01359.26",
+   "description": "Transposase (partial DDE domain)",
+   "length": 80,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "d77984bae1136830",
+   "name": "DDE_Tnp_Tn3",
+   "accession": "PF01526.25",
+   "description": "Tn3 transposase DDE domain",
+   "length": 389,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "5c380e654d875c87",
+   "name": "HTH_Tnp_1",
+   "accession": "PF01527.27",
+   "description": "Transposase",
+   "length": 75,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "5bee3241422e43fe",
+   "name": "DDE_Tnp_1",
+   "accession": "PF01609.29",
+   "description": "Transposase DDE domain",
+   "length": 199,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "f3a7775e60115eaf",
+   "name": "IclR_C",
+   "accession": "PF01614.25",
+   "description": "Bacterial transcriptional regulator IclR C-terminal",
+   "length": 174,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "31ad94afdaef1198",
+   "name": "Y1_Tnp",
+   "accession": "PF01797.23",
+   "description": "Transposase IS200 like",
+   "length": 121,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "d375b80eeacc4e4f",
+   "name": "RuvC",
+   "accession": "PF02075.24",
+   "description": "Crossover junction endodeoxyribonuclease RuvC",
+   "length": 148,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "57def2383969eac6",
+   "name": "AraC_binding",
+   "accession": "PF02311.27",
+   "description": "AraC-like ligand binding domain",
+   "length": 136,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "6bb4460d37492be9",
+   "name": "Transposase_20",
+   "accession": "PF02371.24",
+   "description": "Transposase IS116/IS110/IS902 family",
+   "length": 87,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "c7235d35f1a81dff",
+   "name": "HTH_7",
+   "accession": "PF02796.22",
+   "description": "Helix-turn-helix domain of resolvase",
+   "length": 45,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "8598e94ebd88cf27",
+   "name": "Pyr_redox_dim",
+   "accession": "PF02852.29",
+   "description": "Pyridine nucleotide-disulphide oxidoreductase, dimerisation domain",
+   "length": 110,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "093aafff31b38486",
+   "name": "DDE_Tnp_IS66",
+   "accession": "PF03050.22",
+   "description": "Transposase IS66 family",
+   "length": 284,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "3de123ae957ba0c0",
+   "name": "LysR_substrate",
+   "accession": "PF03466.26",
+   "description": "LysR substrate binding domain",
+   "length": 209,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "e4134420db359b6f",
+   "name": "RuvX",
+   "accession": "PF03652.22",
+   "description": "Holliday junction resolvase",
+   "length": 134,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "72b06e02d2767a78",
+   "name": "Zn_ribbon_InsA",
+   "accession": "PF03811.18",
+   "description": "InsA N-terminal domain",
+   "length": 35,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "15390f2cf917a890",
+   "name": "TnpB_IS66",
+   "accession": "PF05717.20",
+   "description": "IS66 Orf2 like protein",
+   "length": 101,
+   "library": "family_hmms/mobility.hmm"
+  },
+  {
+   "digest": "f59706a63373a1f3",
+   "name": "Recombinase",
+   "accession": "PF07508.21",
+   "description": "Recombinase",
+   "length": 103,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "e768962754c51066",
+   "name": "Pyr_redox_2",
+   "accession": "PF07992.21",
+   "description": "Pyridine nucleotide-disulphide oxidoreductase",
+   "length": 291,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "e6f985b1dfd2c21c",
+   "name": "FAD_binding_8",
+   "accession": "PF08022.19",
+   "description": "FAD-binding domain",
+   "length": 109,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "ab9e316bd9215267",
+   "name": "HTH_IclR",
+   "accession": "PF09339.18",
+   "description": "IclR helix-turn-helix domain",
+   "length": 52,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "788baefed523b23e",
+   "name": "HTH_18",
+   "accession": "PF12833.15",
+   "description": "Helix-turn-helix domain",
+   "length": 80,
+   "library": "family_hmms/regulator.hmm"
+  },
+  {
+   "digest": "4c45499dc2ebb372",
+   "name": "Zn_ribbon_recom",
+   "accession": "PF13408.14",
+   "description": "Recombinase zinc beta ribbon domain",
+   "length": 58,
+   "library": "family_hmms/recombinase.hmm"
+  },
+  {
+   "digest": "f8796706ebceb43e",
+   "name": "Rieske_2",
+   "accession": "PF13806.13",
+   "description": "Rieske-like [2Fe-2S] domain",
+   "length": 104,
+   "library": "component_hmms/components.hmm"
+  },
+  {
+   "digest": "0f389a0745e2f907",
+   "name": "DDE_Tnp_1_7",
+   "accession": "PF13843.13",
+   "description": "Transposase IS4",
+   "length": 349,
+   "library": "family_hmms/mobility.hmm"
+  }
+ ],
+ "project_models": [
+  {
+   "digest": "00b5b853eb5aead5",
+   "name": "1_101_OxoO",
+   "length": 445,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "a220884c7fe2d959",
+   "name": "1_102_CARDO",
+   "length": 384,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "82c366fdaa43bc73",
+   "name": "1_103_CarAa",
+   "length": 384,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "d8e3251bbf9fde30",
+   "name": "1_104_VanA",
+   "length": 352,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "3433572de36dc901",
+   "name": "1_105_DdmC",
+   "length": 339,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "af6770096daa11c1",
+   "name": "1_106_TsaM",
+   "length": 347,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "7469d9677507f6e7",
+   "name": "1_107_CndA",
+   "length": 348,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "e165586fefa42778",
+   "name": "1_108_PobA",
+   "length": 409,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "10af570829b76c3f",
+   "name": "1_109_LigX",
+   "length": 424,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "7d383744eb6b4f29",
+   "name": "1_110_SxtT",
+   "length": 338,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "1b34509f3a3494bd",
+   "name": "1_111_GxtA",
+   "length": 339,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b070a4d75e063f64",
+   "name": "1_112_NdmA",
+   "length": 356,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b25d671ce552d65c",
+   "name": "1_113_CdnA",
+   "length": 356,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "6760290815a5e868",
+   "name": "1_114_NdmB",
+   "length": 355,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "bcef99f67de7d620",
+   "name": "1_116_GdmA",
+   "length": 353,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b17085f3bd17d073",
+   "name": "1_117_PrnD",
+   "length": 363,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "f53c643d7c5e0fa9",
+   "name": "1_118_RedG",
+   "length": 395,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "7eb45efb32019332",
+   "name": "2_201_BphA1",
+   "length": 457,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "877a492e63c67632",
+   "name": "2_202_EdoA1",
+   "length": 453,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "434031568afd0b41",
+   "name": "2_203_cumA1",
+   "length": 453,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "31c6fb8a62e5c59d",
+   "name": "2_204_Dpe",
+   "length": 460,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "f0e95c6995619824",
+   "name": "2_206_IpBAa",
+   "length": 452,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "9c70dc1f788c2287",
+   "name": "2_207_BpdC1",
+   "length": 456,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "6a142d1d244ffdc6",
+   "name": "2_208_TecA1",
+   "length": 455,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "bc88c96de7c51206",
+   "name": "2_209_TDO",
+   "length": 456,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "da5a07454db768ec",
+   "name": "2_210_XylC1",
+   "length": 453,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "2b0569090d0b7200",
+   "name": "2_211_bfzA",
+   "length": 452,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "fbde42221793c336",
+   "name": "2_212_BedC1",
+   "length": 458,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "e5b5dfc8ee96103f",
+   "name": "2_213_BphA1A2",
+   "length": 453,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "1311541805ea7c24",
+   "name": "2_214_TftA",
+   "length": 456,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "aad9b418cbd070e1",
+   "name": "2_215_cadA",
+   "length": 457,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "5b2079b10d9952a6",
+   "name": "2_216_BPDO",
+   "length": 454,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "4cde5873562e8e52",
+   "name": "2_217_HcaE",
+   "length": 453,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "fff608c03061bba6",
+   "name": "2_218_BphA1",
+   "length": 443,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "027dd39eb1da468e",
+   "name": "3_301_PhnA1a",
+   "length": 454,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b830855ce5e2109f",
+   "name": "3_302_DitA",
+   "length": 464,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "c60c2ed6a660851f",
+   "name": "3_303_NBDO",
+   "length": 449,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "ab4cb6adeae24494",
+   "name": "3_305_ArhA1",
+   "length": 446,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "08e9e694c25c0da6",
+   "name": "3_306_3NTDO",
+   "length": 450,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "e56eedd0aa77bba5",
+   "name": "3_307_NagGH",
+   "length": 418,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "fd838327f5f7f40f",
+   "name": "3_308_DxnA1",
+   "length": 435,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "80de61307b965cb2",
+   "name": "3_309_NahAc",
+   "length": 448,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "0ce6ed0910d8e9c9",
+   "name": "3_310_DntAc",
+   "length": 450,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "f295fcad5be884a8",
+   "name": "3_311_PhtAa",
+   "length": 462,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "e1185eec195a6c9b",
+   "name": "3_312_NinA",
+   "length": 448,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "d28b7d62dcf9494e",
+   "name": "3_313_KshA15",
+   "length": 393,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "eb99816c70a49c5e",
+   "name": "3_316_NarAa",
+   "length": 461,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "43591caa41a6fb2b",
+   "name": "3_317_NidA",
+   "length": 462,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "eedd8229b70c8234",
+   "name": "3_318_NidA",
+   "length": 455,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b7a4930b53968e7f",
+   "name": "3_319_PhdA",
+   "length": 448,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "08fa829254e2ecca",
+   "name": "3_320_NidA3",
+   "length": 448,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "36083da3e81a4ad0",
+   "name": "3_321_Nvd",
+   "length": 430,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "5a88abe11b2c4878",
+   "name": "3_322_DAF36",
+   "length": 428,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "8d9728d622b35f44",
+   "name": "4_401_CmtAb",
+   "length": 431,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "3d6ae883bcebe44d",
+   "name": "4_402_PsbAb",
+   "length": 431,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "bdc4542270c41a8d",
+   "name": "4_403_AtdA",
+   "length": 426,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "3316e8a524720bad",
+   "name": "4_404_TdnA1",
+   "length": 446,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "67bb37e14e44a8cf",
+   "name": "4_405_ROCH34",
+   "length": 439,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "adb774397d050d4b",
+   "name": "4_406_PDO",
+   "length": 442,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "39ea6587ca57c2aa",
+   "name": "4_407_PbaA1",
+   "length": 435,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "5a37ea1c7af3b60f",
+   "name": "4_408_AntA",
+   "length": 471,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "2c7e893c40e8dc6a",
+   "name": "4_409_TPDO",
+   "length": 414,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "85c117b50d2c46f6",
+   "name": "4_410_CbdC",
+   "length": 452,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "f0793deacc40a81d",
+   "name": "4_411_XylX",
+   "length": 454,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "cf13216068621b04",
+   "name": "5_501_CmoS",
+   "length": 444,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "7789673656b98abd",
+   "name": "5_502_CmoB",
+   "length": 441,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "54fd1571920be930",
+   "name": "5_503_CmoA",
+   "length": 441,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "231bfafe8f17951e",
+   "name": "5_504_CntA",
+   "length": 372,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "aa9cb3289236cc59",
+   "name": "5_505_qxyA",
+   "length": 383,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "0c6edde319fac1bb",
+   "name": "5_506_Stc2",
+   "length": 412,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "892172683f7a9608",
+   "name": "5_507_BmoA",
+   "length": 426,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "9f73098ebac211ac",
+   "name": "5_508_GbcA",
+   "length": 430,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "e06d463d70ab2418",
+   "name": "6_601_PAO",
+   "length": 538,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "fd373070f59b1455",
+   "name": "6_602_CAO",
+   "length": 536,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "affd4de8770f33b9",
+   "name": "6_603_PTC52",
+   "length": 559,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "9309eaab7b52373e",
+   "name": "7_701_AerC",
+   "length": 720,
+   "library": "RieskeDB71.hmm"
+  },
+  {
+   "digest": "b36cde0c4acc4219",
+   "name": "ROmotif71",
+   "length": 603,
+   "library": "ROs_71_Clean/ROmotif71.hmm"
+  }
+ ],
+ "upstream_drift": {
+  "checked": true,
+  "checked_utc": "2026-11-12T08:38:11Z",
+  "pfam_models_checked": 37,
+  "models_behind_upstream": 8,
+  "detail": [
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Ring_hydroxyl_B",
+    "pinned": "PF00866.25",
+    "upstream_now": "PF00866.26"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Fer2",
+    "pinned": "PF00111.33",
+    "upstream_now": "PF00111.34"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Rieske",
+    "pinned": "PF00355.33",
+    "upstream_now": "PF00355.34"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Rieske_2",
+    "pinned": "PF13806.13",
+    "upstream_now": "PF13806.14"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "NAD_binding_1",
+    "pinned": "PF00175.27",
+    "upstream_now": "PF00175.28"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "FAD_binding_6",
+    "pinned": "PF00970.31",
+    "upstream_now": "PF00970.32"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Pyr_redox_2",
+    "pinned": "PF07992.21",
+    "upstream_now": "PF07992.22"
+   },
+   {
+    "library": "component_hmms/components.hmm",
+    "name": "Pyr_redox_dim",
+    "pinned": "PF02852.29",
+    "upstream_now": "PF02852.30"
+   }
+  ],
+  "reading": "A pinned library that is behind upstream is not an error: re-downloading would change every published HMM call. What would be an error is not knowing the difference, which is why it is recorded here."
+ }
+}

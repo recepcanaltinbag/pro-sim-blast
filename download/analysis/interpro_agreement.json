@@ -1,0 +1,92 @@
+{
+  "question": "does InterPro, annotating the same sequences with its own profiles, agree that they carry a Rieske domain?",
+  "unit": "one amino acid sequence (seq_md5)",
+  "independence": {
+    "independent": "given a sequence, whether InterPro places a Rieske domain on it. Those profiles were built by other people, from other data, at other thresholds",
+    "not_independent": "which sequences get asked. The candidate pool was selected with this project's own Rieske and motif models, so InterPro cannot object to a sequence we never included",
+    "therefore": "this measures precision, and says nothing at all about recall: the sequences we missed are outside it"
+  },
+  "denominators": {
+    "union_sequences": 70317,
+    "with_any_interpro_entry": 25313,
+    "without_any_interpro_entry": 45004,
+    "why_the_rest_are_excluded": "a sequence InterPro has not annotated does not contradict us, it is unannotated -- most are recent unreviewed entries. An absence of evidence is not evidence of absence"
+  },
+  "rieske_agreement": {
+    "interpro_entries_used": {
+      "IPR017941": "Rieske [2Fe-2S] iron-sulphur domain",
+      "IPR036922": "Rieske [2Fe-2S] iron-sulphur domain superfamily"
+    },
+    "our_rieske_intact": 25174,
+    "interpro_rieske": 25313,
+    "both": 25174,
+    "ours_only": 0,
+    "interpro_only": 139,
+    "agreement_share": 1.0
+  },
+  "interpro_sees_rieske_we_do_not": {
+    "sequences": 139,
+    "all_are_excluded_by_our_gate": true,
+    "by_mononuclear_triad_sites_found": {
+      "3": 76,
+      "2": 50,
+      "1": 7,
+      "0": 6
+    },
+    "why_this_is_not_a_contradiction": "InterPro's measure is profile similarity -- is a Rieske domain present -- while ours is whether the four cluster ligands are in place. A Rieske fold without its cluster cannot do the chemistry, so the gate asks for the ligands. The two statements are different, not opposed",
+    "why_it_is_published_anyway": "these sequences are dropped by the gate, and a drop that nobody can see is the failure mode this database keeps finding. 76 of the 139 carry all three mononuclear iron ligands, which makes them a set a curator should look at: a substituted cluster ligand with an intact catalytic triad"
+  },
+  "family_entries_by_our_group": {
+    "1": {
+      "Cholesterol 7-desaturase": 1653,
+      "_sequences": 1653,
+      "Vanillate O-demethylase oxygenase-like, C-terminal catalytic": 1343,
+      "alpha_subunit_family": 325,
+      "LigXa-like, C-terminal domain": 39,
+      "3-ketosteroid-9-alpha-monooxygenase, oxygenase component-like, C-terminal": 14,
+      "Pheophorbide a oxygenase": 2
+    },
+    "2": {
+      "alpha_subunit_family": 769,
+      "_sequences": 248
+    },
+    "3": {
+      "alpha_subunit_family": 1282,
+      "_sequences": 1253,
+      "Cholesterol 7-desaturase": 841,
+      "3-ketosteroid-9-alpha-monooxygenase, oxygenase component-like, C-terminal": 839
+    },
+    "4": {
+      "alpha_subunit_family": 2468,
+      "_sequences": 1181,
+      "Cholesterol 7-desaturase": 266,
+      "LigXa-like, C-terminal domain": 260,
+      "Vanillate O-demethylase oxygenase-like, C-terminal catalytic": 4
+    },
+    "5": {
+      "alpha_subunit_family": 5908,
+      "_sequences": 2762
+    },
+    "6": {
+      "_sequences": 425,
+      "Cholesterol 7-desaturase": 424,
+      "Pheophorbide a oxygenase": 408,
+      "alpha_subunit_family": 89,
+      "Vanillate O-demethylase oxygenase-like, C-terminal catalytic": 13
+    },
+    "7": {
+      "alpha_subunit_family": 6,
+      "_sequences": 3
+    },
+    "?": {
+      "alpha_subunit_family": 22645,
+      "_sequences": 17788,
+      "Cholesterol 7-desaturase": 8653,
+      "Vanillate O-demethylase oxygenase-like, C-terminal catalytic": 3088,
+      "3-ketosteroid-9-alpha-monooxygenase, oxygenase component-like, C-terminal": 2001,
+      "Pheophorbide a oxygenase": 1982,
+      "LigXa-like, C-terminal domain": 767
+    }
+  },
+  "family_entries_are_not_errors": "InterPro's separate family names -- cholesterol 7-desaturase, pheophorbide a oxygenase, vanillate O-demethylase, 3-ketosteroid 9-alpha-monooxygenase -- are not disagreements. This database collects Rieske oxygenases as a whole rather than ring-hydroxylating dioxygenases alone, and those names are what that breadth looks like from the outside"
+}

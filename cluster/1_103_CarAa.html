@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CarAa · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html" aria-current="page">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+<nav class="crumbs"><a href="/pro-sim-blast/index.html">Home</a> › <a href="/pro-sim-blast/clusters.html">Types</a> › 1_103_CarAa</nav>
+
+<h1>CarAa <span class="note">· type 1_103_CarAa ·
+  <a href="/pro-sim-blast/atlas/groups.html">group 1</a></span></h1>
+<div class="numbered" data-contents>
+
+
+
+
+
+<div class="caveat">
+  <b>carbazole</b>
+  <span class="chip chip--xenobiotic">xenobiotic</span>
+  <span class="note">literature confidence: high</span>
+  <br>
+  Determined experimentally for this type's <b>curated reference enzyme</b>.
+  
+  <details class="basis">
+    <summary>What this label does and does not cover</summary>
+    <p class="note">It is the compound the reference enzyme was <em>tested on</em>, not the limit of
+    what it accepts: one Rieske oxygenase commonly turns over several related compounds, and most
+    have been assayed against only a few.
+    </p>
+  </details>
+  <br><span class="note">Alpha subunit of the same carbazole system as CARDO</span>
+  
+  <br><span class="note"><b>Curated from:</b> UniProt Q8G8B6 (CARAA_METRE, reviewed), Metapseudomonas (Pseudomonas) resinovorans CA10 carbazole 1,9a-dioxygenase terminal oxygenase CarAa; stored sequence verified byte-identical to that entry on 2026-10-28. EC 1.14.12.22, RHEA-anchored. Sequence and activity: Sato et al. 1997; the 2002 AEM paper purified the three-component enzyme ·
+      from a published paper
+      </span>
+  
+</div>
+
+
+<figure class="fig reaction">
+  <div class="rxn">
+    
+    <div class="rxn__eq">
+    <div class="rxn__side">
+      
+      <svg class="struct" data-smiles="c1ccc2c(c1)[nH]c1ccccc12" aria-label="carbazole"></svg>
+      
+      <div class="rxn__label">carbazole</div>
+      
+      
+      <div class="rxn__ids">
+        
+        <a href="https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:27543"
+           class="chebi chebi--id"
+           title="read from the balanced equation of the Rhea reaction of this enzyme type">CHEBI:27543</a>
+        <span class="note">9H-carbazole</span>
+        
+        <span class="note">from the
+        balanced equation</span>
+      </div>
+      
+    </div>
+    <div class="rxn__arrow">
+      <div class="rxn__above">O<sub>2</sub> + NAD(P)H</div>
+      <svg viewBox="0 0 120 20" width="120" height="20" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="rx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"
+          orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <line x1="2" y1="10" x2="112" y2="10" stroke="currentColor" stroke-width="1.5" marker-end="url(#rx)"/>
+      </svg>
+      <div class="rxn__below">angular dioxygenation</div>
+    </div>
+    <div class="rxn__side">
+      <div class="rxn__product">2&#39;-aminobiphenyl-2,3-diol</div>
+      <div class="rxn__label">product</div>
+    </div>
+    </div>
+    <div class="rxn__scheme"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 86" width="100%" style="max-width:262px;height:auto" class="rxnscheme"><defs><marker id="rxarrow-angular-dioxygenation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs><polygon points="30.0,27.0 13.5,36.5 13.5,55.5 30.0,65.0 46.5,55.5 46.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="30" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><polygon points="62.9,27.0 46.4,36.5 46.4,55.5 62.9,65.0 79.3,55.5 79.3,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="62.87" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="46.5" cy="46" r="3" fill="#8c2f22"/><line x1="96" y1="46" x2="148" y2="46" stroke="currentColor" stroke-width="1.3" marker-end="url(#rxarrow-angular-dioxygenation)"/><text x="122.0" y="40" font-size="9" text-anchor="middle" fill="currentColor">O₂, NAD(P)H</text><polygon points="176.0,27.0 159.5,36.5 159.5,55.5 176.0,65.0 192.5,55.5 192.5,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="176" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="150.5" y="34.8" font-size="10" text-anchor="end" fill="currentColor">OH</text><polygon points="212.1,27.0 195.6,36.5 195.6,55.5 212.1,65.0 228.6,55.5 228.6,36.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="212.1" cy="46" r="10.5" fill="none" stroke="currentColor" stroke-width="1.1"/><text x="237.6" y="64.2" font-size="10" text-anchor="start" fill="currentColor">OH</text></svg>
+      
+      <div class="rxnote">The attack is at the ring junction, so the fused ring system comes apart rather than simply gaining hydroxyls.</div>
+      
+      <div class="rxn__label">how this reaction class works, in general</div></div>
+  </div>
+  
+  
+  <div class="rxnote rxnote--fate">
+    <b>Where the O<sub>2</sub> oxygen ends up:</b> into the product.
+    
+    
+    <br><span class="small">two hydroxyls are added to the angular ring carbons; the product skeleton gains oxygen.</span>
+    
+  </div>
+  
+  <figcaption>Reaction of the <b>characterised reference enzyme</b> of this type, curated from the
+  literature. Whether a given member catalyses it depends on that member's evidence level.
+  <br><b>Note.</b> alpha subunit of the same carbazole system as CARDO PDB FIELD REMOVED 2026-10-28. The record carried PDB 1WW9, but that entry is the Janthinobacterium sp. J3 enzyme and its deposited sequence does NOT match the one stored here, while it does match 1_102_CARDO. Measured directly against RCSB: the polymer entity of 1WW9 is from Janthinobacterium sp. J3 and differs from this sequence. Two different proteins were pointing at the same structure, so this type was claiming a structure it does not have. No PDB structure is recorded for the CA10 CarAa.
+  <details class="basis">
+    <summary>Why the product is named and not drawn</summary>
+    <p class="note">The substrate is drawn from its SMILES string; drawing the product would
+    require assuming which ring positions are attacked in every member, so it is given by
+    name.</p>
+  </details></figcaption>
+</figure>
+
+
+
+
+
+
+<h2>Literature</h2>
+
+
+
+
+
+
+<h3>The paper behind the structure</h3>
+<ul class="lit">
+
+<li>Nojiri, H. <i>et al.</i>
+  J Mol Biol 2005
+  &mdash; Structure of the terminal oxygenase component of angular dioxygenase, carbazole 1,9a-dioxygenase
+  <br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2005.05.059"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2005.05.059</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16005887/"
+     rel="noopener noreferrer" target="_blank">PMID 16005887</a>
+  <br><span class="note">Primary citation of PDB
+  1WW9. The substrate assignment of this type comes
+  from elsewhere; this is the paper that solved the structure.</span></li>
+
+</ul>
+
+
+
+<details class="basis">
+  <summary>13 papers
+    cited by the UniProt entry of the reference protein</summary>
+  <p class="note"><b>These are not claims about this type.</b> They are the reference list of
+  the UniProt entry, which cites a paper for any annotation it carries &mdash; a genome
+  announcement as readily as a characterisation. Where UniProt attaches a paper to its
+  <i>function</i> or <i>catalytic activity</i> annotation as evidence, it is marked below; only
+  that mark says the paper supports a statement about what the enzyme does.</p>
+  <ul class="lit">
+  
+  <li>Nam J.W. <i>et al.</i>
+  Appl. Environ. Microbiol. 2002
+  &mdash; Purification and characterization of carbazole 1,9a-dioxygenase, a three-component dioxygenase system of Pseudomonas resinovorans strain CA10.
+  <br><a class="mono small" href="https://doi.org/10.1128/aem.68.12.5882-5890.2002"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.68.12.5882-5890.2002</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/12450807/"
+     rel="noopener noreferrer" target="_blank">PMID 12450807</a>
+    <br><span class="note"><b>UniProt cites this as evidence for
+    the function or catalytic activity</b> of Q8G8B6.</span>
+    </li>
+  
+  <li>Sato S.I. <i>et al.</i>
+  J. Bacteriol. 1997
+  &mdash; Identification and characterization of genes encoding carbazole 1,9a-dioxygenase in Pseudomonas sp. strain CA10.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.179.15.4850-4858.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.15.4850-4858.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9244274/"
+     rel="noopener noreferrer" target="_blank">PMID 9244274</a>
+    <br><span class="note"><b>UniProt cites this as evidence for
+    the function or catalytic activity</b> of Q8G8B6.</span>
+    </li>
+  
+  <li>Shintani M. <i>et al.</i>
+  Environ. Microbiol. 2010
+  &mdash; Response of the Pseudomonas host chromosomal transcriptome to carriage of the IncP-7 plasmid pCAR1.
+  <br><a class="mono small" href="https://doi.org/10.1111/j.1462-2920.2009.02110.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/j.1462-2920.2009.02110.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19930443/"
+     rel="noopener noreferrer" target="_blank">PMID 19930443</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Yun C.S. <i>et al.</i>
+  J. Bacteriol. 2010
+  &mdash; Pmr, a histone-like protein H1 (H-NS) family protein encoded by the IncP-7 plasmid pCAR1, is a key global regulator that alters host function.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.00591-10"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.00591-10</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/20639326/"
+     rel="noopener noreferrer" target="_blank">PMID 20639326</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Takahashi Y. <i>et al.</i>
+  Appl. Environ. Microbiol. 2009
+  &mdash; Carbazole-degradative IncP-7 plasmid pCAR1.2 is structurally unstable in Pseudomonas fluorescens Pf0-1, which accumulates catechol, the intermediate of the carbazole degradation pathway.
+  <br><a class="mono small" href="https://doi.org/10.1128/aem.02373-08"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.02373-08</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19376894/"
+     rel="noopener noreferrer" target="_blank">PMID 19376894</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Takahashi Y. <i>et al.</i>
+  Biosci. Biotechnol. Biochem. 2009
+  &mdash; The complete nucleotide sequence of pCAR2: pCAR2 and pCAR1 were structurally identical IncP-7 carbazole degradative plasmids.
+  <br><a class="mono small" href="https://doi.org/10.1271/bbb.80665"
+     rel="noopener noreferrer" target="_blank">doi:10.1271/bbb.80665</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19270415/"
+     rel="noopener noreferrer" target="_blank">PMID 19270415</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Miyakoshi M. <i>et al.</i>
+  BMC Genomics 2009
+  &mdash; High-resolution mapping of plasmid transcriptomes in different host bacteria.
+  <br><a class="mono small" href="https://doi.org/10.1186/1471-2164-10-12"
+     rel="noopener noreferrer" target="_blank">doi:10.1186/1471-2164-10-12</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19134166/"
+     rel="noopener noreferrer" target="_blank">PMID 19134166</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Miyakoshi M. <i>et al.</i>
+  J. Bacteriol. 2007
+  &mdash; Transcriptome analysis of Pseudomonas putida KT2440 harboring the completely sequenced IncP-7 plasmid pCAR1.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.00684-07"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.00684-07</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17675379/"
+     rel="noopener noreferrer" target="_blank">PMID 17675379</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Shintani M. <i>et al.</i>
+  Appl. Environ. Microbiol. 2006
+  &mdash; Characterization of the replication, maintenance, and transfer features of the IncP-7 plasmid pCAR1, which carries genes involved in carbazole and dioxin degradation.
+  <br><a class="mono small" href="https://doi.org/10.1128/aem.72.5.3206-3216.2006"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.72.5.3206-3216.2006</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16672459/"
+     rel="noopener noreferrer" target="_blank">PMID 16672459</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Urata M. <i>et al.</i>
+  J. Bacteriol. 2004
+  &mdash; Transcriptional regulation of the ant operon, encoding two-component anthranilate 1,2-dioxygenase, on the carbazole-degradative plasmid pCAR1 of Pseudomonas resinovorans strain CA10.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.186.20.6815-6823.2004"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.186.20.6815-6823.2004</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15466034/"
+     rel="noopener noreferrer" target="_blank">PMID 15466034</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Maeda K. <i>et al.</i>
+  J. Mol. Biol. 2003
+  &mdash; Complete nucleotide sequence of carbazole/dioxin-degrading plasmid pCAR1 in Pseudomonas resinovorans strain CA10 indicates its mosaicity and the presence of large catabolic transposon Tn4676.
+  <br><a class="mono small" href="https://doi.org/10.1016/s0022-2836(02)01400-6"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0022-2836(02)01400-6</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/12547188/"
+     rel="noopener noreferrer" target="_blank">PMID 12547188</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Nojiri H. <i>et al.</i>
+  J. Bacteriol. 2001
+  &mdash; Genetic characterization and evolutionary implications of a car gene cluster in the carbazole degrader Pseudomonas sp. strain CA10.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.183.12.3663-3679.2001"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.183.12.3663-3679.2001</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11371531/"
+     rel="noopener noreferrer" target="_blank">PMID 11371531</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  <li>Sato S.I. <i>et al.</i>
+  J. Bacteriol. 1997
+  &mdash; Cloning of genes involved in carbazole degradation of Pseudomonas sp. strain CA10: nucleotide sequences of genes and characterization of meta-cleavage enzymes and hydrolase.
+  <br><a class="mono small" href="https://doi.org/10.1128/jb.179.15.4841-4849.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.15.4841-4849.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9244273/"
+     rel="noopener noreferrer" target="_blank">PMID 9244273</a>
+    <br><span class="note">In the reference list of
+    Q8G8B6.</span></li>
+  
+  </ul>
+</details>
+
+
+<p class="note">Every DOI above was checked against the DOI handle registry, not by opening the
+publisher's page: many publishers answer an automated request with an error, and reading that
+error as &ldquo;the DOI is dead&rdquo; marked 79 of 125 valid DOIs as broken in the first
+version of this check.
+</p>
+
+
+
+
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>This type has no members of its own, and that is a property of the reference set
+  rather than missing data.</b>
+  The counts, variants, operons and taxonomy below are all zero.
+  <details class="basis">
+    <summary>Why a curated type can win no members</summary>
+    <p class="note">Every confirmed Rieske oxygenase is filed under the one reference profile it
+    scores highest on, by bit score. The CarAa profile never won that comparison for any
+    protein in the scanned genomes.</p>
+  </details>
+  
+  The exact reference sequence of CarAa was never retrieved from the scanned genomes.
+  Its profile still competes — on 1,683
+  candidates that clear the coverage gate — but loses every time, so the proteins this type
+  would describe are counted under
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (1_102_CARDO).
+  
+  
+  This type's reference is <b>99.2 %</b>
+  identical to that of
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (1_102_CARDO), so the split between the two names is a
+  nomenclature decision, not a biological one.
+  
+  That decision has been taken: <b>both names are kept</b>, because each is a separate
+  characterisation in the literature. The two pages are to be read as one enzyme type with the
+  members counted once.
+  
+  
+  
+  <br>
+  Measured the other way round — by sequence identity rather than by profile score —
+  45 confirmed
+  entries
+  in the database are closer to this type's reference than to any other, and they sit here:
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  (35, up to 99.7 %) · <a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a>
+  (10, up to 32.9 %).
+  
+  
+  
+  
+  <br><span class="note">Closest contest: on
+  <code>NC_004444.1:28468-29641:1</code> this profile scored
+  837.7 bits and
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  scored 837.7 — a gap of
+  0.0 bits.</span>
+  
+  <br><span class="note">The substrate and chemistry below describe the curated reference
+  enzyme of this type and remain valid; only the member statistics are empty. Measured by
+  <code>empty_types.py</code> for every type without members, alongside the
+  other reference-set defects on the
+  <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.</span>
+</div>
+
+
+
+
+
+
+
+<div class="caveat caveat--warn">
+  <b>The member count on this page is not fully determined by biology.</b>
+  
+  This type's reference is 99.2 % identical to
+  <a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>,
+  which is close enough that the split of members between the two profiles is partly arbitrary.
+  114 members fall across the pair and 0 here.
+  
+  <b>The two are kept as separate references deliberately</b>, so read the pair together and the
+  member counts as one number.
+  
+  
+  <details class="basis">
+    <summary>Why it was left this way, and where it is measured</summary>
+    <p class="note">This is a known defect of the curated reference set, not of the assignment
+    method. It is measured and listed on the
+    <a href="/pro-sim-blast/atlas/quality.html">data quality page</a>.
+    <br><b>Curator's note, 2026-11-10.</b>
+    Both records are separately characterised carbazole 1,9a-dioxygenases in the literature. Merging them would delete one published experimental record to tidy a member count, and the count is already published with its caveat on both pages. The split of members between the two profiles is arbitrary; the two records are not.</p>
+  </details>
+</div>
+
+
+
+
+
+
+
+<div class="cols">
+  <div>
+    <h3>Key facts</h3>
+    <dl class="kv">
+      <dt>Members</dt><dd>0 confirmed alpha subunits</dd>
+      <dt>Variants</dt><dd>0 sequence-homogeneous subgroups</dd>
+      <dt>Distribution</dt><dd>0 replicons, 0 genera</dd>
+      <dt>On plasmids</dt><dd>– (0)</dd>
+      <dt>Transposase within 10 kb</dt><dd>–</dd>
+      <dt>Profile match</dt><dd>mean score 0 bits, mean coverage 0.00</dd>
+      
+      
+      
+      <dt>Domains of life</dt><dd></dd>
+      <dt>Phyla</dt><dd class="small"></dd>
+      <dt>Top genera</dt><dd></dd>
+    </dl>
+    
+<details class="basis">
+  <summary>What counts as a genus here, and what is left out</summary>
+  <p class="note">A genus is read from the <b>NCBI taxonomy rank</b> of the genome record that
+  carries the entry: the nearest ancestor whose rank is exactly <code>genus</code>. It is not
+  taken from the first word of the organism name. That difference is measured, not cosmetic:
+  the first word merges every <i>Candidatus</i> organism into one bucket that actually holds
+  17 separate genera, it
+  carries over quoting and bracketing from the source string (<code>'Nostoc</code>,
+  <code>[Enterobacter]</code>), and it misses renamings
+  &mdash; 360
+  confirmed entries change genus when the rank is used
+  (<i>Sinorhizobium</i> &rarr; <b>Ensifer</b>, <i>Rhizobium rhizogenes</i> &rarr;
+  <b>Martinezella</b>).</p>
+  <p class="note"><b>What is left out of every genus count on this page.</b>
+  867
+  confirmed entries (4.1%) have <b>no genus-rank ancestor at all</b> in the current
+  NCBI taxonomy. The largest case is <i>Mycolicibacterium</i>, which the organism strings still
+  name and which would be this database's seventh largest &ldquo;genus&rdquo;: NCBI now holds it
+  as a <b>subgenus</b>, <code>Mycobacterium (subgen. Mycolicibacterium)</code>, and that lineage
+  runs from species straight to the family. Those entries are neither dropped nor given an
+  invented genus; they are carried with the state <code>unassigned</code> and the nearest named
+  rank beside them, and they are excluded from the genus counts shown here. The
+  <a href="/pro-sim-blast/atlas/taxonomy.html#genus">taxonomy page</a> gives the full measurement.</p>
+</details>
+    <p class="dl">
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_103_CarAa.fasta">Sequences (FASTA)</a>
+      <a class="btn" href="/pro-sim-blast/download/cluster/1_103_CarAa.csv">Annotation (CSV)</a>
+    </p>
+  </div>
+
+  <div>
+    
+
+    
+  </div>
+</div>
+
+<h2>Operon and electron transport</h2>
+<div class="cols">
+  <div>
+    <div class="tablewrap">
+    <table class="data compact">
+      <thead><tr><th>Partner</th><th class="num">In the operon</th><th class="num">Within 10 kb</th></tr></thead>
+      <tbody>
+        <tr><td>Beta subunit <span class="note">Ring_hydroxyl_B</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td>Ferredoxin <span class="note">Rieske or plant type, ≤250 aa</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td>Reductase <span class="note">FNR or GR type</span></td>
+            <td class="num">–</td><td class="num">–</td></tr>
+        <tr><td><b>All three in the operon</b></td><td class="num">–</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    
+  </div>
+  <div>
+    <h3>Gene order</h3>
+    
+    
+    <p class="note">No member of this type is close enough to the curated enzyme for its gene
+    order to describe this enzyme. Only the distant arrangements below are available.</p>
+    
+    
+  </div>
+</div>
+
+
+
+<h2>Neighbourhood composition</h2>
+<p class="note">Share of members with at least one gene of each annotation category within four genes
+of the alpha subunit. Categories come from product-name matching and are coarser than the
+sequence-verified partners above.</p>
+<div class="tablewrap"><table class="data compact">
+  <thead><tr><th>Category</th><th class="num">Members with it</th><th class="num">Genes</th></tr></thead>
+  <tbody></tbody>
+</table></div>
+
+
+
+
+
+
+
+<h2>Variants</h2>
+<p class="note">Members were split recursively until each subgroup reached a median pairwise identity
+target. A variant is the finest unit at which a distinct function can reasonably be proposed.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter variants by genus or neighbour…">
+  <thead><tr><th>Variant</th><th class="num">Members</th>
+  <th class="num">Median identity</th>
+  <th>Dominant genera</th><th>Distinguishing neighbours</th>
+  <th class="num">Plasmid<span class="unit">%</span></th>
+  <th data-facet="Homogeneity">Homogeneity</th></tr></thead>
+  <tbody>
+  
+  </tbody>
+</table></div>
+
+<h2>Members <span class="note">0</span></h2>
+
+
+
+
+<div class="caveat caveat--warn">
+  
+  <b>No member of this type is a close homologue of the reference enzyme.</b>
+  All 0 members are below 60 % identical to it.
+  <details class="basis">
+    <summary>How to read the table below</summary>
+    <p class="note">Nothing here should be read as doing the reaction the reference does. What the
+    profile has collected is the surrounding region of sequence space, and the function of
+    everything in it is unknown. If you came here for the characterised enzyme, it is described
+    above; the table below is a list of relatives, not of examples.</p>
+  </details>
+  
+  <br><span class="note">Why the line is drawn at 60 % and what it costs:
+  <a href="/pro-sim-blast/atlas/evidence.html">evidence levels</a> ·
+  <a href="/pro-sim-blast/atlas/closeness.html">how results change when only close members are counted</a></span>
+</div>
+
+
+<div class="tablewrap">
+<table class="data">
+  <thead><tr>
+    <th>Entry</th><th>Organism</th><th>Product</th><th>Type</th><th>Variant</th>
+    <th>How close to the reference</th><th>Class</th>
+    <th class="num">Score<span class="unit">bits</span></th>
+    <th>Operon</th>
+  </tr></thead>
+  <tbody>
+  
+  <tr><td colspan="8" class="empty">No entries.</td></tr>
+  
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+<script src="https://unpkg.com/smiles-drawer@2.0.3/dist/smiles-drawer.min.js"></script>
+<script src="/pro-sim-blast/static/structures.js"></script>
+
+
+
+</body>
+</html>

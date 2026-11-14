@@ -1,0 +1,1999 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data quality · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html" aria-current="page">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/groups.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class=""
+     >Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class=""
+     >Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/disagreements.html" class=""
+     >Disagreements</a>
+  
+  <a href="/pro-sim-blast/atlas/predictions.html" class=""
+     >Predictions</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class="on"
+     aria-current="page">Data quality</a>
+  
+  
+</nav>
+
+
+<h1>What this database cannot tell you</h1>
+<p class="lede">Every count on this site is a count of sequenced genomes, not of organisms in the
+world, and several of its numbers depend on conventions rather than measurements. This page gathers
+those limits in one place, with the size of each effect measured where that is possible.</p>
+
+
+<h2>1 · The same protein, counted many times</h2>
+<p>Public genome collections contain hundreds of strains of the same species, so identical alpha
+subunits recur. The database keeps every copy, because the same protein in a different genome sits
+in a different neighbourhood and genomic context is the subject here. But a percentage over entries
+is therefore a percentage over sequenced strains.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<tbody>
+<tr><td>Confirmed entries</td><td class="num">21,046</td></tr>
+<tr><td>Distinct amino acid sequences</td><td class="num">17,638</td></tr>
+<tr><td><b>Redundancy</b></td><td class="num"><b>16.2 %</b></td></tr>
+<tr><td>Entries whose sequence occurs more than once</td><td class="num">5,565</td></tr>
+<tr><td>Largest number of copies of one sequence</td><td class="num">46</td></tr>
+<tr><td>Entries sharing a RefSeq protein accession</td><td class="num">5,313</td></tr>
+<tr><td>Sequences appearing twice in <em>one</em> replicon, so plausibly a real gene duplication</td>
+    <td class="num">32</td></tr>
+</tbody></table></div>
+<figcaption>Redundancy is 16.2 % overall. The effect on a typical
+statement is modest but real: the share of entries on plasmids is
+2.05 % counted per entry and
+2.08 % counted once per distinct sequence.
+<a href="/pro-sim-blast/download/analysis/redundancy.json">Download the full breakdown</a></figcaption>
+</figure>
+
+<h3>Which types are most affected</h3>
+<div class="tablewrap"><table class="data compact" data-filter="Filter types…">
+<thead><tr><th>Type</th><th class="num">Entries</th><th class="num">Distinct sequences</th><th class="num">Redundancy</th></tr></thead>
+<tbody>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a>
+    <span class="note">5_504_CntA</span></td>
+  <td class="num" data-v="2562">2,562</td>
+  <td class="num" data-v="2163">2,163</td>
+  <td class="num" data-v="15.57">16 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a>
+    <span class="note">1_104_VanA</span></td>
+  <td class="num" data-v="1772">1,772</td>
+  <td class="num" data-v="1404">1,404</td>
+  <td class="num" data-v="20.77">21 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a>
+    <span class="note">5_506_Stc2</span></td>
+  <td class="num" data-v="1768">1,768</td>
+  <td class="num" data-v="1526">1,526</td>
+  <td class="num" data-v="13.69">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a>
+    <span class="note">3_313_KshA15</span></td>
+  <td class="num" data-v="1712">1,712</td>
+  <td class="num" data-v="1427">1,427</td>
+  <td class="num" data-v="16.65">17 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a>
+    <span class="note">5_507_BmoA</span></td>
+  <td class="num" data-v="1160">1,160</td>
+  <td class="num" data-v="1045">1,045</td>
+  <td class="num" data-v="9.91">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a>
+    <span class="note">1_106_TsaM</span></td>
+  <td class="num" data-v="1089">1,089</td>
+  <td class="num" data-v="986">986</td>
+  <td class="num" data-v="9.46">9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a>
+    <span class="note">4_404_TdnA1</span></td>
+  <td class="num" data-v="795">795</td>
+  <td class="num" data-v="655">655</td>
+  <td class="num" data-v="17.61">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a>
+    <span class="note">4_411_XylX</span></td>
+  <td class="num" data-v="734">734</td>
+  <td class="num" data-v="555">555</td>
+  <td class="num" data-v="24.39">24 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a>
+    <span class="note">1_113_CdnA</span></td>
+  <td class="num" data-v="689">689</td>
+  <td class="num" data-v="569">569</td>
+  <td class="num" data-v="17.42">17 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_508_GbcA.html">GbcA</a>
+    <span class="note">5_508_GbcA</span></td>
+  <td class="num" data-v="505">505</td>
+  <td class="num" data-v="329">329</td>
+  <td class="num" data-v="34.85">35 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a>
+    <span class="note">5_505_qxyA</span></td>
+  <td class="num" data-v="486">486</td>
+  <td class="num" data-v="447">447</td>
+  <td class="num" data-v="8.02">8 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a>
+    <span class="note">4_409_TPDO</span></td>
+  <td class="num" data-v="475">475</td>
+  <td class="num" data-v="342">342</td>
+  <td class="num" data-v="28.0">28 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a>
+    <span class="note">5_501_CmoS</span></td>
+  <td class="num" data-v="461">461</td>
+  <td class="num" data-v="388">388</td>
+  <td class="num" data-v="15.84">16 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_410_CbdC.html">CbdC</a>
+    <span class="note">4_410_CbdC</span></td>
+  <td class="num" data-v="429">429</td>
+  <td class="num" data-v="372">372</td>
+  <td class="num" data-v="13.29">13 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a>
+    <span class="note">1_105_DdmC</span></td>
+  <td class="num" data-v="409">409</td>
+  <td class="num" data-v="381">381</td>
+  <td class="num" data-v="6.85">7 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a>
+    <span class="note">4_405_ROCH34</span></td>
+  <td class="num" data-v="375">375</td>
+  <td class="num" data-v="336">336</td>
+  <td class="num" data-v="10.4">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_307_NagGH.html">NagGH</a>
+    <span class="note">3_307_NagGH</span></td>
+  <td class="num" data-v="345">345</td>
+  <td class="num" data-v="294">294</td>
+  <td class="num" data-v="14.78">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_601_PAO.html">PAO</a>
+    <span class="note">6_601_PAO</span></td>
+  <td class="num" data-v="342">342</td>
+  <td class="num" data-v="321">321</td>
+  <td class="num" data-v="6.14">6 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a>
+    <span class="note">3_322_DAF36</span></td>
+  <td class="num" data-v="333">333</td>
+  <td class="num" data-v="279">279</td>
+  <td class="num" data-v="16.22">16 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a>
+    <span class="note">4_408_AntA</span></td>
+  <td class="num" data-v="305">305</td>
+  <td class="num" data-v="231">231</td>
+  <td class="num" data-v="24.26">24 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_406_PDO.html">PDO</a>
+    <span class="note">4_406_PDO</span></td>
+  <td class="num" data-v="286">286</td>
+  <td class="num" data-v="224">224</td>
+  <td class="num" data-v="21.68">22 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a>
+    <span class="note">3_321_Nvd</span></td>
+  <td class="num" data-v="278">278</td>
+  <td class="num" data-v="239">239</td>
+  <td class="num" data-v="14.03">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_217_HcaE.html">HcaE</a>
+    <span class="note">2_217_HcaE</span></td>
+  <td class="num" data-v="259">259</td>
+  <td class="num" data-v="156">156</td>
+  <td class="num" data-v="39.77">40 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a>
+    <span class="note">4_401_CmtAb</span></td>
+  <td class="num" data-v="246">246</td>
+  <td class="num" data-v="219">219</td>
+  <td class="num" data-v="10.98">11 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a>
+    <span class="note">3_311_PhtAa</span></td>
+  <td class="num" data-v="226">226</td>
+  <td class="num" data-v="186">186</td>
+  <td class="num" data-v="17.7">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a>
+    <span class="note">1_110_SxtT</span></td>
+  <td class="num" data-v="225">225</td>
+  <td class="num" data-v="198">198</td>
+  <td class="num" data-v="12.0">12 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a>
+    <span class="note">4_403_AtdA</span></td>
+  <td class="num" data-v="190">190</td>
+  <td class="num" data-v="165">165</td>
+  <td class="num" data-v="13.16">13 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_108_PobA.html">PobA</a>
+    <span class="note">1_108_PobA</span></td>
+  <td class="num" data-v="174">174</td>
+  <td class="num" data-v="148">148</td>
+  <td class="num" data-v="14.94">15 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a>
+    <span class="note">1_111_GxtA</span></td>
+  <td class="num" data-v="174">174</td>
+  <td class="num" data-v="158">158</td>
+  <td class="num" data-v="9.2">9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a>
+    <span class="note">1_117_PrnD</span></td>
+  <td class="num" data-v="161">161</td>
+  <td class="num" data-v="146">146</td>
+  <td class="num" data-v="9.32">9 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_218_BphA1.html">BphA1 (218)</a>
+    <span class="note">2_218_BphA1</span></td>
+  <td class="num" data-v="153">153</td>
+  <td class="num" data-v="126">126</td>
+  <td class="num" data-v="17.65">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a>
+    <span class="note">3_301_PhnA1a</span></td>
+  <td class="num" data-v="149">149</td>
+  <td class="num" data-v="107">107</td>
+  <td class="num" data-v="28.19">28 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a>
+    <span class="note">3_319_PhdA</span></td>
+  <td class="num" data-v="147">147</td>
+  <td class="num" data-v="133">133</td>
+  <td class="num" data-v="9.52">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_603_PTC52.html">PTC52</a>
+    <span class="note">6_603_PTC52</span></td>
+  <td class="num" data-v="140">140</td>
+  <td class="num" data-v="134">134</td>
+  <td class="num" data-v="4.29">4 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/6_602_CAO.html">CAO</a>
+    <span class="note">6_602_CAO</span></td>
+  <td class="num" data-v="138">138</td>
+  <td class="num" data-v="123">123</td>
+  <td class="num" data-v="10.87">11 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a>
+    <span class="note">2_211_bfzA</span></td>
+  <td class="num" data-v="118">118</td>
+  <td class="num" data-v="102">102</td>
+  <td class="num" data-v="13.56">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+    <span class="note">1_102_CARDO</span></td>
+  <td class="num" data-v="114">114</td>
+  <td class="num" data-v="90">90</td>
+  <td class="num" data-v="21.05">21 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_302_DitA.html">DitA</a>
+    <span class="note">3_302_DitA</span></td>
+  <td class="num" data-v="112">112</td>
+  <td class="num" data-v="72">72</td>
+  <td class="num" data-v="35.71">36 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_109_LigX.html">LigX</a>
+    <span class="note">1_109_LigX</span></td>
+  <td class="num" data-v="93">93</td>
+  <td class="num" data-v="87">87</td>
+  <td class="num" data-v="6.45">6 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a>
+    <span class="note">1_107_CndA</span></td>
+  <td class="num" data-v="74">74</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="6.76">7 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_317_NidA.html">NidA (317)</a>
+    <span class="note">3_317_NidA</span></td>
+  <td class="num" data-v="65">65</td>
+  <td class="num" data-v="54">54</td>
+  <td class="num" data-v="16.92">17 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_118_RedG.html">RedG</a>
+    <span class="note">1_118_RedG</span></td>
+  <td class="num" data-v="64">64</td>
+  <td class="num" data-v="55">55</td>
+  <td class="num" data-v="14.06">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_214_TftA.html">TftA</a>
+    <span class="note">2_214_TftA</span></td>
+  <td class="num" data-v="58">58</td>
+  <td class="num" data-v="55">55</td>
+  <td class="num" data-v="5.17">5 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_116_GdmA.html">GdmA</a>
+    <span class="note">1_116_GdmA</span></td>
+  <td class="num" data-v="57">57</td>
+  <td class="num" data-v="50">50</td>
+  <td class="num" data-v="12.28">12 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a>
+    <span class="note">2_204_Dpe</span></td>
+  <td class="num" data-v="57">57</td>
+  <td class="num" data-v="47">47</td>
+  <td class="num" data-v="17.54">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">ArhA1</a>
+    <span class="note">3_305_ArhA1</span></td>
+  <td class="num" data-v="50">50</td>
+  <td class="num" data-v="42">42</td>
+  <td class="num" data-v="16.0">16 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a>
+    <span class="note">3_316_NarAa</span></td>
+  <td class="num" data-v="50">50</td>
+  <td class="num" data-v="48">48</td>
+  <td class="num" data-v="4.0">4 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">EdoA1</a>
+    <span class="note">2_202_EdoA1</span></td>
+  <td class="num" data-v="48">48</td>
+  <td class="num" data-v="34">34</td>
+  <td class="num" data-v="29.17">29 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a>
+    <span class="note">1_112_NdmA</span></td>
+  <td class="num" data-v="43">43</td>
+  <td class="num" data-v="35">35</td>
+  <td class="num" data-v="18.6">19 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_101_OxoO.html">OxoO</a>
+    <span class="note">1_101_OxoO</span></td>
+  <td class="num" data-v="36">36</td>
+  <td class="num" data-v="27">27</td>
+  <td class="num" data-v="25.0">25 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/5_502_CmoB.html">CmoB</a>
+    <span class="note">5_502_CmoB</span></td>
+  <td class="num" data-v="35">35</td>
+  <td class="num" data-v="29">29</td>
+  <td class="num" data-v="17.14">17 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a>
+    <span class="note">2_212_BedC1</span></td>
+  <td class="num" data-v="33">33</td>
+  <td class="num" data-v="27">27</td>
+  <td class="num" data-v="18.18">18 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a>
+    <span class="note">2_216_BPDO</span></td>
+  <td class="num" data-v="29">29</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="37.93">38 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/4_402_PsbAb.html">PsbAb</a>
+    <span class="note">4_402_PsbAb</span></td>
+  <td class="num" data-v="29">29</td>
+  <td class="num" data-v="26">26</td>
+  <td class="num" data-v="10.34">10 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/1_114_NdmB.html">NdmB</a>
+    <span class="note">1_114_NdmB</span></td>
+  <td class="num" data-v="28">28</td>
+  <td class="num" data-v="25">25</td>
+  <td class="num" data-v="10.71">11 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a>
+    <span class="note">3_303_NBDO</span></td>
+  <td class="num" data-v="24">24</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="20.83">21 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a>
+    <span class="note">3_320_NidA3</span></td>
+  <td class="num" data-v="22">22</td>
+  <td class="num" data-v="19">19</td>
+  <td class="num" data-v="13.64">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">BphA1A2</a>
+    <span class="note">2_213_BphA1A2</span></td>
+  <td class="num" data-v="21">21</td>
+  <td class="num" data-v="18">18</td>
+  <td class="num" data-v="14.29">14 %</td></tr>
+
+<tr><td><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a>
+    <span class="note">3_318_NidA</span></td>
+  <td class="num" data-v="20">20</td>
+  <td class="num" data-v="17">17</td>
+  <td class="num" data-v="15.0">15 %</td></tr>
+
+</tbody></table></div>
+<p class="note">Redundancy concentrates in the most heavily sequenced genera:
+<i>Pseudomonas</i> 757 · <i>Acinetobacter</i> 512 · <i>Burkholderia</i> 470 · <i>Mycobacterium</i> 347 · <i>Rhodococcus</i> 265 · <i>rank:subgenus:Mycobacterium (subgen. Mycolicibacterium)</i> 242.
+These are clinical and model environmental isolates, which is a property of sequencing effort rather
+than of the enzymes.</p>
+
+
+<h2>2 · Does it change the conclusions?</h2>
+<p>Each association test is therefore run at three levels: once per entry, once per distinct
+sequence, and once per type and genus. A conclusion that survives all three does not depend on how
+the copies are counted.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Question</th><th>Level</th><th class="num">Xenobiotic</th><th class="num">Natural</th>
+<th class="num">Ratio</th><th class="num">p</th><th class="num">Observations</th></tr></thead>
+<tbody>
+
+
+<tr><td rowspan="3" class="small">Are xenobiotic-degrading RO types more often plasmid-borne than natural-substrate types?</td>
+  <td>per entry</td>
+  <td class="num">3.5 %</td><td class="num">1.4 %</td>
+  <td class="num">2.41×</td><td class="num">1e-19</td>
+  <td class="num">19,028</td></tr>
+
+<tr>
+  <td>per distinct sequence</td>
+  <td class="num">3.1 %</td><td class="num">1.5 %</td>
+  <td class="num">2.15×</td><td class="num">2e-12</td>
+  <td class="num">15,857</td></tr>
+
+<tr>
+  <td>per type and genus</td>
+  <td class="num">4.0 %</td><td class="num">1.2 %</td>
+  <td class="num">3.22×</td><td class="num">1e-06</td>
+  <td class="num">3,074</td></tr>
+
+
+
+<tr><td rowspan="3" class="small">Are xenobiotic RO types more often associated with mobile elements (plasmid or transposase within 10 kb)?</td>
+  <td>per entry</td>
+  <td class="num">19.8 %</td><td class="num">15.7 %</td>
+  <td class="num">1.26×</td><td class="num">3e-13</td>
+  <td class="num">19,028</td></tr>
+
+<tr>
+  <td>per distinct sequence</td>
+  <td class="num">18.9 %</td><td class="num">15.1 %</td>
+  <td class="num">1.25×</td><td class="num">3e-10</td>
+  <td class="num">15,857</td></tr>
+
+<tr>
+  <td>per type and genus</td>
+  <td class="num">22.1 %</td><td class="num">14.9 %</td>
+  <td class="num">1.48×</td><td class="num">3e-07</td>
+  <td class="num">3,074</td></tr>
+
+
+</tbody></table></div>
+<p class="note">Both effects hold at every level, so neither is an artefact of repeated strains.
+<a href="/pro-sim-blast/atlas/statistics.html">All tests</a></p>
+
+
+
+
+<h2>3 · Does it change the conclusions if the inclusion threshold moves?</h2>
+<p>The previous section asks whether a result survives the way copies are counted. This one asks a
+harder question: whether it survives the decision about what counts as a Rieske oxygenase at all.
+A protein enters this database by covering at least 45 % of its best-scoring profile, and that
+number was calibrated against a set of known alpha subunits and known non-alpha proteins. Calibration
+justifies the choice but says nothing about how much the database's own figures depend on it. So the
+gate is moved and every figure recomputed.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th class="num">Coverage threshold</th><th class="num">Entries</th>
+<th class="num">Share of published</th><th class="num">Types with members</th>
+<th class="num">Genera</th><th class="num">On a plasmid</th><th class="num">Eukaryotic</th>
+<th class="num">Bridging Asp per Glu</th><th class="num">Bridging association V</th></tr></thead>
+<tbody>
+
+<tr>
+  <td class="num" data-v="0.35">0.35</td>
+  <td class="num" data-v="21093">21,093</td>
+  <td class="num" data-v="1.0">100 %</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="1027">1,027</td>
+  <td class="num" data-v="0.0205">2.1 %</td>
+  <td class="num" data-v="0.0459">4.6 %</td>
+  <td class="num" data-v="0"><span class="note">not measured</span></td>
+  <td class="num" data-v="0"><span class="note">not measured</span></td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.4">0.40</td>
+  <td class="num" data-v="21090">21,090</td>
+  <td class="num" data-v="1.0">100 %</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="1027">1,027</td>
+  <td class="num" data-v="0.0205">2.1 %</td>
+  <td class="num" data-v="0.0459">4.6 %</td>
+  <td class="num" data-v="0"><span class="note">not measured</span></td>
+  <td class="num" data-v="0"><span class="note">not measured</span></td>
+</tr>
+
+<tr class="hl">
+  <td class="num" data-v="0.45">0.45 <span class="chip chip--ok">published</span></td>
+  <td class="num" data-v="21086">21,086</td>
+  <td class="num" data-v="1.0">100 %</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="1027">1,027</td>
+  <td class="num" data-v="0.0205">2.1 %</td>
+  <td class="num" data-v="0.046">4.6 %</td>
+  <td class="num" data-v="2.25">2.25</td>
+  <td class="num" data-v="0.814">0.814</td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.5">0.50</td>
+  <td class="num" data-v="17998">17,998</td>
+  <td class="num" data-v="0.854">85 %</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="987">987</td>
+  <td class="num" data-v="0.0214">2.1 %</td>
+  <td class="num" data-v="0.053">5.3 %</td>
+  <td class="num" data-v="2.44">2.44</td>
+  <td class="num" data-v="0.851">0.851</td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.55">0.55</td>
+  <td class="num" data-v="16508">16,508</td>
+  <td class="num" data-v="0.783">78 %</td>
+  <td class="num" data-v="69">69</td>
+  <td class="num" data-v="968">968</td>
+  <td class="num" data-v="0.0216">2.2 %</td>
+  <td class="num" data-v="0.0572">5.7 %</td>
+  <td class="num" data-v="2.88">2.88</td>
+  <td class="num" data-v="0.854">0.854</td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.6">0.60</td>
+  <td class="num" data-v="15902">15,902</td>
+  <td class="num" data-v="0.754">75 %</td>
+  <td class="num" data-v="68">68</td>
+  <td class="num" data-v="957">957</td>
+  <td class="num" data-v="0.0213">2.1 %</td>
+  <td class="num" data-v="0.0582">5.8 %</td>
+  <td class="num" data-v="3.05">3.05</td>
+  <td class="num" data-v="0.859">0.859</td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.7">0.70</td>
+  <td class="num" data-v="15212">15,212</td>
+  <td class="num" data-v="0.721">72 %</td>
+  <td class="num" data-v="67">67</td>
+  <td class="num" data-v="916">916</td>
+  <td class="num" data-v="0.022">2.2 %</td>
+  <td class="num" data-v="0.0582">5.8 %</td>
+  <td class="num" data-v="3.09">3.09</td>
+  <td class="num" data-v="0.874">0.874</td>
+</tr>
+
+<tr>
+  <td class="num" data-v="0.8">0.80</td>
+  <td class="num" data-v="13804">13,804</td>
+  <td class="num" data-v="0.655">66 %</td>
+  <td class="num" data-v="66">66</td>
+  <td class="num" data-v="821">821</td>
+  <td class="num" data-v="0.0237">2.4 %</td>
+  <td class="num" data-v="0.0563">5.6 %</td>
+  <td class="num" data-v="3.26">3.26</td>
+  <td class="num" data-v="0.939">0.939</td>
+</tr>
+
+</tbody></table></div>
+<figcaption><b>The answer is that the conclusions do not rest on the threshold.</b> Nearly doubling
+the strictness, from 0.45 to 0.80, discards a third of the entries and still keeps
+66 of 69 types. The
+strongest association the database reports, between the bridging carboxylate and the enzyme group,
+does not weaken under a stricter gate; it strengthens, from
+0.81 to 0.94.
+The share of entries on a plasmid barely moves.
+<b>One figure does depend on it, and predictably.</b> The eukaryotic share falls from
+4.6 % to
+5.6 %, because eukaryotic Rieske proteins match
+these bacterial models only partially. A stricter gate would therefore buy a cleaner bacterial
+database by quietly deleting the eukaryotic branch, which is an argument for keeping the looser
+threshold and labelling the domain of every entry instead.
+<b>Two caveats stated rather than hidden.</b> Lowering the gate below the published value adds
+almost nothing, because the candidate set is itself sparse there, and the residue identity was
+measured only for the confirmed set, so those rows are left empty rather than guessed. The
+recomputed gate also omits one further status check used by the pipeline, which is why it keeps
+21,086 entries against the published
+21,046; the purpose here is the direction and size of
+the change, not the absolute count.
+<a href="/pro-sim-blast/download/analysis/threshold_sensitivity.json">Download the full output</a></figcaption>
+</figure>
+
+
+
+<h2>3c &middot; Sigma70 boxes: an enrichment, not a promoter</h2>
+<p class="lede">The &minus;35 and &minus;10 boxes of a bacterial sigma70 promoter are
+<b>information-poor</b>: six bases each, and common by chance in any AT-rich intergenic stretch.
+So no promoter is located here and none is predicted &mdash; a per-operon claim would not be
+defensible. What <i>is</i> measurable is <b>enrichment</b>: are the two boxes paired at plausible
+spacing more often in real upstream regions than in a null built from those same regions?</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Level</th><th>Null</th><th class="num">Observed</th><th class="num">Expected</th>
+<th class="num">Ratio</th><th class="num">p</th></tr></thead>
+<tbody>
+
+
+
+<tr>
+  <td><b>entry</b></td>
+  <td class="note">shuffled bases</td>
+  <td class="num">431</td>
+  <td class="num">252.85</td>
+  <td class="num"><b>1.705&times;</b></td>
+  <td class="num">5e-25</td></tr>
+
+
+<tr>
+  <td></td>
+  <td class="note">Markov-1 resample</td>
+  <td class="num">431</td>
+  <td class="num">227.0</td>
+  <td class="num"><b>1.899&times;</b></td>
+  <td class="num">3e-34</td></tr>
+
+
+
+
+<tr>
+  <td><b>sequence</b></td>
+  <td class="note">shuffled bases</td>
+  <td class="num">387</td>
+  <td class="num">226.79</td>
+  <td class="num"><b>1.706&times;</b></td>
+  <td class="num">1e-22</td></tr>
+
+
+<tr>
+  <td></td>
+  <td class="note">Markov-1 resample</td>
+  <td class="num">387</td>
+  <td class="num">204.29</td>
+  <td class="num"><b>1.894&times;</b></td>
+  <td class="num">9e-31</td></tr>
+
+
+
+
+<tr>
+  <td><b>genus</b> <span class="note">decides</span></td>
+  <td class="note">shuffled bases</td>
+  <td class="num">202</td>
+  <td class="num">79.16</td>
+  <td class="num"><b>2.552&times;</b></td>
+  <td class="num">4e-32</td></tr>
+
+
+<tr>
+  <td></td>
+  <td class="note">Markov-1 resample</td>
+  <td class="num">202</td>
+  <td class="num">70.96</td>
+  <td class="num"><b>2.847&times;</b></td>
+  <td class="num">2e-38</td></tr>
+
+
+</tbody></table></div>
+<figcaption class="note">Two nulls, because one null is an assumption. Shuffling the bases keeps
+length and base composition &mdash; so GC &mdash; exactly, but loses dinucleotide composition; the
+Markov-1 resample keeps dinucleotide composition in expectation and closes that gap. Both point the
+same way at all three levels, and the gate fails if they ever diverge. The genus level decides,
+because regions from one genome are not independent and an entry-level p value is small from
+repeated sampling alone.</figcaption>
+
+<div class="caveat">
+  <b>What this does not establish.</b> No promoter is identified, and the enrichment says nothing
+  about any individual region. The null is built from the same regions, so composition is
+  controlled but the regions themselves were chosen by this database's own operon calls. And the
+  measurement could only use the 8,750 regions whose replicon carries
+  readable nucleotide sequence &mdash; most records in this set are annotation-only CON entries.
+  Whether the result holds for the unreadable majority is <b>unmeasured</b>.
+</div>
+
+
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Upstream architecture</th><th class="num">Regions</th><th class="num">With a pair</th>
+<th class="num">Null (shuffled)</th><th class="num">Null (Markov-1)</th></tr></thead>
+<tbody>
+
+<tr><td>codirectional other</td>
+  <td class="num">1,785</td>
+  <td class="num">5.3 %</td>
+  <td class="num note">3.4 %</td>
+  <td class="num note">2.9 %</td></tr>
+
+<tr><td>codirectional regulator</td>
+  <td class="num">415</td>
+  <td class="num">4.6 %</td>
+  <td class="num note">2.8 %</td>
+  <td class="num note">2.5 %</td></tr>
+
+<tr><td>divergent other</td>
+  <td class="num">4,212</td>
+  <td class="num">5.2 %</td>
+  <td class="num note">2.8 %</td>
+  <td class="num note">2.5 %</td></tr>
+
+<tr><td>divergent regulator</td>
+  <td class="num">2,338</td>
+  <td class="num">4.2 %</td>
+  <td class="num note">2.7 %</td>
+  <td class="num note">2.5 %</td></tr>
+
+</tbody></table></div>
+<p class="note">Every architecture sits above its own null. The regulator rows show lower shares and
+lower nulls together, which is what shorter regions look like &mdash; a divergent regulator shares a
+median 168 bp with the operon against 247 bp for other upstream genes, so there is less room for a
+pair to occur either way. <b>Whether the enrichment itself differs between architectures is not
+tested here</b>, and the difference in ratio is not claimed.
+<a href="/pro-sim-blast/download/analysis/sigma70_enrichment.json">Download the measurement</a></p>
+
+
+
+
+<h2>3b &middot; A second opinion on the call everything rests on</h2>
+<p class="lede">Every number on this site stands on one judgement: that a sequence carries a
+<b>Rieske [2Fe-2S] domain</b>. That judgement comes from this project's own models. InterPro
+annotates the same sequences with profiles built by other people, from other data, at other
+thresholds &mdash; so for the first time there is an independent second opinion, and this is what
+it says.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Measure</th><th class="num">Sequences</th><th>Reading</th></tr></thead>
+<tbody>
+<tr><td>sequences InterPro has annotated at all</td>
+  <td class="num">25,313</td>
+  <td class="note">of 70,317; the rest carry no InterPro entry
+  and so <b>do not contradict us</b> &mdash; they are unannotated, mostly recent unreviewed
+  records</td></tr>
+<tr><td>we call the Rieske cluster intact</td>
+  <td class="num">25,174</td>
+  <td class="note">among those InterPro annotated</td></tr>
+<tr><td><b>InterPro agrees on every one of them</b></td>
+  <td class="num">25,174</td>
+  <td class="note">sequences we call Rieske-intact that InterPro does not:
+  <b>0</b></td></tr>
+<tr><td>InterPro sees a Rieske domain, our gate excludes it</td>
+  <td class="num">139</td>
+  <td class="note">all of them fail our four-ligand test</td></tr>
+</tbody></table></div>
+
+<div class="caveat">
+  <b>What this does and does not establish.</b> What is independent is what InterPro says
+  <i>about a sequence we handed it</i>. What is not independent is <b>which sequences get
+  asked</b>: the candidate pool was selected with this project's own Rieske and motif models, so
+  InterPro cannot object to a sequence we never included. The measure therefore speaks to
+  <b>precision</b> and says nothing whatever about <b>recall</b> &mdash; the sequences this
+  database missed are outside it, and no agreement figure can reach them.
+</div>
+
+<p class="note"><b>The disagreement runs one way, and it was followed up.</b>
+139 sequences carry a Rieske domain by
+InterPro's profiles but are dropped by this database's gate, which asks for the four cluster
+ligands rather than for domain similarity.
+76 of them carry all three mononuclear iron ligands,
+which at first reading suggested a substituted cluster ligand on an otherwise working enzyme.
+<b>Measuring it says otherwise.</b>
+The canonical cluster-binding motif &mdash;
+<code>C.H.{10,30}C..H</code>, the two C-x-H and C-x-x-H loops
+that hold the iron &mdash; is <b>absent from the raw sequence in
+138 of the
+139</b>, searched without any alignment or column number at all. So
+these are not displaced ligands that a window missed: the binding site is not in the sequence.
+That pattern was validated before being trusted &mdash; it matches
+3,978 of
+4,000 sequences this
+database does call cluster-intact, and all 76 curated references.
+The reading is therefore that InterPro places them in the Rieske superfamily on <b>fold
+similarity</b> while the cluster site itself is gone, and that this database's four-ligand
+requirement is right to exclude them. It is the strongest external test the gate has had.
+<a href="/pro-sim-blast/download/analysis/interpro_agreement.json">The comparison</a> and
+<a href="/pro-sim-blast/download/analysis/rieske_ligand_audit.json">the ligand-by-ligand audit</a>
+are both downloadable.</p>
+
+
+
+<h2>4 · Where the reference set repeats itself</h2>
+<p>Everything above concerns the members. This section concerns the 76 curated enzymes they are
+compared against, and it is the one unresolved defect in the database. Those 76 records hold
+76 distinct sequences, but
+4 of them are not uniquely defined:
+2 pairs
+sit at or above 99 % identity. A member then
+falls to whichever of the two profiles scores fractionally higher. That is arithmetic, not biology,
+and it is why one page of such a pair can report a member count far below its twin, or none at all.
+<b>Every such pair carries a recorded curation decision</b>
+(2 of
+2 written down), printed in the table below and repeated on
+each affected type page, so no reader has to guess whether the duplication was noticed.</p>
+<figure class="fig">
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Relationship</th><th>References</th><th class="num">Identity</th>
+<th class="num">Members each</th><th class="num">Members in total</th><th>Same substrate</th>
+<th>Decision</th></tr></thead>
+<tbody>
+
+
+
+<tr><td>near-identical</td>
+  <td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">EdoA1</a> /
+      <a href="/pro-sim-blast/cluster/2_203_cumA1.html">cumA1</a>
+      <div class="note">ethylbenzene against cumene</div></td>
+  <td class="num">99.8 %</td>
+  <td class="num">48 / 8</td>
+  <td class="num">56</td>
+  <td><span class="chip chip--bad">different</span></td>
+  <td><span class="chip chip--ok">kept separate</span>
+      
+      <div class="note">2026-11-10</div></td></tr>
+
+<tr><td>near-identical</td>
+  <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a> /
+      <a href="/pro-sim-blast/cluster/1_103_CarAa.html">CarAa</a>
+      <div class="note">carbazole against carbazole</div></td>
+  <td class="num">99.2 %</td>
+  <td class="num">114 / 0</td>
+  <td class="num">114</td>
+  <td><span class="chip chip--ok">same</span></td>
+  <td><span class="chip chip--ok">kept separate</span>
+      
+      <div class="note">2026-11-10</div></td></tr>
+
+</tbody></table></div>
+<figcaption><b>How much of the database this touches.</b>
+4 of 76 references are not uniquely
+defined, and 170 members sit under one of
+them. That is a small fraction of the database, and every other type is unaffected.
+
+<b>The pair with two different substrate labels needs reading carefully.</b> Its two
+reference enzymes are 99.8 % identical yet are labelled
+ethylbenzene against cumene, and the members split
+48 to 8 between them.
+That is not evidence of an error, because <b>one Rieske oxygenase commonly accepts many
+substrates</b>; two laboratories testing one compound each will report two different substrates for
+the same enzyme. The labels in this database are the compound each reference was characterised on,
+not the limit of what it accepts. The caution is therefore about reading a label too narrowly rather
+than about a contradiction in the data: a member assigned here may well act on both compounds, and
+on others nobody has tried. It is the same lesson the
+<a href="/pro-sim-blast/atlas/network.html">sequence space page</a> draws from the reference set as a whole,
+that identity does not determine substrate, with its converse, that a single substrate name does not
+bound an enzyme.
+<b>Why it is not simply fixed, and what was decided instead.</b> Repairing it means removing records
+from the curated set and rebuilding the profile library, which re-derives every number on this site.
+For the near-identical pairs the decision has been taken and recorded: <b>they stay as
+separate references.</b> Each record is a separate characterisation in the literature, and merging
+one into the other would discard a published measurement &mdash; a substrate label in one case,
+an independent report of the same activity in the other &mdash; in order to tidy a member count that
+is already published with this caveat beside it. The split of members between two such profiles is
+arbitrary; the records are not. The reasons, with their dates, travel with the data.
+<a href="/pro-sim-blast/download/analysis/reference_redundancy.json">Download the full report</a></figcaption>
+</figure>
+
+<details class="basis">
+  <summary>Decision: EdoA1 / cumA1 &mdash;
+  keep separate, 2026-11-10</summary>
+  <p class="note">The two references carry different substrate labels, ethylbenzene and cumene, because each was assayed on one compound. Merging them would pick one label and discard the other, which asserts more than the assays support: a Rieske oxygenase commonly turns over both. Keeping both records keeps both measurements, and the arbitrary split of members is stated on every affected page.</p>
+</details>
+
+<details class="basis">
+  <summary>Decision: CARDO / CarAa &mdash;
+  keep separate, 2026-11-10</summary>
+  <p class="note">Both records are separately characterised carbazole 1,9a-dioxygenases in the literature. Merging them would delete one published experimental record to tidy a member count, and the count is already published with its caveat on both pages. The split of members between the two profiles is arbitrary; the two records are not.</p>
+</details>
+
+
+<h3>Where a type reports no members, and why</h3>
+<p>7 of the 76 curated types hold no
+confirmed member. That number on its own is not a finding, because at least three different
+situations produce it, and they call for opposite responses: the enzyme may be <b>absent from the
+genomes</b> read here, or it may be <b>present and assigned to a competing profile</b>. The two are
+told apart by a second, independent measurement &mdash; the reference each candidate is closest to by
+sequence identity, which is computed separately from the HMM assignment that decides the type.</p>
+
+<div class="tablewrap"><table class="data compact" data-nosort>
+<thead><tr><th>Type</th><th class="num">Candidates closest to it</th>
+<th class="num">Closest one</th><th>Assigned instead to</th><th>Reading</th></tr></thead>
+<tbody>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/1_103_CarAa.html">CarAa</a></td>
+  <td class="num">45</td>
+  <td class="num">99.7 %</td>
+  <td><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+      <div class="note">the two references are
+      99.2 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/2_206_IpBAa.html">IpBAa</a></td>
+  <td class="num">9</td>
+  <td class="num">96.5 %</td>
+  <td><a href="/pro-sim-blast/cluster/2_203_cumA1.html">cumA1</a>
+      <div class="note">the two references are
+      90.8 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/2_210_XylC1.html">XylC1</a></td>
+  <td class="num">3</td>
+  <td class="num">96.2 %</td>
+  <td><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">EdoA1</a>
+      <div class="note">the two references are
+      63.9 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/3_309_NahAc.html">NahAc</a></td>
+  <td class="num">20</td>
+  <td class="num">100.0 %</td>
+  <td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a>
+      <div class="note">the two references are
+      82.0 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/3_310_DntAc.html">DntAc</a></td>
+  <td class="num">3</td>
+  <td class="num">31.8 %</td>
+  <td><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a>
+      <div class="note">the two references are
+      28.1 % identical</div></td>
+  <td>
+      <span class="chip chip--ok">nothing close in the data</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/3_312_NinA.html">NinA</a></td>
+  <td class="num">11</td>
+  <td class="num">94.2 %</td>
+  <td><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a>
+      <div class="note">the two references are
+      91.3 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+
+<tr><td><a href="/pro-sim-blast/cluster/4_407_PbaA1.html">PbaA1</a></td>
+  <td class="num">2</td>
+  <td class="num">100.0 %</td>
+  <td><a href="/pro-sim-blast/cluster/3_308_DxnA1.html">DxnA1</a>
+      <div class="note">the two references are
+      65.6 % identical</div></td>
+  <td>
+      <span class="chip chip--bad">present, assigned elsewhere</span>
+      </td></tr>
+
+</tbody></table></div>
+
+<div class="caveat">
+  <b>The larger part of this warning is a method defect, not missing data.</b>
+  6
+  of the 7 empty types are represented in these genomes and lose
+  every candidate to a competing profile; only
+  1
+  are empty because nothing in the data resembles them. Three are empty although an entry
+  <b>identical to their own reference sequence</b> is in the database.
+  The sharpest case is mechanical: for
+  <a href="/pro-sim-blast/cluster/3_308_DxnA1.html">DxnA1</a> and <a href="/pro-sim-blast/cluster/4_407_PbaA1.html">PbaA1</a>
+  the two profiles in the assignment library carry a <b>byte-identical probability matrix</b>,
+  although the two reference sequences are only
+  65.6 %
+  identical. Both family profiles were built from the same four proteins, each set containing the
+  other type's reference, so the two models cannot tell the types apart: every candidate scores the
+  same on both, the tie falls the same way every time, and one type can never recruit anything.
+  Sequence-level redundancy checks do not catch this, because the sequences sit far below any
+  redundancy threshold &mdash; the decision passes through the model, not the sequence.
+  Repairing it means rebuilding the profile library and re-assigning every entry, and deciding which
+  homologs belong to which type is a curation judgement rather than something a script should settle.
+  It is published here as a measured defect rather than left as an unexplained zero.
+</div>
+
+
+
+<h2>5 · Limits that cannot be measured away</h2>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>Limit</th><th>What it affects</th><th>What would resolve it</th></tr></thead>
+<tbody>
+<tr><td><b>Substrate labels belong to the reference enzyme</b>, not to its members. Among the curated
+    references, pairs with different substrates reach 99.8 % identity.</td>
+    <td>Every substrate statement on type and entry pages.</td>
+    <td>Biochemical assays on individual members. The database marks how far each member is from the
+    reference so the claim is never implicit. <a href="/pro-sim-blast/atlas/evidence.html">Evidence</a></td></tr>
+<tr><td><b>Operons are defined by a distance rule</b>, not by transcription.</td>
+    <td>All operon composition percentages.</td>
+    <td>Transcriptomics. In the meantime the rule is tested against a background and the effect of
+    the threshold is tabulated. <a href="/pro-sim-blast/atlas/operons.html">Operons</a></td></tr>
+<tr><td><b>Promoters are located, not predicted</b>, and this is a property of the source data
+    rather than a design choice: 88.9 % of the 17,073 downloaded GenBank records are
+    <code>CON</code> records, which declare a length but contain no sequence. The 1,897 records that
+    do carry sequence are eukaryotic transcripts, which have no operons.</td>
+    <td>Everything on the regulation page: the intergenic region is located and measured, but no
+    &minus;35 or &minus;10 box, operator repeat or transcription start can be analysed.</td>
+    <td>Re-fetching the intergenic regions from NCBI. Their coordinates are already stored for
+    10,186 entries, so the request set is defined; it is the download that is missing.
+    <a href="/pro-sim-blast/atlas/regulation.html">Regulation</a></td></tr>
+<tr><td><b>Missing partners are not absent partners.</b> Contig ends truncate neighbourhoods and the
+    window is 10 kb.</td>
+    <td>Beta, ferredoxin and reductase percentages are lower bounds.</td>
+    <td>Complete genomes only, at the cost of sample size. Replicon coding-sequence counts are
+    stored so any analysis can restrict itself.</td></tr>
+<tr><td><b>Discriminating residue positions are statistical</b>, not structural.</td>
+    <td>Variant signature tables.</td>
+    <td>Structures or docking. No structure is used anywhere in this database.</td></tr>
+<tr><td><b>Sequencing is biased</b> towards cultured organisms, clinical isolates and model soil
+    bacteria.</td>
+    <td>Every taxonomic and ecological figure.</td>
+    <td>Nothing available here. The taxonomy tree shows the shape of the bias directly.
+    <a href="/pro-sim-blast/atlas/taxonomy.html">Taxonomy</a></td></tr>
+<tr><td><b>Most curated substrates carry no individual citation.</b> All 76 types now have a
+    recorded substrate, but for 50 of them <code>chemistry.csv</code> records the source only as
+    established literature on the reference enzyme rather than naming a paper or a structure.</td>
+    <td>Every substrate, product and reaction label, and so every chemistry grouping. The claim is
+    traceable for the 21 types with a paper or a PDB entry recorded, and rests on the curator for
+    the rest.</td>
+    <td>Naming the primary reference for each of those 50 types. Each type page prints the source
+    it has, so the gap is visible per type rather than only in aggregate.</td></tr>
+<tr><td><b>Clustering compares sequences, not function.</b> Variants are sequence-homogeneous
+    subgroups; nothing guarantees that a variant boundary is a functional boundary.</td>
+    <td>Variant counts and the claim that variants are candidate functional units.</td>
+    <td>Experiments. The residue signatures are offered as the strongest available circumstantial
+    evidence.</td></tr>
+</tbody></table></div>
+
+
+<h2>6 · What is solid</h2>
+<p>Not everything here is provisional. The selection criterion itself is directly observed rather
+than inferred: in all 21,046 confirmed entries every one of the four Rieske ligands is
+present at its aligned position, and the inter-subunit bridging carboxylate is present in
+100.0 %. The complete 2-His-1-carboxylate iron
+triad is present in 86.6 %, and the
+remainder carry two of the three. Those are measurements on the alignment, not predictions.</p>
+
+<p>The operon rule is likewise supported by a control rather than by assertion: a second alpha
+subunit in the same window shows no positional enrichment at all
+(1.12×, p =
+0.00 on strand), while beta subunits are
+4.02× enriched beside the alpha with a median
+intergenic gap of 0 base pairs.</p>
+
+
+
+<h2>7 · Every file, and the script that made it</h2>
+<p class="note">Nothing on this site is hand-entered except the two curated tables
+(<code>cluster_ecology.csv</code> and <code>chemistry.csv</code>, both from the literature on the
+reference enzymes). Everything else is produced by a script in the repository and can be regenerated
+with <code>bash run_all.sh</code>.</p>
+<div class="tablewrap"><table class="data compact" data-filter="Filter files…">
+<thead><tr><th>File</th><th class="num">Rows</th><th data-facet="Produced by">Produced by</th><th>Contents</th></tr></thead>
+<tbody>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/substrate_chebi.json">substrate_chebi.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">substrate_chebi.py</td>
+  <td class="small">A ChEBI identifier for each enzyme type&#39;s substrate, separated into what was read from a balanced Rhea equation (an identity) and what came from a name match (a candidate). Includes the cases where the curated substrate and the balanced equation describe different molecules.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/roar_genomic_context.gff3.gz">roar_genomic_context.gff3.gz</a></td>
+  <td class="num">–</td>
+  <td class="mono small">export_gff3.py</td>
+  <td class="small">Every called operon and its genes as GFF3, readable directly by IGV, JBrowse, bedtools and gffread. Coordinates are converted to 1-based inclusive; genes inside the search window but outside a called operon are left out, because a window is not context.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/roar_genomic_context.json">roar_genomic_context.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">export_gff3.py</td>
+  <td class="small">The GFF3 export&#39;s own structural verification: feature counts, resolved Parent links and any coordinate that could not be represented.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/hmm_pins.json">hmm_pins.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">pin_hmm_libraries.py</td>
+  <td class="small">The exact HMM model behind every published domain call: accession with its own version plus a digest of the model block. Two libraries sit on different Pfam releases and the report says which.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ingest_gap.csv">ingest_gap.csv</a></td>
+  <td class="num">11,984</td>
+  <td class="mono small">ingest_gap.py</td>
+  <td class="small">Nucleotide records named in this database&#39;s own cross-references but never downloaded: 12,312 of them hold 17,528 sequences that already pass the gate and carry a type but have no genomic context, so they count in no per-type total.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ingest_gap.json">ingest_gap.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">ingest_gap.py</td>
+  <td class="small">The same gap by type: how many sequences each type would gain if those records were fetched.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/empty_types.json">empty_types.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">empty_types.py</td>
+  <td class="small">For every curated type that won no confirmed member of its own, the measured reason: its reference was absorbed by a near-identical sibling profile, no candidate cleared the coverage gate, or the reference sequence was never retrieved from the scanned genomes.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/completeness_audit.json">completeness_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">completeness_audit.py</td>
+  <td class="small">For every curated enzyme type, whether it has a 3D structure, a curated substrate and the other fields the pages rely on -- the per-type inventory behind the coverage statements.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/db_repair.json">db_repair.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">db_repair.py</td>
+  <td class="small">Which data repairs this database carries and why, with the rule each repair follows. A repair that lives only in code would be re-applied silently; this file is its record.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ro_cds_span.json">ro_cds_span.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">ro_cds_span.py</td>
+  <td class="small">Genomic footprints that min/max coordinates cannot explain, resolved into their real CDS parts. A gene crossing the replicon origin has a reported span of the whole replicon unless its parts are read.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/carboxylate_audit.json">carboxylate_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">carboxylate_audit.py</td>
+  <td class="small">A read-only audit of the carboxylate column baseline: which column the triad&#39;s carboxylate is read at, and what the mechanism behind that choice is.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/variant_and_operon.json">variant_and_operon.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">variant_and_operon.py</td>
+  <td class="small">Variants compared at the alignment columns lining the catalytic iron rather than over the whole protein, and how variant identity relates to operon composition, with the non-independence rule stated.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/reference_structures.json">reference_structures.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">verify_reference_structures.py</td>
+  <td class="small">Every PDB id in Table 1 of Miao &amp; Schmidt 2025 resolved against the RCSB data API and mapped onto this database&#39;s curated types, with the architecture validation.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/bootstrap_references.nwk">bootstrap_references.nwk</a></td>
+  <td class="num">–</td>
+  <td class="mono small">bootstrap_tree.py</td>
+  <td class="small">The reference tree in Newick form, with bootstrap support from 200 replicates. Support tests the clade claims that SH-like local support cannot carry.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/bootstrap_confident.nwk">bootstrap_confident.nwk</a></td>
+  <td class="num">–</td>
+  <td class="mono small">bootstrap_tree.py</td>
+  <td class="small">The same bootstrap tree for the confidently assigned entries rather than the references.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/provenance.json">provenance.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">write_provenance.py</td>
+  <td class="small">The manifest of this build: the database, its source data, every table with its row count, and every published file. This is the file that lets a reader check what a published number was computed from.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/union_evidence.json">union_evidence.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">union_evidence.py</td>
+  <td class="small">The same evidence tiers computed for the union sequences, split by whether they carry genomic context. The two pools are NOT comparable as totals: the genomic table counts entries, the union counts distinct sequences.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/literature.json">literature.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">literature.py</td>
+  <td class="small">Literature identifiers for each curated type, kept SEPARATE by source: what this project&#39;s own curation cites, the primary citation of the type&#39;s PDB entry, and the reference list of the reference protein&#39;s UniProt entry. Every DOI is checked against the DOI handle registry.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/residual_beta_audit.json">residual_beta_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">residual_beta_audit.py</td>
+  <td class="small">Why 60 neighbours the annotation calls a beta subunit are not classified as one. Measured from the GenBank records: 58 are pseudogenes and 2 carry no translation, so no model was ever given a sequence. Neither the annotation nor the model set is at fault.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/sigma70_enrichment.json">sigma70_enrichment.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">sigma70_enrichment.py</td>
+  <td class="small">Sigma70 -35/-10 box pairs in real upstream intergenic regions against two nulls built from the same regions. Enriched 1.7-1.9 times at entry level and 2.5-2.8 at genus level, which is the level that decides. No promoter is located or predicted: the boxes are information-poor and only the enrichment is publishable.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/upstream_regions.csv">upstream_regions.csv</a></td>
+  <td class="num">8,750</td>
+  <td class="mono small">upstream_regions.py</td>
+  <td class="small">The 7,616 upstream intergenic regions the enrichment is measured on, with length, GC and architecture. Each region&#39;s length was verified against the intergenic distance computed independently elsewhere.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/upstream_regions.fasta.gz">upstream_regions.fasta.gz</a></td>
+  <td class="num">–</td>
+  <td class="mono small">upstream_regions.py</td>
+  <td class="small">The same regions as DNA, written on the strand that drives the operon.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/replicon_sequence.csv">replicon_sequence.csv</a></td>
+  <td class="num">17,324</td>
+  <td class="mono small">replicon_sequence_census.py</td>
+  <td class="small">Which genome records carry nucleotide sequence and which carry only annotation. Most are CON-type entries whose sequence is not in the file, so an upstream region can be read for 2,985 of the 15,176 genome replicons -- the denominator any future motif measurement has to carry.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/rieske_ligand_audit.json">rieske_ligand_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">rieske_ligand_audit.py</td>
+  <td class="small">Which cluster ligand is missing in the 139 sequences InterPro calls Rieske but this database excludes, and whether the canonical cluster-binding motif is present in the raw sequence at all. It is absent in 138 of the 139, so the binding site is not displaced but gone -- the pattern was validated against 4,000 sequences this database does call cluster-intact and all 76 references.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/interpro_agreement.json">interpro_agreement.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">interpro_agreement.py</td>
+  <td class="small">Our own Rieske-domain call tested against InterPro&#39;s independent profiles: of the 25,313 sequences InterPro has annotated, every one we call Rieske-intact it also calls Rieske, and 139 it calls Rieske are excluded by our stricter four-ligand test -- 76 of those carry all three mononuclear iron ligands.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/coverage_audit.json">coverage_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">coverage_audit.py</td>
+  <td class="small">How much of the known protein universe carrying this domain (Pfam PF00848 in UniProtKB) this database covers, measured by taxon rather than by sequence, with the genera that are absent listed by name. Eukaryotic lineages are reported separately, because this database holds no eukaryotic genome.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/replicon_kind.json">replicon_kind.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">replicon_kind.py</td>
+  <td class="small">What each genome record actually is, read from its own GenBank LOCUS molecule type: 1,897 of the records are mRNA transcripts rather than replicons, and they are excluded from per-replicon denominators instead of being deleted.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/taxonomy_ids.json">taxonomy_ids.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">taxonomy_ids.py</td>
+  <td class="small">NCBI taxid and rank-based genus for every genome record; the entries that NCBI assigns no genus at all are counted rather than dropped.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/all_confirmed.fasta">all_confirmed.fasta</a>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">extract_genomic_context.py, build_operons.py</td>
+  <td class="small">Amino acid sequence of every confirmed alpha subunit.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/all_confirmed.csv">all_confirmed.csv</a>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">the whole pipeline</td>
+  <td class="small">One row per confirmed entry: coordinates, type, variant, evidence level and operon summary.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/operons.csv">operons.csv</a>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">build_operons.py</td>
+  <td class="small">Every gene of every predicted operon, with its component call.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/novel_candidates.fasta">novel_candidates.fasta</a>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">evidence_tiers.py</td>
+  <td class="small">Sequences with no close characterised relative.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/tree_all.nwk">tree_all.nwk</a>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">Maximum-likelihood tree of references and variant representatives.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/carboxylate_anchor_holdout.json">carboxylate_anchor_holdout.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">carboxylate_anchor_holdout.py</td>
+  <td class="small">Whether the per-type carboxylate anchoring is circular. The column is voted by a type&#39;s own positives and the method was then scored on those same positives, so this splits them: half vote, the other half is held out. Pooled held-out recovery 490/490, and the half-data column is the full-vote column in 10 of 10 types -- the machinery reads correctly. (It does NOT validate the column it was pointed at; see the method card.)</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/triad_anchor_his.json">triad_anchor_his.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">triad_anchor_his.py</td>
+  <td class="small">The two histidines and the anchor-poor types read by the same per-type anchoring the carboxylate uses. It also shows why widening a fixed window is not a substitute: of the 55 entries with no histidine at the fixed column, the anchored reading finds both ligands at the type&#39;s own columns in 35 and finds nothing there in 20, while a +-5 window had appeared to find a histidine in all 55. One case decided the rule: 27 CntA entries carry both histidines at columns that 120 of 120 of that type&#39;s members also carry a histidine at, but separated by 7 residues instead of the usual 3-5, because that sub-variant has a three-residue insertion in the iron-binding loop. Requiring the spacing would have discarded 27 genuine enzymes, so column homology decides and the spacing is reported. The seven AerC entries stay untested on purpose: that architecture has no counterpart for the model region the carboxylate column sits in; that decision was taken in a one-off resolution of the AerC architecture which is not published here.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/triad_gate.json">triad_gate.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">triad_gate.py</td>
+  <td class="small">The 2-His-1-carboxylate triad called with all three ligands required -- the definition the literature uses, and the one the admission rule did not use. Each ligand is read the way that ligand can be read: the carboxylate at the fixed column and, where that column is empty, by the within-type anchored re-reading; the two histidines at the fixed column only, because their anchored reading is not built yet. 19,063 of 19,114 confirmed entries are complete; 24 lack a carboxylate after anchoring, 20 lack a histidine after anchoring, and 7 could not be tested at all. Written to the ro_triad table, which leaves is_confirmed untouched so no published denominator moves until the remaining seven are resolved.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/carboxylate_method_card.txt">carboxylate_method_card.txt</a></td>
+  <td class="num">–</td>
+  <td class="mono small">carboxylate_method_card.py</td>
+  <td class="small">The carboxylate reading method printed step by step with the number each step produced -- what is looked at, in what order, and each step&#39;s own accuracy. Generated from carboxylate_audit.json, so it is only as current as that audit: the numbers in the saved copy predate the 2026-10-30 column correction and must be regenerated after the rebuild.</td>
+</tr>
+
+<tr>
+  
+  <td>gate_impact_reanchoring.json <span class="note">(superseded, not published)</span>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run gate impact measurement</td>
+  <td class="small">SUPERSEDED, not published: measured at the wrong carboxylate column (471), so every figure in it is invalid; the re-anchored cost of a 3-of-3 rule is now in triad_gate.json. What reading the catalytic carboxylate by per-type re-anchoring would do to membership. Almost nothing: the 2,700 candidates that currently fail the catalytic test average 0.25 model coverage against 0.83 for those that pass, so they are fragments rather than full enzymes with a shifted column; only 99 of them even reach 0.45 coverage. What changes is the statistic, not who is in the database.</td>
+</tr>
+
+<tr>
+  
+  <td>carboxylate_clade_shift.json <span class="note">(superseded, not published)</span>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run clade test</td>
+  <td class="small">SUPERSEDED, not published: the numbers in this file were measured at the wrong carboxylate column (471) and are invalid; regenerate at column 431. Whether the catalytic carboxylate column has shifted along the family&#39;s evolution, and whether cutting the profile into a few sub-models would fix it. The shift is real and clade-structured — the 26 structurally known carboxylates fall into three tight column bands — but routing a sequence to the right band by similarity fails on the highest-identity cross-band pair, so the workable design is to re-anchor within each type rather than to pre-cut sub-models.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/bridging_geometry_audit.json">bridging_geometry_audit.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">bridging_geometry_audit.py</td>
+  <td class="small">Whether the bridging-carboxylate column really reports the bridge, measured against the crystal structures the same way the catalytic column was. It passes: in 8 of the 9 structures that contain the neighbouring subunit, the residue sits about 6.6 A from that neighbour&#39;s Rieske cluster and about 7.1 A from its own subunit&#39;s iron.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/oxygen_role_phylogeny.json">oxygen_role_phylogeny.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run tree test</td>
+  <td class="small">Whether the tree predicts which enzymes use O2 only as an oxidant. Sister groups share the label 8.9 times more often than chance even after same-type neighbours are removed, but every one of those cross-type neighbourings is the one orthologue pair Nvd/DAF36; the independent third type sits nowhere near them. The signal is real and entirely trivial.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/reaction_anchors.json">reaction_anchors.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">anchor_reactions.py</td>
+  <td class="small">The search for an official reaction anchor for the types that had none: an EC number in the record text, or a UniProt entry named as holding the same sequence. Five of 53 were anchored; no anchor is invented, so the rest stay curated.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/oxygen_fate_computed.json">oxygen_fate_computed.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">compute_oxygen_fate.py</td>
+  <td class="small">The oxygen fate COMPUTED by atom counting over the balanced equation Rhea gives for each enzyme&#39;s EC number, with participant formulas from ChEBI, compared against the value this database resolves. Where the skeleton fragments and the substrate already carries oxygen, counting cannot trace atoms and the entry says so instead of guessing.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/chebi_formula_cache.json">chebi_formula_cache.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">reaction_balance.py</td>
+  <td class="small">Molecular formulas fetched from ChEBI, cached so the balance check can re-run without the network.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/reaction_verification.json">reaction_verification.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">verify_reactions.py</td>
+  <td class="small">Every reference&#39;s recorded product checked against the official reaction equation in UniProt/Rhea. It found three records that named the wrong molecule as the product, the same error that had the oxygen fate of choline monooxygenase recorded wrongly twice.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/repertoire_matrix.json">repertoire_matrix.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run cross-tab over chemistry.csv, oxygen_fate.csv and metabolic_role.csv</td>
+  <td class="small">Reaction class crossed with where the O2 oxygen ends up and with the catabolic/biosynthetic role, plus the comparison against the reaction repertoire listed in the Miao &amp; Schmidt 2025 review: seven of its eight reaction types are present here, sulfoxidation is not, and two categories here are beyond its list.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/curation_claims.json">curation_claims.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">verify_curation_claims.py</td>
+  <td class="small">Contested curation fields measured against UniProt and RCSB: organism, protein name and whether the PDB entry&#39;s sequence matches the one stored here.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/curation_claims_ncbi.json">curation_claims_ncbi.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">verify_curation_claims.py --skip-uniprot</td>
+  <td class="small">The same check for the 12 references whose accession is GenBank or RefSeq rather than UniProt: the record&#39;s own DEFINITION, organism and length against the sequence stored here. The earlier version covered only 6 of the 12 and named a script that does not write it; both are corrected.</td>
+</tr>
+
+<tr>
+  
+  <td>motif_site_audit.json <span class="note">(superseded, not published)</span>
+      </td>
+  <td class="num">–</td>
+  <td class="mono small">motif_site_audit.py</td>
+  <td class="small">SUPERSEDED, not published: the carboxylate column it audits was wrong (471); regenerate at column 431. Which catalytic columns each confirmed member actually hits. The database stores only a boolean, so 2/3 and 3/3 are indistinguishable in it; this records the pattern, including the 55 members whose second hit is the carboxylate column that the crystal structures show to be misplaced.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/motif_single_his_members.json">motif_single_his_members.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run follow-up</td>
+  <td class="small">The 55 members above, with the offset at which a histidine is actually found. 41 carry two distinct histidines just outside the +-2 window (an alignment shift); 14, all CmtAb, carry only one in the region.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/motif_gate_B_new.json">motif_gate_B_new.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">hand-run gate comparison</td>
+  <td class="small">The sequences a wider catalytic window would newly admit. Recorded because it must NOT be adopted as it stands: the two catalytic columns are five apart, so a +-5 window lets one histidine satisfy both sites and ISP-domain and P450 proteins leak in.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/reference_pairs.csv">reference_pairs.csv</a></td>
+  <td class="num">920</td>
+  <td class="mono small">evidence_tiers.py</td>
+  <td class="small">Pairwise identity between the 71 curated references, with their substrates; the calibration for every identity threshold.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/evidence_by_cluster.csv">evidence_by_cluster.csv</a></td>
+  <td class="num">69</td>
+  <td class="mono small">evidence_tiers.py</td>
+  <td class="small">Evidence level composition of each type.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/etc_by_cluster.csv">etc_by_cluster.csv</a></td>
+  <td class="num">541</td>
+  <td class="mono small">etc_types.py</td>
+  <td class="small">Electron-transport configurations per type.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/regulation_by_cluster.csv">regulation_by_cluster.csv</a></td>
+  <td class="num">69</td>
+  <td class="mono small">analyze_regulation.py</td>
+  <td class="small">Upstream architecture and promoter region per type.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/operon_validation.json">operon_validation.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">operon_validation.py</td>
+  <td class="small">Position and strand tests of the operon rule, with the negative control and threshold sensitivity.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/a5_match_guard.json">a5_match_guard.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">a5_match_guard.py</td>
+  <td class="small">Why a cross-referenced nucleotide record is linked to a sequence only on a byte-identical translation: match rate, the residual broken down by cause, and the measured cost of dropping the rule.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/variant_signatures.csv">variant_signatures.csv</a></td>
+  <td class="num">3,322</td>
+  <td class="mono small">variant_signature.py</td>
+  <td class="small">Residue signature of every variant at the columns that separate variants.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/motif_stats.json">motif_stats.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">motif_stats.py</td>
+  <td class="small">Conservation of the eight defining columns.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/redundancy.json">redundancy.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">redundancy.py</td>
+  <td class="small">Sequence redundancy and its effect on every count.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/stats.json">stats.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">stats_overview.py</td>
+  <td class="small">All hypothesis tests with effect sizes at three levels.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/threshold_sensitivity.json">threshold_sensitivity.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">threshold_sensitivity.py</td>
+  <td class="small">Every headline figure recomputed across eight inclusion thresholds, so the reader can see what the choice of threshold costs.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cross_references.json">cross_references.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">cross_references.py</td>
+  <td class="small">The identifiers other databases attach to the same sequences (UniProt, RefSeq, ENA, EC), with the declared denominator and, for EC, the review status that says whether the number was measured or propagated.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/reference_redundancy.json">reference_redundancy.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">reference_redundancy.py</td>
+  <td class="small">Where the curated reference set repeats itself, and how many members sit under a reference that is not uniquely defined.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/stratified_stats.json">stratified_stats.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">stratified_stats.py</td>
+  <td class="small">The bridging-carboxylate association recomputed within each evidence level and assignment class, so a reader can see how much of it rests on members whose chemistry is actually known.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/carboxylate_rows.json">carboxylate_rows.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">stratified_stats.py</td>
+  <td class="small">One compact row per entry (group, type, residue, evidence level, assignment class) so the association can be recomputed in the browser.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/active_site.json">active_site.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">active_site.py</td>
+  <td class="small">Catalytic-iron pocket of every type with a structure, from crystals where they exist and from predicted models elsewhere, with the validation of that transfer and how each pocket column varies across members.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/operon_relations.json">operon_relations.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">operon_relations.py</td>
+  <td class="small">Regulator, operon architecture and transposon associations, with the annotation bias measured.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/learning.json">learning.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">learn_from_data.py</td>
+  <td class="small">What can and cannot be predicted from sequence and from genomic context, with grouped cross-validation and the leaked figure shown alongside.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ecological_origin.json">ecological_origin.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">ecological_origin.py</td>
+  <td class="small">Habitat of each type&#39;s close and distant members, the dominant habitat of its main variant, and the wastewater picture, with a genus control.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ancestry.json">ancestry.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">ancestry.py</td>
+  <td class="small">Pairwise identity between each type&#39;s contaminated-site members and its members from habitats where the chemical is never applied, with the natural-substrate control and the variant-spread resampling test. The curated reference set is deliberately not used.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cooccurrence.json">cooccurrence.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">cooccurrence.py</td>
+  <td class="small">Permutation test of which enzyme types share a replicon more often than their abundance explains.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/substrate_predictability.json">substrate_predictability.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">substrate_predictability.py</td>
+  <td class="small">How well sequence identity predicts a shared substrate label, measured on the curated references.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/habitat.json">habitat.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">isolation_source.py</td>
+  <td class="small">Isolation source, host kingdom and geography per replicon, with the habitat vocabulary and every keyword that decided an assignment.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/geography.json">geography.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">geography.py</td>
+  <td class="small">Where every located entry was collected, by country and by enzyme type, with the deviation of each type from the overall distribution.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/disagreements.json">disagreements.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">disagreements.py</td>
+  <td class="small">Every place where a measurement here does not match a published claim, including this project&#39;s own earlier results, with what each test does not show.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ferredoxin_residue.json">ferredoxin_residue.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">ferredoxin_residue.py</td>
+  <td class="small">The residue at the NDO-Fd A50 column read across every readable ferredoxin, testing a published claim that it is class-dependent.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/control_elements.json">control_elements.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">control_elements.py</td>
+  <td class="small">Regulator families and insertion-sequence families: which enzyme types each sits beside, and whether mobile elements track the enzyme or the host.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/promoter_architecture.json">promoter_architecture.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">promoter_architecture.py</td>
+  <td class="small">Whether a divergent upstream regulator sits across a shorter intergenic region than a divergent non-regulator, tested at entry, sequence and genus level and again within each genus. No promoter sequence is examined.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/family_scan.json">family_scan.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">family_scan.py</td>
+  <td class="small">Neighbouring genes classified by Pfam model rather than by product name: transposase, recombinase and regulator families, each from its own HMM library, set against what the product-name rule says.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ssn_edges.csv">ssn_edges.csv</a></td>
+  <td class="num">87,960</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">Similarity network edges above 30 % identity.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/ssn_nodes.csv">ssn_nodes.csv</a></td>
+  <td class="num">2,235</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">Similarity network nodes.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/tree_meta.json">tree_meta.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">How the published tree was actually built: the substitution model FastTree fell through to, the aligner, and the support measure with its distribution. Recorded because the page caption named a model the run had not used.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/protein_freshness.json">protein_freshness.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">protein_freshness.py</td>
+  <td class="small">Whether each protein in the UniProt snapshot still exists in UniProtKB today, with the reason for every inactive accession, and how many of the survivors could still be given a genomic context. Recorded because the snapshot is dated and the published count was taken at download time.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/bootstrap_references.json">bootstrap_references.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">bootstrap_tree.py</td>
+  <td class="small">Nonparametric bootstrap on the curated reference set: alignment columns resampled with replacement and the tree re-inferred per replicate. Recorded because the published tree carries SH-like local support, which is not bootstrap and cannot support a claim that a group is a clade.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/bootstrap_confident.json">bootstrap_confident.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">bootstrap_tree.py</td>
+  <td class="small">The same bootstrap on the references plus every leaf whose assignment is neither distant nor novel.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/group_monophyly.json">group_monophyly.json</a></td>
+  <td class="num">–</td>
+  <td class="mono small">group_monophyly.py</td>
+  <td class="small">Whether each historical RO group is a single clade of the published tree, measured on three sequence sets: every tip, the curated references alone, and the leaves whose assignment is neither distant nor novel. Recorded because the page claimed the tree recovered the groups, which holds only for groups 5 and 6.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cluster_identity_matrix.csv">cluster_identity_matrix.csv</a></td>
+  <td class="num">69</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">Assignment-boundary signal, not a similarity measure: the highest identity between any two leaf representatives assigned to different types.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cluster_assignment_conflicts.csv">cluster_assignment_conflicts.csv</a></td>
+  <td class="num">1,643</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">The colliding sequences behind that signal, with the evidence level of each.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cluster_reference_identity.csv">cluster_reference_identity.csv</a></td>
+  <td class="num">69</td>
+  <td class="mono small">build_phylogeny.py</td>
+  <td class="small">Identity between the curated reference sequences of each pair of types — what “how similar are these two types” means.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/leaf_profiles.csv">leaf_profiles.csv</a></td>
+  <td class="num">3,355</td>
+  <td class="mono small">characterize_leaves.py</td>
+  <td class="small">Variant profiles: genus composition, plasmid rate, distinguishing neighbours.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/cluster_ecology_stats.csv">cluster_ecology_stats.csv</a></td>
+  <td class="num">52</td>
+  <td class="mono small">analyze_ecology.py</td>
+  <td class="small">Ecology and mobility per type.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/null_model.csv">null_model.csv</a></td>
+  <td class="num">12</td>
+  <td class="mono small">null_model.py</td>
+  <td class="small">Neighbourhood enrichment against random windows.</td>
+</tr>
+
+<tr>
+  
+  <td><a href="/pro-sim-blast/download/analysis/sdp_positions.csv">sdp_positions.csv</a></td>
+  <td class="num">418</td>
+  <td class="mono small">analyze_variants.py</td>
+  <td class="small">Specificity-determining positions at type level.</td>
+</tr>
+
+</tbody></table></div>
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-14 · code revision
+  <code>70ae1cdeb9</code> of 2026-11-14 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+</body>
+</html>

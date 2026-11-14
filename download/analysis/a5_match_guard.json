@@ -1,0 +1,24 @@
+{
+ "rule": "context is linked only when a candidate translation in the SAME record has a byte-identical md5",
+ "n_target_pairs": 18636,
+ "n_target_sequences": 18532,
+ "matched_same_record": 18139,
+ "matched_other_record_only": 9,
+ "residual_pairs": 497,
+ "residual_budget": 497,
+ "sequences_linked": 18043,
+ "link_rate": 0.9736,
+ "residual_causes": {
+  "C_no_ro_candidate": 52,
+  "D_translation_differs": 379,
+  "B_no_cds_annotation": 50,
+  "A_record_missing": 16
+ },
+ "translation_mismatch_detail": {
+  "shared_core_different_ends": 105,
+  "target_within_candidate": 71,
+  "candidate_within_target": 89,
+  "different_protein": 114
+ },
+ "would_be_wrong_without_rule": 114
+}

@@ -1,0 +1,3141 @@
+{
+  "module": "verify_reference_structures.py",
+  "generated_utc": "2026-11-13T17:34:22Z",
+  "what_was_measured": "Every PDB id in Table 1 of Miao & Schmidt 2025 was resolved against the RCSB data API; each row was mapped onto one of this database's 71 curated enzyme types by PDB id, by name plus organism, or by sequence identity to the curated reference; and the review's experimentally determined subunit composition was compared against this database's genomic-context inference of beta-subunit presence.",
+  "parameters": {
+    "min_sequence_identity_pct": 95.0,
+    "identity_definition": "nident / curated reference length",
+    "chemistry": "chemistry.csv",
+    "input_csv": "reference_structures.csv",
+    "db": "roar.sqlite",
+    "refs": "ROs_71_Clean/refs71.fasta",
+    "cache": "structures",
+    "offline": true,
+    "blastp_available": true
+  },
+  "summary": {
+    "review": {
+      "citation": "Miao H, Schmidt S. Rieske Oxygenases: Powerful Models for Understanding Nature's Orchestration of Electron Transfer and Oxidative Chemistry. Biochemistry 2025;64:3801-3813",
+      "doi": "10.1021/acs.biochem.5c00369",
+      "licence": "CC BY 4.0",
+      "table": "Table 1"
+    },
+    "rows_total": 26,
+    "rows_resolved_at_rcsb": 26,
+    "rows_mapped": 24,
+    "rows_unmapped": 2,
+    "mapping_basis_counts": {
+      "pdb_match": 19,
+      "organism_and_name": 0,
+      "sequence_identity": 5,
+      "unmapped": 2
+    },
+    "agreement_counts": {
+      "yes": 24,
+      "partial": 2,
+      "no": 0
+    },
+    "distinct_types_mapped": 23,
+    "types_gaining_an_experimental_structure": [
+      "2_201_BphA1"
+    ],
+    "types_gaining_detail": [
+      {
+        "cluster": "2_201_BphA1",
+        "gains_pdb": "2XR8",
+        "ro_name": "BPDO",
+        "organism": "Paraburkholderia xenovorans LB400",
+        "citation": "10.1016/J.JMB.2010.11.009",
+        "basis": "sequence_identity",
+        "identity_pct": "95.9"
+      }
+    ],
+    "curated_pdb_disagreements": [
+      {
+        "cluster": "5_504_CntA",
+        "review_pdb": "6Y8J",
+        "curated_pdb": "6Y9C",
+        "material": false,
+        "verdict": "the same protein; the curated id is a point variant of it",
+        "detail": "same length (391 aa) and same organism, differing at 1 position: C229A. 6Y8J is the wild type (ligands FES, 2.05 A), 6Y9C is the substituted form (ligands FE/FES/SCN, 1.8 A). Same protein, so the difference is immaterial as to identity -- but the curated id is an engineered variant, which matters if the entry is used as the wild-type active-site reference."
+      },
+      {
+        "cluster": "1_101_OxoO",
+        "review_pdb": "1Z01",
+        "curated_pdb": "1Z03",
+        "material": false,
+        "verdict": "the same protein in different states",
+        "detail": "identical deposited sequences (446 aa, 0 differences), same source organism; they differ only in state: 1Z01 has ligands FE/FES at 1.8 A, 1Z03 has ligands FE/FES at 1.8 A. Both ids are correct and the difference is immaterial."
+      },
+      {
+        "cluster": "5_506_Stc2",
+        "review_pdb": "3VCP",
+        "curated_pdb": "3VCA",
+        "material": false,
+        "verdict": "the same protein in different states",
+        "detail": "identical deposited sequences (412 aa, 0 differences), same source organism; they differ only in state: 3VCP has ligands FE/FES/PRO at 2.2 A, 3VCA has ligands FE/FES at 1.59 A. Both ids are correct and the difference is immaterial."
+      },
+      {
+        "cluster": "4_409_TPDO",
+        "review_pdb": "7Q04",
+        "curated_pdb": "7VJU",
+        "material": true,
+        "verdict": "genuinely different proteins",
+        "detail": "different proteins: 7Q04 is Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit alpha 2 (Comamonas sp./Gallus gallus, 428 aa, 99.5% to the curated reference) and 7VJU is Rieske (2Fe-2S) domain protein (Comamonas testosteroni KF-1, 413 aa, 100.0% to the curated reference). The curated reference of 4_409_TPDO is more identical to 7Q04, so the curated id is the one that represents this type; the review's table simply does not list it."
+      }
+    ],
+    "curated_pdb_disagreements_material": [
+      {
+        "cluster": "4_409_TPDO",
+        "review_pdb": "7Q04",
+        "curated_pdb": "7VJU",
+        "material": true,
+        "verdict": "genuinely different proteins",
+        "detail": "different proteins: 7Q04 is Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit alpha 2 (Comamonas sp./Gallus gallus, 428 aa, 99.5% to the curated reference) and 7VJU is Rieske (2Fe-2S) domain protein (Comamonas testosteroni KF-1, 413 aa, 100.0% to the curated reference). The curated reference of 4_409_TPDO is more identical to 7Q04, so the curated id is the one that represents this type; the review's table simply does not list it."
+      }
+    ],
+    "curated_pdb_ids_vs_table_1": [
+      {
+        "cluster": "1_101_OxoO",
+        "curated_pdb": "1Z03",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "1Z01",
+        "closest_entry_identity_pct": 100.0,
+        "same_protein_listed_under": "1Z01",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 1Z01 (100.0% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      },
+      {
+        "cluster": "1_102_CARDO",
+        "curated_pdb": "1WW9",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "1_105_DdmC",
+        "curated_pdb": "3GKE",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 99.71,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (99.7%); nothing to fix"
+      },
+      {
+        "cluster": "1_110_SxtT",
+        "curated_pdb": "6WN3",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "1_111_GxtA",
+        "curated_pdb": "6WNC",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "1_112_NdmA",
+        "curated_pdb": "6ICK",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "1_114_NdmB",
+        "curated_pdb": "6ICL",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "1_116_GdmA",
+        "curated_pdb": "7QWT",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "2_203_cumA1",
+        "curated_pdb": "1WQL",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "2_209_TDO",
+        "curated_pdb": "3EN1",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "2_213_BphA1A2",
+        "curated_pdb": "1ULI",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "2_216_BPDO",
+        "curated_pdb": "2GBW",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": false,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "2CKF",
+        "closest_entry_identity_pct": 90.97,
+        "verdict": "this id is NOT in Table 1, and no entry the review does list comes close to this type's curated reference (closest: 2CKF at 91.0%, against 100.0% for the curated id). The curated id is the right one for this type and the review's table simply omits this structure -- this is not a curation error."
+      },
+      {
+        "cluster": "2_217_HcaE",
+        "curated_pdb": "8K0A",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_301_PhnA1a",
+        "curated_pdb": "2CKF",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_303_NBDO",
+        "curated_pdb": "2BMO",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_306_3NTDO",
+        "curated_pdb": "5XBP",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_307_NagGH",
+        "curated_pdb": "7C8Z",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_309_NahAc",
+        "curated_pdb": "1NDO",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_313_KshA15",
+        "curated_pdb": "2ZYL",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "3_316_NarAa",
+        "curated_pdb": "2B1X",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": null,
+        "mapped_by_a_review_row": false,
+        "status": "no_sequence_comparison",
+        "verdict": "no blastp hit between this type's reference and this entry, so the assignment could not be tested by sequence"
+      },
+      {
+        "cluster": "4_405_ROCH34",
+        "curated_pdb": "7FHR",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": false,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "7FJL",
+        "closest_entry_identity_pct": 35.15,
+        "verdict": "this id is NOT in Table 1, and no entry the review does list comes close to this type's curated reference (closest: 7FJL at 35.1%, against 100.0% for the curated id). The curated id is the right one for this type and the review's table simply omits this structure -- this is not a curation error."
+      },
+      {
+        "cluster": "4_406_PDO",
+        "curated_pdb": "7FJL",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "4_409_TPDO",
+        "curated_pdb": "7VJU",
+        "listed_in_review": true,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "listed_and_matches",
+        "verdict": "the review lists this id and the structure matches this type's curated reference (100.0%); nothing to fix"
+      },
+      {
+        "cluster": "5_504_CntA",
+        "curated_pdb": "6Y9C",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 99.19,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "6Y8J",
+        "closest_entry_identity_pct": 99.46,
+        "same_protein_listed_under": "6Y8J",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 6Y8J (99.5% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      },
+      {
+        "cluster": "5_506_Stc2",
+        "curated_pdb": "3VCA",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "3VCP",
+        "closest_entry_identity_pct": 100.0,
+        "same_protein_listed_under": "3VCP",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 3VCP (100.0% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      }
+    ],
+    "curated_pdb_ids_that_are_curation_errors": [],
+    "curated_pdb_ids_the_review_omits": [
+      {
+        "cluster": "1_101_OxoO",
+        "curated_pdb": "1Z03",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "1Z01",
+        "closest_entry_identity_pct": 100.0,
+        "same_protein_listed_under": "1Z01",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 1Z01 (100.0% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      },
+      {
+        "cluster": "2_216_BPDO",
+        "curated_pdb": "2GBW",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": false,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "2CKF",
+        "closest_entry_identity_pct": 90.97,
+        "verdict": "this id is NOT in Table 1, and no entry the review does list comes close to this type's curated reference (closest: 2CKF at 91.0%, against 100.0% for the curated id). The curated id is the right one for this type and the review's table simply omits this structure -- this is not a curation error."
+      },
+      {
+        "cluster": "4_405_ROCH34",
+        "curated_pdb": "7FHR",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": false,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "7FJL",
+        "closest_entry_identity_pct": 35.15,
+        "verdict": "this id is NOT in Table 1, and no entry the review does list comes close to this type's curated reference (closest: 7FJL at 35.1%, against 100.0% for the curated id). The curated id is the right one for this type and the review's table simply omits this structure -- this is not a curation error."
+      },
+      {
+        "cluster": "5_504_CntA",
+        "curated_pdb": "6Y9C",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 99.19,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "6Y8J",
+        "closest_entry_identity_pct": 99.46,
+        "same_protein_listed_under": "6Y8J",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 6Y8J (99.5% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      },
+      {
+        "cluster": "5_506_Stc2",
+        "curated_pdb": "3VCA",
+        "listed_in_review": false,
+        "identity_to_this_types_reference_pct": 100.0,
+        "mapped_by_a_review_row": true,
+        "status": "absent_from_review",
+        "closest_entry_in_table_1": "3VCP",
+        "closest_entry_identity_pct": 100.0,
+        "same_protein_listed_under": "3VCP",
+        "verdict": "this exact id is not in Table 1, but the review lists the same protein under 3VCP (100.0% to the same curated reference). Both ids are correct; see curated_pdb_disagreements for which states they are."
+      }
+    ],
+    "types_with_no_structure_at_all_before": [
+      "1_109_LigX",
+      "1_116_GdmA",
+      "1_117_PrnD",
+      "1_118_RedG",
+      "2_215_cadA",
+      "3_306_3NTDO",
+      "3_307_NagGH",
+      "3_312_NinA",
+      "3_321_Nvd",
+      "3_322_DAF36",
+      "5_505_qxyA",
+      "5_507_BmoA",
+      "5_508_GbcA",
+      "6_601_PAO",
+      "6_602_CAO",
+      "6_603_PTC52",
+      "7_701_AerC"
+    ],
+    "of_those_now_gaining_an_experimental_structure": [],
+    "of_those_still_without_any_structure": [
+      "1_109_LigX",
+      "1_116_GdmA",
+      "1_117_PrnD",
+      "1_118_RedG",
+      "2_215_cadA",
+      "3_306_3NTDO",
+      "3_307_NagGH",
+      "3_312_NinA",
+      "3_321_Nvd",
+      "3_322_DAF36",
+      "5_505_qxyA",
+      "5_507_BmoA",
+      "5_508_GbcA",
+      "6_601_PAO",
+      "6_602_CAO",
+      "6_603_PTC52",
+      "7_701_AerC"
+    ]
+  },
+  "architecture_validation": {
+    "what_is_compared": "The review's subunit_composition column is an experimentally determined alpha3 versus alpha3beta3 label. This database instead INFERS the presence of a beta subunit from genomic context (ro_etc.has_beta), and the statistics page reports that inference as beta_by_type with Cramer V = 0.94 without any outside validation. For every review row that maps onto a type, the review therefore supplies independent ground truth for that inference. Agreement is scored per type, not per row, because two review rows can land on the same type.",
+    "query": "SELECT r.ro_cluster, e.has_beta FROM ro r JOIN ro_etc e USING(candidate_id) WHERE r.ro_cluster = ? AND r.is_confirmed = 1",
+    "rows": [
+      {
+        "ro_name": "DMO",
+        "pdb": "3GKE",
+        "mapped_cluster": "1_105_DdmC",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 409,
+        "has_beta_1": 9,
+        "has_beta_0": 400,
+        "beta_fraction": 0.022,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "CntA",
+        "pdb": "6Y8J",
+        "mapped_cluster": "5_504_CntA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 2562,
+        "has_beta_1": 5,
+        "has_beta_0": 2557,
+        "beta_fraction": 0.002,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "CARDO",
+        "pdb": "1WW9",
+        "mapped_cluster": "1_102_CARDO",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 114,
+        "has_beta_1": 10,
+        "has_beta_0": 104,
+        "beta_fraction": 0.0877,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "OMO",
+        "pdb": "1Z01",
+        "mapped_cluster": "1_101_OxoO",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 36,
+        "has_beta_1": 2,
+        "has_beta_0": 34,
+        "beta_fraction": 0.0556,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "KshA",
+        "pdb": "2ZYL",
+        "mapped_cluster": "3_313_KshA15",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 1712,
+        "has_beta_1": 2,
+        "has_beta_0": 1710,
+        "beta_fraction": 0.0012,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "SxtT",
+        "pdb": "6WN3",
+        "mapped_cluster": "1_110_SxtT",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 225,
+        "has_beta_1": 0,
+        "has_beta_0": 225,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "GxtA",
+        "pdb": "6WNC",
+        "mapped_cluster": "1_111_GxtA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 174,
+        "has_beta_1": 0,
+        "has_beta_0": 174,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "Stc2",
+        "pdb": "3VCP",
+        "mapped_cluster": "5_506_Stc2",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 1768,
+        "has_beta_1": 0,
+        "has_beta_0": 1768,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "GdmA",
+        "pdb": "7QWT",
+        "mapped_cluster": "1_116_GdmA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 57,
+        "has_beta_1": 3,
+        "has_beta_0": 54,
+        "beta_fraction": 0.0526,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NDO",
+        "pdb": "1NDO",
+        "mapped_cluster": "3_309_NahAc",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 0,
+        "has_beta_1": 0,
+        "has_beta_0": 0,
+        "db_has_beta_majority": null,
+        "agreement": "not_testable",
+        "note": "this type has no confirmed members in the ro table, so there is no inferred label to compare"
+      },
+      {
+        "ro_name": "CDO",
+        "pdb": "1WQL",
+        "mapped_cluster": "2_203_cumA1",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 8,
+        "has_beta_1": 7,
+        "has_beta_0": 1,
+        "beta_fraction": 0.875,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "BPDO",
+        "pdb": "1ULI",
+        "mapped_cluster": "2_213_BphA1A2",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 21,
+        "has_beta_1": 21,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "BPDO",
+        "pdb": "2XR8",
+        "mapped_cluster": "2_201_BphA1",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 1,
+        "has_beta_1": 0,
+        "has_beta_0": 1,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "disagree",
+        "direction": "the review's structure contains a beta subunit but the database infers none (DB under-calls beta)"
+      },
+      {
+        "ro_name": "NagGH",
+        "pdb": "7C8Z",
+        "mapped_cluster": "3_307_NagGH",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 345,
+        "has_beta_1": 335,
+        "has_beta_0": 10,
+        "beta_fraction": 0.971,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NBDO",
+        "pdb": "2BMO",
+        "mapped_cluster": "3_303_NBDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 24,
+        "has_beta_1": 24,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "TDO",
+        "pdb": "3EN1",
+        "mapped_cluster": "2_209_TDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 6,
+        "has_beta_1": 6,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "PAHDO",
+        "pdb": "2CKF",
+        "mapped_cluster": "3_301_PhnA1a",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 149,
+        "has_beta_1": 131,
+        "has_beta_0": 18,
+        "beta_fraction": 0.8792,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "3NTDO",
+        "pdb": "5XBP",
+        "mapped_cluster": "3_306_3NTDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 2,
+        "has_beta_1": 2,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "TPDO",
+        "pdb": "7VJU",
+        "mapped_cluster": "4_409_TPDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 475,
+        "has_beta_1": 452,
+        "has_beta_0": 23,
+        "beta_fraction": 0.9516,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "TPADO",
+        "pdb": "7Q04",
+        "mapped_cluster": "4_409_TPDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 475,
+        "has_beta_1": 452,
+        "has_beta_0": 23,
+        "beta_fraction": 0.9516,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "HcaEF",
+        "pdb": "8K0A",
+        "mapped_cluster": "2_217_HcaE",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 259,
+        "has_beta_1": 259,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NdmA",
+        "pdb": "6ICK",
+        "mapped_cluster": "1_112_NdmA",
+        "review_composition": "a3a'3",
+        "review_has_beta": false,
+        "confirmed_members": 43,
+        "has_beta_1": 0,
+        "has_beta_0": 43,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NdmB",
+        "pdb": "6ICL",
+        "mapped_cluster": "1_114_NdmB",
+        "review_composition": "a3a'3",
+        "review_has_beta": false,
+        "confirmed_members": 28,
+        "has_beta_1": 0,
+        "has_beta_0": 28,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "PDO",
+        "pdb": "7FJL",
+        "mapped_cluster": "4_406_PDO",
+        "review_composition": "a3a3",
+        "review_has_beta": false,
+        "confirmed_members": 286,
+        "has_beta_1": 10,
+        "has_beta_0": 276,
+        "beta_fraction": 0.035,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      }
+    ],
+    "by_type": [
+      {
+        "ro_name": "OMO",
+        "pdb": "1Z01",
+        "mapped_cluster": "1_101_OxoO",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 36,
+        "has_beta_1": 2,
+        "has_beta_0": 34,
+        "beta_fraction": 0.0556,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "CARDO",
+        "pdb": "1WW9",
+        "mapped_cluster": "1_102_CARDO",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 114,
+        "has_beta_1": 10,
+        "has_beta_0": 104,
+        "beta_fraction": 0.0877,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "DMO",
+        "pdb": "3GKE",
+        "mapped_cluster": "1_105_DdmC",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 409,
+        "has_beta_1": 9,
+        "has_beta_0": 400,
+        "beta_fraction": 0.022,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "SxtT",
+        "pdb": "6WN3",
+        "mapped_cluster": "1_110_SxtT",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 225,
+        "has_beta_1": 0,
+        "has_beta_0": 225,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "GxtA",
+        "pdb": "6WNC",
+        "mapped_cluster": "1_111_GxtA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 174,
+        "has_beta_1": 0,
+        "has_beta_0": 174,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NdmA",
+        "pdb": "6ICK",
+        "mapped_cluster": "1_112_NdmA",
+        "review_composition": "a3a'3",
+        "review_has_beta": false,
+        "confirmed_members": 43,
+        "has_beta_1": 0,
+        "has_beta_0": 43,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NdmB",
+        "pdb": "6ICL",
+        "mapped_cluster": "1_114_NdmB",
+        "review_composition": "a3a'3",
+        "review_has_beta": false,
+        "confirmed_members": 28,
+        "has_beta_1": 0,
+        "has_beta_0": 28,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "GdmA",
+        "pdb": "7QWT",
+        "mapped_cluster": "1_116_GdmA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 57,
+        "has_beta_1": 3,
+        "has_beta_0": 54,
+        "beta_fraction": 0.0526,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "BPDO",
+        "pdb": "2XR8",
+        "mapped_cluster": "2_201_BphA1",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 1,
+        "has_beta_1": 0,
+        "has_beta_0": 1,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "disagree",
+        "direction": "the review's structure contains a beta subunit but the database infers none (DB under-calls beta)"
+      },
+      {
+        "ro_name": "CDO",
+        "pdb": "1WQL",
+        "mapped_cluster": "2_203_cumA1",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 8,
+        "has_beta_1": 7,
+        "has_beta_0": 1,
+        "beta_fraction": 0.875,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "TDO",
+        "pdb": "3EN1",
+        "mapped_cluster": "2_209_TDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 6,
+        "has_beta_1": 6,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "BPDO",
+        "pdb": "1ULI",
+        "mapped_cluster": "2_213_BphA1A2",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 21,
+        "has_beta_1": 21,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "HcaEF",
+        "pdb": "8K0A",
+        "mapped_cluster": "2_217_HcaE",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 259,
+        "has_beta_1": 259,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "PAHDO",
+        "pdb": "2CKF",
+        "mapped_cluster": "3_301_PhnA1a",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 149,
+        "has_beta_1": 131,
+        "has_beta_0": 18,
+        "beta_fraction": 0.8792,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NBDO",
+        "pdb": "2BMO",
+        "mapped_cluster": "3_303_NBDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 24,
+        "has_beta_1": 24,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "3NTDO",
+        "pdb": "5XBP",
+        "mapped_cluster": "3_306_3NTDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 2,
+        "has_beta_1": 2,
+        "has_beta_0": 0,
+        "beta_fraction": 1.0,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "NagGH",
+        "pdb": "7C8Z",
+        "mapped_cluster": "3_307_NagGH",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 345,
+        "has_beta_1": 335,
+        "has_beta_0": 10,
+        "beta_fraction": 0.971,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "KshA",
+        "pdb": "2ZYL",
+        "mapped_cluster": "3_313_KshA15",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 1712,
+        "has_beta_1": 2,
+        "has_beta_0": 1710,
+        "beta_fraction": 0.0012,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "PDO",
+        "pdb": "7FJL",
+        "mapped_cluster": "4_406_PDO",
+        "review_composition": "a3a3",
+        "review_has_beta": false,
+        "confirmed_members": 286,
+        "has_beta_1": 10,
+        "has_beta_0": 276,
+        "beta_fraction": 0.035,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "TPDO",
+        "pdb": "7VJU",
+        "mapped_cluster": "4_409_TPDO",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 475,
+        "has_beta_1": 452,
+        "has_beta_0": 23,
+        "beta_fraction": 0.9516,
+        "db_has_beta_majority": true,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "CntA",
+        "pdb": "6Y8J",
+        "mapped_cluster": "5_504_CntA",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 2562,
+        "has_beta_1": 5,
+        "has_beta_0": 2557,
+        "beta_fraction": 0.002,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      },
+      {
+        "ro_name": "Stc2",
+        "pdb": "3VCP",
+        "mapped_cluster": "5_506_Stc2",
+        "review_composition": "a3",
+        "review_has_beta": false,
+        "confirmed_members": 1768,
+        "has_beta_1": 0,
+        "has_beta_0": 1768,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "agree"
+      }
+    ],
+    "disagreements": [
+      {
+        "ro_name": "BPDO",
+        "pdb": "2XR8",
+        "mapped_cluster": "2_201_BphA1",
+        "review_composition": "a3b3",
+        "review_has_beta": true,
+        "confirmed_members": 1,
+        "has_beta_1": 0,
+        "has_beta_0": 1,
+        "beta_fraction": 0.0,
+        "db_has_beta_majority": false,
+        "agreement": "disagree",
+        "direction": "the review's structure contains a beta subunit but the database infers none (DB under-calls beta)"
+      }
+    ],
+    "not_testable": [
+      {
+        "ro_name": "NDO",
+        "pdb": "1NDO",
+        "mapped_cluster": "3_309_NahAc",
+        "reason": "the type has no confirmed members"
+      },
+      {
+        "ro_name": "BPDO",
+        "pdb": "3GZY",
+        "reason": "the row is not mapped to a type"
+      },
+      {
+        "ro_name": "IadDE",
+        "pdb": "8H2T",
+        "reason": "the row is not mapped to a type"
+      }
+    ],
+    "types_tested": 22,
+    "types_agree": 21,
+    "types_disagree": 1,
+    "agreement_rate": 0.9545,
+    "rows_tested": 23,
+    "rows_agree": 22
+  },
+  "rows": [
+    {
+      "ro_name": "DMO",
+      "organism": "Stenotrophomonas maltophilia",
+      "subunit_composition": "a3",
+      "pdb": "3GKE",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_105_DdmC",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal Structure of Dicamba Monooxygenase",
+      "rcsb_organism": "Stenotrophomonas maltophilia",
+      "rcsb_entities": "DdmC x3 (349 aa, UniProt:Q5S3I3)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2009.07.021",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 99.7% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "CntA",
+      "organism": "Acinetobacter baumannii",
+      "subunit_composition": "a3",
+      "pdb": "6Y8J",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "5_504_CntA",
+      "mapping_basis": "sequence_identity",
+      "mapping_identity_pct": "99.5",
+      "rcsb_title": "Crystal structure of the apo form of a quaternary ammonium Rieske monooxygenase CntA",
+      "rcsb_organism": "Acinetobacter baumannii",
+      "rcsb_entities": "Carnitine monooxygenase oxygenase subunit x1 (391 aa, UniProt:A0AA90HUQ3)",
+      "rcsb_citation_doi": "10.1074/jbc.RA120.016019",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (1) matches alpha3, but the deposited asymmetric unit holds only 1 chain -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone"
+    },
+    {
+      "ro_name": "CARDO",
+      "organism": "Janthinobacterium sp. strain J3",
+      "subunit_composition": "a3",
+      "pdb": "1WW9",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_102_CARDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal structure of the terminal oxygenase component of carbazole 1,9a-dioxygenase, a non-heme iron oxygenase system catalyzing the novel angular dioxygenation for carbazole and dioxin",
+      "rcsb_organism": "Janthinobacterium sp. J3",
+      "rcsb_entities": "terminal oxygenase component of carbazole x1 (392 aa, UniProt:Q84II6)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2005.05.059",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (1) matches alpha3, but the deposited asymmetric unit holds only 1 chain -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "OMO",
+      "organism": "Pseudomonas putida strain 86",
+      "subunit_composition": "a3",
+      "pdb": "1Z01",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_101_OxoO",
+      "mapping_basis": "sequence_identity",
+      "mapping_identity_pct": "100.0",
+      "rcsb_title": "2-Oxoquinoline 8-Monooxygenase Component: Active site Modulation by Rieske-[2fe-2S] Center Oxidation/Reduction",
+      "rcsb_organism": "Pseudomonas putida",
+      "rcsb_entities": "2-oxo-1,2-dihydroquinoline 8-monooxygenase, oxygenase component x6 (446 aa, UniProt:O05935)",
+      "rcsb_citation_doi": "10.1016/j.str.2005.03.008",
+      "agrees_with_review": "yes",
+      "mapping_note": ""
+    },
+    {
+      "ro_name": "KshA",
+      "organism": "Mycobacterium tuberculosis",
+      "subunit_composition": "a3",
+      "pdb": "2ZYL",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_313_KshA15",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal structure of 3-ketosteroid-9-alpha-hydroxylase (KshA) from M. tuberculosis",
+      "rcsb_organism": "Mycobacterium tuberculosis",
+      "rcsb_entities": "POSSIBLE OXIDOREDUCTASE x1 (386 aa, UniProt:P71875)",
+      "rcsb_citation_doi": "10.1074/jbc.M900719200",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (1) matches alpha3, but the deposited asymmetric unit holds only 1 chain -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "SxtT",
+      "organism": "Microseira wollei",
+      "subunit_composition": "a3",
+      "pdb": "6WN3",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_110_SxtT",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Structure of the Rieske non-heme iron oxygenase SxtT",
+      "rcsb_organism": "Microseira wollei",
+      "rcsb_entities": "SxtT x3 (334 aa, UniProt:C3RVQ0)",
+      "rcsb_citation_doi": "10.1038/s41467-020-16729-0",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "GxtA",
+      "organism": "Microseira wollei",
+      "subunit_composition": "a3",
+      "pdb": "6WNC",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_111_GxtA",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Structure of the Rieske non-heme iron oxygenase GxtA",
+      "rcsb_organism": "Microseira wollei",
+      "rcsb_entities": "SxtDIOX x3 (334 aa, UniProt:C3RVP5)",
+      "rcsb_citation_doi": "10.1038/s41467-020-16729-0",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "Stc2",
+      "organism": "Sinorhizobium meliloti 1021",
+      "subunit_composition": "a3",
+      "pdb": "3VCP",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "5_506_Stc2",
+      "mapping_basis": "sequence_identity",
+      "mapping_identity_pct": "100.0",
+      "rcsb_title": "The 2.2 Angstrom structure of Stc2 with proline bound in the active site",
+      "rcsb_organism": "Sinorhizobium meliloti 1021",
+      "rcsb_entities": "Ring-hydroxylating dioxygenase x1 (412 aa, UniProt:Q92ZP9)",
+      "rcsb_citation_doi": "10.1021/ja2111898",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (1) matches alpha3, but the deposited asymmetric unit holds only 1 chain -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone"
+    },
+    {
+      "ro_name": "GdmA",
+      "organism": "Rhizorhabdus wittichii RW1",
+      "subunit_composition": "a3",
+      "pdb": "7QWT",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "1_116_GdmA",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Rieske non-heme iron monooxygenase for guaiacol O-demethylation",
+      "rcsb_organism": "Rhizorhabdus wittichii RW1",
+      "rcsb_entities": "Rieske (2Fe-2S) domain protein x9 (373 aa, UniProt:A0A9J9HDN6)",
+      "rcsb_citation_doi": "10.1016/j.checat.2022.04.019",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "NDO",
+      "organism": "Pseudomonas sp. strain NCIB 9816-4",
+      "subunit_composition": "a3b3",
+      "pdb": "1NDO",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_309_NahAc",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "NAPHTHALENE 1,2-DIOXYGENASE",
+      "rcsb_organism": "Pseudomonas putida",
+      "rcsb_entities": "NAPHTHALENE 1,2-DIOXYGENASE x3 (449 aa, UniProt:P0A110); NAPHTHALENE 1,2-DIOXYGENASE x3 (194 aa, UniProt:P0A112)",
+      "rcsb_citation_doi": "10.1016/S0969-2126(98)00059-8",
+      "agrees_with_review": "yes",
+      "mapping_note": "the two sources name this organism at different levels of specificity -- the review says 'Pseudomonas sp. strain NCIB 9816-4', RCSB says Pseudomonas putida; the genus agrees and this is nomenclature, not a different protein | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "CDO",
+      "organism": "Pseudomonas fluorescens IP01",
+      "subunit_composition": "a3b3",
+      "pdb": "1WQL",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "2_203_cumA1",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Cumene dioxygenase (cumA1A2) from Pseudomonas fluorescens IP01",
+      "rcsb_organism": "Pseudomonas fluorescens",
+      "rcsb_entities": "iron-sulfur protein large subunit of cumene dioxygenase x1 (459 aa, UniProt:Q51743); ethylbenzene dioxygenase small subunit x1 (186 aa, UniProt:Q51744)",
+      "rcsb_citation_doi": "10.1128/JB.187.7.2483-2490.2005",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (2) matches alpha3beta3, but the deposited asymmetric unit holds only 2 chains -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "BPDO",
+      "organism": "Rhodococcus sp. strain RHA1",
+      "subunit_composition": "a3b3",
+      "pdb": "1ULI",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "2_213_BphA1A2",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Biphenyl dioxygenase (BphA1A2) derived from Rhodococcus sp. strain RHA1",
+      "rcsb_organism": "Rhodococcus jostii RHA1",
+      "rcsb_entities": "biphenyl dioxygenase large subunit x3 (460 aa, UniProt:Q53122); biphenyl dioxygenase small subunit x3 (187 aa, UniProt:Q53123)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2004.07.062",
+      "agrees_with_review": "yes",
+      "mapping_note": "the two sources name this organism at different levels of specificity -- the review says 'Rhodococcus sp. strain RHA1', RCSB says Rhodococcus jostii RHA1; the genus agrees and this is nomenclature, not a different protein | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "BPDO",
+      "organism": "Comamonas testosteroni strain B-356",
+      "subunit_composition": "a3b3",
+      "pdb": "3GZY",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "",
+      "mapping_basis": "unmapped",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal Structure of the Biphenyl Dioxygenase from Comamonas testosteroni Sp. Strain B-356",
+      "rcsb_organism": "Comamonas testosteroni",
+      "rcsb_entities": "Biphenyl dioxygenase subunit alpha x1 (457 aa, UniProt:Q46372); Biphenyl dioxygenase subunit beta x1 (186 aa, UniProt:Q46373)",
+      "rcsb_citation_doi": "10.1371/journal.pone.0052550",
+      "agrees_with_review": "yes",
+      "mapping_note": "the primary citation names this strain under a different genus than both the deposition and the review (citation title: \"Structural Characterization of Pandoraea pnomenusa B-356 Biphenyl Dioxygenase Reveals Features of Potent Polychlorinated Biphenyl-Degrading Enzymes\") -- a strain reclassification, not a different protein | the number of distinct polymers (2) matches alpha3beta3, but the deposited asymmetric unit holds only 2 chains -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | no curated reference reaches 95% identity (best: 2_201_BphA1 at 76.9%), and neither the PDB id nor the name/organism match a type -- this enzyme has no counterpart among the 71 types"
+    },
+    {
+      "ro_name": "BPDO",
+      "organism": "Paraburkholderia xenovorans LB400",
+      "subunit_composition": "a3b3",
+      "pdb": "2XR8",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "2_201_BphA1",
+      "mapping_basis": "sequence_identity",
+      "mapping_identity_pct": "95.9",
+      "rcsb_title": "Crystal structure of biphenyl dioxygenase from Burkholderia xenovorans LB400",
+      "rcsb_organism": "Paraburkholderia xenovorans LB400",
+      "rcsb_entities": "BIPHENYL DIOXYGENASE SUBUNIT ALPHA x12 (459 aa, UniProt:P37333); BIPHENYL DIOXYGENASE SUBUNIT BETA x12 (188 aa, UniProt:P37334)",
+      "rcsb_citation_doi": "10.1016/J.JMB.2010.11.009",
+      "agrees_with_review": "yes",
+      "mapping_note": ""
+    },
+    {
+      "ro_name": "NagGH",
+      "organism": "Ralstonia sp. strain U2",
+      "subunit_composition": "a3b3",
+      "pdb": "7C8Z",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_307_NagGH",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal structure of salicylate 5-hydroxylase NagGH (a Rieske non-heme iron-dependent monooxgenase)",
+      "rcsb_organism": "Ralstonia sp.",
+      "rcsb_entities": "Salicylate 5-hydroxylase, large oxygenase component x4 (442 aa, UniProt:O52379); Salicylate 5-hydroxylase, small oxygenase component x4 (161 aa, UniProt:O52380)",
+      "rcsb_citation_doi": "10.1128/AEM.01629-20",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "NBDO",
+      "organism": "Comamonas sp. strain JS765",
+      "subunit_composition": "a3b3",
+      "pdb": "2BMO",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_303_NBDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "The Crystal Structure of Nitrobenzene Dioxygenase",
+      "rcsb_organism": "Comamonas sp. JS765",
+      "rcsb_entities": "OXYGENASE-ALPHA NBDO x1 (447 aa, UniProt:Q8RTL4); OXYGENASE-BETA NBDO x1 (194 aa, UniProt:Q8RTL3)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2005.03.052",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (2) matches alpha3beta3, but the deposited asymmetric unit holds only 2 chains -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "TDO",
+      "organism": "Pseudomonas putida strain F1",
+      "subunit_composition": "a3b3",
+      "pdb": "3EN1",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "2_209_TDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal structure of Toluene 2,3-Dioxygenase",
+      "rcsb_organism": "Pseudomonas putida",
+      "rcsb_entities": "Benzene 1,2-dioxygenase subunit alpha x1 (450 aa, UniProt:A5W4F2); Benzene 1,2-dioxygenase subunit beta x1 (187 aa, UniProt:A5W4F1)",
+      "rcsb_citation_doi": "10.1107/S0907444908036524",
+      "agrees_with_review": "yes",
+      "mapping_note": "the number of distinct polymers (2) matches alpha3beta3, but the deposited asymmetric unit holds only 2 chains -- the trimer is generated by crystallographic symmetry and is not verifiable from the entry record alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "PAHDO",
+      "organism": "Sphingomonas sp. CHY-1",
+      "subunit_composition": "a3b3",
+      "pdb": "2CKF",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_301_PhnA1a",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal Structure of the Terminal Component of the PAH-hydroxylating Dioxygenase from Sphingomonas sp CHY-1",
+      "rcsb_organism": "Sphingomonas sp. CHY-1",
+      "rcsb_entities": "RING-HYDROXYLATING DIOXYGENASE ALPHA SUBUNIT x3 (454 aa, UniProt:Q65AT1); RING-HYDROXYLATING DIOXYGENASE BETA SUBUNIT x3 (174 aa, UniProt:Q65AT0)",
+      "rcsb_citation_doi": "10.1016/J.BBRC.2006.11.117",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "3NTDO",
+      "organism": "Diaphorobacter sp. DS2",
+      "subunit_composition": "a3b3",
+      "pdb": "5XBP",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "3_306_3NTDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Oxygenase component of 3-nitrotoluene dioxygenase from Diaphorobacter sp. strain DS2",
+      "rcsb_organism": "Diaphorobacter sp. DS2",
+      "rcsb_entities": "3NT oxygenase alpha subunit x3 (446 aa, UniProt:M9PW15); 3NT oxygenase beta subunit x3 (193 aa, UniProt:M9PUZ8)",
+      "rcsb_citation_doi": "10.1371/journal.pone.0176398",
+      "agrees_with_review": "yes",
+      "mapping_note": "this entry supersedes the earlier 5BRC (2017-04-19) -- the review cites the current entry, which is correct | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "TPDO",
+      "organism": "Comamonas testosteroni KF-1",
+      "subunit_composition": "a3b3",
+      "pdb": "7VJU",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "4_409_TPDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal Structure of terephthalate dioxygenase from Comamonas testosteroni KF1",
+      "rcsb_organism": "Comamonas testosteroni KF-1",
+      "rcsb_entities": "Rieske (2Fe-2S) domain protein x3 (413 aa, UniProt:B7WRJ9); Aromatic-ring-hydroxylating dioxygenase beta subunit x3 (154 aa, UniProt:B7WRJ8)",
+      "rcsb_citation_doi": "10.1128/JB.00543-21",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "TPADO",
+      "organism": "Comamonas sp. strain E6",
+      "subunit_composition": "a3b3",
+      "pdb": "7Q04",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "4_409_TPDO",
+      "mapping_basis": "sequence_identity",
+      "mapping_identity_pct": "99.5",
+      "rcsb_title": "Crystal structure of TPADO in a substrate-free state",
+      "rcsb_organism": "Comamonas sp.; Gallus gallus",
+      "rcsb_entities": "Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit beta 1 x3 (154 aa, UniProt:Q3C1E2); Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit alpha 2 x3 (428 aa, UniProt:Q3C1D5); Lysozyme x1 (129 aa, UniProt:P00698)",
+      "rcsb_citation_doi": "10.1073/pnas.2121426119",
+      "agrees_with_review": "yes",
+      "mapping_note": "1 polymer entity from a different organism (Lysozyme / Gallus gallus) is not counted toward the subunit composition -- a crystallization additive, not part of the RO"
+    },
+    {
+      "ro_name": "IadDE",
+      "organism": "Variovorax paradoxus",
+      "subunit_composition": "a3b3",
+      "pdb": "8H2T",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "",
+      "mapping_basis": "unmapped",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Cryo-EM structure of IadD/E dioxygenase bound with IAA",
+      "rcsb_organism": "Variovorax paradoxus",
+      "rcsb_entities": "Rieske (2Fe-2S) domain protein x3 (437 aa, UniProt:C5CSP6); Aromatic-ring-hydroxylating dioxygenase beta subunit x3 (162 aa, UniProt:C5CSP7)",
+      "rcsb_citation_doi": "10.1371/journal.pbio.3002189",
+      "agrees_with_review": "yes",
+      "mapping_note": "no curated reference reaches 95% identity (best: 4_404_TdnA1 at 29.7%), and neither the PDB id nor the name/organism match a type -- this enzyme has no counterpart among the 71 types"
+    },
+    {
+      "ro_name": "HcaEF",
+      "organism": "Escherichia coli K-12",
+      "subunit_composition": "a3b3",
+      "pdb": "8K0A",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "2_217_HcaE",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "CryoEM structure of 3-phenylpropionate/cinnamic acid dioxygenase HcaE-HcaF complex",
+      "rcsb_organism": "Escherichia coli K-12",
+      "rcsb_entities": "3-phenylpropionate/cinnamic acid dioxygenase subunit alpha x3 (453 aa, UniProt:P0ABR5); 3-phenylpropionate/cinnamic acid dioxygenase subunit beta x3 (172 aa, UniProt:Q47140)",
+      "rcsb_citation_doi": "",
+      "agrees_with_review": "yes",
+      "mapping_note": "RCSB has no DOI or PubMed id for the primary citation (journal: To be published) -- the structure is citable only by its PDB id | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "NdmA",
+      "organism": "Pseudomonas putida CBB5",
+      "subunit_composition": "a3a'3",
+      "pdb": "6ICK",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1 (NdmA/NdmB pair, 6ICK/6ICL)",
+      "mapped_cluster": "1_112_NdmA",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Pseudomonas putida CBB5 NdmA",
+      "rcsb_organism": "Pseudomonas putida",
+      "rcsb_entities": "Methylxanthine N1-demethylase NdmA x3 (369 aa, UniProt:H9N289)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2019.08.004",
+      "agrees_with_review": "partial",
+      "mapping_note": "the review's alpha3alpha'3 label describes the NdmA3/NdmB3 heterocomplex, but this entry contains only one of the two catalytic subunits (1 distinct polymer), so the composition cannot be confirmed from this entry alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "NdmB",
+      "organism": "Pseudomonas putida CBB5",
+      "subunit_composition": "a3a'3",
+      "pdb": "6ICL",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1 (NdmA/NdmB pair, 6ICK/6ICL)",
+      "mapped_cluster": "1_114_NdmB",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Pseudomonas putida CBB5 NdmB",
+      "rcsb_organism": "Pseudomonas putida",
+      "rcsb_entities": "Methylxanthine N3-demethylase NdmB x1 (373 aa, UniProt:H9N290)",
+      "rcsb_citation_doi": "10.1016/j.jmb.2019.08.004",
+      "agrees_with_review": "partial",
+      "mapping_note": "the review's alpha3alpha'3 label describes the NdmA3/NdmB3 heterocomplex, but this entry contains only one of the two catalytic subunits (1 distinct polymer), so the composition cannot be confirmed from this entry alone | sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    },
+    {
+      "ro_name": "PDO",
+      "organism": "Comamonas testosteroni KF-1",
+      "subunit_composition": "a3a3",
+      "pdb": "7FJL",
+      "source_doi": "10.1021/acs.biochem.5c00369",
+      "source_citation": "Miao H, Schmidt S. Biochemistry 2025;64:3801-3813, Table 1",
+      "mapped_cluster": "4_406_PDO",
+      "mapping_basis": "pdb_match",
+      "mapping_identity_pct": "",
+      "rcsb_title": "Crystal Structure of phthalate dioxygenase from Comamonas testosteroni KF1",
+      "rcsb_organism": "Comamonas testosteroni KF-1",
+      "rcsb_entities": "Rieske (2Fe-2S) domain protein x6 (439 aa, UniProt:B7WQT1)",
+      "rcsb_citation_doi": "10.1016/j.jbc.2021.101416",
+      "agrees_with_review": "yes",
+      "mapping_note": "sequence corroborates the pdb_match: 100.0% identical to this type's curated reference"
+    }
+  ],
+  "rcsb_records": {
+    "3GKE": {
+      "pdb": "3GKE",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of Dicamba Monooxygenase",
+      "organisms": [
+        "Stenotrophomonas maltophilia"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2009.07.021",
+        "pubmed": "19616011",
+        "title": "Crystal structure of dicamba monooxygenase: a Rieske nonheme oxygenase that catalyzes oxidative demethylation.",
+        "journal": "J Mol Biol",
+        "year": 2009
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.75,
+      "ligands": [
+        "ACT",
+        "FE",
+        "FES",
+        "OXY"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "DdmC",
+          "chains": [
+            "A",
+            "B",
+            "C"
+          ],
+          "chain_count": 3,
+          "length": 349,
+          "organisms": [
+            "Stenotrophomonas maltophilia"
+          ],
+          "reference_ids": [
+            "UniProt:Q5S3I3"
+          ]
+        }
+      ]
+    },
+    "6Y8J": {
+      "pdb": "6Y8J",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of the apo form of a quaternary ammonium Rieske monooxygenase CntA",
+      "organisms": [
+        "Acinetobacter baumannii"
+      ],
+      "citation": {
+        "doi": "10.1074/jbc.RA120.016019",
+        "pubmed": "33158989",
+        "title": "Structural basis of carnitine monooxygenase CntA substrate specificity, inhibition, and intersubunit electron transfer.",
+        "journal": "J Biol Chem",
+        "year": 2020
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.05,
+      "ligands": [
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Carnitine monooxygenase oxygenase subunit",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 391,
+          "organisms": [
+            "Acinetobacter baumannii"
+          ],
+          "reference_ids": [
+            "UniProt:A0AA90HUQ3"
+          ]
+        }
+      ]
+    },
+    "1WW9": {
+      "pdb": "1WW9",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of the terminal oxygenase component of carbazole 1,9a-dioxygenase, a non-heme iron oxygenase system catalyzing the novel angular dioxygenation for carbazole and dioxin",
+      "organisms": [
+        "Janthinobacterium sp. J3"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2005.05.059",
+        "pubmed": "16005887",
+        "title": "Structure of the terminal oxygenase component of angular dioxygenase, carbazole 1,9a-dioxygenase",
+        "journal": "J Mol Biol",
+        "year": 2005
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.95,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "terminal oxygenase component of carbazole",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 392,
+          "organisms": [
+            "Janthinobacterium sp. J3"
+          ],
+          "reference_ids": [
+            "UniProt:Q84II6"
+          ]
+        }
+      ]
+    },
+    "1Z01": {
+      "pdb": "1Z01",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "2-Oxoquinoline 8-Monooxygenase Component: Active site Modulation by Rieske-[2fe-2S] Center Oxidation/Reduction",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1016/j.str.2005.03.008",
+        "pubmed": "15893671",
+        "title": "2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S] Center Oxidation/Reduction",
+        "journal": "Structure",
+        "year": 2005
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.8,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "2-oxo-1,2-dihydroquinoline 8-monooxygenase, oxygenase component",
+          "chains": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ],
+          "chain_count": 6,
+          "length": 446,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:O05935"
+          ]
+        }
+      ]
+    },
+    "2ZYL": {
+      "pdb": "2ZYL",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of 3-ketosteroid-9-alpha-hydroxylase (KshA) from M. tuberculosis",
+      "organisms": [
+        "Mycobacterium tuberculosis"
+      ],
+      "citation": {
+        "doi": "10.1074/jbc.M900719200",
+        "pubmed": "19234303",
+        "title": "Characterization of 3-ketosteroid 9{alpha}-hydroxylase, a Rieske oxygenase in the cholesterol degradation pathway of Mycobacterium tuberculosis",
+        "journal": "J Biol Chem",
+        "year": 2009
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.3,
+      "ligands": [
+        "FE2",
+        "FES",
+        "NA"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "POSSIBLE OXIDOREDUCTASE",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 386,
+          "organisms": [
+            "Mycobacterium tuberculosis"
+          ],
+          "reference_ids": [
+            "UniProt:P71875"
+          ]
+        }
+      ]
+    },
+    "6WN3": {
+      "pdb": "6WN3",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Structure of the Rieske non-heme iron oxygenase SxtT",
+      "organisms": [
+        "Microseira wollei"
+      ],
+      "citation": {
+        "doi": "10.1038/s41467-020-16729-0",
+        "pubmed": "32532989",
+        "title": "Structural basis for divergent C-H hydroxylation selectivity in two Rieske oxygenases.",
+        "journal": "Nat Commun",
+        "year": 2020
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.86,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "SxtT",
+          "chains": [
+            "A",
+            "B",
+            "C"
+          ],
+          "chain_count": 3,
+          "length": 334,
+          "organisms": [
+            "Microseira wollei"
+          ],
+          "reference_ids": [
+            "UniProt:C3RVQ0"
+          ]
+        }
+      ]
+    },
+    "6WNC": {
+      "pdb": "6WNC",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Structure of the Rieske non-heme iron oxygenase GxtA",
+      "organisms": [
+        "Microseira wollei"
+      ],
+      "citation": {
+        "doi": "10.1038/s41467-020-16729-0",
+        "pubmed": "32532989",
+        "title": "Structural basis for divergent C-H hydroxylation selectivity in two Rieske oxygenases.",
+        "journal": "Nat Commun",
+        "year": 2020
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.2,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "SxtDIOX",
+          "chains": [
+            "A",
+            "B",
+            "C"
+          ],
+          "chain_count": 3,
+          "length": 334,
+          "organisms": [
+            "Microseira wollei"
+          ],
+          "reference_ids": [
+            "UniProt:C3RVP5"
+          ]
+        }
+      ]
+    },
+    "3VCP": {
+      "pdb": "3VCP",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "The 2.2 Angstrom structure of Stc2 with proline bound in the active site",
+      "organisms": [
+        "Sinorhizobium meliloti 1021"
+      ],
+      "citation": {
+        "doi": "10.1021/ja2111898",
+        "pubmed": "22224443",
+        "title": "Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman, and UV-Visible Spectroscopic Analysis of a Rieske-Type Demethylase.",
+        "journal": "J Am Chem Soc",
+        "year": 2012
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.2,
+      "ligands": [
+        "FE",
+        "FES",
+        "PRO"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Ring-hydroxylating dioxygenase",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 412,
+          "organisms": [
+            "Sinorhizobium meliloti 1021"
+          ],
+          "reference_ids": [
+            "UniProt:Q92ZP9"
+          ]
+        }
+      ]
+    },
+    "7QWT": {
+      "pdb": "7QWT",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Rieske non-heme iron monooxygenase for guaiacol O-demethylation",
+      "organisms": [
+        "Rhizorhabdus wittichii RW1"
+      ],
+      "citation": {
+        "doi": "10.1016/j.checat.2022.04.019",
+        "pubmed": "",
+        "title": "Discovery, characterization, and metabolic engineering of Rieske non-heme iron monooxygenases for guaiacol O-demethylation",
+        "journal": "Chem Catal",
+        "year": 2022
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 3.712,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Rieske (2Fe-2S) domain protein",
+          "chains": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "chain_count": 9,
+          "length": 373,
+          "organisms": [
+            "Rhizorhabdus wittichii RW1"
+          ],
+          "reference_ids": [
+            "UniProt:A0A9J9HDN6"
+          ]
+        }
+      ]
+    },
+    "1NDO": {
+      "pdb": "1NDO",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "NAPHTHALENE 1,2-DIOXYGENASE",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1016/S0969-2126(98)00059-8",
+        "pubmed": "9634695",
+        "title": "Structure of an aromatic-ring-hydroxylating dioxygenase-naphthalene 1,2-dioxygenase.",
+        "journal": "Structure",
+        "year": 1998
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.25,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "NAPHTHALENE 1,2-DIOXYGENASE",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 449,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:P0A110"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "NAPHTHALENE 1,2-DIOXYGENASE",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 194,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:P0A112"
+          ]
+        }
+      ]
+    },
+    "1WQL": {
+      "pdb": "1WQL",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Cumene dioxygenase (cumA1A2) from Pseudomonas fluorescens IP01",
+      "organisms": [
+        "Pseudomonas fluorescens"
+      ],
+      "citation": {
+        "doi": "10.1128/JB.187.7.2483-2490.2005",
+        "pubmed": "15774891",
+        "title": "Crystal Structure of the Terminal Oxygenase Component of Cumene Dioxygenase from Pseudomonas fluorescens IP01",
+        "journal": "J Bacteriol",
+        "year": 2005
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.2,
+      "ligands": [
+        "FE2",
+        "FES",
+        "OXY"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "iron-sulfur protein large subunit of cumene dioxygenase",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 459,
+          "organisms": [
+            "Pseudomonas fluorescens"
+          ],
+          "reference_ids": [
+            "UniProt:Q51743"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "ethylbenzene dioxygenase small subunit",
+          "chains": [
+            "B"
+          ],
+          "chain_count": 1,
+          "length": 186,
+          "organisms": [
+            "Pseudomonas fluorescens"
+          ],
+          "reference_ids": [
+            "UniProt:Q51744"
+          ]
+        }
+      ]
+    },
+    "1ULI": {
+      "pdb": "1ULI",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Biphenyl dioxygenase (BphA1A2) derived from Rhodococcus sp. strain RHA1",
+      "organisms": [
+        "Rhodococcus jostii RHA1"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2004.07.062",
+        "pubmed": "15342255",
+        "title": "Crystal Structure of the Terminal Oxygenase Component of Biphenyl Dioxygenase Derived from Rhodococcus sp. Strain RHA1",
+        "journal": "J Mol Biol",
+        "year": 2004
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.2,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "biphenyl dioxygenase large subunit",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 460,
+          "organisms": [
+            "Rhodococcus jostii RHA1"
+          ],
+          "reference_ids": [
+            "UniProt:Q53122"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "biphenyl dioxygenase small subunit",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 187,
+          "organisms": [
+            "Rhodococcus jostii RHA1"
+          ],
+          "reference_ids": [
+            "UniProt:Q53123"
+          ]
+        }
+      ]
+    },
+    "3GZY": {
+      "pdb": "3GZY",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of the Biphenyl Dioxygenase from Comamonas testosteroni Sp. Strain B-356",
+      "organisms": [
+        "Comamonas testosteroni"
+      ],
+      "citation": {
+        "doi": "10.1371/journal.pone.0052550",
+        "pubmed": "23308114",
+        "title": "Structural Characterization of Pandoraea pnomenusa B-356 Biphenyl Dioxygenase Reveals Features of Potent Polychlorinated Biphenyl-Degrading Enzymes",
+        "journal": "PLoS One",
+        "year": 2013
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.62,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Biphenyl dioxygenase subunit alpha",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 457,
+          "organisms": [
+            "Comamonas testosteroni"
+          ],
+          "reference_ids": [
+            "UniProt:Q46372"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Biphenyl dioxygenase subunit beta",
+          "chains": [
+            "B"
+          ],
+          "chain_count": 1,
+          "length": 186,
+          "organisms": [
+            "Comamonas testosteroni"
+          ],
+          "reference_ids": [
+            "UniProt:Q46373"
+          ]
+        }
+      ]
+    },
+    "2XR8": {
+      "pdb": "2XR8",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of biphenyl dioxygenase from Burkholderia xenovorans LB400",
+      "organisms": [
+        "Paraburkholderia xenovorans LB400"
+      ],
+      "citation": {
+        "doi": "10.1016/J.JMB.2010.11.009",
+        "pubmed": "21073881",
+        "title": "Structural Insight Into the Expanded Pcb-Degrading Abilities of a Biphenyl Dioxygenase Obtained by Directed Evolution.",
+        "journal": "J Mol Biol",
+        "year": 2011
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.49,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "BIPHENYL DIOXYGENASE SUBUNIT ALPHA",
+          "chains": [
+            "A",
+            "C",
+            "E",
+            "G",
+            "I",
+            "K",
+            "M",
+            "O",
+            "Q",
+            "S",
+            "U",
+            "W"
+          ],
+          "chain_count": 12,
+          "length": 459,
+          "organisms": [
+            "Paraburkholderia xenovorans LB400"
+          ],
+          "reference_ids": [
+            "UniProt:P37333"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "BIPHENYL DIOXYGENASE SUBUNIT BETA",
+          "chains": [
+            "B",
+            "D",
+            "F",
+            "H",
+            "J",
+            "L",
+            "N",
+            "P",
+            "R",
+            "T",
+            "V",
+            "X"
+          ],
+          "chain_count": 12,
+          "length": 188,
+          "organisms": [
+            "Paraburkholderia xenovorans LB400"
+          ],
+          "reference_ids": [
+            "UniProt:P37334"
+          ]
+        }
+      ]
+    },
+    "7C8Z": {
+      "pdb": "7C8Z",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of salicylate 5-hydroxylase NagGH (a Rieske non-heme iron-dependent monooxgenase)",
+      "organisms": [
+        "Ralstonia sp."
+      ],
+      "citation": {
+        "doi": "10.1128/AEM.01629-20",
+        "pubmed": "33452034",
+        "title": "Structural and Biochemical Analysis Reveals a Distinct Catalytic Site of Salicylate 5-Monooxygenase NagGH from Rieske Dioxygenases.",
+        "journal": "Appl Environ Microbiol",
+        "year": 2021
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.6,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Salicylate 5-hydroxylase, large oxygenase component",
+          "chains": [
+            "A",
+            "C",
+            "E",
+            "G"
+          ],
+          "chain_count": 4,
+          "length": 442,
+          "organisms": [
+            "Ralstonia sp."
+          ],
+          "reference_ids": [
+            "UniProt:O52379"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Salicylate 5-hydroxylase, small oxygenase component",
+          "chains": [
+            "B",
+            "D",
+            "F",
+            "H"
+          ],
+          "chain_count": 4,
+          "length": 161,
+          "organisms": [
+            "Ralstonia sp."
+          ],
+          "reference_ids": [
+            "UniProt:O52380"
+          ]
+        }
+      ]
+    },
+    "2BMO": {
+      "pdb": "2BMO",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "The Crystal Structure of Nitrobenzene Dioxygenase",
+      "organisms": [
+        "Comamonas sp. JS765"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2005.03.052",
+        "pubmed": "15854650",
+        "title": "Structural insight into the dioxygenation of nitroarene compounds: the crystal structure of nitrobenzene dioxygenase.",
+        "journal": "J Mol Biol",
+        "year": 2005
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.2,
+      "ligands": [
+        "EDO",
+        "FE",
+        "FES",
+        "NI"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "OXYGENASE-ALPHA NBDO",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 447,
+          "organisms": [
+            "Comamonas sp. JS765"
+          ],
+          "reference_ids": [
+            "UniProt:Q8RTL4"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "OXYGENASE-BETA NBDO",
+          "chains": [
+            "B"
+          ],
+          "chain_count": 1,
+          "length": 194,
+          "organisms": [
+            "Comamonas sp. JS765"
+          ],
+          "reference_ids": [
+            "UniProt:Q8RTL3"
+          ]
+        }
+      ]
+    },
+    "3EN1": {
+      "pdb": "3EN1",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of Toluene 2,3-Dioxygenase",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1107/S0907444908036524",
+        "pubmed": "19153463",
+        "title": "Structures of the multicomponent Rieske non-heme iron toluene 2,3-dioxygenase enzyme system",
+        "journal": "Acta Crystallogr D Biol Crystallogr",
+        "year": 2009
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 3.2,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Benzene 1,2-dioxygenase subunit alpha",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 450,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:A5W4F2"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Benzene 1,2-dioxygenase subunit beta",
+          "chains": [
+            "B"
+          ],
+          "chain_count": 1,
+          "length": 187,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:A5W4F1"
+          ]
+        }
+      ]
+    },
+    "2CKF": {
+      "pdb": "2CKF",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of the Terminal Component of the PAH-hydroxylating Dioxygenase from Sphingomonas sp CHY-1",
+      "organisms": [
+        "Sphingomonas sp. CHY-1"
+      ],
+      "citation": {
+        "doi": "10.1016/J.BBRC.2006.11.117",
+        "pubmed": "17157819",
+        "title": "The Catalytic Pocket of the Ring-Hydroxylating Dioxygenase from Sphingomonas Chy-1.",
+        "journal": "Biochem Biophys Res Commun",
+        "year": 2007
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.85,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "RING-HYDROXYLATING DIOXYGENASE ALPHA SUBUNIT",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 454,
+          "organisms": [
+            "Sphingomonas sp. CHY-1"
+          ],
+          "reference_ids": [
+            "UniProt:Q65AT1"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "RING-HYDROXYLATING DIOXYGENASE BETA SUBUNIT",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 174,
+          "organisms": [
+            "Sphingomonas sp. CHY-1"
+          ],
+          "reference_ids": [
+            "UniProt:Q65AT0"
+          ]
+        }
+      ]
+    },
+    "5XBP": {
+      "pdb": "5XBP",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Oxygenase component of 3-nitrotoluene dioxygenase from Diaphorobacter sp. strain DS2",
+      "organisms": [
+        "Diaphorobacter sp. DS2"
+      ],
+      "citation": {
+        "doi": "10.1371/journal.pone.0176398",
+        "pubmed": "28448625",
+        "title": "Structural and functional studies of ferredoxin and oxygenase components of 3-nitrotoluene dioxygenase from Diaphorobacter sp. strain DS2.",
+        "journal": "PLoS One",
+        "year": 2017
+      },
+      "superseded": [
+        {
+          "id": "SPRSDE",
+          "pdb_id": "5XBP",
+          "replace_pdb_id": "5BRC",
+          "date": "2017-04-19T00:00:00.000+00:00"
+        }
+      ],
+      "method": "X-ray",
+      "resolution": 2.9,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "3NT oxygenase alpha subunit",
+          "chains": [
+            "A",
+            "D",
+            "G"
+          ],
+          "chain_count": 3,
+          "length": 446,
+          "organisms": [
+            "Diaphorobacter sp. DS2"
+          ],
+          "reference_ids": [
+            "UniProt:M9PW15"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "3NT oxygenase beta subunit",
+          "chains": [
+            "C",
+            "F",
+            "I"
+          ],
+          "chain_count": 3,
+          "length": 193,
+          "organisms": [
+            "Diaphorobacter sp. DS2"
+          ],
+          "reference_ids": [
+            "UniProt:M9PUZ8"
+          ]
+        }
+      ]
+    },
+    "7VJU": {
+      "pdb": "7VJU",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of terephthalate dioxygenase from Comamonas testosteroni KF1",
+      "organisms": [
+        "Comamonas testosteroni KF-1"
+      ],
+      "citation": {
+        "doi": "10.1128/JB.00543-21",
+        "pubmed": "35007143",
+        "title": "Structural Insights into Dihydroxylation of Terephthalate, a Product of Polyethylene Terephthalate Degradation.",
+        "journal": "J Bacteriol",
+        "year": 2022
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.27,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Rieske (2Fe-2S) domain protein",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 413,
+          "organisms": [
+            "Comamonas testosteroni KF-1"
+          ],
+          "reference_ids": [
+            "UniProt:B7WRJ9"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Aromatic-ring-hydroxylating dioxygenase beta subunit",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 154,
+          "organisms": [
+            "Comamonas testosteroni KF-1"
+          ],
+          "reference_ids": [
+            "UniProt:B7WRJ8"
+          ]
+        }
+      ]
+    },
+    "7Q04": {
+      "pdb": "7Q04",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal structure of TPADO in a substrate-free state",
+      "organisms": [
+        "Comamonas sp.",
+        "Gallus gallus"
+      ],
+      "citation": {
+        "doi": "10.1073/pnas.2121426119",
+        "pubmed": "35312352",
+        "title": "Biochemical and structural characterization of an aromatic ring-hydroxylating dioxygenase for terephthalic acid catabolism.",
+        "journal": "Proc Natl Acad Sci U S A",
+        "year": 2022
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.281,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit beta 1",
+          "chains": [
+            "A",
+            "B",
+            "C"
+          ],
+          "chain_count": 3,
+          "length": 154,
+          "organisms": [
+            "Comamonas sp."
+          ],
+          "reference_ids": [
+            "UniProt:Q3C1E2"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Terephthalate 1,2-dioxygenase, terminal oxygenase component subunit alpha 2",
+          "chains": [
+            "D",
+            "E",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 428,
+          "organisms": [
+            "Comamonas sp."
+          ],
+          "reference_ids": [
+            "UniProt:Q3C1D5"
+          ]
+        },
+        {
+          "entity_id": "3",
+          "description": "Lysozyme",
+          "chains": [
+            "H"
+          ],
+          "chain_count": 1,
+          "length": 129,
+          "organisms": [
+            "Gallus gallus"
+          ],
+          "reference_ids": [
+            "UniProt:P00698"
+          ]
+        }
+      ]
+    },
+    "8H2T": {
+      "pdb": "8H2T",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Cryo-EM structure of IadD/E dioxygenase bound with IAA",
+      "organisms": [
+        "Variovorax paradoxus"
+      ],
+      "citation": {
+        "doi": "10.1371/journal.pbio.3002189",
+        "pubmed": "37459330",
+        "title": "Structural and biochemical characterization of the key components of an auxin degradation operon from the rhizosphere bacterium Variovorax.",
+        "journal": "PLoS Biol",
+        "year": 2023
+      },
+      "superseded": [],
+      "method": "EM",
+      "resolution": 2.59,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Rieske (2Fe-2S) domain protein",
+          "chains": [
+            "B",
+            "D",
+            "G"
+          ],
+          "chain_count": 3,
+          "length": 437,
+          "organisms": [
+            "Variovorax paradoxus"
+          ],
+          "reference_ids": [
+            "UniProt:C5CSP6"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Aromatic-ring-hydroxylating dioxygenase beta subunit",
+          "chains": [
+            "A",
+            "E",
+            "H"
+          ],
+          "chain_count": 3,
+          "length": 162,
+          "organisms": [
+            "Variovorax paradoxus"
+          ],
+          "reference_ids": [
+            "UniProt:C5CSP7"
+          ]
+        }
+      ]
+    },
+    "8K0A": {
+      "pdb": "8K0A",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "CryoEM structure of 3-phenylpropionate/cinnamic acid dioxygenase HcaE-HcaF complex",
+      "organisms": [
+        "Escherichia coli K-12"
+      ],
+      "citation": {
+        "doi": "",
+        "pubmed": "",
+        "title": "CryoEM structure of 3-phenylpropionate/cinnamic acid dioxygenase HcaE-HcaF complex",
+        "journal": "To be published",
+        "year": null
+      },
+      "superseded": [],
+      "method": "EM",
+      "resolution": 3.12,
+      "ligands": [],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "3-phenylpropionate/cinnamic acid dioxygenase subunit alpha",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 453,
+          "organisms": [
+            "Escherichia coli K-12"
+          ],
+          "reference_ids": [
+            "UniProt:P0ABR5"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "3-phenylpropionate/cinnamic acid dioxygenase subunit beta",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 172,
+          "organisms": [
+            "Escherichia coli K-12"
+          ],
+          "reference_ids": [
+            "UniProt:Q47140"
+          ]
+        }
+      ]
+    },
+    "6ICK": {
+      "pdb": "6ICK",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Pseudomonas putida CBB5 NdmA",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2019.08.004",
+        "pubmed": "31412262",
+        "title": "Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.",
+        "journal": "J Mol Biol",
+        "year": 2019
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.952,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Methylxanthine N1-demethylase NdmA",
+          "chains": [
+            "A",
+            "B",
+            "C"
+          ],
+          "chain_count": 3,
+          "length": 369,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:H9N289"
+          ]
+        }
+      ]
+    },
+    "6ICL": {
+      "pdb": "6ICL",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Pseudomonas putida CBB5 NdmB",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jmb.2019.08.004",
+        "pubmed": "31412262",
+        "title": "Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.",
+        "journal": "J Mol Biol",
+        "year": 2019
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.1,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Methylxanthine N3-demethylase NdmB",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 373,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:H9N290"
+          ]
+        }
+      ]
+    },
+    "7FJL": {
+      "pdb": "7FJL",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of phthalate dioxygenase from Comamonas testosteroni KF1",
+      "organisms": [
+        "Comamonas testosteroni KF-1"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jbc.2021.101416",
+        "pubmed": "34800435",
+        "title": "Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.",
+        "journal": "J Biol Chem",
+        "year": 2021
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 2.11,
+      "ligands": [
+        "FE2",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Rieske (2Fe-2S) domain protein",
+          "chains": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ],
+          "chain_count": 6,
+          "length": 439,
+          "organisms": [
+            "Comamonas testosteroni KF-1"
+          ],
+          "reference_ids": [
+            "UniProt:B7WQT1"
+          ]
+        }
+      ]
+    },
+    "1Z03": {
+      "pdb": "1Z03",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "2-Oxoquinoline 8-Monooxygenase Component: Active site Modulation by Rieske-[2fe-2S] Center Oxidation/Reduction",
+      "organisms": [
+        "Pseudomonas putida"
+      ],
+      "citation": {
+        "doi": "10.1016/j.str.2005.03.008",
+        "pubmed": "15893671",
+        "title": "2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S] Center Oxidation/Reduction",
+        "journal": "Structure",
+        "year": 2005
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.8,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "2-oxo-1,2-dihydroquinoline 8-monooxygenase, oxygenase component",
+          "chains": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ],
+          "chain_count": 6,
+          "length": 446,
+          "organisms": [
+            "Pseudomonas putida"
+          ],
+          "reference_ids": [
+            "UniProt:O05935"
+          ]
+        }
+      ]
+    },
+    "2B1X": {
+      "pdb": "2B1X",
+      "fetch_status": "absent from cache and --offline was given",
+      "resolves": false,
+      "title": "",
+      "organisms": [],
+      "citation": {},
+      "superseded": [],
+      "method": "",
+      "resolution": null,
+      "error": "absent from cache and --offline was given",
+      "entities": []
+    },
+    "2GBW": {
+      "pdb": "2GBW",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of Biphenyl 2,3-Dioxygenase from Sphingomonas yanoikuyae B1",
+      "organisms": [
+        "Sphingobium yanoikuyae"
+      ],
+      "citation": {
+        "doi": "10.1186/1472-6807-7-10",
+        "pubmed": "17349044",
+        "title": "Structural investigations of the ferredoxin and terminal oxygenase components of the biphenyl 2,3-dioxygenase from Sphingobium yanoikuyae B1.",
+        "journal": "BMC Struct Biol",
+        "year": 2007
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.7,
+      "ligands": [
+        "FE",
+        "FES",
+        "OXY"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Biphenyl 2,3-Dioxygenase Alpha Subunit",
+          "chains": [
+            "A",
+            "C",
+            "E"
+          ],
+          "chain_count": 3,
+          "length": 454,
+          "organisms": [
+            "Sphingobium yanoikuyae"
+          ],
+          "reference_ids": [
+            "UniProt:A2TC87"
+          ]
+        },
+        {
+          "entity_id": "2",
+          "description": "Biphenyl 2,3-Dioxygenase Beta Subunit",
+          "chains": [
+            "B",
+            "D",
+            "F"
+          ],
+          "chain_count": 3,
+          "length": 174,
+          "organisms": [
+            "Sphingobium yanoikuyae"
+          ],
+          "reference_ids": [
+            "UniProt:A2TC88"
+          ]
+        }
+      ]
+    },
+    "3VCA": {
+      "pdb": "3VCA",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman and UV-visible Spectroscopic Analysis of a Rieske-type Demethylase",
+      "organisms": [
+        "Sinorhizobium meliloti 1021"
+      ],
+      "citation": {
+        "doi": "10.1021/ja2111898",
+        "pubmed": "22224443",
+        "title": "Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman, and UV-Visible Spectroscopic Analysis of a Rieske-Type Demethylase.",
+        "journal": "J Am Chem Soc",
+        "year": 2012
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.59,
+      "ligands": [
+        "FE",
+        "FES"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Ring-hydroxylating dioxygenase",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 412,
+          "organisms": [
+            "Sinorhizobium meliloti 1021"
+          ],
+          "reference_ids": [
+            "UniProt:Q92ZP9"
+          ]
+        }
+      ]
+    },
+    "6Y9C": {
+      "pdb": "6Y9C",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "The structure of a quaternary ammonium Rieske monooxygenase reveals insights into carnitine oxidation by gut microbiota and inter-subunit electron transfer",
+      "organisms": [
+        "Acinetobacter baumannii"
+      ],
+      "citation": {
+        "doi": "10.1111/febs.16722",
+        "pubmed": "36617384",
+        "title": "Characterisation of an unusual cysteine pair in the Rieske carnitine monooxygenase CntA catalytic site.",
+        "journal": "FEBS J",
+        "year": 2023
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.8,
+      "ligands": [
+        "FE",
+        "FES",
+        "SCN"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Carnitine monooxygenase oxygenase subunit",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 391,
+          "organisms": [
+            "Acinetobacter baumannii"
+          ],
+          "reference_ids": [
+            "UniProt:D0C9N6"
+          ]
+        }
+      ]
+    },
+    "7FHR": {
+      "pdb": "7FHR",
+      "fetch_status": "cached",
+      "resolves": true,
+      "title": "Crystal Structure of a Rieske Oxygenase from Cupriavidus metallidurans",
+      "organisms": [
+        "Cupriavidus metallidurans CH34"
+      ],
+      "citation": {
+        "doi": "10.1016/j.jbc.2021.101416",
+        "pubmed": "34800435",
+        "title": "Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.",
+        "journal": "J Biol Chem",
+        "year": 2021
+      },
+      "superseded": [],
+      "method": "X-ray",
+      "resolution": 1.84,
+      "ligands": [
+        "FE2",
+        "FES",
+        "GLU"
+      ],
+      "entities": [
+        {
+          "entity_id": "1",
+          "description": "Putative Phthalate 4,5-dioxygenase, subunit alpha",
+          "chains": [
+            "A"
+          ],
+          "chain_count": 1,
+          "length": 441,
+          "organisms": [
+            "Cupriavidus metallidurans CH34"
+          ],
+          "reference_ids": [
+            "UniProt:Q1LBR9"
+          ]
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "The composition check counts DISTINCT polymer entities, which is what the review's alpha3 versus alpha3beta3 label encodes. It does not verify the trimeric assembly itself: for entries whose asymmetric unit holds fewer than three chains the trimer is generated by crystallographic symmetry, and that is recorded as a note rather than a disagreement.",
+    "The alpha3alpha'3 label describes a heterocomplex of two different catalytic subunits, but the two subunits were deposited as separate entries. Neither entry alone can confirm that composition.",
+    "Sequence identity is computed against the single curated reference sequence of a type, not against that type's members, so it certifies that the structure represents the REFERENCE protein -- not that it represents every member assigned to the type.",
+    "Where two curated types carry identical reference sequences, a structure matches both at the same identity. The script then prefers the type whose name matches the review's RO name and records the other as a duplicate; it does not decide which of the two names is correct.",
+    "ro_etc.has_beta is itself an inference, and for a type with very few confirmed members its majority rests on one or two genomes. Disagreements carry the member count so that low-power cases are visible."
+  ]
+}

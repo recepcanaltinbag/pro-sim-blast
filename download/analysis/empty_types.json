@@ -1,0 +1,493 @@
+{
+ "generated": "2026-11-13T21:20:01",
+ "method": {
+  "question": "why a curated enzyme type has no members of its own",
+  "assignment": "a confirmed RO alpha subunit is filed under the reference profile with the HIGHEST BIT SCORE among the profiles it covers at or above 0.45 of their length; assignment is therefore competitive and a profile with a near-identical sibling can win nothing at all",
+  "cases": {
+   "reference_absorbed": "the curated reference protein itself is in the database as a confirmed entry, but filed under another type -- a genuine merge of two curated names onto one model",
+   "gate_rejected": "the profile never cleared the coverage / E-value gate, so no candidate reached the assignment step",
+   "reference_not_in_genome_set": "the exact reference sequence was never retrieved from the scanned genomes; the profile still competes and loses every contest to a sibling"
+  },
+  "not_fixed_here": "this module explains the empty pages; removing the emptiness means merging or renaming references and rebuilding the profile library, which is a nomenclature decision"
+ },
+ "totals": {
+  "curated_types": 76,
+  "types_with_members": 69,
+  "types_without_members": 7,
+  "by_case": {
+   "reference_not_in_genome_set": 5,
+   "reference_absorbed": 2
+  }
+ },
+ "types": [
+  {
+   "union": {
+    "members": 0,
+    "gated": 0,
+    "measured": true
+   },
+   "cluster": "1_103_CarAa",
+   "gene": "CarAa",
+   "reference_accession": "BAA21728.1",
+   "reference_header": ">gi|2317678|dbj|BAA21728.1| terminal dioxygenase component of carbazole 1,9a-dioxygenase [Pseudomonas sp.]",
+   "substrate": "carbazole",
+   "case": "reference_not_in_genome_set",
+   "absorbed_by": "1_102_CARDO",
+   "evidence": {
+    "reference_length": 384,
+    "reference_in_database": false,
+    "reference_entries": 0,
+    "reference_assigned_to": [],
+    "reference_protein_id": null,
+    "nearest_reference_sibling": {
+     "type": "1_102_CARDO",
+     "identity": 99.2,
+     "qcov": 100.0,
+     "bitscore": 804.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "1_102_CARDO",
+      "entries": 35,
+      "max_identity": 99.7,
+      "max_qcov": 99.2
+     },
+     {
+      "type": "1_106_TsaM",
+      "entries": 10,
+      "max_identity": 32.9,
+      "max_qcov": 48.8
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 45,
+    "candidates_with_a_hit": 18046,
+    "candidates_passing_coverage_gate": 1683,
+    "candidates_failing_coverage_gate": 16363,
+    "max_model_coverage_reached": 1.0,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "1_102_CARDO",
+      "candidates": 114
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NC_004444.1:28468-29641:1",
+     "own_score": 837.7,
+     "own_coverage": 1.0,
+     "winning_type": "1_102_CARDO",
+     "winning_score": 837.7,
+     "score_gap": 0.0
+    }
+   },
+   "note": "The exact reference sequence of CarAa never came out of the scanned genome set. Its profile still competes on 1,683 candidates that clear the coverage gate, but it is outscored every time, most often by CARDO. The proteins this type would describe are therefore counted under 1_102_CARDO. The two references are 99.2 % identical, so the split between the names is a naming decision rather than a biological one."
+  },
+  {
+   "union": {
+    "members": 0,
+    "gated": 0,
+    "measured": true
+   },
+   "cluster": "2_206_IpBAa",
+   "gene": "IpBAa",
+   "reference_accession": "AAC03436.1",
+   "reference_header": ">gi|2822265|gb|AAC03436.1| isopropylbenzene dioxygenase, iron-sulfur protein, large subunit (plasmid) [Pseudomonas putida]",
+   "substrate": "isopropylbenzene",
+   "case": "reference_not_in_genome_set",
+   "absorbed_by": "2_202_EdoA1",
+   "evidence": {
+    "reference_length": 459,
+    "reference_in_database": false,
+    "reference_entries": 0,
+    "reference_assigned_to": [],
+    "reference_protein_id": null,
+    "nearest_reference_sibling": {
+     "type": "2_203_cumA1",
+     "identity": 90.8,
+     "qcov": 99.8,
+     "bitscore": 909.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "2_202_EdoA1",
+      "entries": 2,
+      "max_identity": 96.5,
+      "max_qcov": 100.0
+     },
+     {
+      "type": "2_203_cumA1",
+      "entries": 4,
+      "max_identity": 85.2,
+      "max_qcov": 99.1
+     },
+     {
+      "type": "3_319_PhdA",
+      "entries": 1,
+      "max_identity": 36.4,
+      "max_qcov": 52.0
+     },
+     {
+      "type": "3_318_NidA",
+      "entries": 1,
+      "max_identity": 35.5,
+      "max_qcov": 57.1
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 9,
+    "candidates_with_a_hit": 13923,
+    "candidates_passing_coverage_gate": 5565,
+    "candidates_failing_coverage_gate": 8358,
+    "max_model_coverage_reached": 0.9845,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "2_202_EdoA1",
+      "candidates": 2
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NZ_VYGV01000006.1:524663-526040:-1",
+     "own_score": 889.0,
+     "own_coverage": 0.9823,
+     "winning_type": "2_203_cumA1",
+     "winning_score": 891.8,
+     "score_gap": 2.8
+    }
+   },
+   "note": "The exact reference sequence of IpBAa never came out of the scanned genome set. Its profile still competes on 5,565 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1."
+  },
+  {
+   "union": {
+    "members": 3,
+    "gated": 3,
+    "measured": true
+   },
+   "cluster": "2_210_XylC1",
+   "gene": "XylC1",
+   "reference_accession": "AAC44161.1",
+   "reference_header": ">gi|1354284|gb|AAC44161.1| iron sulfur protein large subunit [Cycloclasticus oligotrophus]",
+   "substrate": "xylene",
+   "case": "reference_not_in_genome_set",
+   "absorbed_by": "2_202_EdoA1",
+   "evidence": {
+    "reference_length": 443,
+    "reference_in_database": false,
+    "reference_entries": 0,
+    "reference_assigned_to": [],
+    "reference_protein_id": null,
+    "nearest_reference_sibling": {
+     "type": "2_201_BphA1",
+     "identity": 67.2,
+     "qcov": 98.2,
+     "bitscore": 662.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "2_202_EdoA1",
+      "entries": 3,
+      "max_identity": 96.2,
+      "max_qcov": 100.0
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 3,
+    "candidates_with_a_hit": 13908,
+    "candidates_passing_coverage_gate": 5676,
+    "candidates_failing_coverage_gate": 8232,
+    "max_model_coverage_reached": 0.9845,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "2_202_EdoA1",
+      "candidates": 2
+     },
+     {
+      "type": "5_504_CntA",
+      "candidates": 1
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NZ_VYGV01000006.1:524663-526040:-1",
+     "own_score": 886.6,
+     "own_coverage": 0.9801,
+     "winning_type": "2_203_cumA1",
+     "winning_score": 891.8,
+     "score_gap": 5.2
+    }
+   },
+   "note": "The exact reference sequence of XylC1 never came out of the scanned genome set. Its profile still competes on 5,676 candidates that clear the coverage gate, but it is outscored every time, most often by EdoA1. The proteins this type would describe are therefore counted under 2_202_EdoA1. 3 sequences assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position."
+  },
+  {
+   "union": {
+    "members": 1,
+    "gated": 1,
+    "measured": true
+   },
+   "cluster": "3_309_NahAc",
+   "gene": "NahAc",
+   "reference_accession": "AAA92141.1",
+   "reference_header": ">gi|1224114|gb|AAA92141.1| naphthalene dioxygenase ISP alpha subunit [Pseudomonas sp.]",
+   "substrate": "naphthalene",
+   "case": "reference_absorbed",
+   "absorbed_by": "3_303_NBDO",
+   "evidence": {
+    "reference_length": 449,
+    "reference_in_database": true,
+    "reference_entries": 5,
+    "reference_assigned_to": [
+     {
+      "type": "3_303_NBDO",
+      "entries": 5
+     }
+    ],
+    "reference_protein_id": "WP_011117400.1",
+    "nearest_reference_sibling": {
+     "type": "3_312_NinA",
+     "identity": 85.7,
+     "qcov": 100.0,
+     "bitscore": 808.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "3_303_NBDO",
+      "entries": 17,
+      "max_identity": 100.0,
+      "max_qcov": 100.0
+     },
+     {
+      "type": "5_504_CntA",
+      "entries": 2,
+      "max_identity": 37.2,
+      "max_qcov": 59.0
+     },
+     {
+      "type": "5_507_BmoA",
+      "entries": 1,
+      "max_identity": 36.4,
+      "max_qcov": 41.2
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 20,
+    "candidates_with_a_hit": 12870,
+    "candidates_passing_coverage_gate": 4068,
+    "candidates_failing_coverage_gate": 8802,
+    "max_model_coverage_reached": 1.0,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "3_305_ArhA1",
+      "candidates": 12
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NZ_CP015878.1:1438205-1439555:1",
+     "own_score": 931.6,
+     "own_coverage": 1.0,
+     "winning_type": "3_303_NBDO",
+     "winning_score": 957.9,
+     "score_gap": 26.3
+    }
+   },
+   "note": "The curated reference protein of NahAc is present in the database (WP_011117400.1, 5 genomic copies), but every copy scores higher on the NBDO profile, so the assignment step filed it under 3_303_NBDO. Two curated names have collapsed onto one model: this is a merge, not missing data. 1 sequence assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position."
+  },
+  {
+   "union": {
+    "members": 0,
+    "gated": 0,
+    "measured": true
+   },
+   "cluster": "3_310_DntAc",
+   "gene": "DntAc",
+   "reference_accession": "AAL50021.1",
+   "reference_header": ">gi|17942397|gb|AAL50021.1| DntAc [Burkholderia cepacia]",
+   "substrate": "2,4-dinitrotoluene",
+   "case": "reference_not_in_genome_set",
+   "absorbed_by": "3_303_NBDO",
+   "evidence": {
+    "reference_length": 447,
+    "reference_in_database": false,
+    "reference_entries": 0,
+    "reference_assigned_to": [],
+    "reference_protein_id": null,
+    "nearest_reference_sibling": {
+     "type": "3_312_NinA",
+     "identity": 93.1,
+     "qcov": 100.0,
+     "bitscore": 864.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "5_507_BmoA",
+      "entries": 1,
+      "max_identity": 31.8,
+      "max_qcov": 50.5
+     },
+     {
+      "type": "5_506_Stc2",
+      "entries": 2,
+      "max_identity": 30.6,
+      "max_qcov": 53.9
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 3,
+    "candidates_with_a_hit": 12288,
+    "candidates_passing_coverage_gate": 4993,
+    "candidates_failing_coverage_gate": 7295,
+    "max_model_coverage_reached": 1.0,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "3_303_NBDO",
+      "candidates": 18
+     },
+     {
+      "type": "3_306_3NTDO",
+      "candidates": 2
+     },
+     {
+      "type": "5_504_CntA",
+      "candidates": 2
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NC_018028.1:1473860-1475210:-1",
+     "own_score": 951.1,
+     "own_coverage": 1.0,
+     "winning_type": "3_303_NBDO",
+     "winning_score": 958.4,
+     "score_gap": 7.3
+    }
+   },
+   "note": "The exact reference sequence of DntAc never came out of the scanned genome set. Its profile still competes on 4,993 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO."
+  },
+  {
+   "union": {
+    "members": 1,
+    "gated": 1,
+    "measured": true
+   },
+   "cluster": "3_312_NinA",
+   "gene": "NinA",
+   "reference_accession": "WP_267253203.1",
+   "reference_header": ">gi|2362707519|ref|WP_267253203.1| aromatic ring-hydroxylating dioxygenase subunit alpha [Sphingobium sp. JS3065]",
+   "substrate": "1-nitronaphthalene",
+   "case": "reference_not_in_genome_set",
+   "absorbed_by": "3_303_NBDO",
+   "evidence": {
+    "reference_length": 447,
+    "reference_in_database": false,
+    "reference_entries": 0,
+    "reference_assigned_to": [],
+    "reference_protein_id": null,
+    "nearest_reference_sibling": {
+     "type": "3_306_3NTDO",
+     "identity": 92.6,
+     "qcov": 99.8,
+     "bitscore": 871.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "3_303_NBDO",
+      "entries": 6,
+      "max_identity": 94.2,
+      "max_qcov": 100.0
+     },
+     {
+      "type": "3_306_3NTDO",
+      "entries": 2,
+      "max_identity": 62.4,
+      "max_qcov": 97.8
+     },
+     {
+      "type": "2_211_bfzA",
+      "entries": 1,
+      "max_identity": 36.0,
+      "max_qcov": 48.8
+     },
+     {
+      "type": "3_305_ArhA1",
+      "entries": 1,
+      "max_identity": 31.8,
+      "max_qcov": 53.8
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 11,
+    "candidates_with_a_hit": 12641,
+    "candidates_passing_coverage_gate": 3879,
+    "candidates_failing_coverage_gate": 8762,
+    "max_model_coverage_reached": 1.0,
+    "coverage_gate": 0.45,
+    "runner_up_to": [],
+    "best_contest": {
+     "candidate_id": "NC_018028.1:1473860-1475210:-1",
+     "own_score": 939.8,
+     "own_coverage": 1.0,
+     "winning_type": "3_303_NBDO",
+     "winning_score": 958.4,
+     "score_gap": 18.6
+    }
+   },
+   "note": "The exact reference sequence of NinA never came out of the scanned genome set. Its profile still competes on 3,879 candidates that clear the coverage gate, but it is outscored every time, most often by NBDO. The proteins this type would describe are therefore counted under 3_303_NBDO. 1 sequence assigned to this type do exist in the union, with no genomic context: they are protein-level entries, so they carry no operon, neighbourhood or replicon, and they are not counted in any figure that needs a position."
+  },
+  {
+   "union": {
+    "members": 0,
+    "gated": 0,
+    "measured": true
+   },
+   "cluster": "4_407_PbaA1",
+   "gene": "PbaA1",
+   "reference_accession": "AHZ46793.1",
+   "reference_header": ">gi|633267947|gb|AHZ46793.1| PbaA1 (plasmid) [Sphingobium wenxiniae]",
+   "substrate": "3-phenoxybenzoate",
+   "case": "reference_absorbed",
+   "absorbed_by": "3_308_DxnA1",
+   "evidence": {
+    "reference_length": 435,
+    "reference_in_database": true,
+    "reference_entries": 1,
+    "reference_assigned_to": [
+     {
+      "type": "3_308_DxnA1",
+      "entries": 1
+     }
+    ],
+    "reference_protein_id": "WP_032073055.1",
+    "nearest_reference_sibling": {
+     "type": "3_308_DxnA1",
+     "identity": 65.6,
+     "qcov": 99.3,
+     "bitscore": 611.0
+    },
+    "entries_nearest_to_this_reference": [
+     {
+      "type": "3_308_DxnA1",
+      "entries": 2,
+      "max_identity": 100.0,
+      "max_qcov": 100.0
+     }
+    ],
+    "entries_nearest_to_this_reference_total": 2,
+    "candidates_with_a_hit": 13235,
+    "candidates_passing_coverage_gate": 7887,
+    "candidates_failing_coverage_gate": 5348,
+    "max_model_coverage_reached": 1.0,
+    "coverage_gate": 0.45,
+    "runner_up_to": [
+     {
+      "type": "3_308_DxnA1",
+      "candidates": 2
+     }
+    ],
+    "best_contest": {
+     "candidate_id": "NC_025133.1:5256-6570:1",
+     "own_score": 971.1,
+     "own_coverage": 1.0,
+     "winning_type": "3_308_DxnA1",
+     "winning_score": 971.1,
+     "score_gap": 0.0
+    }
+   },
+   "note": "The curated reference protein of PbaA1 is present in the database (WP_032073055.1, 1 genomic copy), but every copy scores higher on the DxnA1 profile, so the assignment step filed it under 3_308_DxnA1. Two curated names have collapsed onto one model: this is a merge, not missing data."
+  }
+ ]
+}

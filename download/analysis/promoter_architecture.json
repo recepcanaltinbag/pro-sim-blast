@@ -1,0 +1,499 @@
+{
+ "question": "Does a divergent upstream regulator sit across a shorter intergenic region than a divergent non-regulator?",
+ "measures": "intergenic length in bp between the operon 5' end and the first upstream gene. No promoter sequence is examined and no promoter is predicted; the database holds protein translations of neighbouring genes, not intergenic DNA.",
+ "comparison": {
+  "group_a": "divergent_regulator",
+  "group_b": "divergent_other"
+ },
+ "levels": {
+  "entry": {
+   "n_regulator": 5277,
+   "n_other": 9658,
+   "usable": true,
+   "median_regulator": 164.0,
+   "median_other": 239.0,
+   "median_difference": -75.0,
+   "cliffs_delta": -0.2849,
+   "p": 1.1563411164258683e-182
+  },
+  "sequence": {
+   "n_regulator": 4362,
+   "n_other": 8089,
+   "usable": true,
+   "median_regulator": 164.0,
+   "median_other": 235.0,
+   "median_difference": -71.0,
+   "cliffs_delta": -0.2786,
+   "p": 1.6032415466118528e-145
+  },
+  "genus": {
+   "n_regulator": 653,
+   "n_other": 1947,
+   "usable": true,
+   "median_regulator": 159.5,
+   "median_other": 220.0,
+   "median_difference": -60.5,
+   "cliffs_delta": -0.2769,
+   "p": 2.902552279975775e-26
+  }
+ },
+ "genus_unit_sensitivity": {
+  "why": "Genus is this test's decision unit, and on 2026-11-11 its definition changed from a guess at the organism name to the NCBI rank. The two rows below measure the same data under both definitions, so the reader can see how much the verdict depends on the unit rather than on the biology.",
+  "definitions": {
+   "ncbi_rank": {
+    "n_regulator": 653,
+    "n_other": 1947,
+    "usable": true,
+    "median_regulator": 159.5,
+    "median_other": 220.0,
+    "median_difference": -60.5,
+    "cliffs_delta": -0.2769,
+    "p": 2.902552279975775e-26
+   },
+   "first_word_of_organism": {
+    "n_regulator": 654,
+    "n_other": 1947,
+    "usable": true,
+    "median_regulator": 159.5,
+    "median_other": 220.0,
+    "median_difference": -60.5,
+    "cliffs_delta": -0.276,
+    "p": 3.888882298685324e-26
+   }
+  }
+ },
+ "within_genus": {
+  "n_genera": 60,
+  "genera_with_shorter_regulator_gap": 53,
+  "median_of_differences": -98.5,
+  "p": 1.0800549120541603e-08,
+  "usable": true
+ },
+ "per_genus": {
+  "Acetobacter": {
+   "n_regulator": 14,
+   "n_other": 34,
+   "median_regulator": 105.0,
+   "median_other": 170.0,
+   "difference": -65.0
+  },
+  "Achromobacter": {
+   "n_regulator": 139,
+   "n_other": 46,
+   "median_regulator": 262.0,
+   "median_other": 367.0,
+   "difference": -105.0
+  },
+  "Acidovorax": {
+   "n_regulator": 31,
+   "n_other": 45,
+   "median_regulator": 252.0,
+   "median_other": 277.0,
+   "difference": -25.0
+  },
+  "Acinetobacter": {
+   "n_regulator": 626,
+   "n_other": 228,
+   "median_regulator": 222.0,
+   "median_other": 343.5,
+   "difference": -121.5
+  },
+  "Agrobacterium": {
+   "n_regulator": 12,
+   "n_other": 27,
+   "median_regulator": 124.0,
+   "median_other": 332.0,
+   "difference": -208.0
+  },
+  "Alcaligenes": {
+   "n_regulator": 25,
+   "n_other": 16,
+   "median_regulator": 305.0,
+   "median_other": 169.0,
+   "difference": 136.0
+  },
+  "Arthrobacter": {
+   "n_regulator": 22,
+   "n_other": 13,
+   "median_regulator": 157.5,
+   "median_other": 290.0,
+   "difference": -132.5
+  },
+  "Bordetella": {
+   "n_regulator": 26,
+   "n_other": 63,
+   "median_regulator": 163.0,
+   "median_other": 360.0,
+   "difference": -197.0
+  },
+  "Bradyrhizobium": {
+   "n_regulator": 155,
+   "n_other": 52,
+   "median_regulator": 156.0,
+   "median_other": 260.5,
+   "difference": -104.5
+  },
+  "Burkholderia": {
+   "n_regulator": 477,
+   "n_other": 492,
+   "median_regulator": 211.0,
+   "median_other": 321.0,
+   "difference": -110.0
+  },
+  "Caballeronia": {
+   "n_regulator": 87,
+   "n_other": 64,
+   "median_regulator": 218.0,
+   "median_other": 297.5,
+   "difference": -79.5
+  },
+  "Caenibius": {
+   "n_regulator": 10,
+   "n_other": 14,
+   "median_regulator": 191.0,
+   "median_other": 341.0,
+   "difference": -150.0
+  },
+  "Comamonas": {
+   "n_regulator": 29,
+   "n_other": 50,
+   "median_regulator": 142.0,
+   "median_other": 321.0,
+   "difference": -179.0
+  },
+  "Corynebacterium": {
+   "n_regulator": 13,
+   "n_other": 31,
+   "median_regulator": 215.0,
+   "median_other": 417.0,
+   "difference": -202.0
+  },
+  "Croceicoccus": {
+   "n_regulator": 16,
+   "n_other": 48,
+   "median_regulator": 186.5,
+   "median_other": 190.0,
+   "difference": -3.5
+  },
+  "Cupriavidus": {
+   "n_regulator": 45,
+   "n_other": 42,
+   "median_regulator": 234.0,
+   "median_other": 380.0,
+   "difference": -146.0
+  },
+  "Ensifer": {
+   "n_regulator": 26,
+   "n_other": 18,
+   "median_regulator": 147.0,
+   "median_other": 625.0,
+   "difference": -478.0
+  },
+  "Gordonia": {
+   "n_regulator": 53,
+   "n_other": 73,
+   "median_regulator": 192.0,
+   "median_other": 226.0,
+   "difference": -34.0
+  },
+  "Herbaspirillum": {
+   "n_regulator": 35,
+   "n_other": 18,
+   "median_regulator": 258.0,
+   "median_other": 266.0,
+   "difference": -8.0
+  },
+  "Hydrogenophaga": {
+   "n_regulator": 52,
+   "n_other": 50,
+   "median_regulator": 135.0,
+   "median_other": 189.0,
+   "difference": -54.0
+  },
+  "Klebsiella": {
+   "n_regulator": 116,
+   "n_other": 36,
+   "median_regulator": 125.0,
+   "median_other": 427.0,
+   "difference": -302.0
+  },
+  "Leisingera": {
+   "n_regulator": 20,
+   "n_other": 22,
+   "median_regulator": 241.0,
+   "median_other": 118.5,
+   "difference": 122.5
+  },
+  "Marinobacter": {
+   "n_regulator": 17,
+   "n_other": 13,
+   "median_regulator": 106.0,
+   "median_other": 311.0,
+   "difference": -205.0
+  },
+  "Marinomonas": {
+   "n_regulator": 23,
+   "n_other": 17,
+   "median_regulator": 189.0,
+   "median_other": 318.0,
+   "difference": -129.0
+  },
+  "Massilia": {
+   "n_regulator": 14,
+   "n_other": 17,
+   "median_regulator": 111.5,
+   "median_other": 336.0,
+   "difference": -224.5
+  },
+  "Mesorhizobium": {
+   "n_regulator": 20,
+   "n_other": 202,
+   "median_regulator": 130.5,
+   "median_other": 492.5,
+   "difference": -362.0
+  },
+  "Methylobacterium": {
+   "n_regulator": 11,
+   "n_other": 11,
+   "median_regulator": 279.0,
+   "median_other": 232.0,
+   "difference": 47.0
+  },
+  "Mycobacterium": {
+   "n_regulator": 319,
+   "n_other": 1287,
+   "median_regulator": 97.0,
+   "median_other": 148.0,
+   "difference": -51.0
+  },
+  "Mycobacterium (subgen. Mycolicibacter)": {
+   "n_regulator": 13,
+   "n_other": 19,
+   "median_regulator": 112.0,
+   "median_other": 112.0,
+   "difference": 0.0
+  },
+  "Mycobacteroides": {
+   "n_regulator": 28,
+   "n_other": 79,
+   "median_regulator": 92.0,
+   "median_other": 150.0,
+   "difference": -58.0
+  },
+  "Nocardia": {
+   "n_regulator": 62,
+   "n_other": 134,
+   "median_regulator": 170.5,
+   "median_other": 203.0,
+   "difference": -32.5
+  },
+  "Nocardioides": {
+   "n_regulator": 17,
+   "n_other": 51,
+   "median_regulator": 146.0,
+   "median_other": 121.0,
+   "difference": 25.0
+  },
+  "Novosphingobium": {
+   "n_regulator": 140,
+   "n_other": 313,
+   "median_regulator": 173.5,
+   "median_other": 196.0,
+   "difference": -22.5
+  },
+  "Paenibacillus": {
+   "n_regulator": 12,
+   "n_other": 33,
+   "median_regulator": 271.0,
+   "median_other": 371.0,
+   "difference": -100.0
+  },
+  "Pandoraea": {
+   "n_regulator": 19,
+   "n_other": 35,
+   "median_regulator": 166.0,
+   "median_other": 228.0,
+   "difference": -62.0
+  },
+  "Paraburkholderia": {
+   "n_regulator": 177,
+   "n_other": 180,
+   "median_regulator": 189.0,
+   "median_other": 320.5,
+   "difference": -131.5
+  },
+  "Paracoccus": {
+   "n_regulator": 26,
+   "n_other": 25,
+   "median_regulator": 131.5,
+   "median_other": 282.0,
+   "difference": -150.5
+  },
+  "Polaromonas": {
+   "n_regulator": 14,
+   "n_other": 11,
+   "median_regulator": 151.0,
+   "median_other": 281.0,
+   "difference": -130.0
+  },
+  "Pseudofrankia": {
+   "n_regulator": 16,
+   "n_other": 48,
+   "median_regulator": 237.0,
+   "median_other": 263.5,
+   "difference": -26.5
+  },
+  "Pseudomonas": {
+   "n_regulator": 335,
+   "n_other": 997,
+   "median_regulator": 310.0,
+   "median_other": 286.0,
+   "difference": 24.0
+  },
+  "Pseudonocardia": {
+   "n_regulator": 37,
+   "n_other": 47,
+   "median_regulator": 141.0,
+   "median_other": 197.0,
+   "difference": -56.0
+  },
+  "Pseudorhodoferax": {
+   "n_regulator": 10,
+   "n_other": 11,
+   "median_regulator": 112.0,
+   "median_other": 251.0,
+   "difference": -139.0
+  },
+  "Pusillimonas": {
+   "n_regulator": 26,
+   "n_other": 20,
+   "median_regulator": 216.0,
+   "median_other": 228.5,
+   "difference": -12.5
+  },
+  "Ralstonia": {
+   "n_regulator": 35,
+   "n_other": 26,
+   "median_regulator": 125.0,
+   "median_other": 414.0,
+   "difference": -289.0
+  },
+  "Ramlibacter": {
+   "n_regulator": 21,
+   "n_other": 31,
+   "median_regulator": 110.0,
+   "median_other": 146.0,
+   "difference": -36.0
+  },
+  "Rhizobium": {
+   "n_regulator": 73,
+   "n_other": 89,
+   "median_regulator": 111.0,
+   "median_other": 413.0,
+   "difference": -302.0
+  },
+  "Rhizorhabdus": {
+   "n_regulator": 16,
+   "n_other": 36,
+   "median_regulator": 183.0,
+   "median_other": 214.0,
+   "difference": -31.0
+  },
+  "Rhodococcus": {
+   "n_regulator": 143,
+   "n_other": 318,
+   "median_regulator": 164.0,
+   "median_other": 200.0,
+   "difference": -36.0
+  },
+  "Roseovarius": {
+   "n_regulator": 12,
+   "n_other": 31,
+   "median_regulator": 127.5,
+   "median_other": 183.0,
+   "difference": -55.5
+  },
+  "Ruegeria": {
+   "n_regulator": 11,
+   "n_other": 30,
+   "median_regulator": 171.0,
+   "median_other": 99.5,
+   "difference": 71.5
+  },
+  "Serratia": {
+   "n_regulator": 10,
+   "n_other": 29,
+   "median_regulator": 189.0,
+   "median_other": 396.0,
+   "difference": -207.0
+  },
+  "Sinorhizobium": {
+   "n_regulator": 11,
+   "n_other": 11,
+   "median_regulator": 147.0,
+   "median_other": 616.0,
+   "difference": -469.0
+  },
+  "Sphingobium": {
+   "n_regulator": 105,
+   "n_other": 344,
+   "median_regulator": 139.0,
+   "median_other": 190.5,
+   "difference": -51.5
+  },
+  "Sphingomonas": {
+   "n_regulator": 57,
+   "n_other": 103,
+   "median_regulator": 113.0,
+   "median_other": 155.0,
+   "difference": -42.0
+  },
+  "Sphingopyxis": {
+   "n_regulator": 31,
+   "n_other": 69,
+   "median_regulator": 33.0,
+   "median_other": 149.0,
+   "difference": -116.0
+  },
+  "Streptomyces": {
+   "n_regulator": 105,
+   "n_other": 330,
+   "median_regulator": 193.0,
+   "median_other": 290.0,
+   "difference": -97.0
+  },
+  "Thalassospira": {
+   "n_regulator": 12,
+   "n_other": 13,
+   "median_regulator": 172.5,
+   "median_other": 795.0,
+   "difference": -622.5
+  },
+  "Variovorax": {
+   "n_regulator": 88,
+   "n_other": 68,
+   "median_regulator": 144.0,
+   "median_other": 265.0,
+   "difference": -121.0
+  },
+  "Xanthomonas": {
+   "n_regulator": 40,
+   "n_other": 49,
+   "median_regulator": 126.0,
+   "median_other": 252.0,
+   "difference": -126.0
+  },
+  "rank:subgenus:Mycobacterium (subgen. Mycolicibacterium)": {
+   "n_regulator": 171,
+   "n_other": 525,
+   "median_regulator": 104.0,
+   "median_other": 153.0,
+   "difference": -49.0
+  }
+ },
+ "caveats": [
+  "The regulator is identified by a product-name rule, so a gene whose product string does not say 'regulator' falls into the comparison group even if it regulates.",
+  "A short intergenic region is consistent with a shared promoter but does not demonstrate one; nothing here measures transcription.",
+  "Entries with no upstream gene on the replicon are absent from both groups, not counted as a long gap."
+ ]
+}

@@ -1,0 +1,377 @@
+{
+ "n_neighbour_proteins": 349324,
+ "evalue": 1e-05,
+ "min_coverage": 0.5,
+ "libraries": {
+  "mobility": {
+   "method": "mobility_hmm_v1",
+   "models": [
+    {
+     "accession": "PF01609.29",
+     "name": "DDE_Tnp_1",
+     "purpose": "DDE core of IS4/IS5-like transposases",
+     "length": 199,
+     "description": "Transposase DDE domain"
+    },
+    {
+     "accession": "PF13843.13",
+     "name": "DDE_Tnp_1_7",
+     "purpose": "transposase domain seen alongside DDE_Tnp_1",
+     "length": 349,
+     "description": "Transposase IS4"
+    },
+    {
+     "accession": "PF00665.34",
+     "name": "rve",
+     "purpose": "integrase core (IS3, IS481, retroviral)",
+     "length": 155,
+     "description": "Integrase core domain"
+    },
+    {
+     "accession": "PF01527.27",
+     "name": "HTH_Tnp_1",
+     "purpose": "HTH end of the IS3/IS150 transposase",
+     "length": 75,
+     "description": "Transposase"
+    },
+    {
+     "accession": "PF00872.25",
+     "name": "Transposase_mut",
+     "purpose": "MULE/Mutator-type transposase",
+     "length": 379,
+     "description": "Transposase, Mutator family"
+    },
+    {
+     "accession": "PF03050.22",
+     "name": "DDE_Tnp_IS66",
+     "purpose": "IS66 family transposase",
+     "length": 284,
+     "description": "Transposase IS66 family"
+    },
+    {
+     "accession": "PF01526.25",
+     "name": "DDE_Tnp_Tn3",
+     "purpose": "Tn3 family transposase",
+     "length": 389,
+     "description": "Tn3 transposase DDE domain"
+    },
+    {
+     "accession": "PF02371.24",
+     "name": "Transposase_20",
+     "purpose": "IS110/IS492 family transposase",
+     "length": 87,
+     "description": "Transposase IS116/IS110/IS902 family"
+    },
+    {
+     "accession": "PF01797.23",
+     "name": "Y1_Tnp",
+     "purpose": "IS200/IS605 family transposase",
+     "length": 121,
+     "description": "Transposase IS200 like"
+    },
+    {
+     "accession": "PF01359.26",
+     "name": "Transposase_1",
+     "purpose": "Tc1/mariner (IS630) transposase",
+     "length": 80,
+     "description": "Transposase (partial DDE domain)"
+    },
+    {
+     "accession": "PF03811.18",
+     "name": "Zn_ribbon_InsA",
+     "purpose": "IS1 transposase InsA",
+     "length": 35,
+     "description": "InsA N-terminal domain"
+    },
+    {
+     "accession": "PF05717.20",
+     "name": "TnpB_IS66",
+     "purpose": "IS66 accessory protein TnpB",
+     "length": 101,
+     "description": "IS66 Orf2 like protein"
+    }
+   ],
+   "proteins_with_any_hit": 1435,
+   "proteins_assigned": 1380,
+   "neighbour_rows_assigned": 1532,
+   "model_hits_above_coverage": {
+    "rve": 465,
+    "DDE_Tnp_1": 375,
+    "HTH_Tnp_1": 230,
+    "Transposase_20": 178,
+    "Transposase_mut": 57,
+    "DDE_Tnp_Tn3": 54,
+    "TnpB_IS66": 54,
+    "DDE_Tnp_IS66": 48,
+    "Y1_Tnp": 36,
+    "Zn_ribbon_InsA": 31
+   },
+   "families": {
+    "IS3-like": 548,
+    "IS4/IS5-like": 375,
+    "IS110": 178,
+    "IS66": 101,
+    "MULE": 57,
+    "Tn3": 54,
+    "IS200/IS605": 36,
+    "IS1": 31
+   }
+  },
+  "recombinase": {
+   "method": "recombinase_hmm_v1",
+   "models": [
+    {
+     "accession": "PF00589.28",
+     "name": "Phage_integrase",
+     "purpose": "tyrosine recombinase / site-specific integrase",
+     "length": 172,
+     "description": "Phage integrase family"
+    },
+    {
+     "accession": "PF00239.28",
+     "name": "Resolvase",
+     "purpose": "serine recombinase core",
+     "length": 146,
+     "description": "Resolvase, N terminal domain"
+    },
+    {
+     "accession": "PF02796.22",
+     "name": "HTH_7",
+     "purpose": "recombinase-like HTH end",
+     "length": 45,
+     "description": "Helix-turn-helix domain of resolvase"
+    },
+    {
+     "accession": "PF07508.21",
+     "name": "Recombinase",
+     "purpose": "recombinase family central domain",
+     "length": 103,
+     "description": "Recombinase"
+    },
+    {
+     "accession": "PF13408.14",
+     "name": "Zn_ribbon_recom",
+     "purpose": "recombinase Zn-ribbon domain",
+     "length": 58,
+     "description": "Recombinase zinc beta ribbon domain"
+    },
+    {
+     "accession": "PF02075.24",
+     "name": "RuvC",
+     "purpose": "Holliday junction resolvase RuvC/RuvX",
+     "length": 148,
+     "description": "Crossover junction endodeoxyribonuclease RuvC"
+    },
+    {
+     "accession": "PF03652.22",
+     "name": "RuvX",
+     "purpose": "Holliday junction resolvase RuvX/YqgF",
+     "length": 134,
+     "description": "Holliday junction resolvase"
+    }
+   ],
+   "proteins_with_any_hit": 565,
+   "proteins_assigned": 547,
+   "neighbour_rows_assigned": 581,
+   "model_hits_above_coverage": {
+    "Phage_integrase": 345,
+    "Resolvase": 108,
+    "HTH_7": 44,
+    "RuvX": 41,
+    "Recombinase": 28,
+    "Zn_ribbon_recom": 25,
+    "RuvC": 24
+   },
+   "families": {
+    "tyrosine_recombinase": 345,
+    "serine_recombinase": 137,
+    "holliday_resolvase": 65
+   }
+  },
+  "regulator": {
+   "method": "regulator_family_hmm_v1",
+   "models": [
+    {
+     "accession": "PF00440.30",
+     "name": "TetR_N",
+     "purpose": "TetR family DNA-binding domain",
+     "length": 47,
+     "description": "Bacterial regulatory proteins, tetR family"
+    },
+    {
+     "accession": "PF00392.29",
+     "name": "GntR",
+     "purpose": "GntR family HTH",
+     "length": 64,
+     "description": "Bacterial regulatory proteins, gntR family"
+    },
+    {
+     "accession": "PF00126.35",
+     "name": "HTH_1",
+     "purpose": "LysR family HTH end",
+     "length": 60,
+     "description": "Bacterial regulatory helix-turn-helix protein, lysR family"
+    },
+    {
+     "accession": "PF03466.26",
+     "name": "LysR_substrate",
+     "purpose": "LysR family effector-binding domain",
+     "length": 209,
+     "description": "LysR substrate binding domain"
+    },
+    {
+     "accession": "PF01047.29",
+     "name": "MarR",
+     "purpose": "MarR family HTH",
+     "length": 59,
+     "description": "MarR family"
+    },
+    {
+     "accession": "PF02311.27",
+     "name": "AraC_binding",
+     "purpose": "AraC family effector-binding domain",
+     "length": 136,
+     "description": "AraC-like ligand binding domain"
+    },
+    {
+     "accession": "PF12833.15",
+     "name": "HTH_18",
+     "purpose": "AraC family HTH end",
+     "length": 80,
+     "description": "Helix-turn-helix domain"
+    },
+    {
+     "accession": "PF09339.18",
+     "name": "HTH_IclR",
+     "purpose": "IclR family HTH",
+     "length": 52,
+     "description": "IclR helix-turn-helix domain"
+    },
+    {
+     "accession": "PF01614.25",
+     "name": "IclR_C",
+     "purpose": "IclR family effector-binding domain",
+     "length": 174,
+     "description": "Bacterial transcriptional regulator IclR C-terminal"
+    }
+   ],
+   "proteins_with_any_hit": 23832,
+   "proteins_assigned": 23682,
+   "neighbour_rows_assigned": 25957,
+   "model_hits_above_coverage": {
+    "HTH_1": 7096,
+    "LysR_substrate": 6984,
+    "TetR_N": 5098,
+    "HTH_18": 3448,
+    "HTH_IclR": 3322,
+    "IclR_C": 3117,
+    "GntR": 2620,
+    "MarR": 2163,
+    "AraC_binding": 478
+   },
+   "families": {
+    "LysR": 7145,
+    "TetR": 5097,
+    "AraC": 3500,
+    "IclR": 3351,
+    "GntR": 2620,
+    "MarR": 1969
+   }
+  }
+ },
+ "mobility_vs_regex": {
+  "scanned_neighbour_rows": 382582,
+  "regex_transposon": 3537,
+  "hmm_transposase": 1532,
+  "hmm_recombinase": 581,
+  "transposase_confirmed": 1526,
+  "recombinase_not_mobile": 513,
+  "no_model_hit": 1498,
+  "transposase_missed_by_regex": 6,
+  "recombinase_outside_regex_transposon": 66,
+  "recombinase_not_mobile_top_products": {
+   "tyrosine-type recombinase/integrase": 144,
+   "recombinase family protein": 104,
+   "site-specific integrase": 95,
+   "Holliday junction resolvase RuvX": 39,
+   "tyrosine recombinase XerC": 38,
+   "tyrosine recombinase": 20,
+   "integrase arm-type DNA-binding domain-containing protein": 19,
+   "site-specific tyrosine recombinase XerD": 11,
+   "IS607 family transposase": 10,
+   "tyrosine-type DNA invertase": 8,
+   "integrase": 6,
+   "phage integrase central domain-containing protein": 4,
+   "type 1 fimbria switch DNA invertase FimE": 3,
+   "integron integrase": 3,
+   "gamma-mobile-trio recombinase GmtY": 2
+  },
+  "no_model_hit_top_products": {
+   "recombinase-like helix-turn-helix domain-containing protein": 745,
+   "transposase": 156,
+   "IS21-like element helper ATPase IstB": 65,
+   "IS630 family transposase": 56,
+   "REP-associated tyrosine transposase": 39,
+   "IS6 family transposase": 34,
+   "integrase core domain-containing protein": 22,
+   "ISL3 family transposase": 21,
+   "site-specific integrase": 20,
+   "IS66 family insertion sequence element accessory protein TnpA": 19,
+   "tyrosine-type recombinase/integrase": 19,
+   "transposase family protein": 18,
+   "Rpn family recombination-promoting nuclease/putative transposase": 15,
+   "IS1 family transposase": 13,
+   "IS1595 family transposase": 13
+  },
+  "transposase_missed_by_regex_top_products": {
+   "helix-turn-helix domain-containing protein": 2,
+   "TnsB C-terminal domain-containing protein": 2,
+   "TnsA endonuclease N-terminal domain-containing protein": 1,
+   "hypothetical protein": 1
+  }
+ },
+ "regulator_vs_regex": {
+  "regex_regulator_rows": 35581,
+  "regex_family_blank": 8815,
+  "rescued_by_hmm": 3035,
+  "agreement": {
+   "regex_blank_hmm_named": 3035,
+   "agree": 22295,
+   "regex_named_hmm_blank": 4467,
+   "both_blank": 5780,
+   "disagree": 4
+  },
+  "disagreements": {
+   "Crp_Fnr->MarR": 2,
+   "MarR->IclR": 2
+  },
+  "hmm_only_families": {
+   "AraC": 1903,
+   "LysR": 666,
+   "IclR": 141,
+   "TetR": 135,
+   "GntR": 124,
+   "MarR": 66
+  },
+  "hmm_outside_regex_regulator": 623
+ },
+ "ro_upstream_family": {
+  "n_ro": 21046,
+  "by_source": {
+   "none": 13776,
+   "regex": 4948,
+   "no_upstream_gene": 1440,
+   "hmm": 882
+  },
+  "named_before": 4948,
+  "named_after": 5830,
+  "families_added_by_hmm": {
+   "AraC": 466,
+   "LysR": 326,
+   "IclR": 31,
+   "GntR": 25,
+   "TetR": 20,
+   "MarR": 14
+  }
+ }
+}
