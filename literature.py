@@ -67,6 +67,8 @@ import time
 import urllib.error
 import urllib.request
 
+import yaml
+
 import cross_references
 
 UA = "ROAR-DB/1.0 (literature.py; mailto:noreply@example.org)"
@@ -190,6 +192,125 @@ def sentence_around(text, at, at_end):
     left = (before[-1] + 1) if before else 0
     right = after[0] if after else len(text) - 1
     return re.sub(r"\s+", " ", text[left:right + 1]).strip()[:400]
+
+
+#  ---------------------------------------------------------------- KUTUK
+#  DORDUNCU KAYNAK: citations.yaml. Bu dosya projenin DOGRULANMIS atif
+#  kutugu -- 121 kaydin hepsinde DOI var, hepsi Crossref/PDF ilk sayfasi
+#  ya da UniProt kaydindan dogrulanmis, ve her kayit HANGI IDDIA icin
+#  kullanildigini (`used_for`) yaziyor. 76 tipin 72'si types/*.yaml
+#  icindeki `citations:` listesiyle bu kutuge bagli.
+#
+#  NEDEN SONRADAN EKLENDI. Bu betik ilk yazildiginda kutugu okumuyordu ve
+#  tanimlayicilari `source` DUZ YAZISINDAN cikariyordu. Olculdu (2026-11-15):
+#  16 tipin sayfasinda DOI gorunmuyordu, ama O 16 TIPIN HEPSININ kutukte
+#  dogrulanmis bir DOI'si vardi. Daha kotusu: 7 tipin sayfasi "bu tip icin
+#  tek tek atif KAYDEDILMEMIS" diyordu -- kutukte o tipin referans atfi
+#  duruyorken. Yani sayfa, projenin kendi kutugunun yalanladigi bir YOKLUK
+#  iddia ediyordu. Eksik olan veri degildi, okuma yoluydu.
+#
+#  ROL AYRIMI KORUNUYOR. Kutuk kaydi `used_for` icinde kendi rolunu
+#  soyluyor ve o rol kayda tasinir; birlestirilmez:
+#    reference  kutuk bu makaleyi BU TIPIN referans atfi olarak isaretlemis
+#    secondary  bu tip icin ikincil atif
+#    shared     kutukte BASKA bir tipin birincil atfi olarak kayitli, ama
+#               bu tipin kuratorlugu de ona dayaniyor (GxtA'nin SxtT
+#               makalesine dayanmasi gibi) -- hangi tip oldugu yazilir
+#    note       kutuk notu bu tipi adiyla aniyor, rol beyani yok
+REGISTRY_FILE = "citations.yaml"
+
+#  "<kume> referans atfi:" / "<kume> ikincil atfi" -- kutugun Turkce rol
+#  oneki. Onek YAYIMLANMAZ: rol alana cevrilir, kalan cumle Ingilizce.
+ROLE_RE = re.compile(
+    r"^([0-9]_[0-9]{3}_[A-Za-z0-9]+)\s+(referans atfi|ikincil atfi)\s*:?\s*(.*)$",
+    re.S)
+ROLE_WORD = {"referans atfi": "reference", "ikincil atfi": "secondary"}
+ROLE_RANK = {"reference": 0, "secondary": 1, "shared": 2, "note": 3}
+
+
+def read_registry(root):
+    """citations.yaml -> {id: kayit}. Dosya yoksa bos; kutuk bir onkosul degil."""
+    path = os.path.join(root, REGISTRY_FILE)
+    if not os.path.exists(path):
+        return {}
+    with open(path) as fh:
+        data = yaml.safe_load(fh) or {}
+    return {c["id"]: c for c in (data.get("citations") or []) if c.get("id")}
+
+
+def type_citation_ids(root, cluster):
+    """types/<kume>.yaml icindeki `citations:` listesi."""
+    path = os.path.join(root, "types", cluster + ".yaml")
+    if not os.path.exists(path):
+        return []
+    with open(path) as fh:
+        data = yaml.safe_load(fh) or {}
+    return [str(c) for c in (data.get("citations") or [])]
+
+
+def registry_claim(cluster, text):
+    """Bir `used_for` satirini (rol, Ingilizce iddia, kimin icin) ucluye cevirir.
+
+    Bu tipe ait OLMAYAN bir satir None dondurur: baska tipin iddiasini bu
+    tipin sayfasinda iddia olarak basmak, olculmemis bir seyi olculmus
+    gostermek olurdu. Kaydin kendisi `shared` rolu ile yine listelenir.
+    """
+    match = ROLE_RE.match(text.strip())
+    if match:
+        owner, word, rest = match.group(1), match.group(2), match.group(3).strip()
+        role = ROLE_WORD[word]
+        if owner == cluster:
+            return role, rest, None
+        return "shared", "", owner
+    if cluster in text:
+        return "note", text.strip(), None
+    return None
+
+
+def registry_records(cluster, root, registry):
+    """Kutukteki DOGRULANMIS atiflar. Atif kimligi basina TEK kayit."""
+    out = {}
+    for key in type_citation_ids(root, cluster):
+        entry = registry.get(key)
+        if not entry:
+            #  Kutukte olmayan bir anahtar bir kuratorluk hatasidir ve
+            #  validate_curation onu zaten FAIL ediyor; burada sessizce
+            #  atlanir, cunku bu betigin isi olcmek degil yayinlamak.
+            continue
+        role, claim, owner = "note", "", None
+        claims = []
+        for line in (entry.get("used_for") or []):
+            parsed = registry_claim(cluster, line)
+            if parsed is None:
+                continue
+            if ROLE_RANK[parsed[0]] < ROLE_RANK[role]:
+                role = parsed[0]
+            if parsed[1]:
+                claims.append(parsed[1])
+            if parsed[2]:
+                owner = parsed[2]
+        authors = [a.strip() for a in (entry.get("authors") or "").split(",")
+                   if a.strip()]
+        out[key] = {
+            "source": "registry",
+            "anchor": key,
+            "doi": (entry.get("doi") or "").lower() or None,
+            "pmid": str(entry["pmid"]) if entry.get("pmid") else None,
+            "title": entry.get("title"),
+            "journal": entry.get("journal"),
+            "year": entry.get("year"),
+            "volume": entry.get("volume"),
+            "pages": entry.get("pages"),
+            "authors": authors[:6],
+            "role": role,
+            "supports": " ".join(claims).strip(),
+            "recorded_for": owner,
+            #  Kaydin NEREDEN dogrulandigi yayinlanir: okuyucu "bu DOI'ye
+            #  neden guveniyorum" sorusunu kutugun kendi beyanindan okur.
+            "verified_by": entry.get("verified_by"),
+            "local_pdf": bool(entry.get("local_pdf")),
+        }
+    return out.values()
 
 
 def curated_records(cluster, info):
@@ -381,6 +502,74 @@ def resolve_dois(records, cache):
     return seen
 
 
+def registry_overview(root, registry, types):
+    """TUM kutuk, yayimlanabilir halde: /references sayfasinin girdisi.
+
+    NEDEN. Tip sayfalari yalnizca O TIPIN atiflarini gosteriyor. Ama kutugun
+    sekiz kaydi hicbir tipe bagli DEGIL: motif tanimlari, karboksilatin
+    zorunlulugu, siniflandirma semalari ve bu projenin kendisini olctugu
+    derlemeler -- biri bu veritabaninin CELISTIGI bir iddia tasiyor. Bu
+    kaynaklar sitenin her yerinde kullanilan ifadeleri destekliyordu ama
+    hicbir sayfada gorunmuyorlardi. "Bilimsel bir caliSma" diyen bir
+    veritabaninda kaynak listesinin kendisi de yayimlanmali.
+
+    SCOPE AYRIMI metinden okunur, tahminle degil: proje duzeyindeki satirlar
+    kutukte "project reference:" onekiyle yaziliyor. Onek yayimlanmaz, ama
+    hangi kovaya gittigini O yazar.
+    """
+    linked = {}
+    for cluster in sorted(types):
+        rows = [dict(r) for r in types[cluster] if r.get("source") == "registry"]
+        if rows:
+            rows.sort(key=lambda r: ({"reference": 0, "secondary": 1,
+                                      "note": 2, "shared": 3}.get(r.get("role"), 9),
+                                     -(int(r["year"]) if str(r.get("year") or "").isdigit() else 0)))
+            linked[cluster] = rows
+    used = {r["anchor"] for rows in linked.values() for r in rows}
+
+    PREFIX = "project reference:"
+    project = []
+    for key in sorted(registry):
+        entry = registry[key]
+        #  PROJE SATIRI, TIPE BAGLI OLSA DA proje bolumune girer. Bir kaynak
+        #  hem bir tipin referansi hem bir YONTEM dayanagi olabilir (tez
+        #  hem PrnD'nin ikincil atfi hem Batie semasinin kaynagi). Eskiden
+        #  kayit tipe bagliysa proje satirlari HIC yayimlanmiyordu, yani
+        #  yontem iddiasinin kaynagi gorunmez kaliyordu.
+        supports = [line.strip()[len(PREFIX):].strip()
+                    for line in (entry.get("used_for") or [])
+                    if line.strip().lower().startswith(PREFIX)]
+        if not supports and key in used:
+            continue
+        if not supports:
+            #  Ne proje satiri var ne bir tipe bagli: rol beyani olmayan
+            #  serbest not. Metin oldugu gibi yayimlanir, cunku kaynagin
+            #  neyi destekledigi sessiz kalmamali.
+            supports = [line.strip() for line in (entry.get("used_for") or [])]
+        project.append({
+            "id": key,
+            "authors": entry.get("authors"),
+            "title": entry.get("title"),
+            "journal": entry.get("journal") or entry.get("type"),
+            "year": entry.get("year"),
+            "volume": entry.get("volume"),
+            "pages": entry.get("pages"),
+            "doi": (entry.get("doi") or "").lower() or None,
+            "pmid": str(entry["pmid"]) if entry.get("pmid") else None,
+            "verified_by": entry.get("verified_by"),
+            "supports": supports,
+        })
+    return {
+        "n_citations": len(registry),
+        "n_with_doi": sum(1 for c in registry.values() if c.get("doi")),
+        "n_with_pmid": sum(1 for c in registry.values() if c.get("pmid")),
+        "n_type_citations": len(used),
+        "n_project_citations": len(project),
+        "project": project,
+        "by_type": [{"cluster": c, "rows": linked[c]} for c in sorted(linked)],
+    }
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", default=".")
@@ -391,13 +580,15 @@ def main():
     args = ap.parse_args()
 
     info = anchors(args.root)
+    registry = read_registry(args.root)
     cache = Cache(args.cache, args.fetch)
 
     types = {}
     flat = []
     absent = {}
     for cluster in sorted(info):
-        recs = curated_records(cluster, info[cluster])
+        recs = list(registry_records(cluster, args.root, registry))
+        recs += curated_records(cluster, info[cluster])
         recs += pmc_records(cluster, info[cluster], cache)
         recs += pdb_records(cluster, info[cluster], cache)
         recs += uniprot_records(cluster, info[cluster], cache)
@@ -423,6 +614,13 @@ def main():
             absent[cluster] = ("declared_none"
                                if info[cluster]["declared_none"]
                                else "none_found")
+
+    #  TUM KUTUK de yayimlanir: /references sayfasi bunu okuyor. Tip
+    #  sayfalari yalnizca o tipin atfini gosteriyor ve kutugun sekiz kaydi
+    #  hicbir tipe bagli degil -- motif tanimlari, karboksilatin
+    #  zorunlulugu, siniflandirma semalari. Yayimlanmazlarsa sitedeki
+    #  ifadelerin bir kismi kaynaksiz gorunur.
+    registry_block = registry_overview(args.root, registry, types)
 
     resolved = resolve_dois(flat, cache)
 
@@ -490,6 +688,9 @@ def main():
             "fetch_errors": cache.errors,
         },
         "types": types,
+        #  TUM KUTUK. /references sayfasinin girdisi; tip sayfalari yalnizca
+        #  kendi atiflarini gosteriyor.
+        "registry_published": registry_block,
     }
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     tmp = args.out + ".partial"

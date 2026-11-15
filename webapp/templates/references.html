@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}References{% endblock %}
+{% set page_id = 'references' %}
+{% block body %}
+{% include "_atlas_nav.html" %}
+
+{% macro refcite(r) -%}
+  {% if r.authors %}{% if r.authors is string %}{{ r.authors }}{% else %}{{ r.authors|join(', ') }}{% endif %}{% endif %}
+  {%- if r.year %} ({{ r.year }}){% endif %}.
+  {% if r.title %}{{ r.title }}.{% endif %}
+  {% if r.journal %}<i>{{ r.journal }}</i>{% endif %}
+  {%- if r.volume %} {{ r.volume }}{% endif %}{% if r.pages %}:{{ r.pages }}{% endif %}
+  {%- if r.doi %}<br><a class="mono small" href="https://doi.org/{{ r.doi }}"
+     rel="noopener noreferrer" target="_blank">doi:{{ r.doi }}</a>{% endif %}
+  {%- if r.pmid %} <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/{{ r.pmid }}/"
+     rel="noopener noreferrer" target="_blank">PMID {{ r.pmid }}</a>{% endif %}
+  {%- if r.verified_by %} <span class="note small">verified by
+     {{ r.verified_by|replace('_', ' ')|replace('+', ' + ') }}</span>{% endif %}
+{%- endmacro %}
+
+<h1>Every source this database rests on</h1>
+<p class="lede">This is the project's citation registry, published whole. Each entry carries a DOI
+that was checked against Crossref, PubMed or the first page of the paper itself, and each one says
+<b>what it is cited for</b> &mdash; so a statement on this site can be followed back to the work it
+rests on. Nothing here was written from memory: an unverified identifier is worse than no
+identifier, because a reader who follows it and finds nothing will look for the mistake in
+themselves.</p>
+
+{% if refs %}
+<p>{{ refs.n_citations }} citations, {{ refs.n_with_doi }} with a DOI,
+{{ refs.n_with_pmid }} with a PubMed identifier.
+{{ refs.n_type_citations }} of them are the reference for a curated type; the rest support a
+method, a definition or a classification used across the site.</p>
+
+{% if refs.project %}
+<h2>Methods, definitions and classifications</h2>
+<p class="note">These back statements that are not about one enzyme: the motif definitions the
+candidate scan applies, the rule that the catalytic carboxylate is required, the classification
+schemes, and the reviews this project measured itself against &mdash; including one whose claim
+this database <b>contradicts</b>.</p>
+<ol class="lit">
+{% for r in refs.project %}
+<li id="{{ r.id }}">{{ refcite(r) }}
+  {% for s in r.supports %}<br><span class="note">{{ s }}</span>{% endfor %}
+</li>
+{% endfor %}
+</ol>
+{% endif %}
+
+{% if refs.by_type %}
+<h2>The reference enzymes</h2>
+<p class="note">One block per curated type, in type order. The role shown is the registry's own
+marking: <b>reference</b> is the paper the curation of that type rests on, <b>secondary</b> is
+further support, and <b>shared</b> means the registry records the paper under a sibling type whose
+work this type rests on too.</p>
+{% for t in refs.by_type %}
+<h3 id="{{ t.cluster }}"><a href="{{ u('/cluster/' ~ t.cluster) }}">{{ gene(t.cluster) }}</a>
+  <span class="note">{{ t.cluster }}</span></h3>
+<ul class="lit">
+{% for r in t.rows %}
+<li>{{ refcite(r) }}
+  <br><span class="note">{% if r.role == 'reference' %}<b>Reference citation</b>{% elif r.role == 'secondary' %}Secondary citation{% elif r.role == 'shared' %}Recorded under
+  <a href="{{ u('/cluster/' ~ r.recorded_for) }}">{{ gene(r.recorded_for) }}</a>{% else %}Cited for this type{% endif %}{% if r.supports %} &mdash; {{ r.supports }}{% endif %}</span>
+</li>
+{% endfor %}
+</ul>
+{% endfor %}
+{% endif %}
+
+{% else %}
+<p class="note">The citation registry is not available in this build.</p>
+{% endif %}
+{% endblock %}

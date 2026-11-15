@@ -38,9 +38,11 @@ citations:
     verified_by: local_pdf
     local_pdf: "articles/bi5c00369.pdf"
     used_for:
-      - "Rieske motifi C-x-H-x(15,47)-C-x(2)-H ve mononukleer [DE]-x(2)-H-x(3,5)-H tanimlari (ro_motif.py, aday tarama kapilari)"
-      - "ailenin reaksiyon repertuvari listesi; C-S bagi kirilmasinin ailede bulundugu ama bu sette BULUNMADIGI bu kaynaktan gorulu (MsmA onerisinin gerekcesi)"
-
+    - 'project reference: definitions of the Rieske motif C-x-H-x(15,47)-C-x(2)-H and of the mononuclear
+      [DE]-x(2)-H-x(3,5)-H motif, which are the gates the candidate scan applies (ro_motif.py)'
+    - 'project reference: the family''s reaction repertoire. That C-S bond cleavage occurs in the family
+      but is ABSENT from this set is read from this source, and it is the reason MsmA is proposed as a
+      candidate'
   - id: miao2026_redox_preprint
     authors: "Miao H, Oerlemanns R, Hagedoorn PL, Schmidt S"
     title: "Decoding and Reprogramming Redox Partner Specificity in Rieske Oxygenases for Enhanced Catalytic Activity"
@@ -52,7 +54,8 @@ citations:
     verified_by: local_pdf
     local_pdf: "articles/2026.04.03.713453v1.full.pdf"
     used_for:
-      - "ferredoksin ortak secimi iddiasi; analysis_out/ferredoxin_residue.json bu iddiayi SINADI ve kismen CELISTI (bkz disagreements sayfasi)"
+    - 'project reference: the claim that the family shares a ferredoxin partner. This database TESTED
+      that claim and partly CONTRADICTS it; see the disagreements page'
     note: >
       Hakem sureci gormemis bir onbaski. Bu veritabani onunla celisen bir olcum
       bildiriyor, ve celiski bildirilirken kaynagin onbaski oldugu AYRICA yazilir.
@@ -66,9 +69,9 @@ citations:
     verified_by: local_pdf
     local_pdf: "articles/Complete_thesis.pdf"
     used_for:
-      - "Batie siniflandirmasi Tablo 2 (batie_classes.yaml); Batie, Ballou & Correll 1992'den aktariliyor"
-      - "PrnD'nin yeni tip olarak onerilmesi (literature_harvest NT-01)"
-
+    - 'project reference: the Batie classification as given in Table 2 of the thesis, which transcribes it from Batie, Ballou & Correll 1992 (batie_classes.yaml)'
+    - '1_117_PrnD ikincil atfi: this type was proposed from the thesis''s survey of the family (literature_harvest
+      NT-01); the functional evidence itself is in the 2005 JBC paper'
   - id: zhang2025_aerc
     authors: "Zhang W, Ushimaru R, Kanaida M, Abe I"
     title: "Pyrroline Ring Assembly via N-Prenylation and Oxidative Carbocyclization during Biosynthesis of Aeruginosin Derivatives"
@@ -80,10 +83,9 @@ citations:
     verified_by: local_pdf
     local_pdf: "articles/ja5c01994.pdf"
     used_for:
-      - "AerC: tek enzimde oksidatif karbosiklizasyon VE C-C bagi kirilmasi; sette hic olmayan reaksiyon sinifi"
-      - "ScAerC = BAZ23339.1 kimliginin cozulmesi (analysis_out/aerc_resolution.json)"
-      - "mononukleer demirin deneysel kaniti: 3.00 +/- 0.02 Fe ve 2.2 +/- 0.2 S per monomer; UV-vis 330/460/560 nm"
-
+    - '7_701_AerC referans atfi: oxidative carbocyclisation AND C-C bond cleavage in a single enzyme; a reaction class present nowhere else in this set'
+    - '7_701_AerC referans atfi: experimental evidence for the mononuclear iron: 3.00 +/- 0.02 Fe and 2.2 +/- 0.2 S per monomer; UV-vis bands at 330/460/560 nm'
+    - ScAerC = BAZ23339.1 kimliginin cozulmesi (analysis_out/aerc_resolution.json)
   # --- tarama sirasinda bulunan, PDF'i depoda OLMAYAN kaynaklar ---
   # Bunlarin DOI'leri UniProt / PubMed kayitlarindan okundu, uydurulmadi.
 
@@ -98,8 +100,7 @@ citations:
     pmid: "41755873"
     verified_by: pubmed_record
     used_for:
-      - "2_203_cumA1 substrat araliginin genislemesi: yabanil kumen dioksijenaz beta-bisabolen'i 64:21 oraninda beta-bisabolen-5-ol ve (S)-beta-bisabolen-13-ol'e hidroksilliyor -- kuratorlu bir tip icin ILK terpen substrati"
-
+    - '2_203_cumA1 ikincil atfi: substrate-range extension: wild-type cumene dioxygenase hydroxylates beta-bisabolene to beta-bisabolen-5-ol and (S)-beta-bisabolen-13-ol in a 64:21 ratio -- the FIRST terpene substrate for a curated type'
   - id: demarco1999_msma
     authors: "De Marco P, Moradas-Ferreira P, Higgins TP, McDonald I, Kenna EM, Murrell JC"
     title: "Molecular analysis of a novel methanesulfonic acid monooxygenase from the methylotroph Methylosulfonomonas methylovora"
@@ -110,8 +111,8 @@ citations:
     doi: "10.1128/jb.181.7.2244-2251.1999"
     pmid: "10094704"
     verified_by: uniprot_record
-    used_for: ["MsmA (UniProt Q9X404) aday referansi; C-S bagi kirilmasi"]
-
+    used_for:
+    - 'project reference: MsmA (UniProt Q9X404) as a candidate reference; C-S bond cleavage'
   - id: higgins2000_msma
     authors: "Higgins TP, De Marco P, Murrell JC"
     title: "Purification and partial characterization of the hydroxylase component of the methanesulfonic acid monooxygenase"
@@ -122,8 +123,8 @@ citations:
     doi: "10.1046/j.1432-1327.2000.01538.x"
     pmid: "10903510"
     verified_by: uniprot_record
-    used_for: ["MsmA hidroksilaz bileseninin saflastirilmasi -- protein duzeyinde kanit"]
-
+    used_for:
+    - 'project reference: purification of the MsmA hydroxylase component -- evidence at the protein level'
   - id: kelly1996_msma
     authors: "Kelly DP, Baker SC, Trickett J, Davey M, Murrell JC"
     title: "Metabolism of methanesulfonic acid involves a multicomponent monooxygenase enzyme"
@@ -134,8 +135,8 @@ citations:
     doi: "10.1099/13500872-142-2-251"
     pmid: "8932698"
     verified_by: uniprot_record
-    used_for: ["MsmA'nin cok bilesenli monooksijenaz oldugunun gosterilmesi"]
-
+    used_for:
+    - 'project reference: the demonstration that MsmA is a multicomponent monooxygenase'
   # --- grup 6 (plastid klorofil yolu) islevsel karakterizasyonlari ---
   # types_build.py --check bu uc referansin source alaninda cozulebilir bir
   # tanimlayici olmadigini bildirdi. Atiflar UniProt kayitlarinin referans
@@ -155,8 +156,7 @@ citations:
     uniprot: "Q9FYC2"
     uniprot_scope: "FUNCTION; CATALYTIC ACTIVITY; BIOPHYSICOCHEMICAL PROPERTIES; CHARACTERIZATION"
     used_for:
-      - "6_601_PAO referansinin islevsel dayanagi; basligin kendisi PAO'nun Rieske-tipi demir-sulfur proteini oldugunu soyluyor"
-
+    - '6_601_PAO referans atfi: functional basis of the reference; the title itself states that PAO is a Rieske-type iron-sulfur protein'
   - id: oster2000_cao
     authors: "Oster U, Tanaka R, Tanaka A, Rüdiger W"
     title: "Cloning and functional expression of the gene encoding the key enzyme for chlorophyll b biosynthesis"
@@ -170,8 +170,7 @@ citations:
     uniprot: "Q9MBA1"
     uniprot_scope: "NUCLEOTIDE SEQUENCE [GENOMIC DNA] (ISOFORM 1); FUNCTION; CATALYTIC ACTIVITY"
     used_for:
-      - "6_602_CAO referansinin islevsel dayanagi: klorofillid a oksijenaz, klorofil b sentezinin anahtar enzimi"
-
+    - '6_602_CAO referans atfi: functional basis of the reference: chlorophyllide a oxygenase, the key enzyme of chlorophyll b synthesis'
   - id: bartsch2008_ptc52
     authors: "Bartsch S, Monnet J, Selbach K, Quigley F, Gray J, von Wettstein D, Reinbothe S, Reinbothe C"
     title: "Three thioredoxin targets in the inner envelope membrane of chloroplasts function in protein import and chlorophyll metabolism"
@@ -185,8 +184,7 @@ citations:
     uniprot: "Q8W496"
     uniprot_scope: "FUNCTION; ACTIVITY REGULATION; CATALYTIC ACTIVITY"
     used_for:
-      - "6_603_PTC52 referansinin islevsel dayanagi; protoklorofillid a oksijenaz etkinligi ve tioredoksin regulasyonu"
-
+    - '6_603_PTC52 referans atfi: functional basis of the reference; protochlorophyllide a oxygenase activity and thioredoxin regulation'
   # --- yontem kaynaklari: yapi dogrulamasinda kullanildi (2026-10-21) ---
 
   - id: kauppi1998_ndo
@@ -200,12 +198,9 @@ citations:
     pdb: "1NDO"
     verified_by: crossref_and_rcsb
     used_for:
-      - "AerC metal merkezlerinin POZITIF KONTROLU. 1NDO'nun Rieske merkezi (C81/H83/C101/H104,
-         Fe-Fe 2,77 A) ve mononukleer 2-His-1-karboksilat yuzu (H208/H213/D362) olculup AerC
-         tahminiyle karsilastirildi."
-      - "Kopru aspartatinin rolunun kontrolu: NDO'da Asp205 kendi zincirinin Rieske'sinden
-         46,7 A, KOMSU zincirin Rieske'sinden 7,5 A uzakta -- AerC'de D511'in mononukleer
-         His'lerden 8,4-9,2 A olmasinin neden kopru roluyle tutarli oldugu buradan okunuyor."
+    - '3_309_NahAc referans atfi: structural: the crystal structure of naphthalene 1,2-dioxygenase (PDB 1NDO), which is what this type''s assignment rests on'
+    - '7_701_AerC referans atfi: POSITIVE CONTROL for the AerC metal centres. The Rieske centre of 1NDO (C81/H83/C101/H104, Fe-Fe 2.77 A) and its mononuclear 2-His-1-carboxylate face (H208/H213/D362) were measured and compared with the AerC prediction.'
+    - '7_701_AerC referans atfi: control on the role of the bridging aspartate: in NDO, Asp205 is 46.7 A from the Rieske centre of its own chain but 7.5 A from that of the NEIGHBOURING chain -- this is why 8.4-9.2 A from D511 to the mononuclear histidines in AerC is consistent with a bridging role'
     note: >
       Bu veritabani kendi siniflandirmasinda YAPI KULLANMAZ; burada yapi yalnizca AerC'nin
       metal merkezlerinin geometrisini sinamak icin, dis bir olcut olarak kullanildi.
@@ -220,10 +215,8 @@ citations:
     doi: "10.1126/science.ade2574"
     verified_by: crossref_record
     used_for:
-      - "AerC'nin Rieske alani (kalinti 100-230) ve katalitik alani (440-700) ESMFold ile
-         katlandi; karboksilat Asp667 bu modelde yerelleştirildi."
-      - "Yontemin kendisi de sinandi: ayni ucla 1NDO'nun Rieske alani katlanip kendi kristal
-         yapisiyla karsilastirildi ve geometri ~0,3 A icinde yeniden uretildi."
+    - '7_701_AerC referans atfi: the Rieske domain (residues 100-230) and the catalytic domain (440-700) of AerC were folded with ESMFold; the carboxylate Asp667 was localised in that model'
+    - '7_701_AerC referans atfi: the method itself was tested -- the Rieske domain of 1NDO was folded with the same pipeline and compared with its own crystal structure, reproducing the geometry to within ~0.3 A'
     note: >
       Tahminler APO ve alanlar AYRI katlandi (tam boy icin API 413 donuyor). Dolayisiyla iki
       merkez ARASINDAKI iliski ve alt birimler arasi kopru geometrisi bu olcumden cikarilamaz.
@@ -241,8 +234,7 @@ citations:
     pmid: "15528661"
     verified_by: crossref_record
     used_for:
-      - "3_311_PhtAa referansinin kaynagi. Dizi IKI BAGIMSIZ accession'da birebir ayni
-         dogrulandi: UniProt Q6UP13 ve GenBank AAQ91914.2 (gen phtAa, urun PhtAa, 487 aa)."
+    - '3_311_PhtAa referans atfi: source of the reference sequence. The sequence was verified identical in TWO INDEPENDENT accessions: UniProt Q6UP13 and GenBank AAQ91914.2 (gene phtAa, product PhtAa, 487 aa).'
     note: >
       UYARI, KAYDA GECSIN: Q6UP13 reviewed DEGIL (TrEMBL) ve protein kanit duzeyi
       "Inferred from homology". Yani o UniProt kaydinin KENDISI deneysel kanit tasimiyor;
@@ -1559,10 +1551,10 @@ citations:
     doi: 10.1128/jb.182.6.1641-1649.2000
     verified_by: crossref_api
     used_for:
-    - 'Karboksilatin katalitik olarak ZORUNLU oldugunun kaniti: NDO Asp362 -> Ala
-      mutanti naftalinden hic urun vermiyor ve ham ekstraktta ne oksijen tuketimi
-      ne urun olculuyor, tam boy alfa alt birimi uretildigi halde. triad_gate.py
-      3/3 kuralinin gerekcesi ve about.html bolum 1 bu olcumu kullaniyor.'
+    - 'project reference: evidence that the carboxylate is catalytically REQUIRED. The NDO Asp362-to-Ala
+      mutant gives no product from naphthalene, and neither oxygen consumption nor product is measurable
+      in crude extract although the full-length alpha subunit is produced. This is the basis of the 3/3
+      rule in triad_gate.py and of section 1 of the method page'
   - id: zhu2014_CntA
     authors: Zhu Y, Jameson E, Crosatti M, Schäfer H, Rajakumar K, Bugg TDH, Chen Y
     title: Carnitine metabolism to trimethylamine by an unusual Rieske-type oxygenase from human microbiota
@@ -1670,6 +1662,10 @@ citations:
     verified_by: crossref_api
     used_for:
     - 5_507_BmoA ikincil atfi
+    - '5_508_GbcA referans atfi: functional/genetic: the two gene clusters required for glycine betaine
+      catabolism in P. aeruginosa were identified here, gbcAB among them -- this is the work the GbcA
+      assignment rests on, and the same paper is a secondary citation for BmoA'
+
   - id: barry2013_mechanism
     authors: Barry SM, Challis GL
     title: Mechanism and Catalytic Diversity of Rieske Non-Heme Iron-Dependent Oxygenases
@@ -1681,14 +1677,13 @@ citations:
     pmid: '24244861'
     verified_by: crossref_api
     used_for:
-    - 'metot dogrulamasi (RAPOR_karboksilat_kolonu_2026-10-30.md): mononukleer demirin
-      2-His-1-karboksilat uclusunde karboksilatin Asp VEYA Glu olabildigini, ve korunmus
-      kopru aspartatinin bir demir ligandi degil elektron transferi aracisi oldugunu
-      soyleyen derleme'
-    - 'koprudeki Asp->Glu sorusu: derleme RedG icin "the bridging aspartate residue
-      implicated in electron transfer appears to be mutated to glutamate" diyor ve islevsel
-      yorum yapmiyor -- sitedeki "An open question, not a result." cercevesinin literatur
-      emsali'
+    - 'project reference: method check. The review states that the carboxylate of the mononuclear 2-His-1-carboxylate
+      triad can be Asp OR Glu, and that the conserved bridging aspartate is not an iron ligand but a mediator
+      of electron transfer'
+    - 'project reference: on the bridging Asp-to-Glu question the review says of RedG that ''the bridging
+      aspartate residue implicated in electron transfer appears to be mutated to glutamate'' and offers
+      no functional interpretation -- the literature precedent for the framing used on this site, ''An
+      open question, not a result.'''
   - id: kweon2008_classification
     authors: Kweon O, Kim S, Baek S, Chae J, Adjei MD, Baek D, Kim Y, Cerniglia CE
     title: A new classification system for bacterial Rieske non-heme iron aromatic ring-hydroxylating
@@ -1701,12 +1696,95 @@ citations:
     pmid: '18387195'
     verified_by: crossref_api
     used_for:
-    - 'literaturdeki BES TIPLI sema (Tip I-V): elektron transfer zincirinin bilesenlerine
-      gore -- iki bilesenli Tip I (FNR_C reduktaz) ve Tip II (FNR_N reduktaz), uc bilesenli
-      Tip III ([2Fe-2S] Fd + FNR_N), Tip IV ([2Fe-2S] Fd + GR) ve Tip V ([3Fe-4S] Fd + GR).
-      130 enzim, 25 standart RHO uzerinden kuruldu'
-    - 'Batie semasinin yerine onerildi: Batie/Nam [3Fe-4S] ferredoksinini ve ETC
-      bilesenlerinin genetik ayrikligini aciklayamiyor'
-    - 'bu veritabaninin ro_group alaniyla KARISTIRILMAMALI: Kweon ekseni SISTEMIN
-      elektron ortaklari, ro_group ise alfa alt biriminin dizi kumelenmesi (bkz.
-      batie_classes.yaml ve groups.yaml)'
+    - 'project reference: the five-type scheme in the literature (Types I-V), organised by the components
+      of the electron transport chain -- two-component Type I (FNR_C reductase) and Type II (FNR_N reductase),
+      three-component Type III ([2Fe-2S] Fd + FNR_N), Type IV ([2Fe-2S] Fd + GR) and Type V ([3Fe-4S]
+      Fd + GR). Built on 130 enzymes over 25 standard ring-hydroxylating oxygenases'
+    - 'project reference: proposed in place of the Batie scheme, because Batie/Nam cannot account for
+      the [3Fe-4S] ferredoxin or for the genetic separability of the electron transport components'
+    - 'project reference: NOT to be confused with this database''s ro_group field. The Kweon axis is the
+      electron partners of the SYSTEM, while ro_group is the sequence clustering of the alpha subunit'
+  # --- 2026-11-15'te eklenen bes kaynak -------------------------------------
+  # NEDEN. O gune kadar 76 tipin 4'u kutuge HIC bagli degildi (GdmA, PrnD,
+  # NagGH, Nvd) ve biri (GbcA) yalnizca ikincil atif tasiyordu. Kullanici
+  # "her enzim icin literaturdeki makalesinin DOI'sini sayfasina koy" dedi.
+  # Bes makale Crossref'ten kunyesiyle, PMID'leri PubMed esearch'ten
+  # dogrulandi; hicbiri hatirlanarak yazilmadi. GdmA'nin makalesi PubMed'de
+  # YOK (Chem Catalysis indekslenmiyor), o yuzden pmid alani da yok --
+  # uydurmak yerine eksik birakildi.
+
+  - id: lee2005_PrnD
+    authors: "Lee J, Simurdiak M, Zhao H"
+    title: "Reconstitution and Characterization of Aminopyrrolnitrin Oxygenase, a Rieske N-Oxygenase That Catalyzes Unusual Arylamine Oxidation"
+    journal: "J Biol Chem"
+    year: 2005
+    volume: '280'
+    pages: 36719-36728
+    doi: 10.1074/jbc.m505334200
+    pmid: '16150698'
+    verified_by: crossref_api+pubmed_esearch
+    used_for:
+    - '1_117_PrnD referans atfi: functional: the aminopyrrolnitrin oxygenase was reconstituted
+      and characterised here, and the arylamine-to-nitro oxidation it catalyses is what places
+      this type in the set'
+
+  - id: yoshiyama2006_Nvd
+    authors: "Yoshiyama T, Namiki T, Mita K, Kataoka H, Niwa R"
+    title: "Neverland is an evolutionally conserved Rieske-domain protein that is essential for ecdysone synthesis and insect growth"
+    journal: "Development"
+    year: 2006
+    volume: '133'
+    pages: 2565-2574
+    doi: 10.1242/dev.02428
+    pmid: '16763204'
+    verified_by: crossref_api+pubmed_esearch
+    used_for:
+    - '3_321_Nvd referans atfi: functional/genetic: Neverland is reported here as a
+      Rieske-domain protein required for ecdysone synthesis; the cholesterol 7,8-desaturation
+      assigned to this type rests on this work'
+
+  - id: zhou2002_NagGH
+    authors: "Zhou NY, Al-Dulayymi J, Baird MS, Williams PA"
+    title: "Salicylate 5-Hydroxylase from Ralstonia sp. Strain U2: a Monooxygenase with Close Relationships to and Shared Electron Transport Proteins with Naphthalene Dioxygenase"
+    journal: "J Bacteriol"
+    year: 2002
+    volume: '184'
+    pages: 1547-1555
+    doi: 10.1128/jb.184.6.1547-1555.2002
+    pmid: '11872705'
+    verified_by: crossref_api+pubmed_esearch
+    used_for:
+    - '3_307_NagGH referans atfi: functional: salicylate 5-hydroxylase of strain U2 is
+      characterised here, including the electron transport proteins it shares with naphthalene
+      dioxygenase -- which is also why this type sits next to NahAc'
+
+  - id: fang2013_NagGH
+    authors: "Fang T, Zhou NY"
+    title: "Purification and characterization of salicylate 5-hydroxylase, a three-component monooxygenase from Ralstonia sp. strain U2"
+    journal: "Appl Microbiol Biotechnol"
+    year: 2013
+    volume: '98'
+    pages: 671-679
+    doi: 10.1007/s00253-013-4914-x
+    pmid: '23624660'
+    verified_by: crossref_api+pubmed_esearch
+    used_for:
+    - '3_307_NagGH ikincil atfi: the enzyme was purified here and shown to be a
+      three-component system -- protein-level evidence rather than genetics'
+
+  - id: bleem2022_GdmA
+    authors: "Bleem A, Kuatsjah E, Presley GN, Hinchen DJ, Zahn M, Garcia DC, Michener WE, Konig G, Tornesakis K, Allemann MN, Giannone RJ, McGeehan JE, Beckham GT, Michener JK"
+    title: "Discovery, characterization, and metabolic engineering of Rieske non-heme iron monooxygenases for guaiacol O-demethylation"
+    journal: "Chem Catalysis"
+    year: 2022
+    volume: '2'
+    pages: 1989-2011
+    doi: 10.1016/j.checat.2022.04.019
+    verified_by: crossref_api
+    note: >
+      PubMed'de indekslenmemis (Chem Catalysis); PMID alani bu yuzden yok.
+      Yapisi PDB 7QWT olarak bu makaleyle birlikte yayimlandi.
+    used_for:
+    - '1_116_GdmA referans atfi: functional/structural: the guaiacol O-demethylating Rieske
+      monooxygenase was discovered and characterised here and its structure deposited as
+      PDB 7QWT, which is what this type is assigned from'

@@ -287,6 +287,19 @@ ARTEFACTS = [
     ("geography", [f"{OUT}/geography.json"],
      ["python3", "geography.py", "--db", DB, "--out", f"{OUT}/geography.json"],
      ["geography.py", "stats_overview.py", DB], False),
+    #  family_scan `control_elements`'ten ONCE kosar (2026-11-15'te tasindi).
+    #  NEDEN. `control_elements` transpozon etiketini URUN ADINDAN okuyor ve
+    #  o etiketin ne kadar guvenilir oldugu yalnizca modellerle olculebiliyor;
+    #  olcum family_scan'in yazdigi `neighbor_family` tablosunda duruyordu ama
+    #  adim 49 sira SONRA kostugu icin sayfaya hic baglanamiyordu. Simdi
+    #  bagli: tablo okunuyor ve etiket uc duruma AYRILIYOR. Girdileri
+    #  (neighbor, neighbor_protein, gene_category) 10. adimda hazir, yani bu
+    #  konum gecerli. Sira artik yorumla degil
+    #  `check_step_order_matches_reads` ile korunuyor.
+    ("family_scan", [f"{OUT}/family_scan.json"],
+     ["python3", "family_scan.py", "--db", DB, "--out", f"{OUT}/family_scan.json"],
+     ["family_scan.py", DB, "family_hmms/mobility.hmm",
+      "family_hmms/recombinase.hmm", "family_hmms/regulator.hmm"], False),
     ("control_elements", [f"{OUT}/control_elements.json"],
      ["python3", "control_elements.py", "--db", DB, "--chemistry", CHEM,
       "--out", f"{OUT}/control_elements.json"],
@@ -319,6 +332,14 @@ ARTEFACTS = [
     ("active_site", [f"{OUT}/active_site.json"],
      ["python3", "active_site.py", "--db", DB, "--out-dir", OUT, "--offline"],
      ["active_site.py", DB, CHEM], True),
+    #  Yapilari IKINCI kez ayristirmaz: olcumu active_site.json'dan
+    #  turevler, bu yuzden AGIR degil ve active_site'in HEMEN ardinda
+    #  durur. Sira bagimliligi yorumla degil, bagimlilik listesiyle
+    #  beyan edilir (bkz. check_step_order_matches_reads).
+    ("carboxylate_column", [f"{OUT}/carboxylate_column.json"],
+     ["python3", "carboxylate_column.py", "--active-site",
+      f"{OUT}/active_site.json", "--out", f"{OUT}/carboxylate_column.json"],
+     ["carboxylate_column.py", "ro_motif.py", f"{OUT}/active_site.json"], False),
     ("learning", [f"{OUT}/learning.json"],
      ["python3", "learn_from_data.py", "--db", DB, "--out-dir", OUT],
      ["learn_from_data.py", DB, CHEM, ECO], True),
@@ -605,10 +626,6 @@ ARTEFACTS = [
       "family_hmms/mobility.hmm", "family_hmms/recombinase.hmm",
       "family_hmms/regulator.hmm", "ROs_71_Clean/ROmotif71.hmm",
       "RieskeDB71.hmm"], False),
-    ("family_scan", [f"{OUT}/family_scan.json"],
-     ["python3", "family_scan.py", "--db", DB, "--out", f"{OUT}/family_scan.json"],
-     ["family_scan.py", DB, "family_hmms/mobility.hmm",
-      "family_hmms/recombinase.hmm", "family_hmms/regulator.hmm"], False),
 
     # cross_references: A6. Girdisi ro_union_source + ro_protein_status, yani
     # union'dan SONRA. YAPRAK olarak en sona konuldu: `ro_xref` tablosunu
@@ -802,6 +819,11 @@ DECLARED_WRITES = {
     "a5_cohort": {"replicon_cohort"},
     "union_evidence": {"ro_union_evidence"},
     "ro_cds_span": {"ro_cds_span"},
+    #  family_scan uc tablo yaziyordu ama SAHIBI beyan edilmemisti: yazmalar
+    #  dosya sahibi `database`'e dusuyordu ve bir model kutuphanesi
+    #  degistiginde hangi adimin sorumlu oldugu grafikten okunamiyordu.
+    "family_scan": {"neighbor_family", "neighbor_family_hit",
+                    "ro_upstream_family_hmm"},
     #  DOSYANIN SAHIBI. `build_db.py` veritabani DOSYASINI sifirdan kuruyor,
     #  yani baska adimlarin sahibi oldugu her tabloyu da mesru olarak
     #  dusuruyor. Olculen yazma listesi bu yuzden 42 turetilmis tabloyu

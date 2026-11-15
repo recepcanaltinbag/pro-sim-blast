@@ -2044,7 +2044,14 @@ def check_carboxylate_claim_is_measured(rep, con, root):
                   f"capa cumle yok: {anchor!r} -- kontrol bos gecemez",
                   severity="WARN")
         return
-    window = flat[i:i + 1800]
+    #  PENCERE PARAGRAFIN SONUNDA BITER, sabit bir uzunlukta DEGIL.
+    #  2026-11-15'te sabit 1800 karakter, paragrafa eklenen bir Jinja
+    #  yorumunu ORTADAN kesti: acilis `{#` pencerenin icinde, kapanis `#}`
+    #  disinda kaldi, silme deseni eslesmedi ve yorumdaki tarih (2026-11-15)
+    #  "elle yazilmis sayi" diye FAIL verdi. Kontrol dogru soruyu soruyordu,
+    #  penceresi keyfiydi -- ve keyfi bir pencere kendi bulgusunu uretir.
+    end = flat.find("</li>", i)
+    window = flat[i:end if end > i else i + 1800]
     #  JINJA YORUMLARI DA SILINIR. Desen yalnizca {{ }} ve {% %} siliyordu,
     #  {# #} yorumlarini sayfa METNI sayiyordu -- oysa onlar render
     #  EDILMIYOR, yani icindeki bir sayi sayfada bayatlayamaz.
@@ -3802,6 +3809,42 @@ def check_descriptions_do_not_cite_unpublished_files(rep, root):
               f"{len(_atlas_mod.PROVENANCE)} aciklamanin hicbiri "
               f"yayimlanmayan bir dosyaya isaret etmiyor")
 
+    #  AYNI KURAL ATIF KUTUGUNUN YAYIMLANAN IDDIA CUMLELERINE DE ISLER.
+    #  2026-11-15'te kutuk yayimlanmaya baslandi (/references ve tip
+    #  sayfalari) ve `used_for` satirlari eskiden yalnizca kuratorun notu
+    #  oldugu icin serbestce dosya adi aniyordu -- biri yayimlanmayan
+    #  `aerc_resolution.json`'i, biri hic depoda olmayan bir .md raporunu.
+    #  Yayimlanan bir cumle bir dosya gosteriyorsa, o dosya bulunabilir
+    #  olmali; yoksa isaret bos cikar. Betik adlari (`.py`) ISTISNA DEGIL
+    #  ama desen zaten onlari taniyor, cunku kaynak kodu depoda ve
+    #  bulunabilir -- desene `.py` dahil edilmedi.
+    lit_path = os.path.join(root, "analysis_out", "literature.json")
+    claims_dangling, n_claims = [], 0
+    if os.path.exists(lit_path):
+        with open(lit_path) as handle:
+            lit = json.load(handle)
+        texts = []
+        for cluster, recs in (lit.get("types") or {}).items():
+            for rec in recs:
+                if rec.get("supports"):
+                    texts.append((cluster + "/" + str(rec.get("anchor")),
+                                  rec["supports"]))
+        for row in ((lit.get("registry_published") or {}).get("project") or []):
+            for text in (row.get("supports") or []):
+                texts.append((row.get("id"), text))
+        n_claims = len(texts)
+        for where, text in texts:
+            for match in pattern.finditer(text):
+                cited = match.group(1)
+                if cited in published:
+                    continue
+                claims_dangling.append(f"{where} -> {cited}")
+    rep.check("literatur: yayimlanan iddia cumleleri yayimlanmayan dosya anmiyor",
+              not claims_dangling, n_claims,
+              "; ".join(sorted(set(claims_dangling))[:4]) if claims_dangling
+              else f"{n_claims} iddia cumlesinin hicbiri yayimlanmayan bir "
+                   f"dosyaya isaret etmiyor")
+
 
 def check_published_files_precede_the_gate(rep, root):
     """Yayimlanan her dosya, KAPIDAN ONCE uretiliyor mu?
@@ -3899,7 +3942,7 @@ def check_literature(rep, root, out_dir="analysis_out"):
     types = data.get("types") or {}
     records = [r for recs in types.values() for r in recs]
 
-    known = {"curated", "pdb_primary", "uniprot"}
+    known = {"registry", "curated", "pdb_primary", "uniprot"}
     unknown = sorted({r.get("source") for r in records} - known)
     rep.check("literatur: her kaydin bilinen bir kaynagi var", not unknown,
               len(records),
@@ -3949,6 +3992,91 @@ def check_literature(rep, root, out_dir="analysis_out"):
     #  yapilmis bir kuratorluk kararini yapilmamis gibi gosteriyordu:
     #  yedisinde kurator tek tek atif OLMADIGINI kaydetmis (bakilmis),
     #  yalnizca biri gercek acik is. Kapi acik isi sayar, kararı saymaz.
+    #  --------------------------------------------------------- KUTUK
+    #  OLCULDU 2026-11-15. citations.yaml 121 DOGRULANMIS atif tutuyor ve
+    #  types/*.yaml'in 72'si `citations:` listesiyle ona bagli, ama
+    #  literature.py kutugu HIC OKUMUYORDU. Sonuc: 16 tipin sayfasinda DOI
+    #  gorunmuyordu ve 7 tipin sayfasi "bu tip icin tek tek atif
+    #  kaydedilmemis" diyordu -- kutukte o tipin referans atfi duruyorken.
+    #  Yani sayfa, projenin kendi kutugunun YALANLADIGI bir yokluk iddia
+    #  ediyordu. Eksik olan veri degil, okuma yoluydu; bu kontrol o yolun
+    #  sessizce kopmasini imkansiz kilar.
+    import glob as _glob                                # noqa: PLC0415
+    reg_path = os.path.join(root, "citations.yaml")
+    registry = {}
+    if os.path.exists(reg_path):
+        with open(reg_path) as handle:
+            registry = {c["id"]: c for c in
+                        ((yaml.safe_load(handle) or {}).get("citations") or [])}
+    linked, missing = 0, []
+    declared_but_cited = []
+    STALE = "no individual citation recorded"
+    for path_y in sorted(_glob.glob(os.path.join(root, "types", "*.yaml"))):
+        with open(path_y) as handle:
+            spec = yaml.safe_load(handle) or {}
+        cluster = spec.get("cluster")
+        if not cluster:
+            continue
+        recs = types.get(cluster) or []
+        on_page = {r.get("anchor") for r in recs if r.get("source") == "registry"}
+        for key in (spec.get("citations") or []):
+            if key not in registry:
+                continue            # kutukte olmayan anahtari baska kontrol sayar
+            linked += 1
+            if key not in on_page:
+                missing.append(f"{cluster}: {key}")
+        #  CELISKI: kurator "tek tek atif yok" diyor ama kutukte bu tipin
+        #  REFERANS atfi var. Bugun yedi tipte boyleydi.
+        if STALE in (spec.get("source") or ""):
+            has_ref = any(r.get("source") == "registry" and r.get("role") == "reference"
+                          for r in recs)
+            if has_ref:
+                declared_but_cited.append(cluster)
+    rep.check("literatur: kutuge bagli her atif sayfaya ULASIYOR",
+              not missing, linked,
+              ("sayfada yok: " + "; ".join(missing[:5])) if missing
+              else f"{linked} kutuk atfinin hepsi tip sayfasinda yayinlaniyor")
+    rep.check("literatur: 'atif kaydedilmemis' beyani kutukle CELISMIYOR",
+              not declared_but_cited, len(types),
+              ("beyan kutukle celisiyor: " + ", ".join(declared_but_cited))
+              if declared_but_cited
+              else "hicbir tip, kutukte referans atfi varken 'atif yok' demiyor")
+
+    #  YAYIMLANAN IDDIA CUMLESI INGILIZCE OLMALI. Kutugun `used_for` alani
+    #  kuratorun kendi notu ve Turkce yazilmis olabilir; sayfaya ciktigi an
+    #  Ingilizce-yalnizca kurali onu da baglar. Ayirt edici kapinin KENDI
+    #  listesinden alinir (check_site.TURKISH_RE) -- ikinci bir Turkce
+    #  tanimi yazmak, iki tanimin ayrismasi demekti. Ama o liste rol onekini
+    #  ("referans atfi") GORMUYOR, cunku sozcukler listede yok; onek ayrica
+    #  aranir.
+    turkish, prefixed = [], []
+    try:
+        sys.path.insert(0, root)
+        import check_site as _cs                        # noqa: PLC0415
+        detect = lambda t: sorted({m.group(1).lower() for m in
+                                   _cs.TURKISH_RE.finditer(_cs.strip_residue_codes(t))})
+    except Exception:                                   # noqa: BLE001
+        detect = None
+    for rec in records:
+        claim = rec.get("supports") or ""
+        if not claim:
+            continue
+        if "referans atfi" in claim or "ikincil atfi" in claim:
+            prefixed.append(f"{rec.get('cluster')}: {rec.get('anchor')}")
+        if detect:
+            found = detect(claim)
+            if found:
+                turkish.append(f"{rec.get('cluster')}/{rec.get('anchor')}: "
+                               + ", ".join(found[:4]))
+    n_claims = len([r for r in records if r.get("supports")])
+    rep.check("literatur: yayinlanan iddia cumleleri Ingilizce",
+              not turkish and not prefixed, n_claims,
+              ("Turkce: " + "; ".join(turkish[:4]) if turkish else "")
+              + ("  rol oneki yayinlanmis: " + "; ".join(prefixed[:3])
+                 if prefixed else "")
+              or f"{n_claims} iddia cumlesi Ingilizce ve rol oneki tasimiyor",
+              severity="WARN" if detect is None else "FAIL")
+
     absent = data.get("absence_is_classified") or {}
     declared = absent.get("declared_none") or []
     open_items = absent.get("none_found") or []
@@ -3990,7 +4118,12 @@ def check_step_order_matches_reads(rep, root):
     """
     import re as _re
     produced = {"ro_xref": "cross_references", "ro_union": "union",
-                "ro_union_source": "union", "ro_protein_status": "protein_entries"}
+                "ro_union_source": "union", "ro_protein_status": "protein_entries",
+                #  2026-11-15: `control_elements` artik bu tabloyu okuyor ve
+                #  family_scan'den SONRA siralandi. Sira yorumla degil
+                #  burayla korunuyor; ters cevrilirse kapi FAIL verir.
+                "neighbor_family": "family_scan",
+                "neighbor_family_hit": "family_scan"}
 
     #  MUAFIYETLER, VE MUAFIYETIN KENDISI DE SINANIR. Bir adimin kaynaginda
     #  bir tablo adi gecmesi, o adimin O CAGRIDA onu okudugu anlamina
@@ -4056,6 +4189,95 @@ def check_step_order_matches_reads(rep, root):
               len(order),
               "; ".join(wrong) if wrong
               else f"{len(order)} adimin hicbiri uretilmemis tablo okumuyor")
+
+
+def check_pages_only_read_produced_files(rep, root):
+    """Sayfalarin okudugu her veri dosyasinin bir URETICISI var mi?
+
+    NEDEN. 2026-11-14'te olculdu: atlas ana sayfasindaki karboksilat
+    paragrafi UC dosyadan besleniyordu ve ucunun de pipeline'da ureteni
+    yoktu -- adlari yalnizca `webapp/` icinde geciyordu. Yani yayimlanan bir
+    iddia, yeniden uretilemeyen, tazeligi olculemeyen, referans seti
+    degisince sessizce bayatlayacak bir dosyaya dayaniyordu. Durum bir
+    KUME'de elle beyan edilerek gorunur kilindi (atlas.READ_BUT_UNPRODUCED),
+    ama elle tutulan bir kume yeni vakayi KENDILIGINDEN bulmaz: yarin baska
+    bir sayfa baska bir dosyayi okumaya baslarsa hicbir sey bagirmaz.
+    Bu kontrol durumu BULUR.
+
+    NASIL. Sayfa kodunda (`webapp/*.py`) adi gecen her .json/.csv dosyasi
+    toplanir ve iki kumeden birinde olmasi istenir:
+      (1) `rebuild.py`'de bir adimin CIKTISI olarak beyan edilmis, ya da
+      (2) kok dizindeki herhangi bir pipeline betiginin kaynaginda adi
+          geciyor -- yani bir ureticisi var, cikti listesinde beyan
+          edilmemis bir yan cikti olsa bile.
+    Ikisinde de yoksa dosyanin uretecisi YOK. Beyan edilmis muafiyetler
+    (READ_BUT_UNPRODUCED) FAIL yerine ayri bir WARN olarak sayilir, cunku
+    orada karar verilmis ve kaydedilmis bir sinir var.
+
+    NE BULAMAZ. Adi bir degiskende kurulan dosyayi gormez (ornek:
+    "%s.json" % name). Yani "hepsi uretiliyor" demiyor, "sayfa kodunda
+    ADIYLA gecen hicbir dosya uretici-siz degil" diyor.
+    """
+    import glob as _g
+    import re as _r
+    try:
+        src = open(os.path.join(root, "rebuild.py")).read()
+    except OSError as err:                                # noqa: BLE001
+        rep.check("pages: every data file a page reads has a producer",
+                  False, 1, f"rebuild.py okunamadi: {err}")
+        return
+    steps = _r.findall(r'\n    \("([a-z0-9_]+)",\s*\[(.*?)\],\s*\[(.*?)\],',
+                       src, _r.S)
+    declared = set()
+    for _name, outputs, _cmd in steps:
+        declared |= {os.path.basename(m) for m in
+                     _r.findall(r'["\']([^"\']+\.(?:json|csv|nwk|fasta|sqlite))["\']',
+                                outputs)}
+        declared |= {os.path.basename(m) for m in
+                     _r.findall(r'\{OUT\}/([A-Za-z0-9_.\-]+)', outputs)}
+
+    mentioned = set()
+    for path in sorted(_g.glob(os.path.join(root, "*.py"))):
+        try:
+            body = open(path).read()
+        except OSError:
+            continue
+        mentioned |= set(_r.findall(r'["\']([A-Za-z0-9_\-]+\.(?:json|csv))["\']',
+                                    body))
+
+    exempt = set()
+    try:
+        import sys as _s
+        _s.path.insert(0, os.path.join(root, "webapp"))
+        import atlas as _a
+        exempt = set(getattr(_a, "READ_BUT_UNPRODUCED", ()))
+    except Exception:                                     # noqa: BLE001
+        pass
+
+    read_by_pages = {}
+    for path in sorted(_g.glob(os.path.join(root, "webapp", "*.py"))):
+        body = open(path).read()
+        for name in _r.findall(
+                r'(?:apath|read_json|read_csv)\(\s*["\']([A-Za-z0-9_\-]+\.(?:json|csv))["\']',
+                body):
+            read_by_pages.setdefault(name, os.path.basename(path))
+        for name in _r.findall(
+                r'apath\(\s*["\']([A-Za-z0-9_\-]+\.(?:json|csv))["\']', body):
+            read_by_pages.setdefault(name, os.path.basename(path))
+
+    unproduced, declared_gaps = [], []
+    for name, where in sorted(read_by_pages.items()):
+        if name in declared or name in mentioned:
+            continue
+        (declared_gaps if name in exempt else unproduced).append(
+            f"{name} ({where})")
+    rep.check("pages: every data file a page reads has a producer",
+              not unproduced, len(read_by_pages),
+              ("ureteni yok ve beyan da edilmemis: " + "; ".join(unproduced))
+              if unproduced else
+              f"{len(read_by_pages)} dosyanin hepsinin bir ureticisi var"
+              + (f"; {len(declared_gaps)} tanesi beyan edilmis bir sinir"
+                 if declared_gaps else ""))
 
 
 def check_coverage_audit(rep, con, root, out_dir="analysis_out"):
@@ -5265,6 +5487,7 @@ def main():
         check_record_kind(rep, con, ROOT)
         check_db_writes_are_attributed(rep, ROOT)
         check_step_order_matches_reads(rep, ROOT)
+        check_pages_only_read_produced_files(rep, ROOT)
         check_published_files_precede_the_gate(rep, ROOT)
         check_descriptions_do_not_cite_unpublished_files(rep, ROOT)
         check_literature(rep, ROOT)

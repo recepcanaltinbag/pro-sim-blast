@@ -439,14 +439,25 @@ sequence identity, which is computed separately from the HMM assignment that dec
     <td>Every taxonomic and ecological figure.</td>
     <td>Nothing available here. The taxonomy tree shows the shape of the bias directly.
     <a href="{{ u('/atlas/taxonomy') }}">Taxonomy</a></td></tr>
-<tr><td><b>Most curated substrates carry no individual citation.</b> All {{ N_REFS }} types now have a
-    recorded substrate, but for 50 of them <code>chemistry.csv</code> records the source only as
-    established literature on the reference enzyme rather than naming a paper or a structure.</td>
-    <td>Every substrate, product and reaction label, and so every chemistry grouping. The claim is
-    traceable for the 21 types with a paper or a PDB entry recorded, and rests on the curator for
-    the rest.</td>
-    <td>Naming the primary reference for each of those 50 types. Each type page prints the source
-    it has, so the gap is visible per type rather than only in aggregate.</td></tr>
+{% set cc = citation_coverage() %}
+<tr><td><b>A curated substrate rests on a paper, not on an experiment done here &mdash; and until 2026-11-15 most of them did not even name the paper.</b> All
+    {{ N_REFS }} types have a recorded substrate, and
+    {% if cc %}all {{ cc.with_doi }} of them now carry at least one citation whose DOI resolves,
+    with <b>{{ cc.with_reference }}</b> holding a reference citation in this project's verified
+    registry &mdash; the paper the curation rests on. For {{ cc.shared_only|length }} more the
+    registry records the paper under a sibling type whose work they share. That leaves
+    {% if cc.no_reference %}<b>{{ cc.no_reference|length }}</b> with no reference citation of
+    their own: {{ cc.no_reference|join(', ') }}.{% else %}<b>no type without a reference citation
+    of its own</b>, which is what closed this limitation; it is kept on this page because the
+    measurement is what closed it, and the measurement can change
+    again.{% endif %}{% else %}the citation measurement is not available in this
+    build.{% endif %}</td>
+    <td>Every substrate, product and reaction label, and so every chemistry grouping. For the types
+    with a reference citation the claim is traceable to a paper; for the rest it rests on the
+    curator.</td>
+    <td>Naming a reference for the remaining types. Every type page prints the citations it has,
+    with the registry's own role marking, so the gap is visible per type and not only in
+    aggregate.</td></tr>
 <tr><td><b>Clustering compares sequences, not function.</b> Variants are sequence-homogeneous
     subgroups; nothing guarantees that a variant boundary is a functional boundary.</td>
     <td>Variant counts and the claim that variants are candidate functional units.</td>

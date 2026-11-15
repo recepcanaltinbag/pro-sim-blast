@@ -159,6 +159,32 @@ than from one paper identified during curation. That is a recorded decision, not
 to look at &mdash; and it is written here so the empty section is not read as silence.</p>
 {% endif %}
 
+{# Kutuk bolumu EN USTTE duruyor, cunku dort kaynak icinde en guclusu bu:
+   kaydin kendisi hangi iddia icin kullanildigini yaziyor ve her DOI
+   Crossref/PubMed ya da makalenin ilk sayfasindan dogrulanmis. #}
+{% if lit.registry %}
+<h3>Verified citations for this type</h3>
+<p class="note">These come from this project's citation registry. Every DOI in it was checked
+against Crossref, PubMed or the first page of the paper itself, and the registry also records what
+each paper is cited <i>for</i> &mdash; so a reader can go from a statement on this page to the work
+it rests on. The role below is the registry's own marking, not an inference.</p>
+<ul class="lit">
+{% for r in lit.registry %}
+<li>{{ cite(r) }}
+  {% if r.role == 'reference' %}<br><span class="note"><b>Reference citation for this type</b> &mdash;
+  the paper this type's curation rests on.</span>
+  {% elif r.role == 'secondary' %}<br><span class="note">Secondary citation for this type.</span>
+  {% elif r.role == 'shared' %}<br><span class="note">Recorded in the registry as the primary
+  citation of <a href="{{ u('/cluster/' ~ r.recorded_for) }}">{{ gene(r.recorded_for) }}</a>; this
+  type's curation rests on the same work.</span>
+  {% endif %}
+  {% if r.supports %}<br><span class="note">What it supports: {{ r.supports }}</span>{% endif %}
+  {% if r.verified_by %}<br><span class="note small">verified by {{ r.verified_by|replace('_', ' ')|replace('+', ' + ') }}{% if r.local_pdf %}; the PDF is held locally{% endif %}</span>{% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
 {% if lit.curated %}
 <h3>What this project cites for this type</h3>
 <ul class="lit">

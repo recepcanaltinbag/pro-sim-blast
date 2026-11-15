@@ -20,6 +20,7 @@ import glob
 import json
 import os
 import re
+import unicodedata
 import sqlite3
 import sys
 from collections import defaultdict
@@ -45,6 +46,7 @@ verilen alinan icinde uzerinde altinda yaninda arasinda disinda kisi insan
 klinik hasta hastane ciger beyin doku analizi hesap hesaplanan olcum olculen
 sonuclar dagilim dagilimi grafik tablosu sekil resim harita kloroplast yaprak
 kok govde tohum meyve cicek
+islevsel karakterizasyon oldugunu gosteren dayanagi atfi olculdu kalinti
 """.split()
 
 # Ingilizce ile ESYAZIMLI olanlar ve Latin ikili adlandirma kisaltmalari.
@@ -85,6 +87,16 @@ def strip_residue_codes(text):
       amino asit kodlari   ILE, PRO, ...  ("ile", "pro" Turkce)
       ulke kodlari         TUR            ("tur" Turkce)
     """
+    #  UCUNCU KAYNAK: AYRISMIS UNICODE. 2026-11-15'te olculdu: Crossref'ten
+    #  gelen yazar adi "Diaz" dosyada AYRISMIS halde duruyordu (i + U+0301
+    #  birlesen aksan). Birlesen isaret kelime karakteri DEGIL, bu yuzden
+    #  "D i ´" ile "az" arasina bir kelime siniri dusuyor ve soyadinin son
+    #  iki harfi Turkce "az" sanilıyordu. Cozum sozcugu listeden atmak
+    #  degil -- gercek bir "az" gozden kacardi -- metni BIRLESIK bicime
+    #  (NFC) cevirmek: o zaman "Diaz" tek sozcuk olur. Turkce sozcuk
+    #  listesi ASCII oldugu icin bu normalizasyon hicbir gercek eslesmeyi
+    #  gizlemez.
+    text = unicodedata.normalize("NFC", text)
     text = RESIDUE_FIELD_RE.sub(" ", text)
     text = ISO3_FIELD_RE.sub(" ", text)
     return RESIDUE_TOKEN_RE.sub(" ", text)
@@ -95,8 +107,16 @@ def visible_text(html):
 
     Script icerigi atilmak zorunda, cunku orada href'ler JavaScript ile
     birlestiriliyor ("' + rcsb + '") ve tarayici onlari baglanti sanmaz.
+
+    METIN NFC'YE NORMALLESTIRILIR. Sebebi ayni gun veri dosyasi yolunda da
+    goruldu: ayrismis bir aksan (i + U+0301) bir sozcugu ikiye boluyor ve
+    "Diaz" soyadinin sonundaki "az" Turkce sanilıyor. Normalizasyon
+    strip_residue_codes icinde yapiliyordu ama SAYFA yolu o fonksiyondan
+    gecmiyor -- yani bir duzeltmeyi tek kod yoluna uygulamak, obur yolu
+    oldugu gibi birakti. Iki tarayici artik ayni metni goruyor.
     """
-    return re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
+    text = re.sub(r"<[^>]+>", " ", TAGS_RE.sub(" ", html))
+    return unicodedata.normalize("NFC", text)
 
 
 def check_live_site(base, max_pages=400, workers=8):

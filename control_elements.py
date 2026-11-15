@@ -118,6 +118,101 @@ def load(con, chemistry_path):
     return list(data.values())
 
 
+def mobility_evidence(con):
+    """Urun adindan gelen transpozon etiketi, MODELLERLE karsilastirilir.
+
+    NEDEN BU BLOK VAR. Bu sayfadaki transpozon etiketi bir urun adi duzenli
+    ifadesinden geliyor. Modellerle olculen karsiligi (family_scan.py)
+    `neighbor_family` tablosunda ZATEN duruyordu, ama o adim bu adimdan 49
+    sira SONRA kostugu icin sayfaya hic baglanmamisti: olcum vardi, iddia
+    duzeltilmemisti. 2026-11-15'te adim one alindi ve etiket AYRILDI.
+
+    DORT DURUM, VE DORDU AYRI SAYILIR. Olculdu (2026-11-15, onayli
+    girislerin komsulari): etiketi tasiyan satirlarin yalnizca bir kismi
+    modellere karsi SINANABILIYOR, cunku modelin bakabilmesi icin cikarilmis
+    bir protein cevirisi gerekiyor:
+
+      model_confirmed_mobile            model bir transpozaz/IS alanı buldu
+      model_says_recombinase_not_mobile model bir rekombinaz/integraz buldu,
+                                        yani bu bir mobil eleman DEGIL
+      scanned_no_model_hit              tarandi, kutuphanedeki hicbir model
+                                        tutmadi -- kutuphane 17 model tasiyor
+                                        ve IS630, IS6, ISL3 gibi aileleri
+                                        kapsamiyor, yani bu bir YOKLUK degil
+                                        kutuphanenin MENZILI
+      never_scanned_no_protein          protein cevirisi cikarilmamis; model
+                                        bu satira HIC bakmadi
+
+    EN ONEMLI KARAR: son iki durumu tek "model isabeti yok" kovasina
+    koymamak. Koyulsaydi, aracin bakmadigi satirlar "model yanlisladi" gibi
+    okunurdu -- bu projenin tekrar eden hatasi tam olarak budur. Ayni sebeple
+    etiket topluca modele CEVRILMEDI: model-yalnizca bir sayim, adlarindan
+    belli gercek IS ailelerini kutuphane eksikligi yuzunden ATARDI.
+    Yayimlanan sayimdan CIKARILAN tek grup, modelin CELISTIGI gruptur.
+    """
+    rows = list(con.execute("""
+        WITH tx AS (
+            SELECT DISTINCT nb.neighbor_id AS nid,
+                   nb.nucleotide_id || ':' || nb.start || '-' || nb.end
+                       || ':' || nb.strand AS pk
+            FROM neighbor nb
+            JOIN gene_category c ON c.neighbor_id = nb.neighbor_id
+                                AND c.category = 'transposon'
+            JOIN ro r ON r.candidate_id = nb.candidate_id
+            WHERE r.is_confirmed = 1
+        )
+        SELECT tx.nid,
+               CASE WHEN np.translation IS NULL OR np.translation = ''
+                    THEN 0 ELSE 1 END AS scanned,
+               MAX(CASE WHEN nf.method = 'mobility_hmm_v1' THEN 1 ELSE 0 END),
+               MAX(CASE WHEN nf.method LIKE 'recombinase%' THEN 1 ELSE 0 END)
+        FROM tx
+        LEFT JOIN neighbor_protein np ON np.protein_key = tx.pk
+        LEFT JOIN neighbor_family nf ON nf.neighbor_id = tx.nid
+        GROUP BY tx.nid
+    """))
+    counts = {"model_confirmed_mobile": 0,
+              "model_says_recombinase_not_mobile": 0,
+              "scanned_no_model_hit": 0,
+              "never_scanned_no_protein": 0}
+    for _nid, scanned, mobile, recomb in rows:
+        if mobile:
+            counts["model_confirmed_mobile"] += 1
+        elif recomb:
+            counts["model_says_recombinase_not_mobile"] += 1
+        elif scanned:
+            counts["scanned_no_model_hit"] += 1
+        else:
+            counts["never_scanned_no_protein"] += 1
+    labelled = len(rows)
+    checkable = (counts["model_confirmed_mobile"]
+                 + counts["model_says_recombinase_not_mobile"]
+                 + counts["scanned_no_model_hit"])
+    return {
+        "question": ("How much of the product-name transposon label survives "
+                     "an independent reading with Pfam models?"),
+        "universe": ("neighbouring genes of confirmed entries whose product "
+                     "name reads as a transposon"),
+        "neighbours_labelled_by_product_name": labelled,
+        "checkable_against_models": checkable,
+        "counts": counts,
+        "what_this_is_not": (
+            "The two zero-hit groups are kept apart on purpose. A row with no "
+            "protein translation was never shown to a model, so it is not "
+            "evidence against the label; and a scanned row with no hit may "
+            "still be a real insertion sequence, because the library holds a "
+            "fixed set of models and does not cover every IS family. Only the "
+            "recombinase group is a contradiction: there the models name a "
+            "recombinase or integrase, which is recombination machinery and "
+            "not a mobile element."),
+        "effect_on_the_published_count": (
+            "The label is kept as the product-name reading and is not replaced "
+            "by a model-only count, which would drop named IS families the "
+            "library does not cover. The contradicted group is reported "
+            "separately so a reader can subtract it."),
+    }
+
+
 def enrichment(rows, key_field, keys, col_field, cols, min_expected=5.0):
     """Anahtar x sutun tablosu + hucre sinyalleri + cins duzeyinde tekrar."""
     table = [[sum(1 for d in rows if d[key_field] == k and d[col_field] == c)
@@ -365,17 +460,23 @@ def main():
             "gene that merely sits upstream can be counted.",
             "The transposon label on this page comes from a product-name regular "
             "expression, and it catches recombination machinery that is not a "
-            "mobile element at all -- Holliday junction resolvase RuvX appears 117 "
-            "times. Named insertion-sequence families are therefore extracted "
-            "separately from the product string and kept apart from unnamed "
-            "transposases. How far the label can be trusted was measured "
-            "independently with Pfam models, in separate transposase and "
-            "recombinase HMM libraries; that measurement is published whole in "
-            "family_scan.json and is NOT folded into the counts on this page, "
-            "which remain the product-name reading.",
+            "mobile element at all. Named insertion-sequence families are "
+            "therefore extracted separately from the product string and kept "
+            "apart from unnamed transposases, and the label is now also read "
+            "independently with Pfam transposase and recombinase models: see "
+            "mobility_evidence below, which says how many of the labelled "
+            "neighbours the models confirm, how many they contradict, how many "
+            "were scanned without a hit, and how many were never scanned at all "
+            "because no protein translation was extracted. The counts on this "
+            "page remain the product-name reading, because a model-only count "
+            "would drop named IS families that the library does not cover; the "
+            "contradicted group is reported separately so it can be subtracted.",
             "An entry can carry more than one insertion-sequence family, so the "
             "per-family sets overlap and their sizes do not sum to the total.",
         ],
+        #  URUN ADI ETIKETININ MODELLE OLCULEN KARSILIGI. Kaynagi
+        #  `neighbor_family` (family_scan.py); adim artik bundan ONCE kosuyor.
+        "mobility_evidence": mobility_evidence(con),
         "regulators": regulators,
         "is_families": is_families,
         "mobile_specificity": specificity,

@@ -140,7 +140,8 @@ def norm(s):
 
 def _write_uniprot_report(rows):
     json.dump({"_generated": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
-               "_note": "Kaynaktan olculdu; duzeltme yapilmaz.",
+               "_note": "Measured against the source record; nothing here is "
+                        "corrected, only reported.",
                "rows": rows}, open(OUT, "w"), indent=1, ensure_ascii=False)
     print(f"{len(rows)} tip -> {OUT}")
 

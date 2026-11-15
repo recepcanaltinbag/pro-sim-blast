@@ -1643,6 +1643,10 @@ templates.env.globals.update(
     # yazilinca kirpiliyorlardi. Sayfada HTML olarak yaziliyorlar.
     REACTION_SCHEME_NOTE=atlas.REACTION_SCHEME_NOTE,
     gap_histogram=atlas.gap_histogram,
+    #  Atif kapsami FONKSIYON olarak gecirilir, deger olarak degil: deger
+    #  modul yuklenirken bir kez hesaplanir ve literature.json yeniden
+    #  uretilince sessizce bayatlardi.
+    citation_coverage=atlas.citation_coverage,
     # Grup ETIKETI tek yerden gelir: 6 ve 7 literaturde yok, numara olarak
     # yayimlanmazlar (bkz. atlas.group_label).
     group_label=atlas.group_label, is_literature_group=atlas.is_literature_group,
@@ -1672,74 +1676,69 @@ def _overview(con):
 
 
 def _carboxylate_spread():
-    """Katalitik karboksilatin yapisal referanslarda hangi kolonlara dustugu.
+    """Katalitik karboksilatin yapisal referanslarda hangi kolona dustugu.
 
-    BU SAYILAR SAYFADA ELLE YAZILIYDU (2026-11-03'e kadar): "18 of them",
-    "432 in 2 more", "the remaining 6", "407-411 and 449-451". Olcum iki
-    dosyada ZATEN vardi; yani sayfa, var olan bir olcumu kopyalayarak
-    yayimliyordu ve referans seti ya da capalama degistiginde sessizce
-    bayatlayacakti -- bu projede ayni bicimde bir sayi daha once bayatladi.
+    KAYNAK DEGISTI (2026-11-15). Bu sayilar once uc dosyadan okunuyordu
+    (carboxylate_column_audit.json, ..._raw.json, carboxylate_clade_shift.json)
+    ve ucunun de pipeline'da URETENI YOKTU: 2026-10-28 tarihli tek seferlik
+    bir oturumun ciktilariydi, yeniden uretilemiyordu, biri ayrica kolon
+    duzeltmesinden ONCE uretildigi icin SUPERSEDED idi. Sayfa bu yuzden
+    "bu sayilar yeniden uretilemiyor" uyarisini tasimak zorundaydi.
+    Artik `carboxylate_column.py` ayni olcumu active_site.json'dan
+    TUREVLIYOR, yani rebuild grafiginde bir adim ve bayatligi olculebiliyor.
 
-    Duzyazi AYRISTIRILMIYOR. Denetimin `note` alani bantlari Turkce bir
-    cumlede tasiyor; buradaki hicbir deger o cumleden okunmuyor:
-      testable    : result.testable
-      within_one  : references_at_431 + at_432  (431 +-1 penceresi)
-      outliers    : testable - within_one
-      bands       : column_bands'in LISTE degerli anahtarlari -- "431-432"
-                    anahtari bir sayi dizesi tasidigi icin kendiliginden
-                    disarida kalir
-    Herhangi bir alan eksikse None doner ve sablon o cumleyi yazmaz; eksik
-    olcumu tahminle doldurmak, olculmemis bir seyi yayimlamak olurdu.
+    MESAFENIN ANLAMI DEGISTI, bu yuzden cumle de degisti. Eski dosyada
+    `column_call_distance` ESKI (yanlis) kolon 471'in cagirdigi kalintinin
+    demire uzakligiydi ve 10,9-14,7 A gibi degerler tasiyordu -- yani "bu
+    kolon yanlis" olcumuydu. Yeni dosyadaki mesafe, demiri GERCEKTEN
+    koordine eden karboksilatin en yakin oksijeninin demire uzakligi
+    (1,8-2,3 A, birinci kabuk). Ikisi ayni ada sahip iki FARKLI olcum;
+    sayilari ayni cumlede degistirmek, olculmemis bir seyi olculmus gibi
+    gosterirdi. Bu yuzden sablondaki cumle de bu fonksiyonla birlikte
+    yeniden yazildi.
+
+    Alan eksikse None doner ve sablon o cumleyi hic yazmaz.
     """
-    audit = atlas.read_json(apath("carboxylate_column_audit.json")) or {}
-    clade = atlas.read_json(apath("carboxylate_clade_shift.json")) or {}
-    real = audit.get("the_real_column") or {}
-    result = audit.get("result") or {}
-    bands = [k for k, v in (clade.get("column_bands") or {}).items()
-             if isinstance(v, list)]
+    data = atlas.read_json(apath("carboxylate_column.json")) or {}
+    rows = data.get("per_reference") or []
     try:
-        testable = int(result["testable"])
-        at_col = int(real["references_at_431"])
-        at_next = int(real["at_432"])
-        column = int(real["column"])
+        column = int(data["model_column"])
+        examined = int(data["structures_examined"])
+        within_one = int(data["within_one_column"])
+        at_column = int(data["at_the_model_column"])
+        on_ligand = int(data["column_lands_on_an_iron_ligand"])
     except (KeyError, TypeError, ValueError):
         return None
-    if not bands:
+    if not examined:
         return None
-    within_one = at_col + at_next
-
-    # MESAFE ARALIGI: sayfa "in all 26 testable structures" diyordu, OLCUM
-    # 20 (2026-11-03). Ham dosyada 6 yapi `column_call_distance = -1`
-    # tasiyor -- bu bir mesafe DEGIL, "kolon cagrisinin yapida karsiligi
-    # bulunamadi" nobetci degeri; ve o 6 yapi tam da bant aykirilarindan
-    # (DdmC, NdmA, NdmB, BphA1, NagGH, ROCH34). Bir yapida (HcaE/8K0A)
-    # mononukleer demir hic yok ve alan bile yazilmamis.
-    #
-    # Nobetci degeri ayiklamak ZORUNLU: naif bir min() sayfaya "-1 A"
-    # yazardi. Ayiklanan sayi da GIZLENMIYOR, cunku 20'de olculen bir
-    # araligi 26 yapiya atfetmek tam olarak bu projenin tekrar eden hatasi.
-    raw = atlas.read_json(apath("carboxylate_column_audit_raw.json")) or []
-    dists = [r["column_call_distance"] for r in raw
-             if isinstance(r.get("column_call_distance"), (int, float))
-             and r["column_call_distance"] > 0]
-    sentinel = sum(1 for r in raw
-                   if isinstance(r.get("column_call_distance"), (int, float))
-                   and r["column_call_distance"] <= 0)
-    no_field = sum(1 for r in raw if "column_call_distance" not in r)
-
-    out = {"column": column, "testable": testable, "at_column": at_col,
-           "at_next": at_next, "within_one": within_one,
-           "outliers": testable - within_one,
-           "bands": " and ".join(sorted(bands)),
-           #  Denetimin TARIHI dosyadan okunuyor. Sayfaya elle yazmak
-           #  bayatlayacak bir sayi yazmak olurdu ve kapi
-           #  (check_carboxylate_claim_is_measured) onu hakli olarak
-           #  reddediyor: bu paragraftaki her sayi bir olcumden gelmeli.
-           "audit_date": audit.get("_date")}
-    if dists:
-        out.update({"dist_n": len(dists), "dist_min": min(dists),
-                    "dist_max": max(dists), "dist_unmeasured": sentinel,
-                    "dist_no_iron": no_field})
+    identity = data.get("identity_of_the_iron_coordinating_carboxylate") or {}
+    asp = int(identity.get("ASP") or 0)
+    glu = int(identity.get("GLU") or 0)
+    others = data.get(
+        "other_columns_seen_for_an_iron_coordinating_carboxylate") or []
+    dist = data.get("closest_oxygen_distance_A") or {}
+    out = {
+        "column": column,
+        "testable": examined,
+        "at_column": at_column,
+        "within_one": within_one,
+        "on_ligand": on_ligand,
+        "outliers": examined - within_one,
+        #  Bant adlari artik bir duzyazidan degil, olculen kolonlardan
+        #  geliyor; "and" ile birlestirilmesi yalnizca cumle icin.
+        "bands": " and ".join(str(c) for c in others),
+        "asp": asp,
+        "glu": glu,
+        "identified": asp + glu,
+        "unresolved": len(data.get("structures_unresolved") or []),
+        "no_carboxylate": len(
+            data.get("structures_with_no_carboxylate_on_the_iron") or []),
+        "generated": data.get("generated_utc"),
+    }
+    if dist.get("n"):
+        out.update({"dist_n": int(dist["n"]), "dist_min": float(dist["min"]),
+                    "dist_max": float(dist["max"])})
+    out["n_rows"] = len(rows)
     return out
 
 
@@ -2088,6 +2087,13 @@ def atlas_control(request: Request):
     return render(request, "atlas_control.html",
                   rel=atlas.operon_relations_view(apath("operon_relations.json")),
                   vo=atlas.variant_operon_view(apath("variant_and_operon.json")))
+
+
+@app.get("/references", response_class=HTMLResponse)
+def references(request: Request):
+    """Tum atif kutugu: her kaynak ve NEYI destekledigi."""
+    return render(request, "references.html",
+                  refs=atlas.references_view(apath("literature.json")))
 
 
 @app.get("/atlas/learning", response_class=HTMLResponse)

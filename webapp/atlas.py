@@ -166,10 +166,72 @@ def _literature_raw(path):
     return data.get("types") or {}
 
 
+def references_view(path=None):
+    """Tum kutuk, /references sayfasi icin. Uretilen dosyadan okunur.
+
+    `citations.yaml` DOGRUDAN okunmaz: tek okuma yolu olsun diye kutuk
+    `literature.py` tarafindan literature.json'a yayimlaniyor, boylece
+    kapinin Ingilizce ve tanimlayici kontrolleri bu sayfayi da kapsiyor.
+    """
+    if path is None:
+        path = os.path.join(_DEFAULT_ANALYSIS_DIR, "literature.json")
+    data = read_json(path) or {}
+    block = data.get("registry_published")
+    if not block or not (block.get("by_type") or block.get("project")):
+        return None
+    return block
+
+
+def citation_coverage(path=None):
+    """Atif kapsami, OLCULEREK. Kalite sayfasi icin.
+
+    NEDEN OLCUM. Kalite sayfasindaki sinirlilik satiri "50 tipin kaynagi
+    yalnizca 'established literature' diyor" cumlesini SABIT yaziyordu.
+    2026-11-15'te olculdu: o sayi artik 1. Dogrulanmis atif kutugu
+    (citations.yaml) 76 tipin 72'sine bagliydi ama bu sayfa kutugu hic
+    okumuyordu; sinirlilik gercekten vardi, fakat yayimlanan BUYUKLUGU
+    yanlisti. Sabit sayi, degisen veriyle sessizce ayrisir.
+
+    `shared` rolu bir EKSIK DEGIL: kutuk, o makaleyi kardes bir tipin
+    birincil atfi olarak kaydetmis ve bu tipin kuratorlugu ayni ise
+    dayaniyor (GxtA'nin SxtT makalesine dayanmasi gibi). Kendi referans
+    atfi olmayanlardan ayri sayilir.
+    """
+    if path is None:
+        path = os.path.join(_DEFAULT_ANALYSIS_DIR, "literature.json")
+    types = _literature_raw(path)
+    if not types:
+        return None
+    reference, shared, registry, with_doi = set(), set(), set(), set()
+    for cluster, recs in types.items():
+        for rec in recs:
+            if rec.get("doi"):
+                with_doi.add(cluster)
+            if rec.get("source") != "registry":
+                continue
+            registry.add(cluster)
+            if rec.get("role") == "reference":
+                reference.add(cluster)
+            elif rec.get("role") == "shared":
+                shared.add(cluster)
+    allc = set(types)
+    return {
+        "types": len(allc),
+        "with_doi": len(with_doi),
+        "with_reference": len(reference),
+        "shared_only": sorted(shared - reference),
+        "no_registry": sorted(allc - registry),
+        "no_reference": sorted(allc - reference - shared),
+    }
+
+
 def literature_view(cluster, path=None):
     """Bir tipin literatur kayitlari, KAYNAGINA GORE AYRI gruplanmis.
 
-    Uc grup birlestirilmez, cunku ucu ayni seyi iddia etmiyor: `curated`
+    Dort grup birlestirilmez, cunku dordu ayni seyi iddia etmiyor:
+    `registry` projenin DOGRULANMIS atif kutugunden (citations.yaml) gelir ve
+    kaydin KENDI beyanina gore bu tipin referans atfi / ikincil atfi / baska
+    bir tip icin kayitli ortak atfi oldugunu soyler; `curated`
     bu projenin gosterdigi gerekcedir, `structure` yapinin birincil
     atifidir, `uniprot` ise referans proteinin giris atif listesidir ve
     "bu enzimin makalesi" DEMEK DEGILDIR. Sayfada ayri okunabilmeleri
@@ -192,13 +254,14 @@ def literature_view(cluster, path=None):
         #  kuratorluk karari yapilmamis gibi gorunuyordu.
         absent = (read_json(path) or {}).get("absence_is_classified") or {}
         if cluster in (absent.get("declared_none") or []):
-            return {"curated": [], "structure": [], "uniprot": [],
+            return {"registry": [], "curated": [], "structure": [], "uniprot": [],
                     "total": 0, "unresolved": [], "declared_none": True}
         return None
 
-    groups = {"curated": {}, "structure": {}, "uniprot": {}}
+    groups = {"registry": {}, "curated": {}, "structure": {}, "uniprot": {}}
     for rec in records:
-        bucket = ("curated" if rec.get("source") == "curated"
+        bucket = ("registry" if rec.get("source") == "registry"
+                  else "curated" if rec.get("source") == "curated"
                   else "structure" if rec.get("source") == "pdb_primary"
                   else "uniprot")
         key = rec.get("doi") or ("pmid:" + rec["pmid"] if rec.get("pmid") else None)
@@ -217,14 +280,21 @@ def literature_view(cluster, path=None):
         if rec.get("is_assignment_basis"):
             held["is_assignment_basis"] = True
 
-    def ordered(bucket, by_evidence=False):
+    #  Kutuk kayitlari ROLE gore siralanir: referans atfi once, ortak atif
+    #  sonra. Yila gore siralamak, tipin kendi referans makalesini daha yeni
+    #  bir ikincil atfin ALTINA dusurebiliyordu.
+    ROLE_ORDER = {"reference": 0, "secondary": 1, "note": 2, "shared": 3}
+
+    def ordered(bucket, by_evidence=False, by_role=False):
         rows = list(groups[bucket].values())
         rows.sort(key=lambda r: (
+            ROLE_ORDER.get(r.get("role"), 9) if by_role else 0,
             0 if (by_evidence and r.get("function_evidence")) else 1,
             -(int(r["year"]) if str(r.get("year") or "").isdigit() else 0)))
         return rows
 
-    out = {"curated": ordered("curated"),
+    out = {"registry": ordered("registry", by_role=True),
+           "curated": ordered("curated"),
            "structure": ordered("structure"),
            "uniprot": ordered("uniprot", by_evidence=True)}
     out["total"] = sum(len(v) for v in out.values() if isinstance(v, list))
@@ -2634,6 +2704,11 @@ PROVENANCE = [
     ("active_site.json", "file", "Catalytic-iron pocket of every type with a structure, from "
      "crystals where they exist and from predicted models elsewhere, with the validation of "
      "that transfer and how each pocket column varies across members.", "active_site.py"),
+    ("carboxylate_column.json", "file", "Whether the motif model's carboxylate column lands, in "
+     "each curated reference structure, on the aspartate or glutamate that actually coordinates "
+     "the mononuclear iron, with the column each one is observed at and the first-shell oxygen "
+     "distance. Derived from active_site.json; no structure is parsed a second time.",
+     "carboxylate_column.py"),
     ("operon_relations.json", "file", "Regulator, operon architecture and transposon "
      "associations, with the annotation bias measured.", "operon_relations.py"),
     ("learning.json", "file", "What can and cannot be predicted from sequence and from genomic "
@@ -2790,18 +2865,17 @@ INTERNAL_FILES = frozenset({
 #  olmaya devam ediyor (ROADMAP 135.36).
 AWAITING_TRANSLATION = frozenset()
 
-#  SAYFA OKUYOR AMA URETENI YOK. Bu iki dosya `app.py` tarafindan
-#  okunuyor ve atlas ana sayfasindaki karboksilat paragrafini besliyor,
-#  ama hicbir grafik adimi onlari uretmiyor (2026-11-14'te olculdu:
-#  rebuild.py'de hic gecmiyorlar). Yani yayimlanan bir iddia yeniden
-#  uretilemez bir dosyaya dayaniyor. Sayfa bu sinirı YAZIYOR; burada da
-#  beyan ediliyorlar, cunku "belgesiz" kovasina atilirlarsa yapilacak is
-#  gorunmez olur. Cozum bir KURATORLUK karari: denetimi grafik adimina
-#  cevirmek ya da paragrafi geri cekmek (ROADMAP 135.39).
-READ_BUT_UNPRODUCED = frozenset({
-    "carboxylate_column_audit.json",
-    "carboxylate_column_audit_raw.json",
-})
+#  SAYFA OKUYOR AMA URETENI YOK. 2026-11-14'te iki dosya bu durumdaydi:
+#  `app.py` atlas ana sayfasindaki karboksilat paragrafini onlardan
+#  besliyordu, ama hicbir grafik adimi onlari uretmiyordu -- yani
+#  yayimlanan bir iddia yeniden uretilemez bir dosyaya dayaniyordu.
+#  2026-11-15'te COZULDU: `carboxylate_column.py` ayni olcumu
+#  active_site.json'dan turevliyor, adim grafige girdi ve sayfa artik
+#  uretilen dosyayi okuyor. Eski iki dosya ne okunuyor ne uretiliyor, yani
+#  ORPHANED_FILES'a gecti. Kume BOS KALIYOR, kaldirilmiyor: ayirt edici
+#  mekanizma bir sonraki vaka icin duruyor ve "belgesiz", "gecersiz",
+#  "cevirisi bekliyor", "ureteni yok" ayri durumlar olmaya devam ediyor.
+READ_BUT_UNPRODUCED = frozenset()
 
 #  NE URETENI NE OKUYANI VAR. Diskte duruyorlar ama depoda adlari hicbir
 #  yerde gecmiyor: eski oturumlarin tek seferlik ciktilari. SILINMIYORLAR,
@@ -2810,6 +2884,12 @@ READ_BUT_UNPRODUCED = frozenset({
 #  dayanmiyor. Uretimi geri gelirse bu kumeden cikarilmalari gerekir.
 ORPHANED_FILES = frozenset({
     "candidate_rieske_audit.json",
+    #  2026-11-15'e kadar READ_BUT_UNPRODUCED'daydilar; sayfa artik
+    #  uretilen carboxylate_column.json'u okuyor, bu ikisini kimse
+    #  okumuyor. Silinmiyorlar: olculmus bir ciktiyi silmek sahibinin
+    #  karari ve eski olcumun kendisi tarihce olarak duruyor.
+    "carboxylate_column_audit.json",
+    "carboxylate_column_audit_raw.json",
     "carboxylate_column_by_clade.json",
     "citation_findings.json",
     "citation_todo.json",

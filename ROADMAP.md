@@ -6524,3 +6524,255 @@ Ama engel artık **sessiz değil**: bugün eklenen
 `family_scan`'in tablosunu okumaya başlarsa FAIL verir, çünkü üreten
 adım sonra sıralanmış. Yani "önce sırayı taşı" kuralı artık yoruma değil
 kapıya yazılı.
+
+## 136 · Literatür, karboksilat ve transpozon: kullanıcının üç isteği (2026-11-15)
+
+Kullanıcı üç şey istedi: (1) her enzim için literatürdeki makalenin
+DOI'si sayfasında olsun ve **kontrol edilebilir bilgilerin referansı
+verilsin**, (2) karboksilat denetimi grafik adımına çevrilsin,
+(3) transpozon okuması için "bilimsel olarak ne gerekiyorsa".
+
+### 136.1 · Veri eksik değildi, OKUMA YOLU eksikti
+
+`citations.yaml` **121 doğrulanmış atıf** tutuyordu: hepsinde DOI, hepsi
+Crossref/PDF ilk sayfası/UniProt kaydından doğrulanmış, ve her kayıt
+`used_for` alanında **hangi iddia için** kullanıldığını yazıyor. 76 tipin
+72'si `types/*.yaml` içindeki `citations:` listesiyle bu küttüğe bağlı.
+
+**Ama `literature.py` kütüğü hiç okumuyordu.** Tanımlayıcıları `source`
+düz yazısından çıkarıyordu. Sonuç (2026-11-15'te ölçüldü):
+
+| | önce | sonra |
+|---|---|---|
+| atfı olan tip | 69 / 76 | **76 / 76** |
+| DOI'si olan tip | 60 / 76 | **76 / 76** |
+| yayımlanan kayıt | 183 | 328 |
+| farklı DOI | 127 | 172 (172/172 sicilde kayıtlı) |
+
+**Daha kötüsü:** 7 tipin sayfası *"this project's curation records no
+individual citation for this type's reference enzyme"* diyordu — kütükte
+o tipin **referans atfı duruyorken**. Yani sayfa, projenin kendi
+kütüğünün yalanladığı bir **yokluk** iddia ediyordu. Bu, bu oturumun
+baskın hata sınıfının (aracın ürettiği yokluk, verinin yokluğu gibi
+görünür) bir örneği daha.
+
+**Yapılanlar.** `literature.py`'ye dördüncü kaynak eklendi (`registry`);
+kayıt kendi **rolünü** taşıyor ve roller birleştirilmiyor:
+`reference` (kütük bu makaleyi bu tipin referans atfı olarak işaretlemiş),
+`secondary`, `shared` (kütükte kardeş bir tipin birincil atfı — GxtA'nın
+SxtT makalesine dayanması gibi), `note`. Tip sayfasında **en üstte** yeni
+bir blok: künye + DOI + PMID + *"What it supports"* cümlesi + *"verified
+by"*. Böylece okuyucu sayfadaki bir ifadeden dayandığı işe gidebiliyor —
+kullanıcının istediği şey tam buydu.
+
+17 tipin `source_kind`'ı `general` ("tek tek atıf kaydedilmemiş")
+diyordu; 16'sının kütükte referans atfı vardı, hepsi `paper` olarak
+düzeltildi ve `source` alanları DOI'yi adıyla yazar oldu. Geriye **tek**
+tip kaldı: `3_321_Nvd` — ve o da aşağıda kapandı.
+
+### 136.2 · Kütükte hiç atfı olmayan beş tip: literatür araması
+
+Dört tip kütüğe hiç bağlı değildi (GdmA, PrnD, NagGH, Nvd), biri
+(GbcA) yalnızca ikincil atıf taşıyordu. Beş makale bulundu, künyeleri
+**Crossref'ten**, PMID'leri **PubMed esearch'ten** doğrulandı; hiçbiri
+hatırlanarak yazılmadı:
+
+| tip | atıf | DOI |
+|---|---|---|
+| 1_117_PrnD | Lee, Simurdiak & Zhao 2005, JBC | 10.1074/jbc.m505334200 |
+| 3_321_Nvd | Yoshiyama *et al.* 2006, Development | 10.1242/dev.02428 |
+| 3_307_NagGH | Zhou *et al.* 2002, J Bacteriol | 10.1128/jb.184.6.1547-1555.2002 |
+| 3_307_NagGH | Fang & Zhou 2013, AMB (ikincil) | 10.1007/s00253-013-4914-x |
+| 1_116_GdmA | Bleem *et al.* 2022, Chem Catalysis | 10.1016/j.checat.2022.04.019 |
+
+GdmA'nın makalesi PubMed'de indekslenmemiş; `pmid` alanı **uydurulmak
+yerine boş bırakıldı**. GbcA için kütükte duran Wargo 2008 kaydına bu
+tipin **referans** atfı olduğu satırı eklendi (makale `gbcAB`'yi
+tanımlayan iş). Kütük 121 → **126 kayıt**, `citations_check.py`
+126/126'yı Crossref'ten çözdü ve başlıkları eşleşti.
+
+### 136.3 · Yayımlanan Türkçe: kapının göremediği üç kaynak alanı
+
+`6_601_PAO`, `6_602_CAO`, `6_603_PTC52` tiplerinin `source` alanı
+*"Islevsel karakterizasyon:"* ile başlıyordu ve bu alan **sayfada
+basılıyor**. `check_site.TURKISH_RE` bunu görmedi, çünkü "islevsel" ve
+"karakterizasyon" kelime listesinde yoktu. Üçü çevrildi ve listeye
+**yalnızca bu derlemede gerçekten geçen** sözcükler eklendi
+(`islevsel karakterizasyon oldugunu gosteren dayanagi atfi olculdu
+kalinti`). Ayırt edici sınandı: eski dize dört sözcükle yakalanıyor,
+yeni dize temiz.
+
+Aynı tarama `accession_verified` alanının 68 tipte Türkçe olduğunu da
+gösterdi — **ama o alan hiçbir sayfada basılmıyor**, yani kuratörlük
+içi metin; dokunulmadı. Kural: yayımlanan ne ise İngilizce olmalı,
+kuratörün kendi notu değil.
+
+### 136.4 · Kalite sayfasındaki sabit sayı yanlıştı
+
+Sınırlılık tablosunda *"for **50** of them chemistry.csv records the
+source only as established literature"* yazıyordu. Ölçüm: o sayı artık
+**1**. Sınır gerçekten vardı ama yayımlanan **büyüklüğü** yanlıştı.
+Satır `atlas.citation_coverage()` ile **ölçülen** hale getirildi
+(76 tipte DOI, 68'inde kendi referans atfı, 4'ü kardeş tipin atfına
+dayanıyor, 0'ı atıfsız) ve fonksiyon şablona **değer değil fonksiyon**
+olarak geçiriliyor — değer modül yüklenirken bir kez hesaplanıp
+sessizce bayatlıyordu.
+
+### 136.5 · Karboksilat denetimi: ölçümü tekrarlamak değil, TÜREVLEMEK
+
+135.39'un açık maddesi: atlas paragrafı üretenı olmayan üç dosyaya
+dayanıyordu. Çözüm, yapıları ikinci kez ayrıştırmak **değil**:
+`active_site.py` her referans yapısı için katalitik demiri, ona
+koordine olan kalıntıları, her motif kolonunun yapıda hangi kalıntıya
+düştüğünü ve her havuz kalıntısının hizalama kolonunu **zaten ölçüyor**.
+Bir ölçümün iki uygulaması bu projede yasak.
+
+Yeni adım `carboxylate_column.py` ölçümü `active_site.json`'dan
+türevliyor. İlk koşu eski tek seferlik denetimin sonucunu **yeniden
+üretti**: kolon 431, 12 yapının 10'unda demiri gerçekten koordine eden
+Asp'a düşüyor; sapan ikisi (KshA15/2ZYL, ROCH34/7FHR) **kolon 451**'de —
+eski denetimin "449-451" bandının tam karşılığı. Demiri koordine eden
+karboksilat 12/12 **Asp** (ölçüldü, sayfadaki iddia doğru).
+
+Sayfadaki *"bu sayılar yeniden üretilemiyor"* uyarısı **kaldırıldı**,
+çünkü artık doğru değil. Mesafe cümlesi de yeniden yazıldı: eski dosyada
+mesafe **yanlış kolonun** demire uzaklığıydı (10,9-14,7 Å), yenisinde
+gerçek ligandın birinci kabuk mesafesi (1,8-2,3 Å). Aynı cümlede yalnızca
+sayıyı değiştirmek, iki farklı ölçümü tek ölçüm gibi gösterirdi.
+Eski iki dosya `READ_BUT_UNPRODUCED`'dan `ORPHANED_FILES`'a geçti;
+küme boş kaldı, kaldırılmadı.
+
+### 136.6 · Yapısal kapsam 12/25 idi — sebebi veri değil, bir BAYRAK
+
+`active_site` adımı `--offline` koşuyor (grafik ağdan bağımsız olsun
+diye) ve 25 PDB kimliğinin 13'ü önbellekte yoktu. Yayımlanan
+"structures_available: 12" bu yüzden bir **veri sınırı gibi** okunuyordu;
+aslında aracın kendi kısıtıydı. 13 yapı indirildi (önbellek 26 dosya),
+adım yeniden koşacak. `structures/` **gitignore'da**, yani bu sayı makine
+yereldir; bu da yazıldı.
+
+### 136.7 · Transpozon: model-yalnızca sayım YANLIŞ olurdu
+
+129/135.40b'nin açık maddesi. `family_scan` adımı `control_elements`in
+**önüne alındı** (girdileri 10. adımda hazır) ve yazdığı üç tablo
+sahiplendirildi (`DECLARED_WRITES["family_scan"]`) — daha önce beyan
+edilmemişti, yazmaları dosya sahibi `database`'e düşüyordu.
+
+**Ölçüm (onaylı girişlerin komşuları, 2026-11-15).** Ürün adı 9.243
+komşuyu transpozon diye etiketliyor. Modellerle:
+
+| durum | n |
+|---|---|
+| model doğruladı (transpozaz/IS alanı) | 1.526 |
+| model **çelişti**: rekombinaz/integraz, mobil eleman değil | 513 |
+| tarandı, kütüphanedeki hiçbir model tutmadı | 1.498 |
+| **hiç taranmadı** (protein çevirisi çıkarılmamış) | 5.706 |
+
+**En önemli karar son iki satırı ayırmak.** Tek "model isabeti yok"
+kovasına konsaydı, aracın **hiç bakmadığı** 5.706 satır "model
+yanlışladı" gibi okunurdu. Ve etiket topluca modele **çevrilmedi**:
+kütüphane 17 model taşıyor ve IS630, IS6, ISL3, IS1 gibi adlarından
+belli gerçek aileleri kapsamıyor — model-yalnızca sayım bunları atardı.
+Yayımlanan sayımdan çıkarılabilir tek grup, modelin **çeliştiği**
+513'tür ve o ayrı yayımlanıyor.
+
+### 136.8 · Eklenen muhafızlar (hepsinin ayırt edicisi bozuk veride sınandı)
+
+| muhafız | bozuk veride ne yakaladı |
+|---|---|
+| `literatur: kütüğe bağlı her atıf sayfaya ULAŞIYOR` | qxyA'nın atfı sayfadan silinince FAIL |
+| `literatur: 'atıf kaydedilmemiş' beyanı kütükle ÇELİŞMİYOR` | LigX'in eski yanlış cümlesi geri konunca FAIL |
+| `literatur: yayımlanan iddia cümleleri İngilizce` | Türkçe rol öneki yayımlanınca FAIL |
+| `pages: every data file a page reads has a producer` | sayfa üretenı olmayan dosyayı okuyunca FAIL |
+| `graph: adım sırası okuduğu tabloyla uyumlu` (genişletildi) | family_scan geri alınınca FAIL |
+
+Dördüncüsü bugünün asıl kazancı: 135.39'daki durum bir **kümede elle**
+beyan edilerek görünür kılınmıştı, ama elle tutulan küme yeni vakayı
+kendiliğinden bulmaz. Artık kapı durumu **buluyor**.
+
+### 136.9 · `/references`: kütüğün tamamı yayımlandı
+
+Tip sayfaları yalnızca o tipin atıflarını gösteriyor. Ama kütüğün
+**dokuz** kaydı hiçbir tipe bağlı değil ve sitenin her yerinde kullanılan
+ifadeleri destekliyorlar: motif tanımları (`ro_motif.py` kapıları),
+karboksilatın katalitik olarak **zorunlu** olduğunun kanıtı (NDO
+Asp362→Ala mutantı ürün vermiyor — `triad_gate.py`'nin 3/3 kuralının
+gerekçesi), Batie ve Kweon sınıflandırma şemaları, MsmA aday referansı,
+ve bu veritabanının **çeliştiği** bir ferredoksin iddiası.
+
+Yeni sayfa `/references` kütüğü bütün olarak yayımlıyor: 126 atıf, 126
+DOI, 118 PMID; her kayıt künyesi, DOI/PMID bağlantısı, *"verified by"*
+beyanı ve **neyi desteklediği** ile. Tipe bağlı olanlar tip bloklarında
+(role göre: reference / secondary / shared), proje düzeyindekiler
+"Methods, definitions and classifications" başlığı altında.
+
+Bir kaynak **iki kovada da** olabilir: tez hem PrnD'nin ikincil atfı hem
+Batie şemasının kaynağı. İlk yazımda tipe bağlı kayıtların proje
+satırları hiç yayımlanmıyordu — yöntem iddiasının kaynağı görünmez
+kalıyordu; düzeltildi.
+
+Kütük **doğrudan okunmuyor**: `literature.py` onu `literature.json`'a
+yayımlıyor, sayfa oradan okuyor. Böylece kapının İngilizce ve
+tanımlayıcı kontrolleri bu sayfayı da kapsıyor. Nitekim kapsadı:
+proje düzeyindeki 12 satır Türkçeydi, çevrildi; ve **sarkan atıf
+muhafızı yayımlanan iddia cümlelerine genişletildi** — `used_for`
+satırları eskiden yalnızca kuratörün notu olduğu için serbestçe dosya
+adı anıyordu (biri yayımlanmayan `aerc_resolution.json`'ı, biri depoda
+hiç olmayan bir `.md` raporunu). Yayımlanan bir cümle bir dosya
+gösteriyorsa o dosya bulunabilir olmalı.
+
+### 136.10 · 136.5 ve 136.6'nın nihai sayıları
+
+Yapı önbelleği ısıtıldıktan sonra `active_site` 25 yapıyı çözdü
+(önce 12) ve karboksilat türevlemesi yeniden koştu:
+
+| | önce (12 yapı) | sonra (25 yapı) |
+|---|---|---|
+| katalitik demiri çözülen | 12 | **24** |
+| triad **tam kolonda** doğrulanan tip | 8 | **19** |
+| triad pencere içinde doğrulanan | 10 | **21** |
+| kolon 431 demiri bağlayan D/E'ye düşüyor | 10 | **21** |
+| sapan (kolon 451) | 2 (KshA15, ROCH34) | **3** (+PDO) |
+| demiri koordine eden karboksilat | ASP 12/12 | **ASP 24/24** |
+| en yakın oksijen mesafesi | 1,75-2,30 Å | **1,71-2,32 Å** |
+
+PDO'nun sapması eski tek seferlik denetimin kendi notuyla birebir
+uyuşuyor ("4_406_PDO için kolon D365 diyor, kristalde demiri koordine
+eden ASP343") — türevleme, yeniden üretilemeyen denetimi **doğruladı**.
+
+Bir yapı (HcaE/8K0A) katalitik kriterleri sağlayan hiçbir demir
+taşımıyor. İlk yazımda bu yapı `active_site`'ın `undetermined` listesinde
+olduğu için türevleme onu **hiç görmüyordu**: 25'in 24'ü ile "24 yapı"
+arasındaki fark kaybolacaktı. Düzeltildi; sayfa artık o yapıyı da
+ayrı sayıp sebebini söylüyor. Kendi aracımın ürettiği yokluk, bu
+oturumda yedinci kez.
+
+### 136.11 · Kapının kendi iki hatası: ayrışmış Unicode ve tek kod yoluna uygulanan düzeltme
+
+Yayın `check_site`'ta iki kez durdu ve ikisi de **kapının kendisinin**
+hatasıydı.
+
+**(1) Ayrışmış Unicode yanlış pozitif.** `/cluster/2_217_HcaE` sayfası ve
+`literature.json` "Türkçe `az` içeriyor" diye FAIL verdi. Kaynak:
+Crossref'ten gelen yazar adı **Díaz**, dosyada **ayrışmış** biçimde
+(i + U+0301 birleşen aksan). Birleşen işaret kelime karakteri **değil**,
+bu yüzden `\baz\b` deseni soyadının son iki harfini bağımsız sözcük
+sanıyor. Çözüm sözcüğü listeden atmak **değil** — o zaman gerçek bir
+"az" gözden kaçardı — metni **NFC**'ye normalleştirmek: `Díaz` tek
+sözcük olur. Türkçe sözcük listesi ASCII olduğu için normalizasyon
+hiçbir gerçek eşleşmeyi gizlemiyor (sınandı: ayrışmış "Díaz E" temiz,
+"az bulundu" hâlâ yakalanıyor).
+
+**(2) Düzeltmeyi TEK kod yoluna uyguladım.** Normalizasyonu
+`strip_residue_codes` içine koydum ve veri dosyası taraması temizlendi —
+ama **sayfa** taraması o fonksiyondan geçmiyor, `visible_text` kullanıyor.
+Yani aynı hata ikinci yolda olduğu gibi kaldı ve yayın ikinci kez
+durdu. İki tarayıcı artık aynı metni görüyor. Ders, bu oturumda
+tekrar edenin aynısı: **bir ölçümün iki kod yolu varsa, düzeltme ikisine
+de girmeli** — yoksa düzeltilmiş olan, düzeltilmemiş olanı gizler.
+
+**Yan kazanç.** Bugün listeye eklenen `olculdu` sözcüğü, yayımlanan
+`curation_claims.json` içinde eskiden beri duran Türkçe bir notu
+(`"Kaynaktan olculdu; duzeltme yapilmaz."`) ortaya çıkardı. Kapının
+ayırt edicisini genişletmek, o gün başka bir sebeple eklenmiş olsa bile,
+görünmeyen bir kusuru hemen görünür yaptı.

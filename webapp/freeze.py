@@ -188,6 +188,8 @@ def main():
     save("/", "index.html"); save("/clusters", "clusters.html"); save("/about", "about.html")
     # 2026-11-02: anasayfanin mimari bolumu kendi sayfasina tasindi.
     save("/architecture", "architecture.html")
+    #  2026-11-15: tum atif kutugu kendi sayfasinda yayimlaniyor.
+    save("/references", "references.html")
     print("[pages] atlas")
     for p in ("atlas", "atlas/groups", "atlas/phylogeny", "atlas/network", "atlas/taxonomy", "atlas/operons",
               "atlas/regulation", "atlas/ecology", "atlas/evidence", "atlas/novel",
