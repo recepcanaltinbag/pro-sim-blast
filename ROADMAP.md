@@ -6800,3 +6800,27 @@ sayfada yazıyor.
 Ders: bu oturumda üçüncü kez aynı sınıf — **bir ölçümü üretmek onu
 yayımlamak değil**; yayımlandığı yer sayfadır, çünkü okuyucu orayı
 okuyor.
+
+### 136.13 qxyA nr bosluk olcumu: ilk deneme SINIR ile bitti
+
+`blastp` nr, RID `FKUHASGZ014`, gonderim 21:22. 90 dakika boyunca `WAITING`;
+22:54'te de hala `WAITING`. Bu **bir sonuc degil, bir sinir**: NCBI kuyrugu
+bugun agir, is dusmedi (`UNKNOWN` degil) ama bitmedi de. Bu yuzden hicbir
+sayi yayimlanmadi.
+
+Yapilan iki sey:
+
+1. Ayni RID 300 dakikalik pencereyle yeniden yoklaniyor (NCBI RID'leri ~24
+   saat yasar), cikti `nr_url_hits.tsv`.
+2. Ayni sorgu `refseq_protein`e gonderildi (RID `FM3E68C9014`) -- kuyrugu
+   daha hizli. **Evren farkli**: refseq_protein, nr'nin kuratorlu alt
+   kumesi. Yani buradan cikacak sayi "nr'de bizde olmayan dizi sayisi"
+   DEGIL, "RefSeq'te bizde olmayan dizi sayisi" olur ve nr'nin alt siniri
+   sayilir. `gap_compare.py` artik `--searched` alarak bu evreni raporun
+   icine yaziyor (`searched_database`) ve `what_this_is_not` metnine
+   "%s is not the whole of GenBank either" cumlesini koyuyor.
+
+Olcumun kendisi degismedi: isabetler **dizi md5'i** ile `ro_union`a karsi
+karsilastirilir (accession ile degil), band `pident >= 55 & qcov >= 60`,
+sonuc kimlik bantlarina bolunur. Isabet listesi kapli oldugu icin her
+sayi alt sinirdir.
