@@ -1,0 +1,489 @@
+{
+ "module": "carboxylate_column.py",
+ "what_was_measured": "Whether the motif model's carboxylate column lands, in each curated reference structure, on the Asp or Glu that actually coordinates the mononuclear iron. Derived from active_site.json, which is where the structures are read; nothing here parses a structure a second time.",
+ "what_this_is_not": "It says nothing about references without a structure, and a structure that could not be resolved is counted separately with its reason. A structure that was never downloaded is not evidence that the column is wrong there.",
+ "model_column": 431,
+ "structures_examined": 24,
+ "structures_unresolved": [
+  {
+   "type": "2_217_HcaE",
+   "pdb_id": "8K0A",
+   "why": "no iron satisfies the catalytic criteria (no inorganic sulfur and no partner iron nearby, at least 2 histidine nitrogen and 1 carboxylate oxygen within 2.8 A); the catalytic site is not reported rather than guessed"
+  }
+ ],
+ "at_the_model_column": 21,
+ "within_one_column": 21,
+ "outside_the_window": [
+  {
+   "type": "3_313_KshA15",
+   "pdb_id": "2ZYL",
+   "observed_at_column": null,
+   "columns_of_those_carboxylates": {
+    "ASP304": 451
+   }
+  },
+  {
+   "type": "4_405_ROCH34",
+   "pdb_id": "7FHR",
+   "observed_at_column": null,
+   "columns_of_those_carboxylates": {
+    "ASP349": 451
+   }
+  },
+  {
+   "type": "4_406_PDO",
+   "pdb_id": "7FJL",
+   "observed_at_column": null,
+   "columns_of_those_carboxylates": {
+    "ASP343": 451
+   }
+  }
+ ],
+ "column_lands_on_an_iron_ligand": 21,
+ "other_columns_seen_for_an_iron_coordinating_carboxylate": [
+  451
+ ],
+ "closest_oxygen_distance_A": {
+  "n": 24,
+  "min": 1.71,
+  "max": 2.32
+ },
+ "structures_with_no_carboxylate_on_the_iron": [],
+ "identity_of_the_iron_coordinating_carboxylate": {
+  "ASP": 24
+ },
+ "per_reference": [
+  {
+   "type": "1_101_OxoO",
+   "pdb_id": "1Z03",
+   "model_column": 431,
+   "residue_at_model_column": "ASP365",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP365"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP365": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.12
+  },
+  {
+   "type": "1_102_CARDO",
+   "pdb_id": "1WW9",
+   "model_column": 431,
+   "residue_at_model_column": "ASP333",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP333"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP333": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.96
+  },
+  {
+   "type": "1_105_DdmC",
+   "pdb_id": "3GKE",
+   "model_column": 431,
+   "residue_at_model_column": "ASP294",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP294"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP294": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.05
+  },
+  {
+   "type": "1_110_SxtT",
+   "pdb_id": "6WN3",
+   "model_column": 431,
+   "residue_at_model_column": "ASP280",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP280"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP280": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.18
+  },
+  {
+   "type": "1_111_GxtA",
+   "pdb_id": "6WNC",
+   "model_column": 431,
+   "residue_at_model_column": "ASP280",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP280"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP280": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.19
+  },
+  {
+   "type": "1_112_NdmA",
+   "pdb_id": "6ICK",
+   "model_column": 431,
+   "residue_at_model_column": "ASP289",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP289"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP289": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.18
+  },
+  {
+   "type": "1_114_NdmB",
+   "pdb_id": "6ICL",
+   "model_column": 431,
+   "residue_at_model_column": "ASP296",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP296"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP296": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.17
+  },
+  {
+   "type": "1_116_GdmA",
+   "pdb_id": "7QWT",
+   "model_column": 431,
+   "residue_at_model_column": "ASP299",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP299"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP299": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.71
+  },
+  {
+   "type": "2_203_cumA1",
+   "pdb_id": "1WQL",
+   "model_column": 431,
+   "residue_at_model_column": "ASP388",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP388"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP388": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.96
+  },
+  {
+   "type": "2_209_TDO",
+   "pdb_id": "3EN1",
+   "model_column": 431,
+   "residue_at_model_column": "ASP376",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP376"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP376": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.22
+  },
+  {
+   "type": "2_213_BphA1A2",
+   "pdb_id": "1ULI",
+   "model_column": 431,
+   "residue_at_model_column": "ASP378",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP378"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP378": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.85
+  },
+  {
+   "type": "2_216_BPDO",
+   "pdb_id": "2GBW",
+   "model_column": 431,
+   "residue_at_model_column": "ASP360",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP360"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP360": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.75
+  },
+  {
+   "type": "3_301_PhnA1a",
+   "pdb_id": "2CKF",
+   "model_column": 431,
+   "residue_at_model_column": "ASP360",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP360"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP360": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.99
+  },
+  {
+   "type": "3_303_NBDO",
+   "pdb_id": "2BMO",
+   "model_column": 431,
+   "residue_at_model_column": "ASP360",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP360"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP360": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.95
+  },
+  {
+   "type": "3_306_3NTDO",
+   "pdb_id": "5XBP",
+   "model_column": 431,
+   "residue_at_model_column": "ASP360",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP360"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP360": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.14
+  },
+  {
+   "type": "3_307_NagGH",
+   "pdb_id": "7C8Z",
+   "model_column": 431,
+   "residue_at_model_column": "ASP370",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP370"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP370": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.2
+  },
+  {
+   "type": "3_309_NahAc",
+   "pdb_id": "1NDO",
+   "model_column": 431,
+   "residue_at_model_column": "ASP362",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP362"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP362": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.27
+  },
+  {
+   "type": "3_313_KshA15",
+   "pdb_id": "2ZYL",
+   "model_column": 431,
+   "residue_at_model_column": null,
+   "residue_is_asp_or_glu": null,
+   "ligates_the_catalytic_iron": null,
+   "offset_from_model_column": null,
+   "observed_at_column": null,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP304"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP304": 451
+   },
+   "closest_carboxylate_oxygen_A": 2.15
+  },
+  {
+   "type": "3_316_NarAa",
+   "pdb_id": "2B1X",
+   "model_column": 431,
+   "residue_at_model_column": "ASP372",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP372"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP372": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.32
+  },
+  {
+   "type": "4_405_ROCH34",
+   "pdb_id": "7FHR",
+   "model_column": 431,
+   "residue_at_model_column": "GLN328",
+   "residue_is_asp_or_glu": false,
+   "ligates_the_catalytic_iron": false,
+   "offset_from_model_column": null,
+   "observed_at_column": null,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP349"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP349": 451
+   },
+   "closest_carboxylate_oxygen_A": 2.0
+  },
+  {
+   "type": "4_406_PDO",
+   "pdb_id": "7FJL",
+   "model_column": 431,
+   "residue_at_model_column": "ASP324",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": false,
+   "offset_from_model_column": null,
+   "observed_at_column": null,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP343"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP343": 451
+   },
+   "closest_carboxylate_oxygen_A": 2.16
+  },
+  {
+   "type": "4_409_TPDO",
+   "pdb_id": "7VJU",
+   "model_column": 431,
+   "residue_at_model_column": "ASP356",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP356"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP356": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.04
+  },
+  {
+   "type": "5_504_CntA",
+   "pdb_id": "6Y9C",
+   "model_column": 431,
+   "residue_at_model_column": "ASP323",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP323"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP323": 431
+   },
+   "closest_carboxylate_oxygen_A": 2.3
+  },
+  {
+   "type": "5_506_Stc2",
+   "pdb_id": "3VCA",
+   "model_column": 431,
+   "residue_at_model_column": "ASP360",
+   "residue_is_asp_or_glu": true,
+   "ligates_the_catalytic_iron": true,
+   "offset_from_model_column": 0,
+   "observed_at_column": 431,
+   "shift": null,
+   "iron_coordinating_carboxylates": [
+    "ASP360"
+   ],
+   "columns_of_those_carboxylates": {
+    "ASP360": 431
+   },
+   "closest_carboxylate_oxygen_A": 1.99
+  }
+ ]
+}

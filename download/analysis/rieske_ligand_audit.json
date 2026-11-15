@@ -1,0 +1,376 @@
+{
+  "question": "in the sequences InterPro calls Rieske but this database's gate excludes, which cluster ligand is substituted, and by what?",
+  "why_it_matters": "a curator cannot act on '139 sequences were dropped'. Cys to Ser loses the thiolate that holds the iron; Cys to Gly suggests the fold itself is gone; His to Tyr may mean a different coordination chemistry rather than none. The substitution is the question, not the count",
+  "method": {
+    "alignment": "hmmalign against the project motif model ROmotif71, then insert columns removed with ro_motif.read_stockholm_matchcols so that column numbers are model positions",
+    "columns": [
+      {
+        "column": 164,
+        "accepted": "C",
+        "label": "Rieske Cys-1"
+      },
+      {
+        "column": 166,
+        "accepted": "H",
+        "label": "Rieske His-1"
+      },
+      {
+        "column": 184,
+        "accepted": "C",
+        "label": "Rieske Cys-2"
+      },
+      {
+        "column": 187,
+        "accepted": "H",
+        "label": "Rieske His-2"
+      }
+    ],
+    "window": 2,
+    "columns_are_not_restated_here": "the columns and the tolerance window are read from ro_motif, the owner of the motif question; restating them would be a second implementation of the same measurement, and this project has measured that those diverge silently",
+    "changes_nothing": "this script measures and reports; no call, no table and no curation is changed by it"
+  },
+  "denominator": {
+    "sequences": 139,
+    "aligned": 139,
+    "not_aligned": 0
+  },
+  "missing_ligand_pattern": {
+    "Rieske Cys-1 + Rieske His-1": 50,
+    "Rieske Cys-2 + Rieske His-2": 23,
+    "Rieske His-2": 20,
+    "Rieske His-1": 19,
+    "Rieske Cys-1": 8,
+    "Rieske Cys-1 + Rieske Cys-2 + Rieske His-2": 5,
+    "Rieske Cys-2": 3,
+    "Rieske His-1 + Rieske His-2": 3,
+    "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2 + Rieske His-2": 2,
+    "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2": 2,
+    "Rieske Cys-1 + Rieske His-1 + Rieske His-2": 1,
+    "Rieske His-1 + Rieske Cys-2 + Rieske His-2": 1,
+    "Rieske Cys-1 + Rieske Cys-2": 1,
+    "Rieske His-1 + Rieske Cys-2": 1
+  },
+  "canonical_pair_in_raw_sequence": {
+    "pattern": "C.H.{10,30}C..H",
+    "counts": {
+      "absent": 138,
+      "present": 1
+    },
+    "what_it_separates": "a ligand can be missed for two opposite reasons: it is genuinely absent, or it is present but displaced beyond the column test's two-position window. Those give the same result and mean opposite things -- 'this protein cannot bind the cluster' against 'our alignment misses it'. This pattern is searched in the raw sequence, independent of any alignment or column number, so it separates the two",
+    "validated_on": {
+      "sequences_we_call_intact": 4000,
+      "of_those_matching_the_pattern": 3978,
+      "share": 0.9945
+    },
+    "what_it_is_not": "finding the pattern does not prove a working cluster: the spacing is necessary, not sufficient, and a sequence can carry C-x-H ... C-x-x-H by chance. It narrows the question rather than answering it"
+  },
+  "substituting_residue_by_ligand": {
+    "Rieske Cys-2": {
+      "-": 22,
+      "S": 7,
+      "A": 2,
+      "G": 2,
+      "T": 2,
+      "V": 2,
+      "L": 1
+    },
+    "Rieske Cys-1": {
+      "-": 51,
+      "D": 6,
+      "W": 2,
+      "V": 2,
+      "S": 2,
+      "E": 1,
+      "R": 1,
+      "G": 1,
+      "F": 1,
+      "X": 1,
+      "Y": 1
+    },
+    "Rieske His-2": {
+      "-": 24,
+      "S": 11,
+      "C": 8,
+      "D": 6,
+      "Y": 2,
+      "T": 1,
+      "K": 1,
+      "Q": 1,
+      "A": 1
+    },
+    "Rieske His-1": {
+      "-": 53,
+      "R": 9,
+      "Y": 6,
+      "Q": 3,
+      "T": 2,
+      "D": 1,
+      "L": 1,
+      "F": 1,
+      "P": 1,
+      "N": 1,
+      "A": 1
+    }
+  },
+  "pattern_by_mononuclear_triad_sites": {
+    "3": {
+      "Rieske Cys-1 + Rieske His-1": 39,
+      "Rieske Cys-2 + Rieske His-2": 12,
+      "Rieske His-1": 7,
+      "Rieske Cys-1": 6,
+      "Rieske His-2": 3,
+      "Rieske Cys-2": 2,
+      "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2": 2,
+      "Rieske Cys-1 + Rieske His-1 + Rieske His-2": 1,
+      "Rieske His-1 + Rieske Cys-2 + Rieske His-2": 1,
+      "Rieske Cys-1 + Rieske Cys-2": 1,
+      "Rieske His-1 + Rieske His-2": 1,
+      "Rieske His-1 + Rieske Cys-2": 1
+    },
+    "2": {
+      "Rieske His-2": 14,
+      "Rieske His-1": 11,
+      "Rieske Cys-1 + Rieske His-1": 9,
+      "Rieske Cys-2 + Rieske His-2": 8,
+      "Rieske Cys-1 + Rieske Cys-2 + Rieske His-2": 4,
+      "Rieske His-1 + Rieske His-2": 2,
+      "Rieske Cys-1": 2
+    },
+    "1": {
+      "Rieske His-2": 2,
+      "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2 + Rieske His-2": 1,
+      "Rieske Cys-1 + Rieske Cys-2 + Rieske His-2": 1,
+      "Rieske Cys-2 + Rieske His-2": 1,
+      "Rieske Cys-2": 1,
+      "Rieske His-1": 1
+    },
+    "0": {
+      "Rieske Cys-2 + Rieske His-2": 2,
+      "Rieske Cys-1 + Rieske His-1": 2,
+      "Rieske His-2": 1,
+      "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2 + Rieske His-2": 1
+    }
+  },
+  "examples": {
+    "Rieske Cys-2": [
+      {
+        "seq_md5": "00fa666a573586af91d43e4145006f01",
+        "organism": "Monoraphidium neglectum",
+        "nearest_cluster": "6_603_PTC52",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "897f9493d635e443d1369023ad4fd726",
+        "organism": "Penicillium hetheringtonii",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "d82ea36363953a47d26cc991493e6a3f",
+        "organism": "Phellinidium pouzarii",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 1
+      }
+    ],
+    "Rieske Cys-1 + Rieske Cys-2 + Rieske His-2": [
+      {
+        "seq_md5": "0165fba6a94bcccab151b049c2d4b75e",
+        "organism": "Nocardioides albidus",
+        "nearest_cluster": "1_106_TsaM",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "31ab8b5d07b45b3da72f7bec1a16440b",
+        "organism": "Nocardioides kongjuensis",
+        "nearest_cluster": "1_106_TsaM",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "57d28faeca689d1d970dec8882580362",
+        "organism": "Mycobacterium aquaticum",
+        "nearest_cluster": "1_106_TsaM",
+        "triad_sites_found": 1
+      }
+    ],
+    "Rieske Cys-1 + Rieske His-1": [
+      {
+        "seq_md5": "0427fdeb5e2f1114b40c76e06139245f",
+        "organism": "Dovyalis caffra",
+        "nearest_cluster": "6_603_PTC52",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "0874609b94910dd89bffd7d7c282176b",
+        "organism": "Carya illinoinensis",
+        "nearest_cluster": "6_601_PAO",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "09004f1c5dde7fdc20f3bf869eb4ad3c",
+        "organism": "Tribonema minus",
+        "nearest_cluster": "6_603_PTC52",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske His-1": [
+      {
+        "seq_md5": "0db7f04bfafc59137d764bdd0772e799",
+        "organism": "Bacillus benzoevorans",
+        "nearest_cluster": "4_405_ROCH34",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "124b6985dfc00e3193937ac9cd5a3a57",
+        "organism": "Mycolicibacterium boenickei",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "3be012a3b81d6934c4a931c42135a181",
+        "organism": "Mycobacterium pseudoshottsii",
+        "nearest_cluster": "3_313_KshA15",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske Cys-1 + Rieske His-1 + Rieske His-2": [
+      {
+        "seq_md5": "119e287513639bb234e81296c3af0138",
+        "organism": "Mycolicibacterium pulveris",
+        "nearest_cluster": "3_313_KshA15",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske Cys-2 + Rieske His-2": [
+      {
+        "seq_md5": "11eb7093cd434ede00c35c4fa965b08b",
+        "organism": "Folsomia candida",
+        "nearest_cluster": "3_321_Nvd",
+        "triad_sites_found": 0
+      },
+      {
+        "seq_md5": "1eb1222c7cd0ae4fa4a01ff2b601a5ae",
+        "organism": "Yinghuangia soli",
+        "nearest_cluster": "1_104_VanA",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "24cee3426b0ea09d14e9b02401ddec15",
+        "organism": "Salix udensis",
+        "nearest_cluster": "5_501_CmoS",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske His-2": [
+      {
+        "seq_md5": "1bd1e2d2db0b9d4be6605f65b7e150bf",
+        "organism": "Nostocoides japonicum T1-X7",
+        "nearest_cluster": "1_106_TsaM",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "20441f446d181720b6f5e3cbf3ae1838",
+        "organism": "Rhizophlyctis rosea",
+        "nearest_cluster": "1_105_DdmC",
+        "triad_sites_found": 1
+      },
+      {
+        "seq_md5": "2724fef707e711d4b774e5d5444867c0",
+        "organism": "Aspergillus tamarii",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 2
+      }
+    ],
+    "Rieske His-1 + Rieske His-2": [
+      {
+        "seq_md5": "1e42ca8f33c1110931fe5d708478c160",
+        "organism": "Mycolicibacterium confluentis",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "5536cc5dac2ce047d600283216544567",
+        "organism": "Mycolicibacterium alvei",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 2
+      },
+      {
+        "seq_md5": "b32bad0602e2ebd50b80cc94434d091b",
+        "organism": "Tenacibaculum holothuriorum",
+        "nearest_cluster": "5_507_BmoA",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske Cys-1": [
+      {
+        "seq_md5": "276fbda90789653972bb0b45dac108eb",
+        "organism": "Mycobacterium ulcerans (strain Agy99)",
+        "nearest_cluster": "5_506_Stc2",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "312b0f46f85118f2196d46df5b1644f5",
+        "organism": "Chlorella variabilis",
+        "nearest_cluster": "6_601_PAO",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "474fb4eccff2c28af7b3c8808f513cd4",
+        "organism": "Triticum turgidum subsp. durum",
+        "nearest_cluster": "6_601_PAO",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske His-1 + Rieske Cys-2 + Rieske His-2": [
+      {
+        "seq_md5": "2a2088ee2a71d7de569f8e287e61d5d1",
+        "organism": "Acrasis kona",
+        "nearest_cluster": "6_602_CAO",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2 + Rieske His-2": [
+      {
+        "seq_md5": "4e4aa702b1125bb163ed6cf146137e2d",
+        "organism": "Thalictrum thalictroides",
+        "nearest_cluster": "6_603_PTC52",
+        "triad_sites_found": 1
+      },
+      {
+        "seq_md5": "fca0fb34f208047b1b4a2c883d523cde",
+        "organism": "Oryza meridionalis",
+        "nearest_cluster": "6_603_PTC52",
+        "triad_sites_found": 0
+      }
+    ],
+    "Rieske Cys-1 + Rieske Cys-2": [
+      {
+        "seq_md5": "59d2be5300309cfd2fb9894e06c6183f",
+        "organism": "Hypericibacter terrae",
+        "nearest_cluster": "5_506_Stc2",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske Cys-1 + Rieske His-1 + Rieske Cys-2": [
+      {
+        "seq_md5": "5f7b77827b5cc21bfda303358da2f500",
+        "organism": "Crenothrix polyspora",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 3
+      },
+      {
+        "seq_md5": "f1823a4035f79c5afa8616c0d0ac75c7",
+        "organism": "Leucothrix arctica",
+        "nearest_cluster": "5_504_CntA",
+        "triad_sites_found": 3
+      }
+    ],
+    "Rieske His-1 + Rieske Cys-2": [
+      {
+        "seq_md5": "e332c0cdc96597f9bdf62716b67a1583",
+        "organism": "Emcibacter nanhaiensis",
+        "nearest_cluster": "5_506_Stc2",
+        "triad_sites_found": 3
+      }
+    ]
+  }
+}

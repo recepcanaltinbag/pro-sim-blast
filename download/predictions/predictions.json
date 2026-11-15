@@ -1,0 +1,218 @@
+{
+ "generated": "2026-10-14",
+ "rule": "Nothing here enters types/, chemistry.csv, the HMM library, or any statistic in this database",
+ "controls": {
+  "positive": {
+   "set": "curated references",
+   "n": 75,
+   "four_of_four_rieske": 75,
+   "three_of_three_catalytic": 73,
+   "passes": 75
+  },
+  "negative": [
+   {
+    "set": "cytochrome b6-f iron-sulfur subunit (reviewed)",
+    "n": 55,
+    "four_of_four_rieske": 55,
+    "three_of_three_catalytic": 0,
+    "passes": 0
+   },
+   {
+    "set": "Rieske ferredoxin (reviewed)",
+    "n": 4,
+    "four_of_four_rieske": 0,
+    "three_of_three_catalytic": null,
+    "passes": 0
+   },
+   {
+    "set": "NirD (reviewed)",
+    "n": 7,
+    "four_of_four_rieske": 1,
+    "three_of_three_catalytic": null,
+    "passes": 0
+   }
+  ],
+  "interpretation": "Fifty-six of the sixty-six true non-Rieske-oxygenases carry all four Rieske ligands, none carries the catalytic triad, and none passes. That is exactly the biochemical distinction the test is meant to draw: false positives 0/66, recovery 75/75."
+ },
+ "coverage_rule": {
+  "rule": "Low coverage is not a negative. Where the alignment never reaches the catalytic columns the result is 'not measurable', not 'no triad'. Every row reports its coverage beside its motif score.",
+  "case": "This was measured, not assumed: a 717-residue protein (AerC) aligned over 18.9 % of the model, stopped at column 231, never reached the catalytic columns, and scored 0/3 -- which was wrong. Aligned in fragments, its ligands were all in place."
+ },
+ "archaea": {
+  "strict_pass": 109,
+  "of": 128,
+  "length_range_aa": [
+   331,
+   505
+  ],
+  "length_median_aa": 381,
+  "model_coverage_range": [
+   0.663,
+   0.725
+  ],
+  "phyla": {
+   "Halobacteria": 92,
+   "Thermoproteota": 15,
+   "Thermoplasmata": 2
+  },
+  "protein_existence": {
+   "Predicted": 61,
+   "Inferred from homology": 48,
+   "experimental": 0
+  },
+  "identity_to_curated_refs": {
+   "Halobacteria": {
+    "median": 28.4,
+    "min": 23.5,
+    "max": 43.7
+   },
+   "Thermoproteota": {
+    "median": 37.0,
+    "min": 29.9,
+    "max": 40.5
+   },
+   "Thermoplasmata": {
+    "median": 40.2,
+    "min": 40.2,
+    "max": 40.2
+   },
+   "ge70": 0,
+   "ge50": 0,
+   "lt40": 85
+  },
+  "alignment_coverage": "84-98 % of the query, that is full length rather than the Rieske domain alone",
+  "nearest_refs": {
+   "by_group": {
+    "5": 61,
+    "3": 44,
+    "4": 3,
+    "2": 1
+   },
+   "summary": "The majority sit nearest to group 5 (carnitine and choline oxygenases), group 3 second."
+  },
+  "hgt_test": {
+   "question": "Is there a near-identical bacterial relative, as a recent transfer would leave?",
+   "db": "22,531 bacterial Rieske-domain proteins (UniProt)",
+   "identity": {
+    "median": 33.4,
+    "min": 27.8,
+    "max": 51.7,
+    "ge90": 0,
+    "ge70": 0,
+    "ge50": 2
+   },
+   "conclusion": "No recent transfer. The nearest bacterium is 51.7 % identical at most."
+  },
+  "phylogeny": {
+   "monophyletic": false,
+   "n_clusters": 7,
+   "support_note": "Support values are FastTree SH-like local support, not bootstrap. Deep node support runs 0.52 to 0.97, so the backbone is poorly resolved and no donor group is claimed.",
+   "clusters": [
+    {
+     "n": 61,
+     "members": "Halobacteria (Haloferax, Haloarcula, Natrinema...)",
+     "support": 0.998,
+     "sister": "Bacillota (Bacillus, Alicyclobacillus, Aneurinibacillus)",
+     "sister_node_support": 0.524
+    },
+    {
+     "n": 31,
+     "members": "Halobacteria (Natrarchaeobius, Halobellus, Halopenitus)",
+     "support": 0.985,
+     "sister": "Streptomyces, Pseudonocardia, Hephaestia, Ramlibacter",
+     "sister_node_support": 0.971
+    },
+    {
+     "n": 7,
+     "members": "Thermoproteota 5 (Metallosphaera, Sulfuracidifex) + Thermoplasmata 2 (Acidiplasma)",
+     "support": 0.986,
+     "sister": "Mycobacterium, Mycolicibacterium, Gordonia, Streptomyces",
+     "sister_node_support": 0.647
+    },
+    {
+     "n": 4,
+     "members": "Thermoproteota",
+     "support": 1.0,
+     "sister": "31'lik Halo kladi + aktinobakteriler",
+     "sister_node_support": 0.872
+    },
+    {
+     "n": 2,
+     "members": null,
+     "support": 1.0,
+     "sister": null,
+     "sister_node_support": null
+    },
+    {
+     "n": 2,
+     "members": null,
+     "support": 1.0,
+     "sister": null,
+     "sister_node_support": null
+    },
+    {
+     "n": 2,
+     "members": null,
+     "support": 0.999,
+     "sister": null,
+     "sister_node_support": null
+    }
+   ]
+  },
+  "supported": [
+   "Archaeal proteins with the complete catalytic apparatus exist and are not few: 109, across three archaeal classes, at 23-44 % identity to the nearest curated bacterial reference over 84-98 % of their length.",
+   "They are not a recent acquisition: no bacterial relative exceeds 51.7 % identity in a set of 22,531.",
+   "They are not one lineage: seven pure clusters, each strongly supported within itself, each with a bacterial sister group.",
+   "Halobacteria alone shows at least two independent acquisitions."
+  ],
+  "not_supported": [
+   "That any of them has Rieske oxygenase activity. None is characterised; all are labelled Predicted or Inferred from homology.",
+   "Any particular donor group. Deep node support is 0.52-0.97, so the backbone is poorly resolved.",
+   "The direction of transfer. The tree was rooted at its midpoint.",
+   "Bootstrap or AU support. FastTree SH-like local support was used instead."
+  ],
+  "next_steps": "IQ-TREE with UFBoot and an AU topology test; the genomic context of the electron-transfer partners."
+ },
+ "fungi": {
+  "strict_pass": 654,
+  "of": 2351,
+  "identity_to_curated_refs": {
+   "median": 26.9,
+   "min": 22.7,
+   "max": 38.5,
+   "ge70": 0,
+   "ge50": 0,
+   "lt40": 654
+  },
+  "nearest_refs_by_group": {
+   "5": 633,
+   "3": 16,
+   "6": 4,
+   "2": 1
+  },
+  "pattern": "The fungal candidates sit overwhelmingly nearest to group 5 (633 of 654): CntA 493, CmoB 88, CmoS 50. Sixteen sit nearest to the sterol 7-desaturases Nvd and DAF-36.",
+  "note": "The fungal annotations reading 'choline monooxygenase, chloroplastic' are an artefact of transfer from plants. This test reads alignment columns rather than annotations, so the finding does not depend on them. But note that the archaeal set is also mostly nearest to group 5, so the earlier claim that the two sets fall in different places -- and that this argued against a shared artefact -- does not hold."
+ },
+ "counts": {
+  "archaeal": 109,
+  "fungal": 654
+ },
+ "coverage_range": [
+  0.663,
+  0.725
+ ],
+ "correction": {
+  "what_was_wrong": [
+   "The length range was reported as 429-505 aa. It is 331-505 aa, median 381.",
+   "The nearest references were reported as 'all group 3 (PhdA, NarAa, NidA)'. Group 5 is in fact the majority (61 of 109, CntA alone 59); group 3 is second with 44."
+  ],
+  "cause": "The first run read only the top forty rows sorted by coverage, and the top five DIAMOND hits per phylum, then generalised. The highest-identity hits really were PhdA, NarAa and NidA; the bulk was CntA.",
+  "consequence": "The argument that archaea and fungi fall in different places, and that this is evidence against a shared artefact, is void. Both sets are mostly nearest to group 5. A shared artefact is not excluded by this measurement and needs its own control.",
+  "still_valid": [
+   "the controls (0/66 false positives, 75/75 recovery)",
+   "the HGT test (maximum 51.7 %)",
+   "the phylogeny: seven pure clusters, not monophyletic",
+   "the bridging aspartate in 109 of 109"
+  ]
+ }
+}

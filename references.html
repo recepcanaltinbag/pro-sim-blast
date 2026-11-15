@@ -1,0 +1,1912 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>References · ROAR-DB</title>
+<meta name="description" content="ROAR-DB: Rieske oxygenase alpha subunits with genomic context, operon structure, classification and sequence-based annotation.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/pro-sim-blast/static/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "ROAR-DB",
+  "alternateName": "Rieske Oxygenase Annotation Resource",
+  "description": "Curated Rieske oxygenase alpha subunits published with the genomic context of the record that carries them: operon, neighbourhood, regulator, habitat, NCBI taxon and cross-references. Every published number states its condition and its denominator.",
+  "url": "https://recepcanaltinbag.github.io/pro-sim-blast/",
+  "license": "https://opensource.org/licenses/MIT",
+  "creator": {"@type": "Person", "name": "Recep Can Altınbağ"},
+  "keywords": ["Rieske oxygenase", "ring-hydroxylating dioxygenase",
+               "biodegradation", "comparative genomics", "enzyme database"],
+  "isAccessibleForFree": true,
+  "codeRepository": "https://github.com/recepcanaltinbag/pro-sim-blast",
+  "version": "rev-0019",
+  "dateModified": "2026-11-13"
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="/pro-sim-blast/index.html"><span class="brand__mark">RO</span> ROAR-DB</a>
+  <nav aria-label="Main">
+    <a href="/pro-sim-blast/atlas.html">Atlas</a>
+    <a href="/pro-sim-blast/architecture.html">Architecture</a>
+    <a href="/pro-sim-blast/clusters.html">Types</a>
+    <a href="/pro-sim-blast/search.html">Search</a>
+    
+    <a href="/pro-sim-blast/about.html">Methods</a>
+    
+  </nav>
+  
+</header>
+<main id="main">
+
+
+
+
+
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+
+<nav class="subnav subnav--sections" aria-label="Atlas sections">
+  <a href="/pro-sim-blast/atlas.html" class=""
+     >Overview</a>
+  
+  <a href="/pro-sim-blast/atlas/groups.html" class=""
+     >Sequence</a>
+  
+  <a href="/pro-sim-blast/atlas/operons.html" class=""
+     >Genomic context</a>
+  
+  <a href="/pro-sim-blast/atlas/ecology.html" class=""
+     >Where they live</a>
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class="on"
+     aria-current="true">How far to trust it</a>
+  
+</nav>
+
+
+<nav class="subnav subnav--pages" aria-label="How far to trust it pages">
+  
+  
+  <a href="/pro-sim-blast/atlas/evidence.html" class=""
+     >Evidence</a>
+  
+  <a href="/pro-sim-blast/atlas/novel.html" class=""
+     >Novel candidates</a>
+  
+  <a href="/pro-sim-blast/atlas/statistics.html" class=""
+     >Statistics</a>
+  
+  <a href="/pro-sim-blast/atlas/learning.html" class=""
+     >Predictability</a>
+  
+  <a href="/pro-sim-blast/atlas/disagreements.html" class=""
+     >Disagreements</a>
+  
+  <a href="/pro-sim-blast/atlas/predictions.html" class=""
+     >Predictions</a>
+  
+  <a href="/pro-sim-blast/atlas/quality.html" class=""
+     >Data quality</a>
+  
+  <a href="/pro-sim-blast/references.html" class="on"
+     aria-current="page">References</a>
+  
+  
+</nav>
+
+
+
+
+<h1>Every source this database rests on</h1>
+<p class="lede">This is the project's citation registry, published whole. Each entry carries a DOI
+that was checked against Crossref, PubMed or the first page of the paper itself, and each one says
+<b>what it is cited for</b> &mdash; so a statement on this site can be followed back to the work it
+rests on. Nothing here was written from memory: an unverified identifier is worse than no
+identifier, because a reader who follows it and finds nothing will look for the mistake in
+themselves.</p>
+
+
+<p>126 citations, 126 with a DOI,
+118 with a PubMed identifier.
+118 of them are the reference for a curated type; the rest support a
+method, a definition or a classification used across the site.</p>
+
+
+<h2>Methods, definitions and classifications</h2>
+<p class="note">These back statements that are not about one enzyme: the motif definitions the
+candidate scan applies, the rule that the catalytic carboxylate is required, the classification
+schemes, and the reviews this project measured itself against &mdash; including one whose claim
+this database <b>contradicts</b>.</p>
+<ol class="lit">
+
+<li id="barry2013_mechanism">Barry SM, Challis GL (2013).
+  Mechanism and Catalytic Diversity of Rieske Non-Heme Iron-Dependent Oxygenases.
+  <i>ACS Catalysis</i> 3:2362-2370<br><a class="mono small" href="https://doi.org/10.1021/cs400087p"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/cs400087p</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24244861/"
+     rel="noopener noreferrer" target="_blank">PMID 24244861</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">method check. The review states that the carboxylate of the mononuclear 2-His-1-carboxylate triad can be Asp OR Glu, and that the conserved bridging aspartate is not an iron ligand but a mediator of electron transfer</span><br><span class="note">on the bridging Asp-to-Glu question the review says of RedG that &#39;the bridging aspartate residue implicated in electron transfer appears to be mutated to glutamate&#39; and offers no functional interpretation -- the literature precedent for the framing used on this site, &#39;An open question, not a result.&#39;</span>
+</li>
+
+<li id="demarco1999_msma">De Marco P, Moradas-Ferreira P, Higgins TP, McDonald I, Kenna EM, Murrell JC (1999).
+  Molecular analysis of a novel methanesulfonic acid monooxygenase from the methylotroph Methylosulfonomonas methylovora.
+  <i>J Bacteriol</i> 181:2244-2251<br><a class="mono small" href="https://doi.org/10.1128/jb.181.7.2244-2251.1999"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.181.7.2244-2251.1999</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10094704/"
+     rel="noopener noreferrer" target="_blank">PMID 10094704</a> <span class="note small">verified by
+     uniprot record</span>
+  <br><span class="note">MsmA (UniProt Q9X404) as a candidate reference; C-S bond cleavage</span>
+</li>
+
+<li id="higgins2000_msma">Higgins TP, De Marco P, Murrell JC (2000).
+  Purification and partial characterization of the hydroxylase component of the methanesulfonic acid monooxygenase.
+  <i>Eur J Biochem</i> 267:4763-4769<br><a class="mono small" href="https://doi.org/10.1046/j.1432-1327.2000.01538.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1046/j.1432-1327.2000.01538.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10903510/"
+     rel="noopener noreferrer" target="_blank">PMID 10903510</a> <span class="note small">verified by
+     uniprot record</span>
+  <br><span class="note">purification of the MsmA hydroxylase component -- evidence at the protein level</span>
+</li>
+
+<li id="kelly1996_msma">Kelly DP, Baker SC, Trickett J, Davey M, Murrell JC (1996).
+  Metabolism of methanesulfonic acid involves a multicomponent monooxygenase enzyme.
+  <i>Microbiology</i> 142:251-260<br><a class="mono small" href="https://doi.org/10.1099/13500872-142-2-251"
+     rel="noopener noreferrer" target="_blank">doi:10.1099/13500872-142-2-251</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/8932698/"
+     rel="noopener noreferrer" target="_blank">PMID 8932698</a> <span class="note small">verified by
+     uniprot record</span>
+  <br><span class="note">the demonstration that MsmA is a multicomponent monooxygenase</span>
+</li>
+
+<li id="kweon2008_classification">Kweon O, Kim S, Baek S, Chae J, Adjei MD, Baek D, Kim Y, Cerniglia CE (2008).
+  A new classification system for bacterial Rieske non-heme iron aromatic ring-hydroxylating oxygenases.
+  <i>BMC Biochemistry</i> 9:11<br><a class="mono small" href="https://doi.org/10.1186/1471-2091-9-11"
+     rel="noopener noreferrer" target="_blank">doi:10.1186/1471-2091-9-11</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/18387195/"
+     rel="noopener noreferrer" target="_blank">PMID 18387195</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">the five-type scheme in the literature (Types I-V), organised by the components of the electron transport chain -- two-component Type I (FNR_C reductase) and Type II (FNR_N reductase), three-component Type III ([2Fe-2S] Fd + FNR_N), Type IV ([2Fe-2S] Fd + GR) and Type V ([3Fe-4S] Fd + GR). Built on 130 enzymes over 25 standard ring-hydroxylating oxygenases</span><br><span class="note">proposed in place of the Batie scheme, because Batie/Nam cannot account for the [3Fe-4S] ferredoxin or for the genetic separability of the electron transport components</span><br><span class="note">NOT to be confused with this database&#39;s ro_group field. The Kweon axis is the electron partners of the SYSTEM, while ro_group is the sequence clustering of the alpha subunit</span>
+</li>
+
+<li id="miao2025_perspective">Miao H, Schmidt S (2025).
+  Rieske Oxygenases: Powerful Models for Understanding Nature&#39;s Orchestration of Electron Transfer and Oxidative Chemistry.
+  <i>Biochemistry</i> 64:3801-3813<br><a class="mono small" href="https://doi.org/10.1021/acs.biochem.5c00369"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/acs.biochem.5c00369</a> <span class="note small">verified by
+     local pdf</span>
+  <br><span class="note">definitions of the Rieske motif C-x-H-x(15,47)-C-x(2)-H and of the mononuclear [DE]-x(2)-H-x(3,5)-H motif, which are the gates the candidate scan applies (ro_motif.py)</span><br><span class="note">the family&#39;s reaction repertoire. That C-S bond cleavage occurs in the family but is ABSENT from this set is read from this source, and it is the reason MsmA is proposed as a candidate</span>
+</li>
+
+<li id="miao2026_redox_preprint">Miao H, Oerlemanns R, Hagedoorn PL, Schmidt S (2026).
+  Decoding and Reprogramming Redox Partner Specificity in Rieske Oxygenases for Enhanced Catalytic Activity.
+  <i>bioRxiv (preprint, not peer reviewed)</i><br><a class="mono small" href="https://doi.org/10.64898/2026.04.03.713453"
+     rel="noopener noreferrer" target="_blank">doi:10.64898/2026.04.03.713453</a> <span class="note small">verified by
+     local pdf</span>
+  <br><span class="note">the claim that the family shares a ferredoxin partner. This database TESTED that claim and partly CONTRADICTS it; see the disagreements page</span>
+</li>
+
+<li id="parales2000_ndo_active_site">Parales RE, Lee K, Resnick SM, Jiang H, Lessner DJ, Gibson DT (2000).
+  Substrate Specificity of Naphthalene Dioxygenase: Effect of Specific Amino Acids at the Active Site of the Enzyme.
+  <i>J. Bacteriol.</i> 182:1641-1649<br><a class="mono small" href="https://doi.org/10.1128/jb.182.6.1641-1649.2000"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.182.6.1641-1649.2000</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">evidence that the carboxylate is catalytically REQUIRED. The NDO Asp362-to-Ala mutant gives no product from naphthalene, and neither oxygen consumption nor product is measurable in crude extract although the full-length alpha subunit is produced. This is the basis of the 3/3 rule in triad_gate.py and of section 1 of the method page</span>
+</li>
+
+<li id="runda2024_thesis">Runda M (2024).
+  Rieske oxygenases outside a nutshell.
+  <i>PhD thesis, University of Groningen</i><br><a class="mono small" href="https://doi.org/10.33612/diss.1175898687"
+     rel="noopener noreferrer" target="_blank">doi:10.33612/diss.1175898687</a> <span class="note small">verified by
+     local pdf</span>
+  <br><span class="note">the Batie classification as given in Table 2 of the thesis, which transcribes it from Batie, Ballou &amp; Correll 1992 (batie_classes.yaml)</span>
+</li>
+
+</ol>
+
+
+
+<h2>The reference enzymes</h2>
+<p class="note">One block per curated type, in type order. The role shown is the registry's own
+marking: <b>reference</b> is the paper the curation of that type rests on, <b>secondary</b> is
+further support, and <b>shared</b> means the registry records the paper under a sibling type whose
+work this type rests on too.</p>
+
+<h3 id="1_101_OxoO"><a href="/pro-sim-blast/cluster/1_101_OxoO.html">OxoO</a>
+  <span class="note">1_101_OxoO</span></h3>
+<ul class="lit">
+
+<li>Rosche B, Tshisuaka B, Hauer B, Lingens F, Fetzner S (1997).
+  2-oxo-1,2-dihydroquinoline 8-monooxygenase: phylogenetic relationship to other multicomponent nonheme iron oxygenases.
+  <i>J Bacteriol</i> 179:3549-3554<br><a class="mono small" href="https://doi.org/10.1128/jb.179.11.3549-3554.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.11.3549-3554.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9171399/"
+     rel="noopener noreferrer" target="_blank">PMID 9171399</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + phylogeny (1997); the 2005 Structure paper gives the crystal structure of the oxygenase component with its Rieske and mononuclear iron sites</span>
+</li>
+
+<li>Martins BM, Svetlitchnaia T, Dobbek H (2005).
+  2-Oxoquinoline 8-Monooxygenase Oxygenase Component: Active Site Modulation by Rieske-[2Fe-2S] Center Oxidation/Reduction.
+  <i>Structure</i> 13:817-824<br><a class="mono small" href="https://doi.org/10.1016/j.str.2005.03.008"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.str.2005.03.008</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15893671/"
+     rel="noopener noreferrer" target="_blank">PMID 15893671</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_102_CARDO"><a href="/pro-sim-blast/cluster/1_102_CARDO.html">CARDO</a>
+  <span class="note">1_102_CARDO</span></h3>
+<ul class="lit">
+
+<li>Nojiri H, Ashikawa Y, Noguchi H, Nam JW, Urata M, Fujimoto Z (2005).
+  Structure of the Terminal Oxygenase Component of Angular Dioxygenase, Carbazole 1,9a-Dioxygenase.
+  <i>Journal of Molecular Biology</i> 351:355-370<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2005.05.059"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2005.05.059</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16005887/"
+     rel="noopener noreferrer" target="_blank">PMID 16005887</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; crystal structure of the terminal oxygenase of carbazole 1,9a-dioxygenase; the car operon paper reports the sequence and activity</span>
+</li>
+
+<li>INOUE K, WIDADA J, NAKAI S, ENDOH T, URATA M, ASHIKAWA Y (2004).
+  Divergent Structures of Carbazole DegradativecarOperons Isolated from Gram-negative Bacteria.
+  <i>Bioscience, Biotechnology, and Biochemistry</i> 68:1467-1480<br><a class="mono small" href="https://doi.org/10.1271/bbb.68.1467"
+     rel="noopener noreferrer" target="_blank">doi:10.1271/bbb.68.1467</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15277751/"
+     rel="noopener noreferrer" target="_blank">PMID 15277751</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_103_CarAa"><a href="/pro-sim-blast/cluster/1_103_CarAa.html">CarAa</a>
+  <span class="note">1_103_CarAa</span></h3>
+<ul class="lit">
+
+<li>Sato SI, Nam JW, Kasuga K, Nojiri H, Yamane H, Omori T (1997).
+  Identification and characterization of genes encoding carbazole 1,9a-dioxygenase in Pseudomonas sp. strain CA10.
+  <i>J Bacteriol</i> 179:4850-4858<br><a class="mono small" href="https://doi.org/10.1128/jb.179.15.4850-4858.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.15.4850-4858.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9244274/"
+     rel="noopener noreferrer" target="_blank">PMID 9244274</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: car genes of strain CA10 identified and carbazole 1,9a-dioxygenase activity and substrate range reported; the 2002 AEM paper purified the three-component enzyme</span>
+</li>
+
+<li>Nam JW, Nojiri H, Noguchi H, Uchimura H, Yoshida T, Habe H (2002).
+  Purification and Characterization of Carbazole 1,9a-Dioxygenase, a Three-Component Dioxygenase System of Pseudomonas resinovorans Strain CA10.
+  <i>Appl Environ Microbiol</i> 68:5882-5890<br><a class="mono small" href="https://doi.org/10.1128/aem.68.12.5882-5890.2002"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.68.12.5882-5890.2002</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/12450807/"
+     rel="noopener noreferrer" target="_blank">PMID 12450807</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_104_VanA"><a href="/pro-sim-blast/cluster/1_104_VanA.html">VanA</a>
+  <span class="note">1_104_VanA</span></h3>
+<ul class="lit">
+
+<li>Priefert H, Rabenhorst J, Steinbüchel A (1997).
+  Molecular characterization of genes of Pseudomonas sp. strain HR199 involved in bioconversion of vanillin to protocatechuate.
+  <i>J Bacteriol</i> 179:2595-2607<br><a class="mono small" href="https://doi.org/10.1128/jb.179.8.2595-2607.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.8.2595-2607.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9098058/"
+     rel="noopener noreferrer" target="_blank">PMID 9098058</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: molecular characterisation of the vanillate catabolic genes of strain HR199; no purified-enzyme assay in this paper</span>
+</li>
+
+</ul>
+
+<h3 id="1_105_DdmC"><a href="/pro-sim-blast/cluster/1_105_DdmC.html">DdmC</a>
+  <span class="note">1_105_DdmC</span></h3>
+<ul class="lit">
+
+<li>Herman PL, Behrens M, Chakraborty S, Chrastil BM, Barycki J, Weeks DP (2005).
+  A Three-component Dicamba O-Demethylase from Pseudomonas maltophilia, Strain DI-6.
+  <i>Journal of Biological Chemistry</i> 280:24759-24767<br><a class="mono small" href="https://doi.org/10.1074/jbc.m500597200"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m500597200</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15855162/"
+     rel="noopener noreferrer" target="_blank">PMID 15855162</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: three-component dicamba O-demethylase cloned, assayed and its catalytic activity and subunit composition established; structure in 3GKE</span>
+</li>
+
+<li>Dumitru R, Jiang WZ, Weeks DP, Wilson MA (2009).
+  Crystal Structure of Dicamba Monooxygenase: A Rieske Nonheme Oxygenase that Catalyzes Oxidative Demethylation.
+  <i>Journal of Molecular Biology</i> 392:498-510<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2009.07.021"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2009.07.021</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19616011/"
+     rel="noopener noreferrer" target="_blank">PMID 19616011</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Chakraborty S, Behrens M, Herman PL, Arendsen AF, Hagen WR, Carlson DL (2005).
+  A three-component dicamba O-demethylase from Pseudomonas maltophilia, strain DI-6: Purification and characterization.
+  <i>Archives of Biochemistry and Biophysics</i> 437:20-28<br><a class="mono small" href="https://doi.org/10.1016/j.abb.2005.02.024"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.abb.2005.02.024</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15820213/"
+     rel="noopener noreferrer" target="_blank">PMID 15820213</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Wang X, Li B, Herman PL, Weeks DP (1997).
+  A Three-Component Enzyme System Catalyzes the O Demethylation of the Herbicide Dicamba in Pseudomonas maltophilia DI-6.
+  <i>Appl Environ Microbiol</i> 63:1623-1626<br><a class="mono small" href="https://doi.org/10.1128/aem.63.4.1623-1626.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.63.4.1623-1626.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16535584/"
+     rel="noopener noreferrer" target="_blank">PMID 16535584</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_106_TsaM"><a href="/pro-sim-blast/cluster/1_106_TsaM.html">TsaM</a>
+  <span class="note">1_106_TsaM</span></h3>
+<ul class="lit">
+
+<li>Locher HH, Leisinger T, Cook AM (1991).
+  4-Toluene sulfonate methyl-monooxygenase from Comamonas testosteroni T-2: purification and some properties of the oxygenase component.
+  <i>J Bacteriol</i> 173:3741-3748<br><a class="mono small" href="https://doi.org/10.1128/jb.173.12.3741-3748.1991"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.173.12.3741-3748.1991</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/2050632/"
+     rel="noopener noreferrer" target="_blank">PMID 2050632</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: 4-toluene sulfonate methyl-monooxygenase purified from C. testosteroni T-2, catalytic activity and substrate specificity reported</span>
+</li>
+
+<li>Junker F, Kiewitz R, Cook AM (1997).
+  Characterization of the p-toluenesulfonate operon tsaMBCD and tsaR in Comamonas testosteroni T-2.
+  <i>J Bacteriol</i> 179:919-927<br><a class="mono small" href="https://doi.org/10.1128/jb.179.3.919-927.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.3.919-927.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9006050/"
+     rel="noopener noreferrer" target="_blank">PMID 9006050</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_107_CndA"><a href="/pro-sim-blast/cluster/1_107_CndA.html">CndA</a>
+  <span class="note">1_107_CndA</span></h3>
+<ul class="lit">
+
+<li>Chen Q, Wang CH, Deng SK, Wu YD, Li Y, Yao L (2014).
+  Novel Three-Component Rieske Non-Heme Iron Oxygenase System Catalyzing the N -Dealkylation of Chloroacetanilide Herbicides in Sphingomonads DC-6 and DC-2.
+  <i>Appl Environ Microbiol</i> 80:5078-5085<br><a class="mono small" href="https://doi.org/10.1128/aem.00659-14"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00659-14</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24928877/"
+     rel="noopener noreferrer" target="_blank">PMID 24928877</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional characterisation: three-component Rieske oxygenase CndA-CndB-CndC shown to N-dealkylate alachlor/acetochlor/butachlor; catalytic activity, substrate specificity and subunit composition reported</span>
+</li>
+
+</ul>
+
+<h3 id="1_108_PobA"><a href="/pro-sim-blast/cluster/1_108_PobA.html">PobA</a>
+  <span class="note">1_108_PobA</span></h3>
+<ul class="lit">
+
+<li>Dehmel U, Engesser KH, Timmis KN, Dwyer DF (1995).
+  Cloning, nucleotide sequence, and expression of the gene encoding a novel dioxygenase involved in metabolism of carboxydiphenyl ethers in Pseudomonas pseudoalcaligenes POB310.
+  <i>Arch. Microbiol.</i> 163:35-41<br><a class="mono small" href="https://doi.org/10.1007/bf00262201"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/bf00262201</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7710319/"
+     rel="noopener noreferrer" target="_blank">PMID 7710319</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + heterologous expression of a novel dioxygenase; characterisation is at the level of the cloned activity</span>
+</li>
+
+</ul>
+
+<h3 id="1_109_LigX"><a href="/pro-sim-blast/cluster/1_109_LigX.html">LigX</a>
+  <span class="note">1_109_LigX</span></h3>
+<ul class="lit">
+
+<li>Sonoki T, Obi T, Kubota S, Higashi M, Masai E, Katayama Y (2000).
+  Coexistence of Two Different O Demethylation Systems in Lignin Metabolism by Sphingomonas paucimobilis SYK-6: Cloning and Sequencing of the Lignin Biphenyl-Specific O -Demethylase (LigX) Gene.
+  <i>Appl Environ Microbiol</i> 66:2125-2132<br><a class="mono small" href="https://doi.org/10.1128/aem.66.5.2125-2132.2000"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.66.5.2125-2132.2000</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10788391/"
+     rel="noopener noreferrer" target="_blank">PMID 10788391</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: ligX disruption abolishes 5,5&#39;-dehydrodivanillate O-demethylation (DDVA O-demethylase); the 2014 AEM paper then reconstituted the three-component LigXa/LigXc/LigXd system in vitro</span>
+</li>
+
+<li>Yoshikata T, Suzuki K, Kamimura N, Namiki M, Hishiyama S, Araki T (2014).
+  Three-Component O -Demethylase System Essential for Catabolism of a Lignin-Derived Biphenyl Compound in Sphingobium sp. Strain SYK-6.
+  <i>Appl Environ Microbiol</i> 80:7142-7153<br><a class="mono small" href="https://doi.org/10.1128/aem.02236-14"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.02236-14</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/25217011/"
+     rel="noopener noreferrer" target="_blank">PMID 25217011</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_110_SxtT"><a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a>
+  <span class="note">1_110_SxtT</span></h3>
+<ul class="lit">
+
+<li>Lukowski AL, Liu J, Bridwell-Rabb J, Narayan ARH (2020).
+  Structural basis for divergent C–H hydroxylation selectivity in two Rieske oxygenases.
+  <i>Nat Commun</i> 11<br><a class="mono small" href="https://doi.org/10.1038/s41467-020-16729-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/s41467-020-16729-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/32532989/"
+     rel="noopener noreferrer" target="_blank">PMID 32532989</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional + structural: SxtT and GxtA crystallised and their divergent C-H hydroxylation selectivity on the saxitoxin scaffold established by activity assays</span>
+</li>
+
+<li>Liu J, Tian J, Perry C, Lukowski AL, Doukov TI, Narayan ARH (2022).
+  Design principles for site-selective hydroxylation by a Rieske oxygenase.
+  <i>Nat Commun</i> 13<br><a class="mono small" href="https://doi.org/10.1038/s41467-021-27822-3"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/s41467-021-27822-3</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/35017498/"
+     rel="noopener noreferrer" target="_blank">PMID 35017498</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_111_GxtA"><a href="/pro-sim-blast/cluster/1_111_GxtA.html">GxtA</a>
+  <span class="note">1_111_GxtA</span></h3>
+<ul class="lit">
+
+<li>Liu J, Tian J, Perry C, Lukowski AL, Doukov TI, Narayan ARH (2022).
+  Design principles for site-selective hydroxylation by a Rieske oxygenase.
+  <i>Nat Commun</i> 13<br><a class="mono small" href="https://doi.org/10.1038/s41467-021-27822-3"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/s41467-021-27822-3</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/35017498/"
+     rel="noopener noreferrer" target="_blank">PMID 35017498</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></span>
+</li>
+
+<li>Lukowski AL, Liu J, Bridwell-Rabb J, Narayan ARH (2020).
+  Structural basis for divergent C–H hydroxylation selectivity in two Rieske oxygenases.
+  <i>Nat Commun</i> 11<br><a class="mono small" href="https://doi.org/10.1038/s41467-020-16729-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/s41467-020-16729-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/32532989/"
+     rel="noopener noreferrer" target="_blank">PMID 32532989</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/1_110_SxtT.html">SxtT</a></span>
+</li>
+
+</ul>
+
+<h3 id="1_112_NdmA"><a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a>
+  <span class="note">1_112_NdmA</span></h3>
+<ul class="lit">
+
+<li>Summers RM, Louie TM, Yu CL, Gakhar L, Louie KC, Subramanian M (2012).
+  Novel, Highly Specific N -Demethylases Enable Bacteria To Live on Caffeine and Related Purine Alkaloids.
+  <i>J Bacteriol</i> 194:2041-2049<br><a class="mono small" href="https://doi.org/10.1128/jb.06637-11"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.06637-11</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/22328667/"
+     rel="noopener noreferrer" target="_blank">PMID 22328667</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: NdmA shown to be a highly specific N1-demethylase, with catalytic activity and substrate specificity measured; the 2019 JMB paper adds the structures</span>
+</li>
+
+<li>Kim JH, Kim BH, Brooks S, Kang SY, Summers RM, Song HK (2019).
+  Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.
+  <i>Journal of Molecular Biology</i> 431:3647-3661<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2019.08.004"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2019.08.004</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/31412262/"
+     rel="noopener noreferrer" target="_blank">PMID 31412262</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Summers RM, Louie TM, Yu CL, Subramanian M (2011).
+  Characterization of a broad-specificity non-haem iron N-demethylase from Pseudomonas putida CBB5 capable of utilizing several purine alkaloids as sole carbon and nitrogen source.
+  <i>Microbiology</i> 157:583-592<br><a class="mono small" href="https://doi.org/10.1099/mic.0.043612-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1099/mic.0.043612-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/20966097/"
+     rel="noopener noreferrer" target="_blank">PMID 20966097</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="1_113_CdnA"><a href="/pro-sim-blast/cluster/1_113_CdnA.html">CdnA</a>
+  <span class="note">1_113_CdnA</span></h3>
+<ul class="lit">
+
+<li>Sun D, Yang X, Zeng C, Li B, Wang Y, Zhang C (2020).
+  Novel caffeine degradation gene cluster is mega-plasmid encoded in Paraburkholderia caffeinilytica CF1.
+  <i>Appl Microbiol Biotechnol</i> 104:3025-3036<br><a class="mono small" href="https://doi.org/10.1007/s00253-020-10384-7"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s00253-020-10384-7</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/32009202/"
+     rel="noopener noreferrer" target="_blank">PMID 32009202</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/genomic: caffeine degradation gene cluster on a megaplasmid of Paraburkholderia, N-demethylation activity attributed to the cdn gene products</span>
+</li>
+
+</ul>
+
+<h3 id="1_114_NdmB"><a href="/pro-sim-blast/cluster/1_114_NdmB.html">NdmB</a>
+  <span class="note">1_114_NdmB</span></h3>
+<ul class="lit">
+
+<li>Kim JH, Kim BH, Brooks S, Kang SY, Summers RM, Song HK (2019).
+  Structural and Mechanistic Insights into Caffeine Degradation by the Bacterial N-Demethylase Complex.
+  <i>Journal of Molecular Biology</i> 431:3647-3661<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2019.08.004"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2019.08.004</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/31412262/"
+     rel="noopener noreferrer" target="_blank">PMID 31412262</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a></span>
+</li>
+
+<li>Summers RM, Louie TM, Yu CL, Gakhar L, Louie KC, Subramanian M (2012).
+  Novel, Highly Specific N -Demethylases Enable Bacteria To Live on Caffeine and Related Purine Alkaloids.
+  <i>J Bacteriol</i> 194:2041-2049<br><a class="mono small" href="https://doi.org/10.1128/jb.06637-11"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.06637-11</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/22328667/"
+     rel="noopener noreferrer" target="_blank">PMID 22328667</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a></span>
+</li>
+
+<li>Summers RM, Louie TM, Yu CL, Subramanian M (2011).
+  Characterization of a broad-specificity non-haem iron N-demethylase from Pseudomonas putida CBB5 capable of utilizing several purine alkaloids as sole carbon and nitrogen source.
+  <i>Microbiology</i> 157:583-592<br><a class="mono small" href="https://doi.org/10.1099/mic.0.043612-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1099/mic.0.043612-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/20966097/"
+     rel="noopener noreferrer" target="_blank">PMID 20966097</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/1_112_NdmA.html">NdmA</a></span>
+</li>
+
+</ul>
+
+<h3 id="1_116_GdmA"><a href="/pro-sim-blast/cluster/1_116_GdmA.html">GdmA</a>
+  <span class="note">1_116_GdmA</span></h3>
+<ul class="lit">
+
+<li>Bleem A, Kuatsjah E, Presley GN, Hinchen DJ, Zahn M, Garcia DC (2022).
+  Discovery, characterization, and metabolic engineering of Rieske non-heme iron monooxygenases for guaiacol O-demethylation.
+  <i>Chem Catalysis</i> 2:1989-2011<br><a class="mono small" href="https://doi.org/10.1016/j.checat.2022.04.019"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.checat.2022.04.019</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/structural: the guaiacol O-demethylating Rieske monooxygenase was discovered and characterised here and its structure deposited as PDB 7QWT, which is what this type is assigned from</span>
+</li>
+
+</ul>
+
+<h3 id="1_117_PrnD"><a href="/pro-sim-blast/cluster/1_117_PrnD.html">PrnD</a>
+  <span class="note">1_117_PrnD</span></h3>
+<ul class="lit">
+
+<li>Lee J, Simurdiak M, Zhao H (2005).
+  Reconstitution and Characterization of Aminopyrrolnitrin Oxygenase, a Rieske N-Oxygenase That Catalyzes Unusual Arylamine Oxidation.
+  <i>J Biol Chem</i> 280:36719-36728<br><a class="mono small" href="https://doi.org/10.1074/jbc.m505334200"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m505334200</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16150698/"
+     rel="noopener noreferrer" target="_blank">PMID 16150698</a> <span class="note small">verified by
+     crossref api + pubmed esearch</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: the aminopyrrolnitrin oxygenase was reconstituted and characterised here, and the arylamine-to-nitro oxidation it catalyses is what places this type in the set</span>
+</li>
+
+<li>Runda M (2024).
+  Rieske oxygenases outside a nutshell.
+  <br><a class="mono small" href="https://doi.org/10.33612/diss.1175898687"
+     rel="noopener noreferrer" target="_blank">doi:10.33612/diss.1175898687</a> <span class="note small">verified by
+     local pdf</span>
+  <br><span class="note">Secondary citation &mdash; this type was proposed from the thesis&#39;s survey of the family (literature_harvest NT-01); the functional evidence itself is in the 2005 JBC paper</span>
+</li>
+
+</ul>
+
+<h3 id="1_118_RedG"><a href="/pro-sim-blast/cluster/1_118_RedG.html">RedG</a>
+  <span class="note">1_118_RedG</span></h3>
+<ul class="lit">
+
+<li>Sydor PK, Barry SM, Odulate OM, Barona-Gomez F, Haynes SW, Corre C (2011).
+  Regio- and stereodivergent antibiotic oxidative carbocyclizations catalysed by Rieske oxygenase-like enzymes.
+  <i>Nature Chem</i> 3:388-392<br><a class="mono small" href="https://doi.org/10.1038/nchem.1024"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/nchem.1024</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/21505498/"
+     rel="noopener noreferrer" target="_blank">PMID 21505498</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: RedG shown in vivo and in vitro to catalyse the oxidative carbocyclisation of undecylprodigiosin to streptorubin B (Rieske oxygenase-like enzyme)</span>
+</li>
+
+</ul>
+
+<h3 id="2_201_BphA1"><a href="/pro-sim-blast/cluster/2_201_BphA1.html">BphA1 (201)</a>
+  <span class="note">2_201_BphA1</span></h3>
+<ul class="lit">
+
+<li>Taira K, Hirose J, Hayashida S, Furukawa K (1992).
+  Analysis of bph operon from the polychlorinated biphenyl-degrading strain of Pseudomonas pseudoalcaligenes KF707..
+  <i>Journal of Biological Chemistry</i> 267:4844-4853<br><a class="mono small" href="https://doi.org/10.1016/s0021-9258(18)42908-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0021-9258(18)42908-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/1537863/"
+     rel="noopener noreferrer" target="_blank">PMID 1537863</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: analysis of the bph operon of the PCB-degrading strain KF707</span>
+</li>
+
+<li>Kumar P, Mohammadi M, Viger JF, Barriault D, Gomez-Gil L, Eltis LD (2011).
+  Structural Insight into the Expanded PCB-Degrading Abilities of a Biphenyl Dioxygenase Obtained by Directed Evolution.
+  <i>Journal of Molecular Biology</i> 405:531-547<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2010.11.009"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2010.11.009</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/21073881/"
+     rel="noopener noreferrer" target="_blank">PMID 21073881</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="2_202_EdoA1"><a href="/pro-sim-blast/cluster/2_202_EdoA1.html">EdoA1</a>
+  <span class="note">2_202_EdoA1</span></h3>
+<ul class="lit">
+
+<li>Corkery DM, Dobson ADW (1998).
+  Reverse transcription-PCR analysis of the regulation of ethylbenzene dioxygenase gene expression inPseudomonas fluorescensCA-4.
+  <i>FEMS Microbiology Letters</i> 166:171-176<br><a class="mono small" href="https://doi.org/10.1111/j.1574-6968.1998.tb13886.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/j.1574-6968.1998.tb13886.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9770272/"
+     rel="noopener noreferrer" target="_blank">PMID 9770272</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + transcript regulation only: RT-PCR analysis of ethylbenzene dioxygenase gene regulation; no purified-enzyme characterisation</span>
+</li>
+
+</ul>
+
+<h3 id="2_203_cumA1"><a href="/pro-sim-blast/cluster/2_203_cumA1.html">cumA1</a>
+  <span class="note">2_203_cumA1</span></h3>
+<ul class="lit">
+
+<li>Dong X, Fushinobu S, Fukuda E, Terada T, Nakamura S, Shimizu K (2005).
+  Crystal Structure of the Terminal Oxygenase Component of Cumene Dioxygenase from Pseudomonas fluorescens IP01.
+  <i>J Bacteriol</i> 187:2483-2490<br><a class="mono small" href="https://doi.org/10.1128/jb.187.7.2483-2490.2005"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.187.7.2483-2490.2005</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15774891/"
+     rel="noopener noreferrer" target="_blank">PMID 15774891</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural: crystal structure of the terminal oxygenase of cumene dioxygenase; the 1996 J Ferment Bioeng paper reports the cloning (no DOI in the record)</span>
+</li>
+
+<li>Berger JB, Marques SM, Wissner JL, Schelle JT, Beekwilder J, Damborsky J (2026).
+  Regioselective Sesquiterpene Hydroxylation Directed by Tunnel Remodeling in Rieske Oxygenases.
+  <i>JACS Au</i> 6:847-857<br><a class="mono small" href="https://doi.org/10.1021/jacsau.5c01130"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/jacsau.5c01130</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/41755873/"
+     rel="noopener noreferrer" target="_blank">PMID 41755873</a> <span class="note small">verified by
+     pubmed record</span>
+  <br><span class="note">Secondary citation &mdash; substrate-range extension: wild-type cumene dioxygenase hydroxylates beta-bisabolene to beta-bisabolen-5-ol and (S)-beta-bisabolen-13-ol in a 64:21 ratio -- the FIRST terpene substrate for a curated type</span>
+</li>
+
+</ul>
+
+<h3 id="2_204_Dpe"><a href="/pro-sim-blast/cluster/2_204_Dpe.html">Dpe</a>
+  <span class="note">2_204_Dpe</span></h3>
+<ul class="lit">
+
+<li>Cai S, Chen LW, Ai YC, Qiu JG, Wang CH, Shi C (2017).
+  Degradation of Diphenyl Ether in Sphingobium phenoxybenzoativorans SC_3 Is Initiated by a Novel Ring Cleavage Dioxygenase.
+  <i>Appl Environ Microbiol</i> 83<br><a class="mono small" href="https://doi.org/10.1128/aem.00104-17"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00104-17</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/28283519/"
+     rel="noopener noreferrer" target="_blank">PMID 28283519</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: diphenyl ether degradation shown to be initiated by angular dioxygenation, catalysed by the DpeA1A2 dioxygenase</span>
+</li>
+
+</ul>
+
+<h3 id="2_206_IpBAa"><a href="/pro-sim-blast/cluster/2_206_IpBAa.html">IpBAa</a>
+  <span class="note">2_206_IpBAa</span></h3>
+<ul class="lit">
+
+<li>Eaton RW, Timmis KN (1986).
+  Characterization of a plasmid-specified pathway for catabolism of isopropylbenzene in Pseudomonas putida RE204.
+  <i>J Bacteriol</i> 168:123-131<br><a class="mono small" href="https://doi.org/10.1128/jb.168.1.123-131.1986"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.168.1.123-131.1986</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/3019995/"
+     rel="noopener noreferrer" target="_blank">PMID 3019995</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional (pathway level): plasmid-specified isopropylbenzene catabolic pathway characterised; the sequence was deposited separately in 1997 without a paper</span>
+</li>
+
+</ul>
+
+<h3 id="2_207_BpdC1"><a href="/pro-sim-blast/cluster/2_207_BpdC1.html">BpdC1</a>
+  <span class="note">2_207_BpdC1</span></h3>
+<ul class="lit">
+
+<li>Wang Y, Garnon J, Labbé D, Bergeron H, Lau PCK (1995).
+  Sequence and expression of the bpdC1C2BADE genes involved in the initial steps of biphenyl/chlorobiphenyl degradation by Rhodococcus sp. M5.
+  <i>Gene</i> 164:117-122<br><a class="mono small" href="https://doi.org/10.1016/0378-1119(95)00448-f"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/0378-1119(95)00448-f</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7590299/"
+     rel="noopener noreferrer" target="_blank">PMID 7590299</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + heterologous expression of bpdC1C2BADE; biphenyl transformation shown for the cloned operon, not for the isolated subunit</span>
+</li>
+
+</ul>
+
+<h3 id="2_208_TecA1"><a href="/pro-sim-blast/cluster/2_208_TecA1.html">TecA1</a>
+  <span class="note">2_208_TecA1</span></h3>
+<ul class="lit">
+
+<li>Beil S, Happe B, Timmis KN, Pieper DH (1997).
+  Genetic and Biochemical Characterization of the Broad Spectrum Chlorobenzene Dioxygenase from Burkholderia Sp. Strain PS12 — Dechlorination of 1,2,4,5‐Tetrachlorobenzene.
+  <i>European Journal of Biochemistry</i> 247:190-199<br><a class="mono small" href="https://doi.org/10.1111/j.1432-1033.1997.00190.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/j.1432-1033.1997.00190.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9249026/"
+     rel="noopener noreferrer" target="_blank">PMID 9249026</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: genetic and biochemical characterisation of the broad-spectrum chlorobenzene dioxygenase, with catalytic activity and subunit composition</span>
+</li>
+
+<li>Pollmann K, Beil S, Pieper DH (2001).
+  Transformation of Chlorinated Benzenes and Toluenes by Ralstonia sp. Strain PS12 tecA (Tetrachlorobenzene Dioxygenase) and tecB (Chlorobenzene Dihydrodiol Dehydrogenase) Gene Products.
+  <i>Appl Environ Microbiol</i> 67:4057-4063<br><a class="mono small" href="https://doi.org/10.1128/aem.67.9.4057-4063.2001"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.67.9.4057-4063.2001</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11526005/"
+     rel="noopener noreferrer" target="_blank">PMID 11526005</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Beil S, Mason JR, Timmis KN, Pieper DH (1998).
+  Identification of Chlorobenzene Dioxygenase Sequence Elements Involved in Dechlorination of 1,2,4,5-Tetrachlorobenzene.
+  <i>J Bacteriol</i> 180:5520-5528<br><a class="mono small" href="https://doi.org/10.1128/jb.180.21.5520-5528.1998"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.180.21.5520-5528.1998</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9791099/"
+     rel="noopener noreferrer" target="_blank">PMID 9791099</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="2_209_TDO"><a href="/pro-sim-blast/cluster/2_209_TDO.html">TDO</a>
+  <span class="note">2_209_TDO</span></h3>
+<ul class="lit">
+
+<li>Zylstra GJ, Gibson DT (1989).
+  Toluene Degradation by Pseudomonas putida F1.
+  <i>Journal of Biological Chemistry</i> 264:14940-14946<br><a class="mono small" href="https://doi.org/10.1016/s0021-9258(18)63793-7"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0021-9258(18)63793-7</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/2670929/"
+     rel="noopener noreferrer" target="_blank">PMID 2670929</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence (1989, todC1C2BADE, with N-terminal protein sequencing); the 2009 Acta Cryst D paper gives the structures of the whole three-component toluene 2,3-dioxygenase system</span>
+</li>
+
+<li>Friemann R, Lee K, Brown EN, Gibson DT, Eklund H, Ramaswamy S (2008).
+  Structures of the multicomponent Rieske non-heme iron toluene 2,3-dioxygenase enzyme system.
+  <i>Acta Crystallogr D Biol Crystallogr</i> 65:24-33<br><a class="mono small" href="https://doi.org/10.1107/s0907444908036524"
+     rel="noopener noreferrer" target="_blank">doi:10.1107/s0907444908036524</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19153463/"
+     rel="noopener noreferrer" target="_blank">PMID 19153463</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="2_210_XylC1"><a href="/pro-sim-blast/cluster/2_210_XylC1.html">XylC1</a>
+  <span class="note">2_210_XylC1</span></h3>
+<ul class="lit">
+
+<li>Wang Y, Lau PC, Button DK (1996).
+  A marine oligobacterium harboring genes known to be part of aromatic hydrocarbon degradation pathways of soil pseudomonads.
+  <i>Appl Environ Microbiol</i> 62:2169-2173<br><a class="mono small" href="https://doi.org/10.1128/aem.62.6.2169-2173.1996"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.62.6.2169-2173.1996</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/8787414/"
+     rel="noopener noreferrer" target="_blank">PMID 8787414</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: a marine oligobacterium found to harbour aromatic-hydrocarbon catabolic genes; no enzyme assay</span>
+</li>
+
+</ul>
+
+<h3 id="2_211_bfzA"><a href="/pro-sim-blast/cluster/2_211_bfzA.html">bfzA</a>
+  <span class="note">2_211_bfzA</span></h3>
+<ul class="lit">
+
+<li>Chen X, Ji J, Zhao L, Qiu J, Dai C, Wang W (2017).
+  Molecular Mechanism and Genetic Determinants of Buprofezin Degradation.
+  <i>Appl Environ Microbiol</i> 83<br><a class="mono small" href="https://doi.org/10.1128/aem.00868-17"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00868-17</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/28710269/"
+     rel="noopener noreferrer" target="_blank">PMID 28710269</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: genetic determinants of buprofezin degradation; bfzA1A2 identified as the dioxygenase that attacks buprofezin</span>
+</li>
+
+</ul>
+
+<h3 id="2_212_BedC1"><a href="/pro-sim-blast/cluster/2_212_BedC1.html">BedC1</a>
+  <span class="note">2_212_BedC1</span></h3>
+<ul class="lit">
+
+<li>Tan HM, Tang HY, Joannou CL, Abdel-Wahab NH, Mason JR (1993).
+  The Pseudomonas putida ML2 plasmid-encoded genes for benzene dioxygenase are unusual in codon usage and low in G + C content.
+  <i>Gene</i> 130:33-39<br><a class="mono small" href="https://doi.org/10.1016/0378-1119(93)90343-2"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/0378-1119(93)90343-2</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/8344526/"
+     rel="noopener noreferrer" target="_blank">PMID 8344526</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + N-terminal protein sequence of the benzene dioxygenase genes of plasmid pHMT112</span>
+</li>
+
+</ul>
+
+<h3 id="2_213_BphA1A2"><a href="/pro-sim-blast/cluster/2_213_BphA1A2.html">BphA1A2</a>
+  <span class="note">2_213_BphA1A2</span></h3>
+<ul class="lit">
+
+<li>Masai E, Yamada A, Healy JM, Hatta T, Kimbara K, Fukuda M (1995).
+  Characterization of biphenyl catabolic genes of gram-positive polychlorinated biphenyl degrader Rhodococcus sp. strain RHA1.
+  <i>Appl Environ Microbiol</i> 61:2079-2085<br><a class="mono small" href="https://doi.org/10.1128/aem.61.6.2079-2085.1995"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.61.6.2079-2085.1995</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7793929/"
+     rel="noopener noreferrer" target="_blank">PMID 7793929</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: biphenyl catabolic genes of the Gram-positive PCB degrader characterised, with disruption phenotype and pathway; structure in 1ULI; substrate specificity in the 2007 BBB paper</span>
+</li>
+
+<li>IWASAKI T, TAKEDA H, MIYAUCHI K, YAMADA T, MASAI E, FUKUDA M (2007).
+  Characterization of Two Biphenyl Dioxygenases for Biphenyl/PCB Degradation in A PCB Degrader,Rhodococcussp. Strain RHA1.
+  <i>Bioscience, Biotechnology, and Biochemistry</i> 71:993-1002<br><a class="mono small" href="https://doi.org/10.1271/bbb.60663"
+     rel="noopener noreferrer" target="_blank">doi:10.1271/bbb.60663</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17420585/"
+     rel="noopener noreferrer" target="_blank">PMID 17420585</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Furusawa Y, Nagarajan V, Tanokura M, Masai E, Fukuda M, Senda T (2004).
+  Crystal Structure of the Terminal Oxygenase Component of Biphenyl Dioxygenase Derived from Rhodococcus sp. Strain RHA1.
+  <i>Journal of Molecular Biology</i> 342:1041-1052<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2004.07.062"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2004.07.062</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15342255/"
+     rel="noopener noreferrer" target="_blank">PMID 15342255</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="2_214_TftA"><a href="/pro-sim-blast/cluster/2_214_TftA.html">TftA</a>
+  <span class="note">2_214_TftA</span></h3>
+<ul class="lit">
+
+<li>Danganan CE, Ye RW, Daubaras DL, Xun L, Chakrabarty AM (1994).
+  Nucleotide sequence and functional analysis of the genes encoding 2,4,5-trichlorophenoxyacetic acid oxygenase in Pseudomonas cepacia AC1100.
+  <i>Appl Environ Microbiol</i> 60:4100-4106<br><a class="mono small" href="https://doi.org/10.1128/aem.60.11.4100-4106.1994"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.60.11.4100-4106.1994</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7527626/"
+     rel="noopener noreferrer" target="_blank">PMID 7527626</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: nucleotide sequence and functional analysis of the tftAB genes encoding 2,4,5-trichlorophenoxyacetate oxygenase</span>
+</li>
+
+</ul>
+
+<h3 id="2_215_cadA"><a href="/pro-sim-blast/cluster/2_215_cadA.html">cadA</a>
+  <span class="note">2_215_cadA</span></h3>
+<ul class="lit">
+
+<li>Nielsen TK, Xu Z, Gözdereliler E, Aamand J, Hansen LH, Sørensen SR (2013).
+  Novel Insight into the Genetic Context of the cadAB Genes from a 4-chloro-2-methylphenoxyacetic Acid-Degrading Sphingomonas.
+  <i>PLoS ONE</i> 8:e83346<br><a class="mono small" href="https://doi.org/10.1371/journal.pone.0083346"
+     rel="noopener noreferrer" target="_blank">doi:10.1371/journal.pone.0083346</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24391756/"
+     rel="noopener noreferrer" target="_blank">PMID 24391756</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; genetic context / sequence: cadAB genes of a 4-chloro-2-methylphenoxyacetic-acid-degrading Sphingomonas; the paper maps the genetic context, it does not purify the enzyme</span>
+</li>
+
+</ul>
+
+<h3 id="2_216_BPDO"><a href="/pro-sim-blast/cluster/2_216_BPDO.html">BPDO</a>
+  <span class="note">2_216_BPDO</span></h3>
+<ul class="lit">
+
+<li>Ferraro DJ, Brown EN, Yu CL, Parales RE, Gibson DT, Ramaswamy S (2007).
+  Structural investigations of the ferredoxin and terminal oxygenase components of the biphenyl 2,3-dioxygenase from Sphingobium yanoikuyae B1.
+  <i>BMC Struct Biol</i> 7<br><a class="mono small" href="https://doi.org/10.1186/1472-6807-7-10"
+     rel="noopener noreferrer" target="_blank">doi:10.1186/1472-6807-7-10</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17349044/"
+     rel="noopener noreferrer" target="_blank">PMID 17349044</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural: ferredoxin and terminal oxygenase components of the biphenyl 2,3-dioxygenase crystallised; the 2007 J Ind Microbiol Biotechnol paper reports cloning and characterisation of the multicomponent enzyme</span>
+</li>
+
+<li>Ní Chadhain SM, Moritz EM, Kim E, Zylstra GJ (2007).
+  Identification, cloning, and characterization of a multicomponent biphenyl dioxygenase from Sphingobium yanoikuyae B1.
+  <i>J Ind Microbiol Biotechnol</i> 34:605-613<br><a class="mono small" href="https://doi.org/10.1007/s10295-007-0235-3"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s10295-007-0235-3</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17647036/"
+     rel="noopener noreferrer" target="_blank">PMID 17647036</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="2_217_HcaE"><a href="/pro-sim-blast/cluster/2_217_HcaE.html">HcaE</a>
+  <span class="note">2_217_HcaE</span></h3>
+<ul class="lit">
+
+<li>Díaz E, Ferrández A, García JL (1998).
+  Characterization of the hca Cluster Encoding the Dioxygenolytic Pathway for Initial Catabolism of 3-Phenylpropionic Acid in Escherichia coli K-12.
+  <i>J Bacteriol</i> 180:2915-2923<br><a class="mono small" href="https://doi.org/10.1128/jb.180.11.2915-2923.1998"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.180.11.2915-2923.1998</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9603882/"
+     rel="noopener noreferrer" target="_blank">PMID 9603882</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: the hca cluster shown to encode the dioxygenolytic route for 3-phenylpropionate and cinnamate catabolism</span>
+</li>
+
+</ul>
+
+<h3 id="2_218_BphA1"><a href="/pro-sim-blast/cluster/2_218_BphA1.html">BphA1 (218)</a>
+  <span class="note">2_218_BphA1</span></h3>
+<ul class="lit">
+
+<li>Kosono S, Maeda M, Fuji F, Arai H, Kudo T (1997).
+  Three of the seven bphC genes of Rhodococcus erythropolis TA421, isolated from a termite ecosystem, are located on an indigenous plasmid associated with biphenyl degradation.
+  <i>Appl Environ Microbiol</i> 63:3282-3285<br><a class="mono small" href="https://doi.org/10.1128/aem.63.8.3282-3285.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.63.8.3282-3285.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9251216/"
+     rel="noopener noreferrer" target="_blank">PMID 9251216</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: the paper is about the bphC genes of strain TA421; this bphA1 was deposited alongside it</span>
+</li>
+
+</ul>
+
+<h3 id="3_301_PhnA1a"><a href="/pro-sim-blast/cluster/3_301_PhnA1a.html">PhnA1a</a>
+  <span class="note">3_301_PhnA1a</span></h3>
+<ul class="lit">
+
+<li>Demanèche S, Meyer C, Micoud J, Louwagie M, Willison JC, Jouanneau Y (2004).
+  Identification and Functional Analysis of Two Aromatic-Ring-Hydroxylating Dioxygenases from a Sphingomonas Strain That Degrades Various Polycyclic Aromatic Hydrocarbons.
+  <i>Appl Environ Microbiol</i> 70:6714-6725<br><a class="mono small" href="https://doi.org/10.1128/aem.70.11.6714-6725.2004"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.70.11.6714-6725.2004</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15528538/"
+     rel="noopener noreferrer" target="_blank">PMID 15528538</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: two ring-hydroxylating dioxygenases of strain CHY-1 identified and functionally analysed; the 2007 BBRC paper describes the catalytic pocket from the 2CKF structure</span>
+</li>
+
+<li>Jakoncic J, Jouanneau Y, Meyer C, Stojanoff V (2007).
+  The catalytic pocket of the ring-hydroxylating dioxygenase from Sphingomonas CHY-1.
+  <i>Biochemical and Biophysical Research Communications</i> 352:861-866<br><a class="mono small" href="https://doi.org/10.1016/j.bbrc.2006.11.117"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.bbrc.2006.11.117</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17157819/"
+     rel="noopener noreferrer" target="_blank">PMID 17157819</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_302_DitA"><a href="/pro-sim-blast/cluster/3_302_DitA.html">DitA</a>
+  <span class="note">3_302_DitA</span></h3>
+<ul class="lit">
+
+<li>Martin VJJ, Mohn WW (1999).
+  A Novel Aromatic-Ring-Hydroxylating Dioxygenase from the Diterpenoid-Degrading Bacterium Pseudomonas abietaniphila BKME-9.
+  <i>J Bacteriol</i> 181:2675-2682<br><a class="mono small" href="https://doi.org/10.1128/jb.181.9.2675-2682.1999"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.181.9.2675-2682.1999</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10217753/"
+     rel="noopener noreferrer" target="_blank">PMID 10217753</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: ditA1A2A3 cloned from the diterpenoid degrader and shown to encode a novel aromatic-ring-hydroxylating dioxygenase acting on dehydroabietic acid</span>
+</li>
+
+</ul>
+
+<h3 id="3_303_NBDO"><a href="/pro-sim-blast/cluster/3_303_NBDO.html">NBDO</a>
+  <span class="note">3_303_NBDO</span></h3>
+<ul class="lit">
+
+<li>Lessner DJ, Johnson GR, Parales RE, Spain JC, Gibson DT (2002).
+  Molecular Characterization and Substrate Specificity of Nitrobenzene Dioxygenase from Comamonas sp. Strain JS765.
+  <i>Appl Environ Microbiol</i> 68:634-641<br><a class="mono small" href="https://doi.org/10.1128/aem.68.2.634-641.2002"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.68.2.634-641.2002</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11823201/"
+     rel="noopener noreferrer" target="_blank">PMID 11823201</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: molecular characterisation and substrate specificity of nitrobenzene dioxygenase; structure in 2BMO</span>
+</li>
+
+<li>Friemann R, Ivkovic-Jensen MM, Lessner DJ, Yu CL, Gibson DT, Parales RE (2005).
+  Structural Insight into the Dioxygenation of Nitroarene Compounds: the Crystal Structure of Nitrobenzene Dioxygenase.
+  <i>Journal of Molecular Biology</i> 348:1139-1151<br><a class="mono small" href="https://doi.org/10.1016/j.jmb.2005.03.052"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jmb.2005.03.052</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15854650/"
+     rel="noopener noreferrer" target="_blank">PMID 15854650</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_305_ArhA1"><a href="/pro-sim-blast/cluster/3_305_ArhA1.html">ArhA1</a>
+  <span class="note">3_305_ArhA1</span></h3>
+<ul class="lit">
+
+<li>PINYAKONG O, HABE H, KOUZUMA A, NOJIRI H, YAMANE H, OMORI T (2004).
+  Isolation and characterization of genes encoding polycyclic aromatic hydrocarbon dioxygenase from acenaphthene and acenaphthylene degrading sp. strain A4.
+  <i>FEMS Microbiology Letters</i> 238:297-305<br><a class="mono small" href="https://doi.org/10.1016/j.femsle.2004.07.048"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.femsle.2004.07.048</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15358414/"
+     rel="noopener noreferrer" target="_blank">PMID 15358414</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: genes encoding a polycyclic-aromatic-hydrocarbon dioxygenase isolated and characterised; the 2006 Microbiology paper adds transcriptional/functional analysis for acenaphthylene</span>
+</li>
+
+</ul>
+
+<h3 id="3_306_3NTDO"><a href="/pro-sim-blast/cluster/3_306_3NTDO.html">3NTDO</a>
+  <span class="note">3_306_3NTDO</span></h3>
+<ul class="lit">
+
+<li>Kumari A, Singh D, Ramaswamy S, Ramanathan G (2017).
+  Structural and functional studies of ferredoxin and oxygenase components of 3-nitrotoluene dioxygenase from Diaphorobacter sp. strain DS2.
+  <i>PLoS ONE</i> 12:e0176398<br><a class="mono small" href="https://doi.org/10.1371/journal.pone.0176398"
+     rel="noopener noreferrer" target="_blank">doi:10.1371/journal.pone.0176398</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/28448625/"
+     rel="noopener noreferrer" target="_blank">PMID 28448625</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural + functional: ferredoxin and oxygenase components of 3-nitrotoluene dioxygenase crystallised and assayed; the 2014 Biodegradation paper reports the cloning and expression</span>
+</li>
+
+<li>Singh D, Kumari A, Ramanathan G (2013).
+  3-Nitrotoluene dioxygenase from Diaphorobacter sp. strains: cloning, sequencing and evolutionary studies.
+  <i>Biodegradation</i> 25:479-492<br><a class="mono small" href="https://doi.org/10.1007/s10532-013-9675-9"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s10532-013-9675-9</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24217981/"
+     rel="noopener noreferrer" target="_blank">PMID 24217981</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_307_NagGH"><a href="/pro-sim-blast/cluster/3_307_NagGH.html">NagGH</a>
+  <span class="note">3_307_NagGH</span></h3>
+<ul class="lit">
+
+<li>Zhou NY, Al-Dulayymi J, Baird MS, Williams PA (2002).
+  Salicylate 5-Hydroxylase from Ralstonia sp. Strain U2: a Monooxygenase with Close Relationships to and Shared Electron Transport Proteins with Naphthalene Dioxygenase.
+  <i>J Bacteriol</i> 184:1547-1555<br><a class="mono small" href="https://doi.org/10.1128/jb.184.6.1547-1555.2002"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.184.6.1547-1555.2002</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11872705/"
+     rel="noopener noreferrer" target="_blank">PMID 11872705</a> <span class="note small">verified by
+     crossref api + pubmed esearch</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: salicylate 5-hydroxylase of strain U2 is characterised here, including the electron transport proteins it shares with naphthalene dioxygenase -- which is also why this type sits next to NahAc</span>
+</li>
+
+<li>Fang T, Zhou NY (2013).
+  Purification and characterization of salicylate 5-hydroxylase, a three-component monooxygenase from Ralstonia sp. strain U2.
+  <i>Appl Microbiol Biotechnol</i> 98:671-679<br><a class="mono small" href="https://doi.org/10.1007/s00253-013-4914-x"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s00253-013-4914-x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/23624660/"
+     rel="noopener noreferrer" target="_blank">PMID 23624660</a> <span class="note small">verified by
+     crossref api + pubmed esearch</span>
+  <br><span class="note">Secondary citation &mdash; the enzyme was purified here and shown to be a three-component system -- protein-level evidence rather than genetics</span>
+</li>
+
+</ul>
+
+<h3 id="3_308_DxnA1"><a href="/pro-sim-blast/cluster/3_308_DxnA1.html">DxnA1</a>
+  <span class="note">3_308_DxnA1</span></h3>
+<ul class="lit">
+
+<li>Armengaud J, Happe B, Timmis KN (1998).
+  Genetic Analysis of Dioxin Dioxygenase of Sphingomonas sp. Strain RW1: Catabolic Genes Dispersed on the Genome.
+  <i>J Bacteriol</i> 180:3954-3966<br><a class="mono small" href="https://doi.org/10.1128/jb.180.15.3954-3966.1998"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.180.15.3954-3966.1998</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9683494/"
+     rel="noopener noreferrer" target="_blank">PMID 9683494</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/genetic: genetic analysis of the dioxin dioxygenase dxnA1A2 of strain RW1, including expression and angular dioxygenation of dibenzo-p-dioxin</span>
+</li>
+
+</ul>
+
+<h3 id="3_309_NahAc"><a href="/pro-sim-blast/cluster/3_309_NahAc.html">NahAc</a>
+  <span class="note">3_309_NahAc</span></h3>
+<ul class="lit">
+
+<li>Kauppi B, Lee K, Carredano E, Parales RE, Gibson DT, Eklund H (1998).
+  Structure of an aromatic-ring-hydroxylating dioxygenase - naphthalene 1,2-dioxygenase.
+  <i>Structure</i> 6:571-586<br><a class="mono small" href="https://doi.org/10.1016/s0969-2126(98)00059-8"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0969-2126(98)00059-8</a> <span class="note small">verified by
+     crossref and rcsb</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural: the crystal structure of naphthalene 1,2-dioxygenase (PDB 1NDO), which is what this type&#39;s assignment rests on</span>
+</li>
+
+<li>Ensley BD, Gibson DT (1983).
+  Naphthalene dioxygenase: purification and properties of a terminal oxygenase component.
+  <i>J Bacteriol</i> 155:505-511<br><a class="mono small" href="https://doi.org/10.1128/jb.155.2.505-511.1983"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.155.2.505-511.1983</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/6874638/"
+     rel="noopener noreferrer" target="_blank">PMID 6874638</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: naphthalene dioxygenase terminal oxygenase purified and its properties reported; later papers give substrate specificity by mutagenesis and the 1NDO/side-on dioxygen structures</span>
+</li>
+
+<li>Karlsson A, Parales JV, Parales RE, Gibson DT, Eklund H, Ramaswamy S (2003).
+  Crystal Structure of Naphthalene Dioxygenase: Side-on Binding of Dioxygen to Iron.
+  <i>Science</i> 299:1039-1042<br><a class="mono small" href="https://doi.org/10.1126/science.1078020"
+     rel="noopener noreferrer" target="_blank">doi:10.1126/science.1078020</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/12586937/"
+     rel="noopener noreferrer" target="_blank">PMID 12586937</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Parales RE, Lee K, Resnick SM, Jiang H, Lessner DJ, Gibson DT (2000).
+  Substrate Specificity of Naphthalene Dioxygenase: Effect of Specific Amino Acids at the Active Site of the Enzyme.
+  <i>J Bacteriol</i> 182:1641-1649<br><a class="mono small" href="https://doi.org/10.1128/jb.182.6.1641-1649.2000"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.182.6.1641-1649.2000</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10692370/"
+     rel="noopener noreferrer" target="_blank">PMID 10692370</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_310_DntAc"><a href="/pro-sim-blast/cluster/3_310_DntAc.html">DntAc</a>
+  <span class="note">3_310_DntAc</span></h3>
+<ul class="lit">
+
+<li>Johnson GR, Jain RK, Spain JC (2002).
+  Origins of the 2,4-Dinitrotoluene Pathway.
+  <i>J Bacteriol</i> 184:4219-4232<br><a class="mono small" href="https://doi.org/10.1128/jb.184.15.4219-4232.2002"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.184.15.4219-4232.2002</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/12107140/"
+     rel="noopener noreferrer" target="_blank">PMID 12107140</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/evolutionary: origins of the 2,4-dinitrotoluene pathway, including the dnt dioxygenase genes</span>
+</li>
+
+<li>Johnson GR, Jain RK, Spain JC (1999).
+  Properties of the trihydroxytoluene oxygenase from Burkholderia cepacia R34: an extradiol dioxygenase from the 2,4-dinitrotoluene pathway.
+  <i>Arch Microbiol</i> 173:86-90<br><a class="mono small" href="https://doi.org/10.1007/s002039900111"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s002039900111</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10795678/"
+     rel="noopener noreferrer" target="_blank">PMID 10795678</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_311_PhtAa"><a href="/pro-sim-blast/cluster/3_311_PhtAa.html">PhtAa</a>
+  <span class="note">3_311_PhtAa</span></h3>
+<ul class="lit">
+
+<li>Stingley RL, Brezna B, Khan AA, Cerniglia CE (2004).
+  Novel organization of genes in a phthalate degradation operon of Mycobacterium vanbaalenii PYR-1.
+  <i>Microbiology</i> 150:3749-3761<br><a class="mono small" href="https://doi.org/10.1099/mic.0.27263-0"
+     rel="noopener noreferrer" target="_blank">doi:10.1099/mic.0.27263-0</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15528661/"
+     rel="noopener noreferrer" target="_blank">PMID 15528661</a> <span class="note small">verified by
+     crossref record</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; source of the reference sequence. The sequence was verified identical in TWO INDEPENDENT accessions: UniProt Q6UP13 and GenBank AAQ91914.2 (gene phtAa, product PhtAa, 487 aa).</span>
+</li>
+
+</ul>
+
+<h3 id="3_312_NinA"><a href="/pro-sim-blast/cluster/3_312_NinA.html">NinA</a>
+  <span class="note">3_312_NinA</span></h3>
+<ul class="lit">
+
+<li>Li T, Xu J, Brower AL, Xu ZJ, Xu Y, Spain JC (2023).
+  Molecular Basis and Evolutionary Origin of 1-Nitronaphthalene Catabolism in Sphingobium sp. Strain JS3065.
+  <i>Appl Environ Microbiol</i> 89<br><a class="mono small" href="https://doi.org/10.1128/aem.01728-22"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.01728-22</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/36622195/"
+     rel="noopener noreferrer" target="_blank">PMID 36622195</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: molecular basis and evolutionary origin of 1-nitronaphthalene catabolism; the dioxygenase that releases nitrite from the nitroarene is identified and expressed</span>
+</li>
+
+</ul>
+
+<h3 id="3_313_KshA15"><a href="/pro-sim-blast/cluster/3_313_KshA15.html">KshA15</a>
+  <span class="note">3_313_KshA15</span></h3>
+<ul class="lit">
+
+<li>Capyk JK, D’Angelo I, Strynadka NC, Eltis LD (2009).
+  Characterization of 3-Ketosteroid 9α-Hydroxylase, a Rieske Oxygenase in the Cholesterol Degradation Pathway of Mycobacterium tuberculosis.
+  <i>Journal of Biological Chemistry</i> 284:9937-9946<br><a class="mono small" href="https://doi.org/10.1074/jbc.m900719200"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m900719200</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/19234303/"
+     rel="noopener noreferrer" target="_blank">PMID 19234303</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional + structural: 3-ketosteroid 9alpha-hydroxylase characterised (activity, cofactor, substrate specificity) and crystallised</span>
+</li>
+
+<li>Penfield JS, Worrall LJ, Strynadka NC, Eltis LD (2014).
+  Substrate Specificities and Conformational Flexibility of 3-Ketosteroid 9α-Hydroxylases.
+  <i>Journal of Biological Chemistry</i> 289:25523-25536<br><a class="mono small" href="https://doi.org/10.1074/jbc.m114.575886"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m114.575886</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/25049233/"
+     rel="noopener noreferrer" target="_blank">PMID 25049233</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Capyk JK, Casabon I, Gruninger R, Strynadka NC, Eltis LD (2011).
+  Activity of 3-Ketosteroid 9α-Hydroxylase (KshAB) Indicates Cholesterol Side Chain and Ring Degradation Occur Simultaneously in Mycobacterium tuberculosis.
+  <i>Journal of Biological Chemistry</i> 286:40717-40724<br><a class="mono small" href="https://doi.org/10.1074/jbc.m111.289975"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m111.289975</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/21987574/"
+     rel="noopener noreferrer" target="_blank">PMID 21987574</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_316_NarAa"><a href="/pro-sim-blast/cluster/3_316_NarAa.html">NarAa</a>
+  <span class="note">3_316_NarAa</span></h3>
+<ul class="lit">
+
+<li>Larkin MJ, Allen CCR, Kulakov LA, Lipscomb DA (1999).
+  Purification and Characterization of a Novel Naphthalene Dioxygenase from Rhodococcus sp. Strain NCIMB12038.
+  <i>J Bacteriol</i> 181:6200-6204<br><a class="mono small" href="https://doi.org/10.1128/jb.181.19.6200-6204.1999"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.181.19.6200-6204.1999</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10498739/"
+     rel="noopener noreferrer" target="_blank">PMID 10498739</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: a novel naphthalene dioxygenase purified and characterised from Rhodococcus; the 2005 J Bacteriol paper adds the structure and thermostability</span>
+</li>
+
+<li>Gakhar L, Malik ZA, Allen CCR, Lipscomb DA, Larkin MJ, Ramaswamy S (2005).
+  Structure and Increased Thermostability ofRhodococcussp. Naphthalene 1,2-Dioxygenase.
+  <i>J Bacteriol</i> 187:7222-7231<br><a class="mono small" href="https://doi.org/10.1128/jb.187.21.7222-7231.2005"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.187.21.7222-7231.2005</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16237006/"
+     rel="noopener noreferrer" target="_blank">PMID 16237006</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_317_NidA"><a href="/pro-sim-blast/cluster/3_317_NidA.html">NidA (317)</a>
+  <span class="note">3_317_NidA</span></h3>
+<ul class="lit">
+
+<li>Treadway SL, Yanagimachi KS, Lankenau E, Lessard PA, Stephanopoulos G, Sinskey AJ (1999).
+  Isolation and characterization of indene bioconversion genes from Rhodococcus strain I24.
+  <i>Applied Microbiology and Biotechnology</i> 51:786-793<br><a class="mono small" href="https://doi.org/10.1007/s002530051463"
+     rel="noopener noreferrer" target="_blank">doi:10.1007/s002530051463</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10422226/"
+     rel="noopener noreferrer" target="_blank">PMID 10422226</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional (on a different substrate): the genes were isolated as indene bioconversion genes and assayed on indene</span>
+</li>
+
+</ul>
+
+<h3 id="3_318_NidA"><a href="/pro-sim-blast/cluster/3_318_NidA.html">NidA (318)</a>
+  <span class="note">3_318_NidA</span></h3>
+<ul class="lit">
+
+<li>Khan AA, Wang RF, Cao WW, Doerge DR, Wennerstrom D, Cerniglia CE (2001).
+  Molecular Cloning, Nucleotide Sequence, and Expression of Genes Encoding a Polycyclic Aromatic Ring Dioxygenase from Mycobacterium sp. Strain PYR-1.
+  <i>Appl Environ Microbiol</i> 67:3577-3585<br><a class="mono small" href="https://doi.org/10.1128/aem.67.8.3577-3585.2001"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.67.8.3577-3585.2001</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11472934/"
+     rel="noopener noreferrer" target="_blank">PMID 11472934</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: cloning, sequencing and expression of genes encoding a polycyclic-aromatic-hydrocarbon dioxygenase, with activity on pyrene</span>
+</li>
+
+<li>Stingley RL, Khan AA, Cerniglia CE (2004).
+  Molecular characterization of a phenanthrene degradation pathway in Mycobacterium vanbaalenii PYR-1.
+  <i>Biochemical and Biophysical Research Communications</i> 322:133-146<br><a class="mono small" href="https://doi.org/10.1016/j.bbrc.2004.07.089"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.bbrc.2004.07.089</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/15313184/"
+     rel="noopener noreferrer" target="_blank">PMID 15313184</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="3_319_PhdA"><a href="/pro-sim-blast/cluster/3_319_PhdA.html">PhdA</a>
+  <span class="note">3_319_PhdA</span></h3>
+<ul class="lit">
+
+<li>Saito A, Iwabuchi T, Harayama S (2000).
+  A Novel Phenanthrene Dioxygenase from Nocardioides sp. Strain KP7: Expression in Escherichia coli.
+  <i>J Bacteriol</i> 182:2134-2141<br><a class="mono small" href="https://doi.org/10.1128/jb.182.8.2134-2141.2000"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.182.8.2134-2141.2000</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10735855/"
+     rel="noopener noreferrer" target="_blank">PMID 10735855</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: a novel phenanthrene dioxygenase from strain KP7 expressed in Streptomyces and assayed</span>
+</li>
+
+</ul>
+
+<h3 id="3_320_NidA3"><a href="/pro-sim-blast/cluster/3_320_NidA3.html">NidA3</a>
+  <span class="note">3_320_NidA3</span></h3>
+<ul class="lit">
+
+<li>Kim SJ, Kweon O, Freeman JP, Jones RC, Adjei MD, Jhoo JW (2006).
+  Molecular Cloning and Expression of Genes Encoding a Novel Dioxygenase Involved in Low- and High-Molecular-Weight Polycyclic Aromatic Hydrocarbon Degradation inMycobacterium vanbaaleniiPYR-1.
+  <i>Appl Environ Microbiol</i> 72:1045-1054<br><a class="mono small" href="https://doi.org/10.1128/aem.72.2.1045-1054.2006"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.72.2.1045-1054.2006</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16461648/"
+     rel="noopener noreferrer" target="_blank">PMID 16461648</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: cloning and expression of genes encoding a novel dioxygenase involved in PAH degradation in strain PYR-1</span>
+</li>
+
+</ul>
+
+<h3 id="3_321_Nvd"><a href="/pro-sim-blast/cluster/3_321_Nvd.html">Nvd</a>
+  <span class="note">3_321_Nvd</span></h3>
+<ul class="lit">
+
+<li>Yoshiyama T, Namiki T, Mita K, Kataoka H, Niwa R (2006).
+  Neverland is an evolutionally conserved Rieske-domain protein that is essential for ecdysone synthesis and insect growth.
+  <i>Development</i> 133:2565-2574<br><a class="mono small" href="https://doi.org/10.1242/dev.02428"
+     rel="noopener noreferrer" target="_blank">doi:10.1242/dev.02428</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16763204/"
+     rel="noopener noreferrer" target="_blank">PMID 16763204</a> <span class="note small">verified by
+     crossref api + pubmed esearch</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/genetic: Neverland is reported here as a Rieske-domain protein required for ecdysone synthesis; the cholesterol 7,8-desaturation assigned to this type rests on this work</span>
+</li>
+
+</ul>
+
+<h3 id="3_322_DAF36"><a href="/pro-sim-blast/cluster/3_322_DAF36.html">DAF36</a>
+  <span class="note">3_322_DAF36</span></h3>
+<ul class="lit">
+
+<li>Wollam J, Magomedova L, Magner DB, Shen Y, Rottiers V, Motola DL (2011).
+  The Rieske oxygenase DAF‐36 functions as a cholesterol 7‐desaturase in steroidogenic pathways governing longevity.
+  <i>Aging Cell</i> 10:879-884<br><a class="mono small" href="https://doi.org/10.1111/j.1474-9726.2011.00733.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/j.1474-9726.2011.00733.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/21749634/"
+     rel="noopener noreferrer" target="_blank">PMID 21749634</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: DAF-36 shown to act as a cholesterol 7-desaturase in the dafachronic acid pathway; the 2006 Dev Cell paper established the Rieske-like oxygenase role in dauer formation</span>
+</li>
+
+<li>Yoshiyama-Yanagawa T, Enya S, Shimada-Niwa Y, Yaguchi S, Haramoto Y, Matsuya T (2011).
+  The Conserved Rieske Oxygenase DAF-36/Neverland Is a Novel Cholesterol-metabolizing Enzyme.
+  <i>Journal of Biological Chemistry</i> 286:25756-25762<br><a class="mono small" href="https://doi.org/10.1074/jbc.m111.244384"
+     rel="noopener noreferrer" target="_blank">doi:10.1074/jbc.m111.244384</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/21632547/"
+     rel="noopener noreferrer" target="_blank">PMID 21632547</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Rottiers V, Motola DL, Gerisch B, Cummins CL, Nishiwaki K, Mangelsdorf DJ (2006).
+  Hormonal Control of C. elegans Dauer Formation and Life Span by a Rieske-like Oxygenase.
+  <i>Developmental Cell</i> 10:473-482<br><a class="mono small" href="https://doi.org/10.1016/j.devcel.2006.02.008"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.devcel.2006.02.008</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/16563875/"
+     rel="noopener noreferrer" target="_blank">PMID 16563875</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_401_CmtAb"><a href="/pro-sim-blast/cluster/4_401_CmtAb.html">CmtAb</a>
+  <span class="note">4_401_CmtAb</span></h3>
+<ul class="lit">
+
+<li>Eaton RW (1996).
+  p-Cumate catabolic pathway in Pseudomonas putida Fl: cloning and characterization of DNA carrying the cmt operon.
+  <i>J Bacteriol</i> 178:1351-1362<br><a class="mono small" href="https://doi.org/10.1128/jb.178.5.1351-1362.1996"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.178.5.1351-1362.1996</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/8631713/"
+     rel="noopener noreferrer" target="_blank">PMID 8631713</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: the p-cumate catabolic pathway of P. putida F1 cloned and characterised, including the cmtAaAbAcAd dioxygenase</span>
+</li>
+
+<li>DeFrank JJ, Ribbons DW (1977).
+  p-cymene pathway in Pseudomonas putida: initial reactions.
+  <i>J Bacteriol</i> 129:1356-1364<br><a class="mono small" href="https://doi.org/10.1128/jb.129.3.1356-1364.1977"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.129.3.1356-1364.1977</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/845117/"
+     rel="noopener noreferrer" target="_blank">PMID 845117</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_402_PsbAb"><a href="/pro-sim-blast/cluster/4_402_PsbAb.html">PsbAb</a>
+  <span class="note">4_402_PsbAb</span></h3>
+<ul class="lit">
+
+<li>Puskás LG, Inui M, Kele Z, Yukawa H (2000).
+  Cloning of Genes Participating in Aerobic Biodegradation ofp-Cumate fromRhodopseudomonas palustris.
+  <i>DNA Sequence</i> 11:9-20<br><a class="mono small" href="https://doi.org/10.3109/10425170009033965"
+     rel="noopener noreferrer" target="_blank">doi:10.3109/10425170009033965</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10902905/"
+     rel="noopener noreferrer" target="_blank">PMID 10902905</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: cloning and sequencing of genes for aerobic p-cumate biodegradation; no purification or activity assay of this subunit</span>
+</li>
+
+</ul>
+
+<h3 id="4_403_AtdA"><a href="/pro-sim-blast/cluster/4_403_AtdA.html">AtdA</a>
+  <span class="note">4_403_AtdA</span></h3>
+<ul class="lit">
+
+<li>Fujii T, Takeo M, Maeda Y (1997).
+  Plasmid-Encoded Genes Specifying Aniline Oxidation from Acinetobacter sp. Strain YAA.
+  <i>Microbiology</i> 143:93-99<br><a class="mono small" href="https://doi.org/10.1099/00221287-143-1-93"
+     rel="noopener noreferrer" target="_blank">doi:10.1099/00221287-143-1-93</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9025282/"
+     rel="noopener noreferrer" target="_blank">PMID 9025282</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: plasmid-encoded genes specifying aniline oxidation; the atdA-encoded multicomponent aniline dioxygenase converts aniline to catechol with release of ammonia</span>
+</li>
+
+<li>Takeo M, Ohara A, Sakae S, Okamoto Y, Kitamura C, Kato Di (2013).
+  Function of a Glutamine Synthetase-Like Protein in Bacterial Aniline Oxidation via γ-Glutamylanilide.
+  <i>J Bacteriol</i> 195:4406-4414<br><a class="mono small" href="https://doi.org/10.1128/jb.00397-13"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.00397-13</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/23893114/"
+     rel="noopener noreferrer" target="_blank">PMID 23893114</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_404_TdnA1"><a href="/pro-sim-blast/cluster/4_404_TdnA1.html">TdnA1</a>
+  <span class="note">4_404_TdnA1</span></h3>
+<ul class="lit">
+
+<li>Fukumori F, Saint CP (1997).
+  Nucleotide sequences and regulational analysis of genes involved in conversion of aniline to catechol in Pseudomonas putida UCC22(pTDN1).
+  <i>J Bacteriol</i> 179:399-408<br><a class="mono small" href="https://doi.org/10.1128/jb.179.2.399-408.1997"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.179.2.399-408.1997</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/8990291/"
+     rel="noopener noreferrer" target="_blank">PMID 8990291</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + regulation: nucleotide sequences and regulational analysis of the tdn genes for aniline conversion</span>
+</li>
+
+</ul>
+
+<h3 id="4_405_ROCH34"><a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a>
+  <span class="note">4_405_ROCH34</span></h3>
+<ul class="lit">
+
+<li>Mahto JK, Neetu N, Waghmode B, Kuatsjah E, Sharma M, Sircar D (2021).
+  Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.
+  <i>Journal of Biological Chemistry</i> 297:101416<br><a class="mono small" href="https://doi.org/10.1016/j.jbc.2021.101416"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jbc.2021.101416</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/34800435/"
+     rel="noopener noreferrer" target="_blank">PMID 34800435</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural: crystal structure of the phthalate dioxygenase; the 2025 J Bacteriol paper reports structure-guided engineering for broader phthalate specificity</span>
+</li>
+
+<li>Mahto JK, Mishra I, Jangid K, Kumar P (2025).
+  Structure-guided engineering of an aromatic ring-hydroxylating dioxygenase for broad-spectrum phthalate degradation.
+  <i>J Bacteriol</i> 207<br><a class="mono small" href="https://doi.org/10.1128/jb.00221-25"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.00221-25</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/40793770/"
+     rel="noopener noreferrer" target="_blank">PMID 40793770</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_406_PDO"><a href="/pro-sim-blast/cluster/4_406_PDO.html">PDO</a>
+  <span class="note">4_406_PDO</span></h3>
+<ul class="lit">
+
+<li>Mahto JK, Neetu N, Waghmode B, Kuatsjah E, Sharma M, Sircar D (2021).
+  Molecular insights into substrate recognition and catalysis by phthalate dioxygenase from Comamonas testosteroni.
+  <i>Journal of Biological Chemistry</i> 297:101416<br><a class="mono small" href="https://doi.org/10.1016/j.jbc.2021.101416"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/j.jbc.2021.101416</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/34800435/"
+     rel="noopener noreferrer" target="_blank">PMID 34800435</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/4_405_ROCH34.html">ROCH34</a></span>
+</li>
+
+</ul>
+
+<h3 id="4_407_PbaA1"><a href="/pro-sim-blast/cluster/4_407_PbaA1.html">PbaA1</a>
+  <span class="note">4_407_PbaA1</span></h3>
+<ul class="lit">
+
+<li>Wang C, Chen Q, Wang R, Shi C, Yan X, He J (2014).
+  A Novel Angular Dioxygenase Gene Cluster Encoding 3-Phenoxybenzoate 1′,2′-Dioxygenase in Sphingobium wenxiniae JZ-1.
+  <i>Appl Environ Microbiol</i> 80:3811-3818<br><a class="mono small" href="https://doi.org/10.1128/aem.00208-14"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00208-14</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24747891/"
+     rel="noopener noreferrer" target="_blank">PMID 24747891</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: a novel angular dioxygenase gene cluster encoding 3-phenoxybenzoate 1&#39;,2&#39;-dioxygenase identified and expressed</span>
+</li>
+
+</ul>
+
+<h3 id="4_408_AntA"><a href="/pro-sim-blast/cluster/4_408_AntA.html">AntA</a>
+  <span class="note">4_408_AntA</span></h3>
+<ul class="lit">
+
+<li>Eby DM, Beharry ZM, Coulter ED, Kurtz DM, Neidle EL (2001).
+  Characterization and Evolution of Anthranilate 1,2-Dioxygenase from Acinetobacter sp. Strain ADP1.
+  <i>J Bacteriol</i> 183:109-118<br><a class="mono small" href="https://doi.org/10.1128/jb.183-1.109-118.2001"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.183-1.109-118.2001</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11114907/"
+     rel="noopener noreferrer" target="_blank">PMID 11114907</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: anthranilate 1,2-dioxygenase characterised and its evolution analysed, with catalytic activity, cofactor and kinetic properties</span>
+</li>
+
+<li>Beharry ZM, Eby DM, Coulter ED, Viswanathan R, Neidle EL, Phillips RS (2003).
+  Histidine Ligand Protonation and Redox Potential in the Rieske Dioxygenases: Role of a Conserved Aspartate in Anthranilate 1,2-Dioxygenase.
+  <i>Biochemistry</i> 42:13625-13636<br><a class="mono small" href="https://doi.org/10.1021/bi035385n"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/bi035385n</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/14622009/"
+     rel="noopener noreferrer" target="_blank">PMID 14622009</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+<li>Bundy BM, Campbell AL, Neidle EL (1998).
+  Similarities between the antABC -Encoded Anthranilate Dioxygenase and the benABC -Encoded Benzoate Dioxygenase of Acinetobacter sp. Strain ADP1.
+  <i>J Bacteriol</i> 180:4466-4474<br><a class="mono small" href="https://doi.org/10.1128/jb.180.17.4466-4474.1998"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.180.17.4466-4474.1998</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9721284/"
+     rel="noopener noreferrer" target="_blank">PMID 9721284</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_409_TPDO"><a href="/pro-sim-blast/cluster/4_409_TPDO.html">TPDO</a>
+  <span class="note">4_409_TPDO</span></h3>
+<ul class="lit">
+
+<li>Mahto JK, Neetu N, Sharma M, Dubey M, Vellanki BP, Kumar P (2022).
+  Structural Insights into Dihydroxylation of Terephthalate, a Product of Polyethylene Terephthalate Degradation.
+  <i>J Bacteriol</i> 204<br><a class="mono small" href="https://doi.org/10.1128/jb.00543-21"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.00543-21</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/35007143/"
+     rel="noopener noreferrer" target="_blank">PMID 35007143</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; structural + functional: dihydroxylation of terephthalate (a PET hydrolysis product) analysed from the 7VJU structure</span>
+</li>
+
+</ul>
+
+<h3 id="4_410_CbdC"><a href="/pro-sim-blast/cluster/4_410_CbdC.html">CbdC</a>
+  <span class="note">4_410_CbdC</span></h3>
+<ul class="lit">
+
+<li>Haak B, Fetzner S, Lingens F (1995).
+  Cloning, nucleotide sequence, and expression of the plasmid-encoded genes for the two-component 2-halobenzoate 1,2-dioxygenase from Pseudomonas cepacia 2CBS.
+  <i>J Bacteriol</i> 177:667-675<br><a class="mono small" href="https://doi.org/10.1128/jb.177.3.667-675.1995"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.177.3.667-675.1995</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/7530709/"
+     rel="noopener noreferrer" target="_blank">PMID 7530709</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: cloning, sequencing and expression of the plasmid-encoded 2-halobenzoate 1,2-dioxygenase genes; the 1992 paper purified the two-component enzyme and reported its properties</span>
+</li>
+
+<li>Fetzner S, Müller R, Lingens F (1992).
+  Purification and some properties of 2-halobenzoate 1,2-dioxygenase, a two-component enzyme system from Pseudomonas cepacia 2CBS.
+  <i>J Bacteriol</i> 174:279-290<br><a class="mono small" href="https://doi.org/10.1128/jb.174.1.279-290.1992"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.174.1.279-290.1992</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/1370284/"
+     rel="noopener noreferrer" target="_blank">PMID 1370284</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="4_411_XylX"><a href="/pro-sim-blast/cluster/4_411_XylX.html">XylX</a>
+  <span class="note">4_411_XylX</span></h3>
+<ul class="lit">
+
+<li>Harayama S, Rekik M, Bairoch A, Neidle EL, Ornston LN (1991).
+  Potential DNA slippage structures acquired during evolutionary divergence of Acinetobacter calcoaceticus chromosomal benABC and Pseudomonas putida TOL pWW0 plasmid xylXYZ, genes encoding benzoate dioxygenases.
+  <i>J Bacteriol</i> 173:7540-7548<br><a class="mono small" href="https://doi.org/10.1128/jb.173.23.7540-7548.1991"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.173.23.7540-7548.1991</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/1938949/"
+     rel="noopener noreferrer" target="_blank">PMID 1938949</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: the xylXYZ region sequenced in the context of evolutionary divergence of the Acinetobacter/Pseudomonas dioxygenase genes</span>
+</li>
+
+<li>NEIDLE E, HARTNETT C, ORNSTON LN, BAIROCH A, REKIK M, HARAYAMA S (1992).
+  Cis‐diol dehydrogenases encoded by the TOL pWW0 plasmid xylL gene and the Acinetobacter calcoaceticus chromosomal benD gene are members of the short‐chain alcohol dehydrogenase superfamily.
+  <i>European Journal of Biochemistry</i> 204:113-120<br><a class="mono small" href="https://doi.org/10.1111/j.1432-1033.1992.tb16612.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/j.1432-1033.1992.tb16612.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/1740120/"
+     rel="noopener noreferrer" target="_blank">PMID 1740120</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="5_501_CmoS"><a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a>
+  <span class="note">5_501_CmoS</span></h3>
+<ul class="lit">
+
+<li>Rathinasabapathi B, Burnet M, Russell BL, Gage DA, Liao PC, Nye GJ (1997).
+  Choline monooxygenase, an unusual iron-sulfur enzyme catalyzing the first step of glycine betaine synthesis in plants: Prosthetic group characterization and cDNA cloning.
+  <i>Proc. Natl. Acad. Sci. U.S.A.</i> 94:3454-3458<br><a class="mono small" href="https://doi.org/10.1073/pnas.94.7.3454"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.94.7.3454</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9096415/"
+     rel="noopener noreferrer" target="_blank">PMID 9096415</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: choline monooxygenase purified from spinach chloroplasts, cDNA cloned, ferredoxin-dependent conversion of choline to betaine aldehyde demonstrated</span>
+</li>
+
+</ul>
+
+<h3 id="5_502_CmoB"><a href="/pro-sim-blast/cluster/5_502_CmoB.html">CmoB</a>
+  <span class="note">5_502_CmoB</span></h3>
+<ul class="lit">
+
+<li>Russell BL, Rathinasabapathi B, Hanson AD (1998).
+  Osmotic Stress Induces Expression of Choline Monooxygenase in Sugar Beet and Amaranth1.
+  <i>Plant Physiology</i> 116:859-865<br><a class="mono small" href="https://doi.org/10.1104/pp.116.2.859"
+     rel="noopener noreferrer" target="_blank">doi:10.1104/pp.116.2.859</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9489025/"
+     rel="noopener noreferrer" target="_blank">PMID 9489025</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence + expression: cDNA isolated and shown to be induced by osmotic stress; the catalytic characterisation of plant CMO rests on the spinach enzyme</span>
+</li>
+
+<li>Rathinasabapathi B, Burnet M, Russell BL, Gage DA, Liao PC, Nye GJ (1997).
+  Choline monooxygenase, an unusual iron-sulfur enzyme catalyzing the first step of glycine betaine synthesis in plants: Prosthetic group characterization and cDNA cloning.
+  <i>Proc. Natl. Acad. Sci. U.S.A.</i> 94:3454-3458<br><a class="mono small" href="https://doi.org/10.1073/pnas.94.7.3454"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.94.7.3454</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9096415/"
+     rel="noopener noreferrer" target="_blank">PMID 9096415</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></span>
+</li>
+
+</ul>
+
+<h3 id="5_503_CmoA"><a href="/pro-sim-blast/cluster/5_503_CmoA.html">CmoA</a>
+  <span class="note">5_503_CmoA</span></h3>
+<ul class="lit">
+
+<li>MENG YL, WANG YM, ZHANG DB, NII N (2001).
+  Isolation of a choline monooxygenase cDNA clone from Amaranthus tricolor and its expressions under stress conditions.
+  <i>Cell Res</i> 11:187-193<br><a class="mono small" href="https://doi.org/10.1038/sj.cr.7290085"
+     rel="noopener noreferrer" target="_blank">doi:10.1038/sj.cr.7290085</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/11642403/"
+     rel="noopener noreferrer" target="_blank">PMID 11642403</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; sequence only: isolation of a choline monooxygenase cDNA clone; no enzyme assay on the purified protein</span>
+</li>
+
+<li>Rathinasabapathi B, Burnet M, Russell BL, Gage DA, Liao PC, Nye GJ (1997).
+  Choline monooxygenase, an unusual iron-sulfur enzyme catalyzing the first step of glycine betaine synthesis in plants: Prosthetic group characterization and cDNA cloning.
+  <i>Proc. Natl. Acad. Sci. U.S.A.</i> 94:3454-3458<br><a class="mono small" href="https://doi.org/10.1073/pnas.94.7.3454"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.94.7.3454</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/9096415/"
+     rel="noopener noreferrer" target="_blank">PMID 9096415</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/5_501_CmoS.html">CmoS</a></span>
+</li>
+
+</ul>
+
+<h3 id="5_504_CntA"><a href="/pro-sim-blast/cluster/5_504_CntA.html">CntA</a>
+  <span class="note">5_504_CntA</span></h3>
+<ul class="lit">
+
+<li>Zhu Y, Jameson E, Crosatti M, Schäfer H, Rajakumar K, Bugg TDH (2014).
+  Carnitine metabolism to trimethylamine by an unusual Rieske-type oxygenase from human microbiota.
+  <i>Proc. Natl. Acad. Sci. U.S.A.</i> 111:4268-4273<br><a class="mono small" href="https://doi.org/10.1073/pnas.1316569111"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.1316569111</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/24591617/"
+     rel="noopener noreferrer" target="_blank">PMID 24591617</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: carnitine metabolism to trimethylamine by the unusual Rieske-type oxygenase CntAB, with catalytic activity, pathway and mutagenesis</span>
+</li>
+
+<li>Quareshy M, Shanmugam M, Cameron AD, Bugg TDH, Chen Y (2023).
+  Characterisation of an unusual cysteine pair in the Rieske carnitine monooxygenase CntA catalytic site.
+  <i>The FEBS Journal</i> 290:2939-2953<br><a class="mono small" href="https://doi.org/10.1111/febs.16722"
+     rel="noopener noreferrer" target="_blank">doi:10.1111/febs.16722</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/36617384/"
+     rel="noopener noreferrer" target="_blank">PMID 36617384</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="5_505_qxyA"><a href="/pro-sim-blast/cluster/5_505_qxyA.html">qxyA</a>
+  <span class="note">5_505_qxyA</span></h3>
+<ul class="lit">
+
+<li>Ertekin E, Konstantinidis KT, Tezel U (2016).
+  A Rieske-Type Oxygenase of Pseudomonas sp. BIOMIG1 Converts Benzalkonium Chlorides to Benzyldimethyl Amine.
+  <i>Environmental Science &amp; Technology</i> 51:175-181<br><a class="mono small" href="https://doi.org/10.1021/acs.est.6b03705"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/acs.est.6b03705</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/27792326/"
+     rel="noopener noreferrer" target="_blank">PMID 27792326</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: a Rieske-type oxygenase of Pseudomonas sp. BIOMIG1 shown to convert benzalkonium chloride to benzyldimethylamine</span>
+</li>
+
+<li>Ertekin E, Hatt JK, Konstantinidis KT, Tezel U (2016).
+  Similar Microbial Consortia and Genes Are Involved in the Biodegradation of Benzalkonium Chlorides in Different Environments.
+  <i>Environ. Sci. Technol.</i> 50:4304-4313<br><a class="mono small" href="https://doi.org/10.1021/acs.est.5b05959"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/acs.est.5b05959</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/26992451/"
+     rel="noopener noreferrer" target="_blank">PMID 26992451</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="5_506_Stc2"><a href="/pro-sim-blast/cluster/5_506_Stc2.html">Stc2</a>
+  <span class="note">5_506_Stc2</span></h3>
+<ul class="lit">
+
+<li>Daughtry KD, Xiao Y, Stoner-Ma D, Cho E, Orville AM, Liu P (2012).
+  Quaternary Ammonium Oxidative Demethylation: X-ray Crystallographic, Resonance Raman, and UV–Visible Spectroscopic Analysis of a Rieske-Type Demethylase.
+  <i>J. Am. Chem. Soc.</i> 134:2823-2834<br><a class="mono small" href="https://doi.org/10.1021/ja2111898"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/ja2111898</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/22224443/"
+     rel="noopener noreferrer" target="_blank">PMID 22224443</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional + structural: quaternary ammonium oxidative demethylation of stachydrine established by crystallography, resonance Raman and UV-vis; the 2000 Gene paper defined the stc region</span>
+</li>
+
+<li>Burnet MW, Goldmann A, Message B, Drong R, El Amrani A, Loreau O (2000).
+  The stachydrine catabolism region in Sinorhizobium meliloti encodes a multi-enzyme complex similar to the xenobiotic degrading systems in other bacteria.
+  <i>Gene</i> 244:151-161<br><a class="mono small" href="https://doi.org/10.1016/s0378-1119(99)00554-5"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0378-1119(99)00554-5</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10689197/"
+     rel="noopener noreferrer" target="_blank">PMID 10689197</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="5_507_BmoA"><a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a>
+  <span class="note">5_507_BmoA</span></h3>
+<ul class="lit">
+
+<li>Shao YH, Guo LZ, Zhang YQ, Yu H, Zhao BS, Pang HQ (2018).
+  Glycine Betaine Monooxygenase, an Unusual Rieske-Type Oxygenase System, Catalyzes the Oxidative N -Demethylation of Glycine Betaine in Chromohalobacter salexigens DSM 3043.
+  <i>Appl Environ Microbiol</i> 84<br><a class="mono small" href="https://doi.org/10.1128/aem.00377-18"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00377-18</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/29703733/"
+     rel="noopener noreferrer" target="_blank">PMID 29703733</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional: glycine betaine monooxygenase (BmoAB) characterised as an unusual Rieske-type oxygenase system catalysing glycine betaine demethylation</span>
+</li>
+
+<li>Wargo MJ, Szwergold BS, Hogan DA (2008).
+  Identification of Two Gene Clusters and a Transcriptional Regulator Required for Pseudomonas aeruginosa Glycine Betaine Catabolism.
+  <i>J Bacteriol</i> 190:2690-2699<br><a class="mono small" href="https://doi.org/10.1128/jb.01393-07"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.01393-07</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17951379/"
+     rel="noopener noreferrer" target="_blank">PMID 17951379</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note">Secondary citation</span>
+</li>
+
+</ul>
+
+<h3 id="5_508_GbcA"><a href="/pro-sim-blast/cluster/5_508_GbcA.html">GbcA</a>
+  <span class="note">5_508_GbcA</span></h3>
+<ul class="lit">
+
+<li>Wargo MJ, Szwergold BS, Hogan DA (2008).
+  Identification of Two Gene Clusters and a Transcriptional Regulator Required for Pseudomonas aeruginosa Glycine Betaine Catabolism.
+  <i>J Bacteriol</i> 190:2690-2699<br><a class="mono small" href="https://doi.org/10.1128/jb.01393-07"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/jb.01393-07</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/17951379/"
+     rel="noopener noreferrer" target="_blank">PMID 17951379</a> <span class="note small">verified by
+     crossref api</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional/genetic: the two gene clusters required for glycine betaine catabolism in P. aeruginosa were identified here, gbcAB among them -- this is the work the GbcA assignment rests on, and the same paper is a secondary citation for BmoA</span>
+</li>
+
+<li>Shao YH, Guo LZ, Zhang YQ, Yu H, Zhao BS, Pang HQ (2018).
+  Glycine Betaine Monooxygenase, an Unusual Rieske-Type Oxygenase System, Catalyzes the Oxidative N -Demethylation of Glycine Betaine in Chromohalobacter salexigens DSM 3043.
+  <i>Appl Environ Microbiol</i> 84<br><a class="mono small" href="https://doi.org/10.1128/aem.00377-18"
+     rel="noopener noreferrer" target="_blank">doi:10.1128/aem.00377-18</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/29703733/"
+     rel="noopener noreferrer" target="_blank">PMID 29703733</a> <span class="note small">verified by
+     crossref api + uniparc crc64</span>
+  <br><span class="note">Recorded under
+  <a href="/pro-sim-blast/cluster/5_507_BmoA.html">BmoA</a></span>
+</li>
+
+</ul>
+
+<h3 id="6_601_PAO"><a href="/pro-sim-blast/cluster/6_601_PAO.html">PAO</a>
+  <span class="note">6_601_PAO</span></h3>
+<ul class="lit">
+
+<li>Pružinská A, Tanner G, Anders I, Roca M, Hörtensteiner S (2003).
+  Chlorophyll breakdown: pheophorbide a oxygenase is a Rieske-type iron-sulfur protein, encoded by the accelerated cell death 1 gene.
+  <i>Proc Natl Acad Sci U S A</i> 100:15259-15264<br><a class="mono small" href="https://doi.org/10.1073/pnas.2036571100"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.2036571100</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/14657372/"
+     rel="noopener noreferrer" target="_blank">PMID 14657372</a> <span class="note small">verified by
+     uniprot reference list</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional basis of the reference; the title itself states that PAO is a Rieske-type iron-sulfur protein</span>
+</li>
+
+</ul>
+
+<h3 id="6_602_CAO"><a href="/pro-sim-blast/cluster/6_602_CAO.html">CAO</a>
+  <span class="note">6_602_CAO</span></h3>
+<ul class="lit">
+
+<li>Oster U, Tanaka R, Tanaka A, Rüdiger W (2000).
+  Cloning and functional expression of the gene encoding the key enzyme for chlorophyll b biosynthesis.
+  <i>Plant J</i> 21:305-310<br><a class="mono small" href="https://doi.org/10.1046/j.1365-313x.2000.00672.x"
+     rel="noopener noreferrer" target="_blank">doi:10.1046/j.1365-313x.2000.00672.x</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/10758481/"
+     rel="noopener noreferrer" target="_blank">PMID 10758481</a> <span class="note small">verified by
+     uniprot reference list</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional basis of the reference: chlorophyllide a oxygenase, the key enzyme of chlorophyll b synthesis</span>
+</li>
+
+</ul>
+
+<h3 id="6_603_PTC52"><a href="/pro-sim-blast/cluster/6_603_PTC52.html">PTC52</a>
+  <span class="note">6_603_PTC52</span></h3>
+<ul class="lit">
+
+<li>Bartsch S, Monnet J, Selbach K, Quigley F, Gray J, von Wettstein D (2008).
+  Three thioredoxin targets in the inner envelope membrane of chloroplasts function in protein import and chlorophyll metabolism.
+  <i>Proc Natl Acad Sci U S A</i> 105:4933-4938<br><a class="mono small" href="https://doi.org/10.1073/pnas.0800378105"
+     rel="noopener noreferrer" target="_blank">doi:10.1073/pnas.0800378105</a> <a class="mono small" href="https://pubmed.ncbi.nlm.nih.gov/18349143/"
+     rel="noopener noreferrer" target="_blank">PMID 18349143</a> <span class="note small">verified by
+     uniprot reference list</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; functional basis of the reference; protochlorophyllide a oxygenase activity and thioredoxin regulation</span>
+</li>
+
+</ul>
+
+<h3 id="7_701_AerC"><a href="/pro-sim-blast/cluster/7_701_AerC.html">AerC</a>
+  <span class="note">7_701_AerC</span></h3>
+<ul class="lit">
+
+<li>Zhang W, Ushimaru R, Kanaida M, Abe I (2025).
+  Pyrroline Ring Assembly via N-Prenylation and Oxidative Carbocyclization during Biosynthesis of Aeruginosin Derivatives.
+  <i>J Am Chem Soc</i> 147:10853-10858<br><a class="mono small" href="https://doi.org/10.1021/jacs.5c01994"
+     rel="noopener noreferrer" target="_blank">doi:10.1021/jacs.5c01994</a> <span class="note small">verified by
+     local pdf</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; oxidative carbocyclisation AND C-C bond cleavage in a single enzyme; a reaction class present nowhere else in this set experimental evidence for the mononuclear iron: 3.00 +/- 0.02 Fe and 2.2 +/- 0.2 S per monomer; UV-vis bands at 330/460/560 nm</span>
+</li>
+
+<li>Lin Z, Akin H, Rao R, Hie B, Zhu Z, Lu W (2023).
+  Evolutionary-scale prediction of atomic-level protein structure with a language model.
+  <i>Science</i> 379:1123-1130<br><a class="mono small" href="https://doi.org/10.1126/science.ade2574"
+     rel="noopener noreferrer" target="_blank">doi:10.1126/science.ade2574</a> <span class="note small">verified by
+     crossref record</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; the Rieske domain (residues 100-230) and the catalytic domain (440-700) of AerC were folded with ESMFold; the carboxylate Asp667 was localised in that model the method itself was tested -- the Rieske domain of 1NDO was folded with the same pipeline and compared with its own crystal structure, reproducing the geometry to within ~0.3 A</span>
+</li>
+
+<li>Kauppi B, Lee K, Carredano E, Parales RE, Gibson DT, Eklund H (1998).
+  Structure of an aromatic-ring-hydroxylating dioxygenase - naphthalene 1,2-dioxygenase.
+  <i>Structure</i> 6:571-586<br><a class="mono small" href="https://doi.org/10.1016/s0969-2126(98)00059-8"
+     rel="noopener noreferrer" target="_blank">doi:10.1016/s0969-2126(98)00059-8</a> <span class="note small">verified by
+     crossref and rcsb</span>
+  <br><span class="note"><b>Reference citation</b> &mdash; POSITIVE CONTROL for the AerC metal centres. The Rieske centre of 1NDO (C81/H83/C101/H104, Fe-Fe 2.77 A) and its mononuclear 2-His-1-carboxylate face (H208/H213/D362) were measured and compared with the AerC prediction. control on the role of the bridging aspartate: in NDO, Asp205 is 46.7 A from the Rieske centre of its own chain but 7.5 A from that of the NEIGHBOURING chain -- this is why 8.4-9.2 A from D511 to the mononuclear histidines in AerC is consistent with a bridging role</span>
+</li>
+
+</ul>
+
+
+
+
+
+</main>
+<footer>
+  <p><b>ROAR-DB</b>, the Rieske Oxygenase Annotation Resource. Built from RefSeq and GenBank
+  annotation with profile models of 76 Rieske oxygenases characterised in the literature.
+  Every figure states its method and its limits; <a href="/pro-sim-blast/atlas/quality.html">what the
+  database cannot tell you</a> is documented alongside what it can.</p>
+  <p class="note">Build 2026-11-15 · code revision
+  <code>b21a95dbab</code> of 2026-11-15 · <b>data revision</b>
+  <code>rev-0019</code> of 2026-11-13 ·
+  source and full pipeline: <a href="https://github.com/recepcanaltinbag/pro-sim-blast" rel="noopener">github.com/recepcanaltinbag/pro-sim-blast</a>.
+  When citing a specific entry, quote its identifier and the <b>data revision</b>, because type
+  assignments and variant boundaries change when the pipeline is rerun &mdash; the code revision
+  alone does not pin them, since the same code can be rerun over refetched records and publish
+  different numbers. <a href="/pro-sim-blast/about.html#cite">How to cite</a>. Provided as-is for research
+  use.</p>
+</footer>
+<script src="/pro-sim-blast/static/table.js" defer></script>
+<script src="/pro-sim-blast/static/longnote.js" defer></script>
+<script src="/pro-sim-blast/static/plot.js"></script>
+
+</body>
+</html>

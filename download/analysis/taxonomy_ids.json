@@ -1,0 +1,216 @@
+{
+  "method": {
+    "question": "What changes when each entry's genus is decided by NCBI rank instead of by guessing at the organism name?",
+    "unit": "one replicon (replicon_taxon); a genus-level statistic joins through ro.nucleotide_id",
+    "genus_definition": "the nearest ancestor whose rank is exactly 'genus' in the NCBI lineage (nodes.dmp)",
+    "not_a_genus": [
+      "candidatus",
+      "uncultured",
+      "unclassified",
+      "candidate",
+      "environmental samples",
+      "incertae sedis"
+    ],
+    "taxid_source": "the GenBank source feature, /db_xref=\"taxon:N\"",
+    "taxdump_files": [
+      "nodes.dmp",
+      "names.dmp",
+      "merged.dmp",
+      "delnodes.dmp"
+    ]
+  },
+  "denominators": {
+    "replicons_in_db": 17324,
+    "replicons_with_taxid": 17324,
+    "replicons_without_taxid": 0,
+    "confirmed_entries": 21046
+  },
+  "taxid_status": {
+    "current": 17253,
+    "merged": 71
+  },
+  "distinct_taxids": 6437,
+  "distinct_ranked_genera": 1439,
+  "genus_change": {
+    "entries_whose_genus_changes": 360,
+    "share_changed": 0.0171,
+    "examples": [
+      {
+        "organism": "Mycolicibacter engbaekii",
+        "string_guess": "Mycolicibacter",
+        "ranked_genus": "Mycobacterium",
+        "entries": 1
+      },
+      {
+        "organism": "Sinorhizobium meliloti 1021",
+        "string_guess": "Sinorhizobium",
+        "ranked_genus": "Ensifer",
+        "entries": 1
+      },
+      {
+        "organism": "Sinorhizobium meliloti 1021",
+        "string_guess": "Sinorhizobium",
+        "ranked_genus": "Ensifer",
+        "entries": 1
+      },
+      {
+        "organism": "Candidatus Pelagibacter ubique HTCC1062",
+        "string_guess": "Candidatus",
+        "ranked_genus": "Candidatus Pelagibacter",
+        "entries": 1
+      },
+      {
+        "organism": "Candidatus Koribacter versatilis Ellin345",
+        "string_guess": "Candidatus",
+        "ranked_genus": "Candidatus Korobacter",
+        "entries": 1
+      },
+      {
+        "organism": "Methylacidiphilum infernorum V4",
+        "string_guess": "Methylacidiphilum",
+        "ranked_genus": "Methylacidiphilum (ex Ratnadevi et al. 2023)",
+        "entries": 2
+      },
+      {
+        "organism": "Rhizobium rhizogenes K84",
+        "string_guess": "Rhizobium",
+        "ranked_genus": "Martinezella",
+        "entries": 1
+      },
+      {
+        "organism": "[Acidovorax] ebreus TPSY",
+        "string_guess": "[Acidovorax]",
+        "ranked_genus": "Diaphorobacter",
+        "entries": 1
+      },
+      {
+        "organism": "Sinorhizobium fredii NGR234",
+        "string_guess": "Sinorhizobium",
+        "ranked_genus": "Ensifer",
+        "entries": 2
+      },
+      {
+        "organism": "Candidatus Atelocyanobacterium thalassa isolate ALOHA",
+        "string_guess": "Candidatus",
+        "ranked_genus": "Candidatus Atelocyanobacterium",
+        "entries": 1
+      },
+      {
+        "organism": "Candidatus Puniceispirillum marinum IMCC1322",
+        "string_guess": "Candidatus",
+        "ranked_genus": "Puniceispirillum (SeqCode)",
+        "entries": 5
+      },
+      {
+        "organism": "'Nostoc azollae' 0708",
+        "string_guess": "'Nostoc",
+        "ranked_genus": "Trichormus",
+        "entries": 3
+      },
+      {
+        "organism": "[Enterobacter] lignolyticus SCF1",
+        "string_guess": "[Enterobacter]",
+        "ranked_genus": "Pluralibacter",
+        "entries": 1
+      },
+      {
+        "organism": "Mycolicibacter sinensis",
+        "string_guess": "Mycolicibacter",
+        "ranked_genus": "Mycobacterium (subgen. Mycolicibacter)",
+        "entries": 10
+      },
+      {
+        "organism": "Sinorhizobium fredii HH103",
+        "string_guess": "Sinorhizobium",
+        "ranked_genus": "Ensifer",
+        "entries": 3
+      }
+    ]
+  },
+  "genus_unassigned": {
+    "entries": 867,
+    "share": 0.0412,
+    "handling": "Neither dropped nor invented: carried as genus_state='unassigned' with the nearest named rank recorded as a proxy. A genus-level test either groups by that proxy or leaves the entry out, and either way it is obliged to declare this number.",
+    "nearest_named_rank": {
+      "subgenus": 865,
+      "phylum": 2
+    },
+    "examples": [
+      {
+        "organism": "Mycolicibacterium aichiense",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 12
+      },
+      {
+        "organism": "Mycolicibacterium psychrotolerans",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 9
+      },
+      {
+        "organism": "Mycolicibacterium helvum",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 8
+      },
+      {
+        "organism": "Mycolicibacterium confluentis",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 14
+      },
+      {
+        "organism": "Mycolicibacterium anyangense",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 11
+      },
+      {
+        "organism": "Mycolicibacterium smegmatis MC2 155",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 10
+      },
+      {
+        "organism": "Mycolicibacterium rufum",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 10
+      },
+      {
+        "organism": "Mycolicibacterium hippocampi",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 1
+      },
+      {
+        "organism": "Mycolicibacterium rhodesiae",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 1
+      },
+      {
+        "organism": "Mycolicibacterium smegmatis MC2 155",
+        "string_guess": "Mycolicibacterium",
+        "nearest_named_rank": "subgenus",
+        "nearest_named_name": "Mycobacterium (subgen. Mycolicibacterium)",
+        "entries": 10
+      }
+    ]
+  },
+  "fake_genus_buckets_removed": {
+    "Candidatus": 59,
+    "uncultured": 1
+  },
+  "candidatus_genera": 17
+}

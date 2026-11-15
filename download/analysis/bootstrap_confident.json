@@ -1,0 +1,65 @@
+{
+ "set": "confident",
+ "n_sequences": 537,
+ "alignment_columns": 393,
+ "replicates": 100,
+ "seed": 20261101,
+ "support": "nonparametric bootstrap, alignment columns resampled with replacement, tree re-inferred per replicate",
+ "support_is_bootstrap": true,
+ "n_internal_branches": 534,
+ "median": 0.72,
+ "at_least_0.70": 279,
+ "at_least_0.95": 183,
+ "group_as_a_clade": {
+  "1": {
+   "n": 110,
+   "is_split": false,
+   "bootstrap": null,
+   "largest_pure_clade": 53,
+   "largest_pure_fraction": 0.482
+  },
+  "2": {
+   "n": 62,
+   "is_split": false,
+   "bootstrap": null,
+   "largest_pure_clade": 25,
+   "largest_pure_fraction": 0.403
+  },
+  "3": {
+   "n": 141,
+   "is_split": false,
+   "bootstrap": null,
+   "largest_pure_clade": 78,
+   "largest_pure_fraction": 0.553
+  },
+  "4": {
+   "n": 93,
+   "is_split": false,
+   "bootstrap": null,
+   "largest_pure_clade": 31,
+   "largest_pure_fraction": 0.333
+  },
+  "5": {
+   "n": 104,
+   "is_split": true,
+   "bootstrap": 0.54,
+   "largest_pure_clade": 104,
+   "largest_pure_fraction": 1.0
+  },
+  "6": {
+   "n": 26,
+   "is_split": true,
+   "bootstrap": 0.57,
+   "largest_pure_clade": 26,
+   "largest_pure_fraction": 1.0
+  },
+  "7": {
+   "n": 1,
+   "is_split": null,
+   "bootstrap": null,
+   "note": "single sequence: no branch to test"
+  }
+ },
+ "tree": "bootstrap_confident.nwk",
+ "scope_note": "This tree is inferred from this sequence set ALONE. It is not the published tree restricted to that set, and the two can disagree: analysis_out/group_monophyly.json measures clade structure inside the published 2,062-tip tree, which is a different question. Compare largest_pure_fraction between the two rather than assuming they must agree."
+}

@@ -1,0 +1,603 @@
+{
+ "module": "union_evidence.py",
+ "generated_utc": "2026-11-13T19:44:56Z",
+ "what_was_measured": "The same evidence tiers as the genomic table, computed for the union sequences: every gate-passing sequence in ro_union, whether or not it has genomic context. Thresholds and the DIAMOND call are imported from evidence_tiers.py, not restated.",
+ "what_this_is_not": "These counts are NOT comparable with the genomic table's totals. The ro table counts ENTRIES, so one protein found in a hundred genomes is a hundred rows; ro_union counts DISTINCT SEQUENCES. Two counting rules cannot be divided by one another. A tier also says nothing about substrate: it measures confidence in the enzyme TYPE.",
+ "pools": {
+  "all_gate_passing": {
+   "total": 69245,
+   "tiers": {
+    "characterized": 473,
+    "close_homolog": 10051,
+    "family_member": 12178,
+    "distant": 45008,
+    "novel": 1535
+   }
+  },
+  "with_genomic_context": {
+   "total": 17638,
+   "tiers": {
+    "characterized": 197,
+    "close_homolog": 3625,
+    "family_member": 2998,
+    "distant": 10452,
+    "novel": 366
+   }
+  },
+  "without_genomic_context": {
+   "total": 51607,
+   "tiers": {
+    "characterized": 276,
+    "close_homolog": 6426,
+    "family_member": 9180,
+    "distant": 34556,
+    "novel": 1169
+   }
+  }
+ },
+ "by_cluster": {
+  "1_101_OxoO": {
+   "family_member": 33,
+   "_ctx": 27,
+   "close_homolog": 78,
+   "distant": 3,
+   "_noctx": 89,
+   "characterized": 2
+  },
+  "1_102_CARDO": {
+   "distant": 335,
+   "_ctx": 90,
+   "characterized": 6,
+   "family_member": 78,
+   "close_homolog": 9,
+   "_noctx": 338
+  },
+  "1_104_VanA": {
+   "close_homolog": 1248,
+   "_ctx": 1404,
+   "distant": 1834,
+   "family_member": 773,
+   "novel": 32,
+   "_noctx": 2485,
+   "characterized": 2
+  },
+  "1_105_DdmC": {
+   "distant": 1576,
+   "_ctx": 381,
+   "family_member": 135,
+   "close_homolog": 2,
+   "novel": 11,
+   "_noctx": 1345,
+   "characterized": 2
+  },
+  "1_106_TsaM": {
+   "distant": 3569,
+   "_ctx": 986,
+   "family_member": 431,
+   "close_homolog": 9,
+   "novel": 16,
+   "_noctx": 3041,
+   "characterized": 2
+  },
+  "1_107_CndA": {
+   "distant": 207,
+   "_ctx": 69,
+   "family_member": 31,
+   "_noctx": 172,
+   "close_homolog": 1,
+   "characterized": 1,
+   "novel": 1
+  },
+  "1_108_PobA": {
+   "distant": 629,
+   "_ctx": 148,
+   "family_member": 353,
+   "close_homolog": 2,
+   "_noctx": 838,
+   "characterized": 2
+  },
+  "1_109_LigX": {
+   "distant": 542,
+   "_ctx": 87,
+   "family_member": 351,
+   "close_homolog": 5,
+   "_noctx": 812,
+   "novel": 1
+  },
+  "1_110_SxtT": {
+   "distant": 969,
+   "_ctx": 198,
+   "family_member": 47,
+   "close_homolog": 3,
+   "_noctx": 836,
+   "characterized": 1,
+   "novel": 14
+  },
+  "1_111_GxtA": {
+   "distant": 808,
+   "_ctx": 158,
+   "family_member": 53,
+   "novel": 12,
+   "close_homolog": 15,
+   "_noctx": 731,
+   "characterized": 1
+  },
+  "1_112_NdmA": {
+   "distant": 199,
+   "_ctx": 35,
+   "characterized": 3,
+   "close_homolog": 5,
+   "_noctx": 176,
+   "family_member": 3,
+   "novel": 1
+  },
+  "1_113_CdnA": {
+   "distant": 1930,
+   "_ctx": 569,
+   "novel": 4,
+   "close_homolog": 7,
+   "_noctx": 1383,
+   "family_member": 11
+  },
+  "1_114_NdmB": {
+   "family_member": 15,
+   "_ctx": 25,
+   "distant": 70,
+   "characterized": 2,
+   "close_homolog": 10,
+   "_noctx": 72
+  },
+  "1_116_GdmA": {
+   "distant": 119,
+   "_ctx": 50,
+   "close_homolog": 67,
+   "family_member": 20,
+   "characterized": 3,
+   "_noctx": 161,
+   "novel": 2
+  },
+  "1_117_PrnD": {
+   "close_homolog": 105,
+   "_ctx": 146,
+   "distant": 417,
+   "novel": 9,
+   "family_member": 38,
+   "characterized": 11,
+   "_noctx": 434
+  },
+  "1_118_RedG": {
+   "distant": 182,
+   "_ctx": 55,
+   "characterized": 3,
+   "family_member": 26,
+   "close_homolog": 28,
+   "_noctx": 184
+  },
+  "2_201_BphA1": {
+   "distant": 11,
+   "_ctx": 1,
+   "_noctx": 10
+  },
+  "2_202_EdoA1": {
+   "distant": 28,
+   "_ctx": 34,
+   "characterized": 37,
+   "close_homolog": 60,
+   "_noctx": 91
+  },
+  "2_203_cumA1": {
+   "distant": 4,
+   "_ctx": 6,
+   "close_homolog": 9,
+   "_noctx": 8,
+   "characterized": 1
+  },
+  "2_204_Dpe": {
+   "family_member": 326,
+   "_ctx": 47,
+   "_noctx": 284,
+   "characterized": 1,
+   "distant": 4
+  },
+  "2_207_BpdC1": {
+   "distant": 12,
+   "_ctx": 1,
+   "_noctx": 11
+  },
+  "2_208_TecA1": {
+   "distant": 73,
+   "_ctx": 14,
+   "_noctx": 61,
+   "family_member": 2
+  },
+  "2_209_TDO": {
+   "close_homolog": 12,
+   "_ctx": 6,
+   "_noctx": 8,
+   "family_member": 1,
+   "distant": 1
+  },
+  "2_210_XylC1": {
+   "distant": 3,
+   "_noctx": 3
+  },
+  "2_211_bfzA": {
+   "distant": 345,
+   "_ctx": 102,
+   "family_member": 46,
+   "characterized": 2,
+   "_noctx": 292,
+   "novel": 1
+  },
+  "2_212_BedC1": {
+   "distant": 117,
+   "_ctx": 27,
+   "family_member": 14,
+   "close_homolog": 2,
+   "_noctx": 107,
+   "novel": 1
+  },
+  "2_213_BphA1A2": {
+   "family_member": 61,
+   "_ctx": 18,
+   "distant": 31,
+   "close_homolog": 3,
+   "_noctx": 77
+  },
+  "2_214_TftA": {
+   "family_member": 140,
+   "_ctx": 55,
+   "distant": 153,
+   "close_homolog": 3,
+   "_noctx": 242,
+   "characterized": 1
+  },
+  "2_215_cadA": {
+   "characterized": 3,
+   "_ctx": 10,
+   "close_homolog": 21,
+   "family_member": 3,
+   "_noctx": 21,
+   "distant": 4
+  },
+  "2_216_BPDO": {
+   "close_homolog": 22,
+   "_ctx": 18,
+   "characterized": 10,
+   "_noctx": 19,
+   "distant": 5
+  },
+  "2_217_HcaE": {
+   "characterized": 92,
+   "_ctx": 156,
+   "close_homolog": 206,
+   "_noctx": 143,
+   "distant": 1
+  },
+  "2_218_BphA1": {
+   "distant": 338,
+   "_ctx": 126,
+   "family_member": 293,
+   "close_homolog": 19,
+   "_noctx": 530,
+   "characterized": 1,
+   "novel": 5
+  },
+  "3_301_PhnA1a": {
+   "distant": 236,
+   "_ctx": 107,
+   "family_member": 183,
+   "close_homolog": 16,
+   "novel": 3,
+   "_noctx": 331
+  },
+  "3_302_DitA": {
+   "family_member": 78,
+   "_ctx": 72,
+   "close_homolog": 124,
+   "characterized": 2,
+   "distant": 10,
+   "_noctx": 142
+  },
+  "3_303_NBDO": {
+   "characterized": 16,
+   "_ctx": 19,
+   "close_homolog": 35,
+   "_noctx": 32
+  },
+  "3_305_ArhA1": {
+   "family_member": 44,
+   "_ctx": 42,
+   "distant": 153,
+   "close_homolog": 21,
+   "characterized": 5,
+   "_noctx": 183,
+   "novel": 2
+  },
+  "3_306_3NTDO": {
+   "close_homolog": 2,
+   "_ctx": 2
+  },
+  "3_307_NagGH": {
+   "family_member": 386,
+   "_ctx": 294,
+   "close_homolog": 556,
+   "characterized": 9,
+   "distant": 13,
+   "_noctx": 670
+  },
+  "3_308_DxnA1": {
+   "characterized": 3,
+   "_ctx": 2,
+   "_noctx": 2,
+   "distant": 1
+  },
+  "3_309_NahAc": {
+   "close_homolog": 1,
+   "_noctx": 1
+  },
+  "3_311_PhtAa": {
+   "distant": 188,
+   "_ctx": 186,
+   "close_homolog": 316,
+   "characterized": 18,
+   "novel": 4,
+   "_noctx": 345,
+   "family_member": 5
+  },
+  "3_312_NinA": {
+   "characterized": 1,
+   "_noctx": 1
+  },
+  "3_313_KshA15": {
+   "close_homolog": 1151,
+   "_ctx": 1427,
+   "distant": 1379,
+   "family_member": 1111,
+   "characterized": 3,
+   "novel": 29,
+   "_noctx": 2246
+  },
+  "3_316_NarAa": {
+   "distant": 161,
+   "_ctx": 48,
+   "family_member": 37,
+   "close_homolog": 6,
+   "_noctx": 159,
+   "characterized": 3
+  },
+  "3_317_NidA": {
+   "distant": 68,
+   "_ctx": 54,
+   "family_member": 165,
+   "characterized": 18,
+   "close_homolog": 7,
+   "_noctx": 205,
+   "novel": 1
+  },
+  "3_318_NidA": {
+   "distant": 27,
+   "_ctx": 17,
+   "characterized": 42,
+   "close_homolog": 3,
+   "_noctx": 58,
+   "family_member": 3
+  },
+  "3_319_PhdA": {
+   "distant": 531,
+   "_ctx": 133,
+   "novel": 6,
+   "family_member": 107,
+   "_noctx": 511
+  },
+  "3_320_NidA3": {
+   "characterized": 32,
+   "_ctx": 19,
+   "close_homolog": 20,
+   "distant": 6,
+   "_noctx": 39
+  },
+  "3_321_Nvd": {
+   "distant": 763,
+   "_ctx": 239,
+   "characterized": 1,
+   "novel": 45,
+   "family_member": 169,
+   "close_homolog": 14,
+   "_noctx": 753
+  },
+  "3_322_DAF36": {
+   "distant": 967,
+   "_ctx": 279,
+   "novel": 21,
+   "family_member": 434,
+   "characterized": 1,
+   "close_homolog": 40,
+   "_noctx": 1184
+  },
+  "4_401_CmtAb": {
+   "distant": 484,
+   "_ctx": 219,
+   "family_member": 371,
+   "novel": 15,
+   "characterized": 1,
+   "close_homolog": 20,
+   "_noctx": 672
+  },
+  "4_402_PsbAb": {
+   "family_member": 65,
+   "_ctx": 26,
+   "close_homolog": 35,
+   "characterized": 2,
+   "_noctx": 82,
+   "novel": 1,
+   "distant": 5
+  },
+  "4_403_AtdA": {
+   "distant": 539,
+   "_ctx": 165,
+   "novel": 33,
+   "family_member": 5,
+   "_noctx": 416,
+   "close_homolog": 2,
+   "characterized": 2
+  },
+  "4_404_TdnA1": {
+   "distant": 1891,
+   "_ctx": 655,
+   "family_member": 122,
+   "close_homolog": 25,
+   "characterized": 4,
+   "_noctx": 1390,
+   "novel": 3
+  },
+  "4_405_ROCH34": {
+   "close_homolog": 69,
+   "_ctx": 336,
+   "distant": 1597,
+   "characterized": 1,
+   "family_member": 563,
+   "_noctx": 1895,
+   "novel": 1
+  },
+  "4_406_PDO": {
+   "close_homolog": 259,
+   "_ctx": 224,
+   "distant": 758,
+   "family_member": 190,
+   "characterized": 6,
+   "_noctx": 989
+  },
+  "4_408_AntA": {
+   "close_homolog": 510,
+   "_ctx": 231,
+   "characterized": 6,
+   "distant": 22,
+   "_noctx": 307
+  },
+  "4_409_TPDO": {
+   "close_homolog": 190,
+   "_ctx": 342,
+   "family_member": 709,
+   "distant": 247,
+   "characterized": 14,
+   "_noctx": 828,
+   "novel": 10
+  },
+  "4_410_CbdC": {
+   "close_homolog": 693,
+   "_ctx": 372,
+   "distant": 222,
+   "family_member": 240,
+   "_noctx": 787,
+   "characterized": 4
+  },
+  "4_411_XylX": {
+   "family_member": 268,
+   "_ctx": 555,
+   "close_homolog": 1235,
+   "characterized": 14,
+   "distant": 3,
+   "_noctx": 965
+  },
+  "5_501_CmoS": {
+   "distant": 1797,
+   "_ctx": 388,
+   "novel": 112,
+   "family_member": 421,
+   "_noctx": 1949,
+   "close_homolog": 6,
+   "characterized": 1
+  },
+  "5_502_CmoB": {
+   "distant": 284,
+   "_ctx": 29,
+   "novel": 12,
+   "_noctx": 267
+  },
+  "5_503_CmoA": {
+   "distant": 39,
+   "_ctx": 11,
+   "characterized": 7,
+   "_noctx": 52,
+   "novel": 8,
+   "close_homolog": 9
+  },
+  "5_504_CntA": {
+   "distant": 8139,
+   "_ctx": 2163,
+   "family_member": 60,
+   "novel": 462,
+   "close_homolog": 337,
+   "characterized": 27,
+   "_noctx": 6862
+  },
+  "5_505_qxyA": {
+   "distant": 902,
+   "_ctx": 447,
+   "family_member": 231,
+   "novel": 138,
+   "characterized": 3,
+   "_noctx": 827
+  },
+  "5_506_Stc2": {
+   "distant": 3094,
+   "_ctx": 1526,
+   "family_member": 1983,
+   "novel": 302,
+   "characterized": 8,
+   "close_homolog": 236,
+   "_noctx": 4097
+  },
+  "5_507_BmoA": {
+   "distant": 4301,
+   "_ctx": 1045,
+   "novel": 204,
+   "close_homolog": 253,
+   "characterized": 3,
+   "family_member": 386,
+   "_noctx": 4102
+  },
+  "5_508_GbcA": {
+   "characterized": 7,
+   "_ctx": 329,
+   "close_homolog": 683,
+   "distant": 13,
+   "_noctx": 375,
+   "novel": 1
+  },
+  "6_601_PAO": {
+   "distant": 1368,
+   "_ctx": 321,
+   "family_member": 27,
+   "close_homolog": 370,
+   "characterized": 8,
+   "_noctx": 1459,
+   "novel": 7
+  },
+  "6_602_CAO": {
+   "distant": 84,
+   "_ctx": 123,
+   "close_homolog": 619,
+   "characterized": 9,
+   "family_member": 60,
+   "_noctx": 651,
+   "novel": 2
+  },
+  "6_603_PTC52": {
+   "distant": 182,
+   "_ctx": 134,
+   "family_member": 470,
+   "characterized": 3,
+   "close_homolog": 237,
+   "_noctx": 761,
+   "novel": 3
+  },
+  "7_701_AerC": {
+   "distant": 15,
+   "_ctx": 8,
+   "family_member": 1,
+   "_noctx": 8
+  }
+ }
+}

@@ -1,0 +1,3966 @@
+{
+ "question": "If a contaminated-site enzyme has a relative in the sea, the two lineages split before the chemical existed: the scaffold pre-dates the pollutant, and the contaminated site selected an existing lineage rather than creating a new one. The synthetic substrates in this database (2,4-D, dicamba, PCBs, nitroarenes, carbazole, chloroacetanilides and the rest) date from roughly 1940 to 1970, and the open ocean is not where they are applied.",
+ "method": {
+  "why_no_curated_reference": "Both earlier attempts at this question measured identity to the nearest of the 71 curated references, and both inherited the same flaw: the curated set comes from culture collections that are overwhelmingly soil, clinical and industrial, so any non-industrial member looks distant for a reason that has nothing to do with evolution. This measurement never touches the reference set. It compares members of one enzyme type against other members of the same type, so reference-origin bias cannot enter the result.",
+  "what_is_measured": "For each enzyme type, the pairwise amino-acid identity between every member isolated from a contaminated setting and every member isolated from a setting where the chemical is not applied. The headline figure is the MAXIMUM of that set, because it bounds how recently the two lineages could have separated.",
+  "habitat_groups": {
+   "contaminated": [
+    "contaminated_industrial",
+    "wastewater_sludge",
+    "mining_acid_drainage"
+   ],
+   "chemical_free_narrow": [
+    "marine",
+    "marine_sediment"
+   ],
+   "chemical_free_wide": [
+    "marine",
+    "marine_sediment",
+    "sediment",
+    "freshwater",
+    "cave",
+    "extreme_thermal",
+    "subsurface_deep",
+    "hypersaline"
+   ],
+   "excluded_as_uninformative": [
+    "unknown",
+    "other"
+   ],
+   "not_assigned_to_either_side": {
+    "air_dust": 11,
+    "animal_host": 213,
+    "built_environment": 79,
+    "engineered_system": 12,
+    "food_fermented": 130,
+    "freshwater_sediment": 22,
+    "fungal_associated": 28,
+    "gut_faecal": 135,
+    "human_clinical": 1168,
+    "laboratory_strain": 59,
+    "plant_associated": 406,
+    "plant_tissue": 414,
+    "rhizosphere_soil": 671,
+    "soil": 1293,
+    "water_unspecified": 234
+   },
+   "note": "Habitats outside both groups -- soil, clinical, plant, gut and the rest -- are settings where exposure is unknown rather than absent, so they take no part in this test. They are listed by name and count above so that the size of the unused majority is visible: this test runs on a minority of the database."
+  },
+  "pair_selection": "Every cross-habitat pair of every testable type is aligned; none are sampled. Pseudoreplication is handled at the reporting step instead: the median is taken first within each (contaminated genus x chemical-free genus) cell and then across cells, so one deeply-sequenced genus cannot drag the distribution. The maximum is taken over all pairs, because picking one representative per genus risks discarding the single closest pair, which is precisely the quantity of interest.",
+  "eligibility": "a type is tested only if both sides carry at least 3 distinct genera. The gate counts genera, not members, because a side of forty members from one genus is one sequencing project rather than a habitat.",
+  "alignment": "Bio.Align global alignment with blastp scoring, identity computed only over columns where both sides carry a residue, and a pair discarded unless the alignment covers at least 50 % of the shorter protein. The implementation is imported from operon_relations.py so that the two modules cannot drift to two different definitions of identity.",
+  "why_only_the_maximum_is_interpreted": "An enzyme type here is the best-matching reference HMM, not a clade, so a single type can hold members that are no more similar to each other than two unrelated proteins (25 % is the global-alignment floor for unrelated sequences, the same constant operon_relations.py uses). The median cross-habitat identity of most types sits only a few points above that floor, which means the median has bottomed out and carries no information about divergence depth. It is reported for every type anyway, precisely so that the reader can see that it has bottomed out, but the statistic the argument rests on is the MAXIMUM, which is well clear of the floor everywhere.",
+  "random_identity_floor": 25.0,
+  "interpretation_bands": [
+   {
+    "from": 99.5,
+    "to": 100.0,
+    "name": "indistinguishable"
+   },
+   {
+    "from": 95.0,
+    "to": 99.5,
+    "name": "very close"
+   },
+   {
+    "from": 80.0,
+    "to": 95.0,
+    "name": "close"
+   },
+   {
+    "from": 60.0,
+    "to": 80.0,
+    "name": "distant"
+   },
+   {
+    "from": 0.0,
+    "to": 60.0,
+    "name": "deep"
+   }
+  ],
+  "no_clock": "No molecular clock, and no age in years. Substitution rates vary by orders of magnitude between bacterial lineages and no calibration point exists in this dataset, so identity is reported as a bound and an ordering only.",
+  "permutations": 2000,
+  "seed": 20261005
+ },
+ "coverage": {
+  "confirmed_entries_with_a_sequence": 21046,
+  "entries_by_group": {
+   "contaminated": 671,
+   "chemical_free_narrow": 498,
+   "chemical_free_wide": 1227,
+   "neither": 19148
+  },
+  "habitat_counts": {
+   "unknown": 13786,
+   "soil": 1293,
+   "human_clinical": 1168,
+   "rhizosphere_soil": 671,
+   "other": 487,
+   "freshwater": 424,
+   "contaminated_industrial": 420,
+   "plant_tissue": 414,
+   "plant_associated": 406,
+   "marine": 400,
+   "water_unspecified": 234,
+   "animal_host": 213,
+   "wastewater_sludge": 187,
+   "sediment": 152,
+   "gut_faecal": 135,
+   "food_fermented": 130,
+   "marine_sediment": 98,
+   "built_environment": 79,
+   "mining_acid_drainage": 64,
+   "laboratory_strain": 59,
+   "cave": 49,
+   "extreme_thermal": 39,
+   "subsurface_deep": 34,
+   "hypersaline": 31,
+   "fungal_associated": 28,
+   "freshwater_sediment": 22,
+   "engineered_system": 12,
+   "air_dust": 11
+  },
+  "alignments_run": 37618,
+  "alignments_dropped_for_coverage": 0
+ },
+ "cross_habitat": {
+  "narrow": {
+   "definition": "marine only (the question as asked)",
+   "chemical_free_habitats": [
+    "marine",
+    "marine_sediment"
+   ],
+   "n_types_tested": 23,
+   "n_types_not_tested": 38,
+   "n_pairs": 16455,
+   "types": [
+    {
+     "cluster": "1_105_DdmC",
+     "substrate": "dicamba",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "low",
+     "n_contaminated": 11,
+     "n_free": 10,
+     "genera_contaminated": 5,
+     "genera_free": 3,
+     "shared_genera": 0,
+     "n_pairs": 110,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 15,
+     "max_identity": 32.46,
+     "max_identity_cross_genus": 32.46,
+     "median_identity_genus_cells": 27.18,
+     "median_identity_all_pairs": 27.95,
+     "min_identity": 22.7,
+     "share_of_pairs_below_random_floor": 0.045,
+     "median_points_above_random_floor": 2.18,
+     "bound_band": "deep",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium quisquiliarum P25",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Hyphomonas jannaschiana VP2",
+      "free_habitat": "marine",
+      "identity": 32.46,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium quisquiliarum P25",
+      "free_organism": "Hyphomonas jannaschiana VP2",
+      "free_habitat": "marine",
+      "identity": 32.46
+     }
+    },
+    {
+     "cluster": "5_502_CmoB",
+     "substrate": "choline",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 4,
+     "n_free": 3,
+     "genera_contaminated": 3,
+     "genera_free": 3,
+     "shared_genera": 0,
+     "n_pairs": 12,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 9,
+     "max_identity": 41.43,
+     "max_identity_cross_genus": 41.43,
+     "median_identity_genus_cells": 27.43,
+     "median_identity_all_pairs": 26.91,
+     "min_identity": 22.47,
+     "share_of_pairs_below_random_floor": 0.333,
+     "median_points_above_random_floor": 2.43,
+     "bound_band": "deep",
+     "closest_pair": {
+      "contaminated_organism": "Ferrovum sp. PN-J185",
+      "contaminated_habitat": "mining_acid_drainage",
+      "free_organism": "Alteromonas confluentis",
+      "free_habitat": "marine",
+      "identity": 41.43,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Ferrovum sp. PN-J185",
+      "free_organism": "Alteromonas confluentis",
+      "free_habitat": "marine",
+      "identity": 41.43
+     }
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "substrate": "p-cumate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 3,
+     "n_free": 9,
+     "genera_contaminated": 3,
+     "genera_free": 6,
+     "shared_genera": 0,
+     "n_pairs": 27,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 18,
+     "max_identity": 51.8,
+     "max_identity_cross_genus": 51.8,
+     "median_identity_genus_cells": 27.18,
+     "median_identity_all_pairs": 27.89,
+     "min_identity": 25.19,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 2.18,
+     "bound_band": "deep",
+     "closest_pair": {
+      "contaminated_organism": "Sphingopyxis macrogoltabida",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Hyphomonas atlantica",
+      "free_habitat": "marine",
+      "identity": 51.8,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingopyxis macrogoltabida",
+      "free_organism": "Hyphomonas atlantica",
+      "free_habitat": "marine",
+      "identity": 51.8
+     }
+    },
+    {
+     "cluster": "4_406_PDO",
+     "substrate": "phthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 12,
+     "n_free": 13,
+     "genera_contaminated": 5,
+     "genera_free": 10,
+     "shared_genera": 0,
+     "n_pairs": 156,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 50,
+     "max_identity": 61.56,
+     "max_identity_cross_genus": 61.56,
+     "median_identity_genus_cells": 50.12,
+     "median_identity_all_pairs": 57.29,
+     "min_identity": 27.7,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 25.12,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Comamonas sp. Z1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Thalassospira profundimaris",
+      "free_habitat": "marine",
+      "identity": 61.56,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Comamonas sp. Z1",
+      "free_organism": "Thalassospira profundimaris",
+      "free_habitat": "marine",
+      "identity": 61.56
+     }
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "substrate": "phthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 11,
+     "n_free": 9,
+     "genera_contaminated": 5,
+     "genera_free": 7,
+     "shared_genera": 0,
+     "n_pairs": 99,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 35,
+     "max_identity": 63.53,
+     "max_identity_cross_genus": 63.53,
+     "median_identity_genus_cells": 38.93,
+     "median_identity_all_pairs": 38.93,
+     "min_identity": 23.49,
+     "share_of_pairs_below_random_floor": 0.04,
+     "median_points_above_random_floor": 13.93,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Hydrogenophaga borbori",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Ramlibacter albus",
+      "free_habitat": "marine",
+      "identity": 63.53,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Hydrogenophaga borbori",
+      "free_organism": "Ramlibacter albus",
+      "free_habitat": "marine",
+      "identity": 63.53
+     }
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "substrate": "phenanthrene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 5,
+     "n_free": 5,
+     "genera_contaminated": 3,
+     "genera_free": 5,
+     "shared_genera": 0,
+     "n_pairs": 25,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 15,
+     "max_identity": 64.88,
+     "max_identity_cross_genus": 64.88,
+     "median_identity_genus_cells": 27.78,
+     "median_identity_all_pairs": 28.48,
+     "min_identity": 22.74,
+     "share_of_pairs_below_random_floor": 0.24,
+     "median_points_above_random_floor": 2.78,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Candidatus Micropelagos thuwalensis",
+      "free_habitat": "marine",
+      "identity": 64.88,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "free_organism": "Candidatus Micropelagos thuwalensis",
+      "free_habitat": "marine",
+      "identity": 64.88
+     }
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "substrate": "naphthalene-2-sulfonate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 11,
+     "n_free": 3,
+     "genera_contaminated": 8,
+     "genera_free": 3,
+     "shared_genera": 0,
+     "n_pairs": 33,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 24,
+     "max_identity": 77.51,
+     "max_identity_cross_genus": 77.51,
+     "median_identity_genus_cells": 49.82,
+     "median_identity_all_pairs": 49.39,
+     "min_identity": 38.56,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 24.82,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Variovorax paradoxus",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Marinomonas sp. BSi20584",
+      "free_habitat": "marine",
+      "identity": 77.51,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Variovorax paradoxus",
+      "free_organism": "Marinomonas sp. BSi20584",
+      "free_habitat": "marine",
+      "identity": 77.51
+     }
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "substrate": "3-ketosteroid",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 34,
+     "n_free": 11,
+     "genera_contaminated": 11,
+     "genera_free": 6,
+     "shared_genera": 2,
+     "n_pairs": 374,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 66,
+     "max_identity": 79.47,
+     "max_identity_cross_genus": 69.31,
+     "median_identity_genus_cells": 33.95,
+     "median_identity_all_pairs": 34.13,
+     "min_identity": 25.7,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 8.95,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Rhodococcus erythropolis",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Rhodococcus sp. RD6.2",
+      "free_habitat": "marine_sediment",
+      "identity": 79.47,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Nocardia coubleae",
+      "free_organism": "Rhodococcus sp. RD6.2",
+      "free_habitat": "marine_sediment",
+      "identity": 69.31
+     }
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "substrate": "aniline",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 6,
+     "n_free": 7,
+     "genera_contaminated": 5,
+     "genera_free": 6,
+     "shared_genera": 0,
+     "n_pairs": 42,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 30,
+     "max_identity": 83.78,
+     "max_identity_cross_genus": 83.78,
+     "median_identity_genus_cells": 58.8,
+     "median_identity_all_pairs": 61.24,
+     "min_identity": 27.45,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 33.8,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Hoeflea olei",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sulfitobacter sp. HI0027",
+      "free_habitat": "marine",
+      "identity": 83.78,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Hoeflea olei",
+      "free_organism": "Sulfitobacter sp. HI0027",
+      "free_habitat": "marine",
+      "identity": 83.78
+     }
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "substrate": "4-toluenesulfonate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 44,
+     "n_free": 19,
+     "genera_contaminated": 17,
+     "genera_free": 12,
+     "shared_genera": 1,
+     "n_pairs": 836,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 204,
+     "max_identity": 87.28,
+     "max_identity_cross_genus": 87.28,
+     "median_identity_genus_cells": 31.72,
+     "median_identity_all_pairs": 32.05,
+     "min_identity": 17.71,
+     "share_of_pairs_below_random_floor": 0.146,
+     "median_points_above_random_floor": 6.72,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Paracoccus sp. MKU1",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Thioclava indica",
+      "free_habitat": "marine",
+      "identity": 87.28,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Paracoccus sp. MKU1",
+      "free_organism": "Thioclava indica",
+      "free_habitat": "marine",
+      "identity": 87.28
+     }
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "substrate": "aniline",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 27,
+     "n_free": 12,
+     "genera_contaminated": 12,
+     "genera_free": 10,
+     "shared_genera": 1,
+     "n_pairs": 324,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 120,
+     "max_identity": 88.57,
+     "max_identity_cross_genus": 88.57,
+     "median_identity_genus_cells": 36.62,
+     "median_identity_all_pairs": 52.31,
+     "min_identity": 26.04,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 11.62,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Martelella sp. AD-3",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Thioclava dalianensis",
+      "free_habitat": "marine",
+      "identity": 88.57,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Martelella sp. AD-3",
+      "free_organism": "Thioclava dalianensis",
+      "free_habitat": "marine",
+      "identity": 88.57
+     }
+    },
+    {
+     "cluster": "5_505_qxyA",
+     "substrate": "benzalkonium chloride and other quaternary ammonium compounds",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 10,
+     "n_free": 15,
+     "genera_contaminated": 6,
+     "genera_free": 8,
+     "shared_genera": 1,
+     "n_pairs": 150,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 48,
+     "max_identity": 90.69,
+     "max_identity_cross_genus": 76.86,
+     "median_identity_genus_cells": 27.66,
+     "median_identity_all_pairs": 27.87,
+     "min_identity": 22.47,
+     "share_of_pairs_below_random_floor": 0.133,
+     "median_points_above_random_floor": 2.66,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Variovorax paradoxus",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Variovorax sp.",
+      "free_habitat": "marine",
+      "identity": 90.69,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Hydrogenophaga sp.",
+      "free_organism": "Variovorax sp.",
+      "free_habitat": "marine",
+      "identity": 76.86
+     }
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "substrate": "stachydrine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 41,
+     "n_free": 58,
+     "genera_contaminated": 20,
+     "genera_free": 32,
+     "shared_genera": 4,
+     "n_pairs": 2378,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 640,
+     "max_identity": 92.86,
+     "max_identity_cross_genus": 92.86,
+     "median_identity_genus_cells": 30.69,
+     "median_identity_all_pairs": 31.64,
+     "min_identity": 20.16,
+     "share_of_pairs_below_random_floor": 0.056,
+     "median_points_above_random_floor": 5.69,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Arthrobacter sp. SW1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Pseudarthrobacter enclensis",
+      "free_habitat": "marine_sediment",
+      "identity": 92.86,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Arthrobacter sp. SW1",
+      "free_organism": "Pseudarthrobacter enclensis",
+      "free_habitat": "marine_sediment",
+      "identity": 92.86
+     }
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "substrate": "phenanthrene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 21,
+     "n_free": 17,
+     "genera_contaminated": 5,
+     "genera_free": 8,
+     "shared_genera": 1,
+     "n_pairs": 357,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 40,
+     "max_identity": 96.48,
+     "max_identity_cross_genus": 96.48,
+     "median_identity_genus_cells": 49.63,
+     "median_identity_all_pairs": 43.63,
+     "min_identity": 23.8,
+     "share_of_pairs_below_random_floor": 0.031,
+     "median_points_above_random_floor": 24.63,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 96.48,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 96.48
+     }
+    },
+    {
+     "cluster": "4_411_XylX",
+     "substrate": "toluate and benzoate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 35,
+     "n_free": 11,
+     "genera_contaminated": 14,
+     "genera_free": 9,
+     "shared_genera": 4,
+     "n_pairs": 385,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 126,
+     "max_identity": 96.9,
+     "max_identity_cross_genus": 96.9,
+     "median_identity_genus_cells": 60.35,
+     "median_identity_all_pairs": 59.65,
+     "min_identity": 39.95,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 35.35,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 96.9,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 96.9
+     }
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "substrate": "terephthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 40,
+     "n_free": 19,
+     "genera_contaminated": 10,
+     "genera_free": 9,
+     "shared_genera": 4,
+     "n_pairs": 760,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 90,
+     "max_identity": 97.86,
+     "max_identity_cross_genus": 97.7,
+     "median_identity_genus_cells": 43.78,
+     "median_identity_all_pairs": 44.0,
+     "min_identity": 23.73,
+     "share_of_pairs_below_random_floor": 0.005,
+     "median_points_above_random_floor": 18.78,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium sp. PC22D",
+      "free_habitat": "marine",
+      "identity": 97.86,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 97.7
+     }
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "substrate": "caffeine and methylxanthines",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "medium",
+     "n_contaminated": 21,
+     "n_free": 10,
+     "genera_contaminated": 12,
+     "genera_free": 9,
+     "shared_genera": 4,
+     "n_pairs": 210,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 108,
+     "max_identity": 98.84,
+     "max_identity_cross_genus": 63.16,
+     "median_identity_genus_cells": 30.65,
+     "median_identity_all_pairs": 31.99,
+     "min_identity": 22.6,
+     "share_of_pairs_below_random_floor": 0.038,
+     "median_points_above_random_floor": 5.65,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Klebsiella sp. K5-229",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Klebsiella quasipneumoniae subsp. similipneumoniae",
+      "free_habitat": "marine",
+      "identity": 98.84,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Klebsiella sp. K5-229",
+      "free_organism": "Pseudomonas putida",
+      "free_habitat": "marine",
+      "identity": 63.16
+     }
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "substrate": "benzene and fluorene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "low",
+     "n_contaminated": 7,
+     "n_free": 4,
+     "genera_contaminated": 5,
+     "genera_free": 3,
+     "shared_genera": 2,
+     "n_pairs": 28,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 15,
+     "max_identity": 98.91,
+     "max_identity_cross_genus": 33.5,
+     "median_identity_genus_cells": 29.06,
+     "median_identity_all_pairs": 28.8,
+     "min_identity": 24.29,
+     "share_of_pairs_below_random_floor": 0.071,
+     "median_points_above_random_floor": 4.06,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium yanoikuyae",
+      "free_habitat": "marine",
+      "identity": 98.91,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "free_organism": "Novosphingobium malaysiense",
+      "free_habitat": "marine",
+      "identity": 33.5
+     }
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "substrate": "biphenyl",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 8,
+     "n_free": 3,
+     "genera_contaminated": 3,
+     "genera_free": 3,
+     "shared_genera": 1,
+     "n_pairs": 24,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 9,
+     "max_identity": 98.91,
+     "max_identity_cross_genus": 98.69,
+     "median_identity_genus_cells": 78.85,
+     "median_identity_all_pairs": 79.96,
+     "min_identity": 75.55,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 53.85,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium sp. PC22D",
+      "free_habitat": "marine",
+      "identity": 98.91,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "free_organism": "Novosphingobium sp. PC22D",
+      "free_habitat": "marine",
+      "identity": 98.69
+     }
+    },
+    {
+     "cluster": "1_104_VanA",
+     "substrate": "vanillate",
+     "substrate_class": "natural_aromatic",
+     "substrate_confidence": "high",
+     "n_contaminated": 47,
+     "n_free": 31,
+     "genera_contaminated": 19,
+     "genera_free": 18,
+     "shared_genera": 2,
+     "n_pairs": 1457,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 342,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 95.0,
+     "median_identity_genus_cells": 31.69,
+     "median_identity_all_pairs": 29.26,
+     "min_identity": 19.03,
+     "share_of_pairs_below_random_floor": 0.233,
+     "median_points_above_random_floor": 6.69,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Acinetobacter sp. COS3",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Acinetobacter sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Enterobacter sp. RHBSTW-01064",
+      "free_organism": "Klebsiella quasipneumoniae subsp. similipneumoniae",
+      "free_habitat": "marine",
+      "identity": 95.0
+     }
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "substrate": "2-halobenzoate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 19,
+     "n_free": 11,
+     "genera_contaminated": 9,
+     "genera_free": 10,
+     "shared_genera": 3,
+     "n_pairs": 209,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 90,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 91.53,
+     "median_identity_genus_cells": 60.08,
+     "median_identity_all_pairs": 59.96,
+     "min_identity": 45.8,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 35.08,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Marinobacter sp. EVN1",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Marinobacter sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium sp. Ant17",
+      "free_organism": "Hyphomonas oceanitis SCH89",
+      "free_habitat": "marine",
+      "identity": 91.53
+     }
+    },
+    {
+     "cluster": "5_504_CntA",
+     "substrate": "L-carnitine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 79,
+     "n_free": 86,
+     "genera_contaminated": 18,
+     "genera_free": 28,
+     "shared_genera": 5,
+     "n_pairs": 6794,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 504,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 87.33,
+     "median_identity_genus_cells": 28.1,
+     "median_identity_all_pairs": 28.1,
+     "min_identity": 20.66,
+     "share_of_pairs_below_random_floor": 0.096,
+     "median_points_above_random_floor": 3.1,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium yanoikuyae",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Novosphingobium barchaimii LL02",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 87.33
+     }
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "substrate": "glycine betaine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "medium",
+     "n_contaminated": 37,
+     "n_free": 45,
+     "genera_contaminated": 18,
+     "genera_free": 27,
+     "shared_genera": 3,
+     "n_pairs": 1665,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 486,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 88.73,
+     "median_identity_genus_cells": 28.36,
+     "median_identity_all_pairs": 28.17,
+     "min_identity": 20.91,
+     "share_of_pairs_below_random_floor": 0.101,
+     "median_points_above_random_floor": 3.36,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium xenophagum",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Novosphingobium resinovorum",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 88.73
+     }
+    }
+   ],
+   "types_not_tested": [
+    {
+     "cluster": "1_102_CARDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 3,
+     "genera_free": 1
+    },
+    {
+     "cluster": "1_107_CndA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 4,
+     "genera_free": 0
+    },
+    {
+     "cluster": "1_108_PobA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "1_109_LigX",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 2
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 6,
+     "genera_free": 2
+    },
+    {
+     "cluster": "1_111_GxtA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 3
+    },
+    {
+     "cluster": "1_112_NdmA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 0
+    },
+    {
+     "cluster": "1_116_GdmA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "1_117_PrnD",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    },
+    {
+     "cluster": "1_118_RedG",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 2
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 4,
+     "genera_free": 2
+    },
+    {
+     "cluster": "2_203_cumA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_204_Dpe",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_208_TecA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_209_TDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_215_cadA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 7,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 4,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_302_DitA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 4,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_303_NBDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 0
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 4,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_316_NarAa",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_317_NidA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 3,
+     "genera_free": 0
+    },
+    {
+     "cluster": "3_318_NidA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "3_320_NidA3",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "3_321_Nvd",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 4
+    },
+    {
+     "cluster": "3_322_DAF36",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 8
+    },
+    {
+     "cluster": "4_402_PsbAb",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    },
+    {
+     "cluster": "4_408_AntA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 3,
+     "genera_free": 2
+    },
+    {
+     "cluster": "5_503_CmoA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 1
+    },
+    {
+     "cluster": "5_508_GbcA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "6_601_PAO",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 8
+    },
+    {
+     "cluster": "6_603_PTC52",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    }
+   ],
+   "by_substrate_class": {
+    "xenobiotic": {
+     "n_types": 16,
+     "median_of_type_maxima": 87.92,
+     "min_of_type_maxima": 32.46,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 41.36,
+     "bands": {
+      "indistinguishable": 1,
+      "very close": 5,
+      "close": 4,
+      "distant": 4,
+      "deep": 2
+     },
+     "types_with_an_identical_cross_habitat_pair": 1,
+     "n_pairs": 3565,
+     "median_points_above_random_floor": 16.36,
+     "types_whose_median_is_within_5_points_of_the_floor": 5
+    },
+    "natural_aromatic": {
+     "n_types": 1,
+     "median_of_type_maxima": 100.0,
+     "min_of_type_maxima": 100.0,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 31.69,
+     "bands": {
+      "indistinguishable": 1,
+      "very close": 0,
+      "close": 0,
+      "distant": 0,
+      "deep": 0
+     },
+     "types_with_an_identical_cross_habitat_pair": 1,
+     "n_pairs": 1457,
+     "median_points_above_random_floor": 6.69,
+     "types_whose_median_is_within_5_points_of_the_floor": 0
+    },
+    "natural_specialized": {
+     "n_types": 6,
+     "median_of_type_maxima": 95.85,
+     "min_of_type_maxima": 41.43,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 29.5,
+     "bands": {
+      "indistinguishable": 2,
+      "very close": 1,
+      "close": 1,
+      "distant": 1,
+      "deep": 1
+     },
+     "types_with_an_identical_cross_habitat_pair": 2,
+     "n_pairs": 11433,
+     "median_points_above_random_floor": 4.5,
+     "types_whose_median_is_within_5_points_of_the_floor": 3
+    },
+    "natural_combined": {
+     "n_types": 7,
+     "median_of_type_maxima": 98.84,
+     "min_of_type_maxima": 41.43,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 30.65,
+     "bands": {
+      "indistinguishable": 3,
+      "very close": 1,
+      "close": 1,
+      "distant": 1,
+      "deep": 1
+     },
+     "types_with_an_identical_cross_habitat_pair": 3,
+     "n_pairs": 12890,
+     "median_points_above_random_floor": 5.65,
+     "types_whose_median_is_within_5_points_of_the_floor": 3
+    }
+   },
+   "class_contrast": {
+    "measurable": true,
+    "n_xenobiotic": 16,
+    "n_natural": 7,
+    "type_maxima": {
+     "floor_limited": false,
+     "xenobiotic_median": 87.92,
+     "natural_median": 98.84,
+     "difference_points": -10.92,
+     "mannwhitney_u": 35.5,
+     "p": 0.1803
+    },
+    "type_medians": {
+     "floor_limited": true,
+     "xenobiotic_median": 41.36,
+     "natural_median": 30.65,
+     "difference_points": 10.71,
+     "mannwhitney_u": 81.0,
+     "p": 0.1016
+    }
+   }
+  },
+  "wide": {
+   "definition": "every habitat where these chemicals are not applied",
+   "chemical_free_habitats": [
+    "marine",
+    "marine_sediment",
+    "sediment",
+    "freshwater",
+    "cave",
+    "extreme_thermal",
+    "subsurface_deep",
+    "hypersaline"
+   ],
+   "n_types_tested": 31,
+   "n_types_not_tested": 34,
+   "n_pairs": 37618,
+   "types": [
+    {
+     "cluster": "1_107_CndA",
+     "substrate": "chloroacetanilide herbicides (alachlor, acetochlor, butachlor)",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 6,
+     "n_free": 3,
+     "genera_contaminated": 4,
+     "genera_free": 3,
+     "shared_genera": 2,
+     "n_pairs": 18,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 12,
+     "max_identity": 47.27,
+     "max_identity_cross_genus": 47.27,
+     "median_identity_genus_cells": 39.34,
+     "median_identity_all_pairs": 40.64,
+     "min_identity": 33.13,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 14.34,
+     "bound_band": "deep",
+     "closest_pair": {
+      "contaminated_organism": "Pseudomonas nitroreducens",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Novosphingobium sp. AAP1",
+      "free_habitat": "freshwater",
+      "identity": 47.27,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Pseudomonas nitroreducens",
+      "free_organism": "Novosphingobium sp. AAP1",
+      "free_habitat": "freshwater",
+      "identity": 47.27
+     }
+    },
+    {
+     "cluster": "4_401_CmtAb",
+     "substrate": "p-cumate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 3,
+     "n_free": 16,
+     "genera_contaminated": 3,
+     "genera_free": 10,
+     "shared_genera": 1,
+     "n_pairs": 48,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 30,
+     "max_identity": 51.8,
+     "max_identity_cross_genus": 51.8,
+     "median_identity_genus_cells": 27.25,
+     "median_identity_all_pairs": 27.85,
+     "min_identity": 21.76,
+     "share_of_pairs_below_random_floor": 0.021,
+     "median_points_above_random_floor": 2.25,
+     "bound_band": "deep",
+     "closest_pair": {
+      "contaminated_organism": "Sphingopyxis macrogoltabida",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Hyphomonas atlantica",
+      "free_habitat": "marine",
+      "identity": 51.8,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingopyxis macrogoltabida",
+      "free_organism": "Hyphomonas atlantica",
+      "free_habitat": "marine",
+      "identity": 51.8
+     }
+    },
+    {
+     "cluster": "5_502_CmoB",
+     "substrate": "choline",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 4,
+     "n_free": 8,
+     "genera_contaminated": 3,
+     "genera_free": 7,
+     "shared_genera": 0,
+     "n_pairs": 32,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 21,
+     "max_identity": 63.22,
+     "max_identity_cross_genus": 63.22,
+     "median_identity_genus_cells": 28.49,
+     "median_identity_all_pairs": 34.33,
+     "min_identity": 22.47,
+     "share_of_pairs_below_random_floor": 0.156,
+     "median_points_above_random_floor": 3.49,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Azospira oryzae PS",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Polynucleobacter asymbioticus",
+      "free_habitat": "freshwater",
+      "identity": 63.22,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Azospira oryzae PS",
+      "free_organism": "Polynucleobacter asymbioticus",
+      "free_habitat": "freshwater",
+      "identity": 63.22
+     }
+    },
+    {
+     "cluster": "3_319_PhdA",
+     "substrate": "phenanthrene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 5,
+     "n_free": 9,
+     "genera_contaminated": 3,
+     "genera_free": 9,
+     "shared_genera": 1,
+     "n_pairs": 45,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 27,
+     "max_identity": 64.88,
+     "max_identity_cross_genus": 64.88,
+     "median_identity_genus_cells": 27.73,
+     "median_identity_all_pairs": 28.13,
+     "min_identity": 22.25,
+     "share_of_pairs_below_random_floor": 0.178,
+     "median_points_above_random_floor": 2.73,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Candidatus Micropelagos thuwalensis",
+      "free_habitat": "marine",
+      "identity": 64.88,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "free_organism": "Candidatus Micropelagos thuwalensis",
+      "free_habitat": "marine",
+      "identity": 64.88
+     }
+    },
+    {
+     "cluster": "1_110_SxtT",
+     "substrate": "saxitoxin pathway intermediate",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "medium",
+     "n_contaminated": 8,
+     "n_free": 10,
+     "genera_contaminated": 6,
+     "genera_free": 10,
+     "shared_genera": 0,
+     "n_pairs": 80,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 60,
+     "max_identity": 72.97,
+     "max_identity_cross_genus": 72.97,
+     "median_identity_genus_cells": 32.03,
+     "median_identity_all_pairs": 32.62,
+     "min_identity": 25.62,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 7.03,
+     "bound_band": "distant",
+     "closest_pair": {
+      "contaminated_organism": "Cupriavidus sp. SK-3",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Ectopseudomonas toyotomiensis",
+      "free_habitat": "extreme_thermal",
+      "identity": 72.97,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Cupriavidus sp. SK-3",
+      "free_organism": "Ectopseudomonas toyotomiensis",
+      "free_habitat": "extreme_thermal",
+      "identity": 72.97
+     }
+    },
+    {
+     "cluster": "3_311_PhtAa",
+     "substrate": "phthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 9,
+     "n_free": 4,
+     "genera_contaminated": 4,
+     "genera_free": 4,
+     "shared_genera": 1,
+     "n_pairs": 36,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 16,
+     "max_identity": 80.27,
+     "max_identity_cross_genus": 80.27,
+     "median_identity_genus_cells": 50.94,
+     "median_identity_all_pairs": 50.94,
+     "min_identity": 23.68,
+     "share_of_pairs_below_random_floor": 0.111,
+     "median_points_above_random_floor": 25.94,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Pseudarthrobacter phenanthrenivorans Sphe3",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Microcella pacifica",
+      "free_habitat": "marine",
+      "identity": 80.27,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Pseudarthrobacter phenanthrenivorans Sphe3",
+      "free_organism": "Microcella pacifica",
+      "free_habitat": "marine",
+      "identity": 80.27
+     }
+    },
+    {
+     "cluster": "1_105_DdmC",
+     "substrate": "dicamba",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "low",
+     "n_contaminated": 11,
+     "n_free": 44,
+     "genera_contaminated": 5,
+     "genera_free": 17,
+     "shared_genera": 3,
+     "n_pairs": 484,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 85,
+     "max_identity": 83.9,
+     "max_identity_cross_genus": 55.87,
+     "median_identity_genus_cells": 28.16,
+     "median_identity_all_pairs": 29.37,
+     "min_identity": 22.7,
+     "share_of_pairs_below_random_floor": 0.05,
+     "median_points_above_random_floor": 3.16,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. LASN5T",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium sp. AAP93",
+      "free_habitat": "freshwater",
+      "identity": 83.9,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium quisquiliarum P25",
+      "free_organism": "Novosphingobium sp. AAP83",
+      "free_habitat": "freshwater",
+      "identity": 55.87
+     }
+    },
+    {
+     "cluster": "5_501_CmoS",
+     "substrate": "choline",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 5,
+     "n_free": 19,
+     "genera_contaminated": 3,
+     "genera_free": 11,
+     "shared_genera": 0,
+     "n_pairs": 95,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 33,
+     "max_identity": 85.48,
+     "max_identity_cross_genus": 85.48,
+     "median_identity_genus_cells": 33.06,
+     "median_identity_all_pairs": 32.55,
+     "min_identity": 24.71,
+     "share_of_pairs_below_random_floor": 0.011,
+     "median_points_above_random_floor": 8.06,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Cupriavidus necator",
+      "contaminated_habitat": "mining_acid_drainage",
+      "free_organism": "Ralstonia pickettii OR214",
+      "free_habitat": "sediment",
+      "identity": 85.48,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Cupriavidus necator",
+      "free_organism": "Ralstonia pickettii OR214",
+      "free_habitat": "sediment",
+      "identity": 85.48
+     }
+    },
+    {
+     "cluster": "5_505_qxyA",
+     "substrate": "benzalkonium chloride and other quaternary ammonium compounds",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 10,
+     "n_free": 24,
+     "genera_contaminated": 6,
+     "genera_free": 14,
+     "shared_genera": 2,
+     "n_pairs": 240,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 84,
+     "max_identity": 90.69,
+     "max_identity_cross_genus": 80.94,
+     "median_identity_genus_cells": 28.46,
+     "median_identity_all_pairs": 28.49,
+     "min_identity": 22.47,
+     "share_of_pairs_below_random_floor": 0.092,
+     "median_points_above_random_floor": 3.46,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Variovorax paradoxus",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Variovorax sp.",
+      "free_habitat": "marine",
+      "identity": 90.69,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Hydrogenophaga sp. H7",
+      "free_organism": "Tepidimonas fonticaldi",
+      "free_habitat": "extreme_thermal",
+      "identity": 80.94
+     }
+    },
+    {
+     "cluster": "4_403_AtdA",
+     "substrate": "aniline",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 6,
+     "n_free": 11,
+     "genera_contaminated": 5,
+     "genera_free": 9,
+     "shared_genera": 1,
+     "n_pairs": 66,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 45,
+     "max_identity": 90.97,
+     "max_identity_cross_genus": 83.78,
+     "median_identity_genus_cells": 43.88,
+     "median_identity_all_pairs": 43.46,
+     "min_identity": 24.33,
+     "share_of_pairs_below_random_floor": 0.015,
+     "median_points_above_random_floor": 18.88,
+     "bound_band": "close",
+     "closest_pair": {
+      "contaminated_organism": "Pseudomonas sp. ANT_H12B",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Pseudomonas syringae",
+      "free_habitat": "freshwater",
+      "identity": 90.97,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Hoeflea olei",
+      "free_organism": "Sulfitobacter sp. HI0027",
+      "free_habitat": "marine",
+      "identity": 83.78
+     }
+    },
+    {
+     "cluster": "1_106_TsaM",
+     "substrate": "4-toluenesulfonate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 44,
+     "n_free": 52,
+     "genera_contaminated": 17,
+     "genera_free": 28,
+     "shared_genera": 2,
+     "n_pairs": 2288,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 476,
+     "max_identity": 96.83,
+     "max_identity_cross_genus": 94.83,
+     "median_identity_genus_cells": 31.69,
+     "median_identity_all_pairs": 32.54,
+     "min_identity": 17.71,
+     "share_of_pairs_below_random_floor": 0.062,
+     "median_points_above_random_floor": 6.69,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp. TCM1",
+      "free_habitat": "sediment",
+      "identity": 96.83,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Shinella zoogloeoides",
+      "free_organism": "Ensifer sp. LC54",
+      "free_habitat": "cave",
+      "identity": 94.83
+     }
+    },
+    {
+     "cluster": "3_317_NidA",
+     "substrate": "pyrene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 3,
+     "n_free": 11,
+     "genera_contaminated": 3,
+     "genera_free": 6,
+     "shared_genera": 1,
+     "n_pairs": 33,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 18,
+     "max_identity": 98.5,
+     "max_identity_cross_genus": 46.7,
+     "median_identity_genus_cells": 27.91,
+     "median_identity_all_pairs": 27.37,
+     "min_identity": 25.0,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 2.91,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium subterraneum",
+      "free_habitat": "subsurface_deep",
+      "identity": 98.5,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Rhodococcus opacus M213",
+      "free_organism": "Streptomonospora alba",
+      "free_habitat": "hypersaline",
+      "identity": 46.7
+     }
+    },
+    {
+     "cluster": "4_405_ROCH34",
+     "substrate": "phthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 11,
+     "n_free": 21,
+     "genera_contaminated": 5,
+     "genera_free": 15,
+     "shared_genera": 2,
+     "n_pairs": 231,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 75,
+     "max_identity": 98.6,
+     "max_identity_cross_genus": 91.27,
+     "median_identity_genus_cells": 38.93,
+     "median_identity_all_pairs": 38.93,
+     "min_identity": 23.49,
+     "share_of_pairs_below_random_floor": 0.017,
+     "median_points_above_random_floor": 13.93,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium lactosutens DS20",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp. TCM1",
+      "free_habitat": "sediment",
+      "identity": 98.6,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Variovorax sp. JS1663",
+      "free_organism": "Comamonas sp. CAH-2",
+      "free_habitat": "sediment",
+      "identity": 91.27
+     }
+    },
+    {
+     "cluster": "2_211_bfzA",
+     "substrate": "benzene and fluorene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "low",
+     "n_contaminated": 7,
+     "n_free": 9,
+     "genera_contaminated": 5,
+     "genera_free": 5,
+     "shared_genera": 2,
+     "n_pairs": 63,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 25,
+     "max_identity": 98.91,
+     "max_identity_cross_genus": 49.03,
+     "median_identity_genus_cells": 29.02,
+     "median_identity_all_pairs": 29.1,
+     "min_identity": 24.15,
+     "share_of_pairs_below_random_floor": 0.063,
+     "median_points_above_random_floor": 4.02,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium yanoikuyae",
+      "free_habitat": "marine",
+      "identity": 98.91,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Novosphingobium resinovorum",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 49.03
+     }
+    },
+    {
+     "cluster": "4_404_TdnA1",
+     "substrate": "aniline",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 27,
+     "n_free": 34,
+     "genera_contaminated": 12,
+     "genera_free": 20,
+     "shared_genera": 5,
+     "n_pairs": 918,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 240,
+     "max_identity": 99.06,
+     "max_identity_cross_genus": 88.57,
+     "median_identity_genus_cells": 38.18,
+     "median_identity_all_pairs": 38.21,
+     "min_identity": 24.4,
+     "share_of_pairs_below_random_floor": 0.004,
+     "median_points_above_random_floor": 13.18,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Acinetobacter sp. JW",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Acinetobacter pittii",
+      "free_habitat": "cave",
+      "identity": 99.06,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Martelella sp. AD-3",
+      "free_organism": "Thioclava dalianensis",
+      "free_habitat": "marine",
+      "identity": 88.57
+     }
+    },
+    {
+     "cluster": "2_218_BphA1",
+     "substrate": "biphenyl",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 4,
+     "n_free": 4,
+     "genera_contaminated": 4,
+     "genera_free": 4,
+     "shared_genera": 1,
+     "n_pairs": 16,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 16,
+     "max_identity": 99.15,
+     "max_identity_cross_genus": 39.66,
+     "median_identity_genus_cells": 29.5,
+     "median_identity_all_pairs": 29.5,
+     "min_identity": 24.5,
+     "share_of_pairs_below_random_floor": 0.062,
+     "median_points_above_random_floor": 4.5,
+     "bound_band": "very close",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium subterraneum",
+      "free_habitat": "subsurface_deep",
+      "identity": 99.15,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Streptomyces zinciresistens K42",
+      "free_organism": "Halioglobus sp. HI00S01",
+      "free_habitat": "marine",
+      "identity": 39.66
+     }
+    },
+    {
+     "cluster": "3_307_NagGH",
+     "substrate": "naphthalene-2-sulfonate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 11,
+     "n_free": 13,
+     "genera_contaminated": 8,
+     "genera_free": 7,
+     "shared_genera": 1,
+     "n_pairs": 143,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 56,
+     "max_identity": 99.53,
+     "max_identity_cross_genus": 91.19,
+     "median_identity_genus_cells": 48.66,
+     "median_identity_all_pairs": 47.68,
+     "min_identity": 38.56,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 23.66,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Achromobacter xylosoxidans",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Achromobacter aegrifaciens",
+      "free_habitat": "freshwater",
+      "identity": 99.53,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Comamonas thiooxydans",
+      "free_organism": "Acidovorax sp. GW101-3H11",
+      "free_habitat": "freshwater",
+      "identity": 91.19
+     }
+    },
+    {
+     "cluster": "3_313_KshA15",
+     "substrate": "3-ketosteroid",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 34,
+     "n_free": 45,
+     "genera_contaminated": 11,
+     "genera_free": 12,
+     "shared_genera": 4,
+     "n_pairs": 1530,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 132,
+     "max_identity": 99.72,
+     "max_identity_cross_genus": 78.46,
+     "median_identity_genus_cells": 34.26,
+     "median_identity_all_pairs": 33.92,
+     "min_identity": 24.46,
+     "share_of_pairs_below_random_floor": 0.001,
+     "median_points_above_random_floor": 9.26,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium subterraneum",
+      "free_habitat": "subsurface_deep",
+      "identity": 99.72,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Mycolicibacterium vanbaalenii PYR-1",
+      "free_organism": "Mycobacteroides sp. H001",
+      "free_habitat": "freshwater",
+      "identity": 78.46
+     }
+    },
+    {
+     "cluster": "5_506_Stc2",
+     "substrate": "stachydrine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 41,
+     "n_free": 114,
+     "genera_contaminated": 20,
+     "genera_free": 50,
+     "shared_genera": 6,
+     "n_pairs": 4674,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 1000,
+     "max_identity": 99.74,
+     "max_identity_cross_genus": 97.32,
+     "median_identity_genus_cells": 30.11,
+     "median_identity_all_pairs": 30.2,
+     "min_identity": 19.72,
+     "share_of_pairs_below_random_floor": 0.06,
+     "median_points_above_random_floor": 5.11,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Novosphingobium sp. ES2-1",
+      "contaminated_habitat": "wastewater_sludge",
+      "free_organism": "Novosphingobium subterraneum",
+      "free_habitat": "subsurface_deep",
+      "identity": 99.74,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sinorhizobium sp. Sb3",
+      "free_organism": "Ensifer sp. LC14",
+      "free_habitat": "cave",
+      "identity": 97.32
+     }
+    },
+    {
+     "cluster": "1_104_VanA",
+     "substrate": "vanillate",
+     "substrate_class": "natural_aromatic",
+     "substrate_confidence": "high",
+     "n_contaminated": 47,
+     "n_free": 75,
+     "genera_contaminated": 19,
+     "genera_free": 42,
+     "shared_genera": 8,
+     "n_pairs": 3525,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 798,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 95.0,
+     "median_identity_genus_cells": 34.58,
+     "median_identity_all_pairs": 31.11,
+     "min_identity": 19.03,
+     "share_of_pairs_below_random_floor": 0.106,
+     "median_points_above_random_floor": 9.58,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Pseudomonas veronii 1YdBTEX2",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Pseudomonas sp. GW704-F2",
+      "free_habitat": "freshwater",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Enterobacter sp. RHBSTW-01064",
+      "free_organism": "Klebsiella quasipneumoniae subsp. similipneumoniae",
+      "free_habitat": "marine",
+      "identity": 95.0
+     }
+    },
+    {
+     "cluster": "1_113_CdnA",
+     "substrate": "caffeine and methylxanthines",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "medium",
+     "n_contaminated": 21,
+     "n_free": 29,
+     "genera_contaminated": 12,
+     "genera_free": 19,
+     "shared_genera": 5,
+     "n_pairs": 609,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 228,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 80.76,
+     "median_identity_genus_cells": 31.25,
+     "median_identity_all_pairs": 33.53,
+     "min_identity": 22.6,
+     "share_of_pairs_below_random_floor": 0.015,
+     "median_points_above_random_floor": 6.25,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Acinetobacter junii",
+      "contaminated_habitat": "mining_acid_drainage",
+      "free_organism": "Acinetobacter sp. Ver3",
+      "free_habitat": "hypersaline",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Klebsiella sp. K5-229",
+      "free_organism": "Erwinia typographi",
+      "free_habitat": "freshwater",
+      "identity": 80.76
+     }
+    },
+    {
+     "cluster": "2_202_EdoA1",
+     "substrate": "ethylbenzene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "medium",
+     "n_contaminated": 4,
+     "n_free": 4,
+     "genera_contaminated": 4,
+     "genera_free": 3,
+     "shared_genera": 1,
+     "n_pairs": 16,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 12,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 75.55,
+     "median_identity_genus_cells": 64.77,
+     "median_identity_all_pairs": 66.18,
+     "min_identity": 23.74,
+     "share_of_pairs_below_random_floor": 0.125,
+     "median_points_above_random_floor": 39.77,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Pseudomonas veronii 1YdBTEX2",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Pseudomonas veronii",
+      "free_habitat": "sediment",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Cupriavidus sp. WS",
+      "free_organism": "Pseudomonas veronii",
+      "free_habitat": "sediment",
+      "identity": 75.55
+     }
+    },
+    {
+     "cluster": "2_216_BPDO",
+     "substrate": "biphenyl",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 8,
+     "n_free": 7,
+     "genera_contaminated": 3,
+     "genera_free": 4,
+     "shared_genera": 2,
+     "n_pairs": 56,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 12,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 100.0,
+     "median_identity_genus_cells": 80.07,
+     "median_identity_all_pairs": 79.63,
+     "min_identity": 75.55,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 55.07,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0
+     }
+    },
+    {
+     "cluster": "3_301_PhnA1a",
+     "substrate": "phenanthrene",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 21,
+     "n_free": 32,
+     "genera_contaminated": 5,
+     "genera_free": 11,
+     "shared_genera": 3,
+     "n_pairs": 672,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 55,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 100.0,
+     "median_identity_genus_cells": 46.58,
+     "median_identity_all_pairs": 42.63,
+     "min_identity": 23.63,
+     "share_of_pairs_below_random_floor": 0.027,
+     "median_points_above_random_floor": 21.58,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Pseudomonas veronii 1YdBTEX2",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Pseudomonas sp. GW704-F2",
+      "free_habitat": "freshwater",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "free_organism": "Novosphingobium subterraneum",
+      "free_habitat": "subsurface_deep",
+      "identity": 100.0
+     }
+    },
+    {
+     "cluster": "3_302_DitA",
+     "substrate": "dehydroabietate",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 14,
+     "n_free": 21,
+     "genera_contaminated": 4,
+     "genera_free": 7,
+     "shared_genera": 3,
+     "n_pairs": 294,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 28,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 99.79,
+     "median_identity_genus_cells": 59.23,
+     "median_identity_all_pairs": 62.01,
+     "min_identity": 52.29,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 34.23,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium xenophagum",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Pseudomonas mendocina",
+      "free_organism": "Pseudomonas aeruginosa",
+      "free_habitat": "freshwater",
+      "identity": 99.79
+     }
+    },
+    {
+     "cluster": "4_406_PDO",
+     "substrate": "phthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 12,
+     "n_free": 29,
+     "genera_contaminated": 5,
+     "genera_free": 22,
+     "shared_genera": 2,
+     "n_pairs": 348,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 110,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 100.0,
+     "median_identity_genus_cells": 50.77,
+     "median_identity_all_pairs": 54.23,
+     "min_identity": 26.9,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 25.77,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium xenophagum",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Rhizorhabdus sp.",
+      "free_habitat": "extreme_thermal",
+      "identity": 100.0,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingobium xenophagum",
+      "free_organism": "Rhizorhabdus sp.",
+      "free_habitat": "extreme_thermal",
+      "identity": 100.0
+     }
+    },
+    {
+     "cluster": "4_409_TPDO",
+     "substrate": "terephthalate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 40,
+     "n_free": 47,
+     "genera_contaminated": 10,
+     "genera_free": 15,
+     "shared_genera": 7,
+     "n_pairs": 1880,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 150,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 100.0,
+     "median_identity_genus_cells": 44.3,
+     "median_identity_all_pairs": 43.55,
+     "min_identity": 23.73,
+     "share_of_pairs_below_random_floor": 0.002,
+     "median_points_above_random_floor": 19.3,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0
+     }
+    },
+    {
+     "cluster": "4_410_CbdC",
+     "substrate": "2-halobenzoate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 19,
+     "n_free": 33,
+     "genera_contaminated": 9,
+     "genera_free": 17,
+     "shared_genera": 6,
+     "n_pairs": 627,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 153,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 97.35,
+     "median_identity_genus_cells": 59.21,
+     "median_identity_all_pairs": 59.28,
+     "min_identity": 27.92,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 34.21,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Marinobacter sp. EVN1",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Marinobacter sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sinorhizobium sp. GL28",
+      "free_organism": "Ensifer sp. LC14",
+      "free_habitat": "cave",
+      "identity": 97.35
+     }
+    },
+    {
+     "cluster": "4_411_XylX",
+     "substrate": "toluate and benzoate",
+     "substrate_class": "xenobiotic",
+     "substrate_confidence": "high",
+     "n_contaminated": 35,
+     "n_free": 31,
+     "genera_contaminated": 14,
+     "genera_free": 17,
+     "shared_genera": 5,
+     "n_pairs": 1085,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 238,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 100.0,
+     "median_identity_genus_cells": 63.36,
+     "median_identity_all_pairs": 65.78,
+     "min_identity": 39.95,
+     "share_of_pairs_below_random_floor": 0.0,
+     "median_points_above_random_floor": 38.36,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0,
+      "same_genus": false
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Sphingomonas sp. LH128",
+      "free_organism": "Sphingobium sp. C100",
+      "free_habitat": "sediment",
+      "identity": 100.0
+     }
+    },
+    {
+     "cluster": "5_504_CntA",
+     "substrate": "L-carnitine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "high",
+     "n_contaminated": 79,
+     "n_free": 178,
+     "genera_contaminated": 18,
+     "genera_free": 54,
+     "shared_genera": 8,
+     "n_pairs": 14062,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 972,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 91.71,
+     "median_identity_genus_cells": 28.33,
+     "median_identity_all_pairs": 28.14,
+     "min_identity": 19.83,
+     "share_of_pairs_below_random_floor": 0.092,
+     "median_points_above_random_floor": 3.33,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium yanoikuyae",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium yanoikuyae",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Citrobacter braakii",
+      "free_organism": "Escherichia sp. E3659",
+      "free_habitat": "sediment",
+      "identity": 91.71
+     }
+    },
+    {
+     "cluster": "5_507_BmoA",
+     "substrate": "glycine betaine",
+     "substrate_class": "natural_specialized",
+     "substrate_confidence": "medium",
+     "n_contaminated": 37,
+     "n_free": 92,
+     "genera_contaminated": 18,
+     "genera_free": 42,
+     "shared_genera": 6,
+     "n_pairs": 3404,
+     "n_pairs_dropped_for_coverage": 0,
+     "n_genus_cells": 756,
+     "max_identity": 100.0,
+     "max_identity_cross_genus": 88.73,
+     "median_identity_genus_cells": 28.4,
+     "median_identity_all_pairs": 28.12,
+     "min_identity": 20.81,
+     "share_of_pairs_below_random_floor": 0.108,
+     "median_points_above_random_floor": 3.4,
+     "bound_band": "indistinguishable",
+     "closest_pair": {
+      "contaminated_organism": "Sphingobium xenophagum",
+      "contaminated_habitat": "contaminated_industrial",
+      "free_organism": "Sphingobium sp.",
+      "free_habitat": "marine",
+      "identity": 100.0,
+      "same_genus": true
+     },
+     "closest_cross_genus_pair": {
+      "contaminated_organism": "Novosphingobium resinovorum",
+      "free_organism": "Croceicoccus pelagius",
+      "free_habitat": "marine",
+      "identity": 88.73
+     }
+    }
+   ],
+   "types_not_tested": [
+    {
+     "cluster": "1_101_OxoO",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 0,
+     "genera_free": 1
+    },
+    {
+     "cluster": "1_102_CARDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 3,
+     "genera_free": 1
+    },
+    {
+     "cluster": "1_108_PobA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 4
+    },
+    {
+     "cluster": "1_109_LigX",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 4
+    },
+    {
+     "cluster": "1_111_GxtA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 11
+    },
+    {
+     "cluster": "1_112_NdmA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "1_114_NdmB",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 3
+    },
+    {
+     "cluster": "1_116_GdmA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 1,
+     "genera_free": 3
+    },
+    {
+     "cluster": "1_117_PrnD",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 5
+    },
+    {
+     "cluster": "1_118_RedG",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 4
+    },
+    {
+     "cluster": "2_203_cumA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_204_Dpe",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 0
+    },
+    {
+     "cluster": "2_208_TecA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 2
+    },
+    {
+     "cluster": "2_209_TDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_212_BedC1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 3
+    },
+    {
+     "cluster": "2_213_BphA1A2",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_214_TftA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    },
+    {
+     "cluster": "2_215_cadA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "2_217_HcaE",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 7,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_303_NBDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "3_305_ArhA1",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 2
+    },
+    {
+     "cluster": "3_306_3NTDO",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 1
+    },
+    {
+     "cluster": "3_316_NarAa",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 7
+    },
+    {
+     "cluster": "3_318_NidA",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 2,
+     "genera_free": 1
+    },
+    {
+     "cluster": "3_320_NidA3",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 1,
+     "genera_free": 0
+    },
+    {
+     "cluster": "3_321_Nvd",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 7
+    },
+    {
+     "cluster": "3_322_DAF36",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 2,
+     "genera_free": 11
+    },
+    {
+     "cluster": "4_402_PsbAb",
+     "substrate_class": "xenobiotic",
+     "genera_contaminated": 0,
+     "genera_free": 3
+    },
+    {
+     "cluster": "4_408_AntA",
+     "substrate_class": "natural_aromatic",
+     "genera_contaminated": 2,
+     "genera_free": 4
+    },
+    {
+     "cluster": "5_503_CmoA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 2
+    },
+    {
+     "cluster": "5_508_GbcA",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 1,
+     "genera_free": 2
+    },
+    {
+     "cluster": "6_601_PAO",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 14
+    },
+    {
+     "cluster": "6_602_CAO",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 3
+    },
+    {
+     "cluster": "6_603_PTC52",
+     "substrate_class": "natural_specialized",
+     "genera_contaminated": 0,
+     "genera_free": 3
+    }
+   ],
+   "by_substrate_class": {
+    "xenobiotic": {
+     "n_types": 21,
+     "median_of_type_maxima": 98.91,
+     "min_of_type_maxima": 47.27,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 39.34,
+     "bands": {
+      "indistinguishable": 8,
+      "very close": 6,
+      "close": 4,
+      "distant": 1,
+      "deep": 2
+     },
+     "types_with_an_identical_cross_habitat_pair": 7,
+     "n_pairs": 9313,
+     "median_points_above_random_floor": 14.34,
+     "types_whose_median_is_within_5_points_of_the_floor": 7
+    },
+    "natural_aromatic": {
+     "n_types": 1,
+     "median_of_type_maxima": 100.0,
+     "min_of_type_maxima": 100.0,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 34.58,
+     "bands": {
+      "indistinguishable": 1,
+      "very close": 0,
+      "close": 0,
+      "distant": 0,
+      "deep": 0
+     },
+     "types_with_an_identical_cross_habitat_pair": 1,
+     "n_pairs": 3525,
+     "median_points_above_random_floor": 9.58,
+     "types_whose_median_is_within_5_points_of_the_floor": 0
+    },
+    "natural_specialized": {
+     "n_types": 9,
+     "median_of_type_maxima": 99.74,
+     "min_of_type_maxima": 63.22,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 31.25,
+     "bands": {
+      "indistinguishable": 6,
+      "very close": 0,
+      "close": 1,
+      "distant": 2,
+      "deep": 0
+     },
+     "types_with_an_identical_cross_habitat_pair": 4,
+     "n_pairs": 24780,
+     "median_points_above_random_floor": 6.25,
+     "types_whose_median_is_within_5_points_of_the_floor": 3
+    },
+    "natural_combined": {
+     "n_types": 10,
+     "median_of_type_maxima": 99.87,
+     "min_of_type_maxima": 63.22,
+     "max_of_type_maxima": 100.0,
+     "median_of_type_medians": 31.64,
+     "bands": {
+      "indistinguishable": 7,
+      "very close": 0,
+      "close": 1,
+      "distant": 2,
+      "deep": 0
+     },
+     "types_with_an_identical_cross_habitat_pair": 5,
+     "n_pairs": 28305,
+     "median_points_above_random_floor": 6.64,
+     "types_whose_median_is_within_5_points_of_the_floor": 3
+    }
+   },
+   "class_contrast": {
+    "measurable": true,
+    "n_xenobiotic": 21,
+    "n_natural": 10,
+    "type_maxima": {
+     "floor_limited": false,
+     "xenobiotic_median": 98.91,
+     "natural_median": 99.87,
+     "difference_points": -0.96,
+     "mannwhitney_u": 84.5,
+     "p": 0.384
+    },
+    "type_medians": {
+     "floor_limited": true,
+     "xenobiotic_median": 39.34,
+     "natural_median": 31.64,
+     "difference_points": 7.7,
+     "mannwhitney_u": 133.0,
+     "p": 0.2452
+    }
+   }
+  }
+ },
+ "variant_spread": {
+  "question": "Within one enzyme type, do the contaminated-site members sit inside the type's existing variant diversity, or do they form one tight recent cluster?",
+  "null_model": "2000 draws without replacement of the same number of members from the same type's full membership, seed 20261005. The null therefore carries the type's real variant-size distribution, including its large variants.",
+  "n_types_tested": 35,
+  "types": [
+   {
+    "cluster": "1_102_CARDO",
+    "substrate": "carbazole",
+    "substrate_class": "xenobiotic",
+    "type_members": 114,
+    "type_variants": 23,
+    "measurable": true,
+    "contaminated": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.64,
+     "spread_ratio": 1.137,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.453,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.6662,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": null
+   },
+   {
+    "cluster": "1_104_VanA",
+    "substrate": "vanillate",
+    "substrate_class": "natural_aromatic",
+    "type_members": 1772,
+    "type_variants": 119,
+    "measurable": true,
+    "contaminated": {
+     "members": 47,
+     "variants_occupied": 16,
+     "variants_expected_at_random": 18.72,
+     "spread_ratio": 0.855,
+     "top_variant_share": 0.362,
+     "top_variant_share_expected": 0.268,
+     "p_fewer_variants_than_chance": 0.1839,
+     "p_more_variants_than_chance": 0.9015,
+     "p_more_concentrated_than_chance": 0.09,
+     "q_fewer_variants_than_chance": 0.5801
+    },
+    "chemical_free": {
+     "members": 75,
+     "variants_occupied": 30,
+     "variants_expected_at_random": 24.75,
+     "spread_ratio": 1.212,
+     "top_variant_share": 0.28,
+     "top_variant_share_expected": 0.268,
+     "p_fewer_variants_than_chance": 0.969,
+     "p_more_variants_than_chance": 0.058,
+     "p_more_concentrated_than_chance": 0.4448,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_105_DdmC",
+    "substrate": "dicamba",
+    "substrate_class": "xenobiotic",
+    "type_members": 409,
+    "type_variants": 129,
+    "measurable": true,
+    "contaminated": {
+     "members": 11,
+     "variants_occupied": 11,
+     "variants_expected_at_random": 9.9,
+     "spread_ratio": 1.111,
+     "top_variant_share": 0.091,
+     "top_variant_share_expected": 0.169,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.3053,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 44,
+     "variants_occupied": 26,
+     "variants_expected_at_random": 31.51,
+     "spread_ratio": 0.825,
+     "top_variant_share": 0.182,
+     "top_variant_share_expected": 0.113,
+     "p_fewer_variants_than_chance": 0.024,
+     "p_more_variants_than_chance": 0.989,
+     "p_more_concentrated_than_chance": 0.0645,
+     "q_fewer_variants_than_chance": 0.2393
+    }
+   },
+   {
+    "cluster": "1_106_TsaM",
+    "substrate": "4-toluenesulfonate",
+    "substrate_class": "xenobiotic",
+    "type_members": 1089,
+    "type_variants": 274,
+    "measurable": true,
+    "contaminated": {
+     "members": 44,
+     "variants_occupied": 32,
+     "variants_expected_at_random": 32.87,
+     "spread_ratio": 0.974,
+     "top_variant_share": 0.114,
+     "top_variant_share_expected": 0.125,
+     "p_fewer_variants_than_chance": 0.4353,
+     "p_more_variants_than_chance": 0.6972,
+     "p_more_concentrated_than_chance": 0.6587,
+     "q_fewer_variants_than_chance": 0.9364
+    },
+    "chemical_free": {
+     "members": 52,
+     "variants_occupied": 39,
+     "variants_expected_at_random": 37.69,
+     "spread_ratio": 1.035,
+     "top_variant_share": 0.096,
+     "top_variant_share_expected": 0.122,
+     "p_fewer_variants_than_chance": 0.7406,
+     "p_more_variants_than_chance": 0.3863,
+     "p_more_concentrated_than_chance": 0.8006,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_107_CndA",
+    "substrate": "chloroacetanilide herbicides (alachlor, acetochlor, butachlor)",
+    "substrate_class": "xenobiotic",
+    "type_members": 74,
+    "type_variants": 37,
+    "measurable": true,
+    "contaminated": {
+     "members": 6,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 5.31,
+     "spread_ratio": 1.13,
+     "top_variant_share": 0.167,
+     "top_variant_share_expected": 0.274,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4828,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.84,
+     "spread_ratio": 1.056,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.387,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.8511,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_108_PobA",
+    "substrate": "4-hydroxybenzoate",
+    "substrate_class": "natural_aromatic",
+    "type_members": 174,
+    "type_variants": 31,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.35,
+     "spread_ratio": 1.192,
+     "top_variant_share": 0.25,
+     "top_variant_share_expected": 0.405,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4753,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 4,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 3.32,
+     "spread_ratio": 0.902,
+     "top_variant_share": 0.5,
+     "top_variant_share_expected": 0.413,
+     "p_fewer_variants_than_chance": 0.5522,
+     "p_more_variants_than_chance": 0.8856,
+     "p_more_concentrated_than_chance": 0.5522,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_109_LigX",
+    "substrate": "5,5'-dehydrodivanillate",
+    "substrate_class": "natural_aromatic",
+    "type_members": 93,
+    "type_variants": 38,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 2,
+     "variants_expected_at_random": 3.8,
+     "spread_ratio": 0.526,
+     "top_variant_share": 0.75,
+     "top_variant_share_expected": 0.299,
+     "p_fewer_variants_than_chance": 0.0075,
+     "p_more_variants_than_chance": 1.0,
+     "p_more_concentrated_than_chance": 0.005,
+     "q_fewer_variants_than_chance": 0.0788
+    },
+    "chemical_free": {
+     "members": 7,
+     "variants_occupied": 7,
+     "variants_expected_at_random": 6.35,
+     "spread_ratio": 1.103,
+     "top_variant_share": 0.143,
+     "top_variant_share_expected": 0.223,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4823,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_110_SxtT",
+    "substrate": "saxitoxin pathway intermediate",
+    "substrate_class": "natural_specialized",
+    "type_members": 225,
+    "type_variants": 87,
+    "measurable": true,
+    "contaminated": {
+     "members": 8,
+     "variants_occupied": 5,
+     "variants_expected_at_random": 7.32,
+     "spread_ratio": 0.683,
+     "top_variant_share": 0.375,
+     "top_variant_share_expected": 0.2,
+     "p_fewer_variants_than_chance": 0.0215,
+     "p_more_variants_than_chance": 0.997,
+     "p_more_concentrated_than_chance": 0.0875,
+     "q_fewer_variants_than_chance": 0.1505
+    },
+    "chemical_free": {
+     "members": 10,
+     "variants_occupied": 9,
+     "variants_expected_at_random": 8.96,
+     "spread_ratio": 1.004,
+     "top_variant_share": 0.2,
+     "top_variant_share_expected": 0.183,
+     "p_fewer_variants_than_chance": 0.6772,
+     "p_more_variants_than_chance": 0.7256,
+     "p_more_concentrated_than_chance": 0.6772,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_112_NdmA",
+    "substrate": "caffeine",
+    "substrate_class": "natural_specialized",
+    "type_members": 43,
+    "type_variants": 14,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 1,
+     "variants_expected_at_random": 3.24,
+     "spread_ratio": 0.309,
+     "top_variant_share": 1.0,
+     "top_variant_share_expected": 0.435,
+     "p_fewer_variants_than_chance": 0.009,
+     "p_more_variants_than_chance": 1.0,
+     "p_more_concentrated_than_chance": 0.009,
+     "q_fewer_variants_than_chance": 0.0788
+    },
+    "chemical_free": null
+   },
+   {
+    "cluster": "1_113_CdnA",
+    "substrate": "caffeine and methylxanthines",
+    "substrate_class": "natural_specialized",
+    "type_members": 689,
+    "type_variants": 111,
+    "measurable": true,
+    "contaminated": {
+     "members": 21,
+     "variants_occupied": 13,
+     "variants_expected_at_random": 11.92,
+     "spread_ratio": 1.09,
+     "top_variant_share": 0.286,
+     "top_variant_share_expected": 0.284,
+     "p_fewer_variants_than_chance": 0.7851,
+     "p_more_variants_than_chance": 0.3903,
+     "p_more_concentrated_than_chance": 0.5827,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 29,
+     "variants_occupied": 17,
+     "variants_expected_at_random": 15.05,
+     "spread_ratio": 1.13,
+     "top_variant_share": 0.241,
+     "top_variant_share_expected": 0.278,
+     "p_fewer_variants_than_chance": 0.8521,
+     "p_more_variants_than_chance": 0.2704,
+     "p_more_concentrated_than_chance": 0.7571,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "1_114_NdmB",
+    "substrate": "caffeine",
+    "substrate_class": "natural_specialized",
+    "type_members": 28,
+    "type_variants": 14,
+    "measurable": true,
+    "contaminated": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.8,
+     "spread_ratio": 1.072,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.401,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.8031,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.8,
+     "spread_ratio": 1.073,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.401,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.8026,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "2_202_EdoA1",
+    "substrate": "ethylbenzene",
+    "substrate_class": "xenobiotic",
+    "type_members": 48,
+    "type_variants": 4,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 1,
+     "variants_expected_at_random": 1.6,
+     "spread_ratio": 0.626,
+     "top_variant_share": 1.0,
+     "top_variant_share_expected": 0.841,
+     "p_fewer_variants_than_chance": 0.4823,
+     "p_more_variants_than_chance": 1.0,
+     "p_more_concentrated_than_chance": 0.4823,
+     "q_fewer_variants_than_chance": 0.9378
+    },
+    "chemical_free": {
+     "members": 4,
+     "variants_occupied": 2,
+     "variants_expected_at_random": 1.62,
+     "spread_ratio": 1.237,
+     "top_variant_share": 0.75,
+     "top_variant_share_expected": 0.836,
+     "p_fewer_variants_than_chance": 0.915,
+     "p_more_variants_than_chance": 0.5302,
+     "p_more_concentrated_than_chance": 0.8751,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "2_211_bfzA",
+    "substrate": "benzene and fluorene",
+    "substrate_class": "xenobiotic",
+    "type_members": 118,
+    "type_variants": 34,
+    "measurable": true,
+    "contaminated": {
+     "members": 7,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 5.94,
+     "spread_ratio": 1.009,
+     "top_variant_share": 0.286,
+     "top_variant_share_expected": 0.264,
+     "p_fewer_variants_than_chance": 0.7006,
+     "p_more_variants_than_chance": 0.7126,
+     "p_more_concentrated_than_chance": 0.7006,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 9,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 7.27,
+     "spread_ratio": 0.825,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.246,
+     "p_fewer_variants_than_chance": 0.2214,
+     "p_more_variants_than_chance": 0.956,
+     "p_more_concentrated_than_chance": 0.2794,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "2_216_BPDO",
+    "substrate": "biphenyl",
+    "substrate_class": "xenobiotic",
+    "type_members": 29,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "2_217_HcaE",
+    "substrate": "3-phenylpropionate",
+    "substrate_class": "natural_aromatic",
+    "type_members": 259,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "2_218_BphA1",
+    "substrate": "biphenyl",
+    "substrate_class": "xenobiotic",
+    "type_members": 153,
+    "type_variants": 30,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.33,
+     "spread_ratio": 1.201,
+     "top_variant_share": 0.25,
+     "top_variant_share_expected": 0.41,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4668,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 4,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.32,
+     "spread_ratio": 1.204,
+     "top_variant_share": 0.25,
+     "top_variant_share_expected": 0.413,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4563,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_301_PhnA1a",
+    "substrate": "phenanthrene",
+    "substrate_class": "xenobiotic",
+    "type_members": 149,
+    "type_variants": 28,
+    "measurable": true,
+    "contaminated": {
+     "members": 21,
+     "variants_occupied": 8,
+     "variants_expected_at_random": 11.51,
+     "spread_ratio": 0.695,
+     "top_variant_share": 0.286,
+     "top_variant_share_expected": 0.219,
+     "p_fewer_variants_than_chance": 0.034,
+     "p_more_variants_than_chance": 0.9915,
+     "p_more_concentrated_than_chance": 0.1909,
+     "q_fewer_variants_than_chance": 0.1825
+    },
+    "chemical_free": {
+     "members": 32,
+     "variants_occupied": 17,
+     "variants_expected_at_random": 14.43,
+     "spread_ratio": 1.179,
+     "top_variant_share": 0.219,
+     "top_variant_share_expected": 0.203,
+     "p_fewer_variants_than_chance": 0.947,
+     "p_more_variants_than_chance": 0.1249,
+     "p_more_concentrated_than_chance": 0.4543,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_302_DitA",
+    "substrate": "dehydroabietate",
+    "substrate_class": "natural_specialized",
+    "type_members": 112,
+    "type_variants": 8,
+    "measurable": true,
+    "contaminated": {
+     "members": 14,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 3.67,
+     "spread_ratio": 0.817,
+     "top_variant_share": 0.643,
+     "top_variant_share_expected": 0.639,
+     "p_fewer_variants_than_chance": 0.4548,
+     "p_more_variants_than_chance": 0.9025,
+     "p_more_concentrated_than_chance": 0.6092,
+     "q_fewer_variants_than_chance": 0.9364
+    },
+    "chemical_free": {
+     "members": 21,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 4.34,
+     "spread_ratio": 0.921,
+     "top_variant_share": 0.571,
+     "top_variant_share_expected": 0.634,
+     "p_fewer_variants_than_chance": 0.5797,
+     "p_more_variants_than_chance": 0.7931,
+     "p_more_concentrated_than_chance": 0.8316,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_303_NBDO",
+    "substrate": "nitrobenzene",
+    "substrate_class": "xenobiotic",
+    "type_members": 24,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "3_305_ArhA1",
+    "substrate": "polycyclic aromatic hydrocarbons",
+    "substrate_class": "xenobiotic",
+    "type_members": 50,
+    "type_variants": 20,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 2,
+     "variants_expected_at_random": 3.39,
+     "spread_ratio": 0.59,
+     "top_variant_share": 0.75,
+     "top_variant_share_expected": 0.397,
+     "p_fewer_variants_than_chance": 0.0945,
+     "p_more_variants_than_chance": 0.995,
+     "p_more_concentrated_than_chance": 0.0715,
+     "q_fewer_variants_than_chance": 0.3675
+    },
+    "chemical_free": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.66,
+     "spread_ratio": 1.128,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.447,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.6847,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_307_NagGH",
+    "substrate": "naphthalene-2-sulfonate",
+    "substrate_class": "xenobiotic",
+    "type_members": 345,
+    "type_variants": 18,
+    "measurable": true,
+    "contaminated": {
+     "members": 11,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.72,
+     "spread_ratio": 1.075,
+     "top_variant_share": 0.455,
+     "top_variant_share_expected": 0.592,
+     "p_fewer_variants_than_chance": 0.7981,
+     "p_more_variants_than_chance": 0.5637,
+     "p_more_concentrated_than_chance": 0.919,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 13,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.99,
+     "spread_ratio": 1.003,
+     "top_variant_share": 0.615,
+     "top_variant_share_expected": 0.592,
+     "p_fewer_variants_than_chance": 0.7041,
+     "p_more_variants_than_chance": 0.6682,
+     "p_more_concentrated_than_chance": 0.5367,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_311_PhtAa",
+    "substrate": "phthalate",
+    "substrate_class": "xenobiotic",
+    "type_members": 226,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "3_313_KshA15",
+    "substrate": "3-ketosteroid",
+    "substrate_class": "natural_specialized",
+    "type_members": 1712,
+    "type_variants": 144,
+    "measurable": true,
+    "contaminated": {
+     "members": 34,
+     "variants_occupied": 22,
+     "variants_expected_at_random": 20.77,
+     "spread_ratio": 1.059,
+     "top_variant_share": 0.206,
+     "top_variant_share_expected": 0.144,
+     "p_fewer_variants_than_chance": 0.7766,
+     "p_more_variants_than_chance": 0.3718,
+     "p_more_concentrated_than_chance": 0.096,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 45,
+     "variants_occupied": 29,
+     "variants_expected_at_random": 24.62,
+     "spread_ratio": 1.178,
+     "top_variant_share": 0.111,
+     "top_variant_share_expected": 0.137,
+     "p_fewer_variants_than_chance": 0.963,
+     "p_more_variants_than_chance": 0.0715,
+     "p_more_concentrated_than_chance": 0.8991,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_317_NidA",
+    "substrate": "pyrene",
+    "substrate_class": "xenobiotic",
+    "type_members": 65,
+    "type_variants": 26,
+    "measurable": true,
+    "contaminated": {
+     "members": 3,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 2.87,
+     "spread_ratio": 1.047,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.378,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.8676,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 11,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 8.83,
+     "spread_ratio": 0.679,
+     "top_variant_share": 0.364,
+     "top_variant_share_expected": 0.208,
+     "p_fewer_variants_than_chance": 0.029,
+     "p_more_variants_than_chance": 0.9975,
+     "p_more_concentrated_than_chance": 0.0505,
+     "q_fewer_variants_than_chance": 0.2393
+    }
+   },
+   {
+    "cluster": "3_319_PhdA",
+    "substrate": "phenanthrene",
+    "substrate_class": "xenobiotic",
+    "type_members": 147,
+    "type_variants": 68,
+    "measurable": true,
+    "contaminated": {
+     "members": 5,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 4.81,
+     "spread_ratio": 0.831,
+     "top_variant_share": 0.4,
+     "top_variant_share_expected": 0.236,
+     "p_fewer_variants_than_chance": 0.1749,
+     "p_more_variants_than_chance": 0.988,
+     "p_more_concentrated_than_chance": 0.1749,
+     "q_fewer_variants_than_chance": 0.5801
+    },
+    "chemical_free": {
+     "members": 9,
+     "variants_occupied": 8,
+     "variants_expected_at_random": 8.39,
+     "spread_ratio": 0.954,
+     "top_variant_share": 0.222,
+     "top_variant_share_expected": 0.169,
+     "p_fewer_variants_than_chance": 0.4793,
+     "p_more_variants_than_chance": 0.8851,
+     "p_more_concentrated_than_chance": 0.4793,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "3_322_DAF36",
+    "substrate": "cholesterol",
+    "substrate_class": "natural_specialized",
+    "type_members": 333,
+    "type_variants": 79,
+    "measurable": true,
+    "contaminated": {
+     "members": 3,
+     "variants_occupied": 2,
+     "variants_expected_at_random": 2.73,
+     "spread_ratio": 0.733,
+     "top_variant_share": 0.667,
+     "top_variant_share_expected": 0.423,
+     "p_fewer_variants_than_chance": 0.2499,
+     "p_more_variants_than_chance": 0.9795,
+     "p_more_concentrated_than_chance": 0.2499,
+     "q_fewer_variants_than_chance": 0.6728
+    },
+    "chemical_free": {
+     "members": 21,
+     "variants_occupied": 16,
+     "variants_expected_at_random": 12.36,
+     "spread_ratio": 1.295,
+     "top_variant_share": 0.143,
+     "top_variant_share_expected": 0.26,
+     "p_fewer_variants_than_chance": 0.9835,
+     "p_more_variants_than_chance": 0.055,
+     "p_more_concentrated_than_chance": 0.995,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "4_401_CmtAb",
+    "substrate": "p-cumate",
+    "substrate_class": "xenobiotic",
+    "type_members": 246,
+    "type_variants": 78,
+    "measurable": true,
+    "contaminated": {
+     "members": 3,
+     "variants_occupied": 2,
+     "variants_expected_at_random": 2.94,
+     "spread_ratio": 0.681,
+     "top_variant_share": 0.667,
+     "top_variant_share_expected": 0.354,
+     "p_fewer_variants_than_chance": 0.0625,
+     "p_more_variants_than_chance": 0.9995,
+     "p_more_concentrated_than_chance": 0.0625,
+     "q_fewer_variants_than_chance": 0.2734
+    },
+    "chemical_free": {
+     "members": 16,
+     "variants_occupied": 12,
+     "variants_expected_at_random": 13.75,
+     "spread_ratio": 0.873,
+     "top_variant_share": 0.188,
+     "top_variant_share_expected": 0.14,
+     "p_fewer_variants_than_chance": 0.1554,
+     "p_more_variants_than_chance": 0.9545,
+     "p_more_concentrated_than_chance": 0.2664,
+     "q_fewer_variants_than_chance": 0.8547
+    }
+   },
+   {
+    "cluster": "4_403_AtdA",
+    "substrate": "aniline",
+    "substrate_class": "xenobiotic",
+    "type_members": 190,
+    "type_variants": 33,
+    "measurable": true,
+    "contaminated": {
+     "members": 6,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 4.19,
+     "spread_ratio": 0.954,
+     "top_variant_share": 0.333,
+     "top_variant_share_expected": 0.422,
+     "p_fewer_variants_than_chance": 0.6182,
+     "p_more_variants_than_chance": 0.7591,
+     "p_more_concentrated_than_chance": 0.9045,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 11,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 6.27,
+     "spread_ratio": 0.957,
+     "top_variant_share": 0.455,
+     "top_variant_share_expected": 0.389,
+     "p_fewer_variants_than_chance": 0.5682,
+     "p_more_variants_than_chance": 0.7106,
+     "p_more_concentrated_than_chance": 0.4088,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "4_404_TdnA1",
+    "substrate": "aniline",
+    "substrate_class": "xenobiotic",
+    "type_members": 795,
+    "type_variants": 71,
+    "measurable": true,
+    "contaminated": {
+     "members": 27,
+     "variants_occupied": 13,
+     "variants_expected_at_random": 14.39,
+     "spread_ratio": 0.904,
+     "top_variant_share": 0.296,
+     "top_variant_share_expected": 0.259,
+     "p_fewer_variants_than_chance": 0.3273,
+     "p_more_variants_than_chance": 0.8326,
+     "p_more_concentrated_than_chance": 0.3583,
+     "q_fewer_variants_than_chance": 0.8182
+    },
+    "chemical_free": {
+     "members": 34,
+     "variants_occupied": 18,
+     "variants_expected_at_random": 16.77,
+     "spread_ratio": 1.074,
+     "top_variant_share": 0.265,
+     "top_variant_share_expected": 0.251,
+     "p_fewer_variants_than_chance": 0.7866,
+     "p_more_variants_than_chance": 0.3588,
+     "p_more_concentrated_than_chance": 0.4793,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "4_405_ROCH34",
+    "substrate": "phthalate",
+    "substrate_class": "xenobiotic",
+    "type_members": 375,
+    "type_variants": 73,
+    "measurable": true,
+    "contaminated": {
+     "members": 11,
+     "variants_occupied": 5,
+     "variants_expected_at_random": 8.85,
+     "spread_ratio": 0.565,
+     "top_variant_share": 0.364,
+     "top_variant_share_expected": 0.22,
+     "p_fewer_variants_than_chance": 0.006,
+     "p_more_variants_than_chance": 0.999,
+     "p_more_concentrated_than_chance": 0.099,
+     "q_fewer_variants_than_chance": 0.0788
+    },
+    "chemical_free": {
+     "members": 21,
+     "variants_occupied": 16,
+     "variants_expected_at_random": 14.54,
+     "spread_ratio": 1.101,
+     "top_variant_share": 0.19,
+     "top_variant_share_expected": 0.186,
+     "p_fewer_variants_than_chance": 0.8601,
+     "p_more_variants_than_chance": 0.3043,
+     "p_more_concentrated_than_chance": 0.5787,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "4_406_PDO",
+    "substrate": "phthalate",
+    "substrate_class": "xenobiotic",
+    "type_members": 286,
+    "type_variants": 44,
+    "measurable": true,
+    "contaminated": {
+     "members": 12,
+     "variants_occupied": 5,
+     "variants_expected_at_random": 7.98,
+     "spread_ratio": 0.627,
+     "top_variant_share": 0.583,
+     "top_variant_share_expected": 0.299,
+     "p_fewer_variants_than_chance": 0.0365,
+     "p_more_variants_than_chance": 0.995,
+     "p_more_concentrated_than_chance": 0.024,
+     "q_fewer_variants_than_chance": 0.1825
+    },
+    "chemical_free": {
+     "members": 29,
+     "variants_occupied": 7,
+     "variants_expected_at_random": 14.14,
+     "spread_ratio": 0.495,
+     "top_variant_share": 0.448,
+     "top_variant_share_expected": 0.284,
+     "p_fewer_variants_than_chance": 0.0005,
+     "p_more_variants_than_chance": 1.0,
+     "p_more_concentrated_than_chance": 0.0315,
+     "q_fewer_variants_than_chance": 0.0165
+    }
+   },
+   {
+    "cluster": "4_408_AntA",
+    "substrate": "anthranilate",
+    "substrate_class": "natural_aromatic",
+    "type_members": 305,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "4_409_TPDO",
+    "substrate": "terephthalate",
+    "substrate_class": "xenobiotic",
+    "type_members": 475,
+    "type_variants": 52,
+    "measurable": true,
+    "contaminated": {
+     "members": 40,
+     "variants_occupied": 13,
+     "variants_expected_at_random": 15.38,
+     "spread_ratio": 0.845,
+     "top_variant_share": 0.2,
+     "top_variant_share_expected": 0.283,
+     "p_fewer_variants_than_chance": 0.1989,
+     "p_more_variants_than_chance": 0.9075,
+     "p_more_concentrated_than_chance": 0.984,
+     "q_fewer_variants_than_chance": 0.5801
+    },
+    "chemical_free": {
+     "members": 47,
+     "variants_occupied": 12,
+     "variants_expected_at_random": 16.88,
+     "spread_ratio": 0.711,
+     "top_variant_share": 0.277,
+     "top_variant_share_expected": 0.281,
+     "p_fewer_variants_than_chance": 0.0235,
+     "p_more_variants_than_chance": 0.9935,
+     "p_more_concentrated_than_chance": 0.6197,
+     "q_fewer_variants_than_chance": 0.2393
+    }
+   },
+   {
+    "cluster": "4_410_CbdC",
+    "substrate": "2-halobenzoate",
+    "substrate_class": "xenobiotic",
+    "type_members": 429,
+    "type_variants": 21,
+    "measurable": true,
+    "contaminated": {
+     "members": 19,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 6.33,
+     "spread_ratio": 0.949,
+     "top_variant_share": 0.263,
+     "top_variant_share_expected": 0.433,
+     "p_fewer_variants_than_chance": 0.5617,
+     "p_more_variants_than_chance": 0.7151,
+     "p_more_concentrated_than_chance": 0.9965,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 33,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 8.36,
+     "spread_ratio": 0.718,
+     "top_variant_share": 0.424,
+     "top_variant_share_expected": 0.413,
+     "p_fewer_variants_than_chance": 0.1084,
+     "p_more_variants_than_chance": 0.972,
+     "p_more_concentrated_than_chance": 0.4813,
+     "q_fewer_variants_than_chance": 0.7154
+    }
+   },
+   {
+    "cluster": "4_411_XylX",
+    "substrate": "toluate and benzoate",
+    "substrate_class": "xenobiotic",
+    "type_members": 734,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   },
+   {
+    "cluster": "5_501_CmoS",
+    "substrate": "choline",
+    "substrate_class": "natural_specialized",
+    "type_members": 461,
+    "type_variants": 87,
+    "measurable": true,
+    "contaminated": {
+     "members": 5,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.25,
+     "spread_ratio": 1.23,
+     "top_variant_share": 0.4,
+     "top_variant_share_expected": 0.546,
+     "p_fewer_variants_than_chance": 0.8766,
+     "p_more_variants_than_chance": 0.4023,
+     "p_more_concentrated_than_chance": 0.8766,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 19,
+     "variants_occupied": 12,
+     "variants_expected_at_random": 9.14,
+     "spread_ratio": 1.314,
+     "top_variant_share": 0.316,
+     "top_variant_share_expected": 0.54,
+     "p_fewer_variants_than_chance": 0.9575,
+     "p_more_variants_than_chance": 0.1244,
+     "p_more_concentrated_than_chance": 0.9875,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_502_CmoB",
+    "substrate": "choline",
+    "substrate_class": "natural_specialized",
+    "type_members": 35,
+    "type_variants": 16,
+    "measurable": true,
+    "contaminated": {
+     "members": 4,
+     "variants_occupied": 4,
+     "variants_expected_at_random": 3.37,
+     "spread_ratio": 1.186,
+     "top_variant_share": 0.25,
+     "top_variant_share_expected": 0.401,
+     "p_fewer_variants_than_chance": 1.0,
+     "p_more_variants_than_chance": 0.4863,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 8,
+     "variants_occupied": 6,
+     "variants_expected_at_random": 5.71,
+     "spread_ratio": 1.052,
+     "top_variant_share": 0.25,
+     "top_variant_share_expected": 0.346,
+     "p_fewer_variants_than_chance": 0.7611,
+     "p_more_variants_than_chance": 0.5732,
+     "p_more_concentrated_than_chance": 0.958,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_504_CntA",
+    "substrate": "L-carnitine",
+    "substrate_class": "natural_specialized",
+    "type_members": 2562,
+    "type_variants": 433,
+    "measurable": true,
+    "contaminated": {
+     "members": 79,
+     "variants_occupied": 53,
+     "variants_expected_at_random": 49.19,
+     "spread_ratio": 1.077,
+     "top_variant_share": 0.101,
+     "top_variant_share_expected": 0.13,
+     "p_fewer_variants_than_chance": 0.8596,
+     "p_more_variants_than_chance": 0.1974,
+     "p_more_concentrated_than_chance": 0.8881,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 178,
+     "variants_occupied": 96,
+     "variants_expected_at_random": 89.85,
+     "spread_ratio": 1.068,
+     "top_variant_share": 0.084,
+     "top_variant_share_expected": 0.123,
+     "p_fewer_variants_than_chance": 0.8961,
+     "p_more_variants_than_chance": 0.1479,
+     "p_more_concentrated_than_chance": 0.986,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_505_qxyA",
+    "substrate": "benzalkonium chloride and other quaternary ammonium compounds",
+    "substrate_class": "xenobiotic",
+    "type_members": 486,
+    "type_variants": 106,
+    "measurable": true,
+    "contaminated": {
+     "members": 10,
+     "variants_occupied": 3,
+     "variants_expected_at_random": 7.45,
+     "spread_ratio": 0.403,
+     "top_variant_share": 0.8,
+     "top_variant_share_expected": 0.287,
+     "p_fewer_variants_than_chance": 0.003,
+     "p_more_variants_than_chance": 1.0,
+     "p_more_concentrated_than_chance": 0.001,
+     "q_fewer_variants_than_chance": 0.0788
+    },
+    "chemical_free": {
+     "members": 24,
+     "variants_occupied": 13,
+     "variants_expected_at_random": 14.56,
+     "spread_ratio": 0.893,
+     "top_variant_share": 0.208,
+     "top_variant_share_expected": 0.251,
+     "p_fewer_variants_than_chance": 0.3058,
+     "p_more_variants_than_chance": 0.8256,
+     "p_more_concentrated_than_chance": 0.8186,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_506_Stc2",
+    "substrate": "stachydrine",
+    "substrate_class": "natural_specialized",
+    "type_members": 1768,
+    "type_variants": 234,
+    "measurable": true,
+    "contaminated": {
+     "members": 41,
+     "variants_occupied": 31,
+     "variants_expected_at_random": 23.78,
+     "spread_ratio": 1.303,
+     "top_variant_share": 0.073,
+     "top_variant_share_expected": 0.166,
+     "p_fewer_variants_than_chance": 0.997,
+     "p_more_variants_than_chance": 0.0055,
+     "p_more_concentrated_than_chance": 1.0,
+     "q_fewer_variants_than_chance": 1.0
+    },
+    "chemical_free": {
+     "members": 114,
+     "variants_occupied": 51,
+     "variants_expected_at_random": 47.29,
+     "spread_ratio": 1.079,
+     "top_variant_share": 0.079,
+     "top_variant_share_expected": 0.149,
+     "p_fewer_variants_than_chance": 0.8651,
+     "p_more_variants_than_chance": 0.2079,
+     "p_more_concentrated_than_chance": 0.999,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_507_BmoA",
+    "substrate": "glycine betaine",
+    "substrate_class": "natural_specialized",
+    "type_members": 1160,
+    "type_variants": 230,
+    "measurable": true,
+    "contaminated": {
+     "members": 37,
+     "variants_occupied": 25,
+     "variants_expected_at_random": 25.9,
+     "spread_ratio": 0.965,
+     "top_variant_share": 0.108,
+     "top_variant_share_expected": 0.169,
+     "p_fewer_variants_than_chance": 0.4328,
+     "p_more_variants_than_chance": 0.7056,
+     "p_more_concentrated_than_chance": 0.922,
+     "q_fewer_variants_than_chance": 0.9364
+    },
+    "chemical_free": {
+     "members": 92,
+     "variants_occupied": 49,
+     "variants_expected_at_random": 50.83,
+     "spread_ratio": 0.964,
+     "top_variant_share": 0.087,
+     "top_variant_share_expected": 0.165,
+     "p_fewer_variants_than_chance": 0.3648,
+     "p_more_variants_than_chance": 0.7291,
+     "p_more_concentrated_than_chance": 0.995,
+     "q_fewer_variants_than_chance": 1.0
+    }
+   },
+   {
+    "cluster": "5_508_GbcA",
+    "substrate": "glycine betaine",
+    "substrate_class": "natural_specialized",
+    "type_members": 505,
+    "type_variants": 1,
+    "measurable": false,
+    "why_not": "the whole type collapses into a single sequence variant, so there is no spread to measure on either side"
+   }
+  ],
+  "by_substrate_class": {
+   "xenobiotic": {
+    "n_types": 20,
+    "median_spread_ratio": 0.926,
+    "types_tighter_than_chance_q05": 0,
+    "types_more_concentrated_than_chance_p05": 2,
+    "median_variants_occupied": 4.5,
+    "median_type_variants": 35.5
+   },
+   "natural_aromatic": {
+    "n_types": 3,
+    "median_spread_ratio": 0.855,
+    "types_tighter_than_chance_q05": 0,
+    "types_more_concentrated_than_chance_p05": 1,
+    "median_variants_occupied": 4,
+    "median_type_variants": 38
+   },
+   "natural_specialized": {
+    "n_types": 12,
+    "median_spread_ratio": 1.066,
+    "types_tighter_than_chance_q05": 0,
+    "types_more_concentrated_than_chance_p05": 1,
+    "median_variants_occupied": 4.5,
+    "median_type_variants": 87.0
+   },
+   "natural_combined": {
+    "n_types": 15,
+    "median_spread_ratio": 1.059,
+    "types_tighter_than_chance_q05": 0,
+    "types_more_concentrated_than_chance_p05": 2,
+    "median_variants_occupied": 4,
+    "median_type_variants": 87
+   }
+  },
+  "class_contrast": {
+   "measurable": true,
+   "n_xenobiotic": 20,
+   "n_natural": 15,
+   "xenobiotic_median_spread_ratio": 0.926,
+   "natural_median_spread_ratio": 1.059,
+   "mannwhitney_u": 118.0,
+   "p": 0.2937
+  },
+  "contaminated_vs_chemical_free": {
+   "measurable": true,
+   "n_types": 33,
+   "median_difference": -0.04,
+   "wilcoxon_statistic": 199.0,
+   "p": 0.1495
+  }
+ },
+ "limitations": [
+  "A habitat label is a property of the deposited record, not of the enzyme. It says where the genome was collected; it does not establish that the organism's ancestors lived there, nor that the chemical was truly absent. The marine entries are the least arguable on this point and that is why the narrow definition is reported beside the wide one.",
+  "An identity of 100 % between a contaminated-site entry and a marine entry is also what a metadata error, a mislabelled isolate or a laboratory cross-contamination would produce. Such pairs are counted separately rather than being read as evidence of recent transfer.",
+  "The test is symmetric and therefore silent on direction. It cannot say whether a lineage moved from the sea to a contaminated site or the reverse; it bounds only how far apart the two are.",
+  "Both sides are small. Several types rest on three or four genera per side, and a non-significant control contrast at that sample size means 'no difference detected', not 'no difference'.",
+  "Substrate class comes from cluster_ecology.csv, where some assignments are marked low confidence (DdmC, cadA, bfzA among them). A type whose substrate label is wrong sits in the wrong column of every table here.",
+  "An enzyme type is a best-hit bin against a reference HMM, not a clade. Most types contain cross-habitat pairs sitting at the unrelated-protein floor (25 % identity), so the median cross-pair identity of a type has bottomed out and is not a measurement of divergence depth. Only the maximum is read as a bound, and the medians appear in the tables so the reader can see where the floor is.",
+  "Sequence variants (ro_leaf.leaf_id) are a clustering of this database's own sequences, not a dated phylogeny. Occupying many variants shows that contaminated-site members are not one tight group; it does not date them."
+ ],
+ "verdict": {
+  "label": "supported",
+  "headline": "The pollutant-degrading types show cross-habitat divergence of the same depth as the types acting on molecules humans never made. On this measure the pollutant-degrading lineages are ordinary ancient diversity, which is the hypothesis in its strongest form.",
+  "what_the_bound_says": "Under the narrow, marine-only definition, 16 xenobiotic types have at least 3 genera on both sides, and every one of them does have a marine relative. For 10 of those 16 the CLOSEST marine relative of any contaminated-site member is below 95 % identity, and for 2 it is below 60 %. Those lineages cannot have separated recently: below 95 % identity means tens of substitutions across a ~400-residue protein, and below 60 % means hundreds. That is a bound on how recent the split can be, not a date for it.",
+  "where_the_bound_is_loose": "7 of the 21 xenobiotic types testable under the wide definition contain a contaminated-site member and a chemical-free member whose sequences are indistinguishable (99.95 % identity or above). For those the measurement places no bound at all: an ancient lineage that has barely changed and a transfer last decade produce the same number. A high maximum therefore cannot refute the hypothesis, and it cannot support it either -- it simply leaves the question open for that type.",
+  "how_far_this_goes": "The hypothesis is established type by type only for the types where the bound is deep. Across the whole set it is supported in a different and weaker way: by the control. Pollutant-degrading types are indistinguishable from natural-substrate types in how far their cross-habitat relatives sit, and nothing about them looks like a lineage that a contaminated site produced.",
+  "the_control": "xenobiotic types: median type maximum 98.91 %, natural-substrate types 99.87 %, a difference of -0.96 points, Mann-Whitney p = 0.384 on 21 against 10 types (wide definition). Under the narrow definition the same contrast is -10.92 points, p = 0.1803. Neither is significant, and at ten to twenty types per side that means no difference was detected rather than that none exists. Note also that the natural-substrate control is carried mostly by natural_specialized types; only one natural_aromatic type clears the gate.",
+  "the_marine_only_answer": "Under the user's own narrow definition -- marine and marine sediment only -- 16 xenobiotic types can be tested, median type maximum 87.92 %, range 32.46 to 100.0 %. The narrow definition is the stronger evidence, not the weaker: it has fewer types but its habitat is the one where the chemicals are least arguably absent, and it is the definition under which the bound actually bites for most types.",
+  "the_second_angle": "Across 20 xenobiotic types, contaminated-site members occupy a median 0.926 times as many sequence variants as a random draw of the same size from the same type -- that is, as many as chance. After correction 0 types are tighter than chance. The natural-substrate control sits at 1.059 (15 types, p = 0.2937). Contaminated-site members are spread through their type's existing variant diversity, not concentrated in one recent clade -- which is what recruitment of a pre-existing lineage looks like, and not what a newly selected variant would look like.",
+  "no_clock_was_used": "No molecular clock was applied and no age in years is stated anywhere in this output. Protein substitution rates differ by orders of magnitude between lineages, and this database contains no calibration point -- no fossil, no dated isolate series, no independently known divergence -- from which a rate could be estimated. Converting identity into years here would manufacture precision that the data do not contain. What identity can carry is an ordering and a bound, and that is all that is reported."
+ }
+}

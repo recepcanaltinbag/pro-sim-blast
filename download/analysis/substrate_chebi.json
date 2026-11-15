@@ -1,0 +1,198 @@
+{
+ "question": "Does every enzyme type's substrate carry a controlled identifier, and where does that identifier come from?",
+ "method": {
+  "unit": "one (enzyme type, substrate) pair -- a type with three balanced Rhea reactions has three substrates, which is a fact about the enzyme, not a duplicate row",
+  "states": {
+   "rhea_equation": "read from the balanced equation of the type's own Rhea reaction; this is an identity",
+   "name_match": "the curated substrate name matched exactly one ChEBI label or synonym; this is a CANDIDATE, not an identity, and no claim rests on it"
+  },
+  "ambiguity_is_not_resolved": "When a name matches more than one ChEBI entry, none is chosen: choosing would mean calling one of two molecules correct at random.",
+  "schema": "A derived table, not a new column in chemistry.csv, so the curated source stays single-owner and the derived value stays reproducible."
+ },
+ "denominators": {
+  "types": 76,
+  "types_with_rhea_substrate": 28,
+  "pairs_written": 67,
+  "by_state": {
+   "name_match": 28,
+   "rhea_equation": 39
+  },
+  "types_unresolved": 20,
+  "network_lookup_allowed": false,
+  "name_matches_from_cache": 21
+ },
+ "curated_name_differs_from_equation": {
+  "why_this_is_not_a_count_of_errors": "A name difference is not a disagreement: 'dicamba' and '3,6-dichloro-2-methoxybenzoate' are the same molecule. Each row below is therefore decided on STRUCTURE -- the heavy-atom composition of the curated SMILES against the formula of the balanced equation's substrate -- not on the name.",
+  "atom_counter_validated": "On the 15 pairs where the curated name equals the Rhea name, the counter agrees 15/15 with the Rhea formula; a mismatch is therefore a mismatch in the data, not in the counter.",
+  "by_verdict": {
+   "generic_rhea_class": 1,
+   "same_molecule": 8
+  },
+  "rows": [
+   {
+    "cluster": "1_103_CarAa",
+    "curated_substrate": "carbazole",
+    "curated_heavy_atoms": {
+     "N": 1,
+     "C": 12
+    },
+    "rhea_substrates": [
+     "9h-carbazole"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "9H-carbazole",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "1_105_DdmC",
+    "curated_substrate": "dicamba",
+    "curated_heavy_atoms": {
+     "O": 3,
+     "C": 8,
+     "Cl": 2
+    },
+    "rhea_substrates": [
+     "3,6-dichloro-2-methoxybenzoate"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "3,6-dichloro-2-methoxybenzoate",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "1_106_TsaM",
+    "curated_substrate": "4-toluenesulfonate",
+    "curated_heavy_atoms": {
+     "C": 7,
+     "S": 1,
+     "O": 3
+    },
+    "rhea_substrates": [
+     "toluene-4-sulfonate"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "toluene-4-sulfonate",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "1_107_CndA",
+    "curated_substrate": "chloroacetanilide herbicides (alachlor, acetochlor, butachlor)",
+    "curated_heavy_atoms": {
+     "C": 14,
+     "N": 1,
+     "O": 2,
+     "Cl": 1
+    },
+    "rhea_substrates": [
+     "acetochlor",
+     "alachlor",
+     "butachlor"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "alachlor",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "2_217_HcaE",
+    "curated_substrate": "3-phenylpropionate",
+    "curated_heavy_atoms": {
+     "O": 2,
+     "C": 9
+    },
+    "rhea_substrates": [
+     "(e)-cinnamate",
+     "3-phenylpropanoate"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "3-phenylpropanoate",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "3_313_KshA15",
+    "curated_substrate": "3-ketosteroid",
+    "curated_heavy_atoms": {
+     "O": 2,
+     "C": 19
+    },
+    "rhea_substrates": [
+     "3-oxochol-4-en-22-oate",
+     "3-oxochol-4-en-22-oyl-coa",
+     "3-oxochola-1,4-dien-22-oate",
+     "3-oxochola-1,4-dien-22-oyl-coa",
+     "androst-4-ene-3,17-dione",
+     "androsta-1,4-diene-3,17-dione"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "androsta-1,4-diene-3,17-dione",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "4_410_CbdC",
+    "curated_substrate": "2-halobenzoate",
+    "curated_heavy_atoms": {
+     "O": 2,
+     "C": 7,
+     "Cl": 1
+    },
+    "rhea_substrates": [
+     "a 2-halobenzoate"
+    ],
+    "verdict": "generic_rhea_class",
+    "matched_substrate": "a 2-halobenzoate",
+    "reading": "Rhea states a generic formula (a placeholder element stands for the halogen), so an atom count cannot decide; forcing the comparison would manufacture a disagreement"
+   },
+   {
+    "cluster": "5_504_CntA",
+    "curated_substrate": "L-carnitine",
+    "curated_heavy_atoms": {
+     "N": 1,
+     "O": 3,
+     "C": 7
+    },
+    "rhea_substrates": [
+     "(r)-carnitine"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "(R)-carnitine",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   },
+   {
+    "cluster": "5_506_Stc2",
+    "curated_substrate": "stachydrine",
+    "curated_heavy_atoms": {
+     "N": 1,
+     "O": 2,
+     "C": 7
+    },
+    "rhea_substrates": [
+     "l-proline betaine"
+    ],
+    "verdict": "same_molecule",
+    "matched_substrate": "L-proline betaine",
+    "reading": "the curated name differs but the heavy-atom composition is identical, so this is a nomenclature difference (trivial against systematic name, salt or stereo descriptor), not a disagreement"
+   }
+  ]
+ },
+ "ambiguous_names": [],
+ "unresolved_types": [
+  "1_101_OxoO",
+  "1_108_PobA",
+  "1_110_SxtT",
+  "1_111_GxtA",
+  "1_113_CdnA",
+  "1_116_GdmA",
+  "1_117_PrnD",
+  "2_206_IpBAa",
+  "2_214_TftA",
+  "2_215_cadA",
+  "3_305_ArhA1",
+  "3_307_NagGH",
+  "3_308_DxnA1",
+  "3_320_NidA3",
+  "4_407_PbaA1",
+  "4_409_TPDO",
+  "4_411_XylX",
+  "5_505_qxyA",
+  "6_603_PTC52",
+  "7_701_AerC"
+ ]
+}

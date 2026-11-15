@@ -1,0 +1,24 @@
+{
+ "question": "Can this database's genomic context be read by standard tools without converting anything?",
+ "format": "GFF3 (version 3), gzip-compressed",
+ "coordinates": "1-based inclusive, converted from the 0-based half-open coordinates stored in the database; measured on 4000 entries, 3996 satisfy end - start == 3 * (amino acids + 1)",
+ "unit": "one operon feature per confirmed alpha subunit, with each operon gene as a child CDS",
+ "not_exported": "Neighbouring genes that are not part of a called operon. A gene inside the search window but outside the operon is a window artefact, not context, and including it would turn a 117 thousand line file into a million.",
+ "counts": {
+  "regions": 12329,
+  "operons": 21046,
+  "cds": 97060,
+  "partial": 24
+ },
+ "verification": {
+  "lines": 130438,
+  "features": 118106,
+  "sequence_regions": 12329,
+  "distinct_ids": 118106,
+  "parent_links": 97060,
+  "unresolved_parents": 0,
+  "problems": [],
+  "valid": true
+ },
+ "data_revision": null
+}
