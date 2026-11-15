@@ -6658,15 +6658,21 @@ yereldir; bu da yazıldı.
 sahiplendirildi (`DECLARED_WRITES["family_scan"]`) — daha önce beyan
 edilmemişti, yazmaları dosya sahibi `database`'e düşüyordu.
 
-**Ölçüm (onaylı girişlerin komşuları, 2026-11-15).** Ürün adı 9.243
-komşuyu transpozon diye etiketliyor. Modellerle:
+**Ölçüm (2026-11-15).** İki ayrı evren var ve karıştırılmamalı:
+veritabanındaki **tüm** komşular arasında ürün adı 9.243 komşuyu
+transpozon diye etiketliyor; sayfanın evreni ise **onaylı girişlerin**
+komşuları (5.418 etiket) ve yayımlanan sayılar bunlar:
 
-| durum | n |
-|---|---|
-| model doğruladı (transpozaz/IS alanı) | 1.526 |
-| model **çelişti**: rekombinaz/integraz, mobil eleman değil | 513 |
-| tarandı, kütüphanedeki hiçbir model tutmadı | 1.498 |
-| **hiç taranmadı** (protein çevirisi çıkarılmamış) | 5.706 |
+| durum | onaylı girişler | tüm komşular |
+|---|---|---|
+| model doğruladı (transpozaz/IS alanı) | **1.503** | 1.526 |
+| model **çelişti**: rekombinaz/integraz, mobil eleman değil | **505** | 513 |
+| tarandı, kütüphanedeki hiçbir model tutmadı | **1.478** | 1.498 |
+| **hiç taranmadı** (protein çevirisi çıkarılmamış) | **1.932** | 5.706 |
+
+Modellere gösterilebilen kısım onaylı girişlerde 3.486/5.418 (%64),
+tüm komşularda 3.537/9.243 (%38) — yani "hiç taranmadı" oranı evrene
+göre çok değişiyor ve iki sayıyı aynı cümlede kullanmak yanlış olurdu.
 
 **En önemli karar son iki satırı ayırmak.** Tek "model isabeti yok"
 kovasına konsaydı, aracın **hiç bakmadığı** 5.706 satır "model
@@ -6776,3 +6782,21 @@ de girmeli** — yoksa düzeltilmiş olan, düzeltilmemiş olanı gizler.
 (`"Kaynaktan olculdu; duzeltme yapilmaz."`) ortaya çıkardı. Kapının
 ayırt edicisini genişletmek, o gün başka bir sebeple eklenmiş olsa bile,
 görünmeyen bir kusuru hemen görünür yaptı.
+
+### 136.12 · Ölçümü JSON'a yazmak yayımlamak değildir
+
+136.7'yi ilk yazdığımda transpozon ölçümünü `control_elements.json`'a
+koydum ve **sayfaya koymadım**. Caveat metni "bkz. aşağıdaki
+mobility_evidence" diyordu — ama o "aşağısı" indirilen dosyanın içiydi,
+sayfanın değil. Yani düzeltilmiş iddia indirilebilirdi, fakat sayfayı
+okuyan hâlâ yalnızca ürün adı sayımını görüyordu.
+
+`atlas/elements` sayfasına dört satırlık ölçüm tablosu eklendi; her
+satırın yanında **nasıl okunacağı** yazıyor: doğrulanan, çelişen
+(çıkarılabilir), taranıp isabet almayan (kütüphanenin menzili), ve hiç
+taranmayan (model bakmadı). Ve neden model-yalnızca sayıma geçilmediği
+sayfada yazıyor.
+
+Ders: bu oturumda üçüncü kez aynı sınıf — **bir ölçümü üretmek onu
+yayımlamak değil**; yayımlandığı yer sayfadır, çünkü okuyucu orayı
+okuyor.

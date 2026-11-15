@@ -3206,6 +3206,8 @@ def control_elements_view(path):
         "regulators": raw.get("regulators") or [],
         "is_families": raw.get("is_families") or [],
         "specificity": raw.get("mobile_specificity") or {},
+        #  Urun adi etiketinin MODELLE olculen karsiligi (family_scan).
+        "mobility_evidence": raw.get("mobility_evidence") or {},
         "sankey_reaction": sankey_layout(raw.get("sankey_regulator_to_reaction")),
         "sankey_chem": sankey_layout(raw.get("sankey_regulator_to_chem_family")),
     }

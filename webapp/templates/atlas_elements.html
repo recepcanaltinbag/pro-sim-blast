@@ -67,6 +67,36 @@ a stronger piece of evidence than an unnamed “transposase”. Of
 {{ el.coverage.entries_with_unnamed_transposase_only|fmt }} carry only an unnamed transposase, and
 {{ el.coverage.entries_whose_only_hit_is_recombination_machinery|fmt }} matched nothing but
 recombination machinery, which is not a mobile element at all.</p>
+
+{% set me = el.mobility_evidence %}
+{% if me and me.counts %}
+{% set mc = me.counts %}
+<p>That label can be read a second way, with Pfam transposase and recombinase models, and the two
+readings do not agree. Of the <b>{{ me.neighbours_labelled_by_product_name|fmt }}</b> neighbouring
+genes whose product name says transposon, <b>{{ me.checkable_against_models|fmt }}</b> could be
+shown to a model at all &mdash; the rest carry no extracted protein translation.</p>
+<div class="tablewrap"><table class="data compact">
+<thead><tr><th>What the models say</th><th class="num">Neighbours</th><th>How to read it</th></tr></thead>
+<tbody>
+<tr><td>A transposase or IS domain</td><td class="num">{{ mc.model_confirmed_mobile|fmt }}</td>
+    <td>Confirmed: name and model agree.</td></tr>
+<tr><td>A recombinase or integrase</td>
+    <td class="num">{{ mc.model_says_recombinase_not_mobile|fmt }}</td>
+    <td><b>Contradicted.</b> Recombination machinery is not a mobile element; this is the group a
+    reader can subtract.</td></tr>
+<tr><td>Scanned, no model matched</td><td class="num">{{ mc.scanned_no_model_hit|fmt }}</td>
+    <td>Not a refutation. The library holds a fixed set of models and does not cover every IS
+    family, so a real insertion sequence can sit here.</td></tr>
+<tr><td>Never scanned</td><td class="num">{{ mc.never_scanned_no_protein|fmt }}</td>
+    <td>No protein translation was extracted, so no model ever looked. This says nothing about the
+    label either way.</td></tr>
+</tbody></table></div>
+<p class="note">The counts above keep the product-name reading, and the label was deliberately
+<b>not</b> replaced by a model-only count: that would drop named families such as IS630, IS6 and
+ISL3, which the library does not cover, and would silently turn a limit of the tool into a claim
+about the data. The last two rows are kept apart for the same reason &mdash; a row no model looked
+at is not a row a model rejected.</p>
+{% endif %}
 <div class="tablewrap"><table class="data compact">
 <thead><tr><th>Family</th><th class="num">Alpha subunits</th><th class="num">Enzyme types</th>
 <th class="num">Genera</th><th class="num">Types it stands out in</th>
