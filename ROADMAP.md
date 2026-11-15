@@ -6824,3 +6824,44 @@ Olcumun kendisi degismedi: isabetler **dizi md5'i** ile `ro_union`a karsi
 karsilastirilir (accession ile degil), band `pident >= 55 & qcov >= 60`,
 sonuc kimlik bantlarina bolunur. Isabet listesi kapli oldugu icin her
 sayi alt sinirdir.
+
+### 136.14 qxyA nr bosluk olcumu: SONUC (tek gen)
+
+nr isi (RID `FKUHASGZ014`) 3 saat kuyrukta bekledikten sonra bitti. Iki
+arac hatasi yolda duzeltildi -- ikisi de ayni sinifa ait: **aracin urettigi
+bir bosluk, veride bosluk gibi gorundu.**
+
+1. `FORMAT_TYPE=Tabular` 62 baytlik bir DURUM sayfasi dondurdu; yoklayicim
+   bunu "5 satir" sayip `[bitti]` yazdi. Gercekte is hazirdi ve
+   `ThereAreHits=yes` idi. XML calisti; `blastxml_to_tsv.py` cevirisi
+   yazildi ve cevirdigi satiri `<Hit>` sayisiyla karsilastiriyor.
+2. efetch accession'a surum ekliyor (`WP_068587002.1`), isabet listesinde
+   surum yok. Anahtar eslesmedigi icin 17 isabetin 17'si "cekilemedi"
+   sayildi ve rapor "0 var, 0 yok" yazdi. Anahtar surumsuzlestirildi;
+   ayrica **muhafiz** eklendi: banddaki hicbir dizi cekilemezse betik
+   `sys.exit` ile duruyor, cunku bu bir olcum degil bir cekme hatasidir.
+
+**Olculen (qxyA, nr, kimlik >= %55 & qcov >= %60):**
+
+| | sayi |
+|---|---|
+| bandda nr isabeti | 17 |
+| havuzumuzda (`ro_union`) var | 3 |
+| **havuzumuzda YOK** | **14** |
+| bunlardan >= %95 kimlikte | 12 |
+| en yakin eksik | %99.22 (`MGA9222885`, *Pseudomonas graminis*) |
+
+**Tavan bandi kesmedi** ve bu olculdu, iddia edilmedi: donen 500 isabetin
+en dusuk bit skoru 316.2, banddaki en dusuk bit skoru 508.8. Kesim noktasi
+bandin altinda kaldigi icin bu sayi nr icinde **tam**, alt sinir degil.
+`gap_compare.py` bunu `hit_cap.band_truncated_by_hit_cap` olarak yaziyor ve
+`what_this_is_not` metnini buna gore kuruyor.
+
+Eksik 14'un cogu WGS/MAG toplu accession'lari (MGA, HCF, EOE, MID, HPV,
+EQT, HBO, TXG) ama **alti RefSeq `WP_`** -- yani kuratorlu kayitlar da
+kaciyor. Bu, mekanizmayi dogruluyor: arama uzayi UniProtKB PF00355 (11
+Aralik 2024) oldugu icin GenBank/RefSeq'te olup UniProt'ta olmayan dizi
+gorunmuyor.
+
+**NEDEN HENUZ YAYIMLANMADI.** Bu tek bir gen. Site capinda bir cumle icin
+n=1 yeterli degil; asagidaki coklu-sorgu olcumu bekliyor.
